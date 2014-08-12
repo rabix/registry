@@ -19,5 +19,7 @@ var app = express();
 
 require('./config/express')(app, config);
 
-app.listen(config.port);
+app.listen(config.port, function () {
+    console.log('App served on http://localhost:' + config.port);
+});
 

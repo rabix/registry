@@ -7,11 +7,7 @@ module.exports = function (app) {
     app.use('/api', router);
 };
 
-router.get('/', function (req, res, next) {
+router.get('/test', function (req, res, next) {
 
-    Article.find(function (err, articles) {
-        if (err) return next(err);
-        res.json(articles);
-    });
+    res.json({test: 'test'});
 });
-
