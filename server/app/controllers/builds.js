@@ -22,10 +22,10 @@ router.get('/builds', function (req, res, next) {
         }
     });
 
-    Build.count().where(where).exec(function(err, total) {
+    Build.count(where).exec(function(err, total) {
         if (err) { return next(err); }
 
-        Build.find().where(where).skip(skip).limit(limit).populate('repoId').exec(function(err, builds) {
+        Build.find(where).skip(skip).limit(limit).populate('repoId').exec(function(err, builds) {
             if (err) { return next(err); }
 
             res.json({list: builds, total: total});

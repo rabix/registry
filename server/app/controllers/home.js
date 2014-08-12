@@ -1,3 +1,5 @@
+'use strict';
+
 var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
@@ -19,7 +21,7 @@ router.get('/prepare', function (req, res, next) {
 
     Repo.find(function (err, repos) {
 
-        if (err) return next(err);
+        if (err) { return next(err); }
 
         var repoIds = [];
 
@@ -29,7 +31,7 @@ router.get('/prepare', function (req, res, next) {
             var reposMockPath = __dirname + '/../../mocks/repos.json';
 
             fs.readFile(reposMockPath, 'utf8', function (err, result) {
-                if (err) return next(err);
+                if (err) { return next(err); }
 
                 result = JSON.parse(result);
 
@@ -51,7 +53,7 @@ router.get('/prepare', function (req, res, next) {
 
         // insert apps
         App.find(function (err, apps) {
-            if (err) return next(err);
+            if (err) { return next(err); }
 
             if (apps.length === 0) {
 
@@ -67,7 +69,7 @@ router.get('/prepare', function (req, res, next) {
                     });
 
                     App.collection.insert(result.data, function(err) {
-                        if (err) return next(err);
+                        if (err) { return next(err); }
                     });
 
                 });
@@ -76,14 +78,14 @@ router.get('/prepare', function (req, res, next) {
 
         // insert builds
         Build.find(function (err, builds) {
-            if (err) return next(err);
+            if (err) { return next(err); }
 
             if (builds.length === 0) {
 
                 var buildsMockPath = __dirname + '/../../mocks/builds.json';
 
                 fs.readFile(buildsMockPath, 'utf8', function (err, result) {
-                    if (err) return next(err);
+                    if (err) { return next(err); }
 
                     result = JSON.parse(result);
 
@@ -92,7 +94,7 @@ router.get('/prepare', function (req, res, next) {
                     });
 
                     Build.collection.insert(result.data, function(err) {
-                        if (err) return next(err);
+                        if (err) { return next(err); }
                     });
 
                 });

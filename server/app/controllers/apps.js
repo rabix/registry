@@ -20,12 +20,18 @@ router.get('/apps', function (req, res, next) {
         if (_.contains(paramKey, 'field_')) {
             where[paramKey.replace('field_', '')] = paramVal;
         }
+        if (paramKey === 'q') {
+            where.$or = [
+                {name: new RegExp(paramVal, 'i')},
+                {description: new RegExp(paramVal, 'i')}
+            ];
+        }
     });
 
-    App.count().where(where).exec(function(err, total) {
+    App.count(where).exec(function(err, total) {
         if (err) { return next(err); }
 
-        App.find().where(where).skip(skip).limit(limit).populate('repoId').exec(function(err, apps) {
+        App.find(where).skip(skip).limit(limit).populate('repoId').exec(function(err, apps) {
             if (err) { return next(err); }
 
             res.json({list: apps, total: total});
