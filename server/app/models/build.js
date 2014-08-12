@@ -5,9 +5,9 @@ var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
 
 var BuildSchema = new Schema({
-    repoId: ObjectId,
     status: String,
-    head_commit: String
+    head_commit: String,
+    repoId: { type: Schema.Types.ObjectId, ref: 'Repo' }
 });
 
 /*

@@ -3,8 +3,7 @@
 angular.module('registryApp')
     .service('Api', ['$resource', '$http', '$q', function ($resource, $http, $q) {
 
-        var apiUrlRemote = 'http://5e9e1fd7.ngrok.com';
-        var apiUrl = '';
+        var apiUrl = '/api';
 
         this.apps = $resource(apiUrl + '/apps/:id', {id: '@id'}, {
             add: {method: 'POST'},

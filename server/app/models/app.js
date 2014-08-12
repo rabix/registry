@@ -6,13 +6,13 @@ var ObjectId = Schema.ObjectId;
 
 var AppSchema = new Schema({
     name: String,
-    repoId: ObjectId,
     description: String,
-    app: String,
+    app: Schema.Types.Mixed,
     toolkit_name: String,
     toolkit_version: String,
-    links: String,
+    links: Schema.Types.Mixed,
     app_checksum: String,
+    repoId: { type: Schema.Types.ObjectId, ref: 'Repo' }
 });
 
 /*

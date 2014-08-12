@@ -14,10 +14,5 @@ RepoSchema.virtual('date')
         return this._id.getTimestamp();
     });
 
-RepoSchema.virtual('repoId')
-    .get(function() {
-        return this._id;
-    });
-
 mongoose.model('Repo', RepoSchema);
 

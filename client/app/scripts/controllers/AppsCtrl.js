@@ -14,11 +14,13 @@ angular.module('registryApp')
          */
         var appsLoaded = function(result) {
 
+            console.log(result);
+
             $scope.view.paginator.prev = $scope.view.page > 1;
             $scope.view.paginator.next = ($scope.view.page * $scope.view.perPage) <= result.total;
             $scope.view.total = Math.ceil(result.total / $scope.view.perPage);
 
-            $scope.view.apps = result.items;
+            $scope.view.apps = result.list;
             $scope.view.loading = false;
         };
 
