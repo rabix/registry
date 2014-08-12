@@ -33,8 +33,8 @@
             </thead>
             <tbody>
                 <tr ng-repeat="app in view.apps">
-                    <td><a ng-href="#/app/{{ app.id }}">{{ app.name }}</a></td>
-                    <td><a ng-href="#/repo/{{ app.repoId.id }}">{{ app.repoId.owner +'/'+ app.repoId.name }}</a></td>
+                    <td><a ng-href="#/app/{{ app._id }}">{{ app.name }}</a></td>
+                    <td><a ng-href="#/repo/{{ app.repoId.id }}">{{ app.repoId.owner }}/{{ app.repoId.name }}</a></td>
                     <td><p tooltip="{{ app.description }}" tooltip-popup-delay="1000">{{ app.description }}</p></td>
                 </tr>
                 <tr class="empty" ng-if="view.apps.length === 0">

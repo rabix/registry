@@ -3,12 +3,14 @@
 angular.module('registryApp')
     .service('User', ['Api', function (Api) {
 
+        var self = {};
+
         /**
          * Get user's details
          *
          * @returns {object} $promise
          */
-        this.getUser = function() {
+        self.getUser = function() {
 
             var promise = Api.user.get().$promise;
 
@@ -21,7 +23,7 @@ angular.module('registryApp')
          *
          * @returns {object} $promise
          */
-        this.logOut = function() {
+        self.logOut = function() {
 
             var promise = Api.logout.confirm().$promise;
 
@@ -34,7 +36,7 @@ angular.module('registryApp')
          *
          * @returns {object} $promise
          */
-        this.getToken = function() {
+        self.getToken = function() {
 
             var promise = Api.token.get().$promise;
 
@@ -46,7 +48,7 @@ angular.module('registryApp')
          *
          * @returns {object} $promise
          */
-        this.generateToken = function() {
+        self.generateToken = function() {
 
             var promise = Api.token.generate().$promise;
 
@@ -58,7 +60,7 @@ angular.module('registryApp')
          *
          * @returns {object} $promise
          */
-        this.revokeToken = function() {
+        self.revokeToken = function() {
 
             var promise = Api.token.revoke().$promise;
 
@@ -71,7 +73,7 @@ angular.module('registryApp')
          * @params {string} email
          * @returns {object} $promise
          */
-        this.subscribe = function(email) {
+        self.subscribe = function(email) {
 
             var promise = Api.subscribe.post({email: email}).$promise;
 
@@ -84,7 +86,7 @@ angular.module('registryApp')
          * @param result
          * @returns {object}
          */
-        this.parseUser = function (result) {
+        self.parseUser = function (result) {
 
             var params = ['avatar_url', 'gravatar_id', 'html_url', 'name'];
             var user = {};
@@ -97,5 +99,7 @@ angular.module('registryApp')
 
             return user;
         };
+
+        return self;
 
     }]);

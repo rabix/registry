@@ -4,7 +4,7 @@
         <div class="container">
             <a ng-href="#/builds" class="btn btn-default pull-left go-back"><i class="glyphicon glyphicon-chevron-left"></i> Back</a>
             <h1>
-                <span tooltip="Build #{{ view.build.id }}" tooltip-popup-delay="1000">Build #{{ view.build.id }}</span>
+                <span tooltip="Build #{{ view.build._id }}" tooltip-popup-delay="1000">Build #{{ view.build._id }}</span>
                 <span class="label pull-right" ng-class="{'label-success': view.build.status === 'success', 'label-info': view.build.status === 'running', 'label-danger': view.build.status === 'failure', 'label-warning': view.build.status === 'pending'}">
                     <i class="glyphicon {{ view.build.status }}" ng-class="{'glyphicon-ok-circle': view.build.status === 'success', 'glyphicon-repeat': view.build.status === 'running', 'glyphicon-remove-circle': view.build.status === 'failure', 'glyphicon-time': view.build.status === 'pending'}"></i>
                     <span>{{ view.build.status }}</span>
@@ -21,7 +21,7 @@
             <div class="panel panel-warning">
                 <div class="panel-heading"><h4 class="panel-title">Info</h4></div>
                 <div class="panel-body">
-                    <p><strong>Repo/User:</strong> <a ng-href="#/builds?repo={{ view.build.repo }}">{{ view.build.repo }}</a></p>
+                    <p><strong>Repo/User:</strong> <a ng-href="#/builds?repo={{ view.build.repoId._id }}">{{ view.build.repoId.owner }}/{{ view.build.repoId.name }}</a></p>
                     <p><strong>Date:</strong> {{ view.build.head_commit.timestamp | date:'short' }}</p>
                     <p><strong>Author:</strong> {{ view.build.head_commit.author.name }}</p>
                     <p><strong>Committer:</strong> {{ view.build.head_commit.committer.name }}</p>

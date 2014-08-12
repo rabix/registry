@@ -165,6 +165,7 @@
         background-color: #222;
         padding: 0 10px;
         counter-reset: counter;
+        @include box-shadow(none);
         @include scrollBar($orange);
 
         .line {

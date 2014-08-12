@@ -18,7 +18,7 @@ angular.module('registryApp')
             $scope.view.paginator.next = ($scope.view.page * $scope.view.perPage) < result.total;
             $scope.view.total = Math.ceil(result.total / $scope.view.perPage);
 
-            $scope.view.builds = result.items;
+            $scope.view.builds = result.list;
             $scope.view.loading = false;
 
         };

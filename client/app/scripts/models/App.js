@@ -3,6 +3,7 @@
 angular.module('registryApp')
     .service('App', ['Api', function (Api) {
 
+        var self = {};
         /**
          * Get list of apps
          *
@@ -10,7 +11,7 @@ angular.module('registryApp')
          * @params {string} searchTerm
          * @returns {object} $promise
          */
-        this.getApps = function(skip, searchTerm, repo) {
+        self.getApps = function(skip, searchTerm, repo) {
 
             var isSearch = !(_.isUndefined(searchTerm) || _.isEmpty(searchTerm));
             var params = {skip: skip};
@@ -20,7 +21,7 @@ angular.module('registryApp')
             }
 
             if (angular.isDefined(repo)) {
-                params.field_repo = repo.replace(/&/g, '/');
+                params.field_repoId = repo.replace(/&/g, '/');
             }
 
             var promise = Api.apps.get(params).$promise;
@@ -35,12 +36,14 @@ angular.module('registryApp')
          * @param id
          * @returns {object} $promise
          */
-        this.getApp = function(id) {
+        self.getApp = function(id) {
 
             var promise = Api.apps.get({id: id}).$promise;
 
             return promise;
 
         };
+
+        return self;
 
     }]);
