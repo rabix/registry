@@ -17,9 +17,11 @@ var AppSchema = new Schema({
 
 /*
  AppSchema {
-     app.docker_image_ref = {
-        image_repo: '',
-        image_tag: ''
+     app: {
+        docker_image_ref = {
+            image_repo: '',
+            image_tag: ''
+        }
      },
      links = {
         app_ref: '',

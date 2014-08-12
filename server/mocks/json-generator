@@ -1,0 +1,47 @@
+// APPS
+[
+  '{{repeat(200)}}',
+  {
+    name: '{{lorem(1, "words")}}',
+    description: '{{lorem()}}',
+    toolkit_name: '{{lorem(1, "words")}}',
+    toolkit_version: '{{random(0.1,0.2,1.0)}}',
+    links: {
+      app_ref: 'http://app-ref#{{guid()}}'
+    },
+    app_checksum: '$checksum${{guid()}}',
+    app: {
+      docker_image_ref: {
+	        image_repo: 'http://image-repo#{{guid()}}',
+            image_tag: '{{lorem(1, "words")}}'
+        }
+    }
+  }
+]
+
+//BUILDS
+[
+  '{{repeat(100)}}',
+  {
+
+    status: function (tags) {
+      var statuses = ['success', 'running', 'failure', 'pending'];
+      return statuses[tags.integer(0, statuses.length - 1)];
+    },
+    head_commit: {
+        id: '{{guid()}}',
+	    message: '{{lorem()}}',
+        url: 'http://commit-{{lorem(1, "words")}}.com#bla',
+        timestamp: 1407849135,
+        added: [],
+        modified: [],
+        removed: [],
+        author: {
+            name: '{{lorem(1, "words")}}'
+        },
+        committer: {
+            name: '{{lorem(1, "words")}}'
+        }
+    }
+  }
+]
