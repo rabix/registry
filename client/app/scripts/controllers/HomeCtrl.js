@@ -12,7 +12,7 @@ angular.module('registryApp')
         $scope.view.message = {};
         $scope.view.loading = false;
 
-        $scope.view.classes = ['page', 'home'];
+        $scope.view.classes = ['page', 'home', 'auto'];
         Loading.setClasses($scope.view.classes);
 
         $scope.Loading = Loading;

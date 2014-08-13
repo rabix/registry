@@ -10,7 +10,12 @@ var config = {
         },
         port: 3000,
         db: 'mongodb://localhost/server-development',
-        clientPath: '../../client/app'
+        clientPath: '../../client/app',
+        github: {
+            clientId: 'bffb0517d8c629f2b2db',
+            clientSecret: '3697d0796cb2ed6443495399a963eed96d47bea5',
+            callbackURL: 'http://localhost:3000/auth/github/callback'
+        }
     },
 
     test: {
@@ -20,7 +25,12 @@ var config = {
         },
         port: 3000,
         db: 'mongodb://localhost/server-test',
-        clientPath: '../../client/app'
+        clientPath: '../../client/app',
+        github: {
+            clientId: 'bffb0517d8c629f2b2db',
+            clientSecret: '3697d0796cb2ed6443495399a963eed96d47bea5',
+            callbackURL: 'http://localhost:3000/auth/github/callback'
+        }
     },
 
     production: {
@@ -30,7 +40,12 @@ var config = {
         },
         port: 3000,
         db: 'mongodb://localhost/server-production',
-        clientPath: '../../client/dist'
+        clientPath: '../../client/dist',
+        github: {
+            clientId: 'bffb0517d8c629f2b2db',
+            clientSecret: '3697d0796cb2ed6443495399a963eed96d47bea5',
+            callbackURL: 'http://localhost:3000/auth/github/callback'
+        }
     }
 };
 

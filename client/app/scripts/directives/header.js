@@ -41,20 +41,9 @@ angular.module('registryApp')
                 scope.HeaderService = Header;
 
                 User.getUser().then(function(result) {
-                    scope.view.user = User.parseUser(result);
+                    scope.view.user = result.user;
                     scope.view.loading = false;
                 });
-
-                /**
-                 * Log Out the user
-                 */
-                scope.logOut = function() {
-
-                    User.logOut().then(function() {
-                        scope.view.user = {};
-                        $route.reload();
-                    });
-                };
 
                 scope.$watch('HeaderService.active', function (n, o) {
                     if (n !== o) {

@@ -8,6 +8,9 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var compress = require('compression');
 var methodOverride = require('method-override');
+var passport = require('passport');
+var GitHubStrategy = require('passport-github').Strategy;
+var session = require('express-session');
 
 module.exports = function (app, config) {
     app.set('views', config.root + '/app/views');
@@ -23,6 +26,15 @@ module.exports = function (app, config) {
     app.use(compress());
     app.use(express.static(config.root + config.clientPath));
     app.use(methodOverride());
+
+    app.use(session({
+        secret: 'reallybigsecret',
+        saveUninitialized: true,
+        resave: true
+    }));
+    app.use(passport.initialize());
+    app.use(passport.session());
+
 
     var controllersPath = path.join(__dirname, '../app/controllers');
     fs.readdirSync(controllersPath).forEach(function (file) {
@@ -56,5 +68,35 @@ module.exports = function (app, config) {
             title: 'error'
         });
     });
+
+    passport.serializeUser(function(user, done) {
+        done(null, user);
+    });
+
+    passport.deserializeUser(function(obj, done) {
+        done(null, obj);
+    });
+
+    passport.use(new GitHubStrategy({
+            clientID: config.github.clientId,
+            clientSecret: config.github.clientSecret,
+            callbackURL: config.github.callbackURL
+        },
+        function(accessToken, refreshToken, profile, done) {
+            process.nextTick(function () {
+
+                var mongoose = require('mongoose');
+                var User = mongoose.model('User');
+
+                var user = new User();
+                user.username = profile.username;
+                user.github = profile;
+
+                user.save();
+
+                return done(null, profile);
+            });
+        }
+    ));
 
 };

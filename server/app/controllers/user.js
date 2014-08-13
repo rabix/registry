@@ -8,5 +8,5 @@ module.exports = function (app) {
 };
 
 router.get('/user', function (req, res, next) {
-    res.json({user: 'mock user'});
+    res.json({user: req.user});
 });
