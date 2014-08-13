@@ -17,7 +17,7 @@ router.get('/repos', function (req, res, next) {
     Repo.count(function(err, total) {
         if (err) { return next(err); }
 
-        Repo.find().skip(skip).limit(limit).exec(function(err, repos) {
+        Repo.find({}).skip(skip).limit(limit).exec(function(err, repos) {
             if (err) { return next(err); }
 
             res.json({list: repos, total: total});

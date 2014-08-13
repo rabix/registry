@@ -55,15 +55,9 @@ angular.module('registryApp')
             }
         };
 
-        this.user = $resource(apiUrl + '/user');
-
-        this.token = $resource(apiUrl + '/token', {}, {
-            generate: {method: 'POST'},
-            revoke: {method: 'DELETE'}
-        });
-
-        this.logout = $resource(apiUrl + '/logout', {}, {
-            confirm: {method: 'POST'}
+        this.user = $resource(apiUrl + '/user/:action', {action: '@action'}, {
+            update: {method: 'PUT'},
+            delete: {method: 'DELETE'}
         });
 
         // TODO uncomment later when api ready

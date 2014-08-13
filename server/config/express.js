@@ -99,7 +99,7 @@ module.exports = function (app, config) {
 
                         user.save();
                     } else {
-                        User.update({github: profile});
+                        User.update({email: email}, {github: profile});
                     }
 
                 });
