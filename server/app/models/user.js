@@ -5,6 +5,8 @@ var mongoose = require('mongoose'),
 
 var UserSchema = new Schema({
     username: String,
+    email: String,
+    token: String,
     github: Schema.Types.Mixed
 });
 

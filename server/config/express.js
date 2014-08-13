@@ -85,14 +85,24 @@ module.exports = function (app, config) {
         function(accessToken, refreshToken, profile, done) {
             process.nextTick(function () {
 
+                var email = profile.emails[0].value;
                 var mongoose = require('mongoose');
                 var User = mongoose.model('User');
 
-                var user = new User();
-                user.username = profile.username;
-                user.github = profile;
+                User.count({email: email}, function(err, count) {
+                    if (count === 0) {
+                        var user = new User();
 
-                user.save();
+                        user.username = profile.username;
+                        user.email = email;
+                        user.github = profile;
+
+                        user.save();
+                    } else {
+                        User.update({github: profile});
+                    }
+
+                });
 
                 return done(null, profile);
             });
