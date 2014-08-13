@@ -1,9 +1,7 @@
 'use strict';
 
 angular.module('registryApp')
-    .controller('BuildCtrl', ['$scope', '$routeParams', '$interval', '$document', '$timeout', 'Build', 'Header', function ($scope, $routeParams, $interval, $document, $timeout, Build, Header) {
-
-        $scope.$parent.view.classes.push('build');
+    .controller('BuildCtrl', ['$scope', '$routeParams', '$interval', '$document', '$timeout', 'Build', 'Header', 'Loading', function ($scope, $routeParams, $interval, $document, $timeout, Build, Header, Loading) {
 
         var logIntervalId;
         var scrollTimeoutId;
@@ -13,6 +11,14 @@ angular.module('registryApp')
         $scope.view = {};
         $scope.view.loading = true;
         $scope.view.build = null;
+
+        $scope.view.classes = ['page', 'build'];
+        Loading.setClasses($scope.view.classes);
+
+        $scope.Loading = Loading;
+        $scope.$watch('Loading.classes', function(n, o) {
+            if (n !== o) { $scope.view.classes = n; }
+        });
 
         /* get the build details */
         Build.getBuild($routeParams.id).then(function(result) {

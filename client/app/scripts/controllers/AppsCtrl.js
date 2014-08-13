@@ -1,9 +1,7 @@
 'use strict';
 
 angular.module('registryApp')
-    .controller('AppsCtrl', ['$scope', '$routeParams', 'App', 'Header', 'Api', function ($scope, $routeParams, App, Header, Api) {
-
-        $scope.$parent.view.classes.push('apps');
+    .controller('AppsCtrl', ['$scope', '$routeParams', 'App', 'Header', 'Api', 'Loading', function ($scope, $routeParams, App, Header, Api, Loading) {
 
         Header.setActive('apps');
 
@@ -29,6 +27,14 @@ angular.module('registryApp')
         if ($routeParams.repo) {
             $scope.view.repo = $routeParams.repo.replace(/&/g, '/');
         }
+
+        $scope.view.classes = ['page', 'apps'];
+        Loading.setClasses($scope.view.classes);
+
+        $scope.Loading = Loading;
+        $scope.$watch('Loading.classes', function(n, o) {
+            if (n !== o) { $scope.view.classes = n; }
+        });
 
         $scope.view.paginator = {
             prev: false,

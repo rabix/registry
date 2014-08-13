@@ -14,6 +14,6 @@ module.exports = function (app) {
 };
 
 router.get('/', function (req, res, next) {
-    res.json({result: 'Api is working!'});
+    res.json({message: 'Api is working!'});
 });
 

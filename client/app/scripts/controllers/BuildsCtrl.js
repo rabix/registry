@@ -1,9 +1,7 @@
 'use strict';
 
 angular.module('registryApp')
-    .controller('BuildsCtrl', ['$scope', '$routeParams', '$window', 'Build', 'Header', function ($scope, $routeParams, $window, Build, Header) {
-
-        $scope.$parent.view.classes.push('builds');
+    .controller('BuildsCtrl', ['$scope', '$routeParams', '$window', 'Build', 'Header', 'Loading', function ($scope, $routeParams, $window, Build, Header, Loading) {
 
         Header.setActive('builds');
 
@@ -27,6 +25,14 @@ angular.module('registryApp')
         $scope.view.loading = true;
         $scope.view.builds = [];
         $scope.view.repo = $routeParams.repo;
+
+        $scope.view.classes = ['page', 'builds'];
+        Loading.setClasses($scope.view.classes);
+
+        $scope.Loading = Loading;
+        $scope.$watch('Loading.classes', function(n, o) {
+            if (n !== o) { $scope.view.classes = n; }
+        });
 
         $scope.view.paginator = {
             prev: false,

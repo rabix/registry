@@ -1,9 +1,7 @@
 'use strict';
 
 angular.module('registryApp')
-    .controller('ReposCtrl', ['$scope', '$window', 'Repo', 'Header', function ($scope, $window, Repo, Header) {
-
-        $scope.$parent.view.classes.push('repos');
+    .controller('ReposCtrl', ['$scope', '$window', 'Repo', 'Header', 'Loading', function ($scope, $window, Repo, Header, Loading) {
 
         Header.setActive('repos');
 
@@ -36,6 +34,14 @@ angular.module('registryApp')
         $scope.view.page = 1;
         $scope.view.perPage = 25;
         $scope.view.total = 0;
+
+        $scope.view.classes = ['page', 'repos'];
+        Loading.setClasses($scope.view.classes);
+
+        $scope.Loading = Loading;
+        $scope.$watch('Loading.classes', function(n, o) {
+            if (n !== o) { $scope.view.classes = n; }
+        });
 
         Repo.getRepos(0).then(reposLoaded);
 

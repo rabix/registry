@@ -1,4 +1,4 @@
-<div ng-class="$parent.view.classes" loading="view.loading">
+<div ng-class="view.classes" loading="view.loading">
 
     <div class="heading">
         <div class="container">
@@ -8,10 +8,6 @@
     <!-- # .heading -->
 
     <div ng-if="!view.loading" class="container">
-
-        <div class="row" ng-if="(view.user | isEmpty)">
-            <a href="/login" class="btn btn-lg btn-primary log-in-btn">Log In With GitHub</a>
-        </div>
 
         <section>
             <h2>Overview</h2>

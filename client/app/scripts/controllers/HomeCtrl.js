@@ -1,26 +1,27 @@
 'use strict';
 
 angular.module('registryApp')
-    .controller('HomeCtrl', ['$scope', '$timeout', 'Header', 'User', function ($scope, $timeout, Header, User) {
-
-        $scope.$parent.view.classes.push('home');
+    .controller('HomeCtrl', ['$scope', '$timeout', 'Header', 'User', 'Loading', function ($scope, $timeout, Header, User, Loading) {
 
         var subscribeTimeoutId;
 
         Header.setActive('home');
 
         $scope.view = {};
-        $scope.view.loading = true;
         $scope.view.showError = false;
         $scope.view.message = {};
+        $scope.view.loading = false;
+
+        $scope.view.classes = ['page', 'home'];
+        Loading.setClasses($scope.view.classes);
+
+        $scope.Loading = Loading;
+        $scope.$watch('Loading.classes', function(n, o) {
+            if (n !== o) { $scope.view.classes = n; }
+        });
 
         $scope.subscribe = {};
         $scope.subscribe.email = '';
-
-        User.getUser().then(function(result) {
-            $scope.view.user = User.parseUser(result);
-            $scope.view.loading = false;
-        });
 
         /**
          * Subscribe user to the mailing list

@@ -1,9 +1,7 @@
 'use strict';
 
 angular.module('registryApp')
-    .controller('RepoCtrl', ['$scope', '$routeParams', '$q', 'Repo', 'App', 'Build', 'Header', function ($scope, $routeParams, $q, Repo, App, Build, Header) {
-
-        $scope.$parent.view.classes.push('repo');
+    .controller('RepoCtrl', ['$scope', '$routeParams', '$q', 'Repo', 'App', 'Build', 'Header', 'Loading', function ($scope, $routeParams, $q, Repo, App, Build, Header, Loading) {
 
         Header.setActive('repos');
 
@@ -33,6 +31,14 @@ angular.module('registryApp')
                 loading: false
             }
         };
+
+        $scope.view.classes = ['page', 'repo'];
+        Loading.setClasses($scope.view.classes);
+
+        $scope.Loading = Loading;
+        $scope.$watch('Loading.classes', function(n, o) {
+            if (n !== o) { $scope.view.classes = n; }
+        });
 
         var repoId = $routeParams.id.replace(/&/g, '/');
 

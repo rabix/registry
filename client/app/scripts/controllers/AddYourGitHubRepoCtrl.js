@@ -1,15 +1,21 @@
 'use strict';
 
 angular.module('registryApp')
-    .controller('AddYourGitHubRepoCtrl', ['$scope', '$timeout', '$location', '$filter', 'Repo', 'Header', function ($scope, $timeout, $location, $filter, Repo, Header) {
-
-        $scope.$parent.view.classes.push('add-your-github-repo');
+    .controller('AddYourGitHubRepoCtrl', ['$scope', '$timeout', '$location', '$filter', 'Repo', 'Header', 'Loading', function ($scope, $timeout, $location, $filter, Repo, Header, Loading) {
 
         Header.setActive('repos');
 
         $scope.view = {};
         $scope.view.loading = true;
         $scope.view.repos = [];
+
+        $scope.view.classes = ['page', 'add-your-github-repo'];
+        Loading.setClasses($scope.view.classes);
+
+        $scope.Loading = Loading;
+        $scope.$watch('Loading.classes', function(n, o) {
+            if (n !== o) { $scope.view.classes = n; }
+        });
 
         Repo.getHitHubRepos().then(function(result) {
             // TODO remove timeout when api handler ready
