@@ -3,6 +3,8 @@
 angular.module('registryApp')
     .service('Repo', ['Api', function (Api) {
 
+        var self = {};
+
         /**
          * Get list of repos
          *
@@ -10,7 +12,7 @@ angular.module('registryApp')
          * @params {string} searchTerm
          * @returns {object} $promise
          */
-        this.getRepos = function(skip, searchTerm) {
+        self.getRepos = function(skip, searchTerm) {
 
             var isSearch = !(_.isUndefined(searchTerm) || _.isEmpty(searchTerm));
             var params = {skip: skip};
@@ -31,7 +33,7 @@ angular.module('registryApp')
          * @param id
          * @returns {object} $promise
          */
-        this.getRepo = function(id) {
+        self.getRepo = function(id) {
 
             var params = id.split('/');
             var owner = params[0];
@@ -49,7 +51,7 @@ angular.module('registryApp')
          * @param id
          * @returns {object} $promise
          */
-        this.addRepo = function(id) {
+        self.addRepo = function(id) {
 
             var params = id.split('/');
             var owner = params[0];
@@ -67,7 +69,7 @@ angular.module('registryApp')
          *
          * @returns {object} $promise
          */
-        this.getHitHubRepos = function() {
+        self.getHitHubRepos = function() {
 
             var promise = Api.gitHubRepos.get().$promise;
 
@@ -81,7 +83,7 @@ angular.module('registryApp')
          * @param result
          * @returns {object}
          */
-        this.parseUser = function (result) {
+        self.parseUser = function (result) {
 
             var params = ['created_by', 'id', 'secret'];
             var repo = {};
@@ -94,5 +96,7 @@ angular.module('registryApp')
 
             return repo;
         };
+
+        return self;
 
     }]);

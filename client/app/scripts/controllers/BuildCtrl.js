@@ -17,7 +17,7 @@ angular.module('registryApp')
         /* get the build details */
         Build.getBuild($routeParams.id).then(function(result) {
 
-            $scope.view.build = result;
+            $scope.view.build = result.data;
 
             $scope.view.log = [];
             $scope.view.contentLength = 0;

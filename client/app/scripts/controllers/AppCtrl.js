@@ -13,7 +13,7 @@ angular.module('registryApp')
 
         App.getApp($routeParams.id).then(function(result) {
             $scope.view.loading = false;
-            $scope.view.app = result;
+            $scope.view.app = result.data;
         });
 
 

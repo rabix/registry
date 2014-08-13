@@ -31,10 +31,10 @@
                         </span>
                     </td>
                     <td class="field-id">
-                        <a ng-href="#/build/{{ build.id }}" tooltip="{{ build.id }}" tooltip-popup-delay="1000">#{{ build.id }}</a>
+                        <a ng-href="#/build/{{ build._id }}" tooltip="{{ build._id }}" tooltip-popup-delay="1000">#{{ build._id }}</a>
                     </td>
                     <td class="field-repo">
-                        <a ng-href="#/repo/{{ build.repo | encode }}">{{ build.repo }}</a>
+                        <a ng-href="#/repo/{{ build.repoId._id | encode }}">{{ build.repoId.owner }}/{{ build.repoId.name }}</a>
                     </td>
                     <td class="field-message">
                         <p tooltip="{{ build.head_commit.message }}" tooltip-popup-delay="1000">{{ build.head_commit.message }}</p>

@@ -3,18 +3,20 @@
 angular.module('registryApp')
     .service('Build', ['Api', '$q', function (Api, $q) {
 
+        var self = {};
+
         /**
          * Get list of builds
          *
          * @params {integer} skip
          * @returns {object} $promise
          */
-        this.getBuilds = function(skip, repo) {
+        self.getBuilds = function(skip, repo) {
 
             var params = {skip: skip};
 
             if (angular.isDefined(repo)) {
-                params.field_repo = repo.replace(/&/g, '/');
+                params.field_repoId = repo.replace(/&/g, '/');
             }
 
             var promise = Api.builds.get(params).$promise;
@@ -29,7 +31,7 @@ angular.module('registryApp')
          * @param id
          * @returns {object} $promise
          */
-        this.getBuild = function(id) {
+        self.getBuild = function(id) {
 
             var promise = Api.builds.get({id: id}).$promise;
 
@@ -43,7 +45,7 @@ angular.module('registryApp')
          * @param range
          * @returns {*}
          */
-        this.getLog = function(id, range) {
+        self.getLog = function(id, range) {
 
             var deferred = $q.defer();
 
@@ -60,5 +62,7 @@ angular.module('registryApp')
             return deferred.promise;
 
         };
+
+        return self;
 
     }]);

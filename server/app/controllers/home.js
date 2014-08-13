@@ -1,3 +1,5 @@
+'use strict';
+
 var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
@@ -14,3 +16,4 @@ module.exports = function (app) {
 router.get('/', function (req, res, next) {
     res.json({result: 'Api is working!'});
 });
+

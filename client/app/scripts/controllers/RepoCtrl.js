@@ -36,9 +36,10 @@ angular.module('registryApp')
 
         var repoId = $routeParams.id.replace(/&/g, '/');
 
-        Repo.getRepo(repoId).then(function (repo) {
+        Repo.getRepo(repoId).then(function (result) {
 
-            $scope.view.repo = Repo.parseUser(repo);
+            console.log(result);
+            $scope.view.repo = result.data;
 
             $q.all([
                 App.getApps(0, '', repoId),
@@ -64,7 +65,7 @@ angular.module('registryApp')
             $scope.view.paginator[tab].next = ($scope.view.paginator[tab].page * $scope.view.paginator[tab].perPage) < result.total;
             $scope.view.paginator[tab].total = Math.ceil(result.total / $scope.view.paginator[tab].perPage);
 
-            return result.items;
+            return result.list;
 
         };
 

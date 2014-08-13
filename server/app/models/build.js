@@ -6,7 +6,7 @@ var ObjectId = Schema.ObjectId;
 
 var BuildSchema = new Schema({
     status: String,
-    head_commit: String,
+    head_commit: Schema.Types.Mixed,
     repoId: { type: Schema.Types.ObjectId, ref: 'Repo' }
 });
 
