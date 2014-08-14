@@ -3,7 +3,7 @@
     <div class="heading">
         <div class="container">
             <a ng-href="#/repos" class="btn btn-default pull-left go-back"><i class="glyphicon glyphicon-chevron-left"></i> Back</a>
-            <h1>Add Your GitHub Repo <strong class="mock-label">[mock]</strong></h1>
+            <h1>Add Your GitHub Repo</h1>
         </div>
     </div>
     <!-- # .heading -->
@@ -14,13 +14,13 @@
             <thead>
                 <tr>
                     <th class="field-repo-id">Owner/Name</th>
-                    <th class="field-action">Action</th>
+                    <th class="field-action">Add</th>
                 </tr>
             </thead>
             <tbody>
                 <tr ng-repeat="repo in view.repos">
                     <td class="field-repo-id">
-                        <a ng-href="{{ repo.html_url }}" target="_blank">{{ repo.id }}</a>
+                        <a ng-href="{{ repo.html_url }}" target="_blank">{{ repo.full_name }}</a>
                     </td>
                     <td class="field-action">
                         <button ng-if="!repo.added" ng-click="addRepo(repo)" ng-disabled="repo.adding" class="btn btn-default glyphicon glyphicon-plus"></button>

@@ -69,7 +69,25 @@ module.exports = function (app, config) {
         });
     });
 
-    passport.serializeUser(function(user, done) {
+    var parseUser = function(user) {
+
+        var gitHubObj = {
+            id: user._json.id,
+            name: user._json.name,
+            repos_url: user._json.repos_url,
+            url: user._json.url,
+            gravatar_id: user._json.gravatar_id,
+            avatar_url: user._json.avatar_url,
+            login: user._json.login
+        };
+
+        return gitHubObj;
+
+    };
+
+    passport.serializeUser(function(profile, done) {
+        var user = parseUser(profile);
+        user.email = profile.emails[0].value;
         done(null, user);
     });
 
@@ -80,7 +98,8 @@ module.exports = function (app, config) {
     passport.use(new GitHubStrategy({
             clientID: config.github.clientId,
             clientSecret: config.github.clientSecret,
-            callbackURL: config.github.callbackURL
+            callbackURL: config.github.callbackURL,
+            scope: config.github.scope
         },
         function(accessToken, refreshToken, profile, done) {
             process.nextTick(function () {
@@ -89,22 +108,39 @@ module.exports = function (app, config) {
                 var mongoose = require('mongoose');
                 var User = mongoose.model('User');
 
+//                var gitHubObj = {
+//                    id: profile._json.id,
+//                    name: profile._json.name,
+//                    repos_url: profile._json.repos_url,
+//                    url: profile._json.url,
+//                    gravatar_id: profile._json.gravatar_id,
+//                    avatar_url: profile._json.avatar_url,
+//                    login: profile._json.login,
+//                    accessToken: accessToken
+//                };
+                var gitHubObj = parseUser(profile);
+                gitHubObj.accessToken = accessToken;
+
                 User.count({email: email}, function(err, count) {
                     if (count === 0) {
                         var user = new User();
 
                         user.username = profile.username;
                         user.email = email;
-                        user.github = profile;
+                        user.github = gitHubObj;
 
                         user.save();
                     } else {
-                        User.update({email: email}, {github: profile});
+                        console.log(profile);
+                        User.findOneAndUpdate({email: email}, {github: gitHubObj}, {}, function() {
+                            if (err) { return done(null, null); }
+
+                            return done(null, profile);
+                        });
                     }
 
                 });
 
-                return done(null, profile);
             });
         }
     ));

@@ -6,7 +6,8 @@ var mongoose = require('mongoose'),
 var RepoSchema = new Schema({
     name: String,
     owner: String,
-    created_by: String
+    created_by: String,
+    secret: String
 });
 
 RepoSchema.virtual('date')

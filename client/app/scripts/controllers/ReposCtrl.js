@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('registryApp')
-    .controller('ReposCtrl', ['$scope', '$window', 'Repo', 'Header', 'Loading', function ($scope, $window, Repo, Header, Loading) {
+    .controller('ReposCtrl', ['$scope', '$window', 'Repo', 'Header', 'Loading', 'User', function ($scope, $window, Repo, Header, Loading, User) {
 
         Header.setActive('repos');
 
@@ -25,6 +25,11 @@ angular.module('registryApp')
         $scope.view.loading = true;
         $scope.view.repos = [];
         $scope.view.searchTerm = '';
+        $scope.view.user = {};
+
+        User.getUser().then(function(result) {
+            $scope.view.user = result.user;
+        });
 
         $scope.view.paginator = {
             prev: false,

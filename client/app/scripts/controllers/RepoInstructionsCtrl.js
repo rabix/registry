@@ -17,11 +17,9 @@ angular.module('registryApp')
             if (n !== o) { $scope.view.classes = n; }
         });
 
-        var repoId = $routeParams.id.replace(/&/g, '/');
+        Repo.getRepo($routeParams.id).then(function (result) {
 
-        Repo.getRepo(repoId).then(function (repo) {
-
-            $scope.view.repo = Repo.parseUser(repo);
+            $scope.view.repo = result.data;
             $scope.view.loading = false;
 
         });

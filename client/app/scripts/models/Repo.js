@@ -35,11 +35,11 @@ angular.module('registryApp')
          */
         self.getRepo = function(id) {
 
-            var params = id.split('/');
-            var owner = params[0];
-            var name = params[1];
+//            var params = id.split('/');
+//            var owner = params[0];
+//            var name = params[1];
 
-            var promise = Api.repos.get({owner: owner, name: name}).$promise;
+            var promise = Api.repos.get({id: id}).$promise;
 
             return promise;
 
@@ -48,17 +48,16 @@ angular.module('registryApp')
         /**
          * Add repo to the user
          *
-         * @param id
+         * @param repo
          * @returns {object} $promise
          */
-        self.addRepo = function(id) {
+        self.addRepo = function(repo) {
 
-            var params = id.split('/');
+            var params = repo.full_name.split('/');
             var owner = params[0];
             var name = params[1];
 
-            // TODO replace reposMock with repos when api handler ready
-            var promise = Api.reposMock.add({owner: owner, name: name}).$promise;
+            var promise = Api.repos.add({}, {owner: owner, name: name}).$promise;
 
             return promise;
 
@@ -69,7 +68,7 @@ angular.module('registryApp')
          *
          * @returns {object} $promise
          */
-        self.getHitHubRepos = function() {
+        self.getGitHubRepos = function() {
 
             var promise = Api.gitHubRepos.get().$promise;
 

@@ -34,7 +34,7 @@
                         <a ng-href="#/build/{{ build._id }}" tooltip="{{ build._id }}" tooltip-popup-delay="1000">#{{ build._id }}</a>
                     </td>
                     <td class="field-repo">
-                        <a ng-href="#/repo/{{ build.repoId._id | encode }}">{{ build.repoId.owner }}/{{ build.repoId.name }}</a>
+                        <a ng-href="#/repo/{{ build.repoId._id }}">{{ build.repoId.owner }}/{{ build.repoId.name }}</a>
                     </td>
                     <td class="field-message">
                         <p tooltip="{{ build.head_commit.message }}" tooltip-popup-delay="1000">{{ build.head_commit.message }}</p>

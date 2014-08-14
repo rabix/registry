@@ -14,7 +14,8 @@ var config = {
         github: {
             clientId: 'bffb0517d8c629f2b2db',
             clientSecret: '3697d0796cb2ed6443495399a963eed96d47bea5',
-            callbackURL: 'http://localhost:3000/auth/github/callback'
+            callbackURL: 'http://localhost:3000/auth/github/callback',
+            scope: 'repo:status,read:org'
         }
     },
 
@@ -29,7 +30,8 @@ var config = {
         github: {
             clientId: 'bffb0517d8c629f2b2db',
             clientSecret: '3697d0796cb2ed6443495399a963eed96d47bea5',
-            callbackURL: 'http://localhost:3000/auth/github/callback'
+            callbackURL: 'http://localhost:3000/auth/github/callback',
+            scope: 'repo:status,read:org'
         }
     },
 
@@ -44,7 +46,8 @@ var config = {
         github: {
             clientId: 'bffb0517d8c629f2b2db',
             clientSecret: '3697d0796cb2ed6443495399a963eed96d47bea5',
-            callbackURL: 'http://localhost:3000/auth/github/callback'
+            callbackURL: 'http://localhost:3000/auth/github/callback',
+            scope: 'repo:status,read:org'
         }
     }
 };

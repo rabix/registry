@@ -17,12 +17,9 @@ angular.module('registryApp')
             if (n !== o) { $scope.view.classes = n; }
         });
 
-        Repo.getHitHubRepos().then(function(result) {
-            // TODO remove timeout when api handler ready
-            $timeout(function () {
-                $scope.view.loading = false;
-                $scope.view.repos = result.items;
-            }, 300);
+        Repo.getGitHubRepos().then(function(result) {
+            $scope.view.loading = false;
+            $scope.view.repos = result.list;
         });
 
         /**
@@ -33,11 +30,9 @@ angular.module('registryApp')
 
             repo.adding = true;
 
-            Repo.addRepo(repo.id).then(function() {
-                repo.adding = true;
-                // TODO remove hardcoded url once the api handler is ready
-                //$location.path('/repo-instructions/' + $filter('encode')(repo.id));
-                $location.path('/repo-instructions/' + $filter('encode')('rabix/bedtools2'));
+            Repo.addRepo(repo).then(function(result) {
+                repo.adding = false;
+                $location.path('/repo-instructions/' + result.repo._id);
 
             });
 

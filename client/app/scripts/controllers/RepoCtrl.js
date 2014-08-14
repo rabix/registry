@@ -40,16 +40,14 @@ angular.module('registryApp')
             if (n !== o) { $scope.view.classes = n; }
         });
 
-        var repoId = $routeParams.id.replace(/&/g, '/');
-
-        Repo.getRepo(repoId).then(function (result) {
+        Repo.getRepo($routeParams.id).then(function (result) {
 
             console.log(result);
             $scope.view.repo = result.data;
 
             $q.all([
-                App.getApps(0, '', repoId),
-                Build.getBuilds(0, repoId)
+                App.getApps(0, '', $routeParams.id),
+                Build.getBuilds(0, $routeParams.id)
             ]).then(function (result) {
 
                 $scope.view.loading = false;
@@ -104,14 +102,14 @@ angular.module('registryApp')
                 var offset = ($scope.view.paginator[$scope.view.tab].page - 1) * $scope.view.paginator[$scope.view.tab].perPage;
 
                 if ($scope.view.tab === 'apps') {
-                    App.getApps(offset, '', repoId).then(function (result) {
+                    App.getApps(offset, '', $routeParams.id).then(function (result) {
                         $scope.view.apps = itemsLoaded(result, 'apps');
                         $scope.view.paginator.apps.loading = false;
                     });
                 }
 
                 if ($scope.view.tab === 'builds') {
-                    Build.getBuilds(offset, repoId).then(function (result) {
+                    Build.getBuilds(offset, $routeParams.id).then(function (result) {
                         $scope.view.builds = itemsLoaded(result, 'builds');
                         $scope.view.paginator.builds.loading = false;
                     });

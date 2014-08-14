@@ -16,9 +16,7 @@ router.get('/user', function (req, res, next) {
 
 router.get('/user/token', authenticated, function (req, res, next) {
 
-    var email = req.user.emails[0].value;
-
-    User.findOne({email: email}, function(err, user) {
+    User.findOne({email: req.user.email}, function(err, user) {
         if (err) { return next(err); }
 
         res.json({token: user.token});
@@ -28,10 +26,9 @@ router.get('/user/token', authenticated, function (req, res, next) {
 
 router.put('/user/token', authenticated, function (req, res, next) {
 
-    var email = req.user.emails[0].value;
     var token = uuid.v4();
 
-    User.findOneAndUpdate({email: email}, {token: token}, {}, function(err, user) {
+    User.findOneAndUpdate({email: req.user.email}, {token: token}, {}, function(err, user) {
         if (err) { return next(err); }
 
         res.json({token: user.token});
@@ -41,9 +38,7 @@ router.put('/user/token', authenticated, function (req, res, next) {
 
 router.delete('/user/token', authenticated, function (req, res, next) {
 
-    var email = req.user.emails[0].value;
-
-    User.findOneAndUpdate({email: email}, {token: ''}, {}, function(err, user) {
+    User.findOneAndUpdate({email: req.user.email}, {token: ''}, {}, function(err, user) {
         if (err) { return next(err); }
 
         res.json({token: user.token});

@@ -49,7 +49,7 @@ angular.module('registryApp')
 
             var deferred = $q.defer();
 
-            Api.log(range).get({id: id, tab: 'log'}, function(result, headers) {
+            Api.log(range).get({id: id}, function(result, headers) {
 
                 deferred.resolve({
                     status: headers('X-BUILD-STATUS'),

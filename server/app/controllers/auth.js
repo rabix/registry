@@ -5,7 +5,9 @@ var router = express.Router();
 var passport = require('passport');
 
 module.exports = function (app) {
+
     app.use('/auth', router);
+
 };
 
 router.get('/github',
@@ -22,6 +24,11 @@ router.get('/logout', function(req, res){
     req.logout();
     res.redirect('/');
 });
+
+router.get('/get-access-token', function(req, res){
+    res.json(req.query);
+});
+
 
 
 

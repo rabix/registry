@@ -46,7 +46,6 @@ router.get('/builds/:id', function (req, res, next) {
 
 router.get('/builds/:id/log', function (req, res, next) {
 
-    // TODO get build log
-    res.json('CONTENT');
+    res.send('CONTENT');
 
 });
