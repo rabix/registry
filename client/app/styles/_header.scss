@@ -27,6 +27,10 @@ $header-blue: #29567D;
     font-size: 14px;
     line-height: 40px;
     text-shadow: 1px 1px 1px $dark-blue;
+
+    img {
+      margin: 0 1px;
+    }
   }
 
   .nav-tabs {

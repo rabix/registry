@@ -11,6 +11,8 @@ var mongoose = require('mongoose');
 var Repo = mongoose.model('Repo');
 var User = mongoose.model('User');
 
+var filters = require('../../common/route-filters');
+
 module.exports = function (app) {
     app.use('/api', router);
 };
@@ -75,7 +77,7 @@ router.post('/repos', function (req, res, next) {
 
 });
 
-router.get('/github-repos', authenticated, function (req, res, next) {
+router.get('/github-repos', filters.authenticated, function (req, res, next) {
 
     User.findOne({email: req.user.email}, function(err, user) {
         if (err) { return next(err); }
@@ -118,12 +120,6 @@ router.get('/github-repos', authenticated, function (req, res, next) {
     });
 
 });
-
-function authenticated(req, res, next) {
-    if (req.isAuthenticated()) { return next(); }
-    res.statusCode = 403;
-    res.json({message: 'You must be logged in!'});
-}
 
 var getRepoRow = function(repo) {
 
