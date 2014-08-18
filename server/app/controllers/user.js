@@ -11,7 +11,14 @@ module.exports = function (app) {
 };
 
 router.get('/user', function (req, res, next) {
-    res.json({user: req.user});
+
+    var user = req.user;
+
+    if (user && !user.username) {
+        user.username = user.login;
+    }
+
+    res.json({user: user});
 });
 
 router.get('/user/token', authenticated, function (req, res, next) {
