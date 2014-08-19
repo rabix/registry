@@ -11,9 +11,30 @@ var mongoose = require('mongoose');
 var Repo = mongoose.model('Repo');
 var User = mongoose.model('User');
 
+var bodyParser = require('body-parser');
+
 var filters = require('../../common/route-filters');
 
+var logger = require('../../common/logger');
+
+var R = {
+    db: 0,
+    client: null,
+
+    startBuild: function (repo) {
+
+    }
+
+};
+
+//var redis = require('redis');
+
 module.exports = function (app) {
+    app.use(bodyParser.urlencoded({
+        extended: true
+    }));
+    app.use(bodyParser.json());
+
     app.use('/api', router);
 };
 
@@ -68,6 +89,8 @@ router.post('/repos', function (req, res, next) {
 
             res.json({repo: repo});
 
+            addWebhook(owner, name);
+
         } else {
             res.statusCode = 403;
             res.json({message: 'Repository is already added'});
@@ -121,6 +144,22 @@ router.get('/github-repos', filters.authenticated, function (req, res, next) {
 
 });
 
+router.post('/github-webhook', function (req, res, next) {
+    var repo = req.param('repository');
+    var event_type = req.headers['X-Github-Event'];
+
+    console.log(repo, event_type);
+
+    if (event_type === 'push') {
+//        R.startBuild(repo);
+        logger.info('There goes push to a repo: ' + JSON.stringify(a));
+    } else {
+        logger.info('Something happened: ' + JSON.stringify(a));
+
+    }
+
+});
+
 var getRepoRow = function(repo) {
 
     var promise = new mongoose.Promise;
@@ -139,3 +178,35 @@ var getRepoRow = function(repo) {
     return promise;
 };
 
+var addWebhook = function (owner, repo) {
+
+    var url = '/repo/'+ owner + '/' + repo + '/hooks';
+    var opts = {
+        host: 'api.github.com',
+        method: 'POST',
+        body: {
+            name: 'web',
+            events: [
+                "push",
+                "pull_request"
+            ],
+            config: {
+                url: 'http://www.rabix.org/filip/api/github-webhook',
+                content_type: 'json',
+                insecure_ssl: 1
+            },
+            active: true
+        },
+        headers: { 'User-Agent': 'RegistryApp' }
+    };
+
+    var request = https.request(opts, function(response) {
+
+        response.on('end', function () {
+            console.log(response.status);
+        });
+    });
+
+    request.end();
+
+};
