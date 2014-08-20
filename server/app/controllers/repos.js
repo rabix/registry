@@ -183,8 +183,9 @@ var addWebhook = function (owner, r) {
     var url = '/repo/'+ owner + '/' + r + '/hooks';
     var opts = {
         host: 'api.github.com',
+        path: url,
         method: 'POST',
-        headers: { 'User-Agent': 'RegistryApp' }
+        headers: { 'User-Agent': 'Rabix' }
     },
     repo = {
         name: 'web',
