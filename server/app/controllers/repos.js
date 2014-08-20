@@ -178,34 +178,41 @@ var getRepoRow = function(repo) {
     return promise;
 };
 
-var addWebhook = function (owner, repo) {
+var addWebhook = function (owner, r) {
 
-    var url = '/repo/'+ owner + '/' + repo + '/hooks';
+    var url = '/repo/'+ owner + '/' + r + '/hooks';
     var opts = {
         host: 'api.github.com',
         method: 'POST',
-        body: {
-            name: 'web',
+        headers: { 'User-Agent': 'RegistryApp' }
+    },
+    repo = {
+        name: 'web',
             events: [
-                "push",
-                "pull_request"
-            ],
+            "push",
+            "pull_request"
+        ],
             config: {
-                url: 'http://www.rabix.org/api/github-webhook',
+            url: 'http://www.rabix.org/api/github-webhook',
                 content_type: 'json',
                 insecure_ssl: 1
-            },
-            active: true
         },
-        headers: { 'User-Agent': 'RegistryApp' }
+        active: true
     };
+
+    logger.info('Added repo, hooking up GITHUB webhook');
+
+    var repoString = JSON.stringify(repo);
 
     var request = https.request(opts, function(response) {
 
         response.on('end', function () {
             console.log(response.status);
+            logger.info('GITHUB webhook created with status code ' + response.status);
         });
     });
+
+    request.write(repoString);
 
     request.end();
 
