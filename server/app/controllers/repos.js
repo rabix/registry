@@ -205,12 +205,23 @@ var addWebhook = function (owner, r) {
     var repoString = JSON.stringify(repo);
 
     var request = https.request(opts, function(response) {
+        var responseString = '';
+
+        response.setEncoding('utf8');
+
+        response.on('data', function (data) {
+            responseString += data;
+        });
 
         response.on('end', function () {
-            console.log(response.status);
-            logger.info('GITHUB webhook created with status code ' + response.status);
+            logger.info('GITHUB webhook created with response ' + responseString);
         });
     });
+
+    request.on('error', function(e) {
+        logger.info('Error occured while trying to set up webhook');
+    });
+
 
     request.write(repoString);
 
