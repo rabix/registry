@@ -44,8 +44,8 @@ var config = {
         db: 'mongodb://localhost/server-production',
         clientPath: '../../client/dist',
         github: {
-            clientId: 'bffb0517d8c629f2b2db',
-            clientSecret: '3697d0796cb2ed6443495399a963eed96d47bea5',
+            clientId: '8747f41e5e0389547e6d',
+            clientSecret: 'bb7770b1835087947e37bba3f39b6ad9e5ca6c85',
             callbackURL: 'http://www.rabix.org/auth/github/callback',
             scope: 'repo:status,read:org'
         }
