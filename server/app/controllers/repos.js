@@ -180,7 +180,7 @@ var getRepoRow = function(repo) {
 
 var addWebhook = function (owner, r) {
 
-    var url = '/repo/'+ owner + '/' + r + '/hooks';
+    var url = '/repos/'+ owner + '/' + r + '/hooks';
     var opts = {
         host: 'api.github.com',
         path: url,
