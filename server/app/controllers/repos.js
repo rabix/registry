@@ -30,10 +30,10 @@ var R = {
 //var redis = require('redis');
 
 module.exports = function (app) {
-    app.use(bodyParser.urlencoded({
-        extended: true
-    }));
-    app.use(bodyParser.json());
+//    app.use(bodyParser.urlencoded({
+//        extended: true
+//    }));
+//    app.use(bodyParser.json());
 
     app.use('/api', router);
 };
@@ -191,7 +191,7 @@ var addWebhook = function (owner, repo) {
                 "pull_request"
             ],
             config: {
-                url: 'http://www.rabix.org/filip/api/github-webhook',
+                url: 'http://www.rabix.org/api/github-webhook',
                 content_type: 'json',
                 insecure_ssl: 1
             },

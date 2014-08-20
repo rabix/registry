@@ -12,20 +12,21 @@ module.exports = function (app) {
 
 router.get('/github',
     passport.authenticate('github'),
-    function(req, res) {});
+    function (req, res) {
+    });
 
 router.get('/github/callback',
     passport.authenticate('github', { failureRedirect: '/' }),
-    function(req, res) {
+    function (req, res) {
         res.redirect('/');
     });
 
-router.get('/logout', function(req, res){
+router.get('/logout', function (req, res) {
     req.logout();
     res.redirect('/');
 });
 
-router.get('/get-access-token', function(req, res){
+router.get('/get-access-token', function (req, res) {
     res.json(req.query);
 });
 
