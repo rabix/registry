@@ -47,7 +47,7 @@ var config = {
             clientId: '8747f41e5e0389547e6d',
             clientSecret: 'bb7770b1835087947e37bba3f39b6ad9e5ca6c85',
             callbackURL: 'http://www.rabix.org/auth/github/callback',
-            scope: 'repo:status,read:org'
+            scope: 'repo:status,read:org,read:repo_hook,write:repo_hook,admin:repo_hook'
         }
     }
 };
