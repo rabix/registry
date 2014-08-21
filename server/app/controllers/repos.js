@@ -202,9 +202,10 @@ var addWebhook = function (owner, r, currentUser) {
             return next(err);
         }
 
-        var token = user.accessToken;
+        var token = user.github.accessToken;
 
-
+        // TODO: check for token
+        
         var url = '/repos/' + owner + '/' + r + '/hooks';
         var opts = {
             host: 'api.github.com',
@@ -246,9 +247,6 @@ var addWebhook = function (owner, r, currentUser) {
 
 
         logger.info('Added repo "' + r + '", hooking up GITHUB webhook on to url: ' + url);
-
-
-        Lo
 
         var repoString = JSON.stringify(repo);
 
