@@ -7,6 +7,8 @@ var _ = require('lodash');
 var uuid = require('node-uuid');
 var Q = require('q');
 
+var config = require('../../config/config');
+
 var mongoose = require('mongoose');
 var Repo = mongoose.model('Repo');
 var User = mongoose.model('User');
@@ -43,11 +45,15 @@ router.get('/repos', function (req, res, next) {
     var limit = req.query.limit ? req.query.limit : 25;
     var skip = req.query.skip ? req.query.skip : 0;
 
-    Repo.count(function(err, total) {
-        if (err) { return next(err); }
+    Repo.count(function (err, total) {
+        if (err) {
+            return next(err);
+        }
 
-        Repo.find({}).skip(skip).limit(limit).exec(function(err, repos) {
-            if (err) { return next(err); }
+        Repo.find({}).skip(skip).limit(limit).exec(function (err, repos) {
+            if (err) {
+                return next(err);
+            }
 
             res.json({list: repos, total: total});
         });
@@ -57,8 +63,10 @@ router.get('/repos', function (req, res, next) {
 
 router.get('/repos/:id', function (req, res, next) {
 
-    Repo.findById(req.params.id, function(err, repo) {
-        if (err) { return next(err); }
+    Repo.findById(req.params.id, function (err, repo) {
+        if (err) {
+            return next(err);
+        }
 
         res.json({data: repo});
     });
@@ -75,8 +83,10 @@ router.post('/repos', function (req, res, next) {
         res.json({message: 'You can only setup repos owned by you'});
     }
 
-    Repo.count({name: name, owner: owner}, function(err, count) {
-        if (err) { return next(err); }
+    Repo.count({name: name, owner: owner}, function (err, count) {
+        if (err) {
+            return next(err);
+        }
 
         if (count === 0) {
             var repo = new Repo();
@@ -102,8 +112,10 @@ router.post('/repos', function (req, res, next) {
 
 router.get('/github-repos', filters.authenticated, function (req, res, next) {
 
-    User.findOne({email: req.user.email}, function(err, user) {
-        if (err) { return next(err); }
+    User.findOne({email: req.user.email}, function (err, user) {
+        if (err) {
+            return next(err);
+        }
 
         var opts = {
             host: 'api.github.com',
@@ -112,7 +124,7 @@ router.get('/github-repos', filters.authenticated, function (req, res, next) {
             headers: { 'User-Agent': 'RegistryApp' }
         };
 
-        var request = https.request(opts, function(response) {
+        var request = https.request(opts, function (response) {
 
             var data = '';
 
@@ -127,12 +139,12 @@ router.get('/github-repos', filters.authenticated, function (req, res, next) {
                 var repos = JSON.parse(data);
                 var promises = [];
 
-                _.each(repos, function(repo) {
+                _.each(repos, function (repo) {
                     promises.push(getRepoRow(repo));
                 });
 
                 Q.all(promises)
-                    .then(function(repos) {
+                    .then(function (repos) {
                         res.json({list: repos});
                     });
             });
@@ -160,16 +172,18 @@ router.post('/github-webhook', function (req, res, next) {
 
 });
 
-var getRepoRow = function(repo) {
+var getRepoRow = function (repo) {
 
     var promise = new mongoose.Promise;
     var fullNameArr = repo.full_name.split('/');
     var name = fullNameArr[1];
     var owner = fullNameArr[0];
 
-    Repo.count({name: name, owner: owner}, function(err, count) {
+    Repo.count({name: name, owner: owner}, function (err, count) {
 
-        if (err) { promise.reject('Couldn\'t get the repo ' + repo.full_name); }
+        if (err) {
+            promise.reject('Couldn\'t get the repo ' + repo.full_name);
+        }
 
         promise.fulfill({full_name: repo.full_name, html_url: repo.html_url, added: count > 0});
 
@@ -180,32 +194,35 @@ var getRepoRow = function(repo) {
 
 var addWebhook = function (owner, r) {
 
-    var url = '/repos/'+ owner + '/' + r + '/hooks';
+    var url = '/repos/' + owner + '/' + r + '/hooks';
     var opts = {
-        host: 'api.github.com',
-        path: url,
-        method: 'POST',
-        headers: { 'User-Agent': 'Rabix' }
-    },
-    repo = {
-        name: 'web',
+            host: 'api.github.com',
+            path: url,
+            method: 'POST',
+            headers: {
+                'X-Hub-Signature' : config.github.clientSecret,
+                'User-Agent': 'Rabix'
+            }
+        },
+        repo = {
+            name: 'web',
             events: [
-            "push",
-            "pull_request"
-        ],
+                "push",
+                "pull_request"
+            ],
             config: {
-            url: 'http://www.rabix.org/api/github-webhook',
+                url: 'http://www.rabix.org/api/github-webhook',
                 content_type: 'json',
                 insecure_ssl: 1
-        },
-        active: true
-    };
+            },
+            active: true
+        };
 
-    logger.info('Added repo, hooking up GITHUB webhook');
+    logger.info('Added repo "' + r + '", hooking up GITHUB webhook');
 
     var repoString = JSON.stringify(repo);
 
-    var request = https.request(opts, function(response) {
+    var request = https.request(opts, function (response) {
         var responseString = '';
 
         response.setEncoding('utf8');
@@ -219,7 +236,7 @@ var addWebhook = function (owner, r) {
         });
     });
 
-    request.on('error', function(e) {
+    request.on('error', function (e) {
         logger.info('Error occured while trying to set up webhook');
     });
 
