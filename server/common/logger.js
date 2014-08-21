@@ -3,11 +3,12 @@
  */
 var winston = require('winston');
 var path = require('path');
+var config = require('../config/config');
 
-var rootPath = path.normalize(__dirname + '/..');
+var logPath = path.normalize(config.logging.path);
 
-var debugLog = rootPath + '/logs/rabix-debug.log';
-var exceptionLog = rootPath + '/logs/rabix-exceptions.log';
+var debugLog = logPath + '/rabix-debug.log';
+var exceptionLog = logPath + '/rabix-exceptions.log';
 
 var logger = new (winston.Logger)({
     transports: [
