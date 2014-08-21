@@ -207,29 +207,48 @@ var addWebhook = function (owner, r, currentUser) {
 
         var url = '/repos/' + owner + '/' + r + '/hooks';
         var opts = {
-                host: 'api.github.com',
-                path: url,
-                method: 'POST',
-                headers: {
-                    'Authorization': 'token ' + token,
-                    'User-Agent': 'Rabix'
-                }
-            },
-            repo = {
-                name: 'web',
-                events: [
-                    "push",
-                    "pull_request"
-                ],
-                config: {
-                    url: 'http://www.rabix.org/api/github-webhook',
-                    content_type: 'json',
-                    insecure_ssl: 1
-                },
-                active: true
-            };
+            host: 'api.github.com',
+            path: url,
+            method: 'POST',
+            headers: {
+                'Authorization': 'token ' + token,
+                'User-Agent': 'Rabix',
+                'Content-type': 'application/json'
+            }
+        };
+
+//        var repo = {
+//            name: 'web',
+//            events: [
+//                "push",
+//                "pull_request"
+//            ],
+//            config: {
+//                url: 'http://www.rabix.org/api/github-webhook',
+//                content_type: 'json',
+//                insecure_ssl: 1
+//            },
+//            active: true
+//        };
+
+        var repo = {
+            "name": "web",
+            "active": true,
+            "events": [
+                "push",
+                "pull_request"
+            ],
+            "config": {
+                "url": "http://www.rabix.org/api/github-webhook",
+                "content_type": "json"
+            }
+        };
+
 
         logger.info('Added repo "' + r + '", hooking up GITHUB webhook on to url: ' + url);
+
+
+        Lo
 
         var repoString = JSON.stringify(repo);
 
@@ -251,7 +270,7 @@ var addWebhook = function (owner, r, currentUser) {
             logger.info('Error occured while trying to set up webhook');
         });
 
-
+        logger.info('Authorization token: "' + token + '" . Repo string: "' + repoString + '"');
         request.write(repoString);
 
         request.end();
