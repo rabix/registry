@@ -165,11 +165,13 @@ router.post('/github-webhook', function (req, res, next) {
 
     if (event_type === 'push') {
 //        R.startBuild(repo);
-        logger.info('There goes push to a repo: ' + JSON.stringify(a));
+        logger.info('There goes push to a repo: ' + JSON.stringify(repo));
     } else {
-        logger.info('Something happened: ' + JSON.stringify(a));
+        logger.info('Something happened: ' + JSON.stringify(repo));
 
     }
+
+    logger.info('Request headers for webhook: ' + JSON.stringify(req.headers));
 
 });
 
@@ -205,7 +207,7 @@ var addWebhook = function (owner, r, currentUser) {
         var token = user.github.accessToken;
 
         // TODO: check for token
-        
+
         var url = '/repos/' + owner + '/' + r + '/hooks';
         var opts = {
             host: 'api.github.com',
