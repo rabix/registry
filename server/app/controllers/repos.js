@@ -159,9 +159,12 @@ router.get('/github-repos', filters.authenticated, function (req, res, next) {
 
 router.post('/github-webhook', function (req, res, next) {
     var repo = req.param('repository');
-    var event_type = req.headers['X-Github-Event'];
+    var event_type = req.headers['x-github-event'];
+    var github_delivery = req.headers['x-github-delivery'];
 
-    console.log(repo, event_type);
+    console.log(repo, event_type, github_delivery);
+
+    logger.info('Request headers for webhook: ' + JSON.stringify(req.headers));
 
     if (event_type === 'push') {
 //        R.startBuild(repo);
@@ -171,7 +174,6 @@ router.post('/github-webhook', function (req, res, next) {
 
     }
 
-    logger.info('Request headers for webhook: ' + JSON.stringify(req.headers));
 
 });
 
