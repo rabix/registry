@@ -1,13 +1,13 @@
 #!/bin/sh
 
-PATH=/home/filip/registry
+DIR=/home/filip/registry
 
 service rabix-registry stop
 
 echo " ******* Starting build.. ******* "
 
 
-cd $PATH
+cd $DIR
 
 git checkout .
 git pull origin master
