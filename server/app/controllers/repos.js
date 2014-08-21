@@ -162,15 +162,11 @@ router.post('/github-webhook', function (req, res, next) {
     var event_type = req.headers['x-github-event'];
     var github_delivery = req.headers['x-github-delivery'];
 
-    console.log(repo, event_type, github_delivery);
-
-    logger.info('Request headers for webhook: ' + JSON.stringify(req.headers));
-
     if (event_type === 'push') {
 //        R.startBuild(repo);
-        logger.info('There goes push to a repo: ' + JSON.stringify(repo));
+        logger.info('[commit-push]: "'+github_delivery+'". There goes push to a repo: ' + JSON.stringify(repo));
     } else {
-        logger.info('Something happened: ' + JSON.stringify(repo));
+        logger.info('[event]:"'+ event_type +'". There was activity on repo: ' + JSON.stringify(repo));
 
     }
 
