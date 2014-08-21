@@ -77,6 +77,7 @@ router.post('/repos', function (req, res, next) {
 
     var name = req.param('name');
     var owner = req.param('owner');
+    var currentUser = req.user.email;
 
     if (req.user.username !== owner) {
         res.statusCode = 403;
@@ -99,7 +100,7 @@ router.post('/repos', function (req, res, next) {
 
             res.json({repo: repo});
 
-            addWebhook(owner, name);
+            addWebhook(owner, name, currentUser);
 
         } else {
             res.statusCode = 403;
@@ -192,57 +193,69 @@ var getRepoRow = function (repo) {
     return promise;
 };
 
-var addWebhook = function (owner, r) {
+var addWebhook = function (owner, r, currentUser) {
 
-    var url = '/repos/' + owner + '/' + r + '/hooks';
-    var opts = {
-            host: 'api.github.com',
-            path: url,
-            method: 'POST',
-            headers: {
-                'X-Hub-Signature' : config.github.clientSecret,
-                'User-Agent': 'Rabix'
-            }
-        },
-        repo = {
-            name: 'web',
-            events: [
-                "push",
-                "pull_request"
-            ],
-            config: {
-                url: 'http://www.rabix.org/api/github-webhook',
-                content_type: 'json',
-                insecure_ssl: 1
+    User.findOne({ email: currentUser }, function (err, user) {
+
+        if (err) {
+            logger.info('User not found for user with email: ' + currentUser);
+            return next(err);
+        }
+
+        var token = user.accessToken;
+
+
+        var url = '/repos/' + owner + '/' + r + '/hooks';
+        var opts = {
+                host: 'api.github.com',
+                path: url,
+                method: 'POST',
+                headers: {
+                    'Authorization': 'token ' + token,
+                    'User-Agent': 'Rabix'
+                }
             },
-            active: true
-        };
+            repo = {
+                name: 'web',
+                events: [
+                    "push",
+                    "pull_request"
+                ],
+                config: {
+                    url: 'http://www.rabix.org/api/github-webhook',
+                    content_type: 'json',
+                    insecure_ssl: 1
+                },
+                active: true
+            };
 
-    logger.info('Added repo "' + r + '", hooking up GITHUB webhook');
+        logger.info('Added repo "' + r + '", hooking up GITHUB webhook on to url: ' + url);
 
-    var repoString = JSON.stringify(repo);
+        var repoString = JSON.stringify(repo);
 
-    var request = https.request(opts, function (response) {
-        var responseString = '';
+        var request = https.request(opts, function (response) {
+            var responseString = '';
 
-        response.setEncoding('utf8');
+            response.setEncoding('utf8');
 
-        response.on('data', function (data) {
-            responseString += data;
+            response.on('data', function (data) {
+                responseString += data;
+            });
+
+            response.on('end', function () {
+                logger.info('GITHUB webhook created with response ' + responseString);
+            });
         });
 
-        response.on('end', function () {
-            logger.info('GITHUB webhook created with response ' + responseString);
+        request.on('error', function (e) {
+            logger.info('Error occured while trying to set up webhook');
         });
+
+
+        request.write(repoString);
+
+        request.end();
+
     });
-
-    request.on('error', function (e) {
-        logger.info('Error occured while trying to set up webhook');
-    });
-
-
-    request.write(repoString);
-
-    request.end();
 
 };
