@@ -5,7 +5,7 @@ var router = express.Router();
 var uuid = require('node-uuid');
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
-
+var filters = require('../../common/route-filters');
 module.exports = function (app) {
     app.use('/api', router);
 };
@@ -15,13 +15,13 @@ router.get('/user', function (req, res, next) {
     var user = req.user;
 
     if (user && !user.username) {
-        user.username = user.login;
+        user.username = user.github.login;
     }
 
     res.json({user: user});
 });
 
-router.get('/user/token', authenticated, function (req, res, next) {
+router.get('/user/token', filters.authenticated, function (req, res, next) {
 
     User.findOne({email: req.user.email}, function(err, user) {
         if (err) { return next(err); }
