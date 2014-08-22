@@ -19,15 +19,17 @@ var filters = require('../../common/route-filters');
 
 var logger = require('../../common/logger');
 
-var R = {
-    db: 0,
-    client: null,
+// Start Requirements for build
 
-    startBuild: function (repo) {
+var sys = require('sys');
 
-    }
+var exec = require('child_process').exec;
 
-};
+var mkdir = require('mkdirp');
+
+var git = require('gift');
+
+// Ebd Requirements for build
 
 //var redis = require('redis');
 
@@ -164,7 +166,12 @@ router.post('/github-webhook', function (req, res, next) {
 
     if (event_type === 'push') {
 //        R.startBuild(repo);
-        logger.info('[commit-push]: "'+github_delivery+'". There goes push to a repo: ' + JSON.stringify(repo));
+        logger.info('[commit/push]: "'+github_delivery+'". There goes push to a repo: ' + JSON.stringify(repo));
+        logger.info('[build/trigger]: starting build for repo "'+ repo.name +'"');
+
+        startBuild(repo, github_delivery);
+
+
     } else {
         logger.info('[event]:"'+ event_type +'". There was activity on repo: ' + JSON.stringify(repo));
 
@@ -275,4 +282,51 @@ var addWebhook = function (owner, r, currentUser) {
 
     });
 
+};
+
+var startBuild = function (repo, sha) {
+    var buildDir = path.normalize('/data/rabix-registry/builds');
+    var folder = buildDir + '/build_' +  repo_name + '_' + sha;
+
+    mkdir(folder , function(err){
+
+        if (err) {
+            throw err;
+        }
+
+        var r = git.clone(repo.url, folder, function (err,repo) {
+            if (err) {
+                throw err;
+            }
+
+            repo.checkout(sha, function(err, commit){
+
+                logger.info('Build for repo "'+ repo.full_name +'" for commit "'+ sha+'" started');
+
+                var child = exec("rabix build", { cwd: folder } , function (error, stdout, stderr) {
+
+                    sys.print('stdout: ' + stdout);
+
+                    sys.print('stderr: ' + stderr);
+
+                    if (error !== null) {
+                        console.log('exec error: ' + error);
+                    }
+
+                    if (child.exitCode === 0) {
+                        logger.info('Build for repo "'+ repo.full_name +'" for commit "'+ sha+'" endded succesfully');
+                    } else if (child.exitCode === 1) {
+                        logger.error('Build for repo "'+ repo.full_name +'" for commit "'+ sha+'" failed');
+                    } else {
+                        logger.error('Unknown status code returned for repo "'+ repo.full_name +'" commit "'+ sha+'"');
+                    }
+
+                });
+
+
+            });
+
+        });
+
+    });
 };
