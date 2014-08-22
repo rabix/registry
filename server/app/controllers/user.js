@@ -14,10 +14,6 @@ router.get('/user', function (req, res, next) {
 
     var user = req.user;
 
-    if (user && !user.username) {
-        user.username = user.github.login;
-    }
-
     res.json({user: user});
 });
 
