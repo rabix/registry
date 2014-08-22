@@ -6,6 +6,7 @@ var https = require('https');
 var _ = require('lodash');
 var uuid = require('node-uuid');
 var Q = require('q');
+var path = require('path');
 
 var config = require('../../config/config');
 
