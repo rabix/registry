@@ -287,7 +287,7 @@ var addWebhook = function (owner, r, currentUser) {
 
 var startBuild = function (repo, sha) {
     var buildDir = path.normalize('/data/rabix-registry/builds');
-    var folder = buildDir + '/build_' +  repo_name + '_' + sha;
+    var folder = buildDir + '/build_' +  repo.name + '_' + sha;
 
     mkdir(folder , function(err){
 
