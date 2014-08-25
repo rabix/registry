@@ -27,7 +27,7 @@ router.get('/user/token', filters.authenticated, function (req, res, next) {
 
 });
 
-router.put('/user/token', authenticated, function (req, res, next) {
+router.put('/user/token', filters.authenticated, function (req, res, next) {
 
     var token = uuid.v4();
 
@@ -39,7 +39,7 @@ router.put('/user/token', authenticated, function (req, res, next) {
 
 });
 
-router.delete('/user/token', authenticated, function (req, res, next) {
+router.delete('/user/token', filters.authenticated, function (req, res, next) {
 
     User.findOneAndUpdate({email: req.user.email}, {token: ''}, {}, function(err, user) {
         if (err) { return next(err); }
@@ -48,9 +48,3 @@ router.delete('/user/token', authenticated, function (req, res, next) {
     });
 
 });
-
-function authenticated(req, res, next) {
-    if (req.isAuthenticated()) { return next(); }
-    res.statusCode = 400;
-    res.json({message: 'You must be logged in!'});
-}

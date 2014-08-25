@@ -15,7 +15,7 @@ var config = {
             clientId: 'bffb0517d8c629f2b2db',
             clientSecret: '3697d0796cb2ed6443495399a963eed96d47bea5',
             callbackURL: 'http://localhost:3000/auth/github/callback',
-            scope: 'repo:status,read:org'
+            scope: 'repo:status,read:org,read:repo_hook,write:repo_hook,admin:repo_hook,user'
         },
         logging: {
             path: rootPath + '/logs'
@@ -34,7 +34,7 @@ var config = {
             clientId: 'bffb0517d8c629f2b2db',
             clientSecret: '3697d0796cb2ed6443495399a963eed96d47bea5',
             callbackURL: 'http://localhost:3000/auth/github/callback',
-            scope: 'repo:status,read:org'
+            scope: 'repo:status,read:org,read:repo_hook,write:repo_hook,admin:repo_hook,user'
         },
         logging: {
             path: rootPath + '/logs'
@@ -53,7 +53,7 @@ var config = {
             clientId: '8747f41e5e0389547e6d',
             clientSecret: 'bb7770b1835087947e37bba3f39b6ad9e5ca6c85',
             callbackURL: 'http://www.rabix.org/auth/github/callback',
-            scope: 'repo:status,read:org,read:repo_hook,write:repo_hook,admin:repo_hook'
+            scope: 'repo:status,read:org,read:repo_hook,write:repo_hook,admin:repo_hook,user'
         },
         logging: {
             path: '/data/log/rabix-registry'

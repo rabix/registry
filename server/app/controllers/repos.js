@@ -120,15 +120,14 @@ router.get('/github-repos', filters.authenticated, function (req, res, next) {
         if (err) {
             return next(err);
         }
-
+        console.log(user, req.user);
         var opts = {
             host: 'api.github.com',
             path: '/users/' + user.username + '/repos',
-            method: 'GET',
-            headers: { 'User-Agent': 'RegistryApp' }
+            headers: { 'User-Agent': 'Rabix' }
         };
 
-        var request = https.request(opts, function (response) {
+        var request = https.get(opts, function (response) {
 
             var data = '';
 

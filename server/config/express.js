@@ -12,6 +12,8 @@ var passport = require('passport');
 var GitHubStrategy = require('passport-github').Strategy;
 var session = require('express-session');
 
+var https = require('https');
+
 module.exports = function (app, config) {
     app.set('views', config.root + '/app/views');
     app.set('view engine', 'ejs');
@@ -105,8 +107,6 @@ module.exports = function (app, config) {
             process.nextTick(function () {
 
                 var email = profile.emails[0].value;
-                var mongoose = require('mongoose');
-                var User = mongoose.model('User');
 
 //                var gitHubObj = {
 //                    id: profile._json.id,
@@ -121,28 +121,76 @@ module.exports = function (app, config) {
                 var gitHubObj = parseUser(profile);
                 gitHubObj.accessToken = accessToken;
 
-                User.count({email: email}, function(err, count) {
-                    if (count === 0) {
-                        var user = new User();
+                if (typeof email === 'undefined') {
+                    var opts = {
+                        hostname: 'api.github.com',
+                        path: '/user/emails',
+                        headers: {
+                            'Authorization': 'token ' + accessToken,
+                            'User-Agent': 'Rabix',
+                            'Content-type': 'application/json'
+                        }
+                    };
 
-                        user.username = profile.username;
-                        user.email = email;
-                        user.github = gitHubObj;
+                    https.get(opts, function (response) {
+                        var responseString = '';
 
-                        user.save();
-                    } else {
-                        console.log(profile);
-                        User.findOneAndUpdate({email: email}, {github: gitHubObj}, {}, function() {
-                            if (err) { return done(null, null); }
+                        response.setEncoding('utf8');
+
+                        response.on('data', function (data) {
+                            responseString += data;
+                        });
+
+                        response.on('end', function () {
+                            var e = JSON.parse(responseString);
+                            profile.emails = [
+                                {
+                                    value: e[0].email
+                                }
+                            ];
+                            addUser(e[0].email, gitHubObj, profile);
 
                             return done(null, profile);
                         });
-                    }
 
-                });
+                    }).on('error', function (e) {
+                        console.log('error while getting user email', e);
+                    });
+                } else {
+                    addUser(email, gitHubObj, profile);
+
+                    return done(null, profile);
+                }
+
 
             });
         }
     ));
+
+    function addUser(email, gitHubObj, profile) {
+        var mongoose = require('mongoose');
+        var User = mongoose.model('User');
+
+        User.count({email: email}, function(err, count) {
+            console.log(count);
+            if (count === 0) {
+                var user = new User();
+
+                user.username = profile.username;
+                user.email = email;
+                user.github = gitHubObj;
+
+                user.save();
+            } else {
+                console.log(profile);
+                User.findOneAndUpdate({email: email}, {github: gitHubObj}, {}, function() {
+                    if (err) { return done(null, null); }
+
+                });
+            }
+
+        });
+
+    }
 
 };
