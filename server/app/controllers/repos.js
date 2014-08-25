@@ -284,9 +284,9 @@ var addWebhook = function (owner, r, currentUser) {
 
 };
 
-var startBuild = function (repo, sha) {
+var startBuild = function (repository, sha) {
     var buildDir = path.normalize('/data/rabix-registry/builds');
-    var folder = buildDir + '/build_' +  repo.name + '_' + sha;
+    var folder = buildDir + '/build_' +  repository.name + '_' + sha;
 
     mkdir(folder , function(err){
 
@@ -294,14 +294,18 @@ var startBuild = function (repo, sha) {
             throw err;
         }
 
-        var r = git.clone(repo.url, folder, function (err,repo) {
+        var r = git.clone(repository.url, folder, function (err,repo) {
             if (err) {
                 throw err;
             }
 
             repo.checkout(sha, function(err, commit){
 
-                logger.info('Build for repo "'+ repo.full_name +'" for commit "'+ sha+'" started');
+                if (err) {
+                    throw new Error(err);
+                }
+
+                logger.info('Build for repo "'+ repository.full_name +'" for commit "'+ sha+'" started');
 
                 var child = exec("rabix build", { cwd: folder } , function (error, stdout, stderr) {
 
@@ -314,11 +318,11 @@ var startBuild = function (repo, sha) {
                     }
 
                     if (child.exitCode === 0) {
-                        logger.info('Build for repo "'+ repo.full_name +'" for commit "'+ sha+'" endded succesfully');
+                        logger.info('Build for repo "'+ repository.full_name +'" for commit "'+ sha+'" endded succesfully');
                     } else if (child.exitCode === 1) {
-                        logger.error('Build for repo "'+ repo.full_name +'" for commit "'+ sha+'" failed');
+                        logger.error('Build for repo "'+ repository.full_name +'" for commit "'+ sha+'" failed');
                     } else {
-                        logger.error('Unknown status code returned for repo "'+ repo.full_name +'" commit "'+ sha+'"');
+                        logger.error('Unknown status code returned for repo "'+ repository.full_name +'" commit "'+ sha+'"');
                     }
 
                 });
