@@ -328,7 +328,7 @@ var startBuild = function (repository, head_commit) {
 //                });
 
                 // Prepare build logs for writing
-                var logPath = path.normalize('/data/logs/rabix-registry/builds'),
+                var logPath = path.normalize('/data/log/rabix-registry/builds'),
                     stdoutLog = fs.openSync(logPath + '/build_' +  repository.name + '_' + sha + '_stdout.log', 'a'),
                     stderrLog = fs.openSync(logPath + '/build_' +  repository.name + '_' + sha + '_stderr.log', 'a');
 
