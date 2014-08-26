@@ -168,13 +168,14 @@ router.post('/github-webhook', function (req, res, next) {
     var repo = req.param('repository');
     var event_type = req.headers['x-github-event'];
     var github_delivery = req.headers['x-github-delivery'];
+    var head_commit = req.param('head_commit');
 
     if (event_type === 'push') {
 //        R.startBuild(repo);
-        logger.info('[commit/push]: "'+github_delivery+'". There goes push to a repo: ' + JSON.stringify(repo));
+        logger.info('[commit/push]: Author: "' + head_commit.author.username + '"  "' + head_commit.id + '". There goes push to a repo: ' + repo.name);
         logger.info('[build/trigger]: starting build for repo "'+ repo.name +'"');
 
-        startBuild(repo, github_delivery);
+        startBuild(repo, head_commit);
 
 
     } else {
@@ -279,7 +280,9 @@ var addWebhook = function (owner, r, currentUser) {
 
 };
 
-var startBuild = function (repository, sha) {
+var startBuild = function (repository, head_commit) {
+
+    var sha = head_commit.id;
     var buildDir = path.normalize('/data/rabix-registry/builds');
     var folder = buildDir + '/build_' +  repository.name + '_' + sha;
 
