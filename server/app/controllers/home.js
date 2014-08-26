@@ -9,6 +9,6 @@ module.exports = function (app, config) {
 
 router.get('/', function (req, res, next) {
     res.json({message: 'Api is working!'});
-});w
+});
 
 
