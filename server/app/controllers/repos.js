@@ -25,6 +25,7 @@ var logger = require('../../common/logger');
 var sys = require('sys');
 
 var exec = require('child_process').exec;
+var spawn = require('child_process').spawn;
 
 var mkdir = require('mkdirp');
 
@@ -85,6 +86,10 @@ router.post('/repos', function (req, res, next) {
     if (req.user.username !== owner) {
         res.statusCode = 403;
         res.json({message: 'You can only setup repos owned by you'});
+
+        //TODO: check if you can return just without next
+
+//        return next()
     }
 
     Repo.count({name: name, owner: owner}, function (err, count) {
@@ -211,7 +216,11 @@ var addWebhook = function (owner, r, currentUser) {
 
         var token = user.github.accessToken;
 
-        // TODO: check for token
+        if (!token) {
+            logger.error('Token not found for user: "'+owner+'"');
+//            throw Error('Token not found');
+            return false;
+        }
 
         var url = '/repos/' + owner + '/' + r + '/hooks';
         var opts = {
@@ -224,20 +233,6 @@ var addWebhook = function (owner, r, currentUser) {
                 'Content-type': 'application/json'
             }
         };
-
-//        var repo = {
-//            name: 'web',
-//            events: [
-//                "push",
-//                "pull_request"
-//            ],
-//            config: {
-//                url: 'http://www.rabix.org/api/github-webhook',
-//                content_type: 'json',
-//                insecure_ssl: 1
-//            },
-//            active: true
-//        };
 
         var repo = {
             "name": "web",
@@ -307,24 +302,46 @@ var startBuild = function (repository, sha) {
 
                 logger.info('Build for repo "'+ repository.full_name +'" for commit "'+ sha+'" started');
 
-                var child = exec("rabix build", { cwd: folder } , function (error, stdout, stderr) {
+//                var child = exec("rabix build", { cwd: folder } , function (error, stdout, stderr) {
+//
+//                    sys.print('stdout: ' + stdout);
+//
+//                    sys.print('stderr: ' + stderr);
+//
+//                    if (error !== null) {
+//                        console.log('exec error: ' + error);
+//                    }
+//
+//                    if (child.exitCode === 0) {
+//                        logger.info('Build for repo "'+ repository.full_name +'" for commit "'+ sha+'" endded succesfully');
+//                    } else if (child.exitCode === 1) {
+//                        logger.error('Build for repo "'+ repository.full_name +'" for commit "'+ sha+'" failed');
+//                    } else {
+//                        logger.error('Unknown status code returned for repo "'+ repository.full_name +'" commit "'+ sha+'"');
+//                    }
+//
+//                });
 
-                    sys.print('stdout: ' + stdout);
+                // Prepare build logs for writing
+                var logPath = path.normalize('/data/logs/rabix-registry/builds'),
+                    stdoutLog = fs.openSync(logPath + '/build_' +  repository.name + '_' + sha + '_stdout.log', 'a'),
+                    stderrLog = fs.openSync(logPath + '/build_' +  repository.name + '_' + sha + '_stderr.log', 'a');
 
-                    sys.print('stderr: ' + stderr);
 
-                    if (error !== null) {
-                        console.log('exec error: ' + error);
-                    }
-
-                    if (child.exitCode === 0) {
-                        logger.info('Build for repo "'+ repository.full_name +'" for commit "'+ sha+'" endded succesfully');
-                    } else if (child.exitCode === 1) {
-                        logger.error('Build for repo "'+ repository.full_name +'" for commit "'+ sha+'" failed');
+                var rabix = spawn('rabix', ['build ', '--config=.rabix.yml'], {
+                    cwd: folder,
+                    detached: true,
+                    stdio: [ 'ignore', stdoutLog, stderrLog ]
+                });
+                
+                rabix.on('close', function (code) {
+                    if (code === 0) {
+                        logger.info('Build for repo "'+ repository.full_name +'" for commit "'+ sha+'" endded succesfully with status code of : ' + code);
+                    } else if (code === 1) {
+                        logger.error('Build for repo "'+ repository.full_name +'" for commit "'+ sha+'" failed with status code of : ' + code);
                     } else {
-                        logger.error('Unknown status code returned for repo "'+ repository.full_name +'" commit "'+ sha+'"');
+                        logger.error('Unknown status code returned for repo "'+ repository.full_name +'" commit "'+ sha+'" with status code of : ' + code);
                     }
-
                 });
 
 
