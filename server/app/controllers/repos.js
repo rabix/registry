@@ -31,6 +31,8 @@ var mkdir = require('mkdirp');
 
 var git = require('gift');
 
+var fs = require('fs');
+
 // Ebd Requirements for build
 
 //var redis = require('redis');
