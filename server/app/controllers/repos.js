@@ -333,7 +333,7 @@ var startBuild = function (repository, head_commit) {
                     stderrLog = fs.openSync(logPath + '/build_' +  repository.name + '_' + sha + '_stderr.log', 'a');
 
 
-                var rabix = spawn('rabix', ['build ', '--config=.rabix.yml'], {
+                var rabix = spawn('rabix', ['build'], {
                     cwd: folder,
                     detached: true,
                     stdio: [ 'ignore', stdoutLog, stderrLog ]
