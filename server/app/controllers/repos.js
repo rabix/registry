@@ -301,7 +301,7 @@ var startBuild = function (repository, head_commit) {
     build.log_dir = log_dir;
     build.err_log_dir = err_log_dir;
 
-    Repo.findOne({owner: repository.owner, name: repository.name}, function (err, repo) {
+    Repo.findOne({owner: repository.owner.name, name: repository.name}, function (err, repo) {
         if (err) { logger.error('Couldnt find any repo to add build to') }
 
         build.repoId = repo._id;
