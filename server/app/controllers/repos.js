@@ -300,11 +300,18 @@ var startBuild = function (repository, head_commit) {
     build.head_commit = head_commit;
     build.log_dir = log_dir;
     build.err_log_dir = err_log_dir;
-    build.repoId = repository.id;
 
-    Build.collection.insert(build, function (err, build) {
-        if (err) { logger.error('Couldn\'t insert build into db for repo: '+ repository.name); }
+    Repo.findOne({owner: repository.owner, name: repository.name}, function (err, repo) {
+        if (err) { logger.error('Couldnt find any repo to add build to') }
+
+        build.repoId = repo._id;
+
+        Build.collection.insert(build, function (err, build) {
+            if (err) { logger.error('Couldn\'t insert build into db for repo: '+ repository.name); }
+        });
+
     });
+
 
     mkdir(folder , function(err){
 
