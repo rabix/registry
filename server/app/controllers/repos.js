@@ -13,6 +13,7 @@ var config = require('../../config/config');
 var mongoose = require('mongoose');
 var Repo = mongoose.model('Repo');
 var User = mongoose.model('User');
+var Build = mongoose.model('Build');
 
 var bodyParser = require('body-parser');
 
@@ -288,6 +289,23 @@ var startBuild = function (repository, head_commit) {
     var buildDir = path.normalize('/data/rabix-registry/builds');
     var folder = buildDir + '/build_' +  repository.name + '_' + sha;
 
+    var logPath = path.normalize(config.logging.builds);
+
+    var log_dir = logPath + '/build_' +  repository.name + '_' + sha + '_stdout.log';
+    var err_log_dir = logPath + '/build_' +  repository.name + '_' + sha + '_stderr.log';
+
+    var build = {};
+
+    build.status = 'pending';
+    build.head_commit = head_commit;
+    build.log_dir = log_dir;
+    build.err_log_dir = err_log_dir;
+    build.repoId = repository.id;
+
+    Build.collection.insert(build, function (err) {
+        if (err) { logger.error('Couldn\'t insert build into db for repo: '+ repository.name); }
+    });
+
     mkdir(folder , function(err){
 
         if (err) {
@@ -307,30 +325,9 @@ var startBuild = function (repository, head_commit) {
 
                 logger.info('Build for repo "'+ repository.full_name +'" for commit "'+ sha+'" started');
 
-//                var child = exec("rabix build", { cwd: folder } , function (error, stdout, stderr) {
-//
-//                    sys.print('stdout: ' + stdout);
-//
-//                    sys.print('stderr: ' + stderr);
-//
-//                    if (error !== null) {
-//                        console.log('exec error: ' + error);
-//                    }
-//
-//                    if (child.exitCode === 0) {
-//                        logger.info('Build for repo "'+ repository.full_name +'" for commit "'+ sha+'" endded succesfully');
-//                    } else if (child.exitCode === 1) {
-//                        logger.error('Build for repo "'+ repository.full_name +'" for commit "'+ sha+'" failed');
-//                    } else {
-//                        logger.error('Unknown status code returned for repo "'+ repository.full_name +'" commit "'+ sha+'"');
-//                    }
-//
-//                });
-
                 // Prepare build logs for writing
-                var logPath = path.normalize('/data/log/rabix-registry/builds'),
-                    stdoutLog = fs.openSync(logPath + '/build_' +  repository.name + '_' + sha + '_stdout.log', 'a'),
-                    stderrLog = fs.openSync(logPath + '/build_' +  repository.name + '_' + sha + '_stderr.log', 'a');
+                var stdoutLog = fs.openSync(log_dir, 'a'),
+                    stderrLog = fs.openSync(err_log_dir, 'a');
 
 
                 var rabix = spawn('rabix', ['build'], {
@@ -338,15 +335,27 @@ var startBuild = function (repository, head_commit) {
                     detached: true,
                     stdio: [ 'ignore', stdoutLog, stderrLog ]
                 });
+
+                build.status = 'running';
+
+                Build.findOneAndUpdate({repoId: repository.id}, {status: status});
                 
                 rabix.on('close', function (code) {
+                    var status = 'failure';
+
                     if (code === 0) {
                         logger.info('Build for repo "'+ repository.full_name +'" for commit "'+ sha+'" endded succesfully with status code of : ' + code);
+
+                        status = 'success';
+
                     } else if (code === 1) {
                         logger.error('Build for repo "'+ repository.full_name +'" for commit "'+ sha+'" failed with status code of : ' + code);
                     } else {
                         logger.error('Unknown status code returned for repo "'+ repository.full_name +'" commit "'+ sha+'" with status code of : ' + code);
                     }
+
+                    Build.findOneAndUpdate({repoId: repository.id}, {status: status});
+
                 });
 
 
