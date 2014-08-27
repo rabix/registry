@@ -336,9 +336,7 @@ var startBuild = function (repository, head_commit) {
                     stdio: [ 'ignore', stdoutLog, stderrLog ]
                 });
 
-                build.status = 'running';
-
-                Build.findOneAndUpdate({repoId: repository.id}, {status: status});
+                Build.findOneAndUpdate({repoId: repository.id}, {status: 'running'});
                 
                 rabix.on('close', function (code) {
                     var status = 'failure';
