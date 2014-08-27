@@ -302,7 +302,7 @@ var startBuild = function (repository, head_commit) {
     build.err_log_dir = err_log_dir;
     build.repoId = repository.id;
 
-    Build.collection.insert(build, function (err) {
+    Build.collection.insert(build, function (err, build) {
         if (err) { logger.error('Couldn\'t insert build into db for repo: '+ repository.name); }
     });
 
@@ -336,7 +336,9 @@ var startBuild = function (repository, head_commit) {
                     stdio: [ 'ignore', stdoutLog, stderrLog ]
                 });
 
-                Build.findOneAndUpdate({repoId: repository.id}, {status: 'running'});
+                Build.findOneAndUpdate({"head_commit.id": sha}, {status: 'running'}, function (err, build) {
+                    if (err) console.log('Error updateing build for repo "'+ repository.id +'" ', err);
+                });
                 
                 rabix.on('close', function (code) {
                     var status = 'failure';
@@ -352,7 +354,9 @@ var startBuild = function (repository, head_commit) {
                         logger.error('Unknown status code returned for repo "'+ repository.full_name +'" commit "'+ sha+'" with status code of : ' + code);
                     }
 
-                    Build.findOneAndUpdate({repoId: repository.id}, {status: status});
+                    Build.findOneAndUpdate({"head_commit.id": sha}, {status: status}, function (err, build) {
+                        if (err) console.log('Error updateing build for repo "'+ repository.id +'" ', err);
+                    });
 
                 });
 
