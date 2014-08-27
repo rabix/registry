@@ -35,8 +35,8 @@ router.get('/builds', function (req, res, next) {
 });
 
 router.get('/builds/:id', function (req, res, next) {
-
-    Build.findById(req.params.id).populate('repoId').exec(function(err, build) {
+    console.log(req.params.id);
+    Build.findOne({"head_commit.id": req.params.id}).populate('repoId').exec(function(err, build) {
         if (err) { return next(err); }
 
         res.json({data: build});
