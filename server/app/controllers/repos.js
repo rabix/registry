@@ -85,15 +85,15 @@ router.post('/repos', function (req, res, next) {
     var name = req.param('name');
     var owner = req.param('owner');
     var currentUser = req.user.email;
-
-    if (req.user.username !== owner) {
-        res.statusCode = 403;
-        res.json({message: 'You can only setup repos owned by you'});
-
-        //TODO: check if you can return just without next
-
-//        return next()
-    }
+//
+//    if (req.user.username !== owner) {
+//        res.statusCode = 403;
+//        res.json({message: 'You can only setup repos owned by you'});
+//
+//        //TODO: check if you can return just without next
+//
+////        return next()
+//    }
 
     Repo.count({name: name, owner: owner}, function (err, count) {
         if (err) {
