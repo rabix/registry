@@ -344,7 +344,7 @@ var startBuild = function (repository, head_commit) {
                 });
 
                 Build.findOneAndUpdate({"head_commit.id": sha}, {status: 'running'}, function (err, build) {
-                    if (err) console.log('Error updateing build for repo "'+ repository.id +'" ', err);
+                    if (err) console.log('Error updating build for repo "'+ repository.id +'" ', err);
                 });
                 
                 rabix.on('close', function (code) {

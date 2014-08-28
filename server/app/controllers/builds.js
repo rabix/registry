@@ -6,6 +6,8 @@ var mongoose = require('mongoose');
 var _ = require('lodash');
 var Build = mongoose.model('Build');
 
+var fs = require('fs');
+
 module.exports = function (app) {
     app.use('/api', router);
 };
@@ -35,7 +37,7 @@ router.get('/builds', function (req, res, next) {
 });
 
 router.get('/builds/:id', function (req, res, next) {
-    console.log(req.params.id);
+
     Build.findOne({"head_commit.id": req.params.id}).populate('repoId').exec(function(err, build) {
         if (err) { return next(err); }
 
@@ -46,6 +48,11 @@ router.get('/builds/:id', function (req, res, next) {
 
 router.get('/builds/:id/log', function (req, res, next) {
 
-    res.send('CONTENT');
+    Build.findOne({"head_commit.id": req.params.id}, function (err, build) {
+
+        fs.readFile(build.log_dir, 'utf8', function (err, data) {
+            res.send(data);
+        });
+    });
 
 });
