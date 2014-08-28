@@ -22,15 +22,15 @@ angular.module('registryApp')
 
         /* get the build details */
         Build.getBuild($routeParams.id).then(function(result) {
-
+            var build = result.data;
             $scope.view.build = result.data;
 
             $scope.view.log = [];
             $scope.view.contentLength = 0;
 
-
+            console.log('Get build, ', result);
             /* start lo(n)g polling if build is running */
-            if (result.status === 'running') {
+            if (build.status === 'running') {
 
                 console.log('lo(n)g polling started');
 
@@ -52,9 +52,10 @@ angular.module('registryApp')
         /**
          * Callback when log for the build is loaded
          *
-         * @param result
+         * @param res
          */
-        var logLoaded = function(result) {
+        var logLoaded = function(data) {
+            var result = data.content;
 
             if (result.status !== 'running') {
                 $scope.stopLogInterval();

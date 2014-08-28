@@ -2,6 +2,7 @@
     "data": [
         {
             "status": "success",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "9159adbd-9628-437c-b1bb-c93dba6ac658",
                 "message": "Ex cupidatat tempor proident Lorem ut est Lorem incididunt ipsum cupidatat aliquip nulla.",
@@ -20,6 +21,7 @@
         },
         {
             "status": "running",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "31f374a4-1077-4d98-8c43-e8567646cc7f",
                 "message": "Labore sunt ipsum aliquip qui do minim.",
@@ -38,6 +40,7 @@
         },
         {
             "status": "success",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "53728694-afd2-4887-a622-4f8d1d329543",
                 "message": "Dolore fugiat magna exercitation ex officia aliquip pariatur officia consectetur commodo anim.",
@@ -56,6 +59,7 @@
         },
         {
             "status": "pending",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "a4c2d3cf-9267-434d-a1f5-1b3f9787ae68",
                 "message": "Voluptate ea nostrud ad in incididunt et nulla nulla ex.",
@@ -74,6 +78,7 @@
         },
         {
             "status": "pending",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "f5f1debc-e7b7-41f8-b501-6f46955b290e",
                 "message": "Id mollit elit consectetur elit minim veniam sunt eiusmod excepteur laborum dolore incididunt.",
@@ -92,6 +97,7 @@
         },
         {
             "status": "failure",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "8d106cb5-c149-4460-a9f0-1168dc23dadd",
                 "message": "Aute voluptate pariatur eiusmod nulla ex sint veniam tempor deserunt laboris irure.",
@@ -110,6 +116,7 @@
         },
         {
             "status": "success",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "ccdda04e-2432-4743-a485-f42090e57f8a",
                 "message": "Officia dolor tempor eu duis ullamco enim non veniam.",
@@ -128,6 +135,7 @@
         },
         {
             "status": "running",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "c5b71dcc-3c66-4454-bee1-69661bf43d16",
                 "message": "Quis fugiat nostrud minim est id quis pariatur consectetur enim duis elit ex ea.",
@@ -146,6 +154,7 @@
         },
         {
             "status": "failure",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "053f4132-c290-4115-af10-45434bce2cdc",
                 "message": "Cupidatat laborum laboris sit dolore sint aliqua adipisicing.",
@@ -164,6 +173,7 @@
         },
         {
             "status": "running",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "465258da-631d-4397-93ea-9ff33b07ecee",
                 "message": "Aliquip anim ex excepteur in velit.",
@@ -182,6 +192,7 @@
         },
         {
             "status": "success",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "52087db0-96c8-46ab-8b3d-8f8a681fe2cf",
                 "message": "Esse duis magna ullamco sunt sunt mollit duis ad cupidatat ad qui duis ex.",
@@ -200,6 +211,7 @@
         },
         {
             "status": "success",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "f715d650-fb89-4914-bd2c-dac6e5bda7ef",
                 "message": "Elit anim adipisicing esse anim sit occaecat occaecat deserunt.",
@@ -218,6 +230,7 @@
         },
         {
             "status": "running",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "8153e420-3aac-498f-bf8d-927cf266da4a",
                 "message": "Sunt consequat cillum cillum aute laboris elit irure exercitation in voluptate dolor consequat.",
@@ -236,6 +249,7 @@
         },
         {
             "status": "failure",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "20db23ed-fc9b-4596-a81c-87a4d554d469",
                 "message": "Amet aute irure ea cupidatat.",
@@ -254,6 +268,7 @@
         },
         {
             "status": "pending",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "5ceb246a-114d-4ea9-b9ba-490610600df9",
                 "message": "Dolore enim reprehenderit enim velit elit culpa anim.",
@@ -272,6 +287,7 @@
         },
         {
             "status": "running",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "882629f7-5680-4f2e-8d74-13bca61df68f",
                 "message": "Adipisicing consequat nisi magna ullamco irure quis qui ea aliquip est sint ipsum.",
@@ -290,6 +306,7 @@
         },
         {
             "status": "failure",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "5167abc7-b203-4f6c-898d-907646989d69",
                 "message": "Culpa Lorem do anim sit adipisicing ex sit eiusmod velit elit enim duis laboris.",
@@ -308,6 +325,7 @@
         },
         {
             "status": "pending",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "b6bc9140-f8ba-425c-8812-6a458d185539",
                 "message": "Proident excepteur enim est duis nulla ad proident officia tempor ea reprehenderit pariatur est ex.",
@@ -326,6 +344,7 @@
         },
         {
             "status": "success",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "d67750c2-436b-4393-baa0-6651e2ec0be8",
                 "message": "Ipsum sunt eiusmod dolore dolor aliquip labore elit deserunt enim.",
@@ -344,6 +363,7 @@
         },
         {
             "status": "success",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "845dd241-7926-4c07-9cc2-aa083a162b55",
                 "message": "Sit ad proident sint adipisicing.",
@@ -362,6 +382,7 @@
         },
         {
             "status": "failure",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "2ed6fd07-1f45-44ea-a31d-3f6cbfcc2256",
                 "message": "Dolor esse proident ullamco eiusmod quis.",
@@ -380,6 +401,7 @@
         },
         {
             "status": "running",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "a0cf9a88-67f1-4c91-95d6-ebf2b2091b97",
                 "message": "Anim aliqua irure voluptate deserunt irure sunt ea aliquip officia veniam ea veniam.",
@@ -398,6 +420,7 @@
         },
         {
             "status": "pending",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "4649de49-9f95-4d84-afc9-48fcf5ae8516",
                 "message": "Enim adipisicing commodo dolor aliqua ea laborum nisi amet dolor pariatur velit.",
@@ -416,6 +439,7 @@
         },
         {
             "status": "failure",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "b5cce3c0-8bc4-4880-9b8b-214f80f19b66",
                 "message": "In enim excepteur consectetur ex sit adipisicing duis consequat duis qui ad culpa dolor.",
@@ -434,6 +458,7 @@
         },
         {
             "status": "success",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "c27c7e63-c50b-4daf-acc9-45f6c5728b76",
                 "message": "Tempor occaecat sit voluptate anim incididunt non duis amet.",
@@ -452,6 +477,7 @@
         },
         {
             "status": "success",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "d752cfec-e9da-492e-97ac-254ba31963d7",
                 "message": "Ex aute Lorem proident eu sint cupidatat aliqua duis.",
@@ -470,6 +496,7 @@
         },
         {
             "status": "pending",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "3452a83b-4c19-4eed-a86c-5c44ef58c4e2",
                 "message": "Ad nisi Lorem duis culpa velit qui voluptate qui aliqua ea reprehenderit commodo.",
@@ -488,6 +515,7 @@
         },
         {
             "status": "success",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "440fef07-3be6-4331-ac7c-48fa97268e8a",
                 "message": "Eiusmod est nisi Lorem in sunt cillum.",
@@ -506,6 +534,7 @@
         },
         {
             "status": "pending",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "4d1e73ba-943b-4cc1-94e8-b830483a074a",
                 "message": "Aute dolor reprehenderit elit ex proident consequat nostrud officia mollit officia incididunt anim.",
@@ -524,6 +553,7 @@
         },
         {
             "status": "running",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "09e0696b-f7a3-4509-bc12-431d587634d5",
                 "message": "Irure nostrud aliquip laborum ad fugiat ad eu veniam sunt fugiat voluptate excepteur eu.",
@@ -542,6 +572,7 @@
         },
         {
             "status": "failure",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "59a7826f-7230-4257-8a93-5d4569b683d2",
                 "message": "Dolor eiusmod laborum cupidatat veniam veniam reprehenderit cupidatat.",
@@ -560,6 +591,7 @@
         },
         {
             "status": "running",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "dc667a30-69f3-4e78-955a-1313b0759df3",
                 "message": "Occaecat elit reprehenderit anim magna eiusmod ex veniam elit laborum incididunt.",
@@ -578,6 +610,7 @@
         },
         {
             "status": "failure",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "20651b70-64ca-4eb6-8c39-101f7edeee45",
                 "message": "Officia est occaecat nostrud velit Lorem est quis quis tempor labore ad.",
@@ -596,6 +629,7 @@
         },
         {
             "status": "success",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "c2b6c40b-860c-40fa-9e60-86c3daef8991",
                 "message": "Elit eu exercitation eiusmod anim culpa do mollit aliquip cillum qui.",
@@ -614,6 +648,7 @@
         },
         {
             "status": "failure",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "e9b3dddc-9155-4b7f-8e2e-a8c7cbb230aa",
                 "message": "Exercitation nostrud Lorem nostrud ea sunt cupidatat aliquip non aliqua aliquip aute enim.",
@@ -632,6 +667,7 @@
         },
         {
             "status": "success",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "e9bd445b-8873-464e-b892-4a901af10b1f",
                 "message": "Est nulla cillum do laboris do aliqua aliqua.",
@@ -650,6 +686,7 @@
         },
         {
             "status": "failure",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "d7ee82f0-c2a5-4853-a98e-cf2dcade7ee5",
                 "message": "Mollit anim ipsum magna proident quis dolore proident ad qui ullamco non ullamco excepteur amet.",
@@ -668,6 +705,7 @@
         },
         {
             "status": "failure",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "6dfba867-9acc-478e-b2b4-eb7ec2cf05fd",
                 "message": "Proident est incididunt cillum ex et reprehenderit et commodo mollit minim nisi qui.",
@@ -686,6 +724,7 @@
         },
         {
             "status": "success",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "1737ed96-753a-48e6-af61-feadf69ae42e",
                 "message": "Qui consectetur exercitation laborum ad.",
@@ -704,6 +743,7 @@
         },
         {
             "status": "running",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "53fe4650-6bdb-4a9c-9d8a-93e499ada429",
                 "message": "Sit nostrud excepteur sint id qui consequat exercitation irure sit in.",
@@ -722,6 +762,7 @@
         },
         {
             "status": "failure",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "f67a0840-6f35-4144-a76d-29562015d091",
                 "message": "Deserunt proident et cupidatat ea proident excepteur ea pariatur quis anim.",
@@ -740,6 +781,7 @@
         },
         {
             "status": "running",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "860a8cec-fb29-489a-acdb-5b92bc9a5536",
                 "message": "Anim minim fugiat ut ex velit amet mollit nostrud qui magna nostrud nulla.",
@@ -758,6 +800,7 @@
         },
         {
             "status": "pending",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "bc1eb74b-a686-4d7d-b0ec-5a032e07ac68",
                 "message": "Exercitation pariatur dolor pariatur tempor esse velit reprehenderit nostrud mollit irure occaecat.",
@@ -776,6 +819,7 @@
         },
         {
             "status": "success",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "6e429933-39b2-4770-a640-553893f2b3f3",
                 "message": "Dolor fugiat excepteur aliqua laborum laboris consectetur dolore aliqua et ex culpa excepteur.",
@@ -794,6 +838,7 @@
         },
         {
             "status": "running",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "6238d264-7844-4615-b04c-e3fcfc7d2d35",
                 "message": "Et incididunt irure commodo occaecat consectetur anim tempor eiusmod reprehenderit tempor.",
@@ -812,6 +857,7 @@
         },
         {
             "status": "success",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "1b13353a-e097-4a91-851c-8700aaed4b34",
                 "message": "Nulla ut duis sint sit irure dolore cupidatat commodo ad velit nulla.",
@@ -830,6 +876,7 @@
         },
         {
             "status": "running",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "4c8a4c67-a095-41d1-bd0b-e4c8162febca",
                 "message": "In cupidatat laboris elit qui veniam sunt elit.",
@@ -848,6 +895,7 @@
         },
         {
             "status": "running",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "0e67fd5d-c0c2-4c49-9605-903d51800f26",
                 "message": "Adipisicing consequat incididunt consequat officia est anim nisi minim non Lorem.",
@@ -866,6 +914,7 @@
         },
         {
             "status": "failure",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "3e009358-e9a9-4526-ad38-546663e88add",
                 "message": "Incididunt aliquip tempor aute esse sit ut ipsum laborum id qui sit.",
@@ -884,6 +933,7 @@
         },
         {
             "status": "failure",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "240d8019-51c4-44fc-b6b4-9c5f7d341817",
                 "message": "Nostrud consectetur est occaecat amet anim excepteur aute magna.",
@@ -902,6 +952,7 @@
         },
         {
             "status": "pending",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "d0318c70-20a1-42f5-bf40-e2fc37ea444a",
                 "message": "Voluptate amet Lorem minim proident laborum incididunt minim eu proident qui.",
@@ -920,6 +971,7 @@
         },
         {
             "status": "failure",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "d770c9d4-5e15-4e18-b6fd-0dc4c50b1e61",
                 "message": "Commodo ullamco labore id tempor ex qui dolore in laboris enim.",
@@ -938,6 +990,7 @@
         },
         {
             "status": "pending",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "2c949cf1-b4d7-4d81-a69e-9668a1bfd954",
                 "message": "Dolor excepteur occaecat consectetur culpa sit proident adipisicing fugiat proident sit proident est fugiat ad.",
@@ -956,6 +1009,7 @@
         },
         {
             "status": "failure",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "e57b1f43-93d8-4053-9c14-e51176647b01",
                 "message": "Est aute velit aliquip ad culpa cillum.",
@@ -974,6 +1028,7 @@
         },
         {
             "status": "success",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "2270a1f1-547c-492b-bb50-6cbfe4de677a",
                 "message": "Occaecat nulla exercitation aliqua esse ea tempor cupidatat enim elit veniam.",
@@ -992,6 +1047,7 @@
         },
         {
             "status": "failure",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "50ed8f4d-e89b-4413-ab0c-f255fc731a0f",
                 "message": "Proident occaecat tempor sint tempor reprehenderit.",
@@ -1010,6 +1066,7 @@
         },
         {
             "status": "success",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "46c45dd9-8085-43be-a4e4-a6524604c80d",
                 "message": "Aliqua qui velit eu ex officia labore in exercitation aliquip.",
@@ -1028,6 +1085,7 @@
         },
         {
             "status": "success",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "caeb341e-5e46-4f64-8203-5564a991040c",
                 "message": "Aute excepteur elit adipisicing consequat labore exercitation consequat proident amet sunt cupidatat.",
@@ -1046,6 +1104,7 @@
         },
         {
             "status": "failure",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "9d9b5181-a7a7-4e3e-a624-90ab7084b96b",
                 "message": "Id cillum culpa sit minim et qui cupidatat eu cupidatat reprehenderit.",
@@ -1064,6 +1123,7 @@
         },
         {
             "status": "running",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "6923797b-f777-4c31-89ba-e633972dda71",
                 "message": "Id qui laborum culpa sit et veniam ullamco et.",
@@ -1082,6 +1142,7 @@
         },
         {
             "status": "pending",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "dfcd05aa-37df-45f1-8448-a231c55e1194",
                 "message": "Voluptate nulla aliqua nulla occaecat cillum amet.",
@@ -1100,6 +1161,7 @@
         },
         {
             "status": "success",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "85e646fd-3a44-46f3-9c90-7159e479003f",
                 "message": "Quis Lorem et eiusmod commodo culpa quis reprehenderit.",
@@ -1118,6 +1180,7 @@
         },
         {
             "status": "pending",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "fb8ef6ae-c1a5-4d8c-aa1d-1aee75dacc11",
                 "message": "Amet nulla adipisicing reprehenderit culpa Lorem ipsum fugiat irure eiusmod eiusmod.",
@@ -1136,6 +1199,7 @@
         },
         {
             "status": "failure",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "afc1e205-28cc-4646-a8ab-fd371d6b30ee",
                 "message": "Quis aute sunt proident dolore amet dolore incididunt nostrud ea Lorem reprehenderit sit.",
@@ -1154,6 +1218,7 @@
         },
         {
             "status": "running",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "0ce53752-e8ad-4b02-8ce8-ce049acff55c",
                 "message": "Id enim ea velit voluptate cupidatat voluptate esse dolor ullamco incididunt laborum adipisicing.",
@@ -1172,6 +1237,7 @@
         },
         {
             "status": "success",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "bbddcdc5-eaab-4194-8d52-ca2dde7bbc26",
                 "message": "Mollit nulla deserunt eiusmod exercitation tempor.",
@@ -1190,6 +1256,7 @@
         },
         {
             "status": "success",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "a0b73852-f269-421d-a8cd-fb8ebad5f561",
                 "message": "Duis laborum eu duis qui nostrud labore mollit.",
@@ -1208,6 +1275,7 @@
         },
         {
             "status": "failure",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "7e82d12a-d3b8-44b2-888b-68d2b68e17af",
                 "message": "Irure quis ipsum ipsum in velit.",
@@ -1226,6 +1294,7 @@
         },
         {
             "status": "running",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "c2846df8-136a-4311-b97a-23a77804cb1b",
                 "message": "Minim ad aute mollit consectetur excepteur cillum fugiat eu laborum culpa aute minim tempor laborum.",
@@ -1244,6 +1313,7 @@
         },
         {
             "status": "success",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "7c53c905-767d-4bc0-a44e-8178412d841f",
                 "message": "Officia sint esse minim dolore dolore cupidatat commodo mollit adipisicing elit nisi.",
@@ -1262,6 +1332,7 @@
         },
         {
             "status": "pending",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "20c194b7-4076-4298-956e-6dc1a6fcf93b",
                 "message": "Irure esse minim deserunt deserunt in consectetur pariatur Lorem anim deserunt fugiat.",
@@ -1280,6 +1351,7 @@
         },
         {
             "status": "success",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "beebda00-a5b0-4659-ab04-e5c798667547",
                 "message": "Nostrud reprehenderit sit velit sint eiusmod qui officia nostrud consectetur reprehenderit.",
@@ -1298,6 +1370,7 @@
         },
         {
             "status": "pending",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "b187f7a5-a574-439a-8237-8fd6c359b155",
                 "message": "Adipisicing non dolore amet sit exercitation.",
@@ -1316,6 +1389,7 @@
         },
         {
             "status": "pending",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "1b1c8be2-f3d9-4346-8e30-099a03e7d207",
                 "message": "Pariatur aliquip non ipsum consequat veniam amet eu et ad irure sint.",
@@ -1334,6 +1408,7 @@
         },
         {
             "status": "failure",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "1b1d4dc0-0d73-420a-bf5c-13f157d2b8ed",
                 "message": "In anim nulla enim nulla velit ex voluptate occaecat do et velit sint in.",
@@ -1352,6 +1427,7 @@
         },
         {
             "status": "failure",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "62f68c7c-20d6-4959-87fa-a45d8a3d7f0a",
                 "message": "Est anim ex cupidatat commodo in dolore laboris culpa aute.",
@@ -1370,6 +1446,7 @@
         },
         {
             "status": "pending",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "cc2151cc-a4ab-42b5-8e7d-5167d4c9d1bb",
                 "message": "Ullamco nostrud nisi ad in excepteur sint reprehenderit tempor ipsum elit qui laborum eiusmod adipisicing.",
@@ -1388,6 +1465,7 @@
         },
         {
             "status": "running",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "8b34f8da-9543-447b-aa42-fc3bd646c7ed",
                 "message": "Do deserunt irure eiusmod eu mollit aliquip cillum esse.",
@@ -1406,6 +1484,7 @@
         },
         {
             "status": "failure",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "da14cd0a-0b6d-4713-83e4-792707890f6f",
                 "message": "Excepteur ea culpa aliqua sint adipisicing ad.",
@@ -1424,6 +1503,7 @@
         },
         {
             "status": "pending",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "bac56b5e-38a5-437c-ba95-e35ddf488552",
                 "message": "Voluptate nostrud amet tempor ad ipsum excepteur officia dolore nostrud proident commodo nostrud.",
@@ -1442,6 +1522,7 @@
         },
         {
             "status": "pending",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "df299624-7e64-4f36-93ad-0bb46de73e2c",
                 "message": "Aliqua cupidatat dolor cupidatat amet.",
@@ -1460,6 +1541,7 @@
         },
         {
             "status": "running",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "b13eefa0-7aff-4ed8-a5e6-9b446b565458",
                 "message": "Culpa magna consectetur irure voluptate consectetur exercitation est in exercitation occaecat.",
@@ -1478,6 +1560,7 @@
         },
         {
             "status": "success",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "31147b88-8686-4ed7-bd94-3268ac317211",
                 "message": "Quis Lorem enim et ex sint cupidatat.",
@@ -1496,6 +1579,7 @@
         },
         {
             "status": "failure",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "b2b3133f-c90e-493c-ae19-54ad69409d95",
                 "message": "Laborum laborum veniam incididunt fugiat eiusmod consectetur esse esse magna eiusmod voluptate labore.",
@@ -1514,6 +1598,7 @@
         },
         {
             "status": "pending",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "71da60b3-a97f-4dc2-9952-47b6622ff800",
                 "message": "Duis est aliqua ut excepteur laboris ipsum non laboris.",
@@ -1532,6 +1617,7 @@
         },
         {
             "status": "success",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "e20ba80a-823d-4a56-bc77-e422bacf1f12",
                 "message": "Exercitation nostrud nisi velit reprehenderit excepteur veniam et.",
@@ -1550,6 +1636,7 @@
         },
         {
             "status": "failure",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "3bfc44bf-16a2-42a5-8bab-6ab4871d9901",
                 "message": "Esse quis et nostrud veniam minim voluptate magna minim minim.",
@@ -1568,6 +1655,7 @@
         },
         {
             "status": "failure",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "ec122329-cdda-410a-adce-b713bf498a85",
                 "message": "Consequat deserunt pariatur ad incididunt Lorem.",
@@ -1586,6 +1674,7 @@
         },
         {
             "status": "running",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "86a77a92-6cdc-4e86-80cf-a708329a3bca",
                 "message": "Nisi sint non veniam consequat tempor et eu labore anim excepteur.",
@@ -1604,6 +1693,7 @@
         },
         {
             "status": "running",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "dd2583f9-5a2b-4e0c-b1fe-cd1caa5b8695",
                 "message": "Adipisicing incididunt quis consequat tempor fugiat nostrud.",
@@ -1622,6 +1712,7 @@
         },
         {
             "status": "running",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "2f2e5846-9e46-4c00-a93d-6317235aac9d",
                 "message": "Sint aute do eiusmod elit nulla do eiusmod veniam laborum magna.",
@@ -1640,6 +1731,7 @@
         },
         {
             "status": "pending",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "24d4df62-923d-4f31-b9dc-c5d79e51bc13",
                 "message": "Voluptate ipsum esse culpa cupidatat laboris nulla aute dolore incididunt ea ex sit ut.",
@@ -1658,6 +1750,7 @@
         },
         {
             "status": "success",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "b685b6db-a5e7-4fa4-8205-eba8b9e88e49",
                 "message": "Minim commodo voluptate adipisicing culpa anim dolor voluptate ipsum veniam culpa non sint ut.",
@@ -1676,6 +1769,7 @@
         },
         {
             "status": "running",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "951925c7-b802-43f2-b340-974c588ac137",
                 "message": "Amet eu commodo ad ut fugiat minim dolor ex consectetur officia ullamco duis enim minim.",
@@ -1694,6 +1788,7 @@
         },
         {
             "status": "success",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "f51a145f-240c-4039-bf7b-5e2b653a9c9f",
                 "message": "Do ex deserunt do culpa irure commodo Lorem magna sit veniam.",
@@ -1712,6 +1807,7 @@
         },
         {
             "status": "running",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "1053857d-4d1b-42e8-85cd-5174c7cef44b",
                 "message": "Do est ex ipsum Lorem anim commodo pariatur commodo qui.",
@@ -1730,6 +1826,7 @@
         },
         {
             "status": "running",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "e6778087-bd26-42a6-9f8e-749589ca34ee",
                 "message": "Est amet magna cupidatat laborum.",
@@ -1748,6 +1845,7 @@
         },
         {
             "status": "failure",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "fa4a9f15-edfe-4078-acc5-c7d4ea518cdc",
                 "message": "Amet ea dolor Lorem dolor adipisicing cillum dolore reprehenderit esse consectetur.",
@@ -1766,6 +1864,7 @@
         },
         {
             "status": "running",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "b283c521-6caa-4d1a-8287-fc727cc39414",
                 "message": "Occaecat nostrud pariatur excepteur aute id ea incididunt sit tempor ad fugiat veniam.",
@@ -1784,6 +1883,7 @@
         },
         {
             "status": "success",
+            "log_dir": "/data/log/rabix-registry/builds/build_bedtools2_311cbc23494d1df6ea2f55c287b62af81fb59e59_stdout.log",
             "head_commit": {
                 "id": "03868010-9784-4707-bc28-b2c1847ac869",
                 "message": "Nisi mollit nisi magna anim laboris qui officia eiusmod fugiat cupidatat.",

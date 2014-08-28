@@ -55,7 +55,7 @@ router.get('/builds/:id', function (req, res, next) {
             return next(err);
         }
 
-        res.json({data: build});
+        res.json({ data: build});
     });
 
 });
@@ -64,11 +64,11 @@ router.get('/builds/:id/log', function (req, res, next) {
 
     Build.findOne({"head_commit.id": req.params.id}, function (err, build) {
 
-        fs.readFile(build.log_dir, 'utf8', function (err, data) {
+        fs.readFile(build.log_dir, 'utf8', function (err, log) {
             res.json({
                 status: build.status,
-                content: data,
-                contentLength: data.toString().length
+                content: log,
+                contentLength: log.toString().length
             });
         });
     });

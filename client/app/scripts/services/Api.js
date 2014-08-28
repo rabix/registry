@@ -19,7 +19,7 @@ angular.module('registryApp')
                     method: 'GET',
                     headers: {'range': 'bytes=' + range + '-'},
                     transformResponse: [function(data) {
-                        return { content: data };
+                        return { content: JSON.parse(data)};
                     }].concat($http.defaults.transformResponse)
                 }
             });
