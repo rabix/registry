@@ -67,7 +67,8 @@ router.get('/builds/:id/log', function (req, res, next) {
         fs.readFile(build.log_dir, 'utf8', function (err, data) {
             res.json({
                 status: build.status,
-                content: data
+                content: data,
+                contentLength: data.toString().length
             });
         });
     });
