@@ -18,28 +18,42 @@ router.get('/builds', function (req, res, next) {
     var skip = req.query.skip ? req.query.skip : 0;
     var where = {};
 
-    _.each(req.query, function(paramVal, paramKey) {
+    _.each(req.query, function (paramVal, paramKey) {
         if (_.contains(paramKey, 'field_')) {
             where[paramKey.replace('field_', '')] = paramVal;
         }
     });
 
-    Build.count(where).exec(function(err, total) {
-        if (err) { return next(err); }
+    Build.count(where, function (err, total) {
 
-        Build.find(where).skip(skip).limit(limit).populate('repoId').exec(function(err, builds) {
-            if (err) { return next(err); }
+        if (err) {
+            return next(err);
+        }
 
-            res.json({list: builds, total: total});
-        });
+        if (total !== 0) {
+
+
+            Build.find(where).skip(skip).limit(limit).populate('repoId').exec(function (err, builds) {
+                if (err) {
+                    return next(err);
+                }
+
+                res.json({list: builds, total: total});
+            });
+
+        } else {
+            res.json({list: [], total: total});
+        }
     });
 
 });
 
 router.get('/builds/:id', function (req, res, next) {
 
-    Build.findOne({"head_commit.id": req.params.id}).populate('repoId').exec(function(err, build) {
-        if (err) { return next(err); }
+    Build.findOne({"head_commit.id": req.params.id}).populate('repoId').exec(function (err, build) {
+        if (err) {
+            return next(err);
+        }
 
         res.json({data: build});
     });
@@ -51,7 +65,10 @@ router.get('/builds/:id/log', function (req, res, next) {
     Build.findOne({"head_commit.id": req.params.id}, function (err, build) {
 
         fs.readFile(build.log_dir, 'utf8', function (err, data) {
-            res.send(data);
+            res.json({
+                status: build.status,
+                content: data
+            });
         });
     });
 
