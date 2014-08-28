@@ -42,7 +42,8 @@ angular.module('registryApp')
 
             } else {
                 /* other than that take the log for the current build */
-                Build.getLog($routeParams.id, 0).then(function(result) {
+                Build.getLog($routeParams.id, 0).then(function(res) {
+                    var result = res.content;
                     $scope.view.loading = false;
                     $scope.view.log = $scope.view.log.concat(result.content.split('\n'));
                 });
@@ -52,7 +53,7 @@ angular.module('registryApp')
         /**
          * Callback when log for the build is loaded
          *
-         * @param res
+         * @param data
          */
         var logLoaded = function(data) {
             var result = data.content;
@@ -64,8 +65,9 @@ angular.module('registryApp')
             $scope.view.build.status = result.status;
 
             if (result.contentLength > 0) {
-                $scope.view.log = result.content.split('\n');
-                $scope.view.contentLength += parseInt(result.contentLength, 10);
+
+                $scope.view.log = _.union($scope.view.log, result.content.split('\n'));
+                $scope.view.contentLength = parseInt(result.contentLength, 10);
                 console.log('lo(n)g polling at ', $scope.view.contentLength);
 
                 $scope.stopScrollTimeout();
