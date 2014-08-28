@@ -64,7 +64,7 @@ angular.module('registryApp')
             $scope.view.build.status = result.status;
 
             if (result.contentLength > 0) {
-                $scope.view.log = $scope.view.log.concat(result.content.split('\n'));
+                $scope.view.log = result.content.split('\n');
                 $scope.view.contentLength += parseInt(result.contentLength, 10);
                 console.log('lo(n)g polling at ', $scope.view.contentLength);
 
