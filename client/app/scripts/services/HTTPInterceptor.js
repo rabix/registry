@@ -24,7 +24,7 @@ angular.module('registryApp')
 
             'responseError': function(rejection) {
                 // intercept response error
-                var message = (_.isEmpty(rejection.data.message)) ? 'An error occurred while attempting to retrieve response from ' + rejection.config.url : rejection.data.message;
+                var message = (!_.isEmpty(rejection.data) && !_.isEmpty(rejection.data.message)) ? rejection.data.message : 'An error occurred while attempting to retrieve response from ' + rejection.config.url;
                 $rootScope.$broadcast('httpError', message);
                 return $q.reject(rejection);
             }
