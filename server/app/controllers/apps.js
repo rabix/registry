@@ -5,6 +5,7 @@ var router = express.Router();
 var mongoose = require('mongoose');
 var _ = require('lodash');
 var App = mongoose.model('App');
+var filters = require('../../common/route-filters');
 
 module.exports = function (app) {
     app.use('/api', router);
@@ -50,3 +51,19 @@ router.get('/apps/:id', function (req, res, next) {
     });
 
 });
+
+
+router.put('/apps', filters.authenticateClient, function (req, res, next) {
+
+});
+
+
+router.post('/apps', filters.authenticateClient, function (req, res, next) {
+
+});
+
+router.delete('/apps', filters.authenticateClient, function (req, res, next) {
+
+});
+
+
