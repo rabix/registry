@@ -53,8 +53,8 @@ router.get('/apps/:id', function (req, res, next) {
 });
 
 
-router.put('/apps', filters.authenticateClient, function (req, res, next) {
-
+router.put('/apps', filters.authenticated, function (req, res, next) {
+    
 });
 
 
