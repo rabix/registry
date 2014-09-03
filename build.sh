@@ -18,6 +18,16 @@ grunt
 
 cd ..
 
+cd cliche
+
+grunt
+
+cd ..
+
+pwd
+
+echo "Frontend build done"
+
 service rabix-registry start
 
 echo "******* Build ended.. ******* "

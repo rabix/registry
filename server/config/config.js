@@ -53,7 +53,7 @@ var config = {
         port: 3000,
         db: 'mongodb://localhost/server-production',
         clientPath: '../../client/dist',
-        clichePath: '../../../cliche.prod/app',
+        clichePath: '../../../cliche.prod',
         github: {
             clientId: '8747f41e5e0389547e6d',
             clientSecret: 'bb7770b1835087947e37bba3f39b6ad9e5ca6c85',
