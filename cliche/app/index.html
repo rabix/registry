@@ -1,0 +1,79 @@
+<!doctype html>
+<html class="no-js">
+    <head>
+        <meta charset="utf-8">
+        <title>cliche</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+
+        <link rel="shortcut icon" href="images/favicon.ico">
+
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700' rel='stylesheet' type='text/css'>
+
+        <!-- build:css({.tmp,app}) styles/main.css -->
+        <link rel="stylesheet" href="styles/main.css">
+        <!-- endbuild -->
+
+    </head>
+    <body ng-app="clicheApp">
+        <!--[if lt IE 7]>
+            <div class="browsehappy">
+                <p>You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+            </div>
+        <![endif]-->
+
+        <div class="main" ng-controller="MasterCtrl">
+            <div class="container-fluid" ng-view=""></div>
+            <span class="saving" ng-class="{show: view.saving}">saving</span>
+        </div>
+
+        <error></error>
+
+        <!--[if lt IE 9]>
+        <script src="bower_components/es5-shim/es5-shim.js"></script>
+        <script src="bower_components/json3/lib/json3.min.js"></script>
+        <![endif]-->
+
+        <!-- build:js scripts/vendor.js -->
+        <script src="bower_components/angular/angular.js"></script>
+        <script src="bower_components/json3/lib/json3.js"></script>
+        <script src="bower_components/angular-resource/angular-resource.js"></script>
+        <script src="bower_components/angular-route/angular-route.js"></script>
+        <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+        <script src="bower_components/lodash/dist/lodash.js"></script>
+        <script src="bower_components/ng-prettyjson/src/ng-prettyjson.js"></script>
+        <script src="bower_components/localforage/dist/localforage.js"></script>
+        <script src="bower_components/angular-localForage/dist/angular-localForage.js"></script>
+        <script src="bower_components/zeroclipboard/dist/ZeroClipboard.js"></script>
+        <!-- endbuild -->
+
+        <!-- build:js({.tmp,app}) scripts/scripts.js -->
+        <script src="scripts/app.js"></script>
+        <script src="scripts/template.js"></script>
+
+        <script src="scripts/controllers/MasterCtrl.js"></script>
+        <script src="scripts/controllers/HomeCtrl.js"></script>
+        <script src="scripts/controllers/AddPropertyCtrl.js"></script>
+        <script src="scripts/controllers/ModalCtrl.js"></script>
+
+        <script src="scripts/directives/error.js"></script>
+        <script src="scripts/directives/loading.js"></script>
+        <script src="scripts/directives/ioFile.js"></script>
+        <script src="scripts/directives/property-input.js"></script>
+        <script src="scripts/directives/property-output.js"></script>
+        <script src="scripts/directives/enum.js"></script>
+        <script src="scripts/directives/input-field.js"></script>
+        <script src="scripts/directives/argument.js"></script>
+        <script src="scripts/directives/add-property.js"></script>
+        <script src="scripts/directives/zclip.js"></script>
+
+        <script src="scripts/filters/is-empty.js"></script>
+        <script src="scripts/filters/trim.js"></script>
+        <script src="scripts/filters/contains.js"></script>
+
+        <script src="scripts/services/HTTPInterceptor.js"></script>
+        <script src="scripts/services/Data.js"></script>
+        <script src="scripts/services/RecursionHelper.js"></script>
+        <!-- endbuild -->
+    </body>
+</html>

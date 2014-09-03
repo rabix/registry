@@ -1,0 +1,104 @@
+<div class="property-wrap" ng-class="{active: active}">
+
+    <legend class="legend-tiny toggle" ng-class="{active: active}" ng-click="toggleProperty()">
+
+        <div class="property-name" ng-hide="view.edit">
+            <span>{{ name }}</span>
+            <a href ng-click="toggleEdit($event)"><i class="glyphicon glyphicon-edit"></i></a>
+        </div>
+
+        <div class="property-name-form" ng-show="view.edit">
+            <div class="input-group" ng-class="{'has-error': view.error}">
+                <input type="text" class="form-control" name="name" ng-model="view.name" ng-click="stopPropagation($event)" ng-keypress="changeName($event)" placeholder="property name" >
+                <span class="input-group-btn">
+                    <button class="btn btn-primary" ng-click="changeName($event)"><i class="glyphicon glyphicon-ok"></i></button>
+                    <button class="btn btn-default" ng-click="toggleEdit($event)"><i class="glyphicon glyphicon-remove"></i></button>
+                </span>
+            </div>
+        </div>
+
+        <div class="checkbox"><label><input type="checkbox" ng-model="prop.required"> required</label></div>
+        <span class="remove" ng-click="removeItem($event)">&times;</span>
+    </legend>
+
+    <div class="property-body">
+        <div class="row">
+
+            <div class="col-md-3">
+                <div class="form-group" ng-class="{'has-error': (form[name+'-type'].$invalid && form[name].$dirty)}">
+                    <label for="property-output-type-{{ view.uniqueId }}" class="control-label">Type</label>
+                    <select class="form-control" id="property-output-type-{{ view.uniqueId }}" name="{{ name }}-type" ng-model="prop.type">
+                        <option value="file">file</option>
+                        <option value="directory">directory</option>
+                        <option value="array">array</option>
+                    </select>
+                </div>
+            </div>
+            <!-- END Type -->
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="property-glob-{{ view.uniqueId }}" class="control-label">Glob</label>
+                    <input type="text" class="form-control" id="property-glob-{{ view.uniqueId }}" name="{{ name }}-glob" ng-model="prop.adapter.glob">
+                </div>
+            </div>
+            <!-- END Prefix -->
+
+            <div class="col-md-2" ng-if="prop.type === 'file'">
+                <div class="form-group">
+                    <label class="control-label empty-label">&nbsp;</label>
+                    <div class="checkbox no-margin">
+                        <label><input type="checkbox" ng-model="prop.adapter.streamable"> Streamable</label>
+                    </div>
+                </div>
+            </div>
+            <!-- END Streamable -->
+
+        </div>
+
+        <div class="row" ng-if="prop.type === 'array'">
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="property-item-min-{{ view.uniqueId }}" class="control-label">Min</label>
+                    <input type="number" class="form-control" id="property-item-min-{{ view.uniqueId }}" name="{{ name }}-item-min" ng-model="prop.minItems" min="0">
+                </div>
+            </div>
+            <!-- END Min -->
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="property-item-max-{{ view.uniqueId }}" class="control-label">Max</label>
+                    <input type="number" class="form-control" id="property-item-max-{{ view.uniqueId }}" name="{{ name }}-item-max" ng-model="prop.maxItems" min="0">
+                </div>
+            </div>
+            <!-- END Max -->
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="property-item-type-{{ view.uniqueId }}" class="control-label">Item Type</label>
+
+                    <select class="form-control" id="property-item-type-{{ view.uniqueId }}" name="{{ name }}-item-type" ng-model="prop.items.type">
+                        <option value>-- choose --</option>
+                        <option value="file">file</option>
+                        <option value="directory">directory</option>
+                    </select>
+                </div>
+            </div>
+            <!-- END Item Type -->
+
+            <div class="col-md-2" ng-if="prop.items.type === 'file'">
+                <div class="form-group">
+                    <label class="control-label empty-label">&nbsp;</label>
+                    <div class="checkbox no-margin">
+                        <label><input type="checkbox" ng-model="prop.adapter.listStreamable"> Streamable</label>
+                    </div>
+                </div>
+            </div>
+            <!-- END Item Streamable -->
+
+        </div>
+    </div>
+
+
+</div>

@@ -1,0 +1,13 @@
+<div class="form-group">
+    <label class="control-label">{{ key }}</label>
+
+    <div class="input-property-body">
+        <input-field
+                ng-repeat="(innerKey, property) in prop.properties"
+                ng-model="view.input[innerKey]"
+                key="{{ innerKey }}"
+                prop="property"
+                form="form">
+        </input-field>
+    </div>
+</div>

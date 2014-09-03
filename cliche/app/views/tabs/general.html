@@ -1,0 +1,73 @@
+<div class="form-group form-group-email" ng-class="{'has-error': (forms.toolForm.documentAuthor.$invalid && forms.toolForm.$dirty)}">
+    <label for="documentAuthor" class="control-label">Document Author</label>
+    <input type="email" class="form-control" id="documentAuthor" name="documentAuthor" ng-model="view.toolForm.documentAuthor" required>
+</div>
+
+<legend class="legend-small">Environment</legend>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="form-group" ng-class="{'has-error': (forms.toolForm.RECtype.$invalid && forms.toolForm.$dirty)}">
+            <label for="type" class="control-label">Type</label>
+            <select class="form-control" id="type" name="RECtype" ng-model="view.toolForm.requirements.environment.container.type">
+                <option value="docker">docker</option>
+            </select>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="form-group" ng-class="{'has-error': (forms.toolForm.RECuri.$invalid && forms.toolForm.$dirty)}">
+            <label for="uri" class="control-label">URI</label>
+            <input type="text" class="form-control" id="uri" name="RECuri" ng-model="view.toolForm.requirements.environment.container.uri" required>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="form-group" ng-class="{'has-error': (forms.toolForm.RECimageId.$invalid && forms.toolForm.$dirty)}">
+            <label for="uri" class="control-label">Image Id</label>
+            <input type="text" class="form-control" id="imageId" name="RECimageId" ng-model="view.toolForm.requirements.environment.container.imageId" required>
+        </div>
+    </div>
+</div>
+
+<!-- END Requirements -> Environment -->
+
+<legend class="legend-small">Resources</legend>
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="form-group" ng-class="{'has-error': (forms.toolForm.RRcpu.$invalid && forms.toolForm.$dirty)}">
+            <label for="cpu" class="control-label">CPU</label>
+            <input type="number" class="form-control" id="cpu" name="RRcpu" ng-model="view.toolForm.requirements.resources.cpu" min="0" required>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="form-group" ng-class="{'has-error': (forms.toolForm.RRmem.$invalid && forms.toolForm.$dirty)}">
+            <label for="mem" class="control-label">Memory</label>
+            <input type="number" class="form-control" id="mem" name="RRmem" ng-model="view.toolForm.requirements.resources.mem" min="0" required>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="form-group" ng-class="{'has-error': (forms.toolForm.RRdiskSpace.$invalid && forms.toolForm.$dirty)}">
+            <label for="diskSpace" class="control-label">Disk Space</label>
+            <input type="number" class="form-control" id="diskSpace" name="RRdiskSpace" ng-model="view.toolForm.requirements.resources.diskSpace" min="0" required>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="form-group">
+            <label class="control-label empty-label">&nbsp;</label>
+            <div class="checkbox">
+                <label><input type="checkbox" ng-model="view.toolForm.requirements.resources.network"> Network</label>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="form-group" ng-class="{'has-error': (forms.toolForm.RplatformFeatures.$invalid && forms.toolForm.$dirty)}">
+    <label class="control-label">Platform Features</label>
+
+    <div class="checkbox" ng-repeat="(key, val) in view.transforms">
+        <label><input type="checkbox" ng-model="view.transforms[key]" ng-change="toggleTransformsList(key)"> {{ key }}</label>
+    </div>
+
+</div>
+
+<!-- END Requirements -> Resources -->

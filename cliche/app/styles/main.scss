@@ -1,0 +1,36 @@
+@import "variables";
+@import "bootstrap";
+@import "mixins";
+
+html, body {
+  overflow-x: hidden;
+}
+
+body {
+  color: #555;
+  background-color: $gray;
+  background-image: url(../images/bg.png);
+  font-family: 'Open Sans', sans-serif;
+}
+
+@import "loader";
+@import "error";
+@import "elements";
+@import "overrides";
+
+.container-fluid {
+  background-color: #fcfcfc;
+}
+
+.page {
+  position: relative;
+  //overflow: auto;
+
+  h2 {
+    font-size: 24px;
+    font-weight: normal;
+    margin: 0 0 20px 0;
+  }
+}
+
+

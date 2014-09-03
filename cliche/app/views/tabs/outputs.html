@@ -1,0 +1,21 @@
+<legend class="legend-small toggle" ng-class="{active: view.propsExpanded.outputs}" ng-click="toggleProperties('outputs')">
+    Properties
+    <add-property
+            type="output"
+            properties="view.toolForm.outputs.properties"
+            platform-features="view.toolForm.requirements.platformFeatures"
+            values-from="view.valuesFrom">
+    </add-property>
+</legend>
+
+<property-output
+        ng-repeat="(key, property) in view.toolForm.outputs.properties"
+        ng-model="property"
+        active="view.active.outputs[key]"
+        name="{{ key }}"
+        form="forms.toolForm"
+        properties="view.toolForm.outputs.properties"
+        required-inputs="view.toolForm.outputs.required">
+</property-output>
+
+<p class="alert alert-info" ng-if="view.toolForm.outputs.properties | isEmpty">There are no outputs at this moment.</p>

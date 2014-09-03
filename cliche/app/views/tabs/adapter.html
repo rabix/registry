@@ -1,0 +1,30 @@
+<div class="form-group">
+    <label class="control-label">Base Cmd</label>
+    <enum ng-model="view.toolForm.adapter.baseCmd" type="'string'" min="1" is-required="true"></enum>
+</div>
+
+<div class="form-group">
+    <label for="stdout" class="control-label">Stdout</label>
+    <input type="text" class="form-control" id="stdout" name="stdout" ng-model="view.toolForm.adapter.stdout" required>
+</div>
+
+<legend class="legend-small toggle" ng-class="{active: view.propsExpanded.args}" ng-click="toggleProperties('args')">
+    Arguments
+    <add-property
+            type="arg"
+            properties="view.toolForm.adapter.args"
+            platform-features="view.toolForm.requirements.platformFeatures"
+            values-from="view.valuesFrom">
+    </add-property>
+</legend>
+<argument
+        ng-repeat="(key, argument) in view.toolForm.adapter.args track by $index"
+        ng-model="argument"
+        active="view.active.args[key]"
+        name="{{ key }}"
+        form="forms.toolForm"
+        properties="view.toolForm.adapter.args"
+        values-from="view.valuesFrom">
+</argument>
+
+<p class="alert alert-info" ng-if="view.toolForm.adapter.args | isEmpty">There are no arguments at this moment.</p>

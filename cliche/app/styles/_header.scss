@@ -1,0 +1,68 @@
+/* HEADER
+================================================ */
+
+$dark-bg: #075211;
+$header-bg: #076112;
+
+.header {
+  $header: 45px;
+  border-bottom: 1px solid #ddd;
+  padding: 5px 0;
+  min-height: $header;
+  background-color: $header-bg;
+  color: #fff;
+  @include box-shadow(0px 1px 20px 0px darken($header-bg, 10%) inset);
+
+  .logo {
+    font-size: 30px;
+    display: block;
+    color: #fff;
+    text-decoration: none;
+    margin-top: -5px;
+    text-shadow: 2px 2px 2px $dark-bg;
+  }
+
+  .welcome {
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 14px;
+    line-height: 35px;
+    text-shadow: 1px 1px 1px $dark-bg;
+  }
+
+  .nav-tabs {
+    border-bottom: none;
+    margin-bottom: -1px;
+    li {
+      a {
+        font-size: 16px;
+        margin-right: 5px;
+        text-shadow: 1px 1px 1px $dark-bg;
+        color: $orange;
+        &:focus, &:hover {
+          text-shadow: 1px 1px 1px #fff;
+          color: darken($orange, 20%);
+        }
+      }
+      &.active {
+        a, a:hover, a:focus {
+          text-shadow: 1px 1px 1px #fff;
+        }
+      }
+    }
+  }
+
+  .log-out-btn {
+    text-decoration: none;
+    color: #fff;
+    font-size: 20px;
+    vertical-align: middle;
+    display: inline-block;
+    margin-left: 10px;
+    text-shadow: 1px 1px 1px $dark-bg;
+    &:hover {
+      color: #f3f3f3;
+    }
+  }
+
+}
