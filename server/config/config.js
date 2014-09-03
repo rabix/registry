@@ -45,7 +45,6 @@ var config = {
         }
     },
 
-
     production: {
         root: rootPath,
         app: {
