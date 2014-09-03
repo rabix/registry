@@ -14,11 +14,20 @@ git pull origin master
 
 cd client
 
+
+npm install
+
+bower install
+
 grunt
 
 cd ..
 
 cd cliche
+
+npm install
+
+bower install
 
 grunt
 
