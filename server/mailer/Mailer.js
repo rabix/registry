@@ -2,11 +2,11 @@ var nodemailer = require('nodemailer');
 
 var config = require('../config/config');
 
-var auth = config.mailer;
+var auth = config.mail;
 
 
 
-var transporter = nodemailer.createTransport({
+var transporter = nodemailer.createTransport('SMTP', {
     service: 'gmail',
     auth: auth
 });
