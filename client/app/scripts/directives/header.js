@@ -26,7 +26,7 @@ angular.module('registryApp')
         return self;
 
     }])
-    .directive('header', ['$templateCache', '$timeout', '$route', 'User', 'Header', function ($templateCache, $timeout, $route, User, Header) {
+    .directive('header', ['$templateCache', 'User', 'Header', function ($templateCache, User, Header) {
         return {
             restrict: 'E',
             replace: true,

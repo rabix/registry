@@ -23,6 +23,7 @@
         <![endif]-->
 
         <div class="main" ng-controller="MasterCtrl">
+            <header></header>
             <div class="container-fluid" ng-view=""></div>
             <span class="saving" ng-class="{show: view.saving}">saving</span>
         </div>
@@ -66,14 +67,18 @@
         <script src="scripts/directives/argument.js"></script>
         <script src="scripts/directives/add-property.js"></script>
         <script src="scripts/directives/zclip.js"></script>
+        <script src="scripts/directives/header.js"></script>
 
         <script src="scripts/filters/is-empty.js"></script>
         <script src="scripts/filters/trim.js"></script>
         <script src="scripts/filters/contains.js"></script>
 
+        <script src="scripts/models/User.js"></script>
+        <script src="scripts/models/Data.js"></script>
+
         <script src="scripts/services/HTTPInterceptor.js"></script>
-        <script src="scripts/services/Data.js"></script>
         <script src="scripts/services/RecursionHelper.js"></script>
+        <script src="scripts/services/Api.js"></script>
         <!-- endbuild -->
     </body>
 </html>

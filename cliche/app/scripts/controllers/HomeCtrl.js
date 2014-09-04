@@ -1,9 +1,7 @@
 'use strict';
 
 angular.module('clicheApp')
-    .controller('HomeCtrl', ['$scope','$q', 'Data', function ($scope, $q, Data) {
-
-        $scope.$parent.view.classes.push('home', 'row');
+    .controller('HomeCtrl', ['$scope','$q', 'Data', 'User', 'Loading', function ($scope, $q, Data, User, Loading) {
 
         $scope.view = {};
         $scope.forms = {};
@@ -26,6 +24,15 @@ angular.module('clicheApp')
             args: {}
         };
 
+        $scope.view.classes = ['page', 'home', 'row'];
+
+        Loading.setClasses($scope.view.classes);
+
+        $scope.Loading = Loading;
+        $scope.$watch('Loading.classes', function(n, o) {
+            if (n !== o) { $scope.view.classes = n; }
+        });
+
         $scope.view.valuesFrom = {};
 
         /* tool form obj */
@@ -44,6 +51,14 @@ angular.module('clicheApp')
                     ]).then(function() {
 
                         $scope.view.toolForm = Data.tool;
+                        $scope.view.toolForm.documentAuthor = null;
+
+                        User.getUser().then(function(result) {
+                            if (result.user) {
+                                $scope.view.toolForm.documentAuthor = result.user.email;
+                            }
+                        });
+
                         $scope.view.jobForm = Data.job;
 
                         $scope.view.loading = false;

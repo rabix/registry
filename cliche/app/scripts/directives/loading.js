@@ -1,46 +1,68 @@
 'use strict';
 
 angular.module('clicheApp')
-    .directive('loading', ['$timeout', function ($timeout) {
-        return {
-            scope: {
-                ngClass: '=',
-                loading: '='
-            },
-            link: function(scope) {
+    .service('Loading', [function() {
 
-                var timeoutId;
+        var self = {};
 
-                var classes = scope.ngClass;
-                classes.push('loading');
-                classes.push('loading-fade');
+        self.classes = [];
 
-                scope.$watch('loading', function(newVal, oldVal) {
-                    if (newVal !== oldVal) {
+        /**
+         * Set classes for the screen
+         * @param classes
+         */
+        self.setClasses = function(classes) {
+            self.classes = classes;
+        };
 
-                        scope.stopLoadingDelay();
+        return self;
+    }])
+    .controller('LoadingCtrl', ['$scope', '$timeout', 'Loading', function($scope, $timeout, Loading) {
 
-                        _.remove(classes, function(cls) { return cls === 'loading-fade'; });
-                        scope.$emit('classChange', classes);
+        var timeoutId;
 
-                        timeoutId = $timeout(function() {
-                            _.remove(classes, function(cls) { return cls === 'loading'; });
-                            scope.$emit('classChange', classes);
-                        }, 300);
-                    }
-                });
+        $scope.classes = Loading.classes;
 
-                scope.stopLoadingDelay = function() {
-                    if (angular.isDefined(timeoutId)) {
-                        $timeout.cancel(timeoutId);
-                        timeoutId = undefined;
-                    }
-                };
+        $scope.classes.push('loading');
+        $scope.classes.push('loading-fade');
 
-                scope.$on('$destroy', function() {
-                    scope.stopLoadingDelay();
-                });
+        $scope.$watch('loading', function(newVal, oldVal) {
+            if (newVal !== oldVal) {
+
+                if (newVal === true && !_.contains($scope.classes, 'loading')) {
+                    $scope.classes.push('loading');
+                    $scope.classes.push('loading-fade');
+                } else {
+                    $scope.stopLoadingDelay();
+
+                    _.remove($scope.classes, function(cls) { return cls === 'loading-fade'; });
+
+                    timeoutId = $timeout(function() {
+                        _.remove($scope.classes, function(cls) { return cls === 'loading'; });
+                    }, 300);
+                }
 
             }
+        });
+
+        $scope.stopLoadingDelay = function() {
+            if (angular.isDefined(timeoutId)) {
+                $timeout.cancel(timeoutId);
+                timeoutId = undefined;
+            }
+        };
+
+        $scope.$on('$destroy', function() {
+            $scope.stopLoadingDelay();
+        });
+
+    }])
+    .directive('loading', [function () {
+        return {
+            scope: {
+                loading: '='
+            },
+            controller: 'LoadingCtrl',
+            link: function() {}
         };
     }]);
