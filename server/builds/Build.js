@@ -23,9 +23,13 @@ var fs = require('fs');
 
 // End Requirements for build
 
+var Mailer = require('../mailer/Mailer').Mailer;
+
 var BuildClass = function (options) {
     this.repository = options.repository;
     this.head_commit = options.head_commit;
+
+    this.user = options.user || null;
 
     if (options.onSuccess) {
         this.onSuccess = options.onSuccess;
@@ -149,7 +153,19 @@ BuildClass.prototype.startBuild = function () {
 
 BuildClass.prototype.endBuild = function (message) {
 
-    // TODO: Send email to user with info about build
+    if (this.user) {
+
+        var user = this.user;
+        var subject = 'Rabix CI: ' + message;
+
+        Mailer.sendMail({
+            to: user.email,
+            from: config.mailer.user,
+            subject: subject
+        });
+
+    }
+
 
     if (this.onSuccess) {
         this.onSuccess.call(this, arguments);

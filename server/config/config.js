@@ -21,6 +21,10 @@ var config = {
         logging: {
             path: rootPath + '/logs',
             builds: '/data/log/rabix-registry/builds'
+        },
+        mail: {
+            user: 'ci.rabix@gmail.com',
+            pass: 'Damns3cr3t.'
         }
     },
 
@@ -42,6 +46,10 @@ var config = {
         logging: {
             path: rootPath + '/logs',
             builds: '/data/log/rabix-registry/builds'
+        },
+        mail: {
+            user: 'ci.rabix@gmail.com',
+            pass: 'Damns3cr3t.'
         }
     },
 
@@ -63,6 +71,10 @@ var config = {
         logging: {
             path: '/data/log/rabix-registry',
             builds: '/data/log/rabix-registry/builds'
+        },
+        mail: {
+            user: 'ci.rabix@gmail.com',
+            pass: 'Damns3cr3t.'
         }
     }
 };
