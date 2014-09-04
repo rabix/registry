@@ -46,6 +46,21 @@ $header-blue: #29567D;
           text-shadow: 1px 1px 1px #fff;
           color: darken($orange, 20%);
         }
+
+        &.cliche-logo {
+          text-decoration: none;
+          text-transform: none;
+
+          span {
+            font-weight: bold;
+            background-image: url(../images/console.png);
+            background-repeat: no-repeat;
+            background-position: center left;
+            padding-left: 23px;
+            display: inline-block;
+          }
+        }
+
       }
       &.active {
         a, a:hover, a:focus {
@@ -69,3 +84,4 @@ $header-blue: #29567D;
   }
 
 }
+

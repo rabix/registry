@@ -53,6 +53,9 @@
         &.logo {
           a {
             padding-right: 10px;
+            &:after {
+              right: 3px;
+            }
           }
         }
         a {
