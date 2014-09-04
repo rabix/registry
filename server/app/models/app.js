@@ -7,12 +7,13 @@ var ObjectId = Schema.ObjectId;
 var AppSchema = new Schema({
     name: String,
     description: String,
-    app: Schema.Types.Mixed,
-    toolkit_name: String,
-    toolkit_version: String,
+    author: String,
+    json: Schema.Types.Mixed,
     links: Schema.Types.Mixed,
-    app_checksum: String,
-    repoId: { type: Schema.Types.ObjectId, ref: 'Repo' }
+    repo_name: String,
+    repo_owner: String,
+    repo_id: String
+//    repoId: { type: Schema.Types.ObjectId, ref: 'Repo' }
 });
 
 /*
@@ -27,6 +28,18 @@ var AppSchema = new Schema({
         app_ref: '',
      }
  }
+
+ AppSchema {
+    app_name: '',
+    app_description: '',
+    app_json: "{}",
+    links: {
+        json: ''
+    },
+    repo_name: '',
+    repo_id: ''
+ }
+
  */
 
 AppSchema.virtual('date')
