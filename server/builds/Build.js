@@ -162,6 +162,16 @@ BuildClass.prototype.endBuild = function (message) {
             to: user.email,
             from: config.mail.user,
             subject: subject
+        }, function (err, data) {
+
+            if (err) {
+                logger.error('Error while sendig email to ' + user.email);
+            } else {
+                console.log('Sending Email log: ', data);
+                logger.info('Successfully sent email to: ' + user.email + '. Response: ' + data);
+
+            }
+
         });
 
     }
