@@ -33,6 +33,12 @@ grunt
 
 cd ..
 
+cd server
+
+npm install
+
+cd ..
+
 pwd
 
 echo "Frontend build done"

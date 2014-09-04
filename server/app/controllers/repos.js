@@ -165,6 +165,7 @@ router.post('/github-webhook', function (req, res, next) {
 //        startBuild(repo, head_commit);
 
         var build = new BuildClass.Build({
+            user: head_commit.author,
             repository: repo,
             head_commit: head_commit
         });
