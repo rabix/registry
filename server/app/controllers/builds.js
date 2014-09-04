@@ -33,7 +33,7 @@ router.get('/builds', function (req, res, next) {
         if (total !== 0) {
 
 
-            Build.find(where).skip(skip).limit(limit).populate('repoId').exec(function (err, builds) {
+            Build.find(where).skip(skip).limit(limit).populate('repoId').sort({_id: 'desc'}).exec(function (err, builds) {
                 if (err) {
                     return next(err);
                 }

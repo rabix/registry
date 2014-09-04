@@ -57,7 +57,12 @@ angular.module('clicheApp')
                         User.getUser().then(function(result) {
                             $scope.view.user = result.user;
                             if (result.user) {
-                                $scope.view.toolForm.documentAuthor = result.user.email;
+                                if (_.isEmpty($scope.view.toolForm.documentAuthor)) {
+                                    $scope.view.toolForm.documentAuthor = result.user.email;
+                                }
+                                if (_.isEmpty($scope.view.toolForm.softwareDescription.repo_owner)) {
+                                    $scope.view.toolForm.softwareDescription.repo_owner = result.user.login;
+                                }
                             }
                         });
 

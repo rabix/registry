@@ -42,7 +42,7 @@ router.get('/repos', function (req, res, next) {
             return next(err);
         }
 
-        Repo.find({}).skip(skip).limit(limit).exec(function (err, repos) {
+        Repo.find({}).skip(skip).limit(limit).sort({_id: 'desc'}).exec(function (err, repos) {
             if (err) {
                 return next(err);
             }

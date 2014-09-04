@@ -36,7 +36,7 @@ router.get('/apps', function (req, res, next) {
     App.count(where).exec(function(err, total) {
         if (err) { return next(err); }
 
-        App.find(where).skip(skip).limit(limit).exec(function(err, apps) {
+        App.find(where).skip(skip).limit(limit).sort({_id: 'desc'}).exec(function(err, apps) {
             if (err) { return next(err); }
 
             res.json({list: apps, total: total});

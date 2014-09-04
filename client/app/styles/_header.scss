@@ -5,9 +5,9 @@ $dark-blue: #1A3852;
 $header-blue: #29567D;
 
 .header {
-  $header: 52px;
+  $header: 39px;
   border-bottom: 1px solid #ddd;
-  padding: 10px 0 0 0;
+  padding-top: 5px;
   min-height: $header;
   background-color: $header-blue;
   color: #fff;
@@ -18,14 +18,19 @@ $header-blue: #29567D;
     color: #fff;
     text-decoration: none;
     margin-top: -5px;
+    line-height: $header - 1px;
     text-shadow: 2px 2px 2px $dark-blue;
+  }
+
+  .btn {
+    padding: 3px 12px;
   }
 
   .welcome {
     display: inline-block;
     vertical-align: middle;
     font-size: 14px;
-    line-height: 40px;
+    line-height: 28px;
     text-shadow: 1px 1px 1px $dark-blue;
 
     img {
@@ -42,6 +47,8 @@ $header-blue: #29567D;
         margin-right: 5px;
         text-shadow: 1px 1px 1px $dark-blue;
         color: $orange;
+        padding: 5px 15px;
+
         &:focus, &:hover {
           text-shadow: 1px 1px 1px #fff;
           color: darken($orange, 20%);
@@ -50,6 +57,11 @@ $header-blue: #29567D;
         &.cliche-logo {
           text-decoration: none;
           text-transform: none;
+          color: #ddd;
+
+          &:hover {
+            color: darken($orange, 20%);
+          }
 
           span {
             font-weight: bold;

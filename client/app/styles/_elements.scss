@@ -21,6 +21,10 @@
     height: 55px;
     padding: 10px 0;
 
+    &.empty {
+      height: 10px;
+    }
+
     .label {
       font-size: 15px;
       display: inline-block;

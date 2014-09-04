@@ -7,7 +7,9 @@ angular.module('clicheApp')
             restrict: 'E',
             replace: true,
             template: $templateCache.get('views/partials/add-app.html'),
-            scope: {},
+            scope: {
+                form: '='
+            },
             link: function(scope) {
 
                 scope.view = {};
@@ -17,6 +19,11 @@ angular.module('clicheApp')
                  * Add the app to the registry
                  */
                 scope.addApp = function() {
+
+                    if (scope.form.$invalid) {
+                        scope.form.$setDirty();
+                        return false;
+                    }
 
                     scope.view.adding = true;
 

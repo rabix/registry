@@ -9,11 +9,11 @@
             <div class="col-md-10">
 
                 <ul class="nav nav-tabs pull-left">
-                    <li><a ng-href="/cliche" target="_blank" class="cliche-logo"><span>cli</span>che</a></li>
                     <li ng-class="{active: view.active === 'apps'}"><a ng-href="#/apps">Apps</a></li>
                     <li ng-class="{active: view.active === 'builds'}"><a ng-href="#/builds">Builds</a></li>
                     <li ng-class="{active: view.active === 'repos'}"><a ng-href="#/repos">Repos</a></li>
                     <li ng-class="{active: view.active === 'settings'}"><a ng-href="#/settings">Settings</a></li>
+                    <li><a ng-href="/cliche" target="_blank" class="cliche-logo"><span>cli</span>che</a></li>
                 </ul>
 
                 <a ng-if="(view.user | isEmpty)" href="/auth/github" class="btn btn-primary pull-right">Log In With GitHub</a>

@@ -1,7 +1,7 @@
 {
     "tool": {
         "softwareDescription": {},
-        "documentAuthor": "author@gmail.com",
+        "documentAuthor": "",
         "requirements": {
             "environment": {
                 "container": {
