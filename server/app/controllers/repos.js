@@ -15,6 +15,8 @@ var Repo = mongoose.model('Repo');
 var User = mongoose.model('User');
 var Build = mongoose.model('Build');
 
+var BuildClass = require('../../builds/Build');
+
 var bodyParser = require('body-parser');
 
 var filters = require('../../common/route-filters');
@@ -170,7 +172,6 @@ router.get('/github-repos', filters.authenticated, function (req, res, next) {
 router.post('/github-webhook', function (req, res, next) {
     var repo = req.param('repository');
     var event_type = req.headers['x-github-event'];
-    var github_delivery = req.headers['x-github-delivery'];
     var head_commit = req.param('head_commit');
 
     if (event_type === 'push') {
@@ -178,7 +179,14 @@ router.post('/github-webhook', function (req, res, next) {
         logger.info('[commit/push]: Author: "' + head_commit.author.username + '"  "' + head_commit.id + '". There goes push to a repo: ' + repo.name);
         logger.info('[build/trigger]: starting build for repo "'+ repo.name +'"');
 
-        startBuild(repo, head_commit);
+//        startBuild(repo, head_commit);
+
+        var build = new BuildClass.Build({
+            repository: repo,
+            head_commit: head_commit
+        });
+
+        build.startBuild();
 
 
     } else {

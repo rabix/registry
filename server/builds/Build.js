@@ -2,11 +2,15 @@ var mongoose = require('mongoose');
 var Repo = mongoose.model('Repo');
 var Build = mongoose.model('Build');
 
+var config = require('../config/config');
+
 var logger = require('../common/logger');
 
 // Start Requirements for build
 
 var sys = require('sys');
+
+var path = require('path');
 
 //    var exec = require('child_process').exec;
 var spawn = require('child_process').spawn;
@@ -19,10 +23,8 @@ var fs = require('fs');
 
 // End Requirements for build
 
-var BuildClass;
-
-BuildClass = function (options) {
-    this.repository = options.repo;
+var BuildClass = function (options) {
+    this.repository = options.repository;
     this.head_commit = options.head_commit;
 
     if (options.onSuccess) {
