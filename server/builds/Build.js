@@ -160,7 +160,7 @@ BuildClass.prototype.endBuild = function (message) {
 
         Mailer.sendMail({
             to: user.email,
-            from: config.mailer.user,
+            from: config.mail.user,
             subject: subject
         });
 
