@@ -23,23 +23,6 @@ var filters = require('../../common/route-filters');
 
 var logger = require('../../common/logger');
 
-// Start Requirements for build
-
-var sys = require('sys');
-
-var exec = require('child_process').exec;
-var spawn = require('child_process').spawn;
-
-var mkdir = require('mkdirp');
-
-var git = require('gift');
-
-var fs = require('fs');
-
-// Ebd Requirements for build
-
-//var redis = require('redis');
-
 module.exports = function (app) {
 //    app.use(bodyParser.urlencoded({
 //        extended: true
