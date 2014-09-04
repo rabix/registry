@@ -13,17 +13,20 @@
         <div class="description">
             <div class="panel panel-warning">
                 <div class="panel-body">
+
                     <section>
                         <h5>Docker Image Details</h5>
-                        <p><strong>Image Repo:</strong> {{ view.app.app.docker_image_ref.image_repo }}</p>
-                        <p><strong>Image Tag:</strong> {{ view.app.app.docker_image_ref.image_tag }}</p>
+                        <p><strong>Image Id:</strong> {{ view.app.json.requirements.environment.container.imageId }}</p>
+                        <p><strong>Image Uri:</strong> {{ view.app.json.requirements.environment.container.uri }}</p>
                     </section>
 
                     <section>
                         <h5>App Details</h5>
-                        <p><strong>Repo/User:</strong> <a ng-href="#/builds?repo={{ view.app.repoId._id }}">{{ view.app.repoId.owner }}/{{ view.app.repoId.name }}</a></p>
-                        <p><strong>Toolkit Name:</strong> {{ view.app.toolkit_name }}</p>
-                        <p><strong>Toolkit Version:</strong> {{ view.app.toolkit_version }}</p>
+                        <p>
+                            <strong>Repo:</strong>
+                            <a ng-if="app.repo_id && app.repo_owner && app.repo_name" ng-href="#/repo/{{ app.repo_id }}">{{ app.repo_owner }}/{{ app.repo_name }}</a>
+                            <span ng-if="!app.repo_id">{{ app.repo_owner | repo:app.repo_name }}</span>
+                        </p>
                     </section>
                 </div>
             </div>
