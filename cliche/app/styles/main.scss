@@ -25,7 +25,8 @@ body {
 
 .page {
   position: relative;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
 
   h2 {
     font-size: 24px;
@@ -69,5 +70,6 @@ body {
     }
   }
 }
+
 
 

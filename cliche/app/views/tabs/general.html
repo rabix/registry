@@ -3,6 +3,36 @@
     <input type="email" class="form-control" id="documentAuthor" name="documentAuthor" ng-model="view.toolForm.documentAuthor" required>
 </div>
 
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label for="type" class="control-label">App Name</label>
+            <input type="text" class="form-control" id="appName" name="appName" ng-model="view.toolForm.softwareDescription.name">
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <label for="type" class="control-label">App Description</label>
+            <textarea class="form-control" id="appDescription" name="appDescription" ng-model="view.toolForm.softwareDescription.description"></textarea>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label for="type" class="control-label">Repo Owner</label>
+            <input type="text" class="form-control" id="repoOwner" name="repoOwner" ng-model="view.toolForm.softwareDescription.repo_owner">
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <label for="type" class="control-label">Repo Name</label>
+            <input type="text" class="form-control" id="repoName" name="repoName" ng-model="view.toolForm.softwareDescription.repo_name">
+        </div>
+    </div>
+</div>
+
 <legend class="legend-small">Environment</legend>
 
 <div class="row">

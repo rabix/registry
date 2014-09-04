@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('clicheApp')
-    .factory('Data', ['$localForage', '$http', '$q', function ($localForage, $http, $q) {
+    .factory('Data', ['$localForage', '$http', '$q', 'Api', function ($localForage, $http, $q, Api) {
 
         var self = {};
 
@@ -471,6 +471,19 @@ angular.module('clicheApp')
                 });
 
             return deferred.promise;
+
+        };
+
+        /**
+         * Add an app
+         *
+         * @returns {object} $promise
+         */
+        self.addApp = function() {
+
+            var promise = Api.apps.add({}, self.tool).$promise;
+
+            return promise;
 
         };
 

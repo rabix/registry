@@ -25,6 +25,7 @@ angular.module('clicheApp')
         };
 
         $scope.view.classes = ['page', 'home', 'row'];
+        $scope.view.user = null;
 
         Loading.setClasses($scope.view.classes);
 
@@ -54,6 +55,7 @@ angular.module('clicheApp')
                         $scope.view.toolForm.documentAuthor = null;
 
                         User.getUser().then(function(result) {
+                            $scope.view.user = result.user;
                             if (result.user) {
                                 $scope.view.toolForm.documentAuthor = result.user.email;
                             }
@@ -218,6 +220,5 @@ angular.module('clicheApp')
                 }
             }
         };
-
 
     }]);
