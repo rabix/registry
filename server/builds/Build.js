@@ -166,9 +166,11 @@ BuildClass.prototype.endBuild = function (message) {
 
             if (err) {
                 logger.error('Error while sendig email to ' + user.email);
+            } else {
+                console.log('Sending Email log: ', data);
+                logger.info('Successfully sent email to: ' + user.email + '. Response: ' + data);
+
             }
-            console.log('Sending Email log: ', err, data);
-            logger.info('Successfully sent email to: ' + user.email + '. Response: ' + data);
 
         });
 
