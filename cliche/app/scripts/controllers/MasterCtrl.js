@@ -4,13 +4,8 @@ angular.module('clicheApp')
     .controller('MasterCtrl', ['$scope', '$interval', 'Data', function ($scope, $interval, Data) {
 
         $scope.view = {};
-        $scope.view.classes = ['page'];
         $scope.view.saving = false;
         $scope.view.fetch = false;
-
-        $scope.$on('classChange', function(event, classes) {
-            $scope.view.classes = classes;
-        });
 
         var saveIntervalId = $interval(function() {
 

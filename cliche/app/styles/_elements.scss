@@ -340,8 +340,9 @@ legend {
 }
 
 .json-trace,
+.json-trace pre,
 .console-trace,
-#prettyjson{
+.console-trace pre {
   height: 760px;
   background-color: #222;
   border-color: $orange;
@@ -454,7 +455,7 @@ legend {
 .fixed-left,
 .fixed-right {
   position: fixed;
-  top: 0;
+  top: 20px;
   z-index: 1000;
 }
 
@@ -471,7 +472,7 @@ legend {
   width: 42%;
   & + .tabs {
     position: fixed;
-    top: 46px;
+    top: 65px;
     right: 0;
     width: 42%;
     z-index: 999;
