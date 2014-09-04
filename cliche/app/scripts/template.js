@@ -57,7 +57,7 @@ angular.module('clicheApp').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('views/partials/add-app-response.html',
-    "<div class=\"modal-body\"><h4 class=\"center-block\">{{ view.trace.message }}</h4><p class=\"center-block\" ng-if=\"view.trace.appId\">You can check the app <a ng-href=\"#/apps/{{ view.trace.appId }}\">here</a></p><div class=\"center-block\"><button class=\"btn btn-default\" ng-click=\"ok()\">Close</button></div></div>"
+    "<div class=\"modal-body\"><h4 class=\"center-block\">{{ view.trace.message }}</h4><p class=\"center-block\" ng-if=\"view.trace.appId\">You can check the app <a ng-href=\"/#/app/{{ view.trace.appId }}\">here</a></p><div class=\"center-block\"><button class=\"btn btn-default\" ng-click=\"ok()\">Close</button></div></div>"
   );
 
 

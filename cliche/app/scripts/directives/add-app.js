@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('clicheApp')
-    .directive('addApp', ['$templateCache', '$modal', '$timeout', 'Data', function ($templateCache, $modal, $timeout, Data) {
+    .directive('addApp', ['$templateCache', '$modal', 'Data', function ($templateCache, $modal, Data) {
 
         return {
             restrict: 'E',
@@ -19,13 +19,14 @@ angular.module('clicheApp')
                 scope.addApp = function() {
 
                     scope.view.adding = true;
-                    //Data.addApp().then(function(result) {
-                    $timeout(function() {
+
+                    Data.addApp().then(function(result) {
 
                         scope.view.adding = false;
-                        var result = {
+
+                        var trace = {
                             message: 'App has been added successfully!',
-                            appId: '9879-1231-131231-1231231'
+                            appId: result._id
                         };
 
                         $modal.open({
@@ -43,7 +44,7 @@ angular.module('clicheApp')
                                 };
 
                             }],
-                            resolve: { data: function () { return { trace: result }; }}
+                            resolve: { data: function () { return { trace: trace }; }}
                         });
 
                     });
