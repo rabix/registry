@@ -35,8 +35,13 @@
 
 
         <div class="snippet">
+            <p>Link to Amazon S3</p>
+            <div><a ng-href="{{ view.app.links.json }}" target="_blank">{{ view.app.links.json }}</a></div>
+        </div>
+
+        <div class="snippet">
             <p>Use this code snippet for your pipeline</p>
-            <pre pretty-json="{$ref: view.app.links.app_ref, checksum: view.app.app_checksum}"></pre>
+            <pre pretty-json="view.app.json"></pre>
         </div>
 
         <div class="snippet">

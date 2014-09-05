@@ -175,6 +175,13 @@ body {
     }
   }
 
+  /* App page */
+  &.app {
+    .heading {
+      margin: 0;
+    }
+  }
+
   .table {
     margin: 0;
     td {

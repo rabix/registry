@@ -62,7 +62,7 @@ angular.module('clicheApp').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('views/partials/add-app.html',
-    "<div class=\"add-app-wrap\"><button ng-disabled=\"view.adding\" class=\"add-app-btn btn btn-primary\" ng-click=\"addApp()\"><i class=\"glyphicon glyphicon-plus\"></i> Add an App</button><p ng-if=\"view.error\">{{ view.error }}</p></div>"
+    "<div class=\"add-app-wrap\"><button ng-disabled=\"view.adding\" class=\"add-app-btn btn btn-primary\" ng-click=\"addApp()\"><i class=\"glyphicon glyphicon-plus\"></i> Publish the App</button><p ng-if=\"view.error\">{{ view.error }}</p></div>"
   );
 
 

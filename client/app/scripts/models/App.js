@@ -21,7 +21,7 @@ angular.module('registryApp')
             }
 
             if (angular.isDefined(repo)) {
-                params.field_repoId = repo.replace(/&/g, '/');
+                params.field_repo_id = repo.replace(/&/g, '/');
             }
 
             var promise = Api.apps.get(params).$promise;
