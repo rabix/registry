@@ -72,8 +72,6 @@ BuildClass.prototype.startBuild = function () {
 
         build.repoId = repo._id;
 
-        _self.build = build;
-
         Build.collection.insert(build, function (err, build) {
             if (err) {
                 logger.error('Couldn\'t insert build into db for repo: ' + repository.name);
@@ -140,7 +138,7 @@ BuildClass.prototype.startBuild = function () {
                         if (err) console.log('Error updating build for repo "' + repository.id + '" ', err);
                     });
 
-                    _self.endBuild(message);
+                    _self.endBuild(message, build);
 
 
                 });
@@ -154,7 +152,7 @@ BuildClass.prototype.startBuild = function () {
 
 };
 
-BuildClass.prototype.endBuild = function (message) {
+BuildClass.prototype.endBuild = function (message, build) {
 
     if (this.user) {
 
@@ -179,7 +177,7 @@ BuildClass.prototype.endBuild = function (message) {
 
     }
     
-    uploadToS3(this);
+    uploadToS3(build);
 
     if (this.onSuccess) {
         this.onSuccess.call(this, arguments);

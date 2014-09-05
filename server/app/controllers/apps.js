@@ -9,6 +9,7 @@ var App = mongoose.model('App');
 var Repo = mongoose.model('Repo');
 
 var filters = require('../../common/route-filters');
+var Amazon = require('../../aws/aws').Amazon;
 
 module.exports = function (app) {
     app.use('/api', router);
@@ -92,7 +93,16 @@ router.post('/apps', filters.authenticated, function (req, res, next) {
             app.repo_id = repo._id;
         }
 
-        app.save();
+
+        var folder = app.repo_owner + '-' + app.repo_name;
+
+        Amazon.createFolder(folder);
+        Amazon.uploadJSON(app.name+'.json', app.json, folder);
+        Amazon.getFileUrl(app.name+'.json', folder, function (url) {
+            app.links.json = url;
+            app.save();
+        });
+
     });
 
     res.json(app);
