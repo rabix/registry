@@ -204,10 +204,8 @@ var uploadToS3 = function (build) {
                     return false;
                 }
 
-                Amazon.getFileUrl(file_name, 'build-logs', function (url) {
-                    Build.findOneAndUpdate({"head_commit.id": build.head_commit.id}, {log_dir: url}, function (err, build) {
-                        if (err) console.log('Error updating build for repo "' + JSON.stringify(build) + '" ', err);
-                    });
+                Build.findOneAndUpdate({"head_commit.id": build.head_commit.id}, {log_dir: file_name}, function (err, build) {
+                    if (err) console.log('Error updating build for repo "' + JSON.stringify(build) + '" ', err);
                 });
 
             });
