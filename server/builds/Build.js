@@ -191,7 +191,7 @@ BuildClass.prototype.endBuild = function (message) {
 };
 
 var uploadToS3 = function (build) {
-    var log_arr = build.log_dir.split('/');
+    var log_arr = build.build.log_dir.split('/');
     var file_name = log_arr[log_arr.length-1];
     
     fs.readFile(build.log_dir, 'utf8', function (err, data) {

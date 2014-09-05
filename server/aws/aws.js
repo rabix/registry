@@ -2,7 +2,8 @@ var AWS = require('aws-sdk');
 //var config = require('../config/config');
 //var amazon_credentials = config.amazon;
 
-AWS.config.loadFromPath('./config/amazon.json');
+AWS.config.loadFromPath(__dirname + '/../config/amazon.json');
+
 
 var s3 = new AWS.S3();
 
