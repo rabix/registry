@@ -286,6 +286,20 @@ legend {
   }
 }
 
+.form-group {
+  &.required {
+    & > .control-label {
+      position: relative;
+      &:after {
+        content: '*';
+        display: inline-block;
+        color: #D9534F;
+        padding: 0 5px;
+      }
+    }
+  }
+}
+
 .input-property {
 
   & > .form-group {
@@ -319,17 +333,6 @@ legend {
       background-color: #f9f9f9;
     }
 
-    &.required {
-      & > .control-label {
-        position: relative;
-        &:after {
-          content: '*';
-          display: inline-block;
-          color: #D9534F;
-          padding: 0 5px;
-        }
-      }
-    }
   }
 }
 
@@ -512,6 +515,19 @@ legend {
     position: absolute;
     bottom: 5px;
     right: 15px;
+  }
+  p {
+    position: absolute;
+    padding: 20px 30px;
+    top: 50%;
+    left: 50%;
+    width: 200px;
+    margin-left: -100px;
+    margin-top: -50px;
+    color: #ff0000;
+    border: 1px solid #cc0000;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.5);
   }
 }
 

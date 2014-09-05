@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('clicheApp')
-    .directive('addApp', ['$templateCache', '$modal', 'Data', function ($templateCache, $modal, Data) {
+    .directive('addApp', ['$templateCache', '$modal', '$timeout', 'Data', function ($templateCache, $modal, $timeout, Data) {
 
         return {
             restrict: 'E',
@@ -11,6 +11,8 @@ angular.module('clicheApp')
                 form: '='
             },
             link: function(scope) {
+
+                var timeoutId;
 
                 scope.view = {};
                 scope.view.adding = false;
@@ -22,10 +24,18 @@ angular.module('clicheApp')
 
                     if (scope.form.$invalid) {
                         scope.form.$setDirty();
+                        scope.view.error = 'Please fill in all required fields!';
+
+                        scope.clearTimeout();
+                        timeoutId = $timeout(function() {
+                            scope.view.error = '';
+                        }, 5000);
+
                         return false;
                     }
 
                     scope.view.adding = true;
+                    scope.view.error = '';
 
                     Data.addApp().then(function(result) {
 
@@ -56,6 +66,17 @@ angular.module('clicheApp')
 
                     });
 
+                };
+
+                scope.$on('$destroy', function() {
+                    scope.clearTimeout();
+                });
+
+                scope.clearTimeout = function() {
+                    if (angular.isDefined(timeoutId)) {
+                        $timeout.cancel(timeoutId);
+                        timeoutId = undefined;
+                    }
                 };
 
             }
