@@ -7,6 +7,7 @@ var _ = require('lodash');
 var Build = mongoose.model('Build');
 
 var fs = require('fs');
+var Amazon = require('../../aws/aws').Amazon;
 
 module.exports = function (app) {
     app.use('/api', router);
@@ -64,14 +65,25 @@ router.get('/builds/:id/log', function (req, res, next) {
 
     Build.findOne({"head_commit.id": req.params.id}, function (err, build) {
 
-        fs.readFile(build.log_dir, 'utf8', function (err, log) {
-            console.log(log.length);
-            res.json({
-                status: build.status,
-                content: log,
-                contentLength: log.toString().length
+        if (build.log_dir.indexOf('data/log/rabix-registry') !== -1 ) {
+            fs.readFile(build.log_dir, 'utf8', function (err, log) {
+                console.log(log.length);
+                res.json({
+                    status: build.status,
+                    content: log,
+                    contentLength: log.toString().length
+                });
             });
-        });
+        } else {
+            Amazon.getFile(build.log_dir, 'build-logs', function (err, data) {
+                res.json({
+                    status: build.status,
+                    content: data,
+                    contentLength: data.toString().length
+                });
+            });
+        }
+
     });
 
 });

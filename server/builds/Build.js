@@ -24,6 +24,7 @@ var fs = require('fs');
 // End Requirements for build
 
 var Mailer = require('../mailer/Mailer').Mailer;
+var Amazon = require('../aws/aws').Amazon;
 
 var BuildClass = function (options) {
     this.repository = options.repository;
@@ -70,6 +71,8 @@ BuildClass.prototype.startBuild = function () {
         }
 
         build.repoId = repo._id;
+
+        _self.build = build;
 
         Build.collection.insert(build, function (err, build) {
             if (err) {
@@ -175,7 +178,8 @@ BuildClass.prototype.endBuild = function (message) {
         });
 
     }
-
+    
+    uploadToS3(this);
 
     if (this.onSuccess) {
         this.onSuccess.call(this, arguments);
@@ -184,6 +188,35 @@ BuildClass.prototype.endBuild = function (message) {
     if (this.onError) {
         this.onError.call(this, arguments);
     }
+};
+
+var uploadToS3 = function (build) {
+    var log_arr = build.log_dir.split('/');
+    var file_name = log_arr[log_arr.length-1];
+    
+    fs.readFile(build.log_dir, 'utf8', function (err, data) {
+        if (err) return false;
+
+        Amazon.uploadFile(file_name, data, 'build-logs', function () {
+
+            fs.unlink(build.log_dir, function (err) {
+
+                if (err) {
+                    console.log('error while deleting file %s', build.log_dir);
+                    return false;
+                }
+
+                Amazon.getFileUrl(file_name, 'build-logs', function (url) {
+                    Build.findOneAndUpdate({"head_commit.id": build.head_commit.id}, {log_dir: url}, function (err, build) {
+                        if (err) console.log('Error updating build for repo "' + JSON.stringify(build) + '" ', err);
+                    });
+                });
+
+            });
+
+        });
+
+    })
 };
 
 exports.Build = BuildClass;
