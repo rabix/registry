@@ -7,6 +7,7 @@ var _ = require('lodash');
 
 var App = mongoose.model('App');
 var Repo = mongoose.model('Repo');
+var User = mongoose.model('User');
 
 var filters = require('../../common/route-filters');
 var Amazon = require('../../aws/aws').Amazon;
@@ -49,7 +50,7 @@ router.get('/apps', function (req, res, next) {
 
 router.get('/apps/:id', function (req, res, next) {
 
-    App.findById(req.params.id).exec(function(err, app) {
+    App.findById(req.params.id).populate('user_id').exec(function(err, app) {
         if (err) { return next(err); }
 
         res.json({data: app});
@@ -68,7 +69,6 @@ router.post('/apps', filters.authenticated, function (req, res, next) {
 
     // TODO: Validate app JSON
 //    Validator.validateApp(data);
-
 
     var desc = data.softwareDescription;
 
@@ -93,19 +93,20 @@ router.post('/apps', filters.authenticated, function (req, res, next) {
             app.repo_id = repo._id;
         }
 
-
         var folder = app.repo_owner + '-' + app.repo_name;
 
         Amazon.createFolder(folder);
         Amazon.uploadJSON(app.name+'.json', app.json, folder);
         Amazon.getFileUrl(app.name+'.json', folder, function (url) {
             app.links.json = url;
+
+            app.user_id = req.user.id;
             app.save();
+
+            res.json(app);
         });
 
     });
-
-    res.json(app);
 
 });
 

@@ -2,7 +2,6 @@
 
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var ObjectId = Schema.ObjectId;
 
 var AppSchema = new Schema({
     name: String,
@@ -12,7 +11,8 @@ var AppSchema = new Schema({
     links: Schema.Types.Mixed,
     repo_name: String,
     repo_owner: String,
-    repo_id: String
+    repo_id: String,
+    user_id: { type: Schema.Types.ObjectId, ref: 'User' }
 //    repoId: { type: Schema.Types.ObjectId, ref: 'Repo' }
 });
 

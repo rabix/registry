@@ -75,7 +75,8 @@ module.exports = function (app, config) {
     var parseUser = function(user) {
 
         var gitHubObj = {
-            id: user._json.id,
+            id: user.id,
+            github_id: user._json.id,
             name: user._json.name,
             repos_url: user._json.repos_url,
             url: user._json.url,
@@ -109,16 +110,6 @@ module.exports = function (app, config) {
 
                 var email = profile.emails[0].value;
 
-//                var gitHubObj = {
-//                    id: profile._json.id,
-//                    name: profile._json.name,
-//                    repos_url: profile._json.repos_url,
-//                    url: profile._json.url,
-//                    gravatar_id: profile._json.gravatar_id,
-//                    avatar_url: profile._json.avatar_url,
-//                    login: profile._json.login,
-//                    accessToken: accessToken
-//                };
                 var gitHubObj = parseUser(profile);
                 gitHubObj.accessToken = accessToken;
 
@@ -149,18 +140,22 @@ module.exports = function (app, config) {
                                     value: e[0].email
                                 }
                             ];
-                            addUser(e[0].email, gitHubObj, profile);
 
-                            return done(null, profile);
+                            addUser(e[0].email, gitHubObj, profile).then(function(user) {
+                                profile.id = user.id;
+                                return done(null, profile);
+                            });
+
                         });
 
                     }).on('error', function (e) {
                         console.log('error while getting user email', e);
                     });
                 } else {
-                    addUser(email, gitHubObj, profile);
-
-                    return done(null, profile);
+                    addUser(email, gitHubObj, profile).then(function(user) {
+                        profile.id = user.id;
+                        return done(null, profile);
+                    });
                 }
 
 
@@ -169,11 +164,13 @@ module.exports = function (app, config) {
     ));
 
     function addUser(email, gitHubObj, profile) {
+
         var mongoose = require('mongoose');
+        var promise = new mongoose.Promise();
         var User = mongoose.model('User');
 
         User.count({email: email}, function(err, count) {
-            console.log(count);
+
             if (count === 0) {
                 var user = new User();
 
@@ -182,15 +179,18 @@ module.exports = function (app, config) {
                 user.github = gitHubObj;
 
                 user.save();
-            } else {
-                console.log(profile);
-                User.findOneAndUpdate({email: email}, {github: gitHubObj}, {}, function() {
-                    if (err) { return done(null, null); }
 
+                promise.fulfill({id: user._id});
+            } else {
+
+                User.findOneAndUpdate({email: email}, {github: gitHubObj}, {}, function(err, user) {
+                    if (err) { return done(null, null); }
+                    promise.fulfill({id: user._id});
                 });
             }
-
         });
+
+        return promise;
 
     }
 
