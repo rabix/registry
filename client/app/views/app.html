@@ -11,7 +11,7 @@
     <div ng-if="!view.loading" class="container" height>
 
         <div class="description">
-            <div class="panel panel-warning">
+            <div class="panel panel-warning panel-app">
                 <div class="panel-body">
 
                     <section>
@@ -24,19 +24,19 @@
                         <h5>App Details</h5>
                         <p>
                             <strong>Repo:</strong>
-                            <a ng-if="app.repo_id && app.repo_owner && app.repo_name" ng-href="#/repo/{{ app.repo_id }}">{{ app.repo_owner }}/{{ app.repo_name }}</a>
-                            <span ng-if="!app.repo_id">{{ app.repo_owner | repo:app.repo_name }}</span>
+                            <a ng-if="view.app.repo_id && view.app.repo_owner && view.app.repo_name" ng-href="#/repo/{{ view.app.repo_id }}">{{ view.app.repo_owner }}/{{ view.app.repo_name }}</a>
+                            <span ng-if="!view.app.repo_id">{{ view.app.repo_owner | repo:view.app.repo_name }}</span>
                         </p>
                     </section>
                 </div>
             </div>
-            {{ view.app.description }}
+            {{ !view.app.description ? 'This app doesn\'t have any description' : view.app.description }}
         </div>
 
 
         <div class="snippet">
             <p>Link to Amazon S3</p>
-            <div><a ng-href="{{ view.app.links.json }}" target="_blank">{{ view.app.links.json }}</a></div>
+            <div><a class="s3-link" ng-href="{{ view.app.links.json }}" target="_blank">{{ view.app.links.json }}</a></div>
         </div>
 
         <div class="snippet">

@@ -510,8 +510,8 @@ legend {
   }
 }
 
-.add-app-wrap {
-  .add-app-btn {
+.app-actions-wrap {
+  .app-action-btns {
     position: absolute;
     bottom: 5px;
     right: 15px;
@@ -528,6 +528,37 @@ legend {
     border: 1px solid #cc0000;
     text-align: center;
     background-color: rgba(0, 0, 0, 0.5);
+  }
+}
+
+.app-list {
+  margin: 10px 0;
+  max-height: 450px;
+  overflow: auto;
+  li {
+    cursor: pointer;
+    border-bottom: 1px solid #ddd;
+    &:first-child {
+      border-top: 1px solid #ddd;
+    }
+    &.selected {
+      background-color: $blue;
+      color: #fff;
+      a {
+        color: #fff;
+      }
+    }
+    span {
+      display: inline-block;
+      .glyphicon {
+        color: #eee;
+        margin: 10px;
+      }
+    }
+    a {
+      float: right;
+      margin: 7px 10px;
+    }
   }
 }
 

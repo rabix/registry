@@ -474,19 +474,6 @@ angular.module('clicheApp')
 
         };
 
-        /**
-         * Add an app
-         *
-         * @returns {object} $promise
-         */
-        self.addApp = function() {
-
-            var promise = Api.apps.add({}, self.tool).$promise;
-
-            return promise;
-
-        };
-
         return self;
 
 

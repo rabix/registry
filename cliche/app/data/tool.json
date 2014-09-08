@@ -6,8 +6,8 @@
             "environment": {
                 "container": {
                     "type": "docker",
-                    "uri": "uri",
-                    "imageId": "imageId"
+                    "uri": "",
+                    "imageId": ""
                 }
             },
             "resources": {

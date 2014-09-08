@@ -1,0 +1,25 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="cancel()"><span>&times;</span><span class="sr-only">Close</span></button>
+    <h4 class="modal-title">App list from the Registry</h4>
+</div>
+<div class="modal-body">
+
+    <p class="center-block">Select an app from the list you want to import</p>
+    <div ng-class="{loading: view.loading}">
+        <ul class="app-list">
+            <li ng-repeat="app in view.apps" ng-class="{selected: app._id === view.selectedApp._id}" ng-click="selectApp(app)">
+                <span>
+                    <i class="glyphicon glyphicon-ok"></i>
+                    {{ app.name }}
+                </span>
+                <a ng-href="/#/app/{{ app._id }}" target="_blank">view app</a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="center-block">
+        <button class="btn btn-primary" ng-click="import()">Import <strong>{{ view.selectedApp.name }}</strong></button>
+        <button class="btn btn-default" ng-click="cancel()">Cancel</button>
+    </div>
+
+</div>

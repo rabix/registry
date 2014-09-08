@@ -65,6 +65,9 @@
     .panel {
       float: right;
       margin: 0 0 5px 5px;
+      &.panel-app {
+        width: 400px;
+      }
       p {
         white-space: nowrap;
         strong {
@@ -207,4 +210,13 @@
       }
     }
   }
+}
+
+.s3-link {
+  padding: 0 10px;
+  text-overflow: ellipsis;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  display: block;
 }
