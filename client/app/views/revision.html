@@ -1,0 +1,51 @@
+<div ng-class="view.classes" loading="view.loading">
+
+    <div class="heading">
+        <div class="container">
+            <a ng-href="#/app/{{ view.revision.app_id }}/revisions" class="btn btn-default pull-left go-back"><i class="glyphicon glyphicon-chevron-left"></i> Back</a>
+            <h1>{{ view.revision.name }}</h1>
+        </div>
+    </div>
+    <!-- # .heading -->
+
+    <div ng-if="!view.loading" class="container">
+
+        <div class="description">
+            <div class="panel panel-warning panel-app">
+                <div class="panel-body">
+
+                    <section>
+                        <h5>Docker Image Details</h5>
+                        <p><strong>Image Id:</strong> {{ view.revision.json.requirements.environment.container.imageId }}</p>
+                        <p><strong>Image Uri:</strong> {{ view.revision.json.requirements.environment.container.uri }}</p>
+                    </section>
+
+                    <section>
+                        <h5>App Details</h5>
+                        <p>
+                            <strong>Repo:</strong>
+                            <a ng-if="view.revision.repo_id && view.revision.repo_owner && view.revision.repo_name" ng-href="#/repo/{{ view.revision.repo_id }}">{{ view.revision.repo_owner }}/{{ view.revision.repo_name }}</a>
+                            <span ng-if="!view.revision.repo_id">{{ view.revision.repo_owner | repo:view.revision.repo_name }}</span>
+                        </p>
+                    </section>
+
+                </div>
+            </div>
+            {{ !view.revision.description ? 'This app revision doesn\'t have any description' : view.revision.description }}
+        </div>
+
+
+        <div class="snippet">
+            <p>Use this code snippet for your pipeline</p>
+            <pre pretty-json="view.revision.json"></pre>
+        </div>
+
+        <div class="snippet">
+            <p>Use this command to run the app</p>
+            <pre>$ rabix run "{{ view.revision.links.app_ref }}"</pre>
+        </div>
+
+    </div>
+    <!-- # .container -->
+
+</div>

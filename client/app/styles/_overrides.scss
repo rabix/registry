@@ -20,6 +20,27 @@
   }
 }
 
+.nav-pills {
+  margin: 5px 0;
+  li {
+    a {
+      padding: 5px 15px;
+      border: 1px solid transparent;
+    }
+    &.active {
+      a,
+      a:focus,
+      a:hover {
+        color: #555;
+        background-color: $gray;
+        background-image: url(../images/bg.png);
+        border: 1px solid #ddd;
+        cursor: pointer;
+      }
+    }
+  }
+}
+
 form {
   .form-control {
     color: #555;
@@ -71,8 +92,8 @@ form {
       tr {
         &:hover {
           background-image: url(../images/bg.png);
-          border-left: 1px solid #ddd;
-          border-right: 1px solid #ddd;
+          //border-left: 1px solid #ddd;
+          //border-right: 1px solid #ddd;
           td {
             background-color: transparent;
           }

@@ -49,7 +49,8 @@ angular.module('clicheApp')
                 $q.all([
                         Data.fetchTool(),
                         Data.fetchJob(),
-                        Data.fetchOwner()
+                        Data.fetchOwner(),
+                        Data.fetchAppId()
                     ]).then(function() {
 
                         $scope.view.toolForm = Data.tool;
@@ -70,6 +71,7 @@ angular.module('clicheApp')
                         $scope.view.jobForm = Data.job;
 
                         $scope.view.owner = Data.owner;
+                        $scope.view.appId = Data.appId;
 
                         $scope.view.loading = false;
 
@@ -229,9 +231,13 @@ angular.module('clicheApp')
             }
         };
 
+        /**
+         * Import existing app or app revision
+         *
+         * @param app
+         */
         $scope.importApp = function(app) {
 
-            console.log(app);
             Data.setTool(app.json);
             $scope.view.toolForm = app.json;
 
@@ -243,6 +249,9 @@ angular.module('clicheApp')
 
             Data.setOwner(app.user_id);
             $scope.view.owner = app.user_id;
+
+            Data.setAppId(app._id);
+            $scope.view.appId = app._id;
 
         };
 

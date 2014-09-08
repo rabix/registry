@@ -11,6 +11,8 @@ angular.module('registryApp')
             update: {method: 'PUT'}
         });
 
+        self.revisions = $resource(apiUrl + '/revisions/:id', {id: '@id'});
+
         self.builds = $resource(apiUrl + '/builds/:id', {id: '@id'});
 
         self.log = function(range) {

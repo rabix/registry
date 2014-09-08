@@ -3,23 +3,22 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var AppSchema = new Schema({
+var RevisionSchema = new Schema({
+    order: Number,
     name: String,
     description: String,
     author: String,
     json: Schema.Types.Mixed,
-    links: Schema.Types.Mixed,
     repo_name: String,
     repo_owner: String,
     repo_id: String,
-    user_id: { type: Schema.Types.ObjectId, ref: 'User' },
-    revisions: [{type : Schema.Types.ObjectId, ref : 'Revision'}]
+    app_id: { type: Schema.Types.ObjectId, ref: 'App' }
 });
 
-AppSchema.virtual('date')
+RevisionSchema.virtual('date')
     .get(function () {
         return this._id.getTimestamp();
     });
 
-mongoose.model('App', AppSchema);
+mongoose.model('Revision', RevisionSchema);
 

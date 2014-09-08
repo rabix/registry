@@ -1,13 +1,14 @@
 <div class="app-actions-wrap">
 
     <div class="app-action-btns">
-        <button ng-disabled="view.publishing" class="app-publish-btn btn btn-primary" ng-click="publishApp()">
-            <i class="glyphicon glyphicon-plus"></i>
-            Publish the App
+        <button ng-if="view.canSave" ng-disabled="view.saving" class="app-save-btn btn btn-default" ng-click="saveApp()">
+            <i class="glyphicon glyphicon-ok"></i> Save
+        </button>
+        <button ng-disabled="view.saving" class="app-publish-btn btn btn-primary" ng-click="publishApp()">
+            <i class="glyphicon glyphicon-plus"></i> Publish
         </button>
         <button class="app-publish-btn btn btn-default" ng-click="getAppsList()">
-            <i class="glyphicon glyphicon-import"></i>
-            Import the App
+            <i class="glyphicon glyphicon-import"></i> Import
         </button>
     </div>
 

@@ -7,7 +7,7 @@ var _ = require('lodash');
 
 var App = mongoose.model('App');
 var Repo = mongoose.model('Repo');
-var User = mongoose.model('User');
+var Revision = mongoose.model('Revision');
 
 var filters = require('../../common/route-filters');
 var Amazon = require('../../aws/aws').Amazon;
@@ -38,7 +38,7 @@ router.get('/apps', function (req, res, next) {
     App.count(where).exec(function(err, total) {
         if (err) { return next(err); }
 
-        App.find(where).skip(skip).limit(limit).sort({_id: 'desc'}).exec(function(err, apps) {
+        App.find(where).populate('revisions', 'name order json').skip(skip).limit(limit).sort({_id: 'desc'}).exec(function(err, apps) {
             if (err) { return next(err); }
 
             res.json({list: apps, total: total});
@@ -60,7 +60,50 @@ router.get('/apps/:id', function (req, res, next) {
 
 
 router.put('/apps', filters.authenticated, function (req, res, next) {
-    
+
+    var data = req.body;
+
+    // TODO: Validate app JSON
+//    Validator.validateApp(data);
+
+    App.findById(data.app_id, function(err, app) {
+        if (err) { return next(err); }
+
+        var desc = data.tool.softwareDescription;
+
+        app.name = desc.name;
+        app.description = desc.description;
+        app.author = data.tool.documentAuthor;
+        app.json = data.tool;
+        app.links = {
+            json: ''
+        };
+        app.revisions = [];
+
+        app.repo_name = desc.repo_name || '';
+        app.repo_owner = desc.repo_owner || '';
+        app.repo_id = desc.repo_id || '';
+
+        var folder = app.repo_owner + '-' + app.repo_name;
+
+        Amazon.createFolder(folder);
+        Amazon.uploadJSON(app.name+'.json', app.json, folder);
+        Amazon.getFileUrl(app.name+'.json', folder, function (url) {
+
+            app.links.json = url;
+
+            app.save(function(err) {
+                if (err) { return next(err); }
+
+                Revision.find({app_id: data.app_id}).remove(function(err) {
+                    if (err) { return next(err); }
+                    res.json(app);
+                });
+            });
+        });
+
+    });
+
 });
 
 

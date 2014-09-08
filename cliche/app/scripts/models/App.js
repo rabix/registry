@@ -18,11 +18,31 @@ angular.module('clicheApp')
         /**
          * Add an app
          *
+         * @params {string} mode
          * @returns {object} $promise
          */
-        self.addApp = function() {
+        self.addApp = function(mode) {
 
-            var promise = Api.apps.add({}, Data.tool).$promise;
+            var promise;
+
+            if (mode === 'update') {
+                promise = Api.apps.update({}, {tool: Data.tool, app_id: Data.appId}).$promise;
+            } else {
+                promise = Api.apps.add({}, Data.tool).$promise;
+            }
+
+            return promise;
+
+        };
+
+        /**
+         * Add app revision
+         *
+         * @returns {object} $promise
+         */
+        self.addRevision = function() {
+
+            var promise = Api.revisions.add({}, {tool: Data.tool, app_id: Data.appId}).$promise;
 
             return promise;
 

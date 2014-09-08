@@ -27,6 +27,13 @@ angular.module('clicheApp')
         self.owner = null;
 
         /**
+         * Current app id
+         *
+         * @type {string}
+         */
+        self.appId = null;
+
+        /**
          * Command generated from input and adapter values
          * @type {string}
          */
@@ -114,6 +121,27 @@ angular.module('clicheApp')
         };
 
         /**
+         * Fetch app id from storage
+         *
+         * @returns {*}
+         */
+        self.fetchAppId = function() {
+
+            var deferred = $q.defer();
+
+            $localForage.getItem('app_id')
+                .then(function(appId) {
+
+                    self.appId = appId;
+                    deferred.resolve(appId);
+
+                });
+
+            return deferred.promise;
+
+        };
+
+        /**
          * Set tool object
          *
          * @param {Object} tool
@@ -136,7 +164,7 @@ angular.module('clicheApp')
         };
 
         /**
-         * Set owner object
+         * Set owner
          *
          * @param {string} owner
          */
@@ -145,6 +173,19 @@ angular.module('clicheApp')
             self.owner = owner;
 
             $localForage.setItem('owner', owner);
+
+        };
+
+        /**
+         * Set app id
+         *
+         * @param {string} appId
+         */
+        self.setAppId = function(appId) {
+
+            self.appId = appId;
+
+            $localForage.setItem('app_id', appId);
 
         };
 

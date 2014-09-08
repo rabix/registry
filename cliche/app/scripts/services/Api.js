@@ -11,6 +11,11 @@ angular.module('clicheApp')
             update: {method: 'PUT'}
         });
 
+        self.revisions = $resource(apiUrl + '/revisions/:id', {id: '@id'}, {
+            add: {method: 'POST'},
+            update: {method: 'PUT'}
+        });
+
         self.user = $resource(apiUrl + '/user/:action', {action: '@action'});
 
         return self;

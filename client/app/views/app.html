@@ -8,53 +8,98 @@
     </div>
     <!-- # .heading -->
 
-    <div ng-if="!view.loading" class="container" height>
+    <div ng-if="!view.loading" class="container">
 
-        <div class="description">
-            <div class="panel panel-warning panel-app">
-                <div class="panel-body">
+        <div ng-if="view.revisions.length > 0" class="nav nav-pills">
+            <li ng-class="{active: view.tab === 'info'}" class=""><a ng-href="#/app/{{ view.app._id }}">Info</a></li>
+            <li ng-class="{active: view.tab === 'revisions'}" class=""><a ng-href="#/app/{{ view.app._id }}/revisions">Revisions</a></li>
+        </div>
 
-                    <section>
-                        <h5>Docker Image Details</h5>
-                        <p><strong>Image Id:</strong> {{ view.app.json.requirements.environment.container.imageId }}</p>
-                        <p><strong>Image Uri:</strong> {{ view.app.json.requirements.environment.container.uri }}</p>
-                    </section>
+        <section ng-if="view.tab === 'info'">
+            <div class="description">
+                <div class="panel panel-warning panel-app">
+                    <div class="panel-body">
 
-                    <section>
-                        <h5>App Details</h5>
-                        <p>
-                            <strong>Repo:</strong>
-                            <a ng-if="view.app.repo_id && view.app.repo_owner && view.app.repo_name" ng-href="#/repo/{{ view.app.repo_id }}">{{ view.app.repo_owner }}/{{ view.app.repo_name }}</a>
-                            <span ng-if="!view.app.repo_id">{{ view.app.repo_owner | repo:view.app.repo_name }}</span>
-                        </p>
-                    </section>
+                        <section>
+                            <h5>Docker Image Details</h5>
+                            <p><strong>Image Id:</strong> {{ view.app.json.requirements.environment.container.imageId }}</p>
+                            <p><strong>Image Uri:</strong> {{ view.app.json.requirements.environment.container.uri }}</p>
+                        </section>
 
-                    <section>
-                        <h5>Author</h5>
-                        <p><strong>Username:</strong> <a href="http://github.com/{{ view.app.user_id.github.login }}" target="_blank">{{ view.app.user_id.github.login }}</a> </p>
-                        <p><strong>Name:</strong> {{ view.app.user_id.github.name }} </p>
-                    </section>
+                        <section>
+                            <h5>App Details</h5>
+                            <p>
+                                <strong>Repo:</strong>
+                                <a ng-if="view.app.repo_id && view.app.repo_owner && view.app.repo_name" ng-href="#/repo/{{ view.app.repo_id }}">{{ view.app.repo_owner }}/{{ view.app.repo_name }}</a>
+                                <span ng-if="!view.app.repo_id">{{ view.app.repo_owner | repo:view.app.repo_name }}</span>
+                            </p>
+                        </section>
+
+                        <section>
+                            <h5>Author</h5>
+                            <p><strong>Username:</strong> <a href="http://github.com/{{ view.app.user_id.github.login }}" target="_blank">{{ view.app.user_id.github.login }}</a> </p>
+                            <p><strong>Name:</strong> {{ view.app.user_id.github.name }} </p>
+                        </section>
+                    </div>
                 </div>
+                {{ !view.app.description ? 'This app doesn\'t have any description' : view.app.description }}
             </div>
-            {{ !view.app.description ? 'This app doesn\'t have any description' : view.app.description }}
-        </div>
 
 
-        <div class="snippet">
-            <p>Link to Amazon S3</p>
-            <div><a class="s3-link" ng-href="{{ view.app.links.json }}" target="_blank">{{ view.app.links.json }}</a></div>
-        </div>
+            <div class="snippet">
+                <p>Link to Amazon S3</p>
+                <div><a class="s3-link" ng-href="{{ view.app.links.json }}" target="_blank">{{ view.app.links.json }}</a></div>
+            </div>
 
-        <div class="snippet">
-            <p>Use this code snippet for your pipeline</p>
-            <pre pretty-json="view.app.json"></pre>
-        </div>
+            <div class="snippet">
+                <p>Use this code snippet for your pipeline</p>
+                <pre pretty-json="view.app.json"></pre>
+            </div>
 
-        <div class="snippet">
-            <p>Use this command to run the app</p>
-            <pre>$ rabix run "{{ view.app.links.app_ref }}"</pre>
-        </div>
+            <div class="snippet">
+                <p>Use this command to run the app</p>
+                <pre>$ rabix run "{{ view.app.links.app_ref }}"</pre>
+            </div>
+        </section>
+
+        <section ng-if="view.tab === 'revisions'">
+
+            <table class="table table-hover revisions">
+                <thead>
+                    <tr>
+                        <th>Revision</th>
+                        <th>Name</th>
+                        <th>Repo</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="revision in view.revisions">
+                        <td><strong>{{ revision.order }}</strong></td>
+                        <td><a ng-href="#/revision/{{ revision._id }}">{{ revision.name }}</a></td>
+                        <td>
+                            <a ng-if="revision.repo_id && revision.repo_owner && revision.repo_name" ng-href="#/repo/{{ revision.repo_id }}">{{ revision.repo_owner }}/{{ revision.repo_name }}</a>
+                            <span ng-if="!revision.repo_id">{{ revision.repo_owner | repo:revision.repo_name }}</span>
+                        </td>
+                        <td><p tooltip="{{ revision.description }}" tooltip-popup-delay="1000">{{ revision.description }}</p></td>
+                    </tr>
+                    <tr class="empty" ng-if="view.revisions.length === 0">
+                        <td colspan="3"><p class="alert alert-info">There are no revisions for this app found</p></td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </section>
 
     </div>
     <!-- # .container -->
+
+    <div class="paginate" ng-if="!view.loading && view.tab === 'revisions' && view.revisions.length > 0">
+        <div class="container">
+            <button ng-disabled="!view.paginator.prev" class="btn btn-default pull-left" ng-click="goToPage('prev')"><i class="glyphicon glyphicon-chevron-left"></i></button>
+            <span class="page-number">{{ view.page }} / {{ view.total }}</span>
+            <button ng-disabled="!view.paginator.next" class="btn btn-default pull-right" ng-click="goToPage('next')"><i class="glyphicon glyphicon-chevron-right"></i></button>
+        </div>
+    </div>
+    <!-- # .paginate -->
 </div>

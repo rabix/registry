@@ -537,31 +537,45 @@ legend {
   overflow: auto;
   border-top: 1px solid #ddd;
   border-bottom: 1px solid #ddd;
+  padding: 1px 0;
   @include scrollBar($blue);
-  li {
+  & > li {
     cursor: pointer;
     border-bottom: 1px solid #ddd;
     &.selected {
-      background-color: $blue;
-      color: #fff;
-      a {
+      & > .app-list-item {
+        background-color: $blue;
         color: #fff;
+        a {
+          color: #fff;
+        }
       }
     }
     &.disabled {
-      cursor: auto;
-      color: #ccc;
-    }
-    span {
-      display: inline-block;
-      .glyphicon {
-        color: #eee;
-        margin: 10px;
+      & > .app-list-item {
+        cursor: auto;
+        color: #ccc;
       }
     }
-    a {
-      float: right;
-      margin: 7px 10px;
+    & > .app-list-item {
+      & > span {
+        display: inline-block;
+        .glyphicon {
+          color: #eee;
+          margin: 10px;
+        }
+      }
+      & > a {
+        float: right;
+        margin: 7px 10px;
+      }
+    }
+    &:last-child {
+      border-bottom: none;
+    }
+    .app-list {
+      margin: 0 0 0 10px;
+      border-bottom: none;
     }
   }
 }

@@ -113,7 +113,6 @@ router.get('/github-repos', filters.authenticated, function (req, res, next) {
         if (err) {
             return next(err);
         }
-        console.log(user, req.user);
         var opts = {
             host: 'api.github.com',
             path: '/users/' + user.username + '/repos',

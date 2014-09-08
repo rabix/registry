@@ -36,6 +36,14 @@ angular
                 templateUrl: 'views/app.html',
                 controller: 'AppCtrl'
             })
+            .when('/app/:id/:tab', {
+                templateUrl: 'views/app.html',
+                controller: 'AppCtrl'
+            })
+            .when('/revision/:id', {
+                templateUrl: 'views/revision.html',
+                controller: 'RevisionCtrl'
+            })
             .when('/builds', {
                 templateUrl: 'views/builds.html',
                 controller: 'BuildsCtrl'
