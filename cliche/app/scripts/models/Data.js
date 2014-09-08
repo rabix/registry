@@ -20,6 +20,13 @@ angular.module('clicheApp')
         self.job = null;
 
         /**
+         * Current app owner
+         *
+         * @type {string}
+         */
+        self.owner = null;
+
+        /**
          * Command generated from input and adapter values
          * @type {string}
          */
@@ -82,6 +89,62 @@ angular.module('clicheApp')
             });
 
             return deferred.promise;
+
+        };
+
+        /**
+         * Fetch owner from storage
+         *
+         * @returns {*}
+         */
+        self.fetchOwner = function() {
+
+            var deferred = $q.defer();
+
+            $localForage.getItem('owner')
+                .then(function(owner) {
+
+                    self.owner = owner;
+                    deferred.resolve(owner);
+
+                });
+
+            return deferred.promise;
+
+        };
+
+        /**
+         * Set tool object
+         *
+         * @param {Object} tool
+         */
+        self.setTool = function(tool) {
+
+            self.tool = tool;
+
+        };
+
+        /**
+         * Set job object
+         *
+         * @param {Object} job
+         */
+        self.setJob = function(job) {
+
+            self.job = job;
+
+        };
+
+        /**
+         * Set owner object
+         *
+         * @param {string} owner
+         */
+        self.setOwner = function(owner) {
+
+            self.owner = owner;
+
+            $localForage.setItem('owner', owner);
 
         };
 
@@ -386,6 +449,7 @@ angular.module('clicheApp')
 
         /**
          * Recursive method for parsing object input values
+         *
          * @param {object} properties
          * @param {object} inputs
          * @returns {string} output
@@ -446,6 +510,7 @@ angular.module('clicheApp')
 
         /**
          * Check if old version of structure and if yes erase the store
+         *
          * @returns {*}
          */
         self.checkStructure = function() {

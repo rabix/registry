@@ -8,7 +8,8 @@ angular.module('clicheApp')
             replace: true,
             template: $templateCache.get('views/partials/app-actions.html'),
             scope: {
-                form: '='
+                form: '=',
+                handle: '&'
             },
             link: function(scope) {
 
@@ -75,49 +76,12 @@ angular.module('clicheApp')
 
                     var modalInstance = $modal.open({
                         template: $templateCache.get('views/partials/app-list.html'),
-                        controller: ['$scope', '$modalInstance', 'App', function($scope, $modalInstance, App) {
-
-                            $scope.view = {};
-                            $scope.view.selectedApp = null;
-                            $scope.view.apps = [];
-                            $scope.view.loading = true;
-
-                            App.getApps({limit: 0}).then(function(result) {
-                                $scope.view.apps = result.list;
-                                $scope.view.loading = false;
-                            });
-
-                            /**
-                             * Select the app to import
-                             *
-                             * @param app
-                             */
-                            $scope.selectApp = function(app) {
-                                $scope.view.selectedApp = app;
-                            };
-
-                            /**
-                             * Do the app import
-                             */
-                            $scope.import = function() {
-                                if ($scope.view.selectedApp) {
-                                    $modalInstance.close($scope.view.selectedApp);
-                                }
-                            };
-
-                            /**
-                             * Close the modal window
-                             */
-                            $scope.cancel = function () {
-                                $modalInstance.dismiss('cancel');
-                            };
-
-                        }],
+                        controller: 'AppListCtrl',
                         resolve: { data: function () { return {}; }}
                     });
 
                     modalInstance.result.then(function (selectedApp) {
-                        console.log(selectedApp);
+                        scope.handle({app: selectedApp});
                     });
 
                 };
@@ -126,6 +90,9 @@ angular.module('clicheApp')
                     scope.clearTimeout();
                 });
 
+                /**
+                 * Clear the timeout
+                 */
                 scope.clearTimeout = function() {
                     if (angular.isDefined(timeoutId)) {
                         $timeout.cancel(timeoutId);

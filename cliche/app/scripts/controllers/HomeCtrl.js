@@ -48,7 +48,8 @@ angular.module('clicheApp')
 
                 $q.all([
                         Data.fetchTool(),
-                        Data.fetchJob()
+                        Data.fetchJob(),
+                        Data.fetchOwner()
                     ]).then(function() {
 
                         $scope.view.toolForm = Data.tool;
@@ -67,6 +68,8 @@ angular.module('clicheApp')
                         });
 
                         $scope.view.jobForm = Data.job;
+
+                        $scope.view.owner = Data.owner;
 
                         $scope.view.loading = false;
 
@@ -224,6 +227,23 @@ angular.module('clicheApp')
                     turnOffDeepWatch();
                 }
             }
+        };
+
+        $scope.importApp = function(app) {
+
+            console.log(app);
+            Data.setTool(app.json);
+            $scope.view.toolForm = app.json;
+
+            var job = angular.copy($scope.view.jobForm);
+            job.inputs = {};
+
+            Data.setJob(job);
+            $scope.view.jobForm = job;
+
+            Data.setOwner(app.user_id);
+            $scope.view.owner = app.user_id;
+
         };
 
     }]);

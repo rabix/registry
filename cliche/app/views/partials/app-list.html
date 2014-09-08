@@ -7,7 +7,10 @@
     <p class="center-block">Select an app from the list you want to import</p>
     <div ng-class="{loading: view.loading}">
         <ul class="app-list">
-            <li ng-repeat="app in view.apps" ng-class="{selected: app._id === view.selectedApp._id}" ng-click="selectApp(app)">
+            <li
+                ng-repeat="app in view.apps"
+                ng-class="{selected: app._id === view.selectedApp._id, disabled: !app.json}"
+                ng-click="selectApp(app)">
                 <span>
                     <i class="glyphicon glyphicon-ok"></i>
                     {{ app.name }}

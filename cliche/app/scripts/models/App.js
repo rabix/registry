@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('clicheApp')
-    .service('App', ['Api', function (Api) {
+    .service('App', ['Api', 'Data', function (Api, Data) {
 
         var self = {};
         /**
@@ -22,7 +22,7 @@ angular.module('clicheApp')
          */
         self.addApp = function() {
 
-            var promise = Api.apps.add({}, self.tool).$promise;
+            var promise = Api.apps.add({}, Data.tool).$promise;
 
             return promise;
 
