@@ -82,24 +82,29 @@ router.put('/apps', filters.authenticated, function (req, res, next) {
 
         app.repo_name = desc.repo_name || '';
         app.repo_owner = desc.repo_owner || '';
-        app.repo_id = desc.repo_id || '';
 
-        var folder = app.repo_owner + '-' + app.repo_name;
+        Repo.findOne({'name': desc.repo_name, 'owner': desc.repo_owner}, function (err, repo) {
 
-        Amazon.createFolder(folder);
-        Amazon.uploadJSON(app.name+'.json', app.json, folder);
-        Amazon.getFileUrl(app.name+'.json', folder, function (url) {
+            if (repo) { app.repo_id = repo._id; }
 
-            app.links.json = url;
+            var folder = app.repo_owner + '-' + app.repo_name;
 
-            app.save(function(err) {
-                if (err) { return next(err); }
+            Amazon.createFolder(folder);
+            Amazon.uploadJSON(app.name+'.json', app.json, folder);
+            Amazon.getFileUrl(app.name+'.json', folder, function (url) {
 
-                Revision.find({app_id: data.app_id}).remove(function(err) {
+                app.links.json = url;
+
+                app.save(function(err) {
                     if (err) { return next(err); }
-                    res.json(app);
+
+                    Revision.find({app_id: data.app_id}).remove(function(err) {
+                        if (err) { return next(err); }
+                        res.json(app);
+                    });
                 });
             });
+
         });
 
     });
@@ -132,9 +137,7 @@ router.post('/apps', filters.authenticated, function (req, res, next) {
 
     Repo.findOne({'name': desc.repo_name, 'owner': desc.repo_owner}, function (err, repo) {
 
-        if (repo) {
-            app.repo_id = repo._id;
-        }
+        if (repo) { app.repo_id = repo._id; }
 
         var folder = app.repo_owner + '-' + app.repo_name;
 

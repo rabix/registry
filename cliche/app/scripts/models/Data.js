@@ -6,6 +6,13 @@ angular.module('clicheApp')
         var self = {};
 
         /**
+         * Version of the storage
+         *
+         * @type {number}
+         */
+        self.version = 4;
+
+        /**
          * Tool json object
          *
          * @type {object}
@@ -561,15 +568,17 @@ angular.module('clicheApp')
             $localForage.getItem('version')
                 .then(function(version) {
 
-                    if (version === 2) {
+                    if (version === self.version) {
                         deferred.resolve();
                         return false;
                     }
 
                     $q.all([
-                            $localForage.setItem('version', 2),
+                            $localForage.setItem('version', self.version),
                             $localForage.setItem('tool', {}),
-                            $localForage.setItem('job', {})
+                            $localForage.setItem('job', {}),
+                            $localForage.removeItem('owner'),
+                            $localForage.removeItem('app_id')
                         ]).then(function() {
                             deferred.resolve();
                         });
