@@ -342,11 +342,11 @@ legend {
   margin: 10px 0 0 0;
 }
 
-.json-trace,
+pre.json-trace,
 .json-trace pre,
-.console-trace,
+pre.console-trace,
 .console-trace pre {
-  height: 760px;
+  //height: 760px;
   background-color: #222;
   border-color: $orange;
   color: $orange;
@@ -354,7 +354,7 @@ legend {
   border-top: none;
   margin-top: -1px;
   padding-bottom: 40px;
-  @include scrollBar($orange);
+  //@include scrollBar($orange);
   @include box-shadow(none);
   @include border-radius(0);
 

@@ -284,4 +284,38 @@ ul {
 
 .col {
   padding: 0;
+  float: none;
+  @include flex-box();
+  @include flex-flow(column nowrap);
+
+  & > .heading {
+    @include flex(0 0 auto);
+  }
+
+  & > .col-body {
+    @include flex(1);
+    @include scrollBar($orange);
+
+    overflow-x: hidden;
+
+    &:not(.tabs) {
+      overflow-y: auto;
+    }
+
+    &.tabs {
+      @include flex-box();
+      @include flex-flow(column nowrap);
+      & > .tab {
+        @include flex(1);
+        @include flex-box();
+        @include flex-flow(column nowrap);
+        .json-trace,
+        .console-trace {
+          @include flex(1);
+          overflow: auto;
+          @include scrollBar($orange);
+        }
+      }
+    }
+  }
 }

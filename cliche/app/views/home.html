@@ -2,7 +2,7 @@
 
     <div class="col" ng-class="{'col-md-7': view.showTrace, 'col-md-12 cancel-fixed': !view.showTrace}">
 
-        <div class="heading row fixed-left">
+        <div class="heading row">
             <div ng-class="{'col-md-12': view.showTrace, 'col-md-8 col-md-offset-2': !view.showTrace}">
 
                 <ul class="nav nav-tabs nav-tabs-steps regular">
@@ -43,22 +43,23 @@
         </div>
         <!-- # .heading -->
 
-        <div class="row">
-            <div ng-class="{'col-md-12': view.showTrace, 'col-md-8 col-md-offset-2': !view.showTrace}">
-                <ng-form class="form" name="forms.toolForm" role="form" novalidate>
-                    <div class="tabs left">
-                        <ng-include src="view.tabViewPath"></ng-include>
-                    </div>
-                </ng-form>
+        <div class="col-body">
+            <div class="row">
+                <div ng-class="{'col-md-12': view.showTrace, 'col-md-8 col-md-offset-2': !view.showTrace}">
+                    <ng-form class="form" name="forms.toolForm" role="form" novalidate>
+                        <div class="tabs left">
+                            <ng-include src="view.tabViewPath"></ng-include>
+                        </div>
+                    </ng-form>
+                </div>
             </div>
         </div>
-
 
     </div>
 
     <div class="col col-md-5" ng-show="view.showTrace">
 
-        <div class="heading fixed-right">
+        <div class="heading">
             <ul class="nav nav-tabs nav-tabs-trace">
                 <li class="pull-right" ng-class="{active: view.trace === 'console'}"><a href ng-click="switchTrace('console')">Console</a></li>
                 <li class="pull-right" ng-class="{active: view.trace === 'job'}"><a href ng-click="switchTrace('job')">Job JSON</a></li>
@@ -66,7 +67,7 @@
             </ul>
         </div>
 
-        <div class="tabs right" ng-switch="view.trace">
+        <div class="tabs right col-body" ng-switch="view.trace">
             <div class="tab" ng-switch-when="tool">
                 <zclip data="tool"></zclip>
                 <app-actions ng-if="!view.loading && view.user" form="forms.toolForm" user="view.user" handle-import="importApp(app)" handle-save="setOwnerAndAppId(user_id, app_id)"></app-actions>

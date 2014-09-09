@@ -7833,9 +7833,10 @@ button.close {
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/main\.scss}line{font-family:\000035}}
 html, body {
   overflow-x: hidden;
+  height: 100%;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/main\.scss}line{font-family:\000039}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/main\.scss}line{font-family:\0000310}}
 body {
   color: #555;
   background-color: #f3f3f3;
@@ -8271,11 +8272,10 @@ legend.toggle.active:after {
 }
 
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003345}}
-.json-trace,
+pre.json-trace,
 .json-trace pre,
-.console-trace,
+pre.console-trace,
 .console-trace pre {
-  height: 760px;
   background-color: #222;
   border-color: #f0ad4e;
   color: #f0ad4e;
@@ -8287,40 +8287,11 @@ legend.toggle.active:after {
   -khtml-border-radius: 0;
   border-radius: 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_mixins\.scss}line{font-family:\00003193}}
-.json-trace::-webkit-scrollbar,
-.json-trace pre::-webkit-scrollbar,
-.console-trace::-webkit-scrollbar,
-.console-trace pre::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_mixins\.scss}line{font-family:\00003198}}
-.json-trace::-webkit-scrollbar-track,
-.json-trace pre::-webkit-scrollbar-track,
-.console-trace::-webkit-scrollbar-track,
-.console-trace pre::-webkit-scrollbar-track {
-  background: #eee;
-}
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_mixins\.scss}line{font-family:\00003202}}
-.json-trace::-webkit-scrollbar-thumb,
-.json-trace pre::-webkit-scrollbar-thumb,
-.console-trace::-webkit-scrollbar-thumb,
-.console-trace pre::-webkit-scrollbar-thumb {
-  background: #f0ad4e;
-}
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_mixins\.scss}line{font-family:\00003204}}
-.json-trace::-webkit-scrollbar-thumb:hover,
-.json-trace pre::-webkit-scrollbar-thumb:hover,
-.console-trace::-webkit-scrollbar-thumb:hover,
-.console-trace pre::-webkit-scrollbar-thumb:hover {
-  background: #ec971f;
-}
 @media (max-width: 600px) {
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003345}}
-  .json-trace,
+  pre.json-trace,
   .json-trace pre,
-  .console-trace,
+  pre.console-trace,
   .console-trace pre {
     height: auto;
   }
@@ -8860,38 +8831,136 @@ ul {
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003285}}
 .col {
   padding: 0;
+  float: none;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-flow: column nowrap;
+  flex-flow: column nowrap;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003291}}
+.col > .heading {
+  -webkit-flex: 0 0 auto;
+  flex: 0 0 auto;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003295}}
+.col > .col-body {
+  -webkit-flex: 1;
+  flex: 1;
+  overflow-x: hidden;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_mixins\.scss}line{font-family:\00003193}}
+.col > .col-body::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_mixins\.scss}line{font-family:\00003198}}
+.col > .col-body::-webkit-scrollbar-track {
+  background: #eee;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_mixins\.scss}line{font-family:\00003202}}
+.col > .col-body::-webkit-scrollbar-thumb {
+  background: #f0ad4e;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_mixins\.scss}line{font-family:\00003204}}
+.col > .col-body::-webkit-scrollbar-thumb:hover {
+  background: #ec971f;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003301}}
+.col > .col-body:not(.tabs) {
+  overflow-y: auto;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003305}}
+.col > .col-body.tabs {
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-flow: column nowrap;
+  flex-flow: column nowrap;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003308}}
+.col > .col-body.tabs > .tab {
+  -webkit-flex: 1;
+  flex: 1;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-flow: column nowrap;
+  flex-flow: column nowrap;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003312}}
+.col > .col-body.tabs > .tab .json-trace,
+.col > .col-body.tabs > .tab .console-trace {
+  -webkit-flex: 1;
+  flex: 1;
+  overflow: auto;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_mixins\.scss}line{font-family:\00003193}}
+.col > .col-body.tabs > .tab .json-trace::-webkit-scrollbar,
+.col > .col-body.tabs > .tab .console-trace::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_mixins\.scss}line{font-family:\00003198}}
+.col > .col-body.tabs > .tab .json-trace::-webkit-scrollbar-track,
+.col > .col-body.tabs > .tab .console-trace::-webkit-scrollbar-track {
+  background: #eee;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_mixins\.scss}line{font-family:\00003202}}
+.col > .col-body.tabs > .tab .json-trace::-webkit-scrollbar-thumb,
+.col > .col-body.tabs > .tab .console-trace::-webkit-scrollbar-thumb {
+  background: #f0ad4e;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_mixins\.scss}line{font-family:\00003204}}
+.col > .col-body.tabs > .tab .json-trace::-webkit-scrollbar-thumb:hover,
+.col > .col-body.tabs > .tab .console-trace::-webkit-scrollbar-thumb:hover {
+  background: #ec971f;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/main\.scss}line{font-family:\0000321}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/main\.scss}line{font-family:\0000322}}
+.main {
+  height: 100%;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-flow: column nowrap;
+  flex-flow: column nowrap;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/main\.scss}line{font-family:\0000328}}
 .container-fluid {
   background-color: #fcfcfc;
-  margin-top: 20px;
+  margin: 0;
+  -webkit-flex: 1;
+  flex: 1;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-flow: column nowrap;
+  flex-flow: column nowrap;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/main\.scss}line{font-family:\0000326}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/main\.scss}line{font-family:\0000336}}
 .page {
   position: relative;
   overflow-y: auto;
   overflow-x: hidden;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex: 1;
+  flex: 1;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/main\.scss}line{font-family:\0000331}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/main\.scss}line{font-family:\0000344}}
 .page h2 {
   font-size: 24px;
   font-weight: normal;
   margin: 0 0 20px 0;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/main\.scss}line{font-family:\0000338}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/main\.scss}line{font-family:\0000351}}
 .header {
   background-color: #29567D;
-  position: fixed;
-  top: 0;
-  left: 0;
   width: 100%;
   height: 20px;
-  z-index: 100;
+  -webkit-flex: 0 0 auto;
+  flex: 0 0 auto;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/main\.scss}line{font-family:\0000346}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/main\.scss}line{font-family:\0000361}}
 .header .rabix-logo {
   font-size: 12px;
   text-transform: uppercase;
@@ -8900,7 +8969,7 @@ ul {
   text-decoration: none;
   padding: 0 20px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/main\.scss}line{font-family:\0000353}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/main\.scss}line{font-family:\0000368}}
 .header .rabix-logo:before {
   content: '';
   display: inline-block;
@@ -8909,17 +8978,17 @@ ul {
   border-bottom: 4px solid transparent;
   margin: 0 5px 0 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/main\.scss}line{font-family:\0000362}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/main\.scss}line{font-family:\0000377}}
 .header .btn-sm, .header .btn-group-sm > .btn {
   padding: 0 10px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/main\.scss}line{font-family:\0000365}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/main\.scss}line{font-family:\0000380}}
 .header .welcome {
   color: #fff;
   font-size: 12px;
   display: block;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/main\.scss}line{font-family:\0000369}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/main\.scss}line{font-family:\0000384}}
 .header .welcome strong {
   margin: 0 5px;
 }
