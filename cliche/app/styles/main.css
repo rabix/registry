@@ -8890,27 +8890,36 @@ ul {
 .col > .col-body.tabs > .tab .console-trace {
   -webkit-flex: 1;
   flex: 1;
-  overflow: auto;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-flow: column nowrap;
+  flex-flow: column nowrap;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003317}}
+.col > .col-body.tabs > .tab .json-trace pre,
+.col > .col-body.tabs > .tab .console-trace pre {
+  -webkit-flex: 1;
+  flex: 1;
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_mixins\.scss}line{font-family:\00003193}}
-.col > .col-body.tabs > .tab .json-trace::-webkit-scrollbar,
-.col > .col-body.tabs > .tab .console-trace::-webkit-scrollbar {
+.col > .col-body.tabs > .tab .json-trace pre::-webkit-scrollbar,
+.col > .col-body.tabs > .tab .console-trace pre::-webkit-scrollbar {
   width: 10px;
   height: 10px;
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_mixins\.scss}line{font-family:\00003198}}
-.col > .col-body.tabs > .tab .json-trace::-webkit-scrollbar-track,
-.col > .col-body.tabs > .tab .console-trace::-webkit-scrollbar-track {
+.col > .col-body.tabs > .tab .json-trace pre::-webkit-scrollbar-track,
+.col > .col-body.tabs > .tab .console-trace pre::-webkit-scrollbar-track {
   background: #eee;
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_mixins\.scss}line{font-family:\00003202}}
-.col > .col-body.tabs > .tab .json-trace::-webkit-scrollbar-thumb,
-.col > .col-body.tabs > .tab .console-trace::-webkit-scrollbar-thumb {
+.col > .col-body.tabs > .tab .json-trace pre::-webkit-scrollbar-thumb,
+.col > .col-body.tabs > .tab .console-trace pre::-webkit-scrollbar-thumb {
   background: #f0ad4e;
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_mixins\.scss}line{font-family:\00003204}}
-.col > .col-body.tabs > .tab .json-trace::-webkit-scrollbar-thumb:hover,
-.col > .col-body.tabs > .tab .console-trace::-webkit-scrollbar-thumb:hover {
+.col > .col-body.tabs > .tab .json-trace pre::-webkit-scrollbar-thumb:hover,
+.col > .col-body.tabs > .tab .console-trace pre::-webkit-scrollbar-thumb:hover {
   background: #ec971f;
 }
 

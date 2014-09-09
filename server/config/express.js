@@ -135,11 +135,7 @@ module.exports = function (app, config) {
 
                         response.on('end', function () {
                             var e = JSON.parse(responseString);
-                            profile.emails = [
-                                {
-                                    value: e[0].email
-                                }
-                            ];
+                            profile.emails = [{value: e[0].email}];
 
                             addUser(e[0].email, gitHubObj, profile).then(function(user) {
                                 profile.id = user.id;

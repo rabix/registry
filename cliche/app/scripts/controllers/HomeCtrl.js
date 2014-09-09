@@ -26,6 +26,7 @@ angular.module('clicheApp')
 
         $scope.view.classes = ['page', 'home', 'row'];
         $scope.view.user = null;
+        $scope.view.repos = [];
 
         Loading.setClasses($scope.view.classes);
 
@@ -42,6 +43,10 @@ angular.module('clicheApp')
         $scope.view.jobForm = Data.job;
 
         $scope.view.loading = true;
+
+        User.getRepos().then(function(result) {
+            $scope.view.repos = result.repos;
+        });
 
         $scope.$watch('$parent.view.fetch', function(doFetch) {
             if (doFetch) {
@@ -236,7 +241,11 @@ angular.module('clicheApp')
          *
          * @param app
          */
-        $scope.importApp = function(app) {
+        $scope.importApp = function(appObj) {
+
+            var app = angular.copy(appObj);
+            //TODO: replace owner, email and repo name
+            app.softwareDescription.repo_owner = '';
 
             Data.setTool(app.json);
             $scope.view.toolForm = app.json;

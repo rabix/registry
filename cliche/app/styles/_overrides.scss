@@ -312,8 +312,12 @@ ul {
         .json-trace,
         .console-trace {
           @include flex(1);
-          overflow: auto;
-          @include scrollBar($orange);
+          @include flex-box();
+          @include flex-flow(column nowrap);
+          pre {
+            @include flex(1);
+            @include scrollBar($orange);
+          }
         }
       }
     }

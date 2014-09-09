@@ -28,7 +28,9 @@
     <div class="col-md-6">
         <div class="form-group">
             <label for="type" class="control-label">Repo Name</label>
-            <input type="text" class="form-control" id="repoName" name="repoName" ng-model="view.toolForm.softwareDescription.repo_name">
+            <select class="form-control" id="repoName" name="repoName" ng-model="view.toolForm.softwareDescription.repo_name" ng-options="repo for repo in view.repos">
+                <option value>-- choose --</option>
+            </select>
         </div>
     </div>
 </div>

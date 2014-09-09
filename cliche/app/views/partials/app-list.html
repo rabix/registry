@@ -5,8 +5,10 @@
 <div class="modal-body">
 
     <p class="center-block">Select an app from the list you want to import</p>
+
     <div ng-class="{loading: view.loading}">
-        <ul class="app-list">
+        <p class="alert alert-info center-block" ng-if="view.apps.length === 0">There are no apps to import at this moment</p>
+        <ul class="app-list" ng-if="view.apps.length > 0">
             <li
                 ng-repeat="app in view.apps"
                 ng-class="{selected: app._id === view.selectedApp._id && !view.selectedRevision, disabled: !app.json}"

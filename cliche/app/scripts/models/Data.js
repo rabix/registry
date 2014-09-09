@@ -157,6 +157,8 @@ angular.module('clicheApp')
 
             self.tool = tool;
 
+            $localForage.setItem('tool', tool);
+
         };
 
         /**
@@ -167,6 +169,8 @@ angular.module('clicheApp')
         self.setJob = function(job) {
 
             self.job = job;
+
+            $localForage.setItem('job', job);
 
         };
 

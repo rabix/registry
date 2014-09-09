@@ -18,6 +18,19 @@ angular.module('clicheApp')
 
         };
 
+
+        /**
+         * Get user's repos
+         *
+         * @returns {object} $promise
+         */
+        self.getRepos = function() {
+
+            var promise = Api.user.get({action: 'repos'}).$promise;
+
+            return promise;
+        };
+
         /**
          * Get the token of the user
          *
