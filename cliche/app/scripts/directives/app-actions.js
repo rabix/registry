@@ -10,7 +10,8 @@ angular.module('clicheApp')
             scope: {
                 form: '=',
                 user: '=',
-                handle: '&'
+                handleImport: '&',
+                handleSave: '&'
             },
             link: function(scope) {
 
@@ -60,6 +61,8 @@ angular.module('clicheApp')
                     var mode = scope.user.id === Data.owner && Data.appId ? 'update' : 'insert';
 
                     App.addApp(mode).then(function(result) {
+
+                        scope.handleSave({user_id: result.user_id, app_id: result._id});
 
                         scope.view.saving = false;
 
@@ -155,7 +158,7 @@ angular.module('clicheApp')
                     });
 
                     modalInstance.result.then(function (selectedApp) {
-                        scope.handle({app: selectedApp});
+                        scope.handleImport({app: selectedApp});
                     });
 
                 };

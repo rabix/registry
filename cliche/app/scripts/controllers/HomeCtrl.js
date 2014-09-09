@@ -255,4 +255,20 @@ angular.module('clicheApp')
 
         };
 
+        /**
+         * Store the owner and the app id for the current app
+         *
+         * @param user_id
+         * @param app_id
+         */
+        $scope.setOwnerAndAppId = function(user_id, app_id) {
+
+            Data.setOwner(user_id);
+            $scope.view.owner = user_id;
+
+            Data.setAppId(app_id);
+            $scope.view.appId = app_id;
+
+        };
+
     }]);
