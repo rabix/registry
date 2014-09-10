@@ -89,47 +89,57 @@ router.put('/apps', filters.authenticated, function (req, res, next) {
 
             var folder = app.repo_owner + '-' + app.repo_name;
 
-            Amazon.createFolder(folder);
-            Amazon.uploadJSON(app.name+'.json', app.json, folder);
-            Amazon.getFileUrl(app.name+'.json', folder, function (url) {
+            Amazon.createFolder(folder).then(
+                function () {
+                    Amazon.uploadJSON(app.name+'.json', app.json, folder).then(
+                        function () {
 
-                app.links.json = url;
+                            Amazon.getFileUrl(app.name+'.json', folder, function (url) {
 
-                app.save(function(err) {
-                    if (err) { return next(err); }
+                                app.links.json = url;
 
-                    Revision.findOne({app_id: data.app_id, current: true}).exec(function(err, oldCurrentRevision) {
-
-                        if (err) { return next(err); }
-
-                        if (oldCurrentRevision) {
-                            oldCurrentRevision.current = false;
-                            oldCurrentRevision.save(function () {
-
-                                Revision.findOne({app_id: data.app_id}).sort({_id: 'desc'}).exec(function(err, newCurrentRevision) {
+                                app.save(function(err) {
                                     if (err) { return next(err); }
 
-                                    newCurrentRevision.current = true;
-                                    newCurrentRevision.save();
+                                    Revision.findOne({app_id: data.app_id, current: true}).exec(function(err, oldCurrentRevision) {
 
-                                    res.json(app);
+                                        if (err) { return next(err); }
+
+                                        if (oldCurrentRevision) {
+                                            oldCurrentRevision.current = false;
+                                            oldCurrentRevision.save(function () {
+
+                                                Revision.findOne({app_id: data.app_id}).sort({_id: 'desc'}).exec(function(err, newCurrentRevision) {
+                                                    if (err) { return next(err); }
+
+                                                    newCurrentRevision.current = true;
+                                                    newCurrentRevision.save();
+
+                                                    res.json(app);
+                                                });
+
+                                            });
+                                        } else {
+                                            Revision.findOne({app_id: data.app_id}).sort({_id: 'desc'}).exec(function(err, newCurrentRevision) {
+                                                if (err) { return next(err); }
+
+                                                newCurrentRevision.current = true;
+                                                newCurrentRevision.save();
+
+                                                res.json(app);
+                                            });
+                                        }
+                                    });
+
                                 });
-
                             });
-                        } else {
-                            Revision.findOne({app_id: data.app_id}).sort({_id: 'desc'}).exec(function(err, newCurrentRevision) {
-                                if (err) { return next(err); }
 
-                                newCurrentRevision.current = true;
-                                newCurrentRevision.save();
-
-                                res.json(app);
-                            });
-                        }
-                    });
-
+                        }, function (error) {
+                            res.status(500).json(error);
+                        });
+                }, function (error) {
+                    res.status(500).json(error);
                 });
-            });
 
         });
 
@@ -167,17 +177,26 @@ router.post('/apps', filters.authenticated, function (req, res, next) {
 
         var folder = app.repo_owner + '-' + app.repo_name;
 
-        Amazon.createFolder(folder);
-        Amazon.uploadJSON(app.name+'.json', app.json, folder);
-        Amazon.getFileUrl(app.name+'.json', folder, function (url) {
-            app.links.json = url;
+        Amazon.createFolder(folder).then(
+            function () {
+                Amazon.uploadJSON(app.name+'.json', app.json, folder).then(
+                    function () {
 
-            app.user_id = req.user.id;
-            app.save();
+                        Amazon.getFileUrl(app.name+'.json', folder, function (url) {
+                            app.links.json = url;
 
-            res.json(app);
-        });
+                            app.user_id = req.user.id;
+                            app.save();
 
+                            res.json(app);
+                        });
+
+                    }, function (error) {
+                        res.status(500).json(error);
+                    });
+            }, function (error) {
+                res.status(500).json(error);
+            });
     });
 
 });
