@@ -1,5 +1,6 @@
 var AWS = require('aws-sdk');
 var mongoose = require('mongoose');
+var logger = require('../common/logger');
 //var config = require('../config/config');
 //var amazon_credentials = config.amazon;
 
@@ -19,16 +20,19 @@ var Amazon = {
         var bucketFolder = BUCKET + '/' + name;
 
         s3.headBucket({Bucket: bucketFolder}, function(err, data) {
-            if(err){
+            if(err) {
                 s3.createBucket({Bucket:bucketFolder}, function(error, data) {
                     if (error) {
-                        promise.reject('There was an error while creating bucket on Amazon');
+                        logger.error('There was an error while creating bucket "' + name + '" on Amazon');
+                        promise.reject('There was an error while creating bucket "' + name + '" on Amazon');
                     } else {
-                        promise.fulfill({message: 'Bucket created', data: data});
+                        logger.info('Bucket "' + name + '" created on Amazon');
+                        promise.fulfill();
                     }
                 });
             } else {
-                promise.fulfill({message: 'Bucket exists and we have access', data: data});
+                logger.info('Bucket "' + name + '" exists and we have access');
+                promise.fulfill();
             }
         });
 
@@ -47,9 +51,11 @@ var Amazon = {
             ContentType: 'json'
         }, function(error, response) {
             if (error) {
-                promise.reject('There was an error while upload json on Amazon');
+                logger.error('There was an error while upload json "' + file_name + '" on Amazon');
+                promise.reject('There was an error while upload json "' + file_name + '" on Amazon');
             } else {
-                promise.fulfill({message: 'uploaded file[' + file_name + '] to [' + file + '] as [' + 'json' + ']', arguments: arguments});
+                logger.info('uploaded file[' + file_name + '] to [' + JSON.stringify(file) + '] as [' + 'json' + ']');
+                promise.fulfill();
             }
         });
 
