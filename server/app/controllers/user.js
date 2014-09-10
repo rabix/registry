@@ -5,6 +5,7 @@ var router = express.Router();
 var uuid = require('node-uuid');
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
+var Subscriber = mongoose.model('Subscriber');
 var filters = require('../../common/route-filters');
 var https = require('https');
 var _ = require('lodash');
@@ -47,6 +48,24 @@ router.delete('/user/token', filters.authenticated, function (req, res, next) {
         if (err) { return next(err); }
 
         res.json({token: user.token});
+    });
+
+});
+
+router.post('/subscribe', function (req, res, next) {
+
+    var email = req.param('email');
+
+    Subscriber.findOne({email: email}, function(err, item) {
+        if (err) { return next(err); }
+
+        if (!item) {
+            var subscriber = new Subscriber();
+            subscriber.email = email;
+            subscriber.save();
+        }
+
+        res.end();
     });
 
 });

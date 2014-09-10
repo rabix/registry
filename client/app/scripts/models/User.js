@@ -62,7 +62,7 @@ angular.module('registryApp')
          */
         self.subscribe = function(email) {
 
-            var promise = Api.subscribe.post({email: email}).$promise;
+            var promise = Api.subscribe.post({}, {email: email}).$promise;
 
             return promise;
         };

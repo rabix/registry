@@ -38,10 +38,10 @@ angular.module('registryApp')
                 return false;
             }
 
-            console.log(User.subscribe($scope.subscribe.email));
+            $scope.view.subscribing = true;
+
             User.subscribe($scope.subscribe.email).then(function (result) {
 
-                console.log(result);
                 $scope.view.message.trace = 'You\'ve subscribed successfully';
                 $scope.view.message.status = true;
 
@@ -51,6 +51,7 @@ angular.module('registryApp')
                     $scope.subscribe = {};
                     $scope.view.showError = false;
                     $scope.view.message = {};
+                    $scope.view.subscribing = false;
                 }, 3000);
 
             });

@@ -38,16 +38,9 @@ angular.module('registryApp')
             delete: {method: 'DELETE'}
         });
 
-        // TODO uncomment later when api ready
-        //this.subscribe = $resource(apiUrl + '/subscribe';
-
-        self.subscribe = {
-            post: function(email) {
-                var deferred = $q.defer();
-                deferred.resolve({message: 'ok', email: email});
-                return {$promise: deferred.promise};
-            }
-        };
+        self.subscribe = $resource(apiUrl + '/subscribe', {}, {
+            post: {method: 'POST'}
+        });
 
         return self;
 

@@ -226,6 +226,7 @@ body {
           padding: 2px 4px;
           font-size: 12px;
           font-weight: normal;
+          min-width: 22px;
           @include border-radius(10px);
         }
       }
