@@ -216,6 +216,19 @@ body {
         display: block;
         white-space: nowrap;
       }
+      &.revision {
+        text-align: center;
+
+        .current {
+          background-color: $blue;
+          color: #fff;
+          display: inline-block;
+          padding: 2px 4px;
+          font-size: 12px;
+          font-weight: normal;
+          @include border-radius(10px);
+        }
+      }
     }
     .status {
       width: 20px;
@@ -254,6 +267,27 @@ body {
         }
       }
     }
+
+    /* Revisions table */
+    &.revisions {
+      th {
+        &:nth-child(1) {
+          text-align: center;
+          width: 10%;
+        }
+        &:nth-child(2),
+        &:nth-child(3) { width: 15%; }
+        &:nth-child(4) { width: 60%; }
+      }
+      td {
+        p {
+          &:not(.alert) {
+            max-width: 500px;
+          }
+        }
+      }
+    }
+
     /* Builds table */
     &.builds {
       th {

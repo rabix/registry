@@ -75,7 +75,7 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="revision in view.revisions">
-                        <td><strong>{{ revision.order }}</strong></td>
+                        <td class="revision"><strong ng-class="{current: revision.current}">{{ revision.order }}</strong></td>
                         <td><a ng-href="#/revision/{{ revision._id }}">{{ revision.name }}</a></td>
                         <td>
                             <a ng-if="revision.repo_id && revision.repo_owner && revision.repo_name" ng-href="#/repo/{{ revision.repo_id }}">{{ revision.repo_owner }}/{{ revision.repo_name }}</a>

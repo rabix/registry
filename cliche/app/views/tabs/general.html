@@ -6,13 +6,13 @@
 <div class="row">
     <div class="col-md-6">
         <div class="form-group required" ng-class="{'has-error': (forms.toolForm.appName.$invalid && forms.toolForm.$dirty)}">
-            <label for="type" class="control-label">App Name</label>
+            <label for="appName" class="control-label">App Name</label>
             <input type="text" class="form-control" id="appName" name="appName" ng-model="view.toolForm.softwareDescription.name" required>
         </div>
     </div>
     <div class="col-md-6">
         <div class="form-group">
-            <label for="type" class="control-label">App Description</label>
+            <label for="appDescription" class="control-label">App Description</label>
             <textarea class="form-control" id="appDescription" name="appDescription" ng-model="view.toolForm.softwareDescription.description"></textarea>
         </div>
     </div>
@@ -21,16 +21,14 @@
 <div class="row">
     <div class="col-md-6">
         <div class="form-group">
-            <label for="type" class="control-label">Repo Owner</label>
-            <input type="text" class="form-control" id="repoOwner" name="repoOwner" ng-model="view.toolForm.softwareDescription.repo_owner">
+            <label for="repoOwner" class="control-label">Repo Owner</label>
+            <input type="text" class="form-control" id="repoOwner" name="repoOwner" ng-model="view.toolForm.softwareDescription.repo_owner" readonly>
         </div>
     </div>
     <div class="col-md-6">
         <div class="form-group">
-            <label for="type" class="control-label">Repo Name</label>
-            <select class="form-control" id="repoName" name="repoName" ng-model="view.toolForm.softwareDescription.repo_name" ng-options="repo for repo in view.repos">
-                <option value>-- choose --</option>
-            </select>
+            <label for="repoName" class="control-label">Repo Name</label>
+            <input type="text" class="form-control" id="repoName" name="repoName" ng-model="view.toolForm.softwareDescription.repo_name">
         </div>
     </div>
 </div>

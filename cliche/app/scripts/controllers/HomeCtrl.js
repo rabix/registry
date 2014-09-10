@@ -26,7 +26,6 @@ angular.module('clicheApp')
 
         $scope.view.classes = ['page', 'home', 'row'];
         $scope.view.user = null;
-        $scope.view.repos = [];
 
         Loading.setClasses($scope.view.classes);
 
@@ -44,10 +43,6 @@ angular.module('clicheApp')
 
         $scope.view.loading = true;
 
-        User.getRepos().then(function(result) {
-            $scope.view.repos = result.repos;
-        });
-
         $scope.$watch('$parent.view.fetch', function(doFetch) {
             if (doFetch) {
 
@@ -64,12 +59,9 @@ angular.module('clicheApp')
                         User.getUser().then(function(result) {
                             $scope.view.user = result.user;
                             if (result.user) {
-                                if (_.isEmpty($scope.view.toolForm.documentAuthor)) {
-                                    $scope.view.toolForm.documentAuthor = result.user.email;
-                                }
-                                if (_.isEmpty($scope.view.toolForm.softwareDescription.repo_owner)) {
-                                    $scope.view.toolForm.softwareDescription.repo_owner = result.user.login;
-                                }
+                                $scope.view.toolForm.documentAuthor = result.user.email;
+                                $scope.view.toolForm.softwareDescription.repo_owner = result.user.login;
+                                $scope.view.toolForm.softwareDescription.repo_name = '';
                             }
                         });
 
@@ -244,8 +236,11 @@ angular.module('clicheApp')
         $scope.importApp = function(appObj) {
 
             var app = angular.copy(appObj);
-            //TODO: replace owner, email and repo name
-            app.softwareDescription.repo_owner = '';
+
+            app.json.documentAuthor = $scope.view.user.email;
+            app.json.softwareDescription.repo_owner = $scope.view.user.login;
+            app.json.softwareDescription.repo_name = '';
+
 
             Data.setTool(app.json);
             $scope.view.toolForm = app.json;

@@ -187,8 +187,6 @@
   }
 }
 
-/* SCROLLBAR STYLE
-================================================ */
 @mixin scrollBar($color) {
   &::-webkit-scrollbar {
     width: 10px;

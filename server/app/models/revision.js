@@ -12,6 +12,7 @@ var RevisionSchema = new Schema({
     repo_name: String,
     repo_owner: String,
     repo_id: String,
+    current: Boolean,
     app_id: { type: Schema.Types.ObjectId, ref: 'App' }
 });
 

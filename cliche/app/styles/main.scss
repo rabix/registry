@@ -3,7 +3,7 @@
 @import "mixins";
 
 html, body {
-  overflow-x: hidden;
+  overflow: hidden;
   height: 100%;
 }
 
@@ -37,9 +37,13 @@ body {
   position: relative;
   overflow-y: auto;
   overflow-x: hidden;
-  //height: 100%;
   @include flex-box();
   @include flex(1);
+  @include scrollBar($orange);
+
+  @media (max-width: 1000px) {
+    @include flex-flow(column nowrap);
+  }
 
   h2 {
     font-size: 24px;
@@ -50,12 +54,8 @@ body {
 
 .header {
   background-color: #29567D;
-  //position: fixed;
-  //top: 0;
-  //left: 0;
   width: 100%;
   height: 20px;
-  //z-index: 100;
   @include flex(0 0 auto);
 
   .rabix-logo {
