@@ -123,8 +123,10 @@ router.put('/apps', filters.authenticated, function (req, res, next) {
                                             Revision.findOne({app_id: data.app_id}).sort({_id: 'desc'}).exec(function(err, newCurrentRevision) {
                                                 if (err) { return next(err); }
 
-                                                newCurrentRevision.current = true;
-                                                newCurrentRevision.save();
+                                                if (newCurrentRevision) {
+                                                    newCurrentRevision.current = true;
+                                                    newCurrentRevision.save();
+                                                }
 
                                                 res.json(app);
                                             });
