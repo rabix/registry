@@ -10,6 +10,7 @@ var Repo = mongoose.model('Repo');
 var Revision = mongoose.model('Revision');
 
 var filters = require('../../common/route-filters');
+var validator = require('../../common/validator');
 var Amazon = require('../../aws/aws').Amazon;
 
 module.exports = function (app) {
@@ -207,4 +208,12 @@ router.delete('/apps', filters.authenticated, function (req, res, next) {
 
 });
 
+router.get('/app-testting', function (req, res, next) {
+
+    var json = {"softwareDescription":{"repo_owner":["milica"],"repo_name":"test","name":"test - update 3","description":"test"},"documentAuthor":["test@test.com"],"requirements":{"environment":{"container":{"type":"docker","uri":"test","imageId":"test"}},"resources":{"cpu":0,"mem":5000,"ports":[],"diskSpace":0,"network":false},"platformFeatures":["transforms/strip_ext","transforms/m-suffix"]},"inputs":{"type":"object","properties":{"reference":{"type":"array","required":false,"adapter":{"order":6,"transform":"transforms/m-suffix","separator":"_","prefix":"","listSeparator":","},"minItems":2,"maxItems":4,"items":{"type":"object","properties":{"test":{"type":"string","adapter":{"separator":[]},"enum":''}}}}}},"outputs":{"type":"object","required":["sam"],"properties":{"sam":{"type":"file","adapter":{"streamable":'',"glob":"output.sam"}}}},"adapter":{"baseCmd":["bwa"],"stdout":["output.sam"],"args":[{"order":0,"value":"mem","separator":"_"},{"order":1,"prefix":[],"valueFrom":"#allocatedResources/cpu","separator":"_"}]}};
+
+    var invalidNodes = validator.validateApp(json);
+
+    res.json({invalidNode: invalidNodes});
+});
 
