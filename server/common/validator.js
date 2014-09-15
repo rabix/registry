@@ -7,54 +7,58 @@ var _ = require('lodash');
 
 var mapDefinition = {
     root: {
-        softwareDescription: {type: 'object'},
-        documentAuthor: {type: 'string'},
-        requirements: {type: 'object'},
+        softwareDescription: {type: 'object', required: true},
+        documentAuthor: {type: 'string', required: true},
+        requirements: {type: 'object', required: true},
         inputs: {type: 'object'},
         outputs: {type: 'object'},
         adapter: {type: 'object'}
     },
     softwareDescription: {
-        repo_owner: {type: 'string'},
-        repo_name: {type: 'string'},
-        name: {type: 'string'},
+        repo_owner: {type: 'string', required: true},
+        repo_name: {type: 'string', required: true},
+        name: {type: 'string', required: true},
         description: {type: 'string'}
     },
     requirements: {
-        environment: {type: 'object'},
-        resources: {type: 'object'},
-        platformFeatures: {type: 'array'}
+        environment: {type: 'object', required: true},
+        resources: {type: 'object', required: true},
+        platformFeatures: {type: 'array', required: true}
     },
     environment: {
-        container: {type: 'object'}
+        container: {type: 'object', required: true}
     },
     container: {
-        type: {type: 'string'},
-        uri: {type: 'string'},
-        imageId: {type: 'string'}
+        type: {type: 'string', required: true},
+        uri: {type: 'string', required: true},
+        imageId: {type: 'string', required: true}
     },
     resources: {
-        cpu: {type: 'number'},
-        mem: {type: 'number'},
+        cpu: {type: 'number', required: true},
+        mem: {type: 'number', required: true},
         ports: {type: 'array'},
-        diskSpace: {type: 'number'},
-        network: {type: 'boolean'}
+        diskSpace: {type: 'number', required: true},
+        network: {type: 'boolean', required: true}
     },
     inputs: {
-        type: {type: 'string'},
-        properties: {type: 'object_custom', name: 'inputs'}
+        type: {type: 'string', required: true},
+        properties: {type: 'object_custom', name: 'inputs', required: true}
     },
     outputs: {
-        type: {type: 'string'},
-        properties: {type: 'object_custom', name: 'outputs'}
+        type: {type: 'string', required: true},
+        properties: {type: 'object_custom', name: 'outputs', required: true}
     },
     adapter: {
-        properties: {type: 'object_custom', name: 'adapter'}
+        baseCmd: {type: 'array', required: true},
+        stdout: {type: 'string', required: true},
+        args: {type: 'object_custom', name: 'adapter', required: true}
     },
     properties: {
         inputs: {
             root: {
-                required: {type: 'boolean'}
+                required: {type: 'boolean', required: true},
+                type: {type: 'string', required: true},
+                adapter: {type: 'object'}
             },
             adapter: {
                 order: {type: 'number'},
@@ -65,6 +69,7 @@ var mapDefinition = {
 
             types: {
                 file: {
+                    root: {},
                     adapter: {
                         streamable: {type: 'boolean'}
                     }
@@ -72,62 +77,72 @@ var mapDefinition = {
                 string: {
                     root: {
                         enum: {type: 'array'}
-                    }
-                },
-                integer: {},
-                boolean: {},
-                array: {
-                    adapter: {
-                        listSeparator: {type: 'string'},
-                        listTransform: {type: 'string'}
                     },
+                    adapter: {}
+                },
+                integer: {
+                    root: {},
+                    adapter: {}
+                },
+                boolean: {
+                    root: {},
+                    adapter: {}
+                },
+                array: {
                     root: {
                         minItems: {type: 'number'},
                         maxItems: {type: 'number'},
                         items: {
-                            type: {type: 'string'},
-                            properties: {type: 'object_custom'}
+                            type: {type: 'string', required: true},
+                            properties: {type: 'object_custom', required: true}
                         }
+                    },
+                    adapter: {
+                        listSeparator: {type: 'string'},
+                        listTransform: {type: 'string'}
                     }
                 }
             }
         },
         outputs: {
             root: {
-                required: {type: 'boolean'}
+                required: {type: 'boolean'},
+                type: {type: 'string', required: true},
+                adapter: {type: 'object', required: true}
             },
             adapter: {
                 glob: {type: 'string'}
             },
             types: {
                 file: {
+                    root: {},
                     adapter: {
                         streamable: {type: 'boolean'}
                     }
                 },
-                directory: {},
+                directory: {
+                    root: {},
+                    adapter: {}
+                },
                 array: {
-                    adapter: {
-                        listStreamable: {type: 'boolean'}
-                    },
                     root: {
                         minItems: {type: 'number'},
                         maxItems: {type: 'number'},
                         items: {
-                            type: {type: 'string'}
+                            type: {type: 'string', required: true}
                         }
+                    },
+                    adapter: {
+                        listStreamable: {type: 'boolean'}
                     }
                 }
             }
         },
         adapter: {
-            root: {
-                baseCmd: {type: 'array'},
-                stdout: {type: 'string'}
-            },
             args: {
                 order: {type: 'number'},
-                value: {type: 'string'},
+                value: {type: ['string', 'number'], required: true},
+                valueFrom: {type: ['string', 'number']},
                 separator: {type: 'string'},
                 prefix: {type: 'string'}
             }
@@ -137,134 +152,263 @@ var mapDefinition = {
 
 var validator = {
 
-    validateInputs: function (props, invalid, parent) {
+    /**
+     * Nodes with invalid value type
+     */
+    invalid: [],
+    /**
+     * Nodes that are not defined by the scheme map
+     */
+    obsolete: {},
+    /**
+     * Nodes that are missing and are required by the scheme map
+     */
+    required: [],
+
+    clear: function () {
+        this.invalid = [];
+        this.obsolete = {};
+        this.required = [];
+    },
+
+    /**
+     * Check if value type of the node is correct
+     *
+     * @param {*} value
+     * @param {*} types
+     * @returns {boolean}
+     */
+    isValidType: function (value, types) {
+
+        var isValidType = function (value, type) {
+            if (type === 'array') {
+                return _.isArray(value);
+            }
+            return typeof value === type;
+        };
+
+        if (_.isArray(types)) {
+
+            var valid = _.find(types, function (type) {
+                return isValidType(value, type);
+            });
+
+            return !_.isUndefined(valid);
+
+        }
+
+        return isValidType(value, types);
+
+    },
+
+    /**
+     * Set obsolete keys defined by the scheme map
+     *
+     * @param values
+     * @param map
+     * @returns {*}
+     */
+    setObsolete: function (prefix, values, map) {
+
+        var keys = [];
+
+        if (_.isArray(map)) {
+            _.each(map, function (child) {
+                keys = keys.concat(_.keys(child));
+            });
+        } else {
+            keys = _.keys(map);
+        }
+
+        var diff = _.difference(_.keys(values), keys);
+
+        if (diff.length > 0) {
+            this.obsolete[prefix] = diff;
+        }
+
+    },
+
+    /**
+     * Set required and invalid nodes defined by the scheme map
+     *
+     * @param {string} prefix
+     * @param {Object} map
+     * @param {Object} prop
+     * @param {string} propName
+     * @param {string} recursionFn
+     */
+    setRequiredAndInvalid: function (prefix, map, prop, /* optional */ propName, /* optional */ recursionFn) {
+
+        var self = this;
+
+        _.each(map, function (attr, key) {
+
+            if (_.isUndefined(prop[key])) {
+                if (attr.required) {
+                    self.required.push(prefix + ':' + key);
+                }
+            } else {
+                if (!self.isValidType(prop[key], attr.type)) {
+                    self.invalid.push(prefix + ':' + key);
+                }
+
+                if (!_.isUndefined(attr.properties) && recursionFn) {
+
+                    self[recursionFn](prop[key].properties, propName);
+
+                } else if (!self.isValidType(prop[key], attr.type)) {
+
+                    self.invalid.push(prefix + ':' + key);
+
+                }
+            }
+
+        });
+
+    },
+
+    /**
+     * Validate input nodes
+     *
+     * @param {Object} props
+     * @param {string} parent
+     */
+    validateInputs: function (props, /* optional */ parent) {
 
         var self = this;
         var map = mapDefinition.properties.inputs;
+        var prefixRoot;
+        var prefixAdapter;
 
         parent = _.isUndefined(parent) ? '' : parent + ':';
 
         _.each(props, function (prop, propName) {
 
-            _.each(map.root, function (attr, key) {
-                if (!_.isUndefined(prop[key]) && typeof prop[key] !== attr.type) {
-                    invalid.push('inputs:' + parent + propName + ':' + key);
-                }
-            });
+            prefixRoot = 'inputs:' + parent + propName;
+            prefixAdapter = 'inputs:' + parent + propName + ':adapter';
 
-            _.each(map.adapter, function (attr, key) {
-                if (!_.isUndefined(prop.adapter[key]) && typeof prop.adapter[key] !== attr.type) {
-                    invalid.push('inputs:' + parent + propName + ':adapter:' + key);
-                }
-            });
+            self.setRequiredAndInvalid(prefixRoot, map.root, prop);
+            self.setRequiredAndInvalid(prefixAdapter, map.adapter, prop.adapter);
 
-            _.each(map.types[prop.type].root, function (attrRoot, key) {
-                if (!_.isUndefined(attrRoot.properties)) {
-                    self.validateInputs(prop[key].properties, invalid, propName);
-                } else if (attrRoot.type !== 'array' && typeof prop[key] !== attrRoot.type || (attrRoot.type === 'array' && !_.isArray(prop[key]))) {
-                    invalid.push('inputs:' + parent + propName + ':' + key);
-                }
-            });
+            if (!_.isUndefined(prop.type)) {
 
-            _.each(map.types[prop.type].adapter, function (attrAdapter, key) {
-                if (!_.isUndefined(prop.adapter[key]) && typeof prop.adapter[key] !== attrAdapter.type) {
-                    invalid.push('inputs:' + parent + propName + ':adapter:' + key);
-                }
-            });
+                self.setObsolete(prefixRoot, prop, [map.root, map.types[prop.type].root]);
+                self.setObsolete(prefixAdapter, prop.adapter, [map.adapter, map.types[prop.type].adapter]);
+
+                self.setRequiredAndInvalid(prefixRoot, map.types[prop.type].root, prop, propName, 'validateInputs');
+                self.setRequiredAndInvalid(prefixAdapter, map.types[prop.type].adapter, prop.adapter);
+            }
         });
     },
 
-    validateOutputs: function (props, invalid) {
+    /**
+     * Validate output nodes
+     *
+     * @param {Object} props
+     */
+    validateOutputs: function (props) {
 
+        var self = this;
         var map = mapDefinition.properties.outputs;
+        var prefixRoot;
+        var prefixAdapter;
 
         _.each(props, function (prop, propName) {
 
-            _.each(map.root, function (attr, key) {
-                if (!_.isUndefined(prop[key]) && typeof prop[key] !== attr.type) {
-                    invalid.push('outputs:' + propName + ':' + key);
-                }
-            });
+            prefixRoot = 'outputs:' + propName;
+            prefixAdapter = 'outputs:' + propName + ':adapter';
 
-            _.each(map.adapter, function (attr, key) {
-                if (!_.isUndefined(prop.adapter[key]) && typeof prop.adapter[key] !== attr.type) {
-                    invalid.push('outputs:' + propName + ':adapter:' + key);
-                }
-            });
+            self.setRequiredAndInvalid(prefixRoot, map.root, prop);
+            self.setRequiredAndInvalid(prefixAdapter, map.adapter, prop.adapter);
 
-            _.each(map.types[prop.type].root, function (attrRoot, key) {
-                if (typeof prop[key] !== attrRoot.type) {
-                    invalid.push('outputs:' + propName + ':' + key);
-                }
-            });
+            if (!_.isUndefined(prop.type)) {
 
-            _.each(map.types[prop.type].adapter, function (attrAdapter, key) {
-                if (!_.isUndefined(prop.adapter[key]) && typeof prop.adapter[key] !== attrAdapter.type) {
-                    invalid.push('outputs:' + propName + ':adapter:' + key);
-                }
-            });
+                self.setObsolete(prefixRoot, prop, [map.root, map.types[prop.type].root]);
+                self.setObsolete(prefixAdapter, prop.adapter, [map.adapter, map.types[prop.type].adapter]);
+
+                self.setRequiredAndInvalid(prefixRoot, map.types[prop.type].root, prop);
+                self.setRequiredAndInvalid(prefixAdapter, map.types[prop.type].adapter, prop.adapter);
+            }
         });
     },
 
-    validateAdapter: function (adapter, invalid) {
+    /**
+     * Validate adapter
+     *
+     * @param {Object} adapter
+     */
+    validateAdapter: function (adapter) {
 
+        var self = this;
         var map = mapDefinition.properties.adapter;
+        var prefix;
 
         _.each(map.root, function (attr, key) {
-            if (attr.type !== 'array' && typeof adapter[key] !== attr.type || (attr.type === 'array' && !_.isArray(adapter[key]))) {
-                invalid.push('adapter:' + key);
+            if (!self.isValidType(adapter[key], attr.type)) {
+                self.invalid.push('adapter:' + key);
             }
         });
 
         _.each(adapter.args, function (arg, index) {
-            _.each(map.args, function (attr, key) {
-                if (!_.isUndefined(arg[key]) && typeof arg[key] !== attr.type) {
-                    invalid.push('adapter:arg[' + index + ']:' + key);
-                }
-            });
+
+            prefix = 'adapter:arg[' + index + ']';
+
+            self.setObsolete(prefix, arg, map.args);
+
+            self.setRequiredAndInvalid(prefix, map.args, arg);
         });
 
     },
 
-    validateApp: function (json, map, invalid, parent) {
+    /**
+     * Validate app's json
+     *
+     * @param {Object} json
+     * @param {Object} map
+     * @param {string} parent
+     * @returns {{invalid: *, obsolete: *, required: *}}
+     */
+    validateApp: function (json, map, /* optional */ parent) {
 
         var self = this;
-        if (_.isUndefined(invalid)) { invalid = []; }
         if (_.isUndefined(map)) { map = mapDefinition.root; }
 
         parent = _.isUndefined(parent) ? '' : parent + ':';
+
+        self.setObsolete(parent + 'root', json, map);
 
         _.each(map, function (attr, key) {
 
             if (attr.type === 'object_custom') {
                 if (attr.name === 'inputs') {
-                    self.validateInputs(json.properties, invalid);
+                    self.validateInputs(json.properties);
                 }
                 if (attr.name === 'outputs') {
-                    self.validateOutputs(json.properties, invalid);
+                    self.validateOutputs(json.properties);
                 }
                 if (attr.name === 'adapter') {
-                    self.validateAdapter(json, invalid);
+                    self.validateAdapter(json);
                 }
             } else {
-                if (attr.type !== 'array' && typeof json[key] !== attr.type || (attr.type === 'array' && !_.isArray(json[key]))) {
-                    invalid.push(parent + key);
-                }
 
-                if (attr.type === 'object') {
-                    if (!_.isUndefined(mapDefinition[key])) {
-                        self.validateApp(json[key], mapDefinition[key], invalid, key);
+                if (_.isUndefined(json[key])) {
+                    if (attr.required) { self.required.push(parent + key); }
+                } else {
+                    if (!self.isValidType(json[key], attr.type)) {
+                        self.invalid.push(parent + key);
+                    }
+                    if (attr.type === 'object') {
+                        if (!_.isUndefined(mapDefinition[key])) {
+                            self.validateApp(json[key], mapDefinition[key], key);
+                        }
                     }
                 }
+
             }
         });
 
-        return invalid;
+        return {invalid: self.invalid, obsolete: self.obsolete, required: self.required};
     }
 };
-
-// TODO: validate required inputs
-// TODO: validate required outputs
-// TODO: validate obsolite properties (maybe?)
 
 module.exports = validator;

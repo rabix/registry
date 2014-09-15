@@ -78,19 +78,9 @@ angular.module('clicheApp')
                             if (_.isUndefined(prop.adapter.separator)) {
                                 prop.adapter.separator = '_';
                             }
-                            if (_.isUndefined(prop.adapter.listSeparator)) {
-                                prop.adapter.listSeparator = 'repeat';
-                            }
-                        });
-
-                        /* add additional args attributes */
-                        _.each($scope.view.toolForm.adapter.args, function(arg) {
-                            if (_.isUndefined(arg.separator)) {
-                                arg.separator = '_';
-                            }
-                            if (!_.isUndefined(arg.valueFrom)) {
-                                arg.value = $scope.view.valuesFrom[arg.valueFrom];
-                            }
+//                            if (_.isUndefined(prop.adapter.listSeparator)) {
+//                                prop.adapter.listSeparator = 'repeat';
+//                            }
                         });
 
                         /* prepare transforms */
@@ -114,6 +104,19 @@ angular.module('clicheApp')
                                 }
                             });
                         });
+
+
+                        /* add additional args attributes */
+                        _.each($scope.view.toolForm.adapter.args, function(arg) {
+                            if (_.isUndefined(arg.separator)) {
+                                arg.separator = '_';
+                            }
+                            if (!_.isUndefined(arg.valueFrom)) {
+                                arg.value = $scope.view.valuesFrom[arg.valueFrom];
+                            }
+                        });
+
+
                     });
 
             }

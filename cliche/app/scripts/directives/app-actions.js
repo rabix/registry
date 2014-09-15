@@ -60,36 +60,39 @@ angular.module('clicheApp')
 
                     var mode = scope.user.id === Data.owner && Data.appId ? 'update' : 'insert';
 
-                    App.addApp(mode).then(function(result) {
+                    App.addApp(mode)
+                        .then(function(result) {
 
-                        scope.handleSave({user_id: result.user_id, app_id: result._id});
+                            scope.handleSave({user_id: result.user_id, app_id: result._id});
 
-                        scope.view.saving = false;
+                            scope.view.saving = false;
 
-                        var trace = {
-                            message: 'App has been ' + (mode === 'update' ? 'updated' : 'added') + ' successfully!',
-                            appId: result._id
-                        };
+                            var trace = {
+                                message: 'App has been ' + (mode === 'update' ? 'updated' : 'added') + ' successfully!',
+                                appId: result._id
+                            };
 
-                        $modal.open({
-                            template: $templateCache.get('views/partials/app-publish-response.html'),
-                            controller: ['$scope', '$modalInstance', 'data', function($scope, $modalInstance, data) {
+                            $modal.open({
+                                template: $templateCache.get('views/partials/app-publish-response.html'),
+                                controller: ['$scope', '$modalInstance', 'data', function($scope, $modalInstance, data) {
 
-                                $scope.view = {};
-                                $scope.view.trace = data.trace;
+                                    $scope.view = {};
+                                    $scope.view.trace = data.trace;
 
-                                /**
-                                 * Close the modal window
-                                 */
-                                $scope.ok = function () {
-                                    $modalInstance.close();
-                                };
+                                    /**
+                                     * Close the modal window
+                                     */
+                                    $scope.ok = function () {
+                                        $modalInstance.close();
+                                    };
 
-                            }],
-                            resolve: { data: function () { return { trace: trace }; }}
+                                }],
+                                resolve: { data: function () { return { trace: trace }; }}
+                            });
+
+                        }, function () {
+                            scope.view.saving = false;
                         });
-
-                    });
 
                 };
 
@@ -115,34 +118,37 @@ angular.module('clicheApp')
                     scope.view.saving = true;
                     scope.view.error = '';
 
-                    App.addRevision().then(function(result) {
+                    App.addRevision()
+                        .then(function(result) {
 
-                        scope.view.saving = false;
+                            scope.view.saving = false;
 
-                        var trace = {
-                            message: 'App revision has been added successfully!',
-                            revisionId: result._id
-                        };
+                            var trace = {
+                                message: 'App revision has been added successfully!',
+                                revisionId: result._id
+                            };
 
-                        $modal.open({
-                            template: $templateCache.get('views/partials/revision-publish-response.html'),
-                            controller: ['$scope', '$modalInstance', 'data', function($scope, $modalInstance, data) {
+                            $modal.open({
+                                template: $templateCache.get('views/partials/revision-publish-response.html'),
+                                controller: ['$scope', '$modalInstance', 'data', function($scope, $modalInstance, data) {
 
-                                $scope.view = {};
-                                $scope.view.trace = data.trace;
+                                    $scope.view = {};
+                                    $scope.view.trace = data.trace;
 
-                                /**
-                                 * Close the modal window
-                                 */
-                                $scope.ok = function () {
-                                    $modalInstance.close();
-                                };
+                                    /**
+                                     * Close the modal window
+                                     */
+                                    $scope.ok = function () {
+                                        $modalInstance.close();
+                                    };
 
-                            }],
-                            resolve: { data: function () { return { trace: trace }; }}
+                                }],
+                                resolve: { data: function () { return { trace: trace }; }}
+                            });
+
+                        }, function () {
+                            scope.view.saving = false;
                         });
-
-                    });
 
                 };
 

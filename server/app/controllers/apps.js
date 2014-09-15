@@ -64,8 +64,13 @@ router.put('/apps', filters.authenticated, function (req, res, next) {
 
     var data = req.body;
 
-    // TODO: Validate app JSON
-//    Validator.validateApp(data);
+//    var check = validator.validateApp(data.tool);
+//    validator.clear();
+//
+//    if (!_.isEmpty(check.invalid) || !_.isEmpty(check.obsolete) || !_.isEmpty(check.required)) {
+//        res.status(400).json({message: JSON.stringify(check)});
+//        return false;
+//    }
 
     App.findById(data.app_id, function(err, app) {
         if (err) { return next(err); }
@@ -152,10 +157,16 @@ router.put('/apps', filters.authenticated, function (req, res, next) {
 
 
 router.post('/apps', filters.authenticated, function (req, res, next) {
+
     var data = req.body;
 
-    // TODO: Validate app JSON
-//    Validator.validateApp(data);
+//    var check = validator.validateApp(data);
+//    validator.clear();
+//
+//    if (!_.isEmpty(check.invalid) || !_.isEmpty(check.obsolete) || !_.isEmpty(check.required)) {
+//        res.status(400).json({message: JSON.stringify(check)});
+//        return false;
+//    }
 
     var desc = data.softwareDescription;
 
@@ -210,10 +221,10 @@ router.delete('/apps', filters.authenticated, function (req, res, next) {
 
 router.get('/app-testting', function (req, res, next) {
 
-    var json = {"softwareDescription":{"repo_owner":["milica"],"repo_name":"test","name":"test - update 3","description":"test"},"documentAuthor":["test@test.com"],"requirements":{"environment":{"container":{"type":"docker","uri":"test","imageId":"test"}},"resources":{"cpu":0,"mem":5000,"ports":[],"diskSpace":0,"network":false},"platformFeatures":["transforms/strip_ext","transforms/m-suffix"]},"inputs":{"type":"object","properties":{"reference":{"type":"array","required":false,"adapter":{"order":6,"transform":"transforms/m-suffix","separator":"_","prefix":"","listSeparator":","},"minItems":2,"maxItems":4,"items":{"type":"object","properties":{"test":{"type":"string","adapter":{"separator":[]},"enum":''}}}}}},"outputs":{"type":"object","required":["sam"],"properties":{"sam":{"type":"file","adapter":{"streamable":'',"glob":"output.sam"}}}},"adapter":{"baseCmd":["bwa"],"stdout":["output.sam"],"args":[{"order":0,"value":"mem","separator":"_"},{"order":1,"prefix":[],"valueFrom":"#allocatedResources/cpu","separator":"_"}]}};
+    var json = {"softwareDescription":{"repo_owner":["milica"],"name":"test - update 3","description":"test"},"documentAuthor":"test@test.com","requirements":{"environment":{"container":{"type":"docker","uri":"test","imageId":"test"}},"resources":{"cpu":0,"mem":5000,"ports":[],"diskSpace":0,"network":false},"platformFeatures":["transforms/strip_ext","transforms/m-suffix"]},"inputs":{"type":"object","properties":{"reference":{"required":false,"adapter":{"order":6,"transform":"transforms/m-suffix","separator":"_","prefix":"","listSeparator":","},"minItems":2,"maxItems":4,"items":{"type":"object","properties":{"test":{"type":"string","adapter":{"separator":[]},"enum":''}}}}}},"outputs":{"properties":{"sam":{"adapter":{"streamable":'',"glob":"output.sam"}}}},"adapter":{"baseCmd":["bwa"],"stdout":["output.sam"],"args":[{"order":0,"value":"mem","separator":"_"},{"test":1, "order":1,"prefix":[],"valueFrom":"#allocatedResources/cpu","separator":"_"}]}};
 
     var invalidNodes = validator.validateApp(json);
 
-    res.json({invalidNode: invalidNodes});
+    res.json(invalidNodes);
 });
 

@@ -10,6 +10,7 @@ var Revision = mongoose.model('Revision');
 var Repo = mongoose.model('Repo');
 
 var filters = require('../../common/route-filters');
+var validator = require('../../common/validator');
 
 module.exports = function (app) {
     app.use('/api', router);
@@ -58,10 +59,16 @@ router.get('/revisions/:id', function (req, res, next) {
 
 
 router.post('/revisions', filters.authenticated, function (req, res, next) {
+
     var data = req.body;
 
-    // TODO: Validate app JSON
-//    Validator.validateApp(data.tool);
+//    var check = validator.validateApp(data.tool);
+//    validator.clear();
+//
+//    if (!_.isEmpty(check.invalid) || !_.isEmpty(check.obsolete) || !_.isEmpty(check.required)) {
+//        res.status(400).json({message: JSON.stringify(check)});
+//        return false;
+//    }
 
     var desc = data.tool.softwareDescription;
 
