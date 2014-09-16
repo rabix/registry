@@ -86,14 +86,13 @@ angular.module('clicheApp')
                         scope.view.error = true;
                         return false;
                     } else {
-                        scope.properties[scope.view.name] = _.cloneDeep(scope.properties[scope.name], function() {
-                            delete scope.properties[scope.name];
-                        });
+                        scope.properties[scope.view.name] = angular.copy(scope.properties[scope.name]);
+
+                        delete scope.properties[scope.name];
+
+                        scope.name = scope.view.name;
+                        scope.view.edit = false;
                     }
-
-                    scope.name = scope.view.name;
-
-                    scope.view.edit = false;
 
                 };
 
@@ -104,6 +103,42 @@ angular.module('clicheApp')
                 scope.stopPropagation = function(e) {
                     e.stopPropagation();
                 };
+
+                var map = Data.getMap().output;
+
+                /* watch for the type change in order to adjust the property structure */
+                scope.$watch('prop.type', function(n, o) {
+                    if (n !== o) {
+
+                        _.each(scope.prop, function(fields, key) {
+
+                            if (!_.contains(_.keys(map[n].root), key) && key !== 'adapter') {
+                                delete scope.prop[key];
+                            }
+
+                            _.each(map[n].root, function(value, field) {
+                                if (_.isUndefined(scope.prop[field])) {
+                                    scope.prop[field] = value;
+                                }
+                            });
+
+                        });
+
+                        _.each(scope.prop.adapter, function(fields, key) {
+
+                            if (!_.contains(_.keys(map[n].adapter), key)) {
+                                delete scope.prop.adapter[key];
+                            }
+
+                            _.each(map[n].adapter, function(value, field) {
+                                if (_.isUndefined(scope.prop.adapter[field])) {
+                                    scope.prop.adapter[field] = value;
+                                }
+                            });
+
+                        });
+                    }
+                });
 
             }
         };

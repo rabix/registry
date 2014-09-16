@@ -208,52 +208,80 @@ angular.module('clicheApp')
         self.getMap = function() {
 
             var map = {
-                file: {
-                    root: {
-                        type: 'string',
-                        required: false
+                input: {
+                    file: {
+                        root: {
+                            type: 'string',
+                            required: false
+                        },
+                        adapter: {prefix: '', separator: '_', order: 0, transform: undefined, streamable: false}
                     },
-                    adapter: {prefix: '', separator: '_', order: 0, transform: undefined, streamable: false}
+                    string: {
+                        root: {
+                            type: 'string',
+                            required: false,
+                            enum: null
+                        },
+                        adapter: {prefix: '', separator: '_', order: 0, transform: undefined}
+                    },
+                    integer: {
+                        root: {
+                            type: 'string',
+                            required: false
+                        },
+                        adapter: {prefix: '', separator: '_', order: 0, transform: undefined}
+                    },
+                    array: {
+                        root: {
+                            type: 'string',
+                            required: false,
+                            minItems: undefined,
+                            maxItems: undefined,
+                            items: {type: 'string'}
+                        },
+                        adapter: {prefix: '', separator: '_', order: 0, transform: undefined, listSeparator: ','}
+                    },
+                    boolean: {
+                        root: {
+                            type: 'string',
+                            required: false
+                        },
+                        adapter: {prefix: '', separator: '_', order: 0, transform: undefined}
+                    },
+                    object: {
+                        root: {
+                            type: 'string',
+                            required: false,
+                            properties: {}
+                        },
+                        adapter: {prefix: '', separator: '_', order: 0, transform: undefined}
+                    }
                 },
-                string: {
-                    root: {
-                        type: 'string',
-                        required: false,
-                        enum: null
+                output: {
+                    file: {
+                        root: {
+                            type: 'string',
+                            required: false
+                        },
+                        adapter: {streamable: false, glob: ''}
                     },
-                    adapter: {prefix: '', separator: '_', order: 0, transform: undefined}
-                },
-                integer: {
-                    root: {
-                        type: 'string',
-                        required: false
+                    directory: {
+                        root: {
+                            type: 'string',
+                            required: false
+                        },
+                        adapter: {glob: ''}
                     },
-                    adapter: {prefix: '', separator: '_', order: 0, transform: undefined}
-                },
-                array: {
-                    root: {
-                        type: 'string',
-                        required: false,
-                        minItems: undefined,
-                        maxItems: undefined,
-                        items: {type: 'string'}
-                    },
-                    adapter: {prefix: '', separator: '_', order: 0, transform: undefined, listSeparator: ','}
-                },
-                boolean: {
-                    root: {
-                        type: 'string',
-                        required: false
-                    },
-                    adapter: {prefix: '', separator: '_', order: 0, transform: undefined}
-                },
-                object: {
-                    root: {
-                        type: 'string',
-                        required: false,
-                        properties: {}
-                    },
-                    adapter: {prefix: '', separator: '_', order: 0, transform: undefined}
+                    array: {
+                        root: {
+                            type: 'string',
+                            required: false,
+                            minItems: undefined,
+                            maxItems: undefined,
+                            items: {type: 'file'}
+                        },
+                        adapter: {listStreamable: false}
+                    }
                 }
             };
 

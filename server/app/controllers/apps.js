@@ -64,13 +64,12 @@ router.put('/apps', filters.authenticated, function (req, res, next) {
 
     var data = req.body;
 
-//    var check = validator.validateApp(data.tool);
-//    validator.clear();
-//
-//    if (!_.isEmpty(check.invalid) || !_.isEmpty(check.obsolete) || !_.isEmpty(check.required)) {
-//        res.status(400).json({message: JSON.stringify(check)});
-//        return false;
-//    }
+    var check = validator.validateApp(data.tool);
+
+    if (!_.isEmpty(check.invalid) || !_.isEmpty(check.obsolete) || !_.isEmpty(check.required)) {
+        res.status(400).json({message: 'There are some errors in your json scheme', json: check});
+        return false;
+    }
 
     App.findById(data.app_id, function(err, app) {
         if (err) { return next(err); }
@@ -160,13 +159,12 @@ router.post('/apps', filters.authenticated, function (req, res, next) {
 
     var data = req.body;
 
-//    var check = validator.validateApp(data);
-//    validator.clear();
-//
-//    if (!_.isEmpty(check.invalid) || !_.isEmpty(check.obsolete) || !_.isEmpty(check.required)) {
-//        res.status(400).json({message: JSON.stringify(check)});
-//        return false;
-//    }
+    var check = validator.validateApp(data);
+
+    if (!_.isEmpty(check.invalid) || !_.isEmpty(check.obsolete) || !_.isEmpty(check.required)) {
+        res.status(400).json({message: 'There are some errors in your json scheme', json: check});
+        return false;
+    }
 
     var desc = data.softwareDescription;
 

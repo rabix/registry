@@ -43,7 +43,7 @@
                     },
                     "adapter": {
                         "order": 3,
-                        "streamable": true
+                        "listStreamable": true
                     }
                 },
                 "minimum_seed_length": {
@@ -71,7 +71,6 @@
         },
         "outputs": {
             "type": "object",
-            "required": ["sam"],
             "properties": {
                 "sam": {
                     "type": "file",
