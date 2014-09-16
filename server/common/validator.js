@@ -56,7 +56,7 @@ var mapDefinition = {
     properties: {
         inputs: {
             root: {
-                required: {type: 'boolean', required: true},
+                required: {type: 'boolean'},
                 type: {type: 'string', required: true},
                 adapter: {type: 'object'}
             },
@@ -92,14 +92,16 @@ var mapDefinition = {
                     root: {
                         minItems: {type: 'number'},
                         maxItems: {type: 'number'},
-                        items: {
-                            type: {type: 'string', required: true},
-                            properties: {type: 'object_custom', required: true}
-                        }
+                        items: {type: 'object', required: true}
                     },
                     adapter: {
                         listSeparator: {type: 'string'},
-                        listTransform: {type: 'string'}
+                        listTransform: {type: 'string'},
+                        listStreamable: {type: 'boolean'}
+                    },
+                    items: {
+                        type: {type: 'string', required: true},
+                        properties: {type: 'object_custom', required: true}
                     }
                 }
             }
@@ -128,12 +130,13 @@ var mapDefinition = {
                     root: {
                         minItems: {type: 'number'},
                         maxItems: {type: 'number'},
-                        items: {
-                            type: {type: 'string', required: true}
-                        }
+                        items: {type: 'object', required: true}
                     },
                     adapter: {
                         listStreamable: {type: 'boolean'}
+                    },
+                    items: {
+                        type: {type: 'string', required: true}
                     }
                 }
             }
@@ -252,7 +255,7 @@ var validator = {
                     self.invalid.push(prefix + ':' + key);
                 }
 
-                if (!_.isUndefined(attr.properties) && recursionFn) {
+                if (attr.type === 'object' && recursionFn) {
 
                     self[recursionFn](prop[key].properties, propName);
 
@@ -371,7 +374,10 @@ var validator = {
     validateApp: function (json, map, /* optional */ parent) {
 
         var self = this;
-        if (_.isUndefined(map)) { map = mapDefinition.root; }
+        if (_.isUndefined(map)) {
+            map = mapDefinition.root;
+            this.clear();
+        }
 
         parent = _.isUndefined(parent) ? '' : parent + ':';
 
@@ -407,7 +413,12 @@ var validator = {
             }
         });
 
-        return {invalid: self.invalid, obsolete: self.obsolete, required: self.required};
+        var output = {};
+        if (!_.isEmpty(self.invalid)) { output.invalid = self.invalid; }
+        if (!_.isEmpty(self.obsolete)) { output.obsolete = self.obsolete; }
+        if (!_.isEmpty(self.required)) { output.required = self.required; }
+
+        return output;
     }
 };
 

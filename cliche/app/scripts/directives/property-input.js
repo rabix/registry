@@ -166,7 +166,7 @@ angular.module('clicheApp')
                         e.stopPropagation();
                     };
 
-                    var map = Data.getMap();
+                    var map = Data.getMap().input;
 
                     /* watch for the type change in order to adjust the property structure */
                     scope.$watch('prop.type', function(n, o) {
