@@ -61,7 +61,7 @@ angular.module('clicheApp')
                             if (result.user) {
                                 $scope.view.toolForm.documentAuthor = result.user.email;
                                 $scope.view.toolForm.softwareDescription.repo_owner = result.user.login;
-                                $scope.view.toolForm.softwareDescription.repo_name = '';
+//                                $scope.view.toolForm.softwareDescription.repo_name = '';
                             }
                         });
 
