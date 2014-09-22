@@ -10,7 +10,7 @@ angular.module('clicheApp')
          *
          * @type {number}
          */
-        self.version = 5;
+        self.version = 6;
 
         /**
          * Tool json object
