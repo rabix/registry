@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('clicheApp')
-    .directive('codemirror', ['$timeout', '$templateCache', 'SandBox', 'Data', function ($timeout, $templateCache, SandBox, Data) {
+    .directive('codemirror', ['$timeout', '$templateCache', 'SandBox', function ($timeout, $templateCache, SandBox) {
         return {
             restrict: 'E',
             replace: true,
@@ -17,6 +17,7 @@ angular.module('clicheApp')
 
                 scope.view = {};
                 scope.view.result = '';
+                scope.view.error = '';
 
                 var timeoutId = $timeout(function () {
 
@@ -29,49 +30,49 @@ angular.module('clicheApp')
 
                 }, 100);
 
+                /**
+                 * Execute the code and show the result
+                 */
                 scope.execute = function () {
 
-                    //TODO: run sandbox eval
                     var code = mirror.getValue();
 
-                    //code.replace(/\$self/gi, scope.arg);
-                    console.log(typeof code, code);
+                    SandBox.evaluate(code, {$self: scope.arg})
+                        .then(function (result) {
 
-                    var input = {
-                        $self: scope.arg
-                    };
+                            scope.view.result = result;
+                            scope.view.error = '';
 
-                    SandBox.evaluate( code
-                        ,
-                        function(res){
-                            console.log(res);
+                        }, function (error) {
 
-                            scope.view.result = res;
-                            scope.$digest();
-                        },
+                            scope.view.result = '';
+                            scope.view.error = error;
 
-                        input,
-
-                        function(err){
-                            console.log(err);
-                            scope.view.result = err;
-                            scope.$digest();
-
-                        }
-                    );
-
+                        });
                 };
 
+                /**
+                 * Load expression to the particular input/output/argument/whatever
+                 */
                 scope.load = function () {
 
                     var code = mirror.getValue();
 
-                    //TODO: evaluate with sandbox.eval and if ok pass it to ExpressionCtrl
+                    SandBox.evaluate(code, {$self: scope.arg})
+                        .then(function () {
 
-                    scope.handleLoad({code: code});
+                            scope.handleLoad({code: code});
+
+                        }, function (error) {
+
+                            scope.view.result = '';
+                            scope.view.error = error;
+
+                        });
                 };
 
                 scope.$on('$destroy', function () {
+                    SandBox.terminate();
                     if (angular.isDefined(timeoutId)) {
                         $timeout.cancel(timeoutId);
                         timeoutId = undefined;

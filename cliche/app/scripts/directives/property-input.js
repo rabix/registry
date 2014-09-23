@@ -34,7 +34,7 @@ angular.module('clicheApp')
 
                     scope.view.propsExpanded = false;
                     scope.view.active = {};
-                    scope.view.disabled = scope.prop.items && scope.prop.items.type === 'object';
+                    scope.view.disabled = (scope.prop.items && scope.prop.items.type) === 'object';
                     scope.view.edit = false;
 
                     /**
@@ -76,6 +76,8 @@ angular.module('clicheApp')
                     scope.toggleEnum = function() {
                         if (scope.view.isEnum) {
                             scope.prop.enum = [''];
+                            Data.removeExpression('input', scope.view.parent);
+
                         } else {
                             scope.prop.enum = null;
                         }

@@ -18,7 +18,7 @@
         </div>
 
         <div class="checkbox"><label><input type="checkbox" ng-model="prop.required"> required</label></div>
-        <button ng-hide="view.disabled" class="btn btn-warning btn-sm pull-right" ng-click="editExpression($event)">expression</button>
+        <button ng-hide="view.disabled || view.isEnum" class="btn btn-warning btn-sm pull-right" ng-click="editExpression($event)">expression</button>
         <span class="remove" ng-click="removeItem($event)">&times;</span>
     </legend>
 

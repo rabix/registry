@@ -318,6 +318,19 @@ legend {
       padding: 10px;
       background-color: #f9f9f9;
       overflow: auto;
+
+      &.split {
+        & > .form-control {
+          display: inline-block;
+          &:nth-child(1) {
+            width: 20%;
+          }
+          &:nth-child(2) {
+            margin-left: -5px;
+            width: 80%;
+          }
+        }
+      }
     }
 
   }
@@ -366,6 +379,15 @@ pre.result  {
   padding-bottom: 40px;
   @include box-shadow(none);
   @include border-radius(0);
+
+  &.error {
+    color: #ff0000;
+    border: 1px solid #cc0000;
+  }
+}
+
+pre.result {
+  padding: 20px;
 }
 
 /* Command box */

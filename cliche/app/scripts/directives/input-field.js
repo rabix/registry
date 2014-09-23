@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('clicheApp')
-    .directive('inputField', ['$templateCache', '$compile', 'RecursionHelper', function ($templateCache, $compile, RecursionHelper) {
+    .directive('inputField', ['$templateCache', '$compile', 'RecursionHelper', 'Data', function ($templateCache, $compile, RecursionHelper, Data) {
 
         var uniqueId = 0;
 
@@ -17,10 +17,12 @@ angular.module('clicheApp')
             },
             compile: function(element) {
                 return RecursionHelper.compile(element, function(scope, iElement) {
+
                     scope.view = {};
 
                     uniqueId++;
                     scope.view.uniqueId = uniqueId;
+                    scope.view.expression = Data.getExpression('input', scope.key);
 
                     var inputScheme = scope.model;
 
@@ -71,6 +73,7 @@ angular.module('clicheApp')
                             scope.model = n;
                         }
                     }, true);
+
 
                 });
             }

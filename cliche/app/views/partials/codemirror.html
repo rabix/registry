@@ -2,7 +2,9 @@
 
     <div class="codemirror-editor"></div>
 
-    <pre class="result">{{ view.result || 'Hit "execute" to see the result of your expression' }}</pre>
+    <pre ng-if="!view.error" class="result">{{ view.result || 'Hit "execute" to see the result of your expression' }}</pre>
+
+    <pre ng-if="view.error" class="result error"><strong>Type:</strong> {{ view.error.name }}<br/><strong>Message:</strong> {{ view.error.message }}</pre>
 
     <div class="center-block">
         <button class="btn btn-danger" ng-click="execute()">Execute</button>

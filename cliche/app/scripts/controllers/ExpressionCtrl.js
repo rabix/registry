@@ -11,6 +11,11 @@ angular.module('clicheApp')
 
         $scope.view.code = expression.code;
 
+        /**
+         * On modal confirm set the appropriate expression and close the modal
+         *
+         * @param value
+         */
         $scope.ok = function (value) {
 
             Data.setExpressionValue($scope.options.type, $scope.options.namespace, value);
@@ -18,6 +23,9 @@ angular.module('clicheApp')
             $modalInstance.close(value);
         };
 
+        /**
+         * On cancel close the modal
+         */
         $scope.cancel = function () {
             $modalInstance.dismiss('cancel');
         };
