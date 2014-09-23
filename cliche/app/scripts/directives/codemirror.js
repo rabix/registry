@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('clicheApp')
-    .directive('codemirror', ['$timeout', '$templateCache', 'JSandbox', function ($timeout, $templateCache, JSandbox) {
+    .directive('codemirror', ['$timeout', '$templateCache', 'SandBox', 'Data', function ($timeout, $templateCache, SandBox, Data) {
         return {
             restrict: 'E',
             replace: true,
@@ -34,17 +34,31 @@ angular.module('clicheApp')
                     //TODO: run sandbox eval
                     var code = mirror.getValue();
 
-                    console.log(code);
+                    //code.replace(/\$self/gi, scope.arg);
+                    console.log(typeof code, code);
 
-                    JSandbox.eval(
-                        code,
-                        function (result) {
-                            console.log('result', result);
-                            scope.view.result = result;
+                    var input = {
+                        $self: scope.arg
+                    };
+
+                    SandBox.evaluate( code
+                        ,
+                        function(res){
+                            console.log(res);
+
+                            scope.view.result = res;
+                            scope.$digest();
                         },
-                        function (error) {
-                            console.log('error', error);
-                        });
+
+                        input,
+
+                        function(err){
+                            console.log(err);
+                            scope.view.result = err;
+                            scope.$digest();
+
+                        }
+                    );
 
                 };
 
