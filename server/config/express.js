@@ -26,8 +26,11 @@ module.exports = function (app, config) {
     }));
     app.use(cookieParser());
     app.use(compress());
+
     app.use('/', express.static(config.root + config.clientPath));
     app.use('/cliche', express.static(config.root + config.clichePath));
+    app.use('/pipeline-editor', express.static(config.root + config.pipelineEditorPath));
+
     app.use(methodOverride());
 
     app.use(session({
