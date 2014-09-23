@@ -19,7 +19,7 @@
         <link rel="stylesheet" href="styles/main.css">
         <!-- endbuild -->
 
-        <link rel="jsandbox" href="vendor/jsandbox/min/jsandbox-worker.min.js" />
+        <link rel="jsandbox" href="vendor/jsandbox/src/jsandbox-worker.js" />
 
     </head>
     <body ng-app="clicheApp">
@@ -42,7 +42,9 @@
         <script src="bower_components/json3/lib/json3.min.js"></script>
         <![endif]-->
 
+
         <!-- build:js scripts/vendor.js -->
+        <script src="vendor/jsandbox/src/jsandbox.js"></script>
         <script src="bower_components/angular/angular.js"></script>
         <script src="bower_components/json3/lib/json3.js"></script>
         <script src="bower_components/angular-resource/angular-resource.js"></script>
@@ -57,7 +59,6 @@
         <script src="bower_components/codemirror/mode/javascript/javascript.js"></script>
         <!-- endbuild -->
 
-        <script src="vendor/jsandbox/min/jsandbox.min.js"></script>
 
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
         <script src="scripts/app.js"></script>

@@ -5,7 +5,7 @@
 "use strict";
 
 angular.module('clicheApp')
-    .factory('JSandbox', function () {
+    .factory('SandBox', [ 'Data', function (Data) {
 
         var Sandbox = new JSandbox();
 
@@ -17,12 +17,16 @@ angular.module('clicheApp')
              * @param code {string}
              * @param success {function}
              *  - first param of the callback is evaluated code result
+             * @param input {object}
              * @param err {function}
              *  - triggered when execution fails, first parameter is err object
              *  - when err is triggered success isn't
              */
-            eval: function (code, success, err) {
-                Sandbox.eval(code, success, null, err);
+            evaluate: function (code, success, input, err) {
+                if (typeof input === 'object' && Data.job) {
+                    input.$job = Data.job;
+                }
+                Sandbox.eval(code, success, input, err);
             },
 
             terminate: function () {
@@ -31,4 +35,4 @@ angular.module('clicheApp')
             }
 
         };
-    });
+    }]);

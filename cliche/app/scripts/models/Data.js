@@ -52,9 +52,9 @@ angular.module('clicheApp')
          * @type {Object}
          */
         self.expressions = {
-            input: {},
-            output: {},
-            adapter: {}
+//            input: {},
+//            output: {},
+//            adapter: {}
         };
 
         /**
@@ -171,7 +171,11 @@ angular.module('clicheApp')
             $localForage.getItem('expressions')
                 .then(function(expressions) {
 
-                    self.expressions = expressions;
+                    self.expressions = expressions || {
+                        input: {},
+                        output: {},
+                        adapter: {}
+                    };
                     deferred.resolve(expressions);
 
                 });
