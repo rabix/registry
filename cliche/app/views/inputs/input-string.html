@@ -1,5 +1,8 @@
 <div class="form-group" ng-class="{required: prop.required, 'has-error': inputForm.inputString.$invalid}">
-    <label class="control-label">{{ key }}</label>
+    <label class="control-label">
+        {{ key }}
+        <expression name="{{ key }}" type="input" arg="view.input"></expression>
+    </label>
 
     <div class="input-property-body">
         <input ng-show="!prop.enum" type="text" class="form-control" name="inputString" ng-model="view.input" ng-required="prop.required">

@@ -242,7 +242,7 @@ label {
 
 pre {
   background-color: #f2f2f2;
-  @include box-shadow(0 0 6px 3px #eee inset);
+  //@include box-shadow(0 0 6px 3px #eee inset);
 }
 
 .center-block {
@@ -342,3 +342,15 @@ ul {
     }
   }
 }
+
+.codemirror {
+  .CodeMirror {
+    margin-bottom: 10px;
+    border: 1px solid #f0ad4e;
+  }
+
+  .result {
+    margin-bottom: 10px;
+  }
+}
+

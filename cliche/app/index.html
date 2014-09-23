@@ -10,6 +10,11 @@
 
         <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700' rel='stylesheet' type='text/css'>
 
+        <!-- build:css styles/vendor.css -->
+        <link rel="stylesheet" href="bower_components/codemirror/lib/codemirror.css">
+        <link rel="stylesheet" href="bower_components/codemirror/theme/mbo.css">
+        <!-- endbuild -->
+
         <!-- build:css({.tmp,app}) styles/main.css -->
         <link rel="stylesheet" href="styles/main.css">
         <!-- endbuild -->
@@ -46,6 +51,8 @@
         <script src="bower_components/localforage/dist/localforage.js"></script>
         <script src="bower_components/angular-localForage/dist/angular-localForage.js"></script>
         <script src="bower_components/zeroclipboard/dist/ZeroClipboard.js"></script>
+        <script src="bower_components/codemirror/lib/codemirror.js"></script>
+        <script src="bower_components/codemirror/mode/javascript/javascript.js"></script>
         <!-- endbuild -->
 
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
@@ -57,6 +64,7 @@
         <script src="scripts/controllers/AddPropertyCtrl.js"></script>
         <script src="scripts/controllers/ModalCtrl.js"></script>
         <script src="scripts/controllers/AppListCtrl.js"></script>
+        <script src="scripts/controllers/ExpressionCtrl.js"></script>
 
         <script src="scripts/directives/error.js"></script>
         <script src="scripts/directives/loading.js"></script>
@@ -70,6 +78,8 @@
         <script src="scripts/directives/zclip.js"></script>
         <script src="scripts/directives/header.js"></script>
         <script src="scripts/directives/app-actions.js"></script>
+        <script src="scripts/directives/codemirror.js"></script>
+        <script src="scripts/directives/expression.js"></script>
 
         <script src="scripts/filters/is-empty.js"></script>
         <script src="scripts/filters/trim.js"></script>

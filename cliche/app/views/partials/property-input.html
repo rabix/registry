@@ -18,6 +18,7 @@
         </div>
 
         <div class="checkbox"><label><input type="checkbox" ng-model="prop.required"> required</label></div>
+        <button ng-hide="view.disabled" class="btn btn-warning btn-sm pull-right" ng-click="editExpression($event)">expression</button>
         <span class="remove" ng-click="removeItem($event)">&times;</span>
     </legend>
 
@@ -58,14 +59,14 @@
             </div>
             <!-- END Separator -->
 
-            <div class="col-md-2">
-                <div class="form-group" title="Transform">
-                    <label for="property-transform-{{ view.uniqueId }}" class="control-label">Transform</label>
-                    <select class="form-control" id="property-transform-{{ view.uniqueId }}" name="{{ name }}-transform" ng-model="prop.adapter.transform" ng-options="transform for transform in transforms" ng-disabled="view.disabled">
-                        <option value="">-- none --</option>
-                    </select>
-                </div>
-            </div>
+            <!--<div class="col-md-2">-->
+                <!--<div class="form-group" title="Transform">-->
+                    <!--<label for="property-transform-{{ view.uniqueId }}" class="control-label">Transform</label>-->
+                    <!--<select class="form-control" id="property-transform-{{ view.uniqueId }}" name="{{ name }}-transform" ng-model="prop.adapter.transform" ng-options="transform for transform in transforms" ng-disabled="view.disabled">-->
+                        <!--<option value="">-- none --</option>-->
+                    <!--</select>-->
+                <!--</div>-->
+            <!--</div>-->
             <!-- END Transform -->
 
             <div class="col-md-2">
@@ -215,6 +216,7 @@
                         ng-model="property"
                         active="view.active[key]"
                         name="{{ key }}"
+                        parent="{{ view.parent }}"
                         form="form"
                         inputs="inputs[name]"
                         properties="prop.items.properties"

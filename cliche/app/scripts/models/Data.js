@@ -47,6 +47,17 @@ angular.module('clicheApp')
         self.command = '';
 
         /**
+         * Defined expression for inputs, outputs and adapters
+         *
+         * @type {Object}
+         */
+        self.expressions = {
+            input: {},
+            output: {},
+            adapter: {}
+        };
+
+        /**
          * Fetch tool object from storage
          *
          * @returns {*}
@@ -141,6 +152,27 @@ angular.module('clicheApp')
 
                     self.appId = appId;
                     deferred.resolve(appId);
+
+                });
+
+            return deferred.promise;
+
+        };
+
+        /**
+         * Fetch expressions from storage
+         *
+         * @returns {*}
+         */
+        self.fetchExpressions = function() {
+
+            var deferred = $q.defer();
+
+            $localForage.getItem('expressions')
+                .then(function(expressions) {
+
+                    self.expressions = expressions;
+                    deferred.resolve(expressions);
 
                 });
 
@@ -299,7 +331,8 @@ angular.module('clicheApp')
 
             $q.all([
                 $localForage.setItem('tool', self.tool),
-                $localForage.setItem('job', self.job)
+                $localForage.setItem('job', self.job),
+                $localForage.setItem('expressions', self.expressions)
             ]).then(
                 function() {
                     deferred.resolve();
@@ -618,6 +651,68 @@ angular.module('clicheApp')
                 });
 
             return deferred.promise;
+
+        };
+
+        /**
+         * Get custom expression for particular field
+         *
+         * @param type
+         * @param name
+         * @returns {*}
+         */
+        self.getExpression = function (type, name) {
+
+            if (_.isUndefined(self.expressions[type][name])) {
+                self.expressions[type][name] = {code: '', active: false, arg: ''};
+            }
+
+            return self.expressions[type][name] || {code: '', active: false, arg: ''};
+
+        };
+
+        self.removeExpression = function (type, name) {
+
+            delete self.expressions[type][name];
+
+        };
+
+        /**
+         * Set expression value for particular field
+         *
+         * @param type
+         * @param name
+         * @param value
+         */
+        self.setExpressionValue = function (type, name, value) {
+
+            self.expressions[type][name].code = value;
+
+        };
+
+        /**
+         * Set expression state for particular field
+         *
+         * @param type
+         * @param name
+         * @param state
+         */
+        self.setExpressionState = function (type, name, state) {
+
+            self.expressions[type][name].active = state;
+
+        };
+
+        /**
+         * Set expression argument for particular field
+         *
+         * @param type
+         * @param name
+         * @param arg
+         */
+        self.setExpressionArg = function (type, name, arg) {
+
+            self.expressions[type][name].arg = arg;
 
         };
 

@@ -50,7 +50,8 @@ angular.module('clicheApp')
                         Data.fetchTool(),
                         Data.fetchJob(),
                         Data.fetchOwner(),
-                        Data.fetchAppId()
+                        Data.fetchAppId(),
+                        Data.fetchExpressions()
                     ]).then(function() {
 
                         $scope.view.toolForm = Data.tool;

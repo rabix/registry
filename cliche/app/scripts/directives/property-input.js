@@ -18,12 +18,15 @@ angular.module('clicheApp')
                 inputs: '=',
                 platformFeatures: '=',
                 valuesFrom: '=',
-                form: '='
+                form: '=',
+                parent: '@'
             },
             compile: function(element) {
                 return RecursionHelper.compile(element, function(scope) {
 
                     scope.view = {};
+
+                    scope.view.parent = scope.parent ? scope.parent + '.' + scope.name : scope.name;
 
                     uniqueId++;
                     scope.view.uniqueId = uniqueId;
@@ -208,6 +211,11 @@ angular.module('clicheApp')
                         if (n !== o) {
                             if (n === 'object') {
                                 scope.view.disabled = true;
+
+                                Data.removeExpression('input', scope.view.parent);
+
+                                scope.inputs[scope.name] = [];
+
                                 if (_.isUndefined(scope.prop.items.properties)) {
                                     scope.prop.items.properties = {};
                                     scope.prop.adapter.prefix = '';
@@ -223,6 +231,30 @@ angular.module('clicheApp')
                             }
                         }
                     });
+
+                    /**
+                     * Edit custom expression for input value evaluation
+                     */
+                    scope.editExpression = function (e) {
+
+                        e.stopPropagation();
+
+                        $modal.open({
+                            template: $templateCache.get('views/partials/edit-expression.html'),
+                            controller: 'ExpressionCtrl',
+                            windowClass: 'modal-expression',
+                            resolve: {
+                                options: function () {
+                                    return {
+                                        name: scope.name,
+                                        namespace: scope.view.parent,
+                                        type: 'input'
+                                    };
+                                }
+                            }
+                        });
+
+                    };
 
 
                 });

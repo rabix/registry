@@ -204,7 +204,7 @@ legend {
 
     .checkbox {
       display: inline-block;
-      margin: 5px 10px 0 0;
+      margin: 5px 10px 0 5px;
       float: right;
     }
 
@@ -311,14 +311,22 @@ legend {
       border-bottom: 1px solid #ddd;
       display: block;
       background-color: #eee;
+      position: relative;
     }
 
     & > .input-property-body {
       padding: 10px;
       background-color: #f9f9f9;
+      overflow: auto;
     }
 
   }
+}
+
+.expression-action {
+  position: absolute;
+  right: 0px;
+  top: 0px;
 }
 
 /* Modal main actions (cancel, ok and so on) */
@@ -332,7 +340,8 @@ legend {
 pre.json-trace,
 .json-trace pre,
 pre.console-trace,
-.console-trace pre {
+.console-trace pre,
+pre.result  {
   background-color: #222;
   border-color: $orange;
   color: $orange;
