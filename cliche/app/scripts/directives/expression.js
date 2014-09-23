@@ -20,7 +20,7 @@ angular.module('clicheApp')
 
                 scope.toggleEval = function () {
 
-                    scope.view.expression.active = !scope.view.expression.active;
+//                    scope.view.expression.active = !scope.view.expression.active;
 
                     if (scope.view.expression.active) {
                         scope.arg = scope.arg + '-transformed';

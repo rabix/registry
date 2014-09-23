@@ -34,7 +34,6 @@ angular.module('clicheApp')
                     //TODO: run sandbox eval
                     var code = mirror.getValue();
 
-                    //code.replace(/\$self/gi, scope.arg);
                     console.log(code);
 
                     JSandbox.eval(

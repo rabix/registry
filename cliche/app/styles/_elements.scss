@@ -324,9 +324,11 @@ legend {
 }
 
 .expression-action {
-  position: absolute;
-  right: 0px;
-  top: 0px;
+  float: right;
+  .checkbox {
+    margin: 0;
+    color: #555;
+  }
 }
 
 .expression-form {

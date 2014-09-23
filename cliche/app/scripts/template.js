@@ -117,7 +117,7 @@ angular.module('clicheApp').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('views/partials/expression.html',
-    "<div class=\"expression-action\" ng-show=\"view.expression.code\"><button class=\"btn btn-sm\" ng-class=\"{'btn-primary': view.expression.active, 'btn-default': !view.expression.active}\" ng-click=\"toggleEval()\">eval</button></div>"
+    "<div class=\"expression-action\" ng-show=\"view.expression.code\"><!--<button class=\"btn btn-sm\" ng-class=\"{'btn-primary': view.expression.active, 'btn-default': !view.expression.active}\" ng-click=\"toggleEval()\">eval</button>--><div class=\"checkbox\"><label><input type=\"checkbox\" ng-model=\"view.expression.active\" ng-change=\"toggleEval()\" class=\"ng-pristine ng-valid\"> evaluate</label></div></div>"
   );
 
 
