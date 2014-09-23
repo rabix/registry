@@ -78,7 +78,7 @@ router.get('/builds/:id/log', function (req, res, next) {
             Amazon.getFile(build.log_dir, 'build-logs', function (err, data) {
                 res.json({
                     status: build.status,
-                    content: data,
+                    content: data.Body.toString(),
                     contentLength: data.toString().length
                 });
             });
