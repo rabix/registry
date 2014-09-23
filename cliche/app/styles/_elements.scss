@@ -329,6 +329,19 @@ legend {
   top: 0px;
 }
 
+.expression-form {
+  margin-bottom: 10px;
+  .form-group {
+    margin-right: 10px;
+    .control-label {
+      margin-right: 10px;
+    }
+    .form-control {
+      width: 100px;
+    }
+  }
+}
+
 /* Modal main actions (cancel, ok and so on) */
 .main-actions {
   overflow: auto;

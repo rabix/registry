@@ -102,7 +102,7 @@ angular.module('clicheApp').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('views/partials/edit-expression.html',
-    "<div class=\"modal-header\"><button type=\"button\" class=\"close\" ng-click=\"cancel()\"><span>&times;</span><span class=\"sr-only\">Close</span></button><h4 class=\"modal-title\">Define expression</h4></div><div class=\"modal-body\"><codemirror code=\"view.code\" handle-load=\"ok(code)\"></codemirror></div>"
+    "<div class=\"modal-header\"><button type=\"button\" class=\"close\" ng-click=\"cancel()\"><span>&times;</span><span class=\"sr-only\">Close</span></button><h4 class=\"modal-title\">Define expression</h4></div><div class=\"modal-body\"><form class=\"expression-form form-inline\"><div class=\"form-group\"><label class=\"control-label\">$self</label><input type=\"text\" class=\"form-control input-sm\" ng-model=\"view.arg\"></div><div class=\"form-group\"><label class=\"control-label\">Available:</label><span>$job</span></div></form><codemirror code=\"view.code\" arg=\"view.arg\" handle-load=\"ok(code)\"></codemirror></div>"
   );
 
 

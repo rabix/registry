@@ -1,13 +1,14 @@
 'use strict';
 
 angular.module('clicheApp')
-    .directive('codemirror', ['$timeout', '$templateCache', function ($timeout, $templateCache) {
+    .directive('codemirror', ['$timeout', '$templateCache', 'JSandbox', function ($timeout, $templateCache, JSandbox) {
         return {
             restrict: 'E',
             replace: true,
             template: $templateCache.get('views/partials/codemirror.html'),
             scope: {
                 code: '=',
+                arg: '=',
                 handleLoad: '&'
             },
             link: function(scope, element) {
@@ -17,7 +18,7 @@ angular.module('clicheApp')
                 scope.view = {};
                 scope.view.result = '';
 
-                $timeout(function () {
+                var timeoutId = $timeout(function () {
 
                     mirror = CodeMirror(element[0].querySelector('.codemirror-editor'), {
                         lineNumbers: true,
@@ -33,7 +34,18 @@ angular.module('clicheApp')
                     //TODO: run sandbox eval
                     var code = mirror.getValue();
 
-                    scope.view.result = code;
+                    //code.replace(/\$self/gi, scope.arg);
+                    console.log(code);
+
+                    JSandbox.eval(
+                        code,
+                        function (result) {
+                            console.log('result', result);
+                            scope.view.result = result;
+                        },
+                        function (error) {
+                            console.log('error', error);
+                        });
 
                 };
 
@@ -45,6 +57,13 @@ angular.module('clicheApp')
 
                     scope.handleLoad({code: code});
                 };
+
+                scope.$on('$destroy', function () {
+                    if (angular.isDefined(timeoutId)) {
+                        $timeout.cancel(timeoutId);
+                        timeoutId = undefined;
+                    }
+                });
 
             }
         };

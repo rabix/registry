@@ -4,6 +4,17 @@
 </div>
 <div class="modal-body">
 
-    <codemirror code="view.code" handle-load="ok(code)"></codemirror>
+    <form class="expression-form form-inline">
+        <div class="form-group">
+            <label class="control-label">$self</label>
+            <input type="text" class="form-control input-sm" ng-model="view.arg" />
+        </div>
+        <div class="form-group">
+            <label class="control-label">Available:</label>
+            <span>$job</span>
+        </div>
+    </form>
+
+    <codemirror code="view.code" arg="view.arg" handle-load="ok(code)"></codemirror>
 
 </div>
