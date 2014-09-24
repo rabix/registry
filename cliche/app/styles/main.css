@@ -8246,12 +8246,12 @@ legend.toggle.active:after {
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003325}}
 .input-property > .form-group > .input-property-body.split > .form-control:nth-child(1) {
-  width: 20%;
+  width: 40%;
 }
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003328}}
 .input-property > .form-group > .input-property-body.split > .form-control:nth-child(2) {
   margin-left: -5px;
-  width: 80%;
+  width: 60%;
 }
 
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003339}}

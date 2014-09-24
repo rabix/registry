@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('clicheApp')
-    .directive('inputField', ['$templateCache', '$compile', 'RecursionHelper', 'Data', function ($templateCache, $compile, RecursionHelper, Data) {
+    .directive('inputField', ['$templateCache', '$compile', '$timeout', '$q', 'RecursionHelper', 'Data', 'SandBox', function ($templateCache, $compile, $timeout, $q, RecursionHelper, Data, SandBox) {
 
         var uniqueId = 0;
 
@@ -13,7 +13,9 @@ angular.module('clicheApp')
                 model: '=ngModel',
                 prop: '=',
                 key: '@',
-                form: '='
+                form: '=',
+                parent: '@',
+                index: '@'
             },
             compile: function(element) {
                 return RecursionHelper.compile(element, function(scope, iElement) {
@@ -22,7 +24,43 @@ angular.module('clicheApp')
 
                     uniqueId++;
                     scope.view.uniqueId = uniqueId;
-                    scope.view.expression = Data.getExpression('input', scope.key);
+                    scope.view.parent = scope.parent ? scope.parent + '.' + scope.key : scope.key;
+                    scope.view.expression = Data.getExpression('input', scope.parent);
+                    scope.view.index = scope.index || 0;
+
+                    $timeout(function () {
+                        if (scope.view.expression.active[scope.view.index]) {
+                            scope.view.arg = scope.view.expression.arg[scope.view.index];
+                        }
+                    }, 100);
+
+                    scope.$watch('view.arg', function (n, o) {
+                        if (n !== o) {
+
+                            if (_.isObject(n)) {
+                                var promises = [];
+                                _.each(n, function (arg) {
+                                    promises.push(
+                                        SandBox.evaluate(scope.view.expression.code, {$self: arg})
+                                            .then(function (result) {
+                                                return !result && isNaN(result) ? null : result;
+                                            })
+                                    );
+                                });
+                                $q.all(promises).then(function (result) {
+                                    scope.view.input = result;
+                                });
+
+                            } else {
+                                SandBox.evaluate(scope.view.expression.code, {$self: n})
+                                    .then(function (result) {
+                                        scope.view.input = !result && isNaN(result) ? null : result;
+                                    });
+                            }
+                            Data.setExpressionArg('input', scope.view.parent, n, scope.view.index);
+                        }
+                    }, true);
+
 
                     var inputScheme = scope.model;
 
@@ -53,12 +91,16 @@ angular.module('clicheApp')
                             });
                             break;
                         default:
-                            inputScheme.push(_.isObject(scope.model) ? '' : scope.model);
+                            _.each(scope.model, function(value) {
+                                var innerScheme = _.isObject(value) ? '' : value;
+                                inputScheme.push(innerScheme);
+                            });
                             break;
                         }
                     } else {
                         inputScheme = _.isObject(scope.model) ? '' : scope.model;
                     }
+
 
                     scope.view.input = inputScheme;
 

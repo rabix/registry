@@ -5,8 +5,21 @@
             (<strong ng-if="prop.minItems">min: {{ prop.minItems }} </strong>
             <strong ng-if="prop.maxItems">max: {{ prop.maxItems }}</strong>)
         </span>
+        <!--<expression name="{{ view.parent }}" type="input" arg="view.input" index="{{ view.index }}" expression="view.expression"></expression>-->
     </label>
     <div class="input-property-body" ng-class="{split: view.expression.active}">
-        <enum ng-model="view.input" type="prop.items.type" min="prop.minItems" max="prop.maxItems" properties="prop.items.properties" is-required="prop.required" form="form"></enum>
+        <enum
+             ng-model="view.input"
+             type="prop.items.type"
+             min="prop.minItems"
+             max="prop.maxItems"
+             properties="prop.items.properties"
+             is-required="prop.required"
+             form="form"
+             index="{{ view.index }}"
+             parent="{{ view.parent }}"
+             expression="view.expression"
+             arg="view.arg">
+        </enum>
     </div>
 </div>

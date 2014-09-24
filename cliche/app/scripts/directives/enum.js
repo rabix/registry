@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('clicheApp')
-    .directive('enum', ['$templateCache', function ($templateCache) {
+    .directive('enum', ['$templateCache', '$timeout', function ($templateCache, $timeout) {
         return {
             restrict: 'E',
             replace: true,
@@ -13,13 +13,19 @@ angular.module('clicheApp')
                 max: '=',
                 properties: '=',
                 isRequired: '=',
-                form: '='
+                form: '=',
+                parent: '@',
+                index: '@',
+                expression: '=',
+                arg: '='
             },
             link: function(scope) {
 
                 scope.view = {};
-                scope.view.list = [];
+                scope.view.index = scope.index || 0;
                 scope.view.tplPath = 'views/enum/enum-' + scope.type  + '.html';
+
+                console.log(scope.arg);
 
                 /**
                  * Get schema for the appropriate enum type
@@ -41,15 +47,22 @@ angular.module('clicheApp')
 
                 };
 
-                if ((!_.isArray(scope.model) || scope.model.length === 0) && !isNaN(scope.min)) {
-                    _.times(scope.min, function() {
-                        scope.view.list.push({value: scope.getSchema()});
-                    });
-                } else {
-                    _.each(scope.model, function(item) {
-                        scope.view.list.push({value: item});
-                    });
-                }
+                scope.transformList = function (list) {
+
+                    scope.view.list = [];
+
+                    if ((!_.isArray(list) || list.length === 0) && !isNaN(scope.min)) {
+                        _.times(scope.min, function() {
+                            scope.view.list.push({value: scope.getSchema()});
+                        });
+                    } else {
+                        _.each(list, function(item) {
+                            scope.view.list.push({value: item});
+                        });
+                    }
+                };
+
+                scope.transformList(scope.model);
 
                 /**
                  * Add item to the list
@@ -78,6 +91,25 @@ angular.module('clicheApp')
                 scope.$watch('view.list', function(n, o) {
                     if (n !== o) {
                         scope.model = _.pluck(n, 'value');
+                    }
+                }, true);
+
+                scope.$watch('expression.active[' + scope.view.index + ']', function(n, o) {
+                    if (n !== o) {
+                        $timeout(function () {
+                            scope.transformList(scope.model);
+                        }, 100);
+                    }
+                });
+
+                scope.$watch('expression.arg[0]', function(n, o) {
+                    if (n !== o) {
+                        console.log(n);
+                        if (_.isArray(n)) {
+                            $timeout(function () {
+                                scope.transformList(scope.model);
+                            }, 100);
+                        }
                     }
                 }, true);
 

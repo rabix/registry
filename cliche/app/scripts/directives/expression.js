@@ -10,68 +10,48 @@ angular.module('clicheApp')
                 name: '@',
                 type: '@',
                 arg: '=',
-                expression: '='
+                expression: '=',
+                index: '@'
             },
             link: function(scope) {
 
+                scope.view = {};
+
                 scope.expression = Data.getExpression(scope.type, scope.name);
+                scope.index = scope.index || 0;
+                scope.arg = scope.arg || '';
 
                 /**
                  * Toggle evaluation application
                  */
                 scope.toggleEvaluation = function () {
 
-                    if (scope.expression.active) {
+                    if (scope.expression.active[scope.index]) {
 
-                        Data.setExpressionArg(scope.type, scope.name, scope.arg);
+                        Data.setExpressionArg(scope.type, scope.name, scope.arg, scope.index);
 
-                        SandBox.evaluate(scope.expression.code, {$self: scope.expression.arg})
-                            .then(function (result) {
-                                scope.arg = !result && isNaN(result) ? null : result;
-                            }, function () {
-                                scope.arg = '';
+                        if (_.isArray(scope.arg)) {
+                            _.each(scope.arg, function (arg, index) {
+                                SandBox.evaluate(scope.expression.code, {$self: arg})
+                                    .then(function (result) {
+                                        scope.arg[index] = !result && isNaN(result) ? null : result;
+                                    });
                             });
-                    } else {
-                        scope.arg = scope.expression.arg;
-                    }
-
-                    Data.setExpressionState(scope.type, scope.name, scope.expression.active);
-
-                };
-
-                /* watch for the $self argument to change and initiate evaluation */
-                scope.$watch('expression.arg', function (n, o) {
-                    if (n !== o) {
-
-//                        if (_.isArray(n)) {
-//
-//                            var promises = [];
-//
-//                            _.each(n, function (arg) {
-//                                var promise = SandBox.evaluate(scope.expression.code, {$self: arg})
-//                                    .then(function (result) {
-//                                        return !result && isNaN(result) ? null : result;
-//                                    });
-//                                promises.push(promise);
-//                            });
-//
-//                            $q.all(promises)
-//                                .then(function (args) {
-//                                    console.log(args);
-//                                    scope.arg = args;
-//                                });
-//
-//                        } else {
-                            SandBox.evaluate(scope.expression.code, {$self: scope.expression.arg})
+                        } else {
+                            SandBox.evaluate(scope.expression.code, {$self: scope.arg})
                                 .then(function (result) {
                                     scope.arg = !result && isNaN(result) ? null : result;
                                 });
-//                        }
+                        }
 
 
-                        Data.setExpressionArg(scope.type, scope.name, n);
+                    } else {
+                        scope.arg = scope.expression.arg[scope.index];
                     }
-                });
+
+                    Data.setExpressionState(scope.type, scope.name, scope.expression.active[scope.index], scope.index);
+
+                };
 
             }
         };

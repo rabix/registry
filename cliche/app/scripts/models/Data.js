@@ -647,7 +647,8 @@ angular.module('clicheApp')
                             $localForage.setItem('tool', {}),
                             $localForage.setItem('job', {}),
                             $localForage.removeItem('owner'),
-                            $localForage.removeItem('app_id')
+                            $localForage.removeItem('app_id'),
+                            $localForage.removeItem('expressions')
                         ]).then(function() {
                             deferred.resolve();
                         });
@@ -667,11 +668,12 @@ angular.module('clicheApp')
          */
         self.getExpression = function (type, name) {
 
-            if (_.isUndefined(self.expressions[type][name])) {
-                self.expressions[type][name] = {code: '', active: false, arg: ''};
+            if (name && _.isUndefined(self.expressions[type][name])) {
+                console.log('getExpression', type, name);
+                self.expressions[type][name] = {code: '', active: {}, arg: {}};
             }
 
-            return self.expressions[type][name] || {code: '', active: false, arg: ''};
+            return self.expressions[type][name];
 
         };
 
@@ -701,9 +703,11 @@ angular.module('clicheApp')
          * @param name
          * @param state
          */
-        self.setExpressionState = function (type, name, state) {
+        self.setExpressionState = function (type, name, state, index) {
 
-            self.expressions[type][name].active = state;
+            index = index || 0;
+
+            self.expressions[type][name].active[index] = state;
 
         };
 
@@ -714,9 +718,11 @@ angular.module('clicheApp')
          * @param name
          * @param arg
          */
-        self.setExpressionArg = function (type, name, arg) {
+        self.setExpressionArg = function (type, name, arg, index) {
 
-            self.expressions[type][name].arg = arg;
+            index = index || 0;
+
+            self.expressions[type][name].arg[index] = arg;
 
         };
 

@@ -12,12 +12,12 @@ angular.module('clicheApp').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('views/enum/enum-object.html',
-    "<div class=\"enum-field form-group form-group-object\"><input-field ng-repeat=\"(innerKey, property) in properties\" ng-model=\"item.value[innerKey]\" key=\"{{ innerKey }}\" prop=\"property\" form=\"form\"></input-field></div>"
+    "<div class=\"enum-field form-group form-group-object\"><input-field ng-repeat=\"(innerKey, property) in properties\" ng-model=\"item.value[innerKey]\" key=\"{{ innerKey }}\" prop=\"property\" form=\"form\" index=\"{{ view.index + '.' + $parent.$index }}\" parent=\"{{ parent }}\"></input-field></div>"
   );
 
 
   $templateCache.put('views/enum/enum-string.html',
-    "<ng-form name=\"inputForm\" class=\"input-property\"><div class=\"enum-field form-group form-group-file\" ng-class=\"{'has-error': inputForm.enumString.$invalid}\"><input type=\"string\" class=\"form-control\" name=\"enumString\" ng-model=\"item.value\" placeholder=\"Enter Value\" ng-required=\"isRequired\"></div></ng-form>"
+    "<ng-form name=\"inputForm\" class=\"input-property\"><div class=\"enum-field form-group form-group-file\" ng-class=\"{'has-error': inputForm.enumString.$invalid, split: expression.active[view.index]}\"><input ng-if=\"expression.active[view.index]\" type=\"text\" class=\"form-control\" ng-model=\"arg[$index]\"> <input type=\"string\" class=\"form-control\" name=\"enumString\" ng-model=\"item.value\" placeholder=\"Enter Value\" ng-required=\"isRequired\" ng-readonly=\"expression.active[view.index]\"></div></ng-form>"
   );
 
 
@@ -27,7 +27,7 @@ angular.module('clicheApp').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('views/inputs/input-array.html',
-    "<div class=\"form-group\" ng-class=\"{required: prop.required, 'has-error': ((view.input.length < prop.minItems && prop.minItems > 0) || (view.input.length > prop.maxItems && prop.maxItems > 0))}\"><label class=\"control-label\">{{ key }} <span ng-if=\"prop.minItems || prop.maxItems\">(<strong ng-if=\"prop.minItems\">min: {{ prop.minItems }}</strong> <strong ng-if=\"prop.maxItems\">max: {{ prop.maxItems }}</strong>)</span></label><div class=\"input-property-body\" ng-class=\"{split: view.expression.active}\"><enum ng-model=\"view.input\" type=\"prop.items.type\" min=\"prop.minItems\" max=\"prop.maxItems\" properties=\"prop.items.properties\" is-required=\"prop.required\" form=\"form\"></enum></div></div>"
+    "<div class=\"form-group\" ng-class=\"{required: prop.required, 'has-error': ((view.input.length < prop.minItems && prop.minItems > 0) || (view.input.length > prop.maxItems && prop.maxItems > 0))}\"><label class=\"control-label\">{{ key }} <span ng-if=\"prop.minItems || prop.maxItems\">(<strong ng-if=\"prop.minItems\">min: {{ prop.minItems }}</strong> <strong ng-if=\"prop.maxItems\">max: {{ prop.maxItems }}</strong>)</span><expression name=\"{{ view.parent }}\" type=\"input\" arg=\"view.input\" index=\"{{ view.index }}\" expression=\"view.expression\"></expression></label><div class=\"input-property-body\" ng-class=\"{split: view.expression.active}\"><enum ng-model=\"view.input\" type=\"prop.items.type\" min=\"prop.minItems\" max=\"prop.maxItems\" properties=\"prop.items.properties\" is-required=\"prop.required\" form=\"form\" index=\"{{ view.index }}\" parent=\"{{ view.parent }}\" expression=\"view.expression\" arg=\"view.arg\"></enum></div></div>"
   );
 
 
@@ -37,22 +37,22 @@ angular.module('clicheApp').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('views/inputs/input-file.html',
-    "<div class=\"form-group\" ng-class=\"{required: prop.required, 'has-error': inputForm.inputFile.$invalid}\"><label class=\"control-label\">{{ key }}<expression name=\"{{ key }}\" type=\"input\" arg=\"view.input.path\" expression=\"view.expression\"></expression></label><div class=\"input-property-body\" ng-class=\"{split: view.expression.active}\"><input ng-if=\"view.expression.active\" type=\"text\" class=\"form-control\" ng-model=\"view.expression.arg\"> <input type=\"text\" class=\"form-control\" name=\"inputFile\" ng-model=\"view.input.path\" ng-required=\"prop.required\" ng-readonly=\"view.expression.active\"></div></div>"
+    "<div class=\"form-group\" ng-class=\"{required: prop.required, 'has-error': inputForm.inputFile.$invalid}\"><label class=\"control-label\">{{ key }}<expression name=\"{{ view.parent }}\" type=\"input\" arg=\"view.input.path\" index=\"{{ view.index }}\" expression=\"view.expression\"></expression></label><div class=\"input-property-body\" ng-class=\"{split: view.expression.active[view.index]}\"><input ng-if=\"view.expression.active[view.index]\" type=\"text\" class=\"form-control\" ng-model=\"view.arg\"> <input type=\"text\" class=\"form-control\" name=\"inputFile\" ng-model=\"view.input.path\" ng-required=\"prop.required\" ng-readonly=\"view.expression.active[view.index]\"></div></div>"
   );
 
 
   $templateCache.put('views/inputs/input-integer.html',
-    "<div class=\"form-group\" ng-class=\"{required: prop.required, 'has-error': inputForm.inputInteger.$invalid}\"><label class=\"control-label\">{{ key }}<expression name=\"{{ key }}\" type=\"input\" arg=\"view.input\" expression=\"view.expression\"></expression></label><div class=\"input-property-body\" ng-class=\"{split: view.expression.active}\"><input ng-if=\"view.expression.active\" type=\"number\" class=\"form-control\" ng-model=\"view.expression.arg\"> <input type=\"number\" class=\"form-control\" name=\"inputInteger\" ng-model=\"view.input\" ng-required=\"prop.required\" ng-readonly=\"view.expression.active\"></div></div>"
+    "<div class=\"form-group\" ng-class=\"{required: prop.required, 'has-error': inputForm.inputInteger.$invalid}\"><label class=\"control-label\">{{ key }}<expression name=\"{{ view.parent }}\" type=\"input\" arg=\"view.input\" index=\"{{ view.index }}\" expression=\"view.expression\"></expression></label><div class=\"input-property-body\" ng-class=\"{split: view.expression.active[view.index]}\"><input ng-if=\"view.expression.active[view.index]\" type=\"number\" class=\"form-control\" ng-model=\"view.arg\"> <input type=\"number\" class=\"form-control\" name=\"inputInteger\" ng-model=\"view.input\" ng-required=\"prop.required\" ng-readonly=\"view.expression.active[view.index]\"></div></div>"
   );
 
 
   $templateCache.put('views/inputs/input-object.html',
-    "<div class=\"form-group\"><label class=\"control-label\">{{ key }}</label><div class=\"input-property-body\"><input-field ng-repeat=\"(innerKey, property) in prop.properties\" ng-model=\"view.input[innerKey]\" key=\"{{ innerKey }}\" prop=\"property\" form=\"form\"></input-field></div></div>"
+    "<div class=\"form-group\"><label class=\"control-label\">{{ key }}</label><div class=\"input-property-body\"><input-field ng-repeat=\"(innerKey, property) in prop.properties\" ng-model=\"view.input[innerKey]\" key=\"{{ innerKey }}\" prop=\"property\" parent=\"{{ view.parent }}\" index=\"{{ view.index }}\" form=\"form\"></input-field></div></div>"
   );
 
 
   $templateCache.put('views/inputs/input-string.html',
-    "<div class=\"form-group\" ng-class=\"{required: prop.required, 'has-error': inputForm.inputString.$invalid}\"><label class=\"control-label\">{{ key }}<expression name=\"{{ key }}\" type=\"input\" arg=\"view.input\" expression=\"view.expression\"></expression></label><div class=\"input-property-body\" ng-class=\"{split: view.expression.active}\"><input ng-if=\"view.expression.active\" type=\"text\" class=\"form-control\" ng-model=\"view.expression.arg\"> <input ng-show=\"!prop.enum\" type=\"text\" class=\"form-control\" name=\"inputString\" ng-model=\"view.input\" ng-required=\"prop.required\" ng-readonly=\"view.expression.active\"><select ng-show=\"prop.enum\" class=\"form-control\" name=\"inputString\" ng-model=\"view.input\" ng-required=\"prop.required\" ng-readonly=\"view.expression.active\"><option value>-- choose --</option><option ng-repeat=\"option in prop.enum track by $index\" value=\"{{ option }}\">{{ (option === '') ? 'empty value' : option }}</option></select></div></div>"
+    "<div class=\"form-group\" ng-class=\"{required: prop.required, 'has-error': inputForm.inputString.$invalid}\"><label class=\"control-label\">{{ key }}<expression name=\"{{ view.parent }}\" type=\"input\" arg=\"view.input\" index=\"{{ view.index }}\" expression=\"view.expression\"></expression></label><div class=\"input-property-body\" ng-class=\"{split: view.expression.active[view.index]}\"><input ng-if=\"view.expression.active[view.index]\" type=\"text\" class=\"form-control\" ng-model=\"view.arg\"> <input ng-show=\"!prop.enum\" type=\"text\" class=\"form-control\" name=\"inputString\" ng-model=\"view.input\" ng-required=\"prop.required\" ng-readonly=\"view.expression.active[view.index]\"><select ng-show=\"prop.enum\" class=\"form-control\" name=\"inputString\" ng-model=\"view.input\" ng-required=\"prop.required\" ng-readonly=\"view.expression.active[view.index]\"><option value>-- choose --</option><option ng-repeat=\"option in prop.enum track by $index\" value=\"{{ option }}\">{{ (option === '') ? 'empty value' : option }}</option></select></div></div>"
   );
 
 
@@ -117,7 +117,7 @@ angular.module('clicheApp').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('views/partials/expression.html',
-    "<div class=\"expression-action\" ng-show=\"expression.code\"><div class=\"checkbox\"><label><input type=\"checkbox\" ng-model=\"expression.active\" ng-change=\"toggleEvaluation()\"> evaluate</label></div></div>"
+    "<div class=\"expression-action\" ng-show=\"expression.code\"><div class=\"checkbox\"><label><input type=\"checkbox\" ng-model=\"expression.active[index]\" ng-change=\"toggleEvaluation()\"> evaluate</label></div></div>"
   );
 
 
@@ -182,7 +182,7 @@ angular.module('clicheApp').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('views/tabs/values.html',
-    "<ng-form class=\"form\" name=\"forms.jobForm\" role=\"form\" novalidate><div class=\"input-container\"><input-field ng-repeat=\"(key, property) in view.toolForm.inputs.properties\" ng-model=\"view.jobForm.inputs[key]\" key=\"{{ key }}\" prop=\"property\" form=\"forms.jobForm\"></input-field></div><p class=\"alert alert-info\" ng-if=\"view.toolForm.inputs.properties | isEmpty\">There are no values to be set at this moment.</p></ng-form>"
+    "<ng-form class=\"form\" name=\"forms.jobForm\" role=\"form\" novalidate><div class=\"input-container\"><input-field ng-repeat=\"(key, property) in view.toolForm.inputs.properties\" ng-model=\"view.jobForm.inputs[key]\" key=\"{{ key }}\" prop=\"property\" index=\"{{ $index }}\" form=\"forms.jobForm\"></input-field></div><p class=\"alert alert-info\" ng-if=\"view.toolForm.inputs.properties | isEmpty\">There are no values to be set at this moment.</p></ng-form>"
   );
 
 }]);

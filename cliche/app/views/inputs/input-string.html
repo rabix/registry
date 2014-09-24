@@ -1,16 +1,16 @@
 <div class="form-group" ng-class="{required: prop.required, 'has-error': inputForm.inputString.$invalid}">
     <label class="control-label">
         {{ key }}
-        <expression name="{{ key }}" type="input" arg="view.input" expression="view.expression"></expression>
+        <expression name="{{ view.parent }}" type="input" arg="view.input" index="{{ view.index }}" expression="view.expression"></expression>
     </label>
 
-    <div class="input-property-body" ng-class="{split: view.expression.active}">
+    <div class="input-property-body" ng-class="{split: view.expression.active[view.index]}">
 
-        <input ng-if="view.expression.active" type="text" class="form-control" ng-model="view.expression.arg">
+        <input ng-if="view.expression.active[view.index]" type="text" class="form-control" ng-model="view.arg">
 
-        <input ng-show="!prop.enum" type="text" class="form-control" name="inputString" ng-model="view.input" ng-required="prop.required" ng-readonly="view.expression.active">
+        <input ng-show="!prop.enum" type="text" class="form-control" name="inputString" ng-model="view.input" ng-required="prop.required" ng-readonly="view.expression.active[view.index]">
 
-        <select ng-show="prop.enum" class="form-control" name="inputString" ng-model="view.input" ng-required="prop.required" ng-readonly="view.expression.active">
+        <select ng-show="prop.enum" class="form-control" name="inputString" ng-model="view.input" ng-required="prop.required" ng-readonly="view.expression.active[view.index]">
             <option value>-- choose --</option>
             <option ng-repeat="option in prop.enum track by $index" value="{{ option }}">{{ (option === '') ? 'empty value' : option }}</option>
         </select>

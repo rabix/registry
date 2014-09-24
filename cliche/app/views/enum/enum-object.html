@@ -4,6 +4,8 @@
             ng-model="item.value[innerKey]"
             key="{{ innerKey }}"
             prop="property"
-            form="form">
+            form="form"
+            index="{{ view.index + '.' + $parent.$index }}"
+            parent="{{ parent }}">
     </input-field>
 </div>
