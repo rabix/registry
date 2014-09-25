@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('clicheApp')
-    .directive('inputField', ['$templateCache', '$compile', '$timeout', '$q', 'RecursionHelper', 'Data', 'SandBox', function ($templateCache, $compile, $timeout, $q, RecursionHelper, Data, SandBox) {
+    .directive('inputField', ['$templateCache', '$compile', '$timeout', '$q', 'RecursionHelper', 'Data', function ($templateCache, $compile, $timeout, $q, RecursionHelper, Data) {
 
         var uniqueId = 0;
 
@@ -25,42 +25,8 @@ angular.module('clicheApp')
                     uniqueId++;
                     scope.view.uniqueId = uniqueId;
                     scope.view.parent = scope.parent ? scope.parent + '.' + scope.key : scope.key;
-                    scope.view.expression = Data.getExpression('input', scope.parent);
+                    scope.view.expression = Data.getExpression('input', scope.view.parent);
                     scope.view.index = scope.index || 0;
-
-                    $timeout(function () {
-                        if (scope.view.expression.active[scope.view.index]) {
-                            scope.view.arg = scope.view.expression.arg[scope.view.index];
-                        }
-                    }, 100);
-
-                    scope.$watch('view.arg', function (n, o) {
-                        if (n !== o) {
-
-                            if (_.isObject(n)) {
-                                var promises = [];
-                                _.each(n, function (arg) {
-                                    promises.push(
-                                        SandBox.evaluate(scope.view.expression.code, {$self: arg})
-                                            .then(function (result) {
-                                                return !result && isNaN(result) ? null : result;
-                                            })
-                                    );
-                                });
-                                $q.all(promises).then(function (result) {
-                                    scope.view.input = result;
-                                });
-
-                            } else {
-                                SandBox.evaluate(scope.view.expression.code, {$self: n})
-                                    .then(function (result) {
-                                        scope.view.input = !result && isNaN(result) ? null : result;
-                                    });
-                            }
-                            Data.setExpressionArg('input', scope.view.parent, n, scope.view.index);
-                        }
-                    }, true);
-
 
                     var inputScheme = scope.model;
 
@@ -101,21 +67,13 @@ angular.module('clicheApp')
                         inputScheme = _.isObject(scope.model) ? '' : scope.model;
                     }
 
-
-                    scope.view.input = inputScheme;
+                    scope.model = inputScheme;
 
                     var template = $templateCache.get('views/inputs/input-' + scope.prop.type  + '.html');
 
                     iElement.append(template);
 
                     $compile(iElement.contents())(scope);
-
-                    scope.$watch('view.input', function(n, o) {
-                        if (n !== o) {
-                            scope.model = n;
-                        }
-                    }, true);
-
 
                 });
             }

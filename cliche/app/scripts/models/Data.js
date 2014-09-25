@@ -662,14 +662,13 @@ angular.module('clicheApp')
         /**
          * Get custom expression for particular field
          *
-         * @param type
-         * @param name
+         * @param {string} type
+         * @param {string} name
          * @returns {*}
          */
         self.getExpression = function (type, name) {
 
             if (name && _.isUndefined(self.expressions[type][name])) {
-                console.log('getExpression', type, name);
                 self.expressions[type][name] = {code: '', active: {}, arg: {}};
             }
 
@@ -677,6 +676,12 @@ angular.module('clicheApp')
 
         };
 
+        /**
+         * Remove particular expression
+         *
+         * @param {string} type
+         * @param {string} name
+         */
         self.removeExpression = function (type, name) {
 
             delete self.expressions[type][name];
@@ -686,9 +691,9 @@ angular.module('clicheApp')
         /**
          * Set expression value for particular field
          *
-         * @param type
-         * @param name
-         * @param value
+         * @param {string} type
+         * @param {string} name
+         * @param {string} value
          */
         self.setExpressionValue = function (type, name, value) {
 
@@ -699,9 +704,9 @@ angular.module('clicheApp')
         /**
          * Set expression state for particular field
          *
-         * @param type
-         * @param name
-         * @param state
+         * @param {string} type
+         * @param {string} name
+         * @param {booelan} state
          */
         self.setExpressionState = function (type, name, state, index) {
 
@@ -714,9 +719,9 @@ angular.module('clicheApp')
         /**
          * Set expression argument for particular field
          *
-         * @param type
-         * @param name
-         * @param arg
+         * @param {string} type
+         * @param {string} name
+         * @param {*} arg
          */
         self.setExpressionArg = function (type, name, arg, index) {
 

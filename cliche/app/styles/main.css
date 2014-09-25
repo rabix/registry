@@ -8004,25 +8004,42 @@ body {
 .enum-list-wrap .enum-list li .enum-field.form-group.form-group-object {
   border-bottom: 1px solid #ddd;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003112}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003111}}
+.enum-list-wrap .enum-list li .enum-field.form-group.split {
+  border: none;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003113}}
+.enum-list-wrap .enum-list li .enum-field.form-group.split > .form-control {
+  display: inline-block;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003115}}
+.enum-list-wrap .enum-list li .enum-field.form-group.split > .form-control:nth-child(1) {
+  width: 40%;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003118}}
+.enum-list-wrap .enum-list li .enum-field.form-group.split > .form-control:nth-child(2) {
+  margin-left: -5px;
+  width: 60%;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003125}}
 .enum-list-wrap .enum-list li > .remove-btn {
   top: 4px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003115}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003128}}
 .enum-list-wrap .enum-list li:last-child {
   margin-bottom: 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003118}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003131}}
 .enum-list-wrap .enum-list li:last-child .enum-field.form-group.form-group-object {
   border-bottom: 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003126}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003139}}
 .enum-list-wrap .enum-list.wide li .enum-field.form-group {
   margin-right: 0px;
 }
 
 /* Legeng used as box heading */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003136}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003149}}
 legend.toggle {
   position: relative;
   cursor: pointer;
@@ -8034,7 +8051,7 @@ legend.toggle {
   -o-user-select: none;
   user-select: none;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003143}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003156}}
 legend.toggle:after {
   content: '';
   display: block;
@@ -8046,7 +8063,7 @@ legend.toggle:after {
   border-bottom: 5px solid transparent;
   margin-top: -5px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003155}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003168}}
 legend.toggle.active:after {
   border-top: 5px solid #555;
   border-left: 5px solid transparent;
@@ -8056,44 +8073,44 @@ legend.toggle.active:after {
 }
 
 /* Property/Argument box */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003167}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003180}}
 .property-wrap,
 .argument-wrap {
   margin: 0 0 10px 0;
   border: 1px solid #ddd;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003172}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003185}}
 .property-wrap:hover,
 .argument-wrap:hover {
   transition: border 0.3s ease;
   border: 1px solid #bbb;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003176}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003189}}
 .property-wrap:hover > .legend-tiny,
 .argument-wrap:hover > .legend-tiny {
   background-color: #ddd;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003179}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003192}}
 .property-wrap:hover > .property-body,
 .argument-wrap:hover > .property-body {
   background-color: #f3f3f3;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003184}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003197}}
 .property-wrap:hover.active > .legend-tiny,
 .argument-wrap:hover.active > .legend-tiny {
   border-bottom: 1px solid #bbb;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003191}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003204}}
 .property-wrap.active > .legend-tiny,
 .argument-wrap.active > .legend-tiny {
   border-bottom: 1px solid #ddd;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003194}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003207}}
 .property-wrap.active > .property-body,
 .argument-wrap.active > .property-body {
   display: block;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003199}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003212}}
 .property-wrap > .legend-tiny,
 .argument-wrap > .legend-tiny {
   padding: 5px 30px 5px 25px;
@@ -8101,14 +8118,14 @@ legend.toggle.active:after {
   position: relative;
   overflow: auto;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003205}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003218}}
 .property-wrap > .legend-tiny .checkbox,
 .argument-wrap > .legend-tiny .checkbox {
   display: inline-block;
   margin: 5px 10px 0 5px;
   float: right;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003211}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003224}}
 .property-wrap > .legend-tiny .remove,
 .argument-wrap > .legend-tiny .remove {
   position: absolute;
@@ -8120,30 +8137,30 @@ legend.toggle.active:after {
   color: #666;
   margin-top: -15px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003220}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003233}}
 .property-wrap > .legend-tiny .remove:hover,
 .argument-wrap > .legend-tiny .remove:hover {
   color: #333;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003226}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003239}}
 .property-wrap > .property-body,
 .argument-wrap > .property-body {
   display: none;
   padding: 10px;
   background-color: #f9f9f9;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003230}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003243}}
 .property-wrap > .property-body > .row,
 .argument-wrap > .property-body > .row {
   margin-left: 0;
   margin-right: 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003233}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003246}}
 .property-wrap > .property-body > .row > div,
 .argument-wrap > .property-body > .row > div {
   padding: 0 5px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003237}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003250}}
 .property-wrap > .property-body .control-label,
 .argument-wrap > .property-body .control-label {
   white-space: nowrap;
@@ -8152,79 +8169,79 @@ legend.toggle.active:after {
   display: block;
   overflow: hidden;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003247}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003260}}
 .property-wrap .checkbox.no-margin,
 .argument-wrap .checkbox.no-margin {
   margin: 5px 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003252}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003265}}
 .property-wrap .property-name,
 .argument-wrap .property-name {
   margin: 5px 0;
   float: left;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003255}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003268}}
 .property-wrap .property-name a,
 .argument-wrap .property-name a {
   padding: 10px 5px;
   color: #555;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003260}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003273}}
 .property-wrap .property-name-form,
 .argument-wrap .property-name-form {
   font-weight: normal;
   width: 240px;
   float: left;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003264}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003277}}
 .property-wrap .property-name-form .input-group,
 .argument-wrap .property-name-form .input-group {
   margin-left: -5px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003266}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003279}}
 .property-wrap .property-name-form .input-group input,
 .argument-wrap .property-name-form .input-group input {
   height: 30px;
   padding: 5px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003270}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003283}}
 .property-wrap .property-name-form .input-group button,
 .argument-wrap .property-name-form .input-group button {
   padding: 4px 8px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003274}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003287}}
 .property-wrap .property-name-form .alert,
 .argument-wrap .property-name-form .alert {
   padding: 5px;
 }
 
 /* Argument box */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003282}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003295}}
 .argument-wrap > .legend-tiny {
   overflow: hidden;
 }
 
 /* Input box */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003290}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003303}}
 .input-property > .form-group {
   margin: 0 0 10px 0;
   border: 1px solid #ddd;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003294}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003307}}
 .input-property > .form-group:hover {
   transition: border 0.3s ease;
   border: 1px solid #bbb;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003298}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003311}}
 .input-property > .form-group:hover > .control-label {
   border-bottom: 1px solid #bbb;
   background-color: #ddd;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003302}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003315}}
 .input-property > .form-group:hover > .input-property-body {
   background-color: #f3f3f3;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003307}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003320}}
 .input-property > .form-group > .control-label {
   padding: 5px 10px;
   margin: 0;
@@ -8234,55 +8251,75 @@ legend.toggle.active:after {
   background-color: #eee;
   position: relative;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003317}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003330}}
 .input-property > .form-group > .input-property-body {
   padding: 10px;
   background-color: #f9f9f9;
   overflow: auto;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003323}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003336}}
 .input-property > .form-group > .input-property-body.split > .form-control {
   display: inline-block;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003325}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003338}}
 .input-property > .form-group > .input-property-body.split > .form-control:nth-child(1) {
   width: 40%;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003328}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003341}}
 .input-property > .form-group > .input-property-body.split > .form-control:nth-child(2) {
   margin-left: -5px;
   width: 60%;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003339}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003352}}
 .expression-action {
-  float: right;
-}
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003341}}
-.expression-action .checkbox {
   margin: 0;
   color: #555;
 }
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003355}}
+.expression-action label {
+  float: right;
+}
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003347}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003360}}
+.evaluate-wrap {
+  float: right;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003362}}
+.evaluate-wrap .btn {
+  padding: 0 5px;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003367}}
 .expression-form {
   margin-bottom: 10px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003349}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003369}}
 .expression-form .form-group {
   margin-right: 10px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003351}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003371}}
 .expression-form .form-group .control-label {
   margin-right: 10px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003354}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003374}}
 .expression-form .form-group .form-control {
   width: 100px;
 }
 
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003380}}
+.evaluate-expr-form {
+  width: 200px;
+}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003383}}
+.evaluate-expr-form .form-group .expr {
+  font-size: 20px;
+  padding: 10px;
+  font-weight: bold;
+}
+
 /* Modal main actions (cancel, ok and so on) */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003361}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003392}}
 .main-actions {
   overflow: auto;
   padding: 10px 0;
@@ -8290,7 +8327,7 @@ legend.toggle.active:after {
 }
 
 /* Json / Command box */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003368}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003399}}
 pre.json-trace,
 .json-trace pre,
 pre.console-trace,
@@ -8307,7 +8344,7 @@ pre.result {
   -khtml-border-radius: 0;
   border-radius: 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003383}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003414}}
 pre.json-trace.error,
 .json-trace pre.error,
 pre.console-trace.error,
@@ -8317,34 +8354,34 @@ pre.result.error {
   border: 1px solid #cc0000;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003389}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003420}}
 pre.result {
   padding: 20px;
 }
 
 /* Command box */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003394}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003425}}
 .console-trace {
   font-size: 20px;
 }
 
 /* Tabs */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003400}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003431}}
 .tabs.left {
   padding: 10px 20px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003404}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003435}}
 .tabs.right .tab {
   position: relative;
   /* ZeroClipboard box */
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003408}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003439}}
 .tabs.right .tab .zclip .btn {
   position: absolute;
   bottom: 5px;
   left: 5px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003413}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003444}}
 .tabs.right .tab .zclip p {
   position: absolute;
   padding: 20px 30px;
@@ -8359,25 +8396,25 @@ pre.result {
   background-color: rgba(0, 0, 0, 0.5);
 }
 @media (min-width: 992px) {
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003399}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003430}}
   .tabs {
     min-height: 770px;
   }
 }
 @media (max-width: 600px) {
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003433}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003464}}
   .tabs.left {
     padding: 10px;
   }
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003439}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003470}}
 .no-margin {
   margin: 0;
 }
 
 /* Browser happy box */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003444}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003475}}
 .browsehappy {
   position: fixed;
   width: 100%;
@@ -8387,7 +8424,7 @@ pre.result {
   z-index: 1000;
   background-color: rgba(0, 0, 0, 0.2);
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003452}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003483}}
 .browsehappy p {
   color: #fff;
   width: 400px;
@@ -8403,14 +8440,14 @@ pre.result {
   -khtml-border-radius: 10px;
   border-radius: 10px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003465}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003496}}
 .browsehappy p a {
   text-decoration: underline;
   font-weight: bold;
 }
 
 /* Saving indicator */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003474}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003505}}
 .saving {
   opacity: 0;
   position: absolute;
@@ -8424,31 +8461,31 @@ pre.result {
   border-radius: 2px 0 0 0;
   transition: opacity 0.3s ease;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003485}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003516}}
 .saving.show {
   opacity: 1;
 }
 
 /* App actions box (save, publish, import) */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003492}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003523}}
 .app-actions-wrap .app-action-btns {
   position: absolute;
   bottom: 5px;
   right: 15px;
 }
 @media (max-width: 600px) {
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003497}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003528}}
   .app-actions-wrap .app-action-btns button {
     width: 40px;
     padding: 6px 0;
   }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003500}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003531}}
   .app-actions-wrap .app-action-btns button i {
     width: 40px;
     margin: 0 auto;
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003507}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003538}}
 .app-actions-wrap p {
   position: absolute;
   padding: 20px 30px;
@@ -8464,7 +8501,7 @@ pre.result {
 }
 
 /* App listing in modal (for the import) */
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003523}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003554}}
 .app-list {
   margin: 10px 0;
   max-height: 456px;
@@ -8490,44 +8527,44 @@ pre.result {
 .app-list::-webkit-scrollbar-thumb:hover {
   background: #3071a9;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003532}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003563}}
 .app-list > li {
   cursor: pointer;
   border-bottom: 1px solid #ddd;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003537}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003568}}
 .app-list > li.selected > .app-list-item {
   background-color: #428bca;
   color: #fff;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003540}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003571}}
 .app-list > li.selected > .app-list-item a {
   color: #fff;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003547}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003578}}
 .app-list > li.disabled > .app-list-item {
   cursor: auto;
   color: #ccc;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003554}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003585}}
 .app-list > li > .app-list-item > span {
   display: inline-block;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003556}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003587}}
 .app-list > li > .app-list-item > span .glyphicon {
   color: #eee;
   margin: 10px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003561}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003592}}
 .app-list > li > .app-list-item > a {
   float: right;
   margin: 7px 10px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003567}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003598}}
 .app-list > li:last-child {
   border-bottom: none;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003571}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_elements\.scss}line{font-family:\00003602}}
 .app-list > li .app-list {
   margin: 0 0 0 10px;
   border-bottom: none;

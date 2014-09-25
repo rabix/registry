@@ -100,6 +100,7 @@ angular.module('clicheApp')
 
                         modalInstance.result.then(function () {
                             Data.deleteProperty('input', scope.name, scope.properties);
+                            Data.removeExpression('input', scope.view.parent);
 
                             if (scope.inputs &&  !_.isUndefined(scope.inputs[scope.name])) {
                                 delete scope.inputs[scope.name];

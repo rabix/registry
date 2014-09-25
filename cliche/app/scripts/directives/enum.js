@@ -15,17 +15,13 @@ angular.module('clicheApp')
                 isRequired: '=',
                 form: '=',
                 parent: '@',
-                index: '@',
-                expression: '=',
-                arg: '='
+                index: '@'
             },
             link: function(scope) {
 
                 scope.view = {};
                 scope.view.index = scope.index || 0;
                 scope.view.tplPath = 'views/enum/enum-' + scope.type  + '.html';
-
-                console.log(scope.arg);
 
                 /**
                  * Get schema for the appropriate enum type
@@ -47,6 +43,11 @@ angular.module('clicheApp')
 
                 };
 
+                /**
+                 * Transform the list with proper structure applied
+                 *
+                 * @param list
+                 */
                 scope.transformList = function (list) {
 
                     scope.view.list = [];
@@ -62,6 +63,7 @@ angular.module('clicheApp')
                     }
                 };
 
+                /* init transform */
                 scope.transformList(scope.model);
 
                 /**
@@ -84,6 +86,10 @@ angular.module('clicheApp')
                         return false;
                     } else {
                         scope.view.list.splice(index, 1);
+
+                        console.log(scope.expression);
+                        console.log(scope.parent, index);
+                        // TODO: delete expressions by index
                     }
                 };
 
@@ -94,25 +100,11 @@ angular.module('clicheApp')
                     }
                 }, true);
 
-                scope.$watch('expression.active[' + scope.view.index + ']', function(n, o) {
+                scope.$watch('model', function(n, o) {
                     if (n !== o) {
-                        $timeout(function () {
-                            scope.transformList(scope.model);
-                        }, 100);
+                        scope.transformList(n);
                     }
                 });
-
-                scope.$watch('expression.arg[0]', function(n, o) {
-                    if (n !== o) {
-                        console.log(n);
-                        if (_.isArray(n)) {
-                            $timeout(function () {
-                                scope.transformList(scope.model);
-                            }, 100);
-                        }
-                    }
-                }, true);
-
 
             }
         };

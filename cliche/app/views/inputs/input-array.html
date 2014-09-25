@@ -1,15 +1,15 @@
-<div class="form-group" ng-class="{required: prop.required, 'has-error': ((view.input.length < prop.minItems && prop.minItems > 0) || (view.input.length > prop.maxItems && prop.maxItems > 0))}">
+<div class="form-group" ng-class="{required: prop.required, 'has-error': ((model.length < prop.minItems && prop.minItems > 0) || (model.length > prop.maxItems && prop.maxItems > 0))}">
     <label class="control-label">
         {{ key }}
         <span ng-if="prop.minItems || prop.maxItems">
             (<strong ng-if="prop.minItems">min: {{ prop.minItems }} </strong>
             <strong ng-if="prop.maxItems">max: {{ prop.maxItems }}</strong>)
         </span>
-        <!--<expression name="{{ view.parent }}" type="input" arg="view.input" index="{{ view.index }}" expression="view.expression"></expression>-->
+        <evaluate name="{{ view.parent }}" type="input" model="model" index="{{ view.index }}" item-type="{{ prop.items.type }}" ></evaluate>
     </label>
-    <div class="input-property-body" ng-class="{split: view.expression.active}">
+    <div class="input-property-body">
         <enum
-             ng-model="view.input"
+             ng-model="model"
              type="prop.items.type"
              min="prop.minItems"
              max="prop.maxItems"
@@ -17,9 +17,7 @@
              is-required="prop.required"
              form="form"
              index="{{ view.index }}"
-             parent="{{ view.parent }}"
-             expression="view.expression"
-             arg="view.arg">
+             parent="{{ view.parent }}">
         </enum>
     </div>
 </div>

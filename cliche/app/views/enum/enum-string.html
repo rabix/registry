@@ -1,9 +1,7 @@
 <ng-form name="inputForm" class="input-property">
-    <div class="enum-field form-group form-group-file" ng-class="{'has-error': inputForm.enumString.$invalid, split: expression.active[view.index]}">
+    <div class="enum-field form-group form-group-file" ng-class="{'has-error': inputForm.enumString.$invalid}">
 
-        <input ng-if="expression.active[view.index]" type="text" class="form-control" ng-model="arg[$index]">
-
-        <input type="string" class="form-control" name="enumString" ng-model="item.value" placeholder="Enter Value" ng-required="isRequired" ng-readonly="expression.active[view.index]">
+        <input type="string" class="form-control" name="enumString" ng-model="item.value" placeholder="Enter Value" ng-required="isRequired">
 
     </div>
 </ng-form>

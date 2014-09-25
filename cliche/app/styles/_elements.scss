@@ -108,6 +108,19 @@
         &.form-group-object {
           border-bottom: 1px solid #ddd;
         }
+        &.split {
+          border: none;
+          & > .form-control {
+            display: inline-block;
+            &:nth-child(1) {
+              width: 40%;
+            }
+            &:nth-child(2) {
+              margin-left: -5px;
+              width: 60%;
+            }
+          }
+        }
       }
       & > .remove-btn {
         top: 4px;
@@ -337,10 +350,17 @@ legend {
 }
 
 .expression-action {
+  margin: 0;
+  color: #555;
+  label {
+    float: right;
+  }
+}
+
+.evaluate-wrap {
   float: right;
-  .checkbox {
-    margin: 0;
-    color: #555;
+  .btn {
+    padding: 0 5px;
   }
 }
 
@@ -353,6 +373,17 @@ legend {
     }
     .form-control {
       width: 100px;
+    }
+  }
+}
+
+.evaluate-expr-form {
+  width: 200px;
+  .form-group {
+    .expr {
+      font-size: 20px;
+      padding: 10px;
+      font-weight: bold;
     }
   }
 }

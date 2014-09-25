@@ -48,6 +48,34 @@ angular.module('clicheApp')
                 return deferred.promise;
             },
 
+            evaluateByArg: function (code, arg) {
+
+                var self = this;
+
+                if (_.isArray(arg)) {
+
+                    var promises = [];
+
+                    _.each(arg, function (o) {
+                        promises.push(
+                            self.evaluate(code, {$self: o})
+                                .then(function (result) {
+                                    return !result && isNaN(result) ? null : result;
+                                })
+                        );
+                    });
+
+                    return $q.all(promises);
+
+                } else {
+                    return self.evaluate(code, {$self: arg})
+                        .then(function (result) {
+                            return !result && isNaN(result) ? null : result;
+                        });
+                }
+
+            },
+
             terminate: function () {
                 if (angular.isDefined(Sandbox)) {
                     Sandbox.terminate();

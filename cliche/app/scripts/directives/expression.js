@@ -30,20 +30,10 @@ angular.module('clicheApp')
 
                         Data.setExpressionArg(scope.type, scope.name, scope.arg, scope.index);
 
-                        if (_.isArray(scope.arg)) {
-                            _.each(scope.arg, function (arg, index) {
-                                SandBox.evaluate(scope.expression.code, {$self: arg})
-                                    .then(function (result) {
-                                        scope.arg[index] = !result && isNaN(result) ? null : result;
-                                    });
+                        SandBox.evaluateByArg(scope.expression.code, scope.arg)
+                            .then(function (result) {
+                                scope.arg = result;
                             });
-                        } else {
-                            SandBox.evaluate(scope.expression.code, {$self: scope.arg})
-                                .then(function (result) {
-                                    scope.arg = !result && isNaN(result) ? null : result;
-                                });
-                        }
-
 
                     } else {
                         scope.arg = scope.expression.arg[scope.index];

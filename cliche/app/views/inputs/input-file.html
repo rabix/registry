@@ -1,14 +1,12 @@
 <div class="form-group" ng-class="{required: prop.required, 'has-error': inputForm.inputFile.$invalid}">
     <label class="control-label">
         {{ key }}
-        <expression name="{{ view.parent }}" type="input" arg="view.input.path" index="{{ view.index }}" expression="view.expression"></expression>
+        <evaluate name="{{ view.parent }}" type="input" model="model.path" index="{{ view.index }}"></evaluate>
     </label>
 
-    <div class="input-property-body" ng-class="{split: view.expression.active[view.index]}">
+    <div class="input-property-body">
 
-        <input ng-if="view.expression.active[view.index]" type="text" class="form-control" ng-model="view.arg">
-
-        <input type="text" class="form-control" name="inputFile" ng-model="view.input.path" ng-required="prop.required" ng-readonly="view.expression.active[view.index]">
+        <input type="text" class="form-control" name="inputFile" ng-model="model.path" ng-required="prop.required">
 
     </div>
 </div>
