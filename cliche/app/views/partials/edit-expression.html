@@ -5,7 +5,7 @@
 <div class="modal-body">
 
     <form class="expression-form form-inline">
-        <div class="form-group">
+        <div ng-if="options.self" class="form-group">
             <label class="control-label">$self</label>
             <input type="text" class="form-control input-sm" ng-model="view.arg" />
         </div>

@@ -251,7 +251,8 @@ angular.module('clicheApp')
                                     return {
                                         name: scope.name,
                                         namespace: scope.view.parent,
-                                        type: 'input'
+                                        type: 'input',
+                                        self: true
                                     };
                                 }
                             }

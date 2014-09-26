@@ -8,22 +8,6 @@
     <div class="property-body">
         <div class="row">
 
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label for="argument-valuefrom-{{ view.uniqueId }}" class="control-label">Value From</label>
-                    <select
-                            class="form-control"
-                            id="argument-valuefrom-{{ view.uniqueId }}"
-                            name="{{ name }}-valuefrom"
-                            ng-change="changeValueFrom()"
-                            ng-model="arg.valueFrom"
-                            ng-options="key as key for (key, value) in valuesFrom">
-                        <option value>-- none --</option>
-                    </select>
-                </div>
-            </div>
-            <!-- END Value From -->
-
             <div class="col-md-2">
                 <div class="form-group">
                     <label for="argument-prefix-{{ view.uniqueId }}" class="control-label">Prefix</label>
@@ -44,10 +28,10 @@
             </div>
             <!-- END Separator -->
 
-            <div class="col-md-2">
+            <div class="col-md-3">
                 <div class="form-group">
                     <label for="argument-value-{{ view.uniqueId }}" class="control-label">Value</label>
-                    <input type="text" class="form-control" id="argument-value-{{ view.uniqueId }}" name="{{ name }}-value" ng-model="arg.value">
+                    <input type="text" class="form-control" id="argument-value-{{ view.uniqueId }}" name="{{ name }}-value" ng-model="arg.value" ng-readonly="view.expression.code">
                 </div>
             </div>
             <!-- END Value -->
@@ -56,6 +40,14 @@
                 <div class="form-group">
                     <label for="argument-order-{{ view.uniqueId }}" class="control-label">Order</label>
                     <input type="number" class="form-control" id="argument-order-{{ view.uniqueId }}" name="{{ name }}-order" ng-model="arg.order">
+                </div>
+            </div>
+            <!-- END Order -->
+
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label class="control-label">&nbsp;</label>
+                    <button class="btn btn-warning btn-sm" ng-click="editExpression($event)">expression</button>
                 </div>
             </div>
             <!-- END Order -->

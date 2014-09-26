@@ -34,6 +34,10 @@ angular.module('clicheApp')
 
                             if (_.isArray(options.model)) {
 
+                                if ($scope.view.model.length !== options.model.length) {
+                                    $scope.view.model = options.model;
+                                }
+
                                 $scope.form = {
                                     arg: [],
                                     isArray: true
@@ -66,6 +70,7 @@ angular.module('clicheApp')
                                 //TODO: additional validation here
 
                                 var value = _.isArray($scope.form.arg) ? _.pluck($scope.form.arg, 'value') : $scope.form.arg;
+                                console.log(value);
 
                                 Data.setExpressionArg(options.type, options.name, value, options.index);
 

@@ -3,9 +3,10 @@
     <enum ng-model="view.toolForm.adapter.baseCmd" type="'string'" min="1" is-required="true"></enum>
 </div>
 
-<div class="form-group">
+<div class="form-group with-expression">
     <label for="stdout" class="control-label">Stdout</label>
     <input type="text" class="form-control" id="stdout" name="stdout" ng-model="view.toolForm.adapter.stdout" required>
+    <button class="btn btn-warning btn-sm btn-expression" ng-click="editExpression($event)">expression</button>
 </div>
 
 <legend class="legend-small toggle" ng-class="{active: view.propsExpanded.args}" ng-click="toggleProperties('args')">

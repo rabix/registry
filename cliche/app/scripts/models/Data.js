@@ -51,11 +51,7 @@ angular.module('clicheApp')
          *
          * @type {Object}
          */
-        self.expressions = {
-//            input: {},
-//            output: {},
-//            adapter: {}
-        };
+        self.expressions = {};
 
         /**
          * Fetch tool object from storage
@@ -174,7 +170,8 @@ angular.module('clicheApp')
                     self.expressions = expressions || {
                         input: {},
                         output: {},
-                        adapter: {}
+                        adapter: {},
+                        argument: {}
                     };
                     deferred.resolve(expressions);
 
@@ -547,13 +544,13 @@ angular.module('clicheApp')
                         value = self.parseArrayInput(property, inputs[key], prefix, separator, listSeparator);
                         /* if input is FILE */
                     } else if (property.type === 'file') {
-                        value = self.applyTransform(property.adapter.transform, inputs[key].path);
+                        value = inputs[key].path;
                         /* if input is OBJECT */
                     } else if (property.type === 'object') {
                         value = self.parseObjectInput(property.properties, inputs[key]);
                         /* if input is anything else (STRING, INTEGER, BOOLEAN) */
                     } else {
-                        value = self.applyTransform(property.adapter.transform, inputs[key]);
+                        value = inputs[key];
                     }
 
                     props.push(_.merge({key: key, order: property.adapter.order, value: value, prefix: prefix, separator: separator}, property));
