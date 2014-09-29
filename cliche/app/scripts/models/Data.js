@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('clicheApp')
-    .factory('Data', ['$localForage', '$http', '$q', 'Api', function ($localForage, $http, $q, Api) {
+    .factory('Data', ['$localForage', '$http', '$q', '$injector', function ($localForage, $http, $q, $injector) {
 
         var self = {};
 
@@ -406,21 +406,25 @@ angular.module('clicheApp')
          */
         self.applyTransform = function(transform, value) {
 
-            var output;
+            var deferred = $q.defer();
+            var SandBox = $injector.get('SandBox');
 
-            switch(transform) {
-            case 'transforms/strip_ext':
-                var tmp = value ? value.split('.') : [];
-                if (tmp[0]) { output = tmp[0]; }
-                break;
-            case 'transforms/m-suffix':
-                output = value + 'm';
-                break;
-            default:
-                output = value;
+            var expr = (transform && transform.expr) ? transform.expr : null;
+
+            if (expr) {
+
+                SandBox.evaluate(expr, {$self: value})
+                    .then(function (result) {
+                        deferred.resolve(result);
+                    }, function (error) {
+                        deferred.reject(error)
+                    });
+
+            } else {
+                deferred.resolve(value);
             }
 
-            return output;
+            return deferred.promise;
         };
 
         /**
@@ -497,25 +501,40 @@ angular.module('clicheApp')
         self.parseArrayInput = function(property, input, prefix, separator, listSeparator) {
 
             var joiner = ' ';
-            var array = [];
+            //var array = [];
+            var promises = [];
 
             if (property.items.type !== 'object') {
                 joiner = listSeparator === 'repeat' ? (' ' + prefix + separator) : listSeparator;
             }
 
             _.each(input, function(val) {
-                var value = '';
+
+                var deferred = $q.defer();
 
                 if (property.items.type === 'object') {
-                    value = self.parseObjectInput(property.items.properties, val);
+                    self.parseObjectInput(property.items.properties, val)
+                        .then(function (result) {
+                            deferred.resolve(result);
+                        });
                 } else {
-                    value = self.applyTransform(property.adapter.listTransform, (_.isObject(val) ? val.path : val));
+                    self.applyTransform(property.adapter.listTransform, (_.isObject(val) ? val.path : val))
+                        .then(function (result) {
+                            deferred.resolve(result);
+                        });
                 }
 
-                array.push(value);
+                promises.push(deferred.promise);
+
+                //array.push(value);
             });
 
-            return array.join(joiner);
+            return $q.all(promises).then(function (result) {
+               return  result.join(joiner);
+            });
+
+
+//            return array.join(joiner);
 
         };
 
@@ -524,40 +543,63 @@ angular.module('clicheApp')
          *
          * @param {object} properties
          * @param {object} inputs
-         * @returns {Array} props
+         * @returns {Promise} props
          */
         self.prepareProperties = function(properties, inputs) {
 
-            var props = [];
+//            var props = [];
+            var promises = [];
 
             /* to through properties */
             _.each(properties, function(property, key) {
                 if (!_.isUndefined(inputs[key])) {
 
-                    var value;
+                    var deferred = $q.defer();
                     var prefix = self.parsePrefix(property.adapter.prefix);
                     var separator = self.parseSeparator(prefix, property.adapter.separator);
                     var listSeparator = self.parseListSeparator(property.adapter.listSeparator);
 
+                    var prop = _.merge({key: key, order: property.adapter.order, value: '', prefix: prefix, separator: separator}, property);
+
                     /* if input is ARRAY */
                     if (property.type === 'array') {
-                        value = self.parseArrayInput(property, inputs[key], prefix, separator, listSeparator);
+                        self.parseArrayInput(property, inputs[key], prefix, separator, listSeparator)
+                            .then(function (result) {
+                                prop.value = result;
+                                deferred.resolve(prop);
+                            });
                         /* if input is FILE */
                     } else if (property.type === 'file') {
-                        value = inputs[key].path;
+                        //value = inputs[key].path;
+                        self.applyTransform(property.adapter.transform, inputs[key].path)
+                            .then(function (result) {
+                                prop.value = result;
+                                deferred.resolve(prop);
+                            });
                         /* if input is OBJECT */
                     } else if (property.type === 'object') {
-                        value = self.parseObjectInput(property.properties, inputs[key]);
+                        self.parseObjectInput(property.properties, inputs[key])
+                            .then(function (result) {
+                                prop.value = result;
+                                deferred.resolve(prop);
+                            });
                         /* if input is anything else (STRING, INTEGER, BOOLEAN) */
                     } else {
-                        value = inputs[key];
+//                        value = inputs[key];
+                        self.applyTransform(property.adapter.transform, inputs[key])
+                            .then(function (result) {
+                                prop.value = result;
+                                deferred.resolve(prop);
+                            });
                     }
 
-                    props.push(_.merge({key: key, order: property.adapter.order, value: value, prefix: prefix, separator: separator}, property));
+                    promises.push(deferred.promise);
+
+                    //props.push(_.merge({key: key, order: property.adapter.order, value: value, prefix: prefix, separator: separator}, property));
                 }
             });
 
-            return props;
+            return $q.all(promises);
 
         };
 
@@ -571,18 +613,24 @@ angular.module('clicheApp')
         self.parseObjectInput = function(properties, inputs) {
 
             var command = [];
-            var props = self.prepareProperties(properties, inputs);
+            //var props = self.prepareProperties(properties, inputs);
 
-            props = _.sortBy(props, 'order');
+            return self.prepareProperties(properties, inputs)
+                .then(function (props) {
 
-            /* generate command */
-            _.each(props, function(prop) {
-                command.push(prop.prefix + prop.separator + prop.value);
-            });
+                    props = _.sortBy(props, 'order');
 
-            var output = command.join(' ');
+                    /* generate command */
+                    _.each(props, function(prop) {
+                        command.push(prop.prefix + prop.separator + prop.value);
+                    });
 
-            return output;
+                    var output = command.join(' ');
+
+                    return output;
+
+                });
+
         };
 
         /**
@@ -594,32 +642,36 @@ angular.module('clicheApp')
 
             var args = [];
             var command = [];
-            var props = self.prepareProperties(self.tool.inputs.properties, self.job.inputs);
+            //var props = self.prepareProperties(self.tool.inputs.properties, self.job.inputs);
 
-            /* to through arguments */
-            _.each(self.tool.adapter.args, function(arg, key) {
-                var prefix = self.parsePrefix(arg.prefix);
-                args.push(_.merge({key: 'arg' + key, order: arg.order, prefix: prefix}, arg));
-            });
+            return self.prepareProperties(self.tool.inputs.properties, self.job.inputs)
+                .then(function (props) {
+                    /* to through arguments */
+                    _.each(self.tool.adapter.args, function(arg, key) {
+                        var prefix = self.parsePrefix(arg.prefix);
+                        args.push(_.merge({key: 'arg' + key, order: arg.order, prefix: prefix}, arg));
+                    });
 
-            var joined = _.sortBy(props.concat(args), 'order');
+                    var joined = _.sortBy(props.concat(args), 'order');
 
-            /* generate command */
-            _.each(joined, function(arg) {
+                    /* generate command */
+                    _.each(joined, function(arg) {
 
-                var separator = self.parseSeparator(arg.prefix, arg.separator);
-                var value = _.isUndefined(arg.value) ? '' : arg.value;
+                        var separator = self.parseSeparator(arg.prefix, arg.separator);
+                        var value = _.isUndefined(arg.value) ? '' : arg.value;
 
-                command.push(arg.prefix + separator + value);
-            });
+                        command.push(arg.prefix + separator + value);
+                    });
 
-            var output = self.tool.adapter.baseCmd.join(' ') + ' ' +
-                command.join(' ') +
-                ' > ' + self.tool.adapter.stdout;
+                    var output = self.tool.adapter.baseCmd.join(' ') + ' ' +
+                        command.join(' ') +
+                        ' > ' + self.tool.adapter.stdout;
 
-            self.command = output;
+                    self.command = output;
 
-            return output;
+                    return output;
+                });
+
         };
 
         /**

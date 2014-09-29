@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('clicheApp')
-    .controller('HomeCtrl', ['$scope','$q', 'Data', 'User', 'Loading', function ($scope, $q, Data, User, Loading) {
+    .controller('HomeCtrl', ['$scope','$q', '$injector', 'Data', 'User', 'Loading', function ($scope, $q, $injector, Data, User, Loading) {
 
         $scope.view = {};
         $scope.forms = {};
@@ -170,14 +170,22 @@ angular.module('clicheApp')
          */
         var turnOnDeepWatch = function() {
 
-            $scope.view.command = Data.generateCommand();
+//            $scope.view.command = Data.generateCommand();
+            Data.generateCommand()
+                .then(function (command) {
+                    $scope.view.command = command;
+                });
 
             var watch = ['view.jobForm.inputs', 'view.toolForm.inputs.properties', 'view.toolForm.adapter'];
 
             _.each(watch, function(arg) {
                 var watcher = $scope.$watch(arg, function(n, o) {
                     if (n !== o) {
-                        $scope.view.command = Data.generateCommand();
+//                        $scope.view.command = Data.generateCommand();
+                        Data.generateCommand()
+                            .then(function (command) {
+                                $scope.view.command = command;
+                            });
                     }
                 }, true);
                 watchers.push(watcher);
@@ -275,6 +283,51 @@ angular.module('clicheApp')
 
             Data.setAppId(app_id);
             $scope.view.appId = app_id;
+
+        };
+
+        $scope.editExpression = function (namespace, index) {
+
+            var $modal = $injector.get('$modal');
+            var $templateCache = $injector.get('$templateCache');
+            var suffix = _.isUndefined(index) ? '' : index;
+
+            var modalInstance = $modal.open({
+                template: $templateCache.get('views/partials/edit-expression.html'),
+                controller: 'ExpressionCtrl',
+                windowClass: 'modal-expression',
+                resolve: {
+                    options: function () {
+                        return {
+                            name: namespace + suffix,
+                            namespace: namespace + suffix,
+                            type: 'adapter',
+                            self: false
+                        };
+                    }
+                }
+            });
+
+            modalInstance.result.then(function (code) {
+
+                var SandBox = $injector.get('SandBox');
+
+                SandBox.evaluate(code, {})
+                    .then(function (result) {
+
+                        if (_.isUndefined(index)) {
+                            $scope.view.toolForm.adapter[namespace] = result;
+                        } else {
+                            //I know, this is ugly but easiest way to initiate scope update without forcing deep watch
+                            var copy = angular.copy($scope.view.toolForm.adapter[namespace]);
+                            copy[index] = result;
+
+                            $scope.view.toolForm.adapter[namespace] = [];
+                            $scope.view.toolForm.adapter[namespace] = angular.copy(copy);
+                        }
+                    });
+
+            });
 
         };
 

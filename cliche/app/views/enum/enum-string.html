@@ -1,7 +1,8 @@
 <ng-form name="inputForm" class="input-property">
-    <div class="enum-field form-group form-group-file" ng-class="{'has-error': inputForm.enumString.$invalid}">
+    <div class="enum-field form-group form-group-file" ng-class="{'has-error': inputForm.enumString.$invalid, 'with-expression': expression}">
 
         <input type="string" class="form-control" name="enumString" ng-model="item.value" placeholder="Enter Value" ng-required="isRequired">
+        <button ng-if="expression" class="btn btn-warning btn-sm btn-expression" ng-click="initExpression($index)">expression</button>
 
     </div>
 </ng-form>

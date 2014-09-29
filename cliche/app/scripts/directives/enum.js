@@ -15,7 +15,9 @@ angular.module('clicheApp')
                 isRequired: '=',
                 form: '=',
                 parent: '@',
-                index: '@'
+                index: '@',
+                expression: '=',
+                handleExpression: '&'
             },
             link: function(scope) {
 
@@ -87,7 +89,6 @@ angular.module('clicheApp')
                     } else {
                         scope.view.list.splice(index, 1);
 
-                        console.log(scope.expression);
                         console.log(scope.parent, index);
                         // TODO: delete expressions by index
                     }
@@ -105,6 +106,10 @@ angular.module('clicheApp')
                         scope.transformList(n);
                     }
                 });
+
+                scope.initExpression = function (index) {
+                    scope.handleExpression({index: index});
+                };
 
             }
         };

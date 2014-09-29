@@ -238,24 +238,34 @@ angular.module('clicheApp')
                     /**
                      * Edit custom expression for input value evaluation
                      */
-                    scope.editExpression = function (e) {
+                    scope.editExpression = function (transformKey) {
 
-                        e.stopPropagation();
+                        var expr = (scope.prop.adapter[transformKey] && scope.prop.adapter[transformKey].expr) ? scope.prop.adapter[transformKey].expr : '';
 
-                        $modal.open({
+                        var modalInstance = $modal.open({
                             template: $templateCache.get('views/partials/edit-expression.html'),
                             controller: 'ExpressionCtrl',
                             windowClass: 'modal-expression',
                             resolve: {
                                 options: function () {
                                     return {
-                                        name: scope.name,
-                                        namespace: scope.view.parent,
-                                        type: 'input',
+                                        expr: expr,
                                         self: true
                                     };
                                 }
                             }
+                        });
+
+                        modalInstance.result.then(function (expr) {
+                            if (_.isEmpty(expr)) {
+                                delete scope.prop.adapter[transformKey];
+                            } else {
+                                if (_.isUndefined(scope.prop.adapter[transformKey]) || !_.isObject(scope.prop.adapter[transformKey])) {
+                                    scope.prop.adapter[transformKey] = {};
+                                }
+                                scope.prop.adapter[transformKey].expr = expr;
+                            }
+
                         });
 
                     };

@@ -254,6 +254,12 @@ legend {
       display: block;
       overflow: hidden;
     }
+    .form-group {
+      .btn {
+        padding-top: 7px;
+        padding-bottom: 7px;
+      }
+    }
   }
 
   .checkbox {

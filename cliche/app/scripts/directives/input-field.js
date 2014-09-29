@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('clicheApp')
-    .directive('inputField', ['$templateCache', '$compile', '$timeout', '$q', 'RecursionHelper', 'Data', function ($templateCache, $compile, $timeout, $q, RecursionHelper, Data) {
+    .directive('inputField', ['$templateCache', '$compile', '$timeout', '$q', 'RecursionHelper', function ($templateCache, $compile, $timeout, $q, RecursionHelper) {
 
         var uniqueId = 0;
 
@@ -25,7 +25,6 @@ angular.module('clicheApp')
                     uniqueId++;
                     scope.view.uniqueId = uniqueId;
                     scope.view.parent = scope.parent ? scope.parent + '.' + scope.key : scope.key;
-                    scope.view.expression = Data.getExpression('input', scope.view.parent);
                     scope.view.index = scope.index || 0;
 
                     var inputScheme = scope.model;
