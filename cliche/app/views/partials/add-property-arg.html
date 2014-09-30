@@ -7,18 +7,10 @@
     <form ng-submit="addProperty()" name="view.form" novalidate>
 
         <div class="row">
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label for="value-from" class="control-label">Value From</label>
-                    <select
-                            class="form-control"
-                            id="value-from"
-                            name="valueFrom"
-                            ng-change="changeValueFrom()"
-                            ng-model="view.property.valueFrom"
-                            ng-options="key as key for (key, value) in options.valuesFrom">
-                        <option value>-- none --</option>
-                    </select>
+            <div class="col-md-3">
+                <div class="form-group" ng-class="{'has-error': (view.form.value.$invalid && view.form.$dirty)}">
+                    <label for="value" class="control-label">Value</label>
+                    <input type="text" class="form-control" id="value" name="value" ng-model="view.property.value" required>
                 </div>
             </div>
             <div class="col-md-3">
@@ -37,16 +29,7 @@
                     </select>
                 </div>
             </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-4">
-                <div class="form-group" ng-class="{'has-error': (view.form.value.$invalid && view.form.$dirty)}">
-                    <label for="value" class="control-label">Value</label>
-                    <input type="text" class="form-control" id="value" name="value" ng-model="view.property.value" required>
-                </div>
-            </div>
-            <div class="col-md-2">
+            <div class="col-md-3">
                 <div class="form-group" ng-class="{'has-error': (view.form.order.$invalid && view.form.$dirty)}">
                     <label for="order" class="control-label">Order</label>
                     <input type="number" class="form-control" id="order" name="order" ng-model="view.property.order">

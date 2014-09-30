@@ -5,10 +5,12 @@
 <div class="modal-body">
 
     <form class="expression-form form-inline">
-        <div ng-if="view.self" class="form-group">
+        <div class="form-group">
             <label class="control-label">Context:</label>
-            <input type="text" class="form-control input-sm" ng-model="view.arg" placeholder="$self" />
-            <span>, </span>
+            <span ng-if="view.self">
+                <input type="text" class="form-control input-sm" ng-model="view.arg" placeholder="$self" />
+                <span>, </span>
+            </span>
             <span>$job</span>
         </div>
     </form>

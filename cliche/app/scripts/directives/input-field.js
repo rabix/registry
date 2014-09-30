@@ -13,9 +13,7 @@ angular.module('clicheApp')
                 model: '=ngModel',
                 prop: '=',
                 key: '@',
-                form: '=',
-                parent: '@',
-                index: '@'
+                form: '='
             },
             compile: function(element) {
                 return RecursionHelper.compile(element, function(scope, iElement) {
@@ -24,8 +22,6 @@ angular.module('clicheApp')
 
                     uniqueId++;
                     scope.view.uniqueId = uniqueId;
-                    scope.view.parent = scope.parent ? scope.parent + '.' + scope.key : scope.key;
-                    scope.view.index = scope.index || 0;
 
                     var inputScheme = scope.model;
 

@@ -10,7 +10,7 @@ angular.module('clicheApp')
          *
          * @type {number}
          */
-        self.version = 6;
+        self.version = 7;
 
         /**
          * Tool json object
@@ -45,13 +45,6 @@ angular.module('clicheApp')
          * @type {string}
          */
         self.command = '';
-
-        /**
-         * Defined expression for inputs, outputs and adapters
-         *
-         * @type {Object}
-         */
-        self.expressions = {};
 
         /**
          * Fetch tool object from storage
@@ -148,32 +141,6 @@ angular.module('clicheApp')
 
                     self.appId = appId;
                     deferred.resolve(appId);
-
-                });
-
-            return deferred.promise;
-
-        };
-
-        /**
-         * Fetch expressions from storage
-         *
-         * @returns {*}
-         */
-        self.fetchExpressions = function() {
-
-            var deferred = $q.defer();
-
-            $localForage.getItem('expressions')
-                .then(function(expressions) {
-
-                    self.expressions = expressions || {
-                        input: {},
-                        output: {},
-                        adapter: {},
-                        argument: {}
-                    };
-                    deferred.resolve(expressions);
 
                 });
 
@@ -332,8 +299,7 @@ angular.module('clicheApp')
 
             $q.all([
                 $localForage.setItem('tool', self.tool),
-                $localForage.setItem('job', self.job),
-                $localForage.setItem('expressions', self.expressions)
+                $localForage.setItem('job', self.job)
             ]).then(
                 function() {
                     deferred.resolve();
@@ -404,20 +370,21 @@ angular.module('clicheApp')
          * @param value
          * @returns {*}
          */
-        self.applyTransform = function(transform, value) {
+        self.applyTransform = function(transform, value, self) {
 
             var deferred = $q.defer();
             var SandBox = $injector.get('SandBox');
 
             var expr = (transform && transform.expr) ? transform.expr : null;
+            var selfInput = self ? {$self: value} : {};
 
             if (expr) {
 
-                SandBox.evaluate(expr, {$self: value})
+                SandBox.evaluate(expr, selfInput)
                     .then(function (result) {
                         deferred.resolve(result);
                     }, function (error) {
-                        deferred.reject(error)
+                        deferred.reject(error);
                     });
 
             } else {
@@ -501,7 +468,6 @@ angular.module('clicheApp')
         self.parseArrayInput = function(property, input, prefix, separator, listSeparator) {
 
             var joiner = ' ';
-            //var array = [];
             var promises = [];
 
             if (property.items.type !== 'object') {
@@ -518,23 +484,23 @@ angular.module('clicheApp')
                             deferred.resolve(result);
                         });
                 } else {
-                    self.applyTransform(property.adapter.listTransform, (_.isObject(val) ? val.path : val))
+                    self.applyTransform(property.adapter.listTransform, (_.isObject(val) ? val.path : val), true)
                         .then(function (result) {
                             deferred.resolve(result);
+                        }, function (error) {
+                            deferred.reject(error);
                         });
                 }
 
                 promises.push(deferred.promise);
-
-                //array.push(value);
             });
 
-            return $q.all(promises).then(function (result) {
-               return  result.join(joiner);
-            });
-
-
-//            return array.join(joiner);
+            return $q.all(promises)
+                    .then(function (result) {
+                        return result.join(joiner);
+                    }, function (error) {
+                        return '"' + error.message + '"';
+                    });
 
         };
 
@@ -547,7 +513,6 @@ angular.module('clicheApp')
          */
         self.prepareProperties = function(properties, inputs) {
 
-//            var props = [];
             var promises = [];
 
             /* to through properties */
@@ -570,8 +535,7 @@ angular.module('clicheApp')
                             });
                         /* if input is FILE */
                     } else if (property.type === 'file') {
-                        //value = inputs[key].path;
-                        self.applyTransform(property.adapter.transform, inputs[key].path)
+                        self.applyTransform(property.adapter.transform, inputs[key].path, true)
                             .then(function (result) {
                                 prop.value = result;
                                 deferred.resolve(prop);
@@ -585,8 +549,7 @@ angular.module('clicheApp')
                             });
                         /* if input is anything else (STRING, INTEGER, BOOLEAN) */
                     } else {
-//                        value = inputs[key];
-                        self.applyTransform(property.adapter.transform, inputs[key])
+                        self.applyTransform(property.adapter.transform, inputs[key], true)
                             .then(function (result) {
                                 prop.value = result;
                                 deferred.resolve(prop);
@@ -594,8 +557,6 @@ angular.module('clicheApp')
                     }
 
                     promises.push(deferred.promise);
-
-                    //props.push(_.merge({key: key, order: property.adapter.order, value: value, prefix: prefix, separator: separator}, property));
                 }
             });
 
@@ -613,7 +574,6 @@ angular.module('clicheApp')
         self.parseObjectInput = function(properties, inputs) {
 
             var command = [];
-            //var props = self.prepareProperties(properties, inputs);
 
             return self.prepareProperties(properties, inputs)
                 .then(function (props) {
@@ -640,21 +600,39 @@ angular.module('clicheApp')
          */
         self.generateCommand = function() {
 
-            var args = [];
-            var command = [];
-            //var props = self.prepareProperties(self.tool.inputs.properties, self.job.inputs);
-
             return self.prepareProperties(self.tool.inputs.properties, self.job.inputs)
+                /* go through arguments and concat then with inputs */
                 .then(function (props) {
-                    /* to through arguments */
+
+                    var argsPromises = [];
                     _.each(self.tool.adapter.args, function(arg, key) {
+
+                        var deferred = $q.defer();
                         var prefix = self.parsePrefix(arg.prefix);
-                        args.push(_.merge({key: 'arg' + key, order: arg.order, prefix: prefix}, arg));
+                        var argObj = angular.copy(arg);
+                        delete argObj.value;
+
+                        var prop = _.merge({key: 'arg' + key, order: arg.order, prefix: prefix, value: ''}, argObj);
+
+                        self.applyTransform(arg.value, arg.value)
+                            .then(function (result) {
+                                prop.value = result;
+                                deferred.resolve(prop);
+                            });
+
+                        argsPromises.push(deferred.promise);
                     });
 
-                    var joined = _.sortBy(props.concat(args), 'order');
+                    return $q.all(argsPromises).then(function (args) {
+                            return _.sortBy(props.concat(args), 'order');
+                        });
 
-                    /* generate command */
+                })
+                /* generate command from arguments and inputs and apply transforms on baseCmd */
+                .then(function (joined) {
+
+                    var command = [];
+
                     _.each(joined, function(arg) {
 
                         var separator = self.parseSeparator(arg.prefix, arg.separator);
@@ -663,15 +641,40 @@ angular.module('clicheApp')
                         command.push(arg.prefix + separator + value);
                     });
 
-                    var output = self.tool.adapter.baseCmd.join(' ') + ' ' +
-                        command.join(' ') +
-                        ' > ' + self.tool.adapter.stdout;
+                    var baseCmdPromises = [];
 
-                    self.command = output;
+                    _.each(self.tool.adapter.baseCmd, function (baseCmd) {
 
-                    return output;
+                        var deferred = $q.defer();
+
+                        self.applyTransform(baseCmd, baseCmd)
+                            .then(function (result) {
+                                deferred.resolve(result);
+                            });
+
+                        baseCmdPromises.push(deferred.promise);
+                    });
+
+                    return $q.all(baseCmdPromises).then(function (cmds) {
+                            return {command: command, baseCmd: cmds.join(' ')};
+                        });
+
+                })
+                /* apply transforms on stdout */
+                .then(function (res) {
+                    return self.applyTransform(self.tool.adapter.stdout, self.tool.adapter.stdout)
+                            .then(function (result) {
+                                return {command: res.command, baseCmd: res.baseCmd, stdout: result};
+                            });
+                })
+                /* generate final command */
+                .then(function (result) {
+
+                    self.command = result.baseCmd + ' ' + result.command.join(' ') + ' > ' + result.stdout;
+
+                    return self.command;
+
                 });
-
         };
 
         /**
@@ -696,8 +699,7 @@ angular.module('clicheApp')
                             $localForage.setItem('tool', {}),
                             $localForage.setItem('job', {}),
                             $localForage.removeItem('owner'),
-                            $localForage.removeItem('app_id'),
-                            $localForage.removeItem('expressions')
+                            $localForage.removeItem('app_id')
                         ]).then(function() {
                             deferred.resolve();
                         });
@@ -705,78 +707,6 @@ angular.module('clicheApp')
                 });
 
             return deferred.promise;
-
-        };
-
-        /**
-         * Get custom expression for particular field
-         *
-         * @param {string} type
-         * @param {string} name
-         * @returns {*}
-         */
-        self.getExpression = function (type, name) {
-
-            if (name && _.isUndefined(self.expressions[type][name])) {
-                self.expressions[type][name] = {code: '', active: {}, arg: {}};
-            }
-
-            return self.expressions[type][name];
-
-        };
-
-        /**
-         * Remove particular expression
-         *
-         * @param {string} type
-         * @param {string} name
-         */
-        self.removeExpression = function (type, name) {
-
-            delete self.expressions[type][name];
-
-        };
-
-        /**
-         * Set expression value for particular field
-         *
-         * @param {string} type
-         * @param {string} name
-         * @param {string} value
-         */
-        self.setExpressionValue = function (type, name, value) {
-
-            self.expressions[type][name].code = value;
-
-        };
-
-        /**
-         * Set expression state for particular field
-         *
-         * @param {string} type
-         * @param {string} name
-         * @param {booelan} state
-         */
-        self.setExpressionState = function (type, name, state, index) {
-
-            index = index || 0;
-
-            self.expressions[type][name].active[index] = state;
-
-        };
-
-        /**
-         * Set expression argument for particular field
-         *
-         * @param {string} type
-         * @param {string} name
-         * @param {*} arg
-         */
-        self.setExpressionArg = function (type, name, arg, index) {
-
-            index = index || 0;
-
-            self.expressions[type][name].arg[index] = arg;
 
         };
 

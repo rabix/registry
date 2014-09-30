@@ -13,11 +13,8 @@ angular.module('clicheApp')
                 name: '@',
                 prop: '=ngModel',
                 active: '=',
-                transforms: '=',
                 properties: '=',
                 inputs: '=',
-                platformFeatures: '=',
-                valuesFrom: '=',
                 form: '=',
                 parent: '@'
             },
@@ -76,8 +73,6 @@ angular.module('clicheApp')
                     scope.toggleEnum = function() {
                         if (scope.view.isEnum) {
                             scope.prop.enum = [''];
-                            Data.removeExpression('input', scope.view.parent);
-
                         } else {
                             scope.prop.enum = null;
                         }
@@ -100,7 +95,6 @@ angular.module('clicheApp')
 
                         modalInstance.result.then(function () {
                             Data.deleteProperty('input', scope.name, scope.properties);
-                            Data.removeExpression('input', scope.view.parent);
 
                             if (scope.inputs &&  !_.isUndefined(scope.inputs[scope.name])) {
                                 delete scope.inputs[scope.name];
@@ -214,8 +208,6 @@ angular.module('clicheApp')
                         if (n !== o) {
                             if (n === 'object') {
                                 scope.view.disabled = true;
-
-                                Data.removeExpression('input', scope.view.parent);
 
                                 scope.inputs[scope.name] = [];
 

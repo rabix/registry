@@ -367,3 +367,10 @@ ul {
   }
 }
 
+@for $num from 1 through 12 {
+  .col-md-#{$num} {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+}
+

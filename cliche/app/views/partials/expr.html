@@ -1,0 +1,14 @@
+<div class="expression-wrap">
+
+    <input ng-if="view.model.expr" type="text" class="form-control" ng-model="view.model.expr" readonly>
+
+    <input ng-if="!view.model.expr" type="text" class="form-control" ng-model="view.model">
+
+    <button
+            tooltip="{{ view.model.expr ? view.model.expr : 'There is no expression defined' }}"
+            tooltip-append-to-body="true" ng-click="editExpression()"
+            class="btn btn-warning btn-expression btn-sm">
+            {}
+    </button>
+
+</div>

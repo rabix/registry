@@ -58,10 +58,18 @@
             </div>
             <!-- END Separator -->
 
-            <div class="col-md-2" ng-if="!view.disabled">
+            <div class="col-md-2" ng-if="!view.disabled && prop.type !== 'array'">
                 <div class="form-group" title="Transform">
                     <label for="property-transform-{{ view.uniqueId }}" class="control-label">Transform</label>
-                    <input type="text" ng-click="editExpression('transform')" class="form-control" id="property-transform-{{ view.uniqueId }}" name="{{ name }}-transform" ng-model="prop.adapter.transform.expr" ng-disabled="view.disabled" readonly>
+                    <input type="text"
+                           ng-click="editExpression('transform')"
+                           tooltip="{{ prop.adapter.transform ? prop.adapter.transform.expr : 'There is no expression defined' }}"
+                           class="form-control"
+                           id="property-transform-{{ view.uniqueId }}"
+                           name="{{ name }}-transform"
+                           ng-model="prop.adapter.transform.expr"
+                           ng-disabled="view.disabled"
+                           readonly>
                 </div>
             </div>
             <!-- END Transform -->
@@ -147,7 +155,14 @@
             <div class="col-md-2" ng-if="prop.type === 'array' && prop.items.type !== 'object'">
                 <div class="form-group" title="Transform">
                     <label for="property-item-transform-{{ view.uniqueId }}" class="control-label">Transform</label>
-                    <input type="text" ng-click="editExpression('listTransform')" class="form-control" id="property-item-transform-{{ view.uniqueId }}" name="{{ name }}-item-transform" ng-model="prop.adapter.listTransform.expr" readonly>
+                    <input type="text"
+                           ng-click="editExpression('listTransform')"
+                           tooltip="{{ prop.adapter.listTransform ? prop.adapter.listTransform.expr : 'There is no expression defined' }}"
+                           class="form-control"
+                           id="property-item-transform-{{ view.uniqueId }}"
+                           name="{{ name }}-item-transform"
+                           ng-model="prop.adapter.listTransform.expr"
+                           readonly>
                 </div>
             </div>
             <!-- END Transform -->
@@ -176,9 +191,7 @@
                     Properties
                     <add-property
                             type="input"
-                            properties="prop.properties"
-                            platform-features="platformFeatures"
-                            values-from="valuesFrom">
+                            properties="prop.properties">
                     </add-property>
                 </legend>
                 <property-input
@@ -188,8 +201,7 @@
                         name="{{ key }}"
                         form="form"
                         inputs="inputs[name]"
-                        properties="prop.properties"
-                        transforms="transforms">
+                        properties="prop.properties">
                 </property-input>
                 <p class="alert alert-info" ng-if="prop.properties | isEmpty">There are no properties at this moment.</p>
             </div>
@@ -201,9 +213,7 @@
                     Properties
                     <add-property
                             type="input"
-                            properties="prop.items.properties"
-                            platform-features="platformFeatures"
-                            values-from="valuesFrom">
+                            properties="prop.items.properties">
                     </add-property>
                 </legend>
                 <property-input
@@ -214,8 +224,7 @@
                         parent="{{ view.parent }}"
                         form="form"
                         inputs="inputs[name]"
-                        properties="prop.items.properties"
-                        transforms="transforms">
+                        properties="prop.items.properties">
                 </property-input>
                 <p class="alert alert-info" ng-if="prop.items.properties | isEmpty">There are no properties at this moment.</p>
             </div>

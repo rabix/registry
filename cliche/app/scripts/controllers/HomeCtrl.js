@@ -34,8 +34,6 @@ angular.module('clicheApp')
             if (n !== o) { $scope.view.classes = n; }
         });
 
-        $scope.view.valuesFrom = {};
-
         /* tool form obj */
         $scope.view.toolForm = Data.tool;
         /* job form obj */
@@ -50,8 +48,7 @@ angular.module('clicheApp')
                         Data.fetchTool(),
                         Data.fetchJob(),
                         Data.fetchOwner(),
-                        Data.fetchAppId(),
-                        Data.fetchExpressions()
+                        Data.fetchAppId()
                     ]).then(function() {
 
                         $scope.view.toolForm = Data.tool;
@@ -84,36 +81,10 @@ angular.module('clicheApp')
 //                            }
                         });
 
-                        /* prepare transforms */
-                        $scope.view.transforms = {
-                            'transforms/strip_ext': false,
-                            'transforms/m-suffix': false
-                        };
-                        _.each($scope.view.toolForm.requirements.platformFeatures, function(transform) {
-                            $scope.view.transforms[transform] = true;
-                        });
-
-                        /* generate valuesFrom array */
-                        _.each($scope.view.jobForm.allocatedResources, function(value, key) {
-
-                            $scope.view.valuesFrom['#allocatedResources/' + key] = value;
-
-                            $scope.$watch('view.toolForm.requirements.resources.'+key, function(newVal, oldVal) {
-                                if (newVal !== oldVal) {
-                                    $scope.view.jobForm.allocatedResources[key] = newVal;
-                                    $scope.view.valuesFrom['#allocatedResources/' + key] = newVal;
-                                }
-                            });
-                        });
-
-
                         /* add additional args attributes */
                         _.each($scope.view.toolForm.adapter.args, function(arg) {
                             if (_.isUndefined(arg.separator)) {
                                 arg.separator = '_';
-                            }
-                            if (!_.isUndefined(arg.valueFrom)) {
-                                arg.value = $scope.view.valuesFrom[arg.valueFrom];
                             }
                         });
 
@@ -121,21 +92,6 @@ angular.module('clicheApp')
 
             }
         });
-
-        /**
-         * Toggle transforms list
-         * @param transform
-         */
-        $scope.toggleTransformsList = function(transform) {
-
-            if (_.contains($scope.view.toolForm.requirements.platformFeatures, transform)) {
-                _.remove($scope.view.toolForm.requirements.platformFeatures, function(transformStr) {
-                    return transform === transformStr;
-                });
-            } else {
-                $scope.view.toolForm.requirements.platformFeatures.push(transform);
-            }
-        };
 
 
         /**
@@ -286,49 +242,23 @@ angular.module('clicheApp')
 
         };
 
-        $scope.editExpression = function (namespace, index) {
+        $scope.addBaseCmd = function () {
+            $scope.view.toolForm.adapter.baseCmd.push('');
+        };
 
-            var $modal = $injector.get('$modal');
-            var $templateCache = $injector.get('$templateCache');
-            var suffix = _.isUndefined(index) ? '' : index;
+        $scope.removeBaseCmd = function (index) {
+            if ($scope.view.toolForm.adapter.baseCmd.length === 1) {
+                return false;
+            }
+            $scope.view.toolForm.adapter.baseCmd.splice(index, 1);
+        };
 
-            var modalInstance = $modal.open({
-                template: $templateCache.get('views/partials/edit-expression.html'),
-                controller: 'ExpressionCtrl',
-                windowClass: 'modal-expression',
-                resolve: {
-                    options: function () {
-                        return {
-                            name: namespace + suffix,
-                            namespace: namespace + suffix,
-                            type: 'adapter',
-                            self: false
-                        };
-                    }
-                }
-            });
+        $scope.updateBaseCmd = function (index, value) {
+            $scope.view.toolForm.adapter.baseCmd[index] = value;
+        };
 
-            modalInstance.result.then(function (code) {
-
-                var SandBox = $injector.get('SandBox');
-
-                SandBox.evaluate(code, {})
-                    .then(function (result) {
-
-                        if (_.isUndefined(index)) {
-                            $scope.view.toolForm.adapter[namespace] = result;
-                        } else {
-                            //I know, this is ugly but easiest way to initiate scope update without forcing deep watch
-                            var copy = angular.copy($scope.view.toolForm.adapter[namespace]);
-                            copy[index] = result;
-
-                            $scope.view.toolForm.adapter[namespace] = [];
-                            $scope.view.toolForm.adapter[namespace] = angular.copy(copy);
-                        }
-                    });
-
-            });
-
+        $scope.updateStdOut = function (value) {
+            $scope.view.toolForm.adapter.stdout = value;
         };
 
     }]);

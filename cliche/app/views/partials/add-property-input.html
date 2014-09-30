@@ -53,17 +53,8 @@
         </div>
 
         <div class="row">
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label class="control-label" for="transform">Transform</label>
-                    <select class="form-control" id="transform" name="transform" ng-model="view.property.adapter.transform" ng-options="transform for transform in options.platformFeatures">
-                        <option value="">-- none --</option>
-                    </select>
-                </div>
-            </div>
-            <!-- END Transform -->
 
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="form-group" ng-class="{'has-error': (view.form.order.$invalid && view.form.$dirty)}">
                     <label class="control-label" for="order">Order</label>
                     <input type="number" class="form-control" id="order" name="order" ng-model="view.property.adapter.order">
@@ -71,8 +62,8 @@
             </div>
             <!-- END Order -->
 
-            <div class="col-md-4">
-                <div class="form-group" ng-if="view.property.type === 'string'">
+            <div class="col-md-4" ng-if="view.property.type === 'string'">
+                <div class="form-group">
                     <label class="empty-label">&nbsp;</label>
                     <div class="checkbox">
                         <label><input type="checkbox" ng-model="view.isEnum" ng-change="toggleEnum()"> Enum</label>
@@ -111,7 +102,7 @@
             </div>
             <!-- END Max -->
 
-            <div class="col-md-4">
+            <div class="col-md-2">
                 <div class="form-group">
                     <label class="control-label" for="item-type" class="control-label">Item Type</label>
 
@@ -125,7 +116,7 @@
             </div>
             <!-- END Item Type -->
 
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="form-group">
                     <label class="control-label" for="item-separator" class="control-label">Item Separator</label>
 
@@ -140,28 +131,16 @@
             </div>
             <!-- END Item Separator -->
 
-        </div>
-
-        <div class="row" ng-if="view.property.type === 'array' && view.property.items.type === 'file'">
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label class="control-label" for="item-transform" class="control-label">Item Transform</label>
-                    <select class="form-control" id="item-transform" name="item-transform" ng-model="view.property.adapter.listTransform" ng-options="transform for transform in options.platformFeatures">
-                        <option value="">-- none --</option>
-                    </select>
-                </div>
-            </div>
-            <!-- END Transform -->
-
-            <div class="col-md-4">
+            <div class="col-md-3" ng-if="view.property.type === 'array' && view.property.items.type === 'file'">
                 <div class="form-group">
                     <label class="empty-label">&nbsp;</label>
                     <div class="checkbox">
-                        <label><input type="checkbox" ng-model="view.property.adapter.streamable"> Item Streamable</label>
+                        <label><input type="checkbox" ng-model="view.property.adapter.streamable"> Streamable</label>
                     </div>
                 </div>
             </div>
             <!-- END Item Streamable -->
+
         </div>
 
         <div class="row" ng-if="view.isEnum">
