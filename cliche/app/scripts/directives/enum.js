@@ -13,14 +13,11 @@ angular.module('clicheApp')
                 max: '=',
                 properties: '=',
                 isRequired: '=',
-                form: '=',
-                parent: '@',
-                index: '@'
+                form: '='
             },
             link: function(scope) {
 
                 scope.view = {};
-                scope.view.index = scope.index || 0;
                 scope.view.tplPath = 'views/enum/enum-' + scope.type  + '.html';
 
                 /**
@@ -72,9 +69,8 @@ angular.module('clicheApp')
                 scope.addItem = function() {
                     if (scope.max && scope.view.list.length >= scope.max) {
                         return false;
-                    } else {
-                        scope.view.list.push({value: scope.getSchema()});
                     }
+                    scope.view.list.push({value: scope.getSchema()});
                 };
 
                 /**
@@ -84,13 +80,8 @@ angular.module('clicheApp')
                 scope.removeItem = function(index) {
                     if (scope.min && scope.view.list.length <= scope.min) {
                         return false;
-                    } else {
-                        scope.view.list.splice(index, 1);
-
-                        console.log(scope.expression);
-                        console.log(scope.parent, index);
-                        // TODO: delete expressions by index
                     }
+                    scope.view.list.splice(index, 1);
                 };
 
                 // TODO not really cool...

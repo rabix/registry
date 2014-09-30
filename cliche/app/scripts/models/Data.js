@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('clicheApp')
-    .factory('Data', ['$localForage', '$http', '$q', 'Api', function ($localForage, $http, $q, Api) {
+    .factory('Data', ['$localForage', '$http', '$q', '$injector', function ($localForage, $http, $q, $injector) {
 
         var self = {};
 
@@ -10,7 +10,7 @@ angular.module('clicheApp')
          *
          * @type {number}
          */
-        self.version = 6;
+        self.version = 7;
 
         /**
          * Tool json object
@@ -45,13 +45,6 @@ angular.module('clicheApp')
          * @type {string}
          */
         self.command = '';
-
-        /**
-         * Defined expression for inputs, outputs and adapters
-         *
-         * @type {Object}
-         */
-        self.expressions = {};
 
         /**
          * Fetch tool object from storage
@@ -148,32 +141,6 @@ angular.module('clicheApp')
 
                     self.appId = appId;
                     deferred.resolve(appId);
-
-                });
-
-            return deferred.promise;
-
-        };
-
-        /**
-         * Fetch expressions from storage
-         *
-         * @returns {*}
-         */
-        self.fetchExpressions = function() {
-
-            var deferred = $q.defer();
-
-            $localForage.getItem('expressions')
-                .then(function(expressions) {
-
-                    self.expressions = expressions || {
-                        input: {},
-                        output: {},
-                        adapter: {},
-                        argument: {}
-                    };
-                    deferred.resolve(expressions);
 
                 });
 
@@ -332,8 +299,7 @@ angular.module('clicheApp')
 
             $q.all([
                 $localForage.setItem('tool', self.tool),
-                $localForage.setItem('job', self.job),
-                $localForage.setItem('expressions', self.expressions)
+                $localForage.setItem('job', self.job)
             ]).then(
                 function() {
                     deferred.resolve();
@@ -404,23 +370,28 @@ angular.module('clicheApp')
          * @param value
          * @returns {*}
          */
-        self.applyTransform = function(transform, value) {
+        self.applyTransform = function(transform, value, self) {
 
-            var output;
+            var deferred = $q.defer();
+            var SandBox = $injector.get('SandBox');
 
-            switch(transform) {
-            case 'transforms/strip_ext':
-                var tmp = value ? value.split('.') : [];
-                if (tmp[0]) { output = tmp[0]; }
-                break;
-            case 'transforms/m-suffix':
-                output = value + 'm';
-                break;
-            default:
-                output = value;
+            var expr = (transform && transform.expr) ? transform.expr : null;
+            var selfInput = self ? {$self: value} : {};
+
+            if (expr) {
+
+                SandBox.evaluate(expr, selfInput)
+                    .then(function (result) {
+                        deferred.resolve(result);
+                    }, function (error) {
+                        deferred.reject(error);
+                    });
+
+            } else {
+                deferred.resolve(value);
             }
 
-            return output;
+            return deferred.promise;
         };
 
         /**
@@ -497,25 +468,39 @@ angular.module('clicheApp')
         self.parseArrayInput = function(property, input, prefix, separator, listSeparator) {
 
             var joiner = ' ';
-            var array = [];
+            var promises = [];
 
             if (property.items.type !== 'object') {
                 joiner = listSeparator === 'repeat' ? (' ' + prefix + separator) : listSeparator;
             }
 
             _.each(input, function(val) {
-                var value = '';
+
+                var deferred = $q.defer();
 
                 if (property.items.type === 'object') {
-                    value = self.parseObjectInput(property.items.properties, val);
+                    self.parseObjectInput(property.items.properties, val)
+                        .then(function (result) {
+                            deferred.resolve(result);
+                        });
                 } else {
-                    value = self.applyTransform(property.adapter.listTransform, (_.isObject(val) ? val.path : val));
+                    self.applyTransform(property.adapter.listTransform, (_.isObject(val) ? val.path : val), true)
+                        .then(function (result) {
+                            deferred.resolve(result);
+                        }, function (error) {
+                            deferred.reject(error);
+                        });
                 }
 
-                array.push(value);
+                promises.push(deferred.promise);
             });
 
-            return array.join(joiner);
+            return $q.all(promises)
+                    .then(function (result) {
+                        return result.join(joiner);
+                    }, function (error) {
+                        return '"' + error.message + '"';
+                    });
 
         };
 
@@ -524,40 +509,58 @@ angular.module('clicheApp')
          *
          * @param {object} properties
          * @param {object} inputs
-         * @returns {Array} props
+         * @returns {Promise} props
          */
         self.prepareProperties = function(properties, inputs) {
 
-            var props = [];
+            var promises = [];
 
             /* to through properties */
             _.each(properties, function(property, key) {
                 if (!_.isUndefined(inputs[key])) {
 
-                    var value;
+                    var deferred = $q.defer();
                     var prefix = self.parsePrefix(property.adapter.prefix);
                     var separator = self.parseSeparator(prefix, property.adapter.separator);
                     var listSeparator = self.parseListSeparator(property.adapter.listSeparator);
 
+                    var prop = _.merge({key: key, order: property.adapter.order, value: '', prefix: prefix, separator: separator}, property);
+
                     /* if input is ARRAY */
                     if (property.type === 'array') {
-                        value = self.parseArrayInput(property, inputs[key], prefix, separator, listSeparator);
+                        self.parseArrayInput(property, inputs[key], prefix, separator, listSeparator)
+                            .then(function (result) {
+                                prop.value = result;
+                                deferred.resolve(prop);
+                            });
                         /* if input is FILE */
                     } else if (property.type === 'file') {
-                        value = inputs[key].path;
+                        self.applyTransform(property.adapter.transform, inputs[key].path, true)
+                            .then(function (result) {
+                                prop.value = result;
+                                deferred.resolve(prop);
+                            });
                         /* if input is OBJECT */
                     } else if (property.type === 'object') {
-                        value = self.parseObjectInput(property.properties, inputs[key]);
+                        self.parseObjectInput(property.properties, inputs[key])
+                            .then(function (result) {
+                                prop.value = result;
+                                deferred.resolve(prop);
+                            });
                         /* if input is anything else (STRING, INTEGER, BOOLEAN) */
                     } else {
-                        value = inputs[key];
+                        self.applyTransform(property.adapter.transform, inputs[key], true)
+                            .then(function (result) {
+                                prop.value = result;
+                                deferred.resolve(prop);
+                            });
                     }
 
-                    props.push(_.merge({key: key, order: property.adapter.order, value: value, prefix: prefix, separator: separator}, property));
+                    promises.push(deferred.promise);
                 }
             });
 
-            return props;
+            return $q.all(promises);
 
         };
 
@@ -571,18 +574,23 @@ angular.module('clicheApp')
         self.parseObjectInput = function(properties, inputs) {
 
             var command = [];
-            var props = self.prepareProperties(properties, inputs);
 
-            props = _.sortBy(props, 'order');
+            return self.prepareProperties(properties, inputs)
+                .then(function (props) {
 
-            /* generate command */
-            _.each(props, function(prop) {
-                command.push(prop.prefix + prop.separator + prop.value);
-            });
+                    props = _.sortBy(props, 'order');
 
-            var output = command.join(' ');
+                    /* generate command */
+                    _.each(props, function(prop) {
+                        command.push(prop.prefix + prop.separator + prop.value);
+                    });
 
-            return output;
+                    var output = command.join(' ');
+
+                    return output;
+
+                });
+
         };
 
         /**
@@ -592,34 +600,81 @@ angular.module('clicheApp')
          */
         self.generateCommand = function() {
 
-            var args = [];
-            var command = [];
-            var props = self.prepareProperties(self.tool.inputs.properties, self.job.inputs);
+            return self.prepareProperties(self.tool.inputs.properties, self.job.inputs)
+                /* go through arguments and concat then with inputs */
+                .then(function (props) {
 
-            /* to through arguments */
-            _.each(self.tool.adapter.args, function(arg, key) {
-                var prefix = self.parsePrefix(arg.prefix);
-                args.push(_.merge({key: 'arg' + key, order: arg.order, prefix: prefix}, arg));
-            });
+                    var argsPromises = [];
+                    _.each(self.tool.adapter.args, function(arg, key) {
 
-            var joined = _.sortBy(props.concat(args), 'order');
+                        var deferred = $q.defer();
+                        var prefix = self.parsePrefix(arg.prefix);
+                        var argObj = angular.copy(arg);
+                        delete argObj.value;
 
-            /* generate command */
-            _.each(joined, function(arg) {
+                        var prop = _.merge({key: 'arg' + key, order: arg.order, prefix: prefix, value: ''}, argObj);
 
-                var separator = self.parseSeparator(arg.prefix, arg.separator);
-                var value = _.isUndefined(arg.value) ? '' : arg.value;
+                        self.applyTransform(arg.value, arg.value)
+                            .then(function (result) {
+                                prop.value = result;
+                                deferred.resolve(prop);
+                            });
 
-                command.push(arg.prefix + separator + value);
-            });
+                        argsPromises.push(deferred.promise);
+                    });
 
-            var output = self.tool.adapter.baseCmd.join(' ') + ' ' +
-                command.join(' ') +
-                ' > ' + self.tool.adapter.stdout;
+                    return $q.all(argsPromises).then(function (args) {
+                            return _.sortBy(props.concat(args), 'order');
+                        });
 
-            self.command = output;
+                })
+                /* generate command from arguments and inputs and apply transforms on baseCmd */
+                .then(function (joined) {
 
-            return output;
+                    var command = [];
+
+                    _.each(joined, function(arg) {
+
+                        var separator = self.parseSeparator(arg.prefix, arg.separator);
+                        var value = _.isUndefined(arg.value) ? '' : arg.value;
+
+                        command.push(arg.prefix + separator + value);
+                    });
+
+                    var baseCmdPromises = [];
+
+                    _.each(self.tool.adapter.baseCmd, function (baseCmd) {
+
+                        var deferred = $q.defer();
+
+                        self.applyTransform(baseCmd, baseCmd)
+                            .then(function (result) {
+                                deferred.resolve(result);
+                            });
+
+                        baseCmdPromises.push(deferred.promise);
+                    });
+
+                    return $q.all(baseCmdPromises).then(function (cmds) {
+                            return {command: command, baseCmd: cmds.join(' ')};
+                        });
+
+                })
+                /* apply transforms on stdout */
+                .then(function (res) {
+                    return self.applyTransform(self.tool.adapter.stdout, self.tool.adapter.stdout)
+                            .then(function (result) {
+                                return {command: res.command, baseCmd: res.baseCmd, stdout: result};
+                            });
+                })
+                /* generate final command */
+                .then(function (result) {
+
+                    self.command = result.baseCmd + ' ' + result.command.join(' ') + ' > ' + result.stdout;
+
+                    return self.command;
+
+                });
         };
 
         /**
@@ -644,8 +699,7 @@ angular.module('clicheApp')
                             $localForage.setItem('tool', {}),
                             $localForage.setItem('job', {}),
                             $localForage.removeItem('owner'),
-                            $localForage.removeItem('app_id'),
-                            $localForage.removeItem('expressions')
+                            $localForage.removeItem('app_id')
                         ]).then(function() {
                             deferred.resolve();
                         });
@@ -653,78 +707,6 @@ angular.module('clicheApp')
                 });
 
             return deferred.promise;
-
-        };
-
-        /**
-         * Get custom expression for particular field
-         *
-         * @param {string} type
-         * @param {string} name
-         * @returns {*}
-         */
-        self.getExpression = function (type, name) {
-
-            if (name && _.isUndefined(self.expressions[type][name])) {
-                self.expressions[type][name] = {code: '', active: {}, arg: {}};
-            }
-
-            return self.expressions[type][name];
-
-        };
-
-        /**
-         * Remove particular expression
-         *
-         * @param {string} type
-         * @param {string} name
-         */
-        self.removeExpression = function (type, name) {
-
-            delete self.expressions[type][name];
-
-        };
-
-        /**
-         * Set expression value for particular field
-         *
-         * @param {string} type
-         * @param {string} name
-         * @param {string} value
-         */
-        self.setExpressionValue = function (type, name, value) {
-
-            self.expressions[type][name].code = value;
-
-        };
-
-        /**
-         * Set expression state for particular field
-         *
-         * @param {string} type
-         * @param {string} name
-         * @param {booelan} state
-         */
-        self.setExpressionState = function (type, name, state, index) {
-
-            index = index || 0;
-
-            self.expressions[type][name].active[index] = state;
-
-        };
-
-        /**
-         * Set expression argument for particular field
-         *
-         * @param {string} type
-         * @param {string} name
-         * @param {*} arg
-         */
-        self.setExpressionArg = function (type, name, arg, index) {
-
-            index = index || 0;
-
-            self.expressions[type][name].arg[index] = arg;
 
         };
 

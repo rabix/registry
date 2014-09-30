@@ -16,11 +16,7 @@
                 "ports": [],
                 "diskSpace": 0,
                 "network": false
-            },
-            "platformFeatures": [
-                "transforms/strip_ext",
-                "transforms/m-suffix"
-            ]
+            }
         },
         "inputs": {
             "type": "object",
@@ -29,8 +25,7 @@
                     "type": "file",
                     "required": true,
                     "adapter": {
-                        "order": 2,
-                        "transform": "transforms/strip_ext"
+                        "order": 2
                     }
                 },
                 "reads": {
@@ -92,7 +87,7 @@
                 {
                     "order": 1,
                     "prefix": "-t",
-                    "valueFrom": "#allocatedResources/cpu"
+                    "value": 10
                 }
             ]
         }

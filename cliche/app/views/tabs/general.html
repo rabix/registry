@@ -91,13 +91,4 @@
     </div>
 </div>
 
-<div class="form-group" ng-class="{'has-error': (forms.toolForm.RplatformFeatures.$invalid && forms.toolForm.$dirty)}">
-    <label class="control-label">Platform Features</label>
-
-    <div class="checkbox" ng-repeat="(key, val) in view.transforms">
-        <label><input type="checkbox" ng-model="view.transforms[key]" ng-change="toggleTransformsList(key)"> {{ key }}</label>
-    </div>
-
-</div>
-
 <!-- END Requirements -> Resources -->

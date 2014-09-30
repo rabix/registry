@@ -1,21 +1,32 @@
 <div class="form-group">
     <label class="control-label">Base Cmd</label>
-    <enum ng-model="view.toolForm.adapter.baseCmd" type="'string'" min="1" is-required="true"></enum>
+
+    <div class="enum-list-wrap">
+        <a href ng-click="addBaseCmd()" class="btn btn-default add-enum-item"><i class="glyphicon glyphicon-plus"></i></a>
+        <div class="enum-list-container">
+            <ul class="enum-list wide" ng-class="{wide: view.toolForm.adapter.baseCmd.length === 1}">
+                <li ng-repeat="baseCmd in view.toolForm.adapter.baseCmd track by $index">
+                    <div class="enum-field form-group form-group-file with-expression">
+                        <expr ng-model="baseCmd" index="{{ $index }}" handle-item-update="updateBaseCmd(index, value)"></expr>
+                    </div>
+                    <a href ng-hide="view.toolForm.adapter.baseCmd.length > 1" class="glyphicon glyphicon-remove remove-btn" ng-click="removeBaseCmd($index)"></a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
 </div>
 
 <div class="form-group with-expression">
-    <label for="stdout" class="control-label">Stdout</label>
-    <input type="text" class="form-control" id="stdout" name="stdout" ng-model="view.toolForm.adapter.stdout" required>
-    <button class="btn btn-warning btn-sm btn-expression" ng-click="editExpression($event)">expression</button>
+    <label class="control-label">Stdout</label>
+    <expr ng-model="view.toolForm.adapter.stdout" handle-item-update="updateStdOut(value)"></expr>
 </div>
 
 <legend class="legend-small toggle" ng-class="{active: view.propsExpanded.args}" ng-click="toggleProperties('args')">
     Arguments
     <add-property
             type="arg"
-            properties="view.toolForm.adapter.args"
-            platform-features="view.toolForm.requirements.platformFeatures"
-            values-from="view.valuesFrom">
+            properties="view.toolForm.adapter.args">
     </add-property>
 </legend>
 <argument
@@ -24,8 +35,7 @@
         active="view.active.args[key]"
         name="{{ key }}"
         form="forms.toolForm"
-        properties="view.toolForm.adapter.args"
-        values-from="view.valuesFrom">
+        properties="view.toolForm.adapter.args">
 </argument>
 
 <p class="alert alert-info" ng-if="view.toolForm.adapter.args | isEmpty">There are no arguments at this moment.</p>

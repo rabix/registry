@@ -49,18 +49,4 @@ angular.module('clicheApp')
             $modalInstance.dismiss('cancel');
         };
 
-        /**
-         * Update the value if value from is changed
-         */
-        $scope.changeValueFrom = function() {
-            $scope.view.property.value = options.valuesFrom[$scope.view.property.valueFrom];
-        };
-
-        $scope.$watch('view.property.value', function(n, o) {
-            if (n !== o && !_.isEmpty(n)) {
-                delete $scope.view.property.valueFrom;
-            }
-        });
-
-
     }]);

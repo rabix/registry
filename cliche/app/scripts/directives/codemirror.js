@@ -9,7 +9,9 @@ angular.module('clicheApp')
             scope: {
                 code: '=',
                 arg: '=',
-                handleLoad: '&'
+                handleLoad: '&',
+                handleCancel: '&',
+                handleClear: '&'
             },
             link: function(scope, element) {
 
@@ -61,7 +63,7 @@ angular.module('clicheApp')
                     SandBox.evaluate(code, {$self: scope.arg})
                         .then(function () {
 
-                            scope.handleLoad({code: code});
+                            scope.handleLoad({expr: code});
 
                         }, function (error) {
 
@@ -69,6 +71,20 @@ angular.module('clicheApp')
                             scope.view.error = error;
 
                         });
+                };
+
+                /**
+                 * Cancel expression edit
+                 */
+                scope.cancel = function () {
+                    scope.handleCancel();
+                };
+
+                /**
+                 * Cancel expression edit and clear it
+                 */
+                scope.clear = function () {
+                    scope.handleClear();
                 };
 
                 scope.$on('$destroy', function () {

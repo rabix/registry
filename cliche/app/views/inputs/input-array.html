@@ -5,7 +5,6 @@
             (<strong ng-if="prop.minItems">min: {{ prop.minItems }} </strong>
             <strong ng-if="prop.maxItems">max: {{ prop.maxItems }}</strong>)
         </span>
-        <evaluate name="{{ view.parent }}" type="input" model="model" index="{{ view.index }}" item-type="{{ prop.items.type }}" ></evaluate>
     </label>
     <div class="input-property-body">
         <enum
@@ -15,9 +14,7 @@
              max="prop.maxItems"
              properties="prop.items.properties"
              is-required="prop.required"
-             form="form"
-             index="{{ view.index }}"
-             parent="{{ view.parent }}">
+             form="form">
         </enum>
     </div>
 </div>

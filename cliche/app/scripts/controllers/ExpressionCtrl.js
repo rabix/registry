@@ -1,26 +1,21 @@
 'use strict';
 
 angular.module('clicheApp')
-    .controller('ExpressionCtrl', ['$scope', '$modalInstance', 'options', 'Data', function ($scope, $modalInstance, options, Data) {
-
-        $scope.options = options;
+    .controller('ExpressionCtrl', ['$scope', '$modalInstance', 'options', function ($scope, $modalInstance, options) {
 
         $scope.view = {};
 
-        var expression = Data.getExpression($scope.options.type, $scope.options.namespace);
-
-        $scope.view.code = expression.code;
+        $scope.view.expr = options.expr || '';
+        $scope.view.self = options.self;
 
         /**
          * On modal confirm set the appropriate expression and close the modal
          *
-         * @param value
+         * @param expr
          */
-        $scope.ok = function (value) {
+        $scope.ok = function (expr) {
 
-            Data.setExpressionValue($scope.options.type, $scope.options.namespace, value);
-
-            $modalInstance.close(value);
+            $modalInstance.close(expr);
         };
 
         /**
@@ -28,6 +23,13 @@ angular.module('clicheApp')
          */
         $scope.cancel = function () {
             $modalInstance.dismiss('cancel');
+        };
+
+        /**
+         * On cancel close the modal and clear expression
+         */
+        $scope.clear = function () {
+            $modalInstance.close('');
         };
 
     }]);

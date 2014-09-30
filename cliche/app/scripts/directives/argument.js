@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('clicheApp')
-    .directive('argument', ['$templateCache', '$modal', 'Data', 'SandBox', function ($templateCache, $modal, Data, SandBox) {
+    .directive('argument', ['$templateCache', '$modal', 'Data', function ($templateCache, $modal, Data) {
 
         var uniqueId = 0;
 
@@ -14,8 +14,7 @@ angular.module('clicheApp')
                 arg: '=ngModel',
                 active: '=',
                 form: '=',
-                properties: '=',
-                valuesFrom: '='
+                properties: '='
             },
             link: function(scope) {
 
@@ -23,16 +22,6 @@ angular.module('clicheApp')
 
                 uniqueId++;
                 scope.view.uniqueId = uniqueId;
-                scope.view.expression = Data.getExpression('argument', scope.name);
-
-                SandBox.evaluate(scope.view.expression.code, {})
-                    .then(function (result) {
-                        scope.arg.value = result;
-                    });
-
-                if (!_.isUndefined(scope.arg.valueFrom)) {
-                    scope.arg.value = scope.valuesFrom[scope.arg.valueFrom];
-                }
 
                 /**
                  * Toggle argument box visibility
@@ -40,19 +29,6 @@ angular.module('clicheApp')
                 scope.toggleArgument = function() {
                     scope.active = !scope.active;
                 };
-
-                /**
-                 * Update the value if value from is changed
-                 */
-                scope.changeValueFrom = function() {
-                    scope.arg.value = scope.valuesFrom[scope.arg.valueFrom];
-                };
-
-                scope.$watch('arg.value', function(n, o) {
-                    if (n !== o && !_.isEmpty(n)) {
-                        scope.arg.valueFrom = null;
-                    }
-                });
 
                 /**
                  * Remove particular property
@@ -71,16 +47,15 @@ angular.module('clicheApp')
 
                     modalInstance.result.then(function () {
                         Data.deleteProperty('arg', scope.name, scope.properties);
-                        Data.removeExpression('argument', scope.name);
                     });
                 };
 
                 /**
                  * Edit custom expression for input value evaluation
                  */
-                scope.editExpression = function (e) {
+                scope.editExpression = function () {
 
-                    e.stopPropagation();
+                    var expr = _.isObject(scope.arg.value) ? scope.arg.value.expr : '';
 
                     var modalInstance = $modal.open({
                         template: $templateCache.get('views/partials/edit-expression.html'),
@@ -89,20 +64,21 @@ angular.module('clicheApp')
                         resolve: {
                             options: function () {
                                 return {
-                                    name: scope.name,
-                                    namespace: scope.name,
-                                    type: 'argument',
-                                    self: false
+                                    expr: expr
                                 };
                             }
                         }
                     });
 
-                    modalInstance.result.then(function (code) {
-                        SandBox.evaluate(code, {})
-                            .then(function (result) {
-                                scope.arg.value = result;
-                            });
+                    modalInstance.result.then(function (expr) {
+                        if (_.isEmpty(expr)) {
+                            scope.arg.value = '';
+                        } else {
+                            if (!_.isObject(scope.arg.value)) {
+                                scope.arg.value = {};
+                            }
+                            scope.arg.value.expr = expr;
+                        }
 
                     });
 

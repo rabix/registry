@@ -28,10 +28,12 @@
             </div>
             <!-- END Separator -->
 
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label for="argument-value-{{ view.uniqueId }}" class="control-label">Value</label>
-                    <input type="text" class="form-control" id="argument-value-{{ view.uniqueId }}" name="{{ name }}-value" ng-model="arg.value" ng-readonly="view.expression.code">
+            <div class="col-md-4">
+                <div class="form-group with-expression">
+                    <label class="control-label">Value</label>
+                    <input ng-if="arg.value.expr" type="text" class="form-control" ng-model="arg.value.expr" readonly>
+                    <input ng-if="!arg.value.expr" type="text" class="form-control" ng-model="arg.value">
+                    <button tooltip="{{ arg.value.expr ? arg.value.expr : 'There is no expression defined' }}" tooltip-append-to-body="true" ng-click="editExpression()" class="btn btn-warning btn-expression btn-sm">{}</button>
                 </div>
             </div>
             <!-- END Value -->
@@ -40,14 +42,6 @@
                 <div class="form-group">
                     <label for="argument-order-{{ view.uniqueId }}" class="control-label">Order</label>
                     <input type="number" class="form-control" id="argument-order-{{ view.uniqueId }}" name="{{ name }}-order" ng-model="arg.order">
-                </div>
-            </div>
-            <!-- END Order -->
-
-            <div class="col-md-2">
-                <div class="form-group">
-                    <label class="control-label">&nbsp;</label>
-                    <button class="btn btn-warning btn-sm" ng-click="editExpression($event)">expression</button>
                 </div>
             </div>
             <!-- END Order -->

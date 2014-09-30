@@ -2,9 +2,7 @@
     Properties
     <add-property
             type="input"
-            properties="view.toolForm.inputs.properties"
-            platform-features="view.toolForm.requirements.platformFeatures"
-            values-from="view.valuesFrom">
+            properties="view.toolForm.inputs.properties">
     </add-property>
 </legend>
 
@@ -15,10 +13,7 @@
         name="{{ key }}"
         form="forms.toolForm"
         inputs="view.jobForm.inputs"
-        properties="view.toolForm.inputs.properties"
-        platform-features="view.toolForm.requirements.platformFeatures"
-        values-from="view.valuesFrom"
-        transforms="view.toolForm.requirements.platformFeatures">
+        properties="view.toolForm.inputs.properties">
 </property-input>
 
 <p class="alert alert-info" ng-if="view.toolForm.inputs.properties | isEmpty">There are no inputs at this moment.</p>

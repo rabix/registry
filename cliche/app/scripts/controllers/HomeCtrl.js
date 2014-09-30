@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('clicheApp')
-    .controller('HomeCtrl', ['$scope','$q', 'Data', 'User', 'Loading', function ($scope, $q, Data, User, Loading) {
+    .controller('HomeCtrl', ['$scope','$q', '$injector', 'Data', 'User', 'Loading', function ($scope, $q, $injector, Data, User, Loading) {
 
         $scope.view = {};
         $scope.forms = {};
@@ -34,8 +34,6 @@ angular.module('clicheApp')
             if (n !== o) { $scope.view.classes = n; }
         });
 
-        $scope.view.valuesFrom = {};
-
         /* tool form obj */
         $scope.view.toolForm = Data.tool;
         /* job form obj */
@@ -50,8 +48,7 @@ angular.module('clicheApp')
                         Data.fetchTool(),
                         Data.fetchJob(),
                         Data.fetchOwner(),
-                        Data.fetchAppId(),
-                        Data.fetchExpressions()
+                        Data.fetchAppId()
                     ]).then(function() {
 
                         $scope.view.toolForm = Data.tool;
@@ -84,36 +81,10 @@ angular.module('clicheApp')
 //                            }
                         });
 
-                        /* prepare transforms */
-                        $scope.view.transforms = {
-                            'transforms/strip_ext': false,
-                            'transforms/m-suffix': false
-                        };
-                        _.each($scope.view.toolForm.requirements.platformFeatures, function(transform) {
-                            $scope.view.transforms[transform] = true;
-                        });
-
-                        /* generate valuesFrom array */
-                        _.each($scope.view.jobForm.allocatedResources, function(value, key) {
-
-                            $scope.view.valuesFrom['#allocatedResources/' + key] = value;
-
-                            $scope.$watch('view.toolForm.requirements.resources.'+key, function(newVal, oldVal) {
-                                if (newVal !== oldVal) {
-                                    $scope.view.jobForm.allocatedResources[key] = newVal;
-                                    $scope.view.valuesFrom['#allocatedResources/' + key] = newVal;
-                                }
-                            });
-                        });
-
-
                         /* add additional args attributes */
                         _.each($scope.view.toolForm.adapter.args, function(arg) {
                             if (_.isUndefined(arg.separator)) {
                                 arg.separator = '_';
-                            }
-                            if (!_.isUndefined(arg.valueFrom)) {
-                                arg.value = $scope.view.valuesFrom[arg.valueFrom];
                             }
                         });
 
@@ -121,21 +92,6 @@ angular.module('clicheApp')
 
             }
         });
-
-        /**
-         * Toggle transforms list
-         * @param transform
-         */
-        $scope.toggleTransformsList = function(transform) {
-
-            if (_.contains($scope.view.toolForm.requirements.platformFeatures, transform)) {
-                _.remove($scope.view.toolForm.requirements.platformFeatures, function(transformStr) {
-                    return transform === transformStr;
-                });
-            } else {
-                $scope.view.toolForm.requirements.platformFeatures.push(transform);
-            }
-        };
 
 
         /**
@@ -170,14 +126,22 @@ angular.module('clicheApp')
          */
         var turnOnDeepWatch = function() {
 
-            $scope.view.command = Data.generateCommand();
+//            $scope.view.command = Data.generateCommand();
+            Data.generateCommand()
+                .then(function (command) {
+                    $scope.view.command = command;
+                });
 
             var watch = ['view.jobForm.inputs', 'view.toolForm.inputs.properties', 'view.toolForm.adapter'];
 
             _.each(watch, function(arg) {
                 var watcher = $scope.$watch(arg, function(n, o) {
                     if (n !== o) {
-                        $scope.view.command = Data.generateCommand();
+//                        $scope.view.command = Data.generateCommand();
+                        Data.generateCommand()
+                            .then(function (command) {
+                                $scope.view.command = command;
+                            });
                     }
                 }, true);
                 watchers.push(watcher);
@@ -276,6 +240,25 @@ angular.module('clicheApp')
             Data.setAppId(app_id);
             $scope.view.appId = app_id;
 
+        };
+
+        $scope.addBaseCmd = function () {
+            $scope.view.toolForm.adapter.baseCmd.push('');
+        };
+
+        $scope.removeBaseCmd = function (index) {
+            if ($scope.view.toolForm.adapter.baseCmd.length === 1) {
+                return false;
+            }
+            $scope.view.toolForm.adapter.baseCmd.splice(index, 1);
+        };
+
+        $scope.updateBaseCmd = function (index, value) {
+            $scope.view.toolForm.adapter.baseCmd[index] = value;
+        };
+
+        $scope.updateStdOut = function (value) {
+            $scope.view.toolForm.adapter.stdout = value;
         };
 
     }]);
