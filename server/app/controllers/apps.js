@@ -64,7 +64,8 @@ router.put('/apps', filters.authenticated, function (req, res, next) {
 
     var data = req.body;
 
-    var check = validator.validateApp(data.tool);
+//    var check = validator.validateApp(data.tool);
+    var check = true;
 
     if (!_.isEmpty(check.invalid) || !_.isEmpty(check.obsolete) || !_.isEmpty(check.required)) {
         res.status(400).json({message: 'There are some errors in your json scheme', json: check});
@@ -159,7 +160,8 @@ router.post('/apps', filters.authenticated, function (req, res, next) {
 
     var data = req.body;
 
-    var check = validator.validateApp(data);
+//    var check = validator.validateApp(data);
+    var check = true;
 
     if (!_.isEmpty(check.invalid) || !_.isEmpty(check.obsolete) || !_.isEmpty(check.required)) {
         res.status(400).json({message: 'There are some errors in your json scheme', json: check});
@@ -217,5 +219,33 @@ router.delete('/apps', filters.authenticated, function (req, res, next) {
 
 });
 
+router.get('/my-apps', filters.authenticated, function (req, res, next) {
 
+    App.find({
+        author: req.user.email
+    }, function (err, data) {
 
+        if (err) {
+            console.log('Error fetching apps for user: ', req.user.email , err);
+            data = null
+        }
+
+        var result = {
+            apps: data,
+            revisions: null
+        };
+
+        Revision.find({        
+            author: req.user.email
+        }, function (err, data) {
+            if (err) {
+                console.log('Error fetching revisions for user: ', req.user.email , err);
+                data = null
+            }
+            result.revisions = data;
+            console.log(result);
+            res.json(result)
+        });
+
+    });
+});

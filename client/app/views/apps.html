@@ -14,7 +14,12 @@
                         </div>
                     </form>
                 </div>
-                <div class="col-md-8 tags">
+
+                <div ng-show="user" class="col-md-2">
+                    <button class="btn btn-default" ng-click="loadMyApps()">Load my apps</button>
+                </div>
+
+                <div class="col-md-6 tags">
                     <span ng-if="view.repo" class="label label-primary">{{ view.repo }} <a ng-href="#/apps" class="close">&times;</a></span>
                 </div>
             </div>

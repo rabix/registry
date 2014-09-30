@@ -10,6 +10,8 @@ angular.module('registryApp')
             add: {method: 'POST'},
             update: {method: 'PUT'}
         });
+        
+        self.myApps = $resource(apiUrl + '/my-apps');
 
         self.revisions = $resource(apiUrl + '/revisions/:id', {id: '@id'});
 

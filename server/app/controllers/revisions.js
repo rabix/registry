@@ -62,7 +62,8 @@ router.post('/revisions', filters.authenticated, function (req, res, next) {
 
     var data = req.body;
 
-    var check = validator.validateApp(data.tool);
+//    var check = validator.validateApp(data.tool);
+    var check = true;
 
     if (!_.isEmpty(check.invalid) || !_.isEmpty(check.obsolete) || !_.isEmpty(check.required)) {
         res.status(400).json({message: 'There are some errors in your json scheme', json: check});

@@ -85,6 +85,12 @@ angular.module('registryApp')
             return promise;
 
         };
+        
+        self.getMyApps = function () {
+            var promise = Api.myApps.get().$promise;
+
+            return promise;
+        };
 
         return self;
 

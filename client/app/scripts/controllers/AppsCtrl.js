@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('registryApp')
-    .controller('AppsCtrl', ['$scope', '$routeParams', 'App', 'Header', 'Api', 'Loading', function ($scope, $routeParams, App, Header, Api, Loading) {
+    .controller('AppsCtrl', ['$scope', '$routeParams', 'App', 'Header', 'Api', 'Loading', 'User',function ($scope, $routeParams, App, Header, Api, Loading, User) {
 
         Header.setActive('apps');
 
@@ -19,6 +19,10 @@ angular.module('registryApp')
             $scope.view.apps = result.list;
             $scope.view.loading = false;
         };
+
+        User.getUser().then(function (result) {
+            $scope.user = result.user;
+        });
 
         $scope.view = {};
         $scope.view.loading = true;
@@ -91,5 +95,13 @@ angular.module('registryApp')
             App.getApps(0, '', $routeParams.repo).then(appsLoaded);
 
         };
+        
+        $scope.loadMyApps = function () {
+            App.getMyApps().then(function (result) {
+
+                var res = result.apps.concat(result.revisions);
+                $scope.view.apps = res;
+            });
+        }
 
     }]);
