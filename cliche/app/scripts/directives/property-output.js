@@ -25,6 +25,7 @@ angular.module('clicheApp')
                 scope.view.uniqueId = uniqueId;
                 scope.view.isEnum = _.isArray(scope.prop.enum);
                 scope.view.edit = false;
+                scope.view.inputs = _.keys(Data.tool.inputs.properties);
 
                 /**
                  * Toggle edit name form
@@ -139,6 +140,35 @@ angular.module('clicheApp')
                         });
                     }
                 });
+
+                /**
+                 * Add meta data to the output
+                 */
+                scope.addMeta = function () {
+                    scope.prop.adapter.meta.push({key: '', value: ''});
+                };
+
+                /**
+                 * Remove meta data from the output
+                 *
+                 * @param {integer} index
+                 * @returns {boolean}
+                 */
+                scope.removeMeta = function (index) {
+
+                    if (scope.prop.adapter.meta.length === 1) { return false; }
+
+                    scope.prop.adapter.meta.splice(index, 1);
+                };
+
+                /**
+                 * Update meta data if expression or literal defined
+                 * @param index
+                 * @param value
+                 */
+                scope.updateMeta = function (index, value) {
+                    scope.prop.adapter.meta[index].value = value;
+                };
 
             }
         };

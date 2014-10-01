@@ -10,7 +10,7 @@ angular.module('clicheApp')
          *
          * @type {number}
          */
-        self.version = 7;
+        self.version = 8;
 
         /**
          * Tool json object
@@ -263,14 +263,14 @@ angular.module('clicheApp')
                             type: 'string',
                             required: false
                         },
-                        adapter: {streamable: false, glob: ''}
+                        adapter: {streamable: false, glob: '', meta: [], indexFiles: []}
                     },
                     directory: {
                         root: {
                             type: 'string',
                             required: false
                         },
-                        adapter: {glob: ''}
+                        adapter: {glob: '', meta: [], indexFiles: []}
                     },
                     array: {
                         root: {
@@ -280,7 +280,7 @@ angular.module('clicheApp')
                             maxItems: undefined,
                             items: {type: 'file'}
                         },
-                        adapter: {listStreamable: false}
+                        adapter: {listStreamable: false, meta: [], indexFiles: []}
                     }
                 }
             };

@@ -271,7 +271,7 @@ angular.module('clicheApp')
         };
 
         /**
-         * Update stdout if expression defined
+         * Update stdout if expression or literal defined
          *
          * @param {*} value
          */

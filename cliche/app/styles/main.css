@@ -8699,20 +8699,20 @@ form .form-control, .form .form-control {
   -khtml-border-radius: 0;
   border-radius: 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003133}}
-form .form-control:read-only, .form .form-control:read-only {
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003135}}
+form input.form-control:read-only, .form input.form-control:read-only {
   cursor: text;
   background-color: #fff;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003138}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003141}}
 form textarea, .form textarea {
   resize: none;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003141}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003144}}
 form .form-group, .form .form-group {
   position: relative;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003144}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003147}}
 form .form-group.unit:after, .form .form-group.unit:after {
   content: 'KB';
   position: absolute;
@@ -8720,26 +8720,26 @@ form .form-group.unit:after, .form .form-group.unit:after {
   right: 6px;
   color: #999;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003151}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003154}}
 form .form-group.unit .form-control, .form .form-group.unit .form-control {
   padding-right: 30px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003156}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003159}}
 form .form-group .checkboxes .checkbox, .form .form-group .checkboxes .checkbox {
   display: inline-block;
   vertical-align: middle;
   width: 50%;
   margin: 0 0 5px 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003161}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003164}}
 form .form-group .checkboxes .checkbox + .checkbox, .form .form-group .checkboxes .checkbox + .checkbox {
   margin-top: 0px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003167}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003170}}
 form .form-group.form-group-email input[type=email], .form .form-group.form-group-email input[type=email] {
   padding-left: 60px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003170}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003173}}
 form .form-group.form-group-email:before, .form .form-group.form-group-email:before {
   content: 'mailto:';
   display: inline-block;
@@ -8750,103 +8750,103 @@ form .form-group.form-group-email:before, .form .form-group.form-group-email:bef
 }
 
 @media (max-width: 600px) {
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003183}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003186}}
   label.empty-label {
     height: 0;
     float: left;
   }
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003191}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003194}}
 .alert {
   -khtml-border-radius: 0;
   border-radius: 0;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003195}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003198}}
 .btn {
   -khtml-border-radius: 0;
   border-radius: 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003197}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003200}}
 .btn.btn-orange {
   background-color: #f0ad4e;
   color: #fff;
   cursor: pointer;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003206}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003209}}
 .input-group.input-group-lg .form-control {
   -khtml-border-radius: 0;
   border-radius: 0;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003209}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003212}}
 .input-group.input-group-lg .btn {
   -khtml-border-radius: 0;
   border-radius: 0;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003216}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003219}}
 .panel .panel-heading, .panel .panel-body {
   -khtml-border-radius: 0;
   border-radius: 0;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003223}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003226}}
 .table thead tr {
   background-image: url(../images/bg.png);
   border-left: 1px solid #ddd;
   border-right: 1px solid #ddd;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003230}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003233}}
 .table tbody tr {
   border-left: 1px solid transparent;
   border-right: 1px solid transparent;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003238}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003241}}
 .table.table-hover tbody tr:hover {
   background-image: url(../images/bg.png);
   border-left: 1px solid #ddd;
   border-right: 1px solid #ddd;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003242}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003245}}
 .table.table-hover tbody tr:hover td {
   background-color: transparent;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003245}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003248}}
 .table.table-hover tbody tr:hover.empty {
   background-image: none;
   border-left-color: transparent;
   border-right-color: transparent;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003256}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003259}}
 pre {
   background-color: #f2f2f2;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003261}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003264}}
 .center-block {
   text-align: center;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003266}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003269}}
 legend.legend-small {
   font-size: 16px;
   margin-bottom: 5px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003270}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003273}}
 legend.legend-small .btn {
   padding: 1px 7px;
   line-height: 20px;
   margin: 3px;
   font-size: 12px;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003277}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003280}}
 legend.legend-r {
   text-align: right;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003280}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003283}}
 legend.legend-tiny {
   font-size: 14px;
   font-weight: bold;
@@ -8856,14 +8856,14 @@ legend.legend-tiny {
   padding: 2px 5px;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003290}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003293}}
 ul {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003299}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003302}}
 .modal.modal-prop .modal-dialog .main-actions {
   text-align: right;
   margin: 10px -15px -15px;
@@ -8871,85 +8871,85 @@ ul {
   padding: 10px;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003309}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003312}}
 .modal-content {
   -khtml-border-radius: 0;
   border-radius: 0;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003314}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003317}}
 .col-md-1 {
   padding-left: 10px;
   padding-right: 10px;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003314}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003317}}
 .col-md-2 {
   padding-left: 10px;
   padding-right: 10px;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003314}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003317}}
 .col-md-3 {
   padding-left: 10px;
   padding-right: 10px;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003314}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003317}}
 .col-md-4 {
   padding-left: 10px;
   padding-right: 10px;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003314}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003317}}
 .col-md-5 {
   padding-left: 10px;
   padding-right: 10px;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003314}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003317}}
 .col-md-6 {
   padding-left: 10px;
   padding-right: 10px;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003314}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003317}}
 .col-md-7 {
   padding-left: 10px;
   padding-right: 10px;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003314}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003317}}
 .col-md-8 {
   padding-left: 10px;
   padding-right: 10px;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003314}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003317}}
 .col-md-9 {
   padding-left: 10px;
   padding-right: 10px;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003314}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003317}}
 .col-md-10 {
   padding-left: 10px;
   padding-right: 10px;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003314}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003317}}
 .col-md-11 {
   padding-left: 10px;
   padding-right: 10px;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003314}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003317}}
 .col-md-12 {
   padding-left: 10px;
   padding-right: 10px;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003320}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003323}}
 .col {
   padding: 0;
   float: none;
@@ -8959,18 +8959,18 @@ ul {
   flex-flow: column nowrap;
 }
 @media (max-width: 1000px) {
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003320}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003323}}
   .col {
     -webkit-flex: 0 0 auto;
     flex: 0 0 auto;
   }
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003330}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003333}}
 .col > .heading {
   -webkit-flex: 0 0 auto;
   flex: 0 0 auto;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003334}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003337}}
 .col > .col-body {
   -webkit-flex: 1;
   flex: 1;
@@ -8993,18 +8993,18 @@ ul {
 .col > .col-body::-webkit-scrollbar-thumb:hover {
   background: #ec971f;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003340}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003343}}
 .col > .col-body:not(.tabs) {
   overflow-y: auto;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003344}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003347}}
 .col > .col-body.tabs {
   display: -webkit-flex;
   display: flex;
   -webkit-flex-flow: column nowrap;
   flex-flow: column nowrap;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003347}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003350}}
 .col > .col-body.tabs > .tab {
   -webkit-flex: 1;
   flex: 1;
@@ -9013,7 +9013,7 @@ ul {
   -webkit-flex-flow: column nowrap;
   flex-flow: column nowrap;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003351}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003354}}
 .col > .col-body.tabs > .tab .json-trace,
 .col > .col-body.tabs > .tab .console-trace {
   -webkit-flex: 1;
@@ -9023,7 +9023,7 @@ ul {
   -webkit-flex-flow: column nowrap;
   flex-flow: column nowrap;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003356}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003359}}
 .col > .col-body.tabs > .tab .json-trace pre,
 .col > .col-body.tabs > .tab .console-trace pre {
   -webkit-flex: 1;
@@ -9051,14 +9051,32 @@ ul {
   background: #ec971f;
 }
 
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003367}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003370}}
 .codemirror .CodeMirror {
   margin-bottom: 10px;
   border: 1px solid #f0ad4e;
 }
-@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003372}}
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003375}}
 .codemirror .result {
   margin-bottom: 10px;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003380}}
+.no-padding {
+  padding: 0;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003383}}
+.no-margin {
+  margin: 0;
+}
+
+@media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/_overrides\.scss}line{font-family:\00003386}}
+.inline {
+  display: inline-block !important;
+  width: auto !important;
+  vertical-align: middle;
+  margin-right: 10px;
 }
 
 @media -sass-debug-info{filename{font-family:file\:\/\/\/Applications\/MAMP\/htdocs\/registry\/cliche\/app\/styles\/main\.scss}line{font-family:\0000322}}

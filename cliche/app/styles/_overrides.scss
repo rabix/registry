@@ -129,10 +129,13 @@ form, .form {
   .form-control {
     color: #555;
     @include border-radius(0);
-
-    &:read-only {
-      cursor: text;
-      background-color: #fff;
+  }
+  input {
+    &.form-control {
+      &:read-only {
+        cursor: text;
+        background-color: #fff;
+      }
     }
   }
   textarea {
@@ -372,6 +375,19 @@ ul {
   .result {
     margin-bottom: 10px;
   }
+}
+
+.no-padding {
+  padding: 0;
+}
+.no-margin {
+  margin: 0;
+}
+.inline {
+  display: inline-block !important;
+  width: auto !important;
+  vertical-align: middle;
+  margin-right: 10px;
 }
 
 

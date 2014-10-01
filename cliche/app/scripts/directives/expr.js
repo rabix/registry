@@ -10,12 +10,14 @@ angular.module('clicheApp')
             scope: {
                 ngModel: '=',
                 index: '@',
+                placeholder: '@',
                 handleItemUpdate: '&'
             },
             link: function(scope) {
 
                 scope.view = {};
                 scope.view.model = scope.ngModel;
+                scope.view.placeholder = scope.placeholder || 'Enter value';
 
                 scope.$watch('view.model', function (n, o) {
                     if (n !== o) {

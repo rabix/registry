@@ -71,7 +71,9 @@
                     "type": "file",
                     "adapter": {
                         "streamable": true,
-                        "glob": "output.sam"
+                        "glob": "output.sam",
+                        "meta": [],
+                        "indexFiles": []
                     }
                 }
             }
