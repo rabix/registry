@@ -27,7 +27,7 @@ angular.module('clicheApp')
 
                     if (scope.prop.type === 'file') {
 
-                        inputScheme = {path: (scope.model && scope.model.path ? scope.model.path : scope.model)};
+                        inputScheme = {path: (_.contains(_.keys(scope.model, 'path'), 'path') ? scope.model.path : scope.model)};
 
                     } else if(scope.prop.type === 'object') {
 
@@ -47,7 +47,7 @@ angular.module('clicheApp')
                             break;
                         case 'file':
                             _.each(scope.model, function(value) {
-                                var innerScheme = {path: (value && value.path ? value.path : value)};
+                                var innerScheme = {path: (_.contains(_.keys(value, 'path'), 'path') ? value.path : value)};
                                 inputScheme.push(innerScheme);
                             });
                             break;

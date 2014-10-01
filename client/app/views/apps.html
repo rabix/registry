@@ -16,7 +16,9 @@
                 </div>
 
                 <div ng-show="user" class="col-md-2">
-                    <button class="btn btn-default" ng-click="loadMyApps()">Load my apps</button>
+                    <label class="checkbox">
+                        <input type="checkbox" ng-model="view.myApps" ng-change="toggleMyApps()" /> Show only my apps
+                    </label>
                 </div>
 
                 <div class="col-md-6 tags">

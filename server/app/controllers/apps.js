@@ -36,6 +36,10 @@ router.get('/apps', function (req, res, next) {
         }
     });
 
+    if (req.user && req.param('myApps')) {
+        where.user_id = req.user.id;
+    }
+
     App.count(where).exec(function(err, total) {
         if (err) { return next(err); }
 

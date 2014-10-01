@@ -81,6 +81,8 @@ angular.module('registryApp')
         $scope.searchApps = function() {
 
             $scope.view.page = 1;
+            $scope.view.loading = true;
+
             App.getApps(0, $scope.view.searchTerm, $routeParams.repo).then(appsLoaded);
 
         };
@@ -92,16 +94,22 @@ angular.module('registryApp')
 
             $scope.view.page = 1;
             $scope.view.searchTerm = '';
+            $scope.view.loading = true;
+
             App.getApps(0, '', $routeParams.repo).then(appsLoaded);
 
         };
-        
-        $scope.loadMyApps = function () {
-            App.getMyApps().then(function (result) {
 
-                var res = result.apps.concat(result.revisions);
-                $scope.view.apps = res;
-            });
-        }
+        /**
+         * Toggle query for myApps filter
+         */
+        $scope.toggleMyApps = function () {
+
+            $scope.view.page = 1;
+            $scope.view.searchTerm = '';
+            $scope.view.loading = true;
+
+            App.getApps(0, '', $routeParams.repo, $scope.view.myApps).then(appsLoaded);
+        };
 
     }]);

@@ -310,6 +310,13 @@ ul {
   @include border-radius(0);
 }
 
+@for $num from 1 through 12 {
+  .col-md-#{$num} {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+}
+
 .col {
   padding: 0;
   float: none;
@@ -367,10 +374,5 @@ ul {
   }
 }
 
-@for $num from 1 through 12 {
-  .col-md-#{$num} {
-    padding-left: 10px;
-    padding-right: 10px;
-  }
-}
+
 
