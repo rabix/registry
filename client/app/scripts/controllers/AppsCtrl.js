@@ -100,7 +100,13 @@ angular.module('registryApp')
             App.getMyApps().then(function (result) {
 
                 var res = result.apps.concat(result.revisions);
-                $scope.view.apps = res;
+
+                var result = {
+                    total: res.length,
+                    list: res
+                };
+
+                appsLoaded(result);
             });
         }
 
