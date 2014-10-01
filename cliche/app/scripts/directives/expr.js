@@ -40,6 +40,7 @@ angular.module('clicheApp')
                         template: $templateCache.get('views/partials/edit-expression.html'),
                         controller: 'ExpressionCtrl',
                         windowClass: 'modal-expression',
+                        backdrop: 'static',
                         resolve: {
                             options: function () {
                                 return {

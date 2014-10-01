@@ -14,7 +14,7 @@
                 ng-class="{selected: app._id === view.selectedApp._id && !view.selectedRevision, disabled: !app.json}"
                 ng-click="selectApp($event, app)">
                     <div class="app-list-item">
-                        <span><i class="fa fa-ok"></i> {{ app.name }}</span>
+                        <span><i class="fa fa-check"></i> {{ app.name }}</span>
                         <a ng-href="/#/app/{{ app._id }}" target="_blank">view app</a>
                         <a ng-if="view.user.id === app.user_id && app.revisions.length > 0" href ng-click="toggleRevisions(app, $event)" target="_blank">{{ app.showRevisions ? 'hide' : 'show' }} revisions</a>
                     </div>
@@ -25,7 +25,7 @@
                         ng-class="{selected: revision._id === view.selectedRevision._id, disabled: !revision.json}"
                         ng-click="selectApp($event, app, revision)">
                             <div class="app-list-item">
-                                <span><i class="fa fa-ok"></i> {{ revision.name }}</span>
+                                <span><i class="fa fa-check"></i> {{ revision.name }}</span>
                                 <a ng-href="/#/revision/{{ revision._id }}" target="_blank">view revision</a>
                             </div>
                     </li>
