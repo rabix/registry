@@ -51,37 +51,12 @@ angular.module('clicheApp')
                 };
 
                 /**
-                 * Edit custom expression for input value evaluation
+                 * Update argument if expression defined
+                 *
+                 * @param {*} value
                  */
-                scope.editExpression = function () {
-
-                    var expr = _.isObject(scope.arg.value) ? scope.arg.value.expr : '';
-
-                    var modalInstance = $modal.open({
-                        template: $templateCache.get('views/partials/edit-expression.html'),
-                        controller: 'ExpressionCtrl',
-                        windowClass: 'modal-expression',
-                        resolve: {
-                            options: function () {
-                                return {
-                                    expr: expr
-                                };
-                            }
-                        }
-                    });
-
-                    modalInstance.result.then(function (expr) {
-                        if (_.isEmpty(expr)) {
-                            scope.arg.value = '';
-                        } else {
-                            if (!_.isObject(scope.arg.value)) {
-                                scope.arg.value = {};
-                            }
-                            scope.arg.value.expr = expr;
-                        }
-
-                    });
-
+                scope.updateArgument = function (value) {
+                    scope.arg.value = value;
                 };
 
             }

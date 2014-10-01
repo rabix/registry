@@ -59,7 +59,7 @@ angular.module('clicheApp')
                             if (result.user) {
                                 $scope.view.toolForm.documentAuthor = result.user.email;
                                 $scope.view.toolForm.softwareDescription.repo_owner = result.user.login;
-//                                $scope.view.toolForm.softwareDescription.repo_name = '';
+                                //$scope.view.toolForm.softwareDescription.repo_name = '';
                             }
                         });
 
@@ -126,7 +126,6 @@ angular.module('clicheApp')
          */
         var turnOnDeepWatch = function() {
 
-//            $scope.view.command = Data.generateCommand();
             Data.generateCommand()
                 .then(function (command) {
                     $scope.view.command = command;
@@ -137,7 +136,6 @@ angular.module('clicheApp')
             _.each(watch, function(arg) {
                 var watcher = $scope.$watch(arg, function(n, o) {
                     if (n !== o) {
-//                        $scope.view.command = Data.generateCommand();
                         Data.generateCommand()
                             .then(function (command) {
                                 $scope.view.command = command;
@@ -242,10 +240,19 @@ angular.module('clicheApp')
 
         };
 
+        /**
+         * Add item to the baseCmd
+         */
         $scope.addBaseCmd = function () {
             $scope.view.toolForm.adapter.baseCmd.push('');
         };
 
+        /**
+         * Remove item from the baseCmd
+         *
+         * @param {integer} index
+         * @returns {boolean}
+         */
         $scope.removeBaseCmd = function (index) {
             if ($scope.view.toolForm.adapter.baseCmd.length === 1) {
                 return false;
@@ -253,10 +260,21 @@ angular.module('clicheApp')
             $scope.view.toolForm.adapter.baseCmd.splice(index, 1);
         };
 
+        /**
+         * Update baseCmd item if expression defined
+         *
+         * @param {integer} index
+         * @param {*} value
+         */
         $scope.updateBaseCmd = function (index, value) {
             $scope.view.toolForm.adapter.baseCmd[index] = value;
         };
 
+        /**
+         * Update stdout if expression defined
+         *
+         * @param {*} value
+         */
         $scope.updateStdOut = function (value) {
             $scope.view.toolForm.adapter.stdout = value;
         };

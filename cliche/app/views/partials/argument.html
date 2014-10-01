@@ -31,9 +31,7 @@
             <div class="col-md-4">
                 <div class="form-group with-expression">
                     <label class="control-label">Value</label>
-                    <input ng-if="arg.value.expr" type="text" class="form-control" ng-model="arg.value.expr" readonly>
-                    <input ng-if="!arg.value.expr" type="text" class="form-control" ng-model="arg.value">
-                    <button tooltip="{{ arg.value.expr ? arg.value.expr : 'There is no expression defined' }}" tooltip-append-to-body="true" ng-click="editExpression()" class="btn btn-warning btn-expression btn-sm">{}</button>
+                    <expr ng-model="arg.value" handle-item-update="updateArgument(value)"></expr>
                 </div>
             </div>
             <!-- END Value -->

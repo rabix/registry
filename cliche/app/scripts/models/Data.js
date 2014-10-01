@@ -239,7 +239,7 @@ angular.module('clicheApp')
                             maxItems: undefined,
                             items: {type: 'string'}
                         },
-                        adapter: {prefix: '', separator: '_', order: 0, transform: undefined, listSeparator: ','}
+                        adapter: {prefix: '', separator: '_', order: 0, listTransform: undefined, listSeparator: ','}
                     },
                     boolean: {
                         root: {
@@ -254,7 +254,7 @@ angular.module('clicheApp')
                             required: false,
                             properties: {}
                         },
-                        adapter: {prefix: '', separator: '_', order: 0, transform: undefined}
+                        adapter: {prefix: '', separator: '_', order: 0}
                     }
                 },
                 output: {
@@ -515,7 +515,7 @@ angular.module('clicheApp')
 
             var promises = [];
 
-            /* to through properties */
+            /* go through properties */
             _.each(properties, function(property, key) {
                 if (!_.isUndefined(inputs[key])) {
 
@@ -533,21 +533,21 @@ angular.module('clicheApp')
                                 prop.value = result;
                                 deferred.resolve(prop);
                             });
-                        /* if input is FILE */
+                    /* if input is FILE */
                     } else if (property.type === 'file') {
                         self.applyTransform(property.adapter.transform, inputs[key].path, true)
                             .then(function (result) {
                                 prop.value = result;
                                 deferred.resolve(prop);
                             });
-                        /* if input is OBJECT */
+                    /* if input is OBJECT */
                     } else if (property.type === 'object') {
                         self.parseObjectInput(property.properties, inputs[key])
                             .then(function (result) {
                                 prop.value = result;
                                 deferred.resolve(prop);
                             });
-                        /* if input is anything else (STRING, INTEGER, BOOLEAN) */
+                    /* if input is anything else (STRING, INTEGER, BOOLEAN) */
                     } else {
                         self.applyTransform(property.adapter.transform, inputs[key], true)
                             .then(function (result) {

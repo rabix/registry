@@ -23,7 +23,7 @@ var mapDefinition = {
     requirements: {
         environment: {type: 'object', required: true},
         resources: {type: 'object', required: true},
-        platformFeatures: {type: 'array', required: true}
+        platformFeatures: {type: 'array'}
     },
     environment: {
         container: {type: 'object', required: true}
