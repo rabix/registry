@@ -21,7 +21,7 @@
                            tooltip="{{ view.showTrace ? 'hide' : 'show' }} trace"
                            tooltip-append-to-body="true"
                            tooltip-placement="right">
-                            <i class="glyphicon" ng-class="{'glyphicon-pause': view.showTrace, 'glyphicon-play': !view.showTrace}"></i>
+                            <i class="fa" ng-class="{'fa-pause': view.showTrace, 'fa-play': !view.showTrace}"></i>
                         </a>
                     </li>
                 </ul>
@@ -35,7 +35,7 @@
                     <li ng-class="{active: view.tab === 'adapter'}"><a href ng-click="switchTab('adapter')">A</a></li>
                     <li ng-class="{active: view.tab === 'values'}"><a href ng-click="switchTab('values')">V</a></li>
 
-                    <li class="pull-right"><a href ng-click="toggleTrace()" class="toggle-trace"><i class="glyphicon" ng-class="{'glyphicon-pause': view.showTrace, 'glyphicon-play': !view.showTrace}"></i></a></li>
+                    <li class="pull-right"><a href ng-click="toggleTrace()" class="toggle-trace"><i class="fa" ng-class="{'fa-pause': view.showTrace, 'fa-play': !view.showTrace}"></i></a></li>
                 </ul>
 
 

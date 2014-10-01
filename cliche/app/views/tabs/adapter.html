@@ -2,14 +2,14 @@
     <label class="control-label">Base Cmd</label>
 
     <div class="enum-list-wrap">
-        <a href ng-click="addBaseCmd()" class="btn btn-default add-enum-item"><i class="glyphicon glyphicon-plus"></i></a>
+        <a href ng-click="addBaseCmd()" class="btn btn-default add-enum-item"><i class="fa fa-plus"></i></a>
         <div class="enum-list-container">
             <ul class="enum-list" ng-class="{wide: view.toolForm.adapter.baseCmd.length === 1}">
                 <li ng-repeat="baseCmd in view.toolForm.adapter.baseCmd track by $index">
                     <div class="enum-field form-group form-group-file with-expression">
                         <expr ng-model="baseCmd" index="{{ $index }}" handle-item-update="updateBaseCmd(index, value)"></expr>
                     </div>
-                    <a href ng-hide="view.toolForm.adapter.baseCmd.length === 1" class="glyphicon glyphicon-remove remove-btn" ng-click="removeBaseCmd($index)"></a>
+                    <a href ng-hide="view.toolForm.adapter.baseCmd.length === 1" class="fa fa-remove remove-btn" ng-click="removeBaseCmd($index)"></a>
                 </li>
             </ul>
         </div>

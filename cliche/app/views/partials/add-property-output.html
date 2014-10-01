@@ -102,7 +102,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="enum-list-wrap">
-                    <a href ng-click="addMeta()" class="btn btn-default add-enum-item"><i class="glyphicon glyphicon-plus"></i></a>
+                    <a href ng-click="addMeta()" class="btn btn-default add-enum-item"><i class="fa fa-plus"></i></a>
                     <div class="enum-list-container">
                         <ul class="enum-list" ng-class="{wide: view.property.adapter.meta.length === 1}">
                             <li ng-repeat="meta in view.property.adapter.meta track by $index">
@@ -116,7 +116,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <a href ng-hide="view.property.adapter.meta.length === 1" class="glyphicon glyphicon-remove remove-btn" ng-click="removeMeta($index)"></a>
+                                <a href ng-hide="view.property.adapter.meta.length === 1" class="fa fa-remove remove-btn" ng-click="removeMeta($index)"></a>
                             </li>
                         </ul>
                         <p ng-if="view.property.adapter.meta.length === 0" class="alert alert-info">Click + on the left to add meta data</p>

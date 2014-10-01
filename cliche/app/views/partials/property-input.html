@@ -4,15 +4,15 @@
 
         <div class="property-name" ng-hide="view.edit">
             <span>{{ name }}</span>
-            <a href ng-click="toggleEdit($event)"><i class="glyphicon glyphicon-edit"></i></a>
+            <a href ng-click="toggleEdit($event)"><i class="fa fa-edit"></i></a>
         </div>
 
         <div class="property-name-form" ng-show="view.edit">
             <div class="input-group" ng-class="{'has-error': view.error}">
                 <input type="text" class="form-control" name="name" ng-model="view.name" ng-click="stopPropagation($event)" ng-keypress="changeName($event)" placeholder="property name" >
                 <span class="input-group-btn">
-                    <button class="btn btn-primary" ng-click="changeName($event)"><i class="glyphicon glyphicon-ok"></i></button>
-                    <button class="btn btn-default" ng-click="toggleEdit($event)"><i class="glyphicon glyphicon-remove"></i></button>
+                    <button class="btn btn-primary" ng-click="changeName($event)"><i class="fa fa-ok"></i></button>
+                    <button class="btn btn-default" ng-click="toggleEdit($event)"><i class="fa fa-remove"></i></button>
                 </span>
             </div>
         </div>

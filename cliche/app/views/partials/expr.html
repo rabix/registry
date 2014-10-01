@@ -5,10 +5,12 @@
     <input ng-if="!view.model.expr" type="text" class="form-control" ng-model="view.model" placeholder="{{ view.placeholder }}">
 
     <button
-            tooltip="{{ view.model.expr ? view.model.expr : 'There is no expression defined' }}"
+            tooltip="{{ view.model.expr ? view.model.expr : 'There is no expression defined. Click to add it' }}"
             tooltip-append-to-body="true" ng-click="editExpression()"
-            class="btn btn-warning btn-expression btn-sm">
-            {}
+            class="btn btn-expression"
+            ng-class="{'btn-warning': view.model.expr, 'btn-default': !view.model.expr}"
+            >
+            <i class="fa fa-code"></i>
     </button>
 
 </div>

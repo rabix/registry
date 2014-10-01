@@ -4,15 +4,15 @@
 
         <div class="property-name" ng-hide="view.edit">
             <span>{{ name }}</span>
-            <a href ng-click="toggleEdit($event)"><i class="glyphicon glyphicon-edit"></i></a>
+            <a href ng-click="toggleEdit($event)"><i class="fa fa-edit"></i></a>
         </div>
 
         <div class="property-name-form" ng-show="view.edit">
             <div class="input-group" ng-class="{'has-error': view.error}">
                 <input type="text" class="form-control" name="name" ng-model="view.name" ng-click="stopPropagation($event)" ng-keypress="changeName($event)" placeholder="property name" >
                 <span class="input-group-btn">
-                    <button class="btn btn-primary" ng-click="changeName($event)"><i class="glyphicon glyphicon-ok"></i></button>
-                    <button class="btn btn-default" ng-click="toggleEdit($event)"><i class="glyphicon glyphicon-remove"></i></button>
+                    <button class="btn btn-primary" ng-click="changeName($event)"><i class="fa fa-ok"></i></button>
+                    <button class="btn btn-default" ng-click="toggleEdit($event)"><i class="fa fa-remove"></i></button>
                 </span>
             </div>
         </div>
@@ -115,7 +115,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="enum-list-wrap">
-                    <a href ng-click="addMeta()" class="btn btn-default add-enum-item"><i class="glyphicon glyphicon-plus"></i></a>
+                    <a href ng-click="addMeta()" class="btn btn-default add-enum-item"><i class="fa fa-plus"></i></a>
                     <div class="enum-list-container">
                         <ul class="enum-list" ng-class="{wide: prop.adapter.meta.length === 1}">
                             <li ng-repeat="meta in prop.adapter.meta track by $index">
@@ -129,7 +129,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <a href ng-hide="prop.adapter.meta.length === 1" class="glyphicon glyphicon-remove remove-btn" ng-click="removeMeta($index)"></a>
+                                <a href ng-hide="prop.adapter.meta.length === 1" class="fa fa-remove remove-btn" ng-click="removeMeta($index)"></a>
                             </li>
                         </ul>
                         <p ng-if="prop.adapter.meta.length === 0" class="alert alert-info">Click + on the left to add meta data</p>

@@ -632,16 +632,19 @@ angular.module('clicheApp')
                 .then(function (joined) {
 
                     var command = [];
+                    var baseCmdPromises = [];
 
                     _.each(joined, function(arg) {
 
                         var separator = self.parseSeparator(arg.prefix, arg.separator);
                         var value = _.isUndefined(arg.value) ? '' : arg.value;
 
-                        command.push(arg.prefix + separator + value);
-                    });
+                        var cmd = arg.prefix + separator + value;
 
-                    var baseCmdPromises = [];
+                        if (!_.isEmpty(cmd)) {
+                            command.push(cmd);
+                        }
+                    });
 
                     _.each(self.tool.adapter.baseCmd, function (baseCmd) {
 
