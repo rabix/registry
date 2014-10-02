@@ -372,7 +372,8 @@ module.exports = function (grunt) {
                             'bower_components/es5-shim/es5-shim.js',
                             'bower_components/json3/lib/json3.min.js',
                             'bower_components/zeroclipboard/dist/ZeroClipboard.swf',
-                            'data/*'
+                            'data/*',
+                            'vendor/jsandbox/src/jsandbox-worker.js'
                         ]
                     },
                     {
@@ -474,7 +475,7 @@ module.exports = function (grunt) {
         'concat',
         'ngmin',
         'copy:dist',
-        'cdnify',
+        //'cdnify',
         'cssmin',
         'uglify',
         'filerev',
