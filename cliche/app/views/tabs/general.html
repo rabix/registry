@@ -64,21 +64,21 @@
 
 <div class="row">
     <div class="col-md-3">
-        <div class="form-group required" ng-class="{'has-error': (forms.toolForm.RRcpu.$invalid && forms.toolForm.$dirty)}">
-            <label for="cpu" class="control-label">CPU</label>
-            <input type="number" class="form-control" id="cpu" name="RRcpu" ng-model="view.toolForm.requirements.resources.cpu" min="0" required>
+        <div class="form-group required with-expression" ng-class="{'has-error': (forms.toolForm.RRcpu.$invalid && forms.toolForm.$dirty)}">
+            <label class="control-label">CPU</label>
+            <expr ng-model="view.toolForm.requirements.resources.cpu" type="number" handle-item-update="updateResource(value, 'cpu')"></expr>
         </div>
     </div>
     <div class="col-md-3">
-        <div class="form-group required" ng-class="{'has-error': (forms.toolForm.RRmem.$invalid && forms.toolForm.$dirty)}">
-            <label for="mem" class="control-label">Memory</label>
-            <input type="number" class="form-control" id="mem" name="RRmem" ng-model="view.toolForm.requirements.resources.mem" min="0" required>
+        <div class="form-group required with-expression" ng-class="{'has-error': (forms.toolForm.RRmem.$invalid && forms.toolForm.$dirty)}">
+            <label class="control-label">Memory</label>
+            <expr ng-model="view.toolForm.requirements.resources.mem" type="number" handle-item-update="updateResource(value, 'mem')"></expr>
         </div>
     </div>
     <div class="col-md-3">
-        <div class="form-group required" ng-class="{'has-error': (forms.toolForm.RRdiskSpace.$invalid && forms.toolForm.$dirty)}">
-            <label for="diskSpace" class="control-label">Disk Space</label>
-            <input type="number" class="form-control" id="diskSpace" name="RRdiskSpace" ng-model="view.toolForm.requirements.resources.diskSpace" min="0" required>
+        <div class="form-group required with-expression" ng-class="{'has-error': (forms.toolForm.RRdiskSpace.$invalid && forms.toolForm.$dirty)}">
+            <label class="control-label">Disk Space</label>
+            <expr ng-model="view.toolForm.requirements.resources.diskSpace" type="number" handle-item-update="updateResource(value, 'diskSpace')"></expr>
         </div>
     </div>
     <div class="col-md-3">

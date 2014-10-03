@@ -9,6 +9,7 @@ angular.module('clicheApp')
             template: $templateCache.get('views/partials/expr.html'),
             scope: {
                 ngModel: '=',
+                type: '@',
                 index: '@',
                 placeholder: '@',
                 self: '@',
@@ -19,6 +20,7 @@ angular.module('clicheApp')
                 scope.view = {};
                 scope.view.model = scope.ngModel;
                 scope.view.placeholder = scope.placeholder || 'Enter value';
+                scope.view.type = scope.type || 'string';
 
                 scope.$watch('view.model', function (n, o) {
                     if (n !== o) {
@@ -28,6 +30,10 @@ angular.module('clicheApp')
                             scope.handleItemUpdate({index: scope.index, value: n});
                         }
                     }
+                });
+
+                scope.$watch('ngModel', function (n, o) {
+                    if (n !== o) { scope.view.model = n; }
                 });
 
                 /**

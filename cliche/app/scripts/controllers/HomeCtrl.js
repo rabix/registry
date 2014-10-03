@@ -279,4 +279,8 @@ angular.module('clicheApp')
             $scope.view.toolForm.adapter.stdout = value;
         };
 
+        $scope.updateResource = function (value, key) {
+            $scope.view.toolForm.requirements.resources[key] = value;
+        };
+
     }]);
