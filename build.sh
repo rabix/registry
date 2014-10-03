@@ -1,6 +1,6 @@
 #!/bin/sh
 
-DIR=/home/filip/registry
+DIR=/data/app/registry
 
 service rabix-registry stop
 
