@@ -280,7 +280,22 @@ angular.module('clicheApp')
         };
 
         $scope.updateResource = function (value, key) {
+
+            var SandBox = $injector.get('SandBox');
+
             $scope.view.toolForm.requirements.resources[key] = value;
+
+            if (_.isObject(value)) {
+
+                SandBox.evaluate(value.expr)
+                    .then(function (result) {
+                        $scope.view.jobForm.allocatedResources[key] = result;
+                    });
+            } else {
+                if ($scope.view.jobForm.allocatedResources[key] < value) {
+                    $scope.view.jobForm.allocatedResources[key] = value;
+                }
+            }
         };
 
     }]);

@@ -32,6 +32,12 @@ angular.module('clicheApp')
                     }
                 });
 
+                scope.$watch('view.model.expr', function (n, o) {
+                    if (n !== o) {
+                        scope.handleItemUpdate({index: scope.index, value: scope.view.model});
+                    }
+                });
+
                 scope.$watch('ngModel', function (n, o) {
                     if (n !== o) { scope.view.model = n; }
                 });
@@ -67,7 +73,6 @@ angular.module('clicheApp')
                             }
                             scope.view.model.expr = expr;
                         }
-
                     });
 
                 };
