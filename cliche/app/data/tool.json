@@ -72,7 +72,13 @@
                     "adapter": {
                         "streamable": true,
                         "glob": "output.sam",
-                        "meta": [],
+                        "meta": {
+                            "_inherit": "",
+                            "key1": {
+                                "expr": "$job"
+                            },
+                            "key2": "test"
+                        },
                         "indexFiles": []
                     }
                 }

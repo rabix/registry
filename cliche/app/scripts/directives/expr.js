@@ -9,8 +9,10 @@ angular.module('clicheApp')
             template: $templateCache.get('views/partials/expr.html'),
             scope: {
                 ngModel: '=',
+                type: '@',
                 index: '@',
                 placeholder: '@',
+                self: '@',
                 handleItemUpdate: '&'
             },
             link: function(scope) {
@@ -18,6 +20,7 @@ angular.module('clicheApp')
                 scope.view = {};
                 scope.view.model = scope.ngModel;
                 scope.view.placeholder = scope.placeholder || 'Enter value';
+                scope.view.type = scope.type || 'string';
 
                 scope.$watch('view.model', function (n, o) {
                     if (n !== o) {
@@ -27,6 +30,10 @@ angular.module('clicheApp')
                             scope.handleItemUpdate({index: scope.index, value: n});
                         }
                     }
+                });
+
+                scope.$watch('ngModel', function (n, o) {
+                    if (n !== o) { scope.view.model = n; }
                 });
 
                 /**
@@ -44,7 +51,8 @@ angular.module('clicheApp')
                         resolve: {
                             options: function () {
                                 return {
-                                    expr: expr
+                                    expr: expr,
+                                    self: scope.self ? true : false
                                 };
                             }
                         }

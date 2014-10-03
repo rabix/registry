@@ -25,7 +25,15 @@ angular.module('clicheApp')
                 scope.view.uniqueId = uniqueId;
                 scope.view.isEnum = _.isArray(scope.prop.enum);
                 scope.view.edit = false;
-                scope.view.inputs = _.keys(Data.tool.inputs.properties);
+
+                scope.view.inputs = [];
+                _.each(Data.tool.inputs.properties, function (value, key) {
+                    if (value.type === 'file' || (value.items && value.items.type === 'file')) {
+                        scope.view.inputs.push(key);
+                    }
+                });
+
+                scope.view.newMeta = {key: '', value: ''};
 
                 /**
                  * Toggle edit name form
@@ -145,7 +153,17 @@ angular.module('clicheApp')
                  * Add meta data to the output
                  */
                 scope.addMeta = function () {
-                    scope.prop.adapter.meta.push({key: '', value: ''});
+
+                    scope.view.newMeta.error = false;
+
+                    if (!_.isUndefined(scope.prop.adapter.meta[scope.view.newMeta.key]) || scope.view.newMeta.key === '') {
+                        scope.view.newMeta.error = true;
+                        return false;
+                    }
+
+                    scope.prop.adapter.meta[scope.view.newMeta.key] = scope.view.newMeta.value;
+                    scope.view.newMeta = {key: '', value: ''};
+
                 };
 
                 /**
@@ -155,20 +173,28 @@ angular.module('clicheApp')
                  * @returns {boolean}
                  */
                 scope.removeMeta = function (index) {
-
-                    if (scope.prop.adapter.meta.length === 1) { return false; }
-
-                    scope.prop.adapter.meta.splice(index, 1);
+                    delete scope.prop.adapter.meta[index];
                 };
 
                 /**
-                 * Update meta data if expression or literal defined
-                 * @param index
+                 * Update new meta value with expression or literal
+                 *
                  * @param value
                  */
-                scope.updateMeta = function (index, value) {
-                    scope.prop.adapter.meta[index].value = value;
+                scope.updateNewMeta = function (value) {
+                    scope.view.newMeta.value = value;
                 };
+
+                /**
+                 * Update existing meta value with expression or literal
+                 *
+                 * @param value
+                 */
+                scope.updateMetaValue = function (index, value) {
+                    scope.prop.adapter.meta[index] = value;
+                };
+
+
 
             }
         };

@@ -1,5 +1,36 @@
 <ng-form class="form" name="forms.jobForm" role="form" novalidate>
 
+    <legend class="legend-small">Allocated Resources</legend>
+
+    <div class="input-property">
+        <div class="form-group">
+            <label class="control-label">CPU</label>
+            <div class="input-property-body">
+                <input type="number" class="form-control" ng-model="view.jobForm.allocatedResources.cpu">
+            </div>
+        </div>
+    </div>
+
+    <div class="input-property">
+        <div class="form-group">
+            <label class="control-label">Memory</label>
+            <div class="input-property-body">
+                <input type="number" class="form-control" ng-model="view.jobForm.allocatedResources.mem">
+            </div>
+        </div>
+    </div>
+
+    <div class="input-property">
+        <div class="form-group">
+            <label class="control-label">Disk Space</label>
+            <div class="input-property-body">
+                <input type="number" class="form-control" ng-model="view.jobForm.allocatedResources.diskSpace">
+            </div>
+        </div>
+    </div>
+
+    <legend class="legend-small">Inputs</legend>
+
     <div class="input-container">
         <input-field
                 ng-repeat="(key, property) in view.toolForm.inputs.properties"
