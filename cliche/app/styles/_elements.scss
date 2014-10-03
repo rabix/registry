@@ -564,6 +564,13 @@ pre.result {
     cursor: pointer;
     border-bottom: 1px solid #ddd;
 
+    & > .app-list-item {
+      overflow: auto;
+      & > span {
+        padding: 7px 10px;
+      }
+    }
+
     &.selected {
       & > .app-list-item {
         background-color: $blue;
@@ -606,4 +613,7 @@ pre.result {
   }
 }
 
+.meta-list {
+  margin-bottom: 10px;
+}
 

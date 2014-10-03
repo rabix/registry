@@ -99,44 +99,55 @@
 
         </div>
 
-        <div class="row">
+        <div class="row meta-list">
             <div class="col-md-12">
+
                 <label class="control-label">Meta</label>
 
+                <div class="form-group with-expression meta-group" ng-class="{'has-error': view.newMeta.error}">
+                    <div class="input-group">
+                        <div class="col-md-6 no-padding">
+                            <input type="text" class="form-control" ng-model="view.newMeta.key" placeholder="key" />
+                        </div>
+                        <div class="col-md-6 no-padding">
+                            <expr ng-model="view.newMeta.value" handle-item-update="updateNewMeta(value)" placeholder="value" self="true"></expr>
+                        </div>
+                        <span class="input-group-btn">
+                            <a href ng-click="addMeta()" class="btn btn-primary"><i class="fa fa-plus"></i></a>
+                        </span>
+                    </div>
+                </div>
+
+                <div ng-repeat="(metaKey, metaValue) in prop.adapter.meta" class="form-group meta-group with-expression">
+                    <div ng-if="metaKey !== '_inherit'" class="input-group">
+                        <div class="col-md-6 no-padding">
+                            <key-changer key="metaKey" items="prop.adapter.meta"></key-changer>
+                        </div>
+                        <div class="col-md-6 no-padding">
+                            <expr ng-model="metaValue" index="{{ metaKey }}" handle-item-update="updateMetaValue(index, value)" placeholder="value" self="true"></expr>
+                        </div>
+                        <span class="input-group-btn">
+                            <a href ng-click="removeMeta(metaKey)" class="btn btn-default"><i class="fa fa-remove"></i></a>
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+
                 <div class="form-group">
-                    <label for="property-meta-inherit-{{ view.uniqueId }}" class="control-label inline">Inherit</label>
-                    <select class="form-control inline" id="property-meta-inherit-{{ view.uniqueId }}" name="{{ name }}-meta-inherit" ng-model="prop.adapter.inherit" ng-options="key for key in view.inputs">
+                    <label for="property-meta-inherit-{{ view.uniqueId }}" class="control-label inline">Inherit From Input</label>
+                    <select class="form-control inline" id="property-meta-inherit-{{ view.uniqueId }}" name="{{ name }}-meta-inherit" ng-model="prop.adapter.meta._inherit">
                         <option value>-- choose --</option>
+                        <option ng-repeat="key in view.inputs" value="{{ key }}">{{ key }}</option>
                     </select>
                 </div>
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-md-12">
-                <div class="enum-list-wrap">
-                    <a href ng-click="addMeta()" class="btn btn-default add-enum-item"><i class="fa fa-plus"></i></a>
-                    <div class="enum-list-container">
-                        <ul class="enum-list" ng-class="{wide: prop.adapter.meta.length === 1}">
-                            <li ng-repeat="meta in prop.adapter.meta track by $index">
-                                <div class="enum-field form-group form-group-file with-expression">
-                                    <div class="row no-margin">
-                                        <div class="col-md-5 no-padding">
-                                            <input type="text" class="form-control" ng-model="meta.key" placeholder="key"/>
-                                        </div>
-                                        <div class="col-md-7 no-padding">
-                                            <expr ng-model="meta.value" index="{{ $index }}" handle-item-update="updateMeta(index, value)" placeholder="value"></expr>
-                                        </div>
-                                    </div>
-                                </div>
-                                <a href ng-hide="prop.adapter.meta.length === 1" class="fa fa-remove remove-btn" ng-click="removeMeta($index)"></a>
-                            </li>
-                        </ul>
-                        <p ng-if="prop.adapter.meta.length === 0" class="alert alert-info">Click + on the left to add meta data</p>
-                    </div>
-                </div>
-            </div>
-        </div>
         <!-- END meta data-->
 
         <div class="row">

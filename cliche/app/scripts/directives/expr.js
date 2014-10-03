@@ -11,6 +11,7 @@ angular.module('clicheApp')
                 ngModel: '=',
                 index: '@',
                 placeholder: '@',
+                self: '@',
                 handleItemUpdate: '&'
             },
             link: function(scope) {
@@ -44,7 +45,8 @@ angular.module('clicheApp')
                         resolve: {
                             options: function () {
                                 return {
-                                    expr: expr
+                                    expr: expr,
+                                    self: scope.self ? true : false
                                 };
                             }
                         }

@@ -121,6 +121,7 @@
       position: absolute;
       bottom: 0px;
       right: 0px;
+      z-index: 100;
       i {
         font-weight: bold;
       }
@@ -146,6 +147,12 @@ form, .form {
   }
   .form-group {
     position: relative;
+    &.meta-group {
+      margin: 0;
+      .btn {
+        width: 41px;
+      }
+    }
     &.unit {
       &:after {
         content: 'KB';
@@ -204,6 +211,9 @@ label {
     background-color: $orange;
     color: #fff;
     cursor: pointer;
+  }
+  &:active, &:focus {
+    outline: none;
   }
 }
 
