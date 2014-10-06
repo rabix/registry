@@ -15,13 +15,13 @@
                     </form>
                 </div>
 
-                <div ng-show="user" class="col-md-2">
+                <div ng-show="user" class="col-md-3">
                     <label class="checkbox">
                         <input type="checkbox" ng-model="view.myApps" ng-change="toggleMyApps()" /> Show only my apps
                     </label>
                 </div>
 
-                <div class="col-md-6 tags">
+                <div class="col-md-5 tags">
                     <span ng-if="view.repo" class="label label-primary">{{ view.repo }} <a ng-href="#/apps" class="close">&times;</a></span>
                 </div>
             </div>

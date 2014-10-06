@@ -16,7 +16,7 @@
                     <li><a ng-href="/cliche" target="_blank" class="cliche-logo"><span>cli</span>che</a></li>
                 </ul>
 
-                <a ng-if="(view.user | isEmpty)" href="/auth/github" class="btn btn-primary pull-right">Log In With GitHub</a>
+                <a ng-if="(view.user | isEmpty)" href="/auth/login" class="btn btn-primary pull-right">Log In With GitHub</a>
 
                 <div ng-if="!(view.user | isEmpty)" class="actions pull-right">
                     <span class="welcome">Welcome <img ng-src="{{view.user.avatar_url}}" width="22px" alt=""/> <strong> {{ view.user.login }}</strong></span>

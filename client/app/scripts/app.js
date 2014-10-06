@@ -77,4 +77,5 @@ angular
             });
 
         $httpProvider.interceptors.push('HTTPInterceptor');
+
     }]);

@@ -4,7 +4,7 @@
         <a ng-href="/" class="rabix-logo pull-left">back to rabix</a>
 
         <div class="pull-right">
-            <a ng-if="(view.user | isEmpty)" href="/auth/github" class="btn btn-sm btn-primary pull-right">Log In With GitHub</a>
+            <a ng-if="(view.user | isEmpty)" href="/auth/login" class="btn btn-sm btn-primary pull-right">Log In With GitHub</a>
 
             <div ng-if="!(view.user | isEmpty)" class="actions pull-right">
                 <span class="welcome">Welcome <strong> {{ view.user.login }}</strong> <img ng-src="{{view.user.avatar_url}}" height="20px" alt=""/></span>

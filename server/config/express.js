@@ -9,10 +9,7 @@ var bodyParser = require('body-parser');
 var compress = require('compression');
 var methodOverride = require('method-override');
 var passport = require('passport');
-var GitHubStrategy = require('passport-github').Strategy;
 var session = require('express-session');
-
-var https = require('https');
 
 module.exports = function (app, config) {
     app.set('views', config.root + '/app/views');
@@ -75,122 +72,5 @@ module.exports = function (app, config) {
         });
     });
 
-    var parseUser = function(user) {
-
-        var gitHubObj = {
-            id: user.id,
-            github_id: user._json.id,
-            name: user._json.name,
-            repos_url: user._json.repos_url,
-            url: user._json.url,
-            gravatar_id: user._json.gravatar_id,
-            avatar_url: user._json.avatar_url,
-            login: user._json.login
-        };
-
-        return gitHubObj;
-
-    };
-
-    passport.serializeUser(function(profile, done) {
-        var user = parseUser(profile);
-        user.email = profile.emails[0].value;
-        done(null, user);
-    });
-
-    passport.deserializeUser(function(obj, done) {
-        done(null, obj);
-    });
-
-    passport.use(new GitHubStrategy({
-            clientID: config.github.clientId,
-            clientSecret: config.github.clientSecret,
-            callbackURL: config.github.callbackURL,
-            scope: config.github.scope
-        },
-        function(accessToken, refreshToken, profile, done) {
-            process.nextTick(function () {
-
-                var email = profile.emails[0].value;
-
-                var gitHubObj = parseUser(profile);
-                gitHubObj.accessToken = accessToken;
-
-                if (typeof email === 'undefined') {
-                    var opts = {
-                        hostname: 'api.github.com',
-                        path: '/user/emails',
-                        headers: {
-                            'Authorization': 'token ' + accessToken,
-                            'User-Agent': 'Rabix',
-                            'Content-type': 'application/json'
-                        }
-                    };
-
-                    https.get(opts, function (response) {
-                        var responseString = '';
-
-                        response.setEncoding('utf8');
-
-                        response.on('data', function (data) {
-                            responseString += data;
-                        });
-
-                        response.on('end', function () {
-                            var e = JSON.parse(responseString);
-                            profile.emails = [{value: e[0].email}];
-
-                            addUser(e[0].email, gitHubObj, profile).then(function(user) {
-                                profile.id = user.id;
-                                return done(null, profile);
-                            });
-
-                        });
-
-                    }).on('error', function (e) {
-                        console.log('error while getting user email', e);
-                    });
-                } else {
-                    addUser(email, gitHubObj, profile).then(function(user) {
-                        profile.id = user.id;
-                        return done(null, profile);
-                    });
-                }
-
-
-            });
-        }
-    ));
-
-    function addUser(email, gitHubObj, profile) {
-
-        var mongoose = require('mongoose');
-        var promise = new mongoose.Promise();
-        var User = mongoose.model('User');
-
-        User.count({email: email}, function(err, count) {
-
-            if (count === 0) {
-                var user = new User();
-
-                user.username = profile.username;
-                user.email = email;
-                user.github = gitHubObj;
-
-                user.save();
-
-                promise.fulfill({id: user._id});
-            } else {
-
-                User.findOneAndUpdate({email: email}, {github: gitHubObj}, {}, function(err, user) {
-                    if (err) { return done(null, null); }
-                    promise.fulfill({id: user._id});
-                });
-            }
-        });
-
-        return promise;
-
-    }
 
 };
