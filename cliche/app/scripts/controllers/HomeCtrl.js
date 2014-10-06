@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('clicheApp')
-    .controller('HomeCtrl', ['$scope','$q', '$injector', 'Data', 'User', 'Loading', function ($scope, $q, $injector, Data, User, Loading) {
+    .controller('HomeCtrl', ['$scope','$q', '$injector', 'Data', 'User', 'Loading', 'SandBox', function ($scope, $q, $injector, Data, User, Loading, SandBox) {
 
         $scope.view = {};
         $scope.forms = {};
@@ -116,6 +116,13 @@ angular.module('clicheApp')
         $scope.switchTab = function(tab) {
             $scope.view.tab = tab;
             $scope.view.tabViewPath = 'views/tabs/' + tab + '.html';
+
+            if (tab === 'values') {
+                watchTheJob();
+            } else {
+                unWatchTheJob();
+            }
+
         };
 
         /* watchers list */
@@ -131,7 +138,8 @@ angular.module('clicheApp')
                     $scope.view.command = command;
                 });
 
-            var watch = ['view.jobForm.inputs', 'view.toolForm.inputs.properties', 'view.toolForm.adapter'];
+            //var watch = ['view.jobForm.inputs', 'view.toolForm.inputs.properties', 'view.toolForm.adapter'];
+            var watch = ['view.toolForm.inputs.properties', 'view.toolForm.adapter'];
 
             _.each(watch, function(arg) {
                 var watcher = $scope.$watch(arg, function(n, o) {
@@ -159,6 +167,65 @@ angular.module('clicheApp')
             });
 
             watchers = [];
+        };
+
+        var jobWatcher;
+
+        /**
+         * Check if there are expressions applied on resources and evaluate them in order to refresh result for the allocated resources
+         */
+        var checkResources = function () {
+
+            _.each($scope.view.toolForm.requirements.resources, function (resource, key) {
+
+                if (_.isObject(resource) && resource.expr && _.contains(resource.expr, '$job')) {
+                    SandBox.evaluate(resource.expr, {})
+                        .then(function (result) {
+                            $scope.view.jobForm.allocatedResources[key] = result;
+                        }, function (error) {
+                            console.log(error);
+                        });
+                }
+            });
+        };
+
+        /**
+         * Watch the job's inputs in order to evaluate expression which include $job as context
+         */
+        var watchTheJob = function () {
+
+            checkResources();
+
+            if ($scope.view.trace === 'console') {
+                Data.generateCommand()
+                    .then(function (command) {
+                        $scope.view.command = command;
+                    });
+            }
+
+            jobWatcher = $scope.$watch('view.jobForm.inputs', function(n, o) {
+                if (n !== o) {
+                    checkResources();
+                    if ($scope.view.trace === 'console') {
+                        Data.generateCommand()
+                            .then(function (command) {
+                                $scope.view.command = command;
+                            });
+                    }
+                }
+            }, true);
+
+        };
+
+        /**
+         * Unwatch job's inputs
+         */
+        var unWatchTheJob = function () {
+
+            if (_.isFunction(jobWatcher)) {
+                jobWatcher.call();
+                jobWatcher = undefined;
+            }
         };
 
         /**
@@ -279,17 +346,23 @@ angular.module('clicheApp')
             $scope.view.toolForm.adapter.stdout = value;
         };
 
+        /**
+         * Update tool resources and apply transformation on allocated resources if needed
+         *
+         * @param {*} value
+         * @param {string} key
+         */
         $scope.updateResource = function (value, key) {
-
-            var SandBox = $injector.get('SandBox');
 
             $scope.view.toolForm.requirements.resources[key] = value;
 
             if (_.isObject(value)) {
 
-                SandBox.evaluate(value.expr)
+                SandBox.evaluate(value.expr, {})
                     .then(function (result) {
                         $scope.view.jobForm.allocatedResources[key] = result;
+                    }, function (error) {
+                        console.log(error);
                     });
             } else {
                 if ($scope.view.jobForm.allocatedResources[key] < value) {
