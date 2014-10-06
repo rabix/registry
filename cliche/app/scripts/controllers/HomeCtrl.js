@@ -133,9 +133,11 @@ angular.module('clicheApp')
          */
         var turnOnDeepWatch = function() {
 
+            $scope.view.generatingCommand = true;
             Data.generateCommand()
                 .then(function (command) {
                     $scope.view.command = command;
+                    $scope.view.generatingCommand = false;
                 });
 
             //var watch = ['view.jobForm.inputs', 'view.toolForm.inputs.properties', 'view.toolForm.adapter'];
@@ -144,9 +146,11 @@ angular.module('clicheApp')
             _.each(watch, function(arg) {
                 var watcher = $scope.$watch(arg, function(n, o) {
                     if (n !== o) {
+                        $scope.view.generatingCommand = true;
                         Data.generateCommand()
                             .then(function (command) {
                                 $scope.view.command = command;
+                                $scope.view.generatingCommand = false;
                             });
                     }
                 }, true);
@@ -197,9 +201,11 @@ angular.module('clicheApp')
             checkResources();
 
             if ($scope.view.trace === 'console') {
+                $scope.view.generatingCommand = true;
                 Data.generateCommand()
                     .then(function (command) {
                         $scope.view.command = command;
+                        $scope.view.generatingCommand = false;
                     });
             }
 
@@ -207,9 +213,11 @@ angular.module('clicheApp')
                 if (n !== o) {
                     checkResources();
                     if ($scope.view.trace === 'console') {
+                        $scope.view.generatingCommand = true;
                         Data.generateCommand()
                             .then(function (command) {
                                 $scope.view.command = command;
+                                $scope.view.generatingCommand = false;
                             });
                     }
                 }

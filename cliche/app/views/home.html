@@ -81,7 +81,7 @@
 
             <div class="tab" ng-switch-when="console">
                 <zclip data="command"></zclip>
-                <pre class="console-trace">{{ view.command }}</pre>
+                <pre class="console-trace" ng-class="{wait: view.generatingCommand}">{{ view.command }}</pre>
             </div>
         </div>
 
