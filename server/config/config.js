@@ -52,6 +52,9 @@ var config = {
             path: rootPath + '/logs',
             builds: '/data/log/rabix-registry/builds'
         },
+        tmpDir: {
+            path: rootPath + '/tmp'
+        },
         mail: {
             user: 'ci.rabix@gmail.com',
             pass: 'Damns3cr3t.'
@@ -77,6 +80,9 @@ var config = {
         logging: {
             path: '/data/log/rabix-registry',
             builds: '/data/log/rabix-registry/builds'
+        },
+        tmpDir: {
+            path: rootPath + '/tmp'
         },
         mail: {
             user: 'ci.rabix@gmail.com',
