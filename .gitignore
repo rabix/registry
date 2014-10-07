@@ -36,3 +36,4 @@ bower_components
 template.js
 /test/*
 *.css
+/server/tmp/*

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('clicheApp')
-    .directive('jobActions', ['$templateCache', '$modal', '$timeout', 'Job', function ($templateCache, $modal, $timeout, Job) {
+    .directive('jobActions', ['$templateCache', '$modal', '$timeout', '$location', 'Job', function ($templateCache, $modal, $timeout, $location, Job) {
 
         return {
             restrict: 'E',
@@ -26,11 +26,10 @@ angular.module('clicheApp')
                     Job.getUrl().then(function (result) {
 
                         scope.view.saving = false;
+                        var trace = {};
 
-                        var trace = {
-                            message: 'Job json URL',
-                            url: result.url
-                        };
+                        trace.url = (_.isEmpty(scope.user)) ? $location.protocol() + '://' + $location.host() + ':' + $location.port() + '/api/jobs/' + result.url : result.url;
+                        trace.message = 'Job json URL' + (_.isEmpty(scope.user) ? ' (this url will expire in 24 hours)' : '');
 
                         $modal.open({
                             template: $templateCache.get('views/partials/job-url-response.html'),
@@ -49,6 +48,10 @@ angular.module('clicheApp')
                             }],
                             resolve: { data: function () { return { trace: trace }; }}
                         });
+
+                        if (_.isEmpty(scope.user)) {
+                            Job.storeJobLocally(result.url);
+                        }
 
                     }, function () {
                         scope.view.saving = false;

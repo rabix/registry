@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('registryApp')
-    .controller('JobsCtrl', ['$scope', 'Job', 'Header', 'Api', 'Loading', 'User',function ($scope, Job, Header, Api, Loading, User) {
+    .controller('JobsCtrl', ['$scope', '$location', 'Job', 'Header', 'Api', 'Loading', 'User',function ($scope, $location, Job, Header, Api, Loading, User) {
 
         Header.setActive('jobs');
 
@@ -24,6 +24,7 @@ angular.module('registryApp')
         $scope.view = {};
         $scope.view.loading = true;
         $scope.view.jobs = [];
+        $scope.view.prefix = '';
 
         $scope.view.classes = ['page', 'jobs'];
         Loading.setClasses($scope.view.classes);
@@ -49,7 +50,10 @@ angular.module('registryApp')
             if (!_.isEmpty(result.user)) {
                 Job.getJobs(0).then(jobsLoaded);
             } else {
-                $scope.view.loading = false;
+
+                $scope.view.prefix = $location.protocol() + '://' + $location.host() + ':' + $location.port() + '/api/jobs/';
+
+                Job.getTmpJobs(0, $scope.view.perPage).then(jobsLoaded);
             }
         });
 
@@ -72,7 +76,11 @@ angular.module('registryApp')
                 $scope.view.loading = true;
                 var offset = ($scope.view.page - 1) * $scope.view.perPage;
 
-                Job.getJobs(offset).then(jobsLoaded);
+                if (!_.isEmpty($scope.view.user)) {
+                    Job.getJobs(offset).then(jobsLoaded);
+                } else {
+                    Job.getTmpJobs(offset, $scope.view.perPage).then(jobsLoaded);
+                }
 
             }
         };

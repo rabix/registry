@@ -16,9 +16,10 @@ angular
         'ngRoute',
         'ngSanitize',
         'ui.bootstrap',
-        'ngPrettyJson'
+        'ngPrettyJson',
+        'LocalForageModule'
     ])
-    .config(['$routeProvider', '$httpProvider', function ($routeProvider, $httpProvider) {
+    .config(['$routeProvider', '$httpProvider', '$localForageProvider', function ($routeProvider, $httpProvider, $localForageProvider) {
         $routeProvider
             .when('/', {
                 templateUrl: 'views/home.html',
@@ -81,5 +82,11 @@ angular
             });
 
         $httpProvider.interceptors.push('HTTPInterceptor');
+
+        $localForageProvider.config({
+            name: 'clicheApp',
+            version: 1.0,
+            storeName: 'clicheDB'
+        });
 
     }]);

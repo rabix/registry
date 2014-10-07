@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('clicheApp')
-    .service('Job', ['Api', 'Data', function (Api, Data) {
+    .service('Job', ['Api', 'Data', '$localForage', function (Api, Data, $localForage) {
 
         var self = {};
 
@@ -16,6 +16,22 @@ angular.module('clicheApp')
             json.app = angular.copy(Data.tool);
 
             return Api.job.upload({}, json).$promise;
+
+        };
+
+        /**
+         * Store jobs locally
+         * @param jobFileName
+         */
+        self.storeJobLocally = function (jobFileName) {
+
+            $localForage.getItem('tmp-jobs').then(function(jobs) {
+
+                jobs = jobs || [];
+                jobs.push(jobFileName);
+
+                $localForage.setItem('tmp-jobs', jobs);
+            });
 
         };
 
