@@ -51,11 +51,11 @@ var Amazon = {
             ContentType: 'json'
         }, function(error, response) {
             if (error) {
-                logger.error('There was an error while upload json "' + file_name + '" on Amazon');
+//                logger.error('There was an error while upload json "' + file_name + '" on Amazon');
                 promise.reject('There was an error while upload json "' + file_name + '" on Amazon');
             } else {
-                logger.info('uploaded file[' + file_name + '] to [' + JSON.stringify(file) + '] as [' + 'json' + ']');
-                promise.fulfill();
+//                logger.info('uploaded file[' + file_name + '] to [' + JSON.stringify(file) + '] as [' + 'json' + ']');
+                promise.fulfill(response);
             }
         });
 
@@ -80,7 +80,7 @@ var Amazon = {
         var params = {Bucket: BUCKET + '/' + bucket, Key: file_name};
         var url = s3.getSignedUrl('getObject', params);
 
-        callback(url);
+        callback(url.split('?')[0]);
 
     },
     
