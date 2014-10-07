@@ -531,9 +531,11 @@ pre.result {
   }
 }
 
-/* App actions box (save, publish, import) */
-.app-actions-wrap {
-  .app-action-btns {
+/* App/Job actions box (save, publish, import) */
+.app-actions-wrap,
+.job-actions-wrap {
+  .app-action-btns,
+  .job-action-btns {
     position: absolute;
     bottom: 5px;
     right: 15px;
@@ -628,5 +630,15 @@ pre.result {
 
 .meta-list {
   margin-bottom: 10px;
+}
+
+.json-url {
+  font-size: 16px;
+  margin: 20px 0;
+  padding: 10px;
+  border: 1px solid #ddd;
+  &:hover {
+    text-decoration: none !important;
+  }
 }
 

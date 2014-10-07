@@ -16,6 +16,10 @@ angular.module('clicheApp')
             update: {method: 'PUT'}
         });
 
+        self.job = $resource(apiUrl + '/job/upload', {}, {
+            upload: {method: 'POST'}
+        });
+
         self.user = $resource(apiUrl + '/user/:action', {action: '@action'});
 
         return self;
