@@ -20,9 +20,6 @@ angular.module('registryApp')
             $scope.view.loading = false;
         };
 
-        User.getUser().then(function (result) {
-            $scope.user = result.user;
-        });
 
         $scope.view = {};
         $scope.view.loading = true;
@@ -45,7 +42,16 @@ angular.module('registryApp')
         $scope.view.perPage = 25;
         $scope.view.total = 0;
 
-        Job.getJobs(0).then(jobsLoaded);
+        User.getUser().then(function (result) {
+
+            $scope.view.user = result.user;
+
+            if (!_.isEmpty(result.user)) {
+                Job.getJobs(0).then(jobsLoaded);
+            } else {
+                $scope.view.loading = false;
+            }
+        });
 
         /**
          * Go to the next/prev page

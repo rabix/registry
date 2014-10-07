@@ -4,7 +4,7 @@
 
     <div ng-if="!view.loading" class="container">
         <table class="table table-hover jobs">
-            <thead><tr><th>URL</th></tr></thead>
+            <thead><tr><th>Job json URL</th></tr></thead>
             <tbody>
                 <tr ng-repeat="job in view.jobs">
                     <td><a ng-href="{{ job.url }}" target="_blank">{{ job.url }}</a></td>

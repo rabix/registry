@@ -15,6 +15,25 @@ module.exports = function (app) {
     app.use('/api', router);
 };
 
+router.get('/jobs', function (req, res, next) {
+
+    var limit = req.query.limit ? req.query.limit : 25;
+    var skip = req.query.skip ? req.query.skip : 0;
+    var where = {user_id: req.user.id};
+
+    Job.count(where).exec(function(err, total) {
+        if (err) { return next(err); }
+
+        Job.find(where).skip(skip).limit(limit).sort({_id: 'desc'}).exec(function(err, jobs) {
+            if (err) { return next(err); }
+
+            res.json({list: jobs, total: total});
+        });
+
+    });
+
+});
+
 router.post('/job/upload', function (req, res, next) {
 
     var json = req.body;
