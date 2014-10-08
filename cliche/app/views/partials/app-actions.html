@@ -7,9 +7,9 @@
         <button ng-disabled="view.saving" class="app-publish-btn btn btn-primary" ng-click="publishApp()">
             <i class="fa fa-plus"></i> Publish
         </button>
-        <button class="app-publish-btn btn btn-default" ng-click="getAppsList()">
-            <i class="fa fa-cloud-download"></i> Import
-        </button>
+        <label><i class="fa fa-cloud-download"></i> Import</label>
+        <button class="app-publish-btn btn btn-default btn-sm" ng-click="getAppsList()">App</button>
+        <button class="app-publish-btn btn btn-default btn-sm" ng-click="loadJsonEditor()">JSON</button>
     </div>
 
     <p ng-if="view.error">{{ view.error }}</p>

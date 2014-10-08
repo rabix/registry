@@ -11,7 +11,8 @@ angular.module('clicheApp')
                 form: '=',
                 user: '=',
                 handleImport: '&',
-                handleSave: '&'
+                handleSave: '&',
+                handleImportJson: '&'
             },
             link: function(scope) {
 
@@ -165,6 +166,21 @@ angular.module('clicheApp')
 
                     modalInstance.result.then(function (selectedApp) {
                         scope.handleImport({app: selectedApp});
+                    });
+
+                };
+
+                scope.loadJsonEditor = function() {
+
+                    var modalInstance = $modal.open({
+                        template: $templateCache.get('views/partials/json-editor.html'),
+                        controller: 'JsonEditorCtrl',
+                        resolve: { options: function () { return {user: scope.user}; }}
+                    });
+
+                    modalInstance.result.then(function (json) {
+                        //TODO: do the validation
+                        scope.handleImportJson({json: json});
                     });
 
                 };

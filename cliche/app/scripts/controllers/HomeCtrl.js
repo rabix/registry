@@ -299,6 +299,29 @@ angular.module('clicheApp')
 
         };
 
+        $scope.importAppAsJson = function(json) {
+
+            json = JSON.parse(json);
+
+            /*
+            Data.setTool(json);
+            $scope.view.toolForm = json;
+
+            var job = angular.copy($scope.view.jobForm);
+            job.inputs = {};
+
+            Data.setJob(job);
+            $scope.view.jobForm = job;
+
+            Data.setOwner($scope.view.user.id);
+            $scope.view.owner = $scope.view.user.id;
+
+            Data.setAppId(null);
+            $scope.view.appId = null;
+            */
+
+        };
+
         /**
          * Store the owner and the app id for the current app
          *
