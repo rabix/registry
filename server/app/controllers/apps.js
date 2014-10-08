@@ -193,7 +193,7 @@ router.post('/apps', filters.authenticated, function (req, res, next) {
 
         if (repo) { app.repo_id = repo._id; }
 
-        var folder = app.repo_owner + '-' + app.repo_name;
+        var folder = 'apps/' + app.repo_owner + '-' + app.repo_name;
 
         Amazon.createFolder(folder).then(
             function () {
