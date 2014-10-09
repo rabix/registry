@@ -219,6 +219,21 @@ router.post('/apps', filters.authenticated, function (req, res, next) {
 
 });
 
+router.post('/validate', filters.authenticated, function (req, res, next) {
+
+    var data = req.body;
+
+    var check = validator.validate(data);
+
+    if (!_.isEmpty(check.invalid) || !_.isEmpty(check.obsolete) || !_.isEmpty(check.required)) {
+        res.status(400).json({message: 'There are some errors in your json scheme', json: check});
+        return false;
+    }
+
+    res.json(data);
+
+});
+
 router.delete('/apps', filters.authenticated, function (req, res, next) {
 
 });

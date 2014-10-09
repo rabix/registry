@@ -152,7 +152,7 @@ angular.module('clicheApp').run(['$templateCache', function($templateCache) {
 
 
   $templateCache.put('views/partials/json-editor.html',
-    "<div class=\"modal-body\"><div class=\"codemirror\"><div class=\"codemirror-editor\"></div></div><div class=\"center-block\"><button class=\"btn btn-primary\" ng-click=\"import()\">Import</button> <button class=\"btn btn-default\" ng-click=\"cancel()\">Cancel</button></div></div>"
+    "<div class=\"modal-body\"><p ng-if=\"view.error\" class=\"alert alert-danger\">{{ view.error }}</p><div class=\"codemirror\"><div class=\"codemirror-editor\"></div></div><div class=\"center-block\"><button class=\"btn btn-primary\" ng-click=\"import()\" ng-disabled=\"view.validating\">Import</button> <button class=\"btn btn-default\" ng-click=\"cancel()\">Cancel</button></div></div>"
   );
 
 

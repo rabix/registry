@@ -170,6 +170,9 @@ angular.module('clicheApp')
 
                 };
 
+                /**
+                 * Load json editor
+                 */
                 scope.loadJsonEditor = function() {
 
                     var modalInstance = $modal.open({
@@ -179,7 +182,6 @@ angular.module('clicheApp')
                     });
 
                     modalInstance.result.then(function (json) {
-                        //TODO: do the validation
                         scope.handleImportJson({json: json});
                     });
 

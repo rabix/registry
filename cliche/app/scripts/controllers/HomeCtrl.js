@@ -299,11 +299,15 @@ angular.module('clicheApp')
 
         };
 
+        /**
+         * Import json to create app
+         *
+         * @param json
+         */
         $scope.importAppAsJson = function(json) {
 
             json = JSON.parse(json);
 
-            /*
             Data.setTool(json);
             $scope.view.toolForm = json;
 
@@ -318,7 +322,7 @@ angular.module('clicheApp')
 
             Data.setAppId(null);
             $scope.view.appId = null;
-            */
+
 
         };
 

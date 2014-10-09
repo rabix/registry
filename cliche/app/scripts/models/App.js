@@ -48,6 +48,18 @@ angular.module('clicheApp')
 
         };
 
+        /**
+         * Validate json format on the server side
+         *
+         * @param json
+         * @returns {Object} $promise
+         */
+        self.validateJson = function (json) {
+
+            return Api.validate.post({}, json).$promise;
+
+        };
+
         return self;
 
     }]);
