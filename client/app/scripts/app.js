@@ -77,6 +77,10 @@ angular
                 templateUrl: 'views/repo-instructions.html',
                 controller: 'RepoInstructionsCtrl'
             })
+            .when('/pipeline-editor', {
+                templateUrl: 'views/pipeline-editor.html',
+                controller: 'PipelineEditorCtrl'
+            })
             .otherwise({
                 redirectTo: '/'
             });

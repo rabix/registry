@@ -78,8 +78,6 @@ var Pipeline = Pipeline || {};
          * the scope to the Event watcher object.
          *
          * @param {string} name
-         * @param {?string} handler
-         * @param {?Object} scope
          */
         unsubscribe: function(name)
         {

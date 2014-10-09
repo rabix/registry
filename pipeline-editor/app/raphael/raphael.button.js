@@ -2,40 +2,38 @@
  * Created by filip on 4.6.14..
  */
 
-define(['jquery', 'raphael'], function ($, Raphael) {
+'use strict';
 
-    'use strict';
+Raphael.fn.button = function (config, cb) {
+    var r = this,
+        callbacks = {};
 
-    Raphael.fn.button = function (config, cb) {
-        var r = this,
-            callbacks = {};
+    config.border = config.border || 4;
 
-        config.border = config.border || 4;
+    callbacks.onClick = (cb && typeof cb.onClick === 'function') ? cb.onClick : null;
+    callbacks.scope = (typeof cb.scope !== 'undefined') ? cb.scope : this;
 
-        callbacks.onClick = (cb && typeof cb.onClick === 'function') ? cb.onClick : null;
-        callbacks.scope = (typeof cb.scope !== 'undefined') ? cb.scope : this;
+    function Button(conf, callbacks) {
 
-        function Button(conf, callbacks) {
+        var pub, button, click = callbacks.onClick;
 
-            var pub, button, click = callbacks.onClick;
+        function initialize() {
+            var group = r.group(),
+                outer, inner;
 
-            function initialize() {
-                var group = r.group(),
-                    outer, inner;
+            outer = r.circle(0, 0, conf.radius);
+            outer.attr({
+                fill: conf.borderFill || '#EBEBEB',
+                stroke: conf.borderStroke || '#C8C8C8'
+            });
 
-                outer = r.circle(0, 0, conf.radius);
-                outer.attr({
-                    fill: conf.borderFill || '#EBEBEB',
-                    stroke: conf.borderStroke || '#C8C8C8'
-                });
+            inner = r.circle(0, 0, conf.radius - conf.border);
+            inner.attr({
+                fill: conf.fill,
+                stroke: 'none'
+            });
 
-                inner = r.circle(0, 0, conf.radius - conf.border);
-                inner.attr({
-                    fill: conf.fill,
-                    stroke: 'none'
-                });
-
-                if (typeof conf.image !== 'undefined') {
+            if (typeof conf.image !== 'undefined') {
 
 //                    var x, y, img, fake, width, height;
 //
@@ -48,56 +46,55 @@ define(['jquery', 'raphael'], function ($, Raphael) {
 //                    x = - width / 2;
 //                    y =  - height / 2;
 
-                    var x, y, img;
+                var x, y, img;
 
-                    x = - conf.image.width / 2;
-                    y =  - conf.image.height / 2;
+                x = - conf.image.width / 2;
+                y =  - conf.image.height / 2;
 
-                    img = r.image(conf.image.url, x, y, conf.image.width, conf.image.height);
+                img = r.image(conf.image.url, x, y, conf.image.width, conf.image.height);
 
-                }
-
-                group.push(outer).push(inner).push(img);
-
-                group.translate(conf.x, conf.y);
-
-                group.node.setAttribute('class', 'svg-buttons');
-
-                button = group;
-
-                initHandlers();
             }
 
-            function initHandlers() {
-                if (callbacks.onClick) {
-                    button.click(callbacks.onClick, callbacks.scope);
-                }
-            }
+            group.push(outer).push(inner).push(img);
 
-            initialize();
+            group.translate(conf.x, conf.y);
 
-            pub = {
+            group.node.setAttribute('class', 'svg-buttons');
 
-                remove: function() {
-                    if (click) {
-                        button.unclick();
-                    }
-                    button.remove();
-                },
+            button = group;
 
-                translateX: function (x) {
-                    button.setTranslation(x, button.getTranslation().y);
-                },
-
-                getEl: function () {
-                    return button;
-                }
-
-            };
-
-            return pub;
+            initHandlers();
         }
 
-        return new Button(config, callbacks);
-    };
-});
+        function initHandlers() {
+            if (callbacks.onClick) {
+                button.click(callbacks.onClick, callbacks.scope);
+            }
+        }
+
+        initialize();
+
+        pub = {
+
+            remove: function() {
+                if (click) {
+                    button.unclick();
+                }
+                button.remove();
+            },
+
+            translateX: function (x) {
+                button.setTranslation(x, button.getTranslation().y);
+            },
+
+            getEl: function () {
+                return button;
+            }
+
+        };
+
+        return pub;
+    }
+
+    return new Button(config, callbacks);
+};

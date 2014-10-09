@@ -2,21 +2,28 @@
  * Created by filip on 8.10.14..
  */
 var Pipeline = (function () {
-    var Public = {
 
-        init: function (model, services) {
-            this.connection = new this.Connection();
-            this.node = new this.Node();
-            this.terminal = new this.Terminal();
+    return {
+
+        init: function (model, $parent, services) {
+            this.model = model;
+            this.$parent = $parent;
+            this.services = services || {};
+
         },
 
-        hi: function () {
-            this.connection.hi();
-            this.node.hi();
-            this.terminal.hi();
-        }
-    };
+        _initCanvas: function () {
+            var width = 600,
+                height = 600;
 
-    return Public;
+            this.canvas = new Raphael(this.$parent[0], width, height);
+        },
+
+
+        Public: {
+
+        }
+
+    };
 
 })();

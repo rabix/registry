@@ -1,5 +1,5 @@
 (function (Pipeline) {
-    function Node() {
+    function Node(model) {
         this.name = 'node';
     }
 
