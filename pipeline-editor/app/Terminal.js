@@ -1,8 +1,16 @@
 /**
  * Created by filip on 8.10.14..
  */
-(function () {
-    var Terminal = {};
+(function (Pipeline) {
+    function Terminal() {
+        this.name = 'terminal';
+    }
 
-    return Terminal;
-})();
+    Terminal.prototype = {
+        hi: function () {
+            console.log('I am ' + this.name );
+        }
+    };
+
+    Pipeline.Terminal = Terminal;
+})(Pipeline || {});

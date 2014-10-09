@@ -23,7 +23,7 @@ module.exports = function (grunt) {
 
     // Watches files for changes and runs tasks based on the changed files
     watch: {
-      js: {
+      pipeline: {
         files: ['<%= config.app %>/{,*/}*.js'],
         tasks: ['pipeline']
       },
@@ -37,7 +37,7 @@ module.exports = function (grunt) {
             separator: ';'
         },
         pipeline: {
-            src: ['<%= config.app %>/Pipeline.js','<%= config.app %>/Node.js', '<%= config.app %>/Terminal.js', '<%= config.app %>/Connection.js'],
+            src: ['<%= config.app %>/raphael/raphael.js', '<%= config.app %>/raphael/raphael.group.js', '<%= config.app %>/raphael/raphael.curve.js', '<%= config.app %>/raphael/raphael.curve.js', '<%= config.app %>/Pipeline.js', '<%= config.app %>/events.js', '<%= config.app %>/Node.js', '<%= config.app %>/Terminal.js', '<%= config.app %>/Connection.js'],
             dest: '<%= config.dist %>/pipeline-editor.js'
         }
     },
@@ -57,54 +57,31 @@ module.exports = function (grunt) {
       server: '.tmp'
     },
 
-//
-//    // Renames files for browser caching purposes
-//    filerev: {
-//      dist: {
-//        src: [
-//          '<%= yeoman.dist %>/scripts/{,*/}*.js',
-//          '<%= yeoman.dist %>/styles/{,*/}*.css',
-//          '<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
-//          '<%= yeoman.dist %>/styles/fonts/*'
-//        ]
-//      }
-//    },
-
     // Copies remaining files to places other tasks can use
     copy: {
-      dist: {
-        files: [{
-          expand: true,
-          dot: true,
-          cwd: '<%= config.app %>',
-          dest: '<%= config.dist %>',
-          src: [
-            '*.{ico,png,txt}',
-            '.htaccess',
-            '*.html',
-            'views/{,*/}*.html',
-            'images/{,*/}*.{webp}',
-            'fonts/*'
-          ]
-        }, {
-          expand: true,
-          cwd: '.tmp/images',
-          dest: '<%= config.dist %>/images',
-          src: ['generated/*']
-        }, {
-          expand: true,
-          cwd: '.',
-          src: 'bower_components/bootstrap-sass-official/assets/fonts/bootstrap/*',
-          dest: '<%= config.dist %>'
-        }]
-      },
       pipeline: {
         expand: true,
         cwd: '<%= config.vendor %>/',
         dest: '<%= config.dist %>/bower_components',
-        src: '{,*/}*.js'
+//        src: '{,*/}*.js'
+          src: "**/**"
       }
     },
+
+      // The actual grunt server settings
+      connect: {
+          options: {
+              port: 9000,
+              // Change this to '0.0.0.0' to access the server from outside.
+              hostname: 'localhost'
+          },
+          dist: {
+              options: {
+                  open: true,
+                  base: '<%= config.dist %>'
+              }
+          }
+      },
 
     // Run some tasks in parallel to speed up the build process
     concurrent: {
@@ -141,7 +118,7 @@ module.exports = function (grunt) {
 
 
     grunt.registerTask('pipeline', 'Concat files', function () {
-        return grunt.task.run(['clean:pipeline', 'copy:pipeline','concat:pipeline'])
+        return grunt.task.run(['clean:pipeline', 'copy:pipeline','concat:pipeline']);
     });
 
 //  grunt.registerTask('build', [

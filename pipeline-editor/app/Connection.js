@@ -1,8 +1,16 @@
 /**
  * Created by filip on 8.10.14..
  */
-(function () {
-    var Connection = {};
+(function (Pipeline) {
+    function Connection() {
+        this.name = "connection";
+    }
     
-    return Connection;
-})();
+    Connection.prototype = {
+        hi: function () {
+            console.log('I am ' + this.name );
+        }
+    };
+
+    Pipeline.Connection = Connection;
+})(Pipeline || {});

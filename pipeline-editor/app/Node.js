@@ -1,5 +1,13 @@
-(function () {
-    var Node = {};
+(function (Pipeline) {
+    function Node() {
+        this.name = 'node';
+    }
 
-    return Node;
-})();
+    Node.prototype = {
+        hi: function () {
+            console.log('I am ' + this.name );
+        }
+    };
+
+    Pipeline.Node = Node;
+})(Pipeline || {});
