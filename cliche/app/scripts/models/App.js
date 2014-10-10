@@ -9,9 +9,7 @@ angular.module('clicheApp')
          */
         self.getApps = function(params) {
 
-            var promise = Api.apps.get(params).$promise;
-
-            return promise;
+            return Api.apps.get(params).$promise;
 
         };
 

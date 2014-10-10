@@ -86,54 +86,6 @@
 
         </div>
 
-        <div class="row">
-            <div class="col-md-12">
-                <label class="control-label">Meta</label>
-
-                <div class="form-group">
-                    <label for="meta-inherit" class="control-label inline">Inherit</label>
-                    <select class="form-control inline" id="meta-inherit" name="meta-inherit" ng-model="view.property.adapter.inherit" ng-options="key for key in view.inputs">
-                        <option value>-- choose --</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-12">
-                <div class="enum-list-wrap">
-                    <a href ng-click="addMeta()" class="btn btn-default add-enum-item"><i class="fa fa-plus"></i></a>
-                    <div class="enum-list-container">
-                        <ul class="enum-list" ng-class="{wide: view.property.adapter.meta.length === 1}">
-                            <li ng-repeat="meta in view.property.adapter.meta track by $index">
-                                <div class="enum-field form-group form-group-file with-expression">
-                                    <div class="row no-margin">
-                                        <div class="col-md-6 no-padding">
-                                            <input type="text" class="form-control" ng-model="meta.key" placeholder="key"/>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <input type="text" class="form-control" ng-model="meta.value" placeholder="value"/>
-                                        </div>
-                                    </div>
-                                </div>
-                                <a href ng-hide="view.property.adapter.meta.length === 1" class="fa fa-remove remove-btn" ng-click="removeMeta($index)"></a>
-                            </li>
-                        </ul>
-                        <p ng-if="view.property.adapter.meta.length === 0" class="alert alert-info">Click + on the left to add meta data</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- END meta data-->
-
-        <div class="row">
-            <div class="col-md-12">
-                <label class="control-label">Index Files</label>
-                <enum ng-model="view.property.adapter.indexFiles" type="'string'"></enum>
-            </div>
-        </div>
-        <!-- END index files -->
-
         <div class="form-group main-actions">
             <a href class="btn btn-warning" ng-click="cancel()">Cancel</a>
             <button type="submit" class="btn btn-primary">Save</button>
