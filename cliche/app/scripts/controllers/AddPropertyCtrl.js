@@ -52,4 +52,5 @@ angular.module('clicheApp')
             $modalInstance.dismiss('cancel');
         };
 
+
     }]);
