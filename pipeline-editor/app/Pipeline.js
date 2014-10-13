@@ -12,7 +12,7 @@ var Pipeline = (function () {
 
 
             this.nodes = {};
-            this.connections = {};
+            this.connections = [];
 
             this._initCanvas();
             this._generateNodes();
@@ -25,6 +25,104 @@ var Pipeline = (function () {
 
             this.canvas = new Raphael(this.$parent[0], width, height);
             this.pipelineWrap = this.canvas.group();
+
+            this._initCanvasPosition();
+            this._initRect(this.canvas, width, height);
+            this._initCanvasMove();
+        },
+
+
+        _initCanvasPosition: function () {
+            this._move(this.model.display.canvas);
+        },
+
+        _initRect: function (canvas, width, height) {
+
+            this.rect = canvas.rect(0, 0, width, height);
+            this.rect.dragged = false;
+
+            this.rect.attr({
+                stroke: 'none',
+                fill: '#fff',
+                opacity: '0'
+            });
+
+        },
+
+        _move: function (position) {
+            this.getEl().translate(position.x, position.y);
+        },
+
+        _initCanvasMove: function () {
+
+            var self = this,
+                canvas = this.getEl(),
+                currentZoomLevel = canvas.getScale(),
+                start, move, end, startCoords;
+
+            start = function startDragging(x, y, event) {
+                startCoords = canvas.getTranslation();
+
+                startCoords.x = startCoords.x * currentZoomLevel.x;
+                startCoords.y = startCoords.y * currentZoomLevel.y;
+
+//                globals.vents.trigger('inPlaceEdit:destroy');
+            };
+
+            move = function onMove(x, y) {
+
+                var translation = startCoords,
+                    canvasEmpty = Object.keys(self.nodes).length === 0;
+
+                if ( !canvasEmpty) {
+
+                    canvas.translate((translation.x + x) / currentZoomLevel.x,
+                            (translation.y + y) / currentZoomLevel.y);
+
+                    self.rect.dragged = true;
+                    self._drawScrollbars();
+
+                }
+
+            };
+
+            end = function endDragging(/*x, y, event*/) {
+
+                // clone translation object
+                var can, canvasTranslation = $.extend({}, canvas.getTranslation());
+
+                // add zoom level
+                canvasTranslation.zoom = currentZoomLevel.x;
+
+                // set it to the pipeline model
+                can = self.model.display.canvas;
+
+                can.x = canvasTranslation.x;
+                can.y = canvasTranslation.y;
+
+                if (self.rect.dragged) {
+//                    globals.vents.trigger('pipeline:change', 'display');
+                }
+
+                startCoords = {
+                    x: 0,
+                    y: 0
+                };
+            };
+
+            this.rect.drag(move, start, end);
+            this.rect.click(function() {
+                if (!self.rect.dragged) {
+//                    globals.vents.trigger('node:deselect');
+                }
+
+                self.rect.dragged = false;
+            });
+
+            this.rect.mouseover(function () {
+//                globals.vents.trigger('remove:wire');
+            });
+
         },
 
         _generateNodes: function () {
@@ -48,7 +146,7 @@ var Pipeline = (function () {
 
             _.each(this.model.display.nodes, function (nodeModel, id) {
                 nodeModel.id = id;
-                console.log(nodeModel);
+
                 _self.nodes[nodeModel.id] = new _self.Node({
                     pipeline: _self,
                     model: nodeModel,
@@ -62,7 +160,7 @@ var Pipeline = (function () {
             });
 
             this.pipelineWrap.translate(this.model.display.canvas.x, this.model.display.canvas.y);
-
+            this.rect.toBack();
         },
         
         _generateConnections: function () {
@@ -86,8 +184,133 @@ var Pipeline = (function () {
                 _self.nodes[connection.start_node].addConnection(_self.connections[connection.id]);
                 _self.nodes[connection.end_node].addConnection(_self.connections[connection.id]);
 
+                _self.connections.push(connection);
+
             });
-        },  
+        },
+
+        _drawScrollbars: function () {
+
+            var canvas      = this.getEl(),
+                canvasBox   = canvas.node.getBBox(),
+                color       = '#B6B6B6',
+                size        = 8,
+                doubleSize  = size * 2,
+                edgesRadius = size / 3, // rounding edges radius for both bars (Vertical / Horizontal Radius)
+                hBar, vBar, canvasTransform, surface, surfaceDimensions, surfaceWidth, surfaceHeight,
+                hX, hY, hW, vX, vY, vH, ratioL, ratioR, ratioT, ratioB, canvasTranslation;
+
+//            if (!canvasBox) {
+//                canvas.setTransform(new matrix.translate(0, 0));
+//                return;
+//            }
+
+            hBar                = this.horizontalBar;
+            vBar                = this.verticalBar;
+            canvasTransform     = canvas.node.getCTM();// || matrix.identity;
+            canvasTranslation   = canvas.getTranslation();
+            surface             = this.canvas;
+            surfaceDimensions   = {
+                width: surface.width,
+                height: surface.height
+            };
+
+            surfaceWidth        = surfaceDimensions.width;
+            surfaceHeight       = surfaceDimensions.height;
+            canvasBox.l         = canvasBox.x + canvasTransform.e;
+            canvasBox.r         = canvasBox.l + (canvasBox.width * canvasTransform.a);
+            canvasBox.t         = canvasBox.y + canvasTransform.f;
+            canvasBox.b         = canvasBox.t + (canvasBox.height * canvasTransform.d);
+
+            if (hBar) {
+                hBar.remove();
+                this.horizontalBar = null;
+            }
+            if (vBar) {
+                vBar.remove();
+                this.verticalBar = null;
+            }
+
+//                surface.createRect({x: canvasBox.l, y: canvasBox.t, width: canvasBox.r - canvasBox.r, height: canvasBox.b - canvasBox.t }).setStroke('red');
+
+            if (canvasBox.l < 0 || canvasBox.r > surfaceWidth) {
+
+                ratioL = ratioR = 1;
+
+                if (canvasBox.l < 0) {
+                    ratioL = surfaceWidth / (surfaceWidth - canvasBox.l);
+                }
+
+                if (canvasBox.r > surfaceWidth) {
+                    ratioR = surfaceWidth / canvasBox.r;
+                }
+
+                hX = (canvasBox.l < 0 ? surfaceWidth - surfaceWidth * ratioL : 0) + size / 2;
+                hY = surfaceHeight - size * 1.5;
+                hW = surfaceWidth * (ratioR * ratioL) - doubleSize;
+
+                if (hX > surfaceWidth - doubleSize * 2) {
+                    hX = surfaceWidth - doubleSize * 2;
+                }
+                if (hW < doubleSize) {
+                    hW = doubleSize;
+                }
+
+                hBar = this.canvas.rect(hX, hY, hW, size, edgesRadius).attr({
+                    fill: color,
+                    stroke: 'none'
+                });
+
+                hBar.toFront();
+                this.horizontalBar = hBar;
+            }
+
+            if (canvasBox.t < 0 || canvasBox.b > surfaceHeight) {
+
+                ratioT = ratioB = 1;
+
+                if (canvasBox.t < 0) {
+                    ratioT = surfaceHeight / (surfaceHeight - canvasBox.t);
+                }
+                if (canvasBox.b > surfaceHeight) {
+                    ratioB = surfaceHeight / canvasBox.b;
+                }
+
+                vX = surfaceWidth - size * 1.5;
+                vY = (canvasBox.t < 0 ? surfaceHeight * (1 - ratioT) : 0) + size / 2;
+                vH = surfaceHeight * (ratioB * ratioT) - doubleSize;
+
+                if (vY > surfaceHeight - doubleSize * 2) {
+                    vY = surfaceHeight - doubleSize * 2;
+                }
+                if (vH < doubleSize) {
+                    vH = doubleSize;
+                }
+
+                vBar = this.canvas.rect(vX, vY, size, vH, edgesRadius).attr({
+                    fill: color,
+                    stroke: 'none'
+                });
+                vBar.toFront();
+                this.verticalBar = vBar;
+            }
+        },
+
+
+        getEl: function () {
+            return this.pipelineWrap;
+        },
+
+        removeConnection: function(connection) {
+            var _self = this;
+
+            _.each(this.connections, function (con, index) {
+                if (con.id === connection.id) {
+                    _self.connections.splice(idnex,1);
+                }
+            });
+
+        },
 
         Public: {
 

@@ -357,3 +357,7 @@ body {
 @-ms-keyframes rotate {
   @include rotate-rule(-ms-);
 }
+
+div.pipeline-editor {
+  @include user-select(none);
+}

@@ -457,7 +457,7 @@
 
                 delete this.connections[connection.id];
 
-                this.parentView.removeConnection(connection);
+                this.pipeline.removeConnection(connection);
             }
 
             // recalculate file types only for input nodes
