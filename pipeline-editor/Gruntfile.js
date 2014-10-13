@@ -65,6 +65,13 @@ module.exports = function (grunt) {
         dest: '<%= config.dist %>/bower_components',
 //        src: '{,*/}*.js'
           src: "**/**"
+      },
+      data: {
+          expand: true,
+          cwd: '',
+          dest: '<%= config.dist %>',
+          src: 'data/pipeline.json'
+
       }
     },
 
@@ -118,7 +125,7 @@ module.exports = function (grunt) {
 
 
     grunt.registerTask('pipeline', 'Concat files', function () {
-        return grunt.task.run(['clean:pipeline', 'copy:pipeline','concat:pipeline']);
+        return grunt.task.run(['clean:pipeline', 'copy:pipeline','concat:pipeline', 'copy:data']);
     });
 
 //  grunt.registerTask('build', [

@@ -4,10 +4,19 @@
 'use strict';
 
 angular.module('registryApp')
-    .controller('PipelineEditorCtrl', ['$scope', '$timeout', '$location', '$filter', 'Header', 'Loading', function ($scope, $timeout, $location, $filter, Header, Loading) {
+    .controller('PipelineEditorCtrl', ['$scope', '$timeout', '$location', '$filter', 'Header', 'Loading', '$http', function ($scope, $timeout, $location, $filter, Header, Loading, $http) {
 
         Header.setActive('pipeline-editor');
 
-        console.log('welcome to pipeline editor');
-        console.log(typeof Pipeline);
+        $.ajax({
+            url: '/pipeline-editor/data/pipeline.json',
+            type: "GET",
+            dataType: 'JSON',
+
+            complete: function(data, status, headers, config) {
+                Pipeline.init(data.responseJSON, document.getElementsByClassName('pipeline-editor'), {});
+            }
+        });
+
+
     }]);
