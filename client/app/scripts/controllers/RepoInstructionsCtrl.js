@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('registryApp')
-    .controller('RepoInstructionsCtrl', ['$scope', '$routeParams', 'Repo', 'Header', 'Loading', function ($scope, $routeParams, Repo, Header, Loading) {
+    .controller('RepoInstructionsCtrl', ['$scope', '$routeParams', 'Repo', 'Sidebar', 'Loading', function ($scope, $routeParams, Repo, Sidebar, Loading) {
 
-        Header.setActive('repos');
+        Sidebar.setActive('repos');
 
         $scope.view = {};
         $scope.view.loading = true;

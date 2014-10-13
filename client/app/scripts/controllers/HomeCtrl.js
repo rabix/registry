@@ -1,18 +1,18 @@
 'use strict';
 
 angular.module('registryApp')
-    .controller('HomeCtrl', ['$scope', '$timeout', 'Header', 'User', 'Loading', function ($scope, $timeout, Header, User, Loading) {
+    .controller('HomeCtrl', ['$scope', '$timeout', 'Sidebar', 'User', 'Loading', function ($scope, $timeout, Sidebar, User, Loading) {
 
         var subscribeTimeoutId;
 
-        Header.setActive('home');
+        Sidebar.setActive('home');
 
         $scope.view = {};
         $scope.view.showError = false;
         $scope.view.message = {};
         $scope.view.loading = false;
 
-        $scope.view.classes = ['page', 'home', 'auto'];
+        $scope.view.classes = ['page', 'home'];
         Loading.setClasses($scope.view.classes);
 
         $scope.Loading = Loading;

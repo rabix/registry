@@ -1,35 +1,33 @@
 <div ng-class="view.classes" loading="view.loading">
 
     <div class="filters">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4">
-                    <form class="search-form" ng-submit="searchApps()" novalidate>
-                        <div class="input-group">
-                            <input type="text" class="form-control" ng-model="view.searchTerm" placeholder="Search apps" required>
-                            <span class="input-group-btn">
-                                <button class="btn btn-primary" type="submit"><i class="glyphicon glyphicon-search"></i></button>
-                                <a ng-if="!(view.searchTerm | isEmpty)" class="btn btn-default" href ng-click="resetSearch()"><i class="glyphicon glyphicon-ban-circle"></i></a>
-                            </span>
-                        </div>
-                    </form>
-                </div>
+        <div class="row no-margin">
+            <div class="col-md-4">
+                <form class="search-form" ng-submit="searchApps()" novalidate>
+                    <div class="input-group">
+                        <input type="text" class="form-control" ng-model="view.searchTerm" placeholder="Search apps" required>
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
+                            <a ng-if="!(view.searchTerm | isEmpty)" class="btn btn-default" href ng-click="resetSearch()"><i class="fa fa-ban"></i></a>
+                        </span>
+                    </div>
+                </form>
+            </div>
 
-                <div ng-show="user" class="col-md-3">
-                    <label class="checkbox">
-                        <input type="checkbox" ng-model="view.myApps" ng-change="toggleMyApps()" /> Show only my apps
-                    </label>
-                </div>
+            <div ng-show="user" class="col-md-3">
+                <label class="checkbox">
+                    <input type="checkbox" ng-model="view.myApps" ng-change="toggleMyApps()" /> Show only my apps
+                </label>
+            </div>
 
-                <div class="col-md-5 tags">
-                    <span ng-if="view.repo" class="label label-primary">{{ view.repo }} <a ng-href="#/apps" class="close">&times;</a></span>
-                </div>
+            <div class="col-md-5 tags">
+                <span ng-if="view.repo" class="label label-primary">{{ view.repo }} <a ng-href="#/apps" class="close">&times;</a></span>
             </div>
         </div>
     </div>
     <!-- # .filters -->
 
-    <div ng-if="!view.loading" class="container">
+    <div ng-if="!view.loading" class="content">
         <table class="table table-hover apps">
             <thead>
                 <tr>
@@ -53,14 +51,12 @@
             </tbody>
         </table>
     </div>
-    <!-- # .container -->
+    <!-- # .content -->
 
     <div class="paginate" ng-if="!view.loading && view.apps.length !== 0">
-        <div class="container">
-            <button ng-disabled="!view.paginator.prev" class="btn btn-default pull-left" ng-click="goToPage('prev')"><i class="glyphicon glyphicon-chevron-left"></i></button>
-            <span class="page-number">{{ view.page }} / {{ view.total }}</span>
-            <button ng-disabled="!view.paginator.next" class="btn btn-default pull-right" ng-click="goToPage('next')"><i class="glyphicon glyphicon-chevron-right"></i></button>
-        </div>
+        <button ng-disabled="!view.paginator.prev" class="btn btn-default pull-left" ng-click="goToPage('prev')"><i class="fa fa-chevron-left"></i></button>
+        <span class="page-number">{{ view.page }} / {{ view.total }}</span>
+        <button ng-disabled="!view.paginator.next" class="btn btn-default pull-right" ng-click="goToPage('next')"><i class="fa fa-chevron-right"></i></button>
     </div>
     <!-- # .paginate -->
 

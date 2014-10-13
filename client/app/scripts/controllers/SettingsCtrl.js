@@ -1,11 +1,11 @@
 'use strict';
 
 angular.module('registryApp')
-    .controller('SettingsCtrl', ['$scope', '$timeout', 'Header', 'User', function ($scope, $timeout, Header, User) {
+    .controller('SettingsCtrl', ['$scope', '$timeout', 'Sidebar', 'User', function ($scope, $timeout, Sidebar, User) {
 
         var tokenTimeoutId;
 
-        Header.setActive('settings');
+        Sidebar.setActive('settings');
 
         $scope.view = {};
         $scope.view.generating = false;

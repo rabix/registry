@@ -1,5 +1,5 @@
 <div class="header">
-    <div ng-if="!view.loading" class="container">
+    <div ng-if="!view.loading" class="content">
 
         <div class="row">
             <div class="col-md-2">
@@ -21,7 +21,7 @@
 
                 <div ng-if="!(view.user | isEmpty)" class="actions pull-right">
                     <span class="welcome">Welcome <img ng-src="{{view.user.avatar_url}}" width="22px" alt=""/> <strong> {{ view.user.login }}</strong></span>
-                    <a ng-href="/auth/logout" tooltip="Log out" tooltip-placement="bottom" tooltip-append-to-body="true" class="glyphicon glyphicon-log-out log-out-btn"></a>
+                    <a ng-href="/auth/logout" tooltip="Log out" tooltip-placement="bottom" tooltip-append-to-body="true" class="fa fa-sign-out log-out-btn"></a>
                 </div>
 
             </div>

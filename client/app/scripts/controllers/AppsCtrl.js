@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('registryApp')
-    .controller('AppsCtrl', ['$scope', '$routeParams', 'App', 'Header', 'Api', 'Loading', 'User',function ($scope, $routeParams, App, Header, Api, Loading, User) {
+    .controller('AppsCtrl', ['$scope', '$routeParams', 'App', 'Sidebar', 'Api', 'Loading', 'User',function ($scope, $routeParams, App, Sidebar, Api, Loading, User) {
 
-        Header.setActive('apps');
+        Sidebar.setActive('apps');
 
         /**
          * Callback when apps are loaded

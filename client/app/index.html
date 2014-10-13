@@ -9,6 +9,7 @@
         <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700' rel='stylesheet' type='text/css'>
 
         <!-- build:css(app) styles/main.css -->
+        <link rel="stylesheet" href="bower_components/fontawesome/css/font-awesome.css">
         <link rel="stylesheet" href="styles/main.css">
         <!-- endbuild -->
 
@@ -20,13 +21,12 @@
         <![endif]-->
 
         <!-- Add your site or application content here -->
-        <div class="main" ng-controller="MasterCtrl">
-            <header></header>
-            <div class="content" ng-view=""></div>
+        <div class="container-fluid" ng-controller="MasterCtrl">
+            <sidebar></sidebar>
+            <div class="main" ng-view=""></div>
         </div>
 
         <error></error>
-
 
         <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
         <script>
@@ -86,10 +86,10 @@
         <script src="scripts/controllers/RepoInstructionsCtrl.js"></script>
         <script src="scripts/controllers/RevisionCtrl.js"></script>
 
-        <script src="scripts/directives/header.js"></script>
         <script src="scripts/directives/error.js"></script>
         <script src="scripts/directives/height.js"></script>
         <script src="scripts/directives/loading.js"></script>
+        <script src="scripts/directives/sidebar.js"></script>
 
         <script src="scripts/filters/is-empty.js"></script>
         <script src="scripts/filters/encode.js"></script>

@@ -2,10 +2,11 @@
 
   .heading,
   .filters {
+    padding: 0 10px;
     background-color: $gray;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 2px solid $orange;
     background-image: url(../images/bg.png);
-    @include box-shadow(0px 2px 0px 0px $orange);
+    @include flex(0 0 auto);
   }
 
   /* Page heading */
@@ -13,14 +14,14 @@
     margin: 0 0 20px 0;
     @include flex(0 0 auto);
     .go-back {
-      margin: 10px 0;
+      margin: 12.5px 0;
     }
   }
 
   /* Page filters */
   .filters {
-    height: 55px;
-    padding: 10px 0;
+    height: 61px;
+    padding: 13px 0;
 
     &.empty {
       height: 10px;
@@ -45,12 +46,14 @@
 
   /* Paginator */
   .paginate {
-    padding: 10px 0;
+    padding: 10px;
     overflow: auto;
     background-color: $gray;
     background-image: url(../images/bg.png);
     border-top: 1px solid #ddd;
     text-align: center;
+    @include flex(0 0 auto);
+
     .page-number {
       display: inline-block;
       font-weight: bold;
@@ -220,4 +223,7 @@
   white-space: nowrap;
   overflow: hidden;
   display: block;
+}
+.no-margin {
+  margin: 0px !important;
 }

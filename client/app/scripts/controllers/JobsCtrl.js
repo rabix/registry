@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('registryApp')
-    .controller('JobsCtrl', ['$scope', '$location', 'Job', 'Header', 'Api', 'Loading', 'User',function ($scope, $location, Job, Header, Api, Loading, User) {
+    .controller('JobsCtrl', ['$scope', '$location', 'Job', 'Sidebar', 'Api', 'Loading', 'User',function ($scope, $location, Job, Sidebar, Api, Loading, User) {
 
-        Header.setActive('jobs');
+        Sidebar.setActive('jobs');
 
         /**
          * Callback when jobs are loaded

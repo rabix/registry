@@ -1,14 +1,12 @@
 <div ng-class="view.classes" loading="view.loading">
 
     <div class="heading">
-        <div class="container">
-            <a ng-href="#/apps" class="btn btn-default pull-left go-back"><i class="glyphicon glyphicon-chevron-left"></i> Back</a>
-            <h1>{{ view.app.name }}</h1>
-        </div>
+        <a ng-href="#/apps" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
+        <h1>{{ view.app.name }}</h1>
     </div>
     <!-- # .heading -->
 
-    <div ng-if="!view.loading" class="container">
+    <div ng-if="!view.loading" class="content">
 
         <div ng-if="view.revisions.length > 0" class="nav nav-pills">
             <li ng-class="{active: view.tab === 'info'}"><a ng-href="#/app/{{ view.app._id }}">Info</a></li>
@@ -92,14 +90,12 @@
         </section>
 
     </div>
-    <!-- # .container -->
+    <!-- # .content -->
 
     <div class="paginate" ng-if="!view.loading && view.tab === 'revisions' && view.revisions.length > 0">
-        <div class="container">
-            <button ng-disabled="!view.paginator.prev" class="btn btn-default pull-left" ng-click="goToPage('prev')"><i class="glyphicon glyphicon-chevron-left"></i></button>
-            <span class="page-number">{{ view.page }} / {{ view.total }}</span>
-            <button ng-disabled="!view.paginator.next" class="btn btn-default pull-right" ng-click="goToPage('next')"><i class="glyphicon glyphicon-chevron-right"></i></button>
-        </div>
+        <button ng-disabled="!view.paginator.prev" class="btn btn-default pull-left" ng-click="goToPage('prev')"><i class="fa fa-chevron-left"></i></button>
+        <span class="page-number">{{ view.page }} / {{ view.total }}</span>
+        <button ng-disabled="!view.paginator.next" class="btn btn-default pull-right" ng-click="goToPage('next')"><i class="fa fa-chevron-right"></i></button>
     </div>
     <!-- # .paginate -->
 </div>

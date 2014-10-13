@@ -1,14 +1,12 @@
 <div ng-class="view.classes" loading="view.loading">
 
     <div class="heading">
-        <div class="container">
-            <a ng-href="#/repos" class="btn btn-default pull-left go-back"><i class="glyphicon glyphicon-chevron-left"></i> Back</a>
-            <h1>{{ view.repo.owner }}/{{ view.repo.name }} <span class="created-by">({{ view.repo.created_by }})</span></h1>
-        </div>
+        <a ng-href="#/repos" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
+        <h1>{{ view.repo.owner }}/{{ view.repo.name }} <span class="created-by">({{ view.repo.created_by }})</span></h1>
     </div>
     <!-- # .heading -->
 
-    <div ng-if="!view.loading" class="container">
+    <div ng-if="!view.loading" class="content">
 
         <div class="nav nav-tabs">
             <li ng-class="{active: view.tab === 'apps'}" class=""><a href ng-click="switchTab('apps')">Apps</a></li>
@@ -50,9 +48,9 @@
                 <tbody>
                     <tr ng-repeat="build in view.builds">
                         <td class="field-status">
-                            <span class="status glyphicon {{ build.status }}"
+                            <span class="status fa {{ build.status }}"
                                   tooltip="{{ build.status }}"
-                                  ng-class="{'glyphicon-ok-circle': build.status === 'success', 'glyphicon-time': build.status === 'pending', 'glyphicon-remove-circle': build.status === 'failure', 'glyphicon-repeat': build.status === 'running'}">
+                                  ng-class="{'fa-check-circle': build.status === 'success', 'fa-time': build.status === 'pending', 'fa-remove-circle': build.status === 'failure', 'fa-repeat': build.status === 'running'}">
                             </span>
                         </td>
                         <td class="field-id">
@@ -75,23 +73,19 @@
         </section>
 
     </div>
-    <!-- # .container -->
+    <!-- # .content -->
 
     <div class="paginate" ng-if="!view.loading && view.tab === 'apps' && view.apps.length > 0">
-        <div class="container">
-            <button ng-disabled="!view.paginator.apps.prev || view.paginator.apps.loading" class="btn btn-default pull-left" ng-click="goToPage('prev')"><i class="glyphicon glyphicon-chevron-left"></i></button>
-            <span class="page-number">{{ view.paginator.apps.page }} / {{ view.paginator.apps.total }}</span>
-            <button ng-disabled="!view.paginator.apps.next || view.paginator.apps.loading" class="btn btn-default pull-right" ng-click="goToPage('next')"><i class="glyphicon glyphicon-chevron-right"></i></button>
-        </div>
+        <button ng-disabled="!view.paginator.apps.prev || view.paginator.apps.loading" class="btn btn-default pull-left" ng-click="goToPage('prev')"><i class="fa fa-chevron-left"></i></button>
+        <span class="page-number">{{ view.paginator.apps.page }} / {{ view.paginator.apps.total }}</span>
+        <button ng-disabled="!view.paginator.apps.next || view.paginator.apps.loading" class="btn btn-default pull-right" ng-click="goToPage('next')"><i class="fa fa-chevron-right"></i></button>
     </div>
     <!-- # .paginate -->
 
     <div class="paginate" ng-if="!view.loading && view.tab === 'builds' && view.builds.length > 0">
-        <div class="container">
-            <button ng-disabled="!view.paginator.builds.prev || view.paginator.builds.loading" class="btn btn-default pull-left" ng-click="goToPage('prev')"><i class="glyphicon glyphicon-chevron-left"></i></button>
-            <span class="page-number">{{ view.paginator.builds.page }} / {{ view.paginator.builds.total }}</span>
-            <button ng-disabled="!view.paginator.builds.next || view.paginator.builds.loading" class="btn btn-default pull-right" ng-click="goToPage('next')"><i class="glyphicon glyphicon-chevron-right"></i></button>
-        </div>
+        <button ng-disabled="!view.paginator.builds.prev || view.paginator.builds.loading" class="btn btn-default pull-left" ng-click="goToPage('prev')"><i class="fa fa-chevron-left"></i></button>
+        <span class="page-number">{{ view.paginator.builds.page }} / {{ view.paginator.builds.total }}</span>
+        <button ng-disabled="!view.paginator.builds.next || view.paginator.builds.loading" class="btn btn-default pull-right" ng-click="goToPage('next')"><i class="fa fa-chevron-right"></i></button>
     </div>
     <!-- # .paginate -->
 </div>
