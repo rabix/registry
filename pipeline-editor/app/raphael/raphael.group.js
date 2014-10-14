@@ -1,9 +1,3 @@
-/**
- * User: jovica
- * Date: 2/13/14
- * Time: 2:28 PM
- */
-
 'use strict';
 
 Raphael.fn.group = function () {
