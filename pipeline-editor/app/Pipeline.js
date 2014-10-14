@@ -14,9 +14,36 @@ var Pipeline = (function () {
             this.nodes = {};
             this.connections = [];
 
+            // temporarily holding references to the terminals
+            // needed for connection to render
+            this.tempConnectionRefs = null;
+
+            // flag for temporary connection
+            this.tempConnectionActive = false;
+
+
             this._initCanvas();
+            this._atachEvents();
             this._generateNodes();
             this._generateConnections();
+        },
+        
+        _atachEvents: function () {
+            var _self = this;
+
+            this.Event.subscribe('temp:connection:state', function (state) {
+                console.log('temp:connection:state', state);
+                _self.tempConnectionActive = state;
+            });
+//
+//            this.Event.subscribe('temp:connection:state', function (state) {
+//                _self.tempConnectionActive = state;
+//            });
+
+            this.Event.subscribe('scrollbars:draw', function () {
+                console.log('scrolbars:draw');
+                _self._drawScrollbars();
+            });
         },
 
         _initCanvas: function () {
@@ -184,8 +211,6 @@ var Pipeline = (function () {
                 _self.nodes[connection.start_node].addConnection(_self.connections[connection.id]);
                 _self.nodes[connection.end_node].addConnection(_self.connections[connection.id]);
 
-                _self.connections.push(connection);
-
             });
         },
 
@@ -302,13 +327,11 @@ var Pipeline = (function () {
         },
 
         removeConnection: function(connection) {
-            var _self = this;
 
-            _.each(this.connections, function (con, index) {
-                if (con.id === connection.id) {
-                    _self.connections.splice(idnex,1);
-                }
-            });
+            if (this.connections[connection.id]){
+                this.connections[connection.id] = null;
+                delete this.connections[connection.id];
+            }
 
         },
 

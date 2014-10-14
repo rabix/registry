@@ -4,7 +4,7 @@
 (function () {
     function Connection(options) {
 
-        this.nodeViews = options.nodeViews;
+        this.nodeViews = options.nodes;
         this.model = options.model;
         this.canvas = options.canvas;
         this.parent = options.parent;
@@ -65,37 +65,38 @@
 
         onMouseOver: function (e, x, y) {
 
-//            if (!this.parentView.tempConnectionActive) {
+            if (!this.Pipeline.tempConnectionActive) {
 
-//                var self = this,
-//                    src = require.toUrl('sbg/pipeline-canvas/img/wire-cut.png'),
-//                    canvasOffset = $('#canvas').offset();
-//
-//                this.removeWire();
-//
-//                this.wire = this.canvas.image(src, x - canvasOffset.left - 15, y - canvasOffset.top - 15, 30, 30);
-//
-//                this.wire.click(function () {
-//                    self.removeWire();
-//                    self.destroyConnection();
-//                });
-//
-//                this.wire.mouseout(this.onMouseOut, this);
-//
-//                this.startTime = Date.now();
+                var self = this,
+                    src = 'images/wire-cut.png',
+                    canvasOffset = $('.pipeline-editor').offset();
 
-//            }
+                this.removeWire();
+
+                this.wire = this.canvas.image(src, x - canvasOffset.left - 15, y - canvasOffset.top - 15, 30, 30);
+
+                this.wire.click(function () {
+                    self.removeWire();
+                    self.destroyConnection();
+                });
+
+                this.wire.mouseout(this.onMouseOut, this);
+
+                this.startTime = Date.now();
+
+            }
+
         },
 
         onMouseOut: function () {
-//            var self = this,
-//                diff = this.startTime - Date.now();
-//
-//            if (this.wire && diff > 1000) {
-//                this.wire.remove();
-//            } else {
-//                this.removeWire();
-//            }
+            var self = this,
+                diff = this.startTime - Date.now();
+
+            if (this.wire && diff > 1000) {
+                this.wire.remove();
+            } else {
+                this.removeWire();
+            }
         },
 
         removeWire: function () {
@@ -178,33 +179,35 @@
 
         destroyConnection: function () {
 
-//            var inputCheck, outputCheck;
-//
-//            this.connection.remove();
-//
-//            this.nodeViews[this.model.start_node].removeConnection(this.model);
-//            this.nodeViews[this.model.end_node].removeConnection(this.model);
-//
-//            inputCheck = this.input.removeConnection(this.model.id);
-//            outputCheck = this.output.removeConnection(this.model.id);
-//
-//            this.input.terminals[this.output.model.id] = null;
-//            delete this.input.terminals[this.output.model.id];
-//
-//            this.output.terminals[this.input.model.id] = null;
-//            delete this.output.terminals[this.input.model.id];
-//
-//            if (!inputCheck) {
-//                this.input.terminalConnected = false;
-//                this.input.setDefaultState();
-//            }
-//
-//            if (!outputCheck) {
-//                this.output.terminalConnected = false;
-//                this.output.setDefaultState();
-//            }
-//
-//            globals.vents.trigger('pipeline:change', 'revision');
+            var inputCheck, outputCheck;
+
+            this.connection.remove();
+
+            this.Pipeline.nodes[this.model.start_node].removeConnection(this.model);
+            this.Pipeline.nodes[this.model.end_node].removeConnection(this.model);
+
+            inputCheck = this.input.removeConnection(this.model.id);
+            outputCheck = this.output.removeConnection(this.model.id);
+
+            this.input.terminals[this.output.model.id] = null;
+            delete this.input.terminals[this.output.model.id];
+
+            this.output.terminals[this.input.model.id] = null;
+            delete this.output.terminals[this.input.model.id];
+
+            if (!inputCheck) {
+                this.input.terminalConnected = false;
+                this.input.setDefaultState();
+            }
+
+            if (!outputCheck) {
+                this.output.terminalConnected = false;
+                this.output.setDefaultState();
+            }
+
+            console.log('Connection remove');
+
+//            this.pipeline.Event.trigger('pipeline:change', 'revision');
         }
     };
 

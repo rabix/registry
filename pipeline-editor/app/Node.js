@@ -166,6 +166,7 @@
                     model: data,
                     parent: this,
                     canvas: canvas,
+                    pipeline: this.Pipeline,
                     pipelineWrap: this.parent
                 }));
             }
@@ -186,6 +187,7 @@
                     model: data,
                     parent: this,
                     canvas: canvas,
+                    pipeline: this.Pipeline,
                     pipelineWrap: this.parent
                 }));
             }
@@ -402,7 +404,7 @@
 
 //            this.parentView.moveSelectedNodes((start.x + dx) - old.x, ( start.y + dy) - old.y , this.model.get('id'));
 
-//            globals.vents.trigger('scrollbars:draw');
+            this.Pipeline.Event.trigger('scrollbars:draw');
         },
 
         onMoveEnd: function () {
@@ -452,18 +454,29 @@
         removeConnection: function (connection) {
             if (this.connections[connection.id]) {
 
-                this.connections[connection.id].destroy();
                 this.connections[connection.id] = null;
 
                 delete this.connections[connection.id];
 
-                this.pipeline.removeConnection(connection);
+                this.Pipeline.removeConnection(connection);
             }
 
             // recalculate file types only for input nodes
 //            if (this.model.type.indexOf('input/') !== -1) {
 //                this._recalculateFileTypes();
 //            }
+        },
+
+        deselectAvailableTerminals: function () {
+
+            _.each(this.inputs, function (terminal) {
+                terminal.setDefaultState();
+            });
+
+            _.each(this.outputs, function (terminal) {
+                terminal.setDefaultState();
+            });
+
         }
     };
 

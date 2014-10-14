@@ -37,7 +37,7 @@ module.exports = function (grunt) {
             separator: ';'
         },
         pipeline: {
-            src: ['<%= config.app %>/raphael/raphael.js', '<%= config.app %>/raphael/raphael.group.js', '<%= config.app %>/raphael/raphael.curve.js', '<%= config.app %>/raphael/raphael.curve.js', '<%= config.app %>/Pipeline.js', '<%= config.app %>/events.js', '<%= config.app %>/Node.js', '<%= config.app %>/Terminal.js', '<%= config.app %>/Connection.js'],
+            src: ['<%= config.app %>/raphael/raphael.js', '<%= config.app %>/raphael/raphael.group.js', '<%= config.app %>/raphael/raphael.button.js', '<%= config.app %>/raphael/raphael.curve.js', '<%= config.app %>/Pipeline.js', '<%= config.app %>/events.js', '<%= config.app %>/Node.js', '<%= config.app %>/Terminal.js', '<%= config.app %>/Connection.js'],
             dest: '<%= config.dist %>/pipeline-editor.js'
         }
     },

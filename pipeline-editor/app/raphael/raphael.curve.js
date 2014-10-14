@@ -144,8 +144,10 @@ Raphael.fn.curve = function (config, attributes) {
             },
 
             remove: function () {
-                pathInner.remove();
-                pathOutter.remove();
+                if (pathInner && pathOutter) {
+                    pathInner.remove();
+                    pathOutter.remove();
+                }
             },
 
             mouseover: function (func,scope) {
