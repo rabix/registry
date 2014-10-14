@@ -17,7 +17,8 @@ angular
         'ngSanitize',
         'ui.bootstrap',
         'ngPrettyJson',
-        'LocalForageModule'
+        'LocalForageModule',
+        'registryApp.cliche'
     ])
     .config(['$routeProvider', '$httpProvider', '$localForageProvider', function ($routeProvider, $httpProvider, $localForageProvider) {
         $routeProvider
@@ -84,9 +85,9 @@ angular
         $httpProvider.interceptors.push('HTTPInterceptor');
 
         $localForageProvider.config({
-            name: 'clicheApp',
+            name: 'registryApp',
             version: 1.0,
-            storeName: 'clicheDB'
+            storeName: 'registryDB'
         });
 
     }]);

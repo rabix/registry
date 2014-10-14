@@ -16,8 +16,11 @@
                 </a>
             </li>
 
-            <li>
-                <a ng-href="/cliche" class="cliche-logo" target="_blank"><i class="fa fa-terminal"></i> <span><strong>cli</strong>che</span></a>
+            <li ng-class="{active: view.active === 'cliche'}">
+                <a ng-href="#/cliche" class="cliche-logo">
+                    <i class="fa fa-terminal"></i>
+                    <span><strong>cli</strong>che</span>
+                </a>
             </li>
         </ul>
         <!-- # .nav -->

@@ -1,0 +1,66 @@
+<div ng-class="view.classes" loading="view.loading">
+
+    <div ng-if="!view.loading" class="content">
+        <div class="col cliche-tabs">
+
+            <div class="heading">
+                <ul class="nav nav-tabs nav-tabs-steps regular">
+
+                    <li ng-class="{active: view.tab === 'general'}"><a href ng-click="switchTab('general')">General</a></li>
+                    <li ng-class="{active: view.tab === 'inputs'}"><a href ng-click="switchTab('inputs')">Inputs</a></li>
+                    <li ng-class="{active: view.tab === 'outputs'}"><a href ng-click="switchTab('outputs')">Outputs</a></li>
+                    <li ng-class="{active: view.tab === 'adapter'}"><a href ng-click="switchTab('adapter')">Adapter</a></li>
+                    <li ng-class="{active: view.tab === 'values'}"><a href ng-click="switchTab('values')">Values</a></li>
+                </ul>
+            </div>
+            <!-- # .heading -->
+
+            <div class="content">
+                <ng-form class="form" name="forms.toolForm" role="form" novalidate>
+                    <div class="tabs left">
+                        <ng-include src="view.tabViewPath"></ng-include>
+                    </div>
+                </ng-form>
+            </div>
+
+        </div>
+
+        <div class="col trace-tabs">
+
+            <div class="heading">
+                <ul class="nav nav-tabs nav-tabs-trace">
+                    <li ng-class="{active: view.trace === 'tool'}"><a href ng-click="switchTrace('tool')">Tool JSON</a></li>
+                    <li ng-class="{active: view.trace === 'job'}"><a href ng-click="switchTrace('job')">Job JSON</a></li>
+                    <li ng-class="{active: view.trace === 'console'}"><a href ng-click="switchTrace('console')">Console</a></li>
+                </ul>
+            </div>
+
+            <div class="content">
+                <div class="tabs right" ng-switch="view.trace">
+
+                    <div class="tab" ng-switch-when="tool">
+                        <zclip data="tool"></zclip>
+                        <app-actions ng-if="!view.loading && view.user" form="forms.toolForm" user="view.user" handle-import="importApp(app)" handle-import-json="importAppAsJson(json)" handle-save="setOwnerAndAppId(user_id, app_id)"></app-actions>
+                        <pre class="json-trace" pretty-json="view.toolForm"></pre>
+                    </div>
+
+                    <div class="tab" ng-switch-when="job">
+                        <zclip data="job"></zclip>
+                        <job-actions user="view.user"></job-actions>
+                        <pre class="json-trace" pretty-json="view.jobForm"></pre>
+                    </div>
+
+                    <div class="tab" ng-switch-when="console">
+                        <zclip data="command"></zclip>
+                        <pre class="console-trace" ng-class="{wait: view.generatingCommand}">{{ view.command }}</pre>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<span class="saving" ng-class="{show: view.saving}">saving</span>

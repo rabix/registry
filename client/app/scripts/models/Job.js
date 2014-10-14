@@ -1,7 +1,7 @@
 "use strict";
 
 angular.module('registryApp')
-    .service('Job', ['Api', '$localForage', function (Api, $localForage) {
+    .service('Job', ['Api', '$localForage', 'Data', function (Api, $localForage, Data) {
 
         var self = {};
 
@@ -17,6 +17,20 @@ angular.module('registryApp')
                 .then(function (result) {
                     return {list: _.pluck(result.list, 'url'), total: result.total}
                 });
+
+        };
+
+        /**
+         * Get job json url
+         *
+         * @returns {object} $promise
+         */
+        self.getUrl = function() {
+
+            var json = angular.copy(Data.job);
+            json.app = angular.copy(Data.tool);
+
+            return Api.job.upload({}, json).$promise;
 
         };
 
@@ -47,6 +61,22 @@ angular.module('registryApp')
 
 
                 });
+
+        };
+
+        /**
+         * Store jobs locally
+         * @param jobFileName
+         */
+        self.storeJobLocally = function (jobFileName) {
+
+            $localForage.getItem('tmp-jobs').then(function(jobs) {
+
+                jobs = jobs || [];
+                jobs.push(jobFileName);
+
+                $localForage.setItem('tmp-jobs', jobs);
+            });
 
         };
 

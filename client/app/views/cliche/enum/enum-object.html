@@ -1,0 +1,9 @@
+<div class="enum-field form-group form-group-object">
+    <input-field
+            ng-repeat="(innerKey, property) in properties"
+            ng-model="item.value[innerKey]"
+            key="{{ innerKey }}"
+            prop="property"
+            form="form">
+    </input-field>
+</div>

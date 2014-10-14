@@ -63,7 +63,8 @@ module.exports = function (grunt) {
 //            },
             template: {
                 files: [
-                    '<%= yeoman.app %>/views/{,*/}*.html'
+                    '<%= yeoman.app %>/views/{,*/}*.html',
+                    '<%= yeoman.app %>/views/cliche/{,*/}*.html'
                 ],
                 tasks: ['ngtemplates:app']
             }
@@ -418,7 +419,9 @@ module.exports = function (grunt) {
                             'fonts/*',
 //                            'bower_components/*'
                             'bower_components/es5-shim/es5-shim.js',
-                            'bower_components/json3/lib/json3.min.js'
+                            'bower_components/json3/lib/json3.min.js',
+                            'data/*',
+                            'vendor/jsandbox/src/jsandbox-worker.js'
                         ]
                     },
                     {
@@ -462,9 +465,8 @@ module.exports = function (grunt) {
 
         ngtemplates: {
             app: {
-                //cwd: '.tmp',
                 cwd: '<%= yeoman.app %>',
-                src: ['views/{,*/}*.html'],
+                src: ['views/{,*/}*.html', 'views/cliche/{,*/}*.html'],
                 dest: '<%= yeoman.app %>/scripts/template.js',
                 options: {
                     module: 'registryApp',

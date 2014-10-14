@@ -1,0 +1,42 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="cancel()"><span>&times;</span><span class="sr-only">Close</span></button>
+    <h4 class="modal-title">App list from the Registry</h4>
+</div>
+<div class="modal-body">
+
+    <p class="center-block">Select an app from the list you want to import</p>
+
+    <div ng-class="{loading: view.loading}">
+        <p class="alert alert-info center-block" ng-if="view.apps.length === 0">There are no apps to import at this moment</p>
+        <ul class="app-list" ng-if="view.apps.length > 0">
+            <li
+                ng-repeat="app in view.apps"
+                ng-class="{selected: app._id === view.selectedApp._id && !view.selectedRevision, disabled: !app.json}"
+                ng-click="selectApp($event, app)">
+                    <div class="app-list-item">
+                        <span><i class="fa fa-check"></i> {{ app.name }}</span>
+                        <a ng-href="/#/app/{{ app._id }}" target="_blank">view app</a>
+                        <a ng-if="view.user.id === app.user_id && app.revisions.length > 0" href ng-click="toggleRevisions(app, $event)" target="_blank">{{ app.showRevisions ? 'hide' : 'show' }} revisions</a>
+                    </div>
+
+                <ul class="app-list" ng-if="view.user.id === app.user_id && app.revisions.length > 0 && app.showRevisions">
+                    <li
+                        ng-repeat="revision in app.revisions | orderBy:'order':true"
+                        ng-class="{selected: revision._id === view.selectedRevision._id, disabled: !revision.json}"
+                        ng-click="selectApp($event, app, revision)">
+                            <div class="app-list-item">
+                                <span><i class="fa fa-check"></i> {{ revision.name }}</span>
+                                <a ng-href="/#/revision/{{ revision._id }}" target="_blank">view revision</a>
+                            </div>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <div class="center-block">
+        <button class="btn btn-primary" ng-click="import()">Import <strong>{{ view.selectedRevision ? view.selectedRevision.name : view.selectedApp.name }}</strong></button>
+        <button class="btn btn-default" ng-click="cancel()">Cancel</button>
+    </div>
+
+</div>

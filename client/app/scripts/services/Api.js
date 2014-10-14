@@ -14,10 +14,21 @@ angular.module('registryApp')
         self.jobs = $resource(apiUrl + '/jobs', {}, {
             clean: {method: 'PUT'}
         });
-        
+
+        self.job = $resource(apiUrl + '/job/upload', {}, {
+            upload: {method: 'POST'}
+        });
+
+        self.validate = $resource(apiUrl + '/validate', {}, {
+            post: {method: 'POST'}
+        });
+
         self.myApps = $resource(apiUrl + '/my-apps');
 
-        self.revisions = $resource(apiUrl + '/revisions/:id', {id: '@id'});
+        self.revisions = $resource(apiUrl + '/revisions/:id', {id: '@id'}, {
+            add: {method: 'POST'},
+            update: {method: 'PUT'}
+        });
 
         self.builds = $resource(apiUrl + '/builds/:id', {id: '@id'});
 

@@ -18,6 +18,47 @@
       }
     }
   }
+
+  &.nav-tabs-steps,
+  &.nav-tabs-trace {
+    border-bottom: none;
+    text-align: center;
+    li {
+      margin-bottom: 0;
+      float: none;
+      display: inline-block;
+      vertical-align: middle;
+      a {
+        font-size: 14px;
+        text-transform: uppercase;
+        padding: 5px 10px;
+        margin: 0;
+        border: none;
+      }
+      &.active {
+        a,
+        a:focus,
+        a:hover {
+          background: $orange;
+          color: #fff;
+          text-shadow: 1px 1px 1px #222;
+          border: none;
+        }
+      }
+    }
+  }
+
+  &.nav-tabs-steps {
+    li {
+      width: 15%;
+    }
+  }
+
+  &.nav-tabs-trace {
+    li {
+      width: 30%;
+    }
+  }
 }
 
 .nav-pills {
@@ -41,10 +82,92 @@
   }
 }
 
-form {
+.form-group {
+  &.required {
+    & > .control-label {
+      position: relative;
+      &:after {
+        content: '*';
+        display: inline-block;
+        color: #D9534F;
+        padding: 0 5px;
+      }
+    }
+  }
+  &.with-expression {
+    position: relative;
+    .btn-expression {
+      position: absolute;
+      bottom: 0px;
+      right: 0px;
+      z-index: 100;
+      i {
+        font-weight: bold;
+      }
+    }
+  }
+}
+
+form, .form {
   .form-control {
     color: #555;
     @include border-radius(0);
+  }
+  input {
+    &.form-control {
+      &:read-only {
+        cursor: text;
+        background-color: #fff;
+      }
+    }
+  }
+  textarea {
+    resize: none;
+  }
+  .form-group {
+    position: relative;
+    &.meta-group {
+      margin: 0;
+      .btn {
+        width: 41px;
+      }
+    }
+    &.unit {
+      &:after {
+        content: 'KB';
+        position: absolute;
+        top: 6px;
+        right: 6px;
+        color: #999;
+      }
+      .form-control {
+        padding-right: 30px;
+      }
+    }
+    .checkboxes {
+      .checkbox {
+        display: inline-block;
+        vertical-align: middle;
+        width: 50%;
+        margin: 0 0 5px 0;
+        + .checkbox {
+          margin-top: 0px;
+        }
+      }
+    }
+    &.form-group-email {
+      input[type=email] {
+        padding-left: 60px;
+      }
+      &:before {
+        content: 'mailto:';
+        display: inline-block;
+        color: #aaa;
+        position: absolute;
+        bottom: 7px;
+        left: 7px;
+      }
+    }
   }
 }
 
@@ -54,6 +177,14 @@ form {
 
 .btn {
   @include border-radius(0);
+  &.btn-orange {
+    background-color: $orange;
+    color: #fff;
+    cursor: pointer;
+  }
+  &:active, &:focus {
+    outline: none;
+  }
 }
 
 .input-group {
@@ -110,6 +241,90 @@ form {
 
 pre {
   background-color: #f2f2f2;
-  @include box-shadow(0 0 6px 3px #eee inset);
+}
+
+.center-block {
+  text-align: center;
+}
+
+label {
+  &.empty-label {
+    @media (max-width: 600px) {
+      height: 0;
+      float: left;
+    }
+  }
+}
+
+legend {
+  &.legend-small {
+    font-size: 16px;
+    margin-bottom: 5px;
+
+    .btn {
+      padding: 1px 7px;
+      line-height: 20px;
+      margin: 3px;
+      font-size: 12px;
+    }
+  }
+  &.legend-r {
+    text-align: right;
+  }
+  &.legend-tiny {
+    font-size: 14px;
+    font-weight: bold;
+    border-bottom: none;
+    margin: 0 0 5px 0;
+    background-color: #eee;
+    padding: 2px 5px;
+  }
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.modal {
+  &.modal-prop {
+    .modal-dialog {
+      .main-actions {
+        text-align: right;
+        margin: 10px -15px -15px;
+        border-top: 1px solid #ddd;
+        padding: 10px;
+      }
+    }
+  }
+}
+
+.modal-content {
+  @include border-radius(0);
+}
+
+.codemirror {
+  .CodeMirror {
+    margin-bottom: 10px;
+    border: 1px solid #f0ad4e;
+  }
+
+  .result {
+    margin-bottom: 10px;
+  }
+}
+
+.no-padding {
+  padding: 0;
+}
+.no-margin {
+  margin: 0;
+}
+.inline {
+  display: inline-block !important;
+  width: auto !important;
+  vertical-align: middle;
+  margin-right: 10px;
 }
 

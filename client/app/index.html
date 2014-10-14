@@ -2,16 +2,24 @@
 <html class="no-js">
     <head>
         <meta charset="utf-8">
+
         <title>Rabix</title>
+
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
+
+        <link rel="shortcut icon" href="images/favicon.ico">
 
         <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700' rel='stylesheet' type='text/css'>
 
         <!-- build:css(app) styles/main.css -->
         <link rel="stylesheet" href="bower_components/fontawesome/css/font-awesome.css">
+        <link rel="stylesheet" href="bower_components/codemirror/lib/codemirror.css">
+        <link rel="stylesheet" href="bower_components/codemirror/theme/mbo.css">
         <link rel="stylesheet" href="styles/main.css">
         <!-- endbuild -->
+
+        <link rel="jsandbox" href="vendor/jsandbox/src/jsandbox-worker.js" />
 
     </head>
     <body ng-app="registryApp">
@@ -52,6 +60,7 @@
         <![endif]-->
 
         <!-- build:js({.tmp,app}) scripts/vendor.js -->
+        <script src="vendor/jsandbox/src/jsandbox.js"></script>
         <script src="bower_components/angular/angular.js"></script>
         <script src="bower_components/json3/lib/json3.js"></script>
         <script src="bower_components/angular-resource/angular-resource.js"></script>
@@ -64,6 +73,12 @@
         <script src="bower_components/ng-prettyjson/src/ng-prettyjson.js"></script>
         <script src="bower_components/localforage/dist/localforage.js"></script>
         <script src="bower_components/angular-localForage/dist/angular-localForage.js"></script>
+        <script src="bower_components/zeroclipboard/dist/ZeroClipboard.js"></script>
+        <!-- endbuild -->
+
+        <!-- build:js scripts/codemirror.js -->
+        <script src="bower_components/codemirror/lib/codemirror.js"></script>
+        <script src="bower_components/codemirror/mode/javascript/javascript.js"></script>
         <!-- endbuild -->
 
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
@@ -104,6 +119,38 @@
         <script src="scripts/models/Job.js"></script>
         <script src="scripts/models/Build.js"></script>
         <script src="scripts/models/Repo.js"></script>
+        <!-- endbuild -->
+
+        <!-- build:js({.tmp,app}) scripts/cliche.js -->
+        <script src="scripts/cliche/app.js"></script>
+
+        <script src="scripts/cliche/controllers/ClicheCtrl.js"></script>
+        <script src="scripts/cliche/controllers/AddPropertyCtrl.js"></script>
+        <script src="scripts/cliche/controllers/ModalCtrl.js"></script>
+        <script src="scripts/cliche/controllers/AppListCtrl.js"></script>
+        <script src="scripts/cliche/controllers/ExpressionCtrl.js"></script>
+        <script src="scripts/cliche/controllers/JsonEditorCtrl.js"></script>
+
+        <script src="scripts/cliche/directives/property-input.js"></script>
+        <script src="scripts/cliche/directives/property-output.js"></script>
+        <script src="scripts/cliche/directives/enum.js"></script>
+        <script src="scripts/cliche/directives/input-field.js"></script>
+        <script src="scripts/cliche/directives/argument.js"></script>
+        <script src="scripts/cliche/directives/add-property.js"></script>
+        <script src="scripts/cliche/directives/zclip.js"></script>
+        <script src="scripts/cliche/directives/app-actions.js"></script>
+        <script src="scripts/cliche/directives/job-actions.js"></script>
+        <script src="scripts/cliche/directives/codemirror.js"></script>
+        <script src="scripts/cliche/directives/expr.js"></script>
+        <script src="scripts/cliche/directives/key-changer.js"></script>
+
+        <script src="scripts/cliche/filters/contains.js"></script>
+        <script src="scripts/cliche/filters/size.js"></script>
+
+        <script src="scripts/cliche/models/Data.js"></script>
+
+        <script src="scripts/cliche/services/RecursionHelper.js"></script>
+        <script src="scripts/cliche/services/JSandbox.js"></script>
         <!-- endbuild -->
     </body>
 </html>

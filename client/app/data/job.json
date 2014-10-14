@@ -1,0 +1,12 @@
+{
+    "job": {
+        "inputs": {},
+        "allocatedResources": {
+            "cpu": 4,
+            "mem": 3000,
+            "ports": [],
+            "diskSpace": 20000,
+            "network": false
+        }
+    }
+}
