@@ -11,7 +11,6 @@
 
   /* Page heading */
   .heading {
-    margin: 0 0 20px 0;
     @include flex(0 0 auto);
     .go-back {
       margin: 12.5px 0;
@@ -149,12 +148,6 @@
     }
   }
 
-  .mock-label {
-    font-size: 14px;
-    padding: 6px 0;
-    float: right;
-  }
-
   .snippet {
     border-left: 5px solid $orange;
     margin-bottom: 25px;
@@ -208,9 +201,23 @@
     }
 
     &.token {
-      margin-bottom: 10px;
+      border-bottom: 2px solid #f0ad4e;
       .btn {
         margin-left: 5px;
+      }
+      .alert {
+        &.trace {
+          visibility: hidden;
+          margin: 5px;
+          display: block;
+          padding: 5px 10px;
+          max-width: 300px;
+          min-height: 32px;
+
+          &.show {
+            visibility: visible;
+          }
+        }
       }
     }
   }
@@ -224,6 +231,7 @@
   overflow: hidden;
   display: block;
 }
+
 .no-margin {
   margin: 0px !important;
 }

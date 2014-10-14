@@ -8,30 +8,23 @@
 
     <div class="content">
 
-        <div class="row actions">
-            <div class="col-md-4">
-                <div class="snippet token">
-                    <p>You can (re)generate your token</p>
-                    <button class="btn btn-primary" ng-click="generateToken()" ng-disabled="view.generating">(Re)generate Token</button>
-                </div>
-                <p ng-if="view.trace.generate !== ''" class="alert alert-success">{{ view.trace.generate }}</p>
-            </div>
-            <div class="col-md-4">
-                <div class="snippet token">
-                    <p>You can revoke your token</p>
-                    <button class="btn btn-danger" ng-click="revokeToken()" ng-disabled="view.revoking">Revoke Token</button>
-                </div>
-                <p ng-if="view.trace.revoke !== ''" class="alert alert-success">{{ view.trace.revoke }}</p>
-            </div>
-            <div class="col-md-4">
-                <div class="snippet token">
-                    <p>Check your token</p>
-                    <button class="btn btn-default" ng-click="getToken()" ng-disabled="view.getting">Check Token</button>
-                </div>
-                <p ng-if="view.trace.token !== ''" class="alert alert-success">{{ view.trace.token }}</p>
-            </div>
+        <div class="snippet token">
+            <p>You can (re)generate your token</p>
+            <button class="btn btn-primary" ng-click="generateToken()" ng-disabled="view.generating">(Re)generate Token</button>
+            <p ng-class="{show: view.trace.generate}" class="trace alert alert-success">{{ view.trace.generate }}</p>
         </div>
 
+        <div class="snippet token">
+            <p>You can revoke your token</p>
+            <button class="btn btn-danger" ng-click="revokeToken()" ng-disabled="view.revoking">Revoke Token</button>
+            <p ng-class="{show: view.trace.revoke}" class="trace alert alert-success">{{ view.trace.revoke }}</p>
+        </div>
+
+        <div class="snippet token">
+            <p>Check your token</p>
+            <button class="btn btn-default" ng-click="getToken()" ng-disabled="view.getting">Check Token</button>
+            <p ng-class="{show: view.trace.token}" class="trace alert alert-success">{{ view.trace.token }}</p>
+        </div>
 
     </div>
     <!-- # .content -->

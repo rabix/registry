@@ -8,6 +8,9 @@ angular.module('registryApp')
         self.open = true;
         self.active = 'apps';
 
+        /**
+         * Toggle sidebar visibility
+         */
         self.toggleOpen = function () {
             self.open = !self.open;
         };

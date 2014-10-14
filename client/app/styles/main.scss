@@ -89,14 +89,25 @@ body {
 
   .content {
     overflow: auto;
+    padding-top: 20px;
     @include scrollBar($orange);
     @include flex(1);
+  }
+
+  /* Builds page */
+  &.builds {
+    .content {
+      padding-top: 0;
+    }
   }
 
   /* Build page */
   &.build {
     .heading {
       margin: 0;
+    }
+    .content {
+      padding: 20px 10px 0;
     }
   }
 
@@ -108,12 +119,18 @@ body {
       background-position: center left 6px;
       padding-left: 30px;
     }
+    .content {
+      padding-top: 0;
+    }
   }
 
   /* Repo page */
   &.repo {
     .created-by {
       font-size: 15px;
+    }
+    .content {
+      padding: 20px 10px 0;
     }
   }
 
@@ -126,6 +143,16 @@ body {
     }
     .heading {
       margin: 0;
+    }
+    .content {
+      padding-top: 0;
+    }
+  }
+
+  /* Repo instructions page */
+  &.repo-instructions {
+    .content {
+      padding: 20px 10px 0;
     }
   }
 
@@ -146,12 +173,15 @@ body {
       text-align: center;
       font-size: 16px;
     }
+    .content {
+      padding: 20px 10px 0;
+    }
   }
 
   /* Home page */
   &.home {
-    & > .content {
-      height: auto !important;
+    .content {
+      padding: 20px 10px 0;
     }
     .log-in-btn {
       width: 300px;
@@ -172,13 +202,20 @@ body {
     }
   }
 
+  /* Apps page */
+  &.apps {
+    .content {
+      padding-top: 0;
+    }
+  }
+
   /* App page */
   &.app {
     .heading {
       margin: 0;
     }
     .content {
-      padding: 0 10px;
+      padding: 0px 10px;
     }
     section {
       table {
@@ -188,6 +225,20 @@ body {
           }
         }
       }
+    }
+  }
+
+  /* Revision page */
+  &.revision {
+    .content {
+      padding: 20px 10px 0;
+    }
+  }
+
+  /* Jobs page */
+  &.jobs {
+    .content {
+      padding-top: 0;
     }
   }
 

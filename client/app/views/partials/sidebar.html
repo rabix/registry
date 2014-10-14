@@ -5,6 +5,7 @@
             <a class="logo" ng-href="#/">Rabix</a>
             <a class="toggle-sidebar" href ng-click="toggleSidebar()" tooltip="{{ view.open ? 'Close' : 'Open' }} sidebar" tooltip-placement="right" tooltip-append-to-body="true"><i class="fa fa-bars"></i></a>
         </div>
+        <!-- # .logo-wrap-->
 
         <ul class="nav nav-tabs nav-stacked">
 
@@ -19,16 +20,22 @@
                 <a ng-href="/cliche" class="cliche-logo" target="_blank"><i class="fa fa-terminal"></i> <span><strong>cli</strong>che</span></a>
             </li>
         </ul>
+        <!-- # .nav -->
 
-        <a ng-if="(view.user | isEmpty)" href="/auth/login" class="btn btn-primary btn-block log-in-btn">
-            <i class="fa fa-github"></i>
-            <span>Log In With GitHub</span>
-        </a>
+        <div class="actions">
 
-        <div ng-if="!(view.user | isEmpty)" class="actions">
-            <span class="welcome"><img ng-src="{{view.user.avatar_url}}" width="30" alt=""/> <strong> {{ view.user.login }}</strong></span>
-            <a ng-href="/auth/logout" tooltip="Log out" tooltip-placement="right" tooltip-append-to-body="true" class="fa fa-sign-out log-out-btn"></a>
+            <a ng-if="(view.user | isEmpty)" href="/auth/login" class="btn btn-primary btn-block log-in-btn">
+                <i class="fa fa-github"></i>
+                <span>Log In With GitHub</span>
+            </a>
+
+            <div ng-if="!(view.user | isEmpty)" class="user-details">
+                <span class="welcome"><img ng-src="{{view.user.avatar_url}}" width="30" alt=""/> <strong> {{ view.user.login }}</strong></span>
+                <a ng-href="/auth/logout" tooltip="Log out" tooltip-placement="right" tooltip-append-to-body="true" class="fa fa-sign-out log-out-btn"></a>
+            </div>
+
         </div>
+        <!-- # .actions -->
 
     </div>
 </div>
