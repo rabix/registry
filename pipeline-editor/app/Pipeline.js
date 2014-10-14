@@ -44,6 +44,28 @@ var Pipeline = (function () {
                 console.log('scrolbars:draw');
                 _self._drawScrollbars();
             });
+
+            this.Event.subscribe('connection:create', function (endTerminal, startTerminal) {
+                var end = endTerminal.model.input ? endTerminal : startTerminal,
+                    start = endTerminal.model.input ? startTerminal : endTerminal;
+
+                _self.tempConnectionRefs = {
+                    end: end,
+                    start: start
+                };
+
+                // connection id has to be set here because of dynamic connection creation
+                var model = {
+                    id: _.random(100000, 999999) + '', // it has to be a string
+                    start_node: start.parent.model.id,
+                    end_node: end.parent.model.id,
+                    input_name: end.id,
+                    output_name: start.id
+                };
+
+                _self.createConnection(model);
+
+            });
         },
 
         _initCanvas: function () {
@@ -195,23 +217,54 @@ var Pipeline = (function () {
 
             _.each(this.model.relations, function (connection, index) {
 
-                var input = _self.nodes[connection.start_node].getTerminalById(connection.output_name, 'output'),
-                    output = _self.nodes[connection.end_node].getTerminalById(connection.input_name, 'input');
-
-                _self.connections[connection.id] = new _self.Connection({
-                    model: connection,
-                    canvas: _self.canvas,
-                    parent: _self.pipelineWrap,
-                    nodes: _self.nodes,
-                    pipeline: _self,
-                    input: input,
-                    output: output
-                });
-
-                _self.nodes[connection.start_node].addConnection(_self.connections[connection.id]);
-                _self.nodes[connection.end_node].addConnection(_self.connections[connection.id]);
+                _self._createConnection(connection);
 
             });
+        },
+        
+        _createConnection: function (connection) {
+            var _self = this,
+                input = _self.nodes[connection.start_node].getTerminalById(connection.output_name, 'output'),
+                output = _self.nodes[connection.end_node].getTerminalById(connection.input_name, 'input');
+
+            _self.connections[connection.id] = new _self.Connection({
+                model: connection,
+                canvas: _self.canvas,
+                parent: _self.pipelineWrap,
+                nodes: _self.nodes,
+                pipeline: _self,
+                input: input,
+                output: output
+            });
+
+            _self.nodes[connection.start_node].addConnection(_self.connections[connection.id]);
+            _self.nodes[connection.end_node].addConnection(_self.connections[connection.id]);
+        },
+        
+        createConnection: function (connection) {
+            var _self = this,
+                input, output;
+
+            if (!this.tempConnectionRefs) {
+                return;
+            }
+
+            input = this.tempConnectionRefs.end;
+            output = this.tempConnectionRefs.start;
+
+            _self.connections[connection.id] = new _self.Connection({
+                model: connection,
+                canvas: _self.canvas,
+                parent: _self.pipelineWrap,
+                nodes: _self.nodes,
+                pipeline: _self,
+                input: input,
+                output: output
+            });
+            console.log(connection, _self.nodes);
+            _self.nodes[connection.start_node].addConnection(_self.connections[connection.id]);
+            _self.nodes[connection.end_node].addConnection(_self.connections[connection.id]);
+
         },
 
         _drawScrollbars: function () {

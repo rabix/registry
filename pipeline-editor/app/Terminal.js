@@ -105,7 +105,9 @@
 
 
             this.pipeline.Event.subscribe('terminal:mouseover', function (terminal) {
+
                 if (self.mousedown && self.tempConnection) {
+                    console.log('4 times' , terminal);
                     self.mouseoverTerminal = terminal;
                 }
             });
@@ -115,16 +117,16 @@
             });
 
             this.pipeline.Event.subscribe('terminal:selectAvailable', function (terminal, nodeId) {
-
-//                self.checkAvailibility(terminal, nodeId);
+                console.log(terminal,nodeId);
+                self.checkAvailibility(terminal, nodeId);
 
             });
 
-//            this.listenTo(globals.vents, 'terminal:deselectAvailable', function () {
-//
-//                self.setDefaultState();
-//
-//            });
+            this.pipeline.Event.subscribe('terminal:deselectAvailable', function () {
+
+                self.setDefaultState();
+
+            });
 
         },
 
@@ -133,16 +135,16 @@
                 available;
 
             if (self.mouseoverTerminal) {
-
-                available = this.checkAvailibility(this.mouseoverTerminal.model, this.mouseoverTerminal.parent.id);
+                console.log(this.mouseoverTerminal);
+                available = this.checkAvailibility(this.mouseoverTerminal.model, this.mouseoverTerminal.parent.model.id);
 
                 if (available.status) {
-                    globals.vents.trigger('connection:create', self.mouseoverTerminal, self);
+                    this.pipeline.Event.trigger('connection:create', self.mouseoverTerminal, self);
 
                     self.mouseoverTerminal = null;
                 } else {
 //                    Notify.show('Cannot connect terminal: ' + available.error);
-                    console.error('Node cannot connect')
+                    console.error('Node cannot connect');
                 }
 
             }
@@ -150,15 +152,16 @@
         },
 
         checkAvailibility: function (terminal, nodeId) {
-
-            var crossIn, crossOut, bothSystem, startNode = this.parent.model, endNode = this.pipeline.nodes[nodeId].model;
+            var crossIn, crossOut, bothSystem,
+                startNode = this.parent.model,
+                endNode = this.pipeline.nodes[nodeId].model;
 
             crossIn = _.intersection(terminal.types, this.model.types);
             crossOut = _.intersection(this.model.types, terminal.types);
 
             if ( ( (crossIn.length !== 0 || crossOut.length !== 0 ) || (terminal.types.length === 0 || this.model.types.length === 0) ) && nodeId !== this.parent.model.id && terminal.input !== this.model.input) {
 
-                if (!this.terminals[terminal.id] ||  ( this.terminals[terminal.id] && this.terminals[terminal.id] !== this.parent.model.get('id') ) ) {
+                if (!this.terminals[terminal.id] ||  ( this.terminals[terminal.id] && this.terminals[terminal.id] !== this.parent.model.id ) ) {
                     this.showAvailableState();
                     return {
                         status: true,
