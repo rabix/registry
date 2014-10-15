@@ -4,9 +4,9 @@
 'use strict';
 
 angular.module('registryApp')
-    .controller('PipelineEditorCtrl', ['$scope', '$timeout', '$location', '$filter', 'Header', 'Loading', '$http', function ($scope, $timeout, $location, $filter, Header, Loading, $http) {
+    .controller('PipelineEditorCtrl', ['$scope', '$timeout', '$location', '$filter', 'Sidebar', 'Loading', '$http', function ($scope, $timeout, $location, $filter, Sidebar, Loading, $http) {
 
-        Header.setActive('pipeline-editor');
+        Sidebar.setActive('pipeline-editor');
 
         $.ajax({
             url: '/pipeline-editor/data/pipeline.json',

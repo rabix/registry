@@ -1,109 +1,162 @@
 <!doctype html>
 <html class="no-js">
-    <head>
-        <meta charset="utf-8">
-        <title>Rabix</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width">
+<head>
+    <meta charset="utf-8">
 
-        <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700' rel='stylesheet' type='text/css'>
+    <title>Rabix</title>
 
-        <!-- build:css(app) styles/main.css -->
-        <link rel="stylesheet" href="styles/main.css">
-        <!-- endbuild -->
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
 
-    </head>
-    <body ng-app="registryApp">
-        <!--[if lt IE 7]>
-        <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
-            your browser</a> to improve your experience.</p>
-        <![endif]-->
+    <link rel="shortcut icon" href="images/favicon.ico">
 
-        <!-- Add your site or application content here -->
-        <div class="container-fluid" ng-controller="MasterCtrl">
-            <sidebar></sidebar>
-            <div class="main" ng-view=""></div>
-        </div>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700' rel='stylesheet'
+          type='text/css'>
 
-        <error></error>
+    <!-- build:css(app) styles/main.css -->
+    <link rel="stylesheet" href="bower_components/fontawesome/css/font-awesome.css">
+    <link rel="stylesheet" href="bower_components/codemirror/lib/codemirror.css">
+    <link rel="stylesheet" href="bower_components/codemirror/theme/mbo.css">
+    <link rel="stylesheet" href="styles/main.css">
+    <!-- endbuild -->
 
+    <link rel="jsandbox" href="vendor/jsandbox/src/jsandbox-worker.js"/>
 
-        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
-        <script>
-            (function (i, s, o, g, r, a, m) {
-                i['GoogleAnalyticsObject'] = r;
-                i[r] = i[r] || function () {
-                    (i[r].q = i[r].q || []).push(arguments)
-                }, i[r].l = 1 * new Date();
-                a = s.createElement(o),
-                        m = s.getElementsByTagName(o)[0];
-                a.async = 1;
-                a.src = g;
-                m.parentNode.insertBefore(a, m)
-            })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+</head>
+<body ng-app="registryApp">
+    <!--[if lt IE 7]>
+    <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
+        your browser</a> to improve your experience.</p>
+    <![endif]-->
 
-            ga('create', 'UA-XXXXX-X');
-            ga('send', 'pageview');
-        </script>
+    <!-- Add your site or application content here -->
+    <div class="container-fluid" ng-controller="MasterCtrl">
+        <sidebar></sidebar>
+        <div class="main" ng-view=""></div>
+    </div>
 
-        <!--[if lt IE 9]>
-        <script src="bower_components/es5-shim/es5-shim.js"></script>
-        <script src="bower_components/json3/lib/json3.min.js"></script>
-        <![endif]-->
+    <error></error>
 
-        <!-- build:js({.tmp,app}) scripts/vendor.js -->
-        <script src="bower_components/angular/angular.js"></script>
-        <script src="bower_components/json3/lib/json3.js"></script>
-        <script src="bower_components/angular-resource/angular-resource.js"></script>
-        <script src="bower_components/angular-cookies/angular-cookies.js"></script>
-        <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
-        <script src="bower_components/angular-animate/angular-animate.js"></script>
-        <script src="bower_components/angular-route/angular-route.js"></script>
-        <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
-        <script src="bower_components/lodash/dist/lodash.js"></script>
-        <script src="bower_components/ng-prettyjson/src/ng-prettyjson.js"></script>
-        <script src="bower_components/localforage/dist/localforage.js"></script>
-        <script src="bower_components/angular-localForage/dist/angular-localForage.js"></script>
-        <!-- endbuild -->
+    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            i[r] = i[r] || function () {
+                (i[r].q = i[r].q || []).push(arguments)
+            }, i[r].l = 1 * new Date();
+            a = s.createElement(o),
+                    m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
 
-        <!-- build:js({.tmp,app}) scripts/scripts.js -->
-        <script src="scripts/app.js"></script>
-        <script src="scripts/template.js"></script>
+        ga('create', 'UA-XXXXX-X');
+        ga('send', 'pageview');
+    </script>
 
-        <script src="scripts/controllers/MasterCtrl.js"></script>
-        <script src="scripts/controllers/HomeCtrl.js"></script>
-        <script src="scripts/controllers/AppsCtrl.js"></script>
-        <script src="scripts/controllers/AppCtrl.js"></script>
-        <script src="scripts/controllers/JobsCtrl.js"></script>
-        <script src="scripts/controllers/ModalCtrl.js"></script>
-        <script src="scripts/controllers/OptionsCtrl.js"></script>
-        <script src="scripts/controllers/BuildsCtrl.js"></script>
-        <script src="scripts/controllers/BuildCtrl.js"></script>
-        <script src="scripts/controllers/ReposCtrl.js"></script>
-        <script src="scripts/controllers/RepoCtrl.js"></script>
-        <script src="scripts/controllers/SettingsCtrl.js"></script>
-        <script src="scripts/controllers/AddYourGitHubRepoCtrl.js"></script>
-        <script src="scripts/controllers/RepoInstructionsCtrl.js"></script>
-        <script src="scripts/controllers/RevisionCtrl.js"></script>
+    <!--[if lt IE 9]>
+    <script src="bower_components/es5-shim/es5-shim.js"></script>
+    <script src="bower_components/json3/lib/json3.min.js"></script>
+    <![endif]-->
 
-        <script src="scripts/directives/header.js"></script>
-        <script src="scripts/directives/error.js"></script>
-        <script src="scripts/directives/height.js"></script>
-        <script src="scripts/directives/loading.js"></script>
+    <!-- build:js({.tmp,app}) scripts/vendor.js -->
+    <script src="vendor/jsandbox/src/jsandbox.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/json3/lib/json3.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.js"></script>
+    <script src="bower_components/angular-cookies/angular-cookies.js"></script>
+    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.js"></script>
+    <script src="bower_components/angular-route/angular-route.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="bower_components/lodash/dist/lodash.js"></script>
+    <script src="bower_components/ng-prettyjson/src/ng-prettyjson.js"></script>
+    <script src="bower_components/localforage/dist/localforage.js"></script>
+    <script src="bower_components/angular-localForage/dist/angular-localForage.js"></script>
+    <script src="bower_components/zeroclipboard/dist/ZeroClipboard.js"></script>
+    <script src="bower_components/jquery/dist/jquery.js"></script>
+    <!-- endbuild -->
 
-        <script src="scripts/filters/is-empty.js"></script>
-        <script src="scripts/filters/encode.js"></script>
-        <script src="scripts/filters/trim.js"></script>
-        <script src="scripts/filters/repo.js"></script>
+    <!-- build:js scripts/codemirror.js -->
+    <script src="bower_components/codemirror/lib/codemirror.js"></script>
+    <script src="bower_components/codemirror/mode/javascript/javascript.js"></script>
+    <!-- endbuild -->
 
-        <script src="scripts/services/Api.js"></script>
-        <script src="scripts/services/HTTPInterceptor.js"></script>
+    <!-- build:js({.tmp,app}) scripts/scripts.js -->
+    <script src="scripts/app.js"></script>
+    <script src="scripts/template.js"></script>
 
-        <script src="scripts/models/User.js"></script>
-        <script src="scripts/models/App.js"></script>
-        <script src="scripts/models/Job.js"></script>
-        <script src="scripts/models/Build.js"></script>
-        <script src="scripts/models/Repo.js"></script>
-        <!-- endbuild -->
-    </body>
+    <script src="scripts/controllers/MasterCtrl.js"></script>
+    <script src="scripts/controllers/HomeCtrl.js"></script>
+    <script src="scripts/controllers/AppsCtrl.js"></script>
+    <script src="scripts/controllers/AppCtrl.js"></script>
+    <script src="scripts/controllers/JobsCtrl.js"></script>
+    <script src="scripts/controllers/ModalCtrl.js"></script>
+    <script src="scripts/controllers/OptionsCtrl.js"></script>
+    <script src="scripts/controllers/BuildsCtrl.js"></script>
+    <script src="scripts/controllers/BuildCtrl.js"></script>
+    <script src="scripts/controllers/ReposCtrl.js"></script>
+    <script src="scripts/controllers/RepoCtrl.js"></script>
+    <script src="scripts/controllers/SettingsCtrl.js"></script>
+    <script src="scripts/controllers/AddYourGitHubRepoCtrl.js"></script>
+    <script src="scripts/controllers/RepoInstructionsCtrl.js"></script>
+    <script src="scripts/controllers/RevisionCtrl.js"></script>
+    <script src="scripts/controllers/PipelineEditorCtrl.js"></script>
+
+    <script src="scripts/directives/error.js"></script>
+    <script src="scripts/directives/height.js"></script>
+    <script src="scripts/directives/loading.js"></script>
+    <script src="scripts/directives/sidebar.js"></script>
+
+    <script src="scripts/filters/is-empty.js"></script>
+    <script src="scripts/filters/encode.js"></script>
+    <script src="scripts/filters/trim.js"></script>
+    <script src="scripts/filters/repo.js"></script>
+
+    <script src="scripts/services/Api.js"></script>
+    <script src="scripts/services/HTTPInterceptor.js"></script>
+
+    <script src="scripts/models/User.js"></script>
+    <script src="scripts/models/App.js"></script>
+    <script src="scripts/models/Job.js"></script>
+    <script src="scripts/models/Build.js"></script>
+    <script src="scripts/models/Repo.js"></script>
+    <!-- endbuild -->
+
+    <!-- build:js({.tmp,app}) scripts/cliche.js -->
+    <script src="scripts/cliche/app.js"></script>
+
+    <script src="scripts/cliche/controllers/ClicheCtrl.js"></script>
+    <script src="scripts/cliche/controllers/AddPropertyCtrl.js"></script>
+    <script src="scripts/cliche/controllers/ModalCtrl.js"></script>
+    <script src="scripts/cliche/controllers/AppListCtrl.js"></script>
+    <script src="scripts/cliche/controllers/ExpressionCtrl.js"></script>
+    <script src="scripts/cliche/controllers/JsonEditorCtrl.js"></script>
+
+    <script src="scripts/cliche/directives/property-input.js"></script>
+    <script src="scripts/cliche/directives/property-output.js"></script>
+    <script src="scripts/cliche/directives/enum.js"></script>
+    <script src="scripts/cliche/directives/input-field.js"></script>
+    <script src="scripts/cliche/directives/argument.js"></script>
+    <script src="scripts/cliche/directives/add-property.js"></script>
+    <script src="scripts/cliche/directives/zclip.js"></script>
+    <script src="scripts/cliche/directives/app-actions.js"></script>
+    <script src="scripts/cliche/directives/job-actions.js"></script>
+    <script src="scripts/cliche/directives/codemirror.js"></script>
+    <script src="scripts/cliche/directives/expr.js"></script>
+    <script src="scripts/cliche/directives/key-changer.js"></script>
+
+    <script src="scripts/cliche/filters/contains.js"></script>
+    <script src="scripts/cliche/filters/size.js"></script>
+
+    <script src="scripts/cliche/models/Data.js"></script>
+
+    <script src="scripts/cliche/services/RecursionHelper.js"></script>
+    <script src="scripts/cliche/services/JSandbox.js"></script>
+    <!-- endbuild -->
+
+    <!-- Pipeline editor (_dyole) -->
+    <script src="/pipeline-editor/pipeline-editor.js"></script>
+</body>
 </html>
