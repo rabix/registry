@@ -91,7 +91,7 @@
             borders = canvas.group();
             borders.push(outerBorder).push(innerBorder);
 
-            label = canvas.text(0, radius + labelOffset, model.label);
+            label = canvas.text(0, radius + labelOffset, model.label + ' ' + model.id);
 
             label.attr({
                 'font-size': 14

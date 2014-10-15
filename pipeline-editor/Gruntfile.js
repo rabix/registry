@@ -128,24 +128,15 @@ module.exports = function (grunt) {
         return grunt.task.run(['clean:pipeline', 'copy:pipeline','concat:pipeline', 'copy:data']);
     });
 
-//  grunt.registerTask('build', [
-//    'clean:dist',
-//    'wiredep',
-//    'useminPrepare',
-//    'concurrent:dist',
-//    'autoprefixer',
-//    'concat',
-//    'ngAnnotate',
-//    'copy:dist',
-//    'cdnify',
-//    'cssmin',
-//    'uglify',
-//    'filerev',
-//    'usemin',
-//    'htmlmin'
-//  ]);
+  grunt.registerTask('build', [
+      'pipeline'
+  ]);
 
   grunt.registerTask('default', [
+      'build'
+  ]);
+
+  grunt.registerTask('serve', [
       'pipeline',
       'watch'
   ]);
