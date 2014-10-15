@@ -14,3 +14,9 @@ var Amazon = require('../../aws/aws').Amazon;
 module.exports = function (app) {
     app.use('/api', router);
 };
+
+
+router.get('/pipeline/format', function (req, res, next) {
+
+});
+
