@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('registryApp')
-    .controller('BuildsCtrl', ['$scope', '$routeParams', '$window', 'Build', 'Header', 'Loading', function ($scope, $routeParams, $window, Build, Header, Loading) {
+    .controller('BuildsCtrl', ['$scope', '$routeParams', '$window', 'Build', 'Sidebar', 'Loading', function ($scope, $routeParams, $window, Build, Sidebar, Loading) {
 
-        Header.setActive('builds');
+        Sidebar.setActive('builds');
 
         /**
          * Callback when builds are loaded

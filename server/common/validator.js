@@ -10,9 +10,9 @@ var mapDefinition = {
         softwareDescription: {type: 'object', required: true},
         documentAuthor: {type: 'string', required: true},
         requirements: {type: 'object', required: true},
-        inputs: {type: 'object'},
-        outputs: {type: 'object'},
-        adapter: {type: 'object'}
+        inputs: {type: 'object', required: true},
+        outputs: {type: 'object', required: true},
+        adapter: {type: 'object', required: true}
     },
     softwareDescription: {
         repo_owner: {type: 'string', required: true},
@@ -34,10 +34,10 @@ var mapDefinition = {
         imageId: {type: 'string', required: true}
     },
     resources: {
-        cpu: {type: 'number', required: true},
-        mem: {type: 'number', required: true},
+        cpu: {type: ['number', 'object'], required: true},
+        mem: {type: ['number', 'object'], required: true},
         ports: {type: 'array'},
-        diskSpace: {type: 'number', required: true},
+        diskSpace: {type: ['number', 'object'], required: true},
         network: {type: 'boolean', required: true}
     },
     inputs: {
@@ -50,7 +50,7 @@ var mapDefinition = {
     },
     adapter: {
         baseCmd: {type: 'array', required: true},
-        stdout: {type: 'string', required: true},
+        stdout: {type: ['string', 'object'], required: true},
         args: {type: 'object_custom', name: 'adapter', required: true}
     },
     properties: {
@@ -62,7 +62,7 @@ var mapDefinition = {
             },
             adapter: {
                 order: {type: 'number'},
-                transform: {type: 'string'},
+                transform: {type: 'object'},
                 separator: {type: 'string'},
                 prefix: {type: 'string'}
             },
@@ -96,7 +96,7 @@ var mapDefinition = {
                     },
                     adapter: {
                         listSeparator: {type: 'string'},
-                        listTransform: {type: 'string'},
+                        listTransform: {type: 'object'},
                         listStreamable: {type: 'boolean'}
                     },
                     items: {
@@ -113,7 +113,9 @@ var mapDefinition = {
                 adapter: {type: 'object', required: true}
             },
             adapter: {
-                glob: {type: 'string'}
+                glob: {type: 'string'},
+                indexFiles: {type: 'array'},
+                meta: {type: 'object'}
             },
             types: {
                 file: {
@@ -144,8 +146,7 @@ var mapDefinition = {
         adapter: {
             args: {
                 order: {type: 'number'},
-                value: {type: ['string', 'number'], required: true},
-                valueFrom: {type: ['string', 'number']},
+                value: {type: ['string', 'number', 'object'], required: true},
                 separator: {type: 'string'},
                 prefix: {type: 'string'}
             }
@@ -153,26 +154,28 @@ var mapDefinition = {
     }
 };
 
-var validator = {
+var validator = function() {
 
     /**
      * Nodes with invalid value type
      */
-    invalid: [],
+    var invalid = [];
+
     /**
      * Nodes that are not defined by the scheme map
      */
-    obsolete: {},
+    var obsolete = {};
+
     /**
      * Nodes that are missing and are required by the scheme map
      */
-    required: [],
+    var required = [];
 
-    clear: function () {
-        this.invalid = [];
-        this.obsolete = {};
-        this.required = [];
-    },
+    var clear = function () {
+        invalid = [];
+        obsolete = {};
+        required = [];
+    };
 
     /**
      * Check if value type of the node is correct
@@ -181,9 +184,9 @@ var validator = {
      * @param {*} types
      * @returns {boolean}
      */
-    isValidType: function (value, types) {
+    var isValidType = function (value, types) {
 
-        var isValidType = function (value, type) {
+        var isValidTypeLocal = function (value, type) {
             if (type === 'array') {
                 return _.isArray(value);
             }
@@ -193,16 +196,16 @@ var validator = {
         if (_.isArray(types)) {
 
             var valid = _.find(types, function (type) {
-                return isValidType(value, type);
+                return isValidTypeLocal(value, type);
             });
 
             return !_.isUndefined(valid);
 
         }
 
-        return isValidType(value, types);
+        return isValidTypeLocal(value, types);
 
-    },
+    };
 
     /**
      * Set obsolete keys defined by the scheme map
@@ -211,7 +214,7 @@ var validator = {
      * @param map
      * @returns {*}
      */
-    setObsolete: function (prefix, values, map) {
+    var setObsolete = function (prefix, values, map) {
 
         var keys = [];
 
@@ -226,10 +229,10 @@ var validator = {
         var diff = _.difference(_.keys(values), keys);
 
         if (diff.length > 0) {
-            this.obsolete[prefix] = diff;
+            obsolete[prefix] = diff;
         }
 
-    },
+    };
 
     /**
      * Set required and invalid nodes defined by the scheme map
@@ -240,35 +243,90 @@ var validator = {
      * @param {string} propName
      * @param {string} recursionFn
      */
-    setRequiredAndInvalid: function (prefix, map, prop, /* optional */ propName, /* optional */ recursionFn) {
-
-        var self = this;
+    var setRequiredAndInvalid = function (prefix, map, prop, /* optional */ propName, /* optional */ isRecursive) {
 
         _.each(map, function (attr, key) {
 
             if (_.isUndefined(prop[key])) {
                 if (attr.required) {
-                    self.required.push(prefix + ':' + key);
+                    required.push(prefix + ':' + key);
                 }
             } else {
-                if (!self.isValidType(prop[key], attr.type)) {
-                    self.invalid.push(prefix + ':' + key);
+                if (!isValidType(prop[key], attr.type)) {
+                    invalid.push(prefix + ':' + key);
                 }
 
-                if (attr.type === 'object' && recursionFn) {
+                if (attr.type === 'object' && isRecursive) {
 
-                    self[recursionFn](prop[key].properties, propName);
+                    validateInputs(prop[key].properties, propName);
 
-                } else if (!self.isValidType(prop[key], attr.type)) {
+                } else if (!isValidType(prop[key], attr.type)) {
 
-                    self.invalid.push(prefix + ':' + key);
+                    invalid.push(prefix + ':' + key);
 
                 }
             }
 
         });
 
-    },
+    };
+
+    /**
+     * Validate adapter
+     *
+     * @param {Object} adapter
+     */
+    var validateAdapter = function (adapter) {
+
+        var map = mapDefinition.properties.adapter;
+        var prefix;
+
+        _.each(map.root, function (attr, key) {
+            if (!isValidType(adapter[key], attr.type)) {
+                invalid.push('adapter:' + key);
+            }
+        });
+
+        _.each(adapter.args, function (arg, index) {
+
+            prefix = 'adapter:arg[' + index + ']';
+
+            setObsolete(prefix, arg, map.args);
+
+            setRequiredAndInvalid(prefix, map.args, arg);
+        });
+
+    };
+
+    /**
+     * Validate output nodes
+     *
+     * @param {Object} props
+     */
+    var validateOutputs = function (props) {
+
+        var map = mapDefinition.properties.outputs;
+        var prefixRoot;
+        var prefixAdapter;
+
+        _.each(props, function (prop, propName) {
+
+            prefixRoot = 'outputs:' + propName;
+            prefixAdapter = 'outputs:' + propName + ':adapter';
+
+            setRequiredAndInvalid(prefixRoot, map.root, prop);
+            setRequiredAndInvalid(prefixAdapter, map.adapter, prop.adapter);
+
+            if (!_.isUndefined(prop.type)) {
+
+                setObsolete(prefixRoot, prop, [map.root, map.types[prop.type].root]);
+                setObsolete(prefixAdapter, prop.adapter, [map.adapter, map.types[prop.type].adapter]);
+
+                setRequiredAndInvalid(prefixRoot, map.types[prop.type].root, prop);
+                setRequiredAndInvalid(prefixAdapter, map.types[prop.type].adapter, prop.adapter);
+            }
+        });
+    };
 
     /**
      * Validate input nodes
@@ -276,9 +334,8 @@ var validator = {
      * @param {Object} props
      * @param {string} parent
      */
-    validateInputs: function (props, /* optional */ parent) {
+    var validateInputs = function (props, /* optional */ parent) {
 
-        var self = this;
         var map = mapDefinition.properties.inputs;
         var prefixRoot;
         var prefixAdapter;
@@ -290,136 +347,90 @@ var validator = {
             prefixRoot = 'inputs:' + parent + propName;
             prefixAdapter = 'inputs:' + parent + propName + ':adapter';
 
-            self.setRequiredAndInvalid(prefixRoot, map.root, prop);
-            self.setRequiredAndInvalid(prefixAdapter, map.adapter, prop.adapter);
+            setRequiredAndInvalid(prefixRoot, map.root, prop);
+            setRequiredAndInvalid(prefixAdapter, map.adapter, prop.adapter);
 
             if (!_.isUndefined(prop.type)) {
 
-                self.setObsolete(prefixRoot, prop, [map.root, map.types[prop.type].root]);
-                self.setObsolete(prefixAdapter, prop.adapter, [map.adapter, map.types[prop.type].adapter]);
+                setObsolete(prefixRoot, prop, [map.root, map.types[prop.type].root]);
+                setObsolete(prefixAdapter, prop.adapter, [map.adapter, map.types[prop.type].adapter]);
 
-                self.setRequiredAndInvalid(prefixRoot, map.types[prop.type].root, prop, propName, 'validateInputs');
-                self.setRequiredAndInvalid(prefixAdapter, map.types[prop.type].adapter, prop.adapter);
+                setRequiredAndInvalid(prefixRoot, map.types[prop.type].root, prop, propName, true);
+                setRequiredAndInvalid(prefixAdapter, map.types[prop.type].adapter, prop.adapter);
             }
         });
-    },
+    };
 
-    /**
-     * Validate output nodes
-     *
-     * @param {Object} props
-     */
-    validateOutputs: function (props) {
+    return {
 
-        var self = this;
-        var map = mapDefinition.properties.outputs;
-        var prefixRoot;
-        var prefixAdapter;
+        /**
+         * Validate app's json
+         *
+         * @param {Object} json
+         * @param {Object} map
+         * @param {string} parent
+         * @returns {{invalid: *, obsolete: *, required: *}}
+         */
+        validate: function (json, map, /* optional */ parent) {
 
-        _.each(props, function (prop, propName) {
+            var self = this;
 
-            prefixRoot = 'outputs:' + propName;
-            prefixAdapter = 'outputs:' + propName + ':adapter';
-
-            self.setRequiredAndInvalid(prefixRoot, map.root, prop);
-            self.setRequiredAndInvalid(prefixAdapter, map.adapter, prop.adapter);
-
-            if (!_.isUndefined(prop.type)) {
-
-                self.setObsolete(prefixRoot, prop, [map.root, map.types[prop.type].root]);
-                self.setObsolete(prefixAdapter, prop.adapter, [map.adapter, map.types[prop.type].adapter]);
-
-                self.setRequiredAndInvalid(prefixRoot, map.types[prop.type].root, prop);
-                self.setRequiredAndInvalid(prefixAdapter, map.types[prop.type].adapter, prop.adapter);
+            if (_.isUndefined(map)) {
+                map = mapDefinition.root;
+                clear();
             }
-        });
-    },
 
-    /**
-     * Validate adapter
-     *
-     * @param {Object} adapter
-     */
-    validateAdapter: function (adapter) {
+            parent = _.isUndefined(parent) ? '' : parent + ':';
 
-        var self = this;
-        var map = mapDefinition.properties.adapter;
-        var prefix;
+            setObsolete(parent + 'root', json, map);
 
-        _.each(map.root, function (attr, key) {
-            if (!self.isValidType(adapter[key], attr.type)) {
-                self.invalid.push('adapter:' + key);
-            }
-        });
+            _.each(map, function (attr, key) {
 
-        _.each(adapter.args, function (arg, index) {
-
-            prefix = 'adapter:arg[' + index + ']';
-
-            self.setObsolete(prefix, arg, map.args);
-
-            self.setRequiredAndInvalid(prefix, map.args, arg);
-        });
-
-    },
-
-    /**
-     * Validate app's json
-     *
-     * @param {Object} json
-     * @param {Object} map
-     * @param {string} parent
-     * @returns {{invalid: *, obsolete: *, required: *}}
-     */
-    validateApp: function (json, map, /* optional */ parent) {
-
-        var self = this;
-        if (_.isUndefined(map)) {
-            map = mapDefinition.root;
-            this.clear();
-        }
-
-        parent = _.isUndefined(parent) ? '' : parent + ':';
-
-        self.setObsolete(parent + 'root', json, map);
-
-        _.each(map, function (attr, key) {
-
-            if (attr.type === 'object_custom') {
-                if (attr.name === 'inputs') {
-                    self.validateInputs(json.properties);
-                }
-                if (attr.name === 'outputs') {
-                    self.validateOutputs(json.properties);
-                }
-                if (attr.name === 'adapter') {
-                    self.validateAdapter(json);
-                }
-            } else {
-
-                if (_.isUndefined(json[key])) {
-                    if (attr.required) { self.required.push(parent + key); }
-                } else {
-                    if (!self.isValidType(json[key], attr.type)) {
-                        self.invalid.push(parent + key);
+                if (attr.type === 'object_custom') {
+                    if (attr.name === 'inputs') {
+                        validateInputs(json.properties);
                     }
-                    if (attr.type === 'object') {
-                        if (!_.isUndefined(mapDefinition[key])) {
-                            self.validateApp(json[key], mapDefinition[key], key);
+                    if (attr.name === 'outputs') {
+                        validateOutputs(json.properties);
+                    }
+                    if (attr.name === 'adapter') {
+                        validateAdapter(json);
+                    }
+                } else {
+
+                    if (_.isUndefined(json[key])) {
+                        if (attr.required) {
+                            required.push(parent + key);
+                        }
+                    } else {
+                        if (!isValidType(json[key], attr.type)) {
+                            invalid.push(parent + key);
+                        }
+                        if (attr.type === 'object') {
+                            if (!_.isUndefined(mapDefinition[key])) {
+                                self.validate(json[key], mapDefinition[key], key);
+                            }
                         }
                     }
+
                 }
+            });
 
+            var output = {};
+
+            if (!_.isEmpty(invalid)) {
+                output.invalid = _.cloneDeep(invalid);
             }
-        });
+            if (!_.isEmpty(obsolete)) {
+                output.obsolete = _.cloneDeep(obsolete);
+            }
+            if (!_.isEmpty(required)) {
+                output.required = _.cloneDeep(required);
+            }
 
-        var output = {};
-        if (!_.isEmpty(self.invalid)) { output.invalid = self.invalid; }
-        if (!_.isEmpty(self.obsolete)) { output.obsolete = self.obsolete; }
-        if (!_.isEmpty(self.required)) { output.required = self.required; }
-
-        return output;
-    }
-};
+            return output;
+        }
+    };
+}();
 
 module.exports = validator;

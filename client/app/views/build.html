@@ -1,20 +1,18 @@
 <div ng-class="view.classes" loading="view.loading">
 
     <div class="heading">
-        <div class="container">
-            <a ng-href="#/builds" class="btn btn-default pull-left go-back"><i class="glyphicon glyphicon-chevron-left"></i> Back</a>
-            <h1>
-                <span tooltip="Build #{{ view.build._id }}" tooltip-popup-delay="1000">Build #{{ view.build._id }}</span>
-                <span class="label pull-right" ng-class="{'label-success': view.build.status === 'success', 'label-info': view.build.status === 'running', 'label-danger': view.build.status === 'failure', 'label-warning': view.build.status === 'pending'}">
-                    <i class="glyphicon {{ view.build.status }}" ng-class="{'glyphicon-ok-circle': view.build.status === 'success', 'glyphicon-repeat': view.build.status === 'running', 'glyphicon-remove-circle': view.build.status === 'failure', 'glyphicon-time': view.build.status === 'pending'}"></i>
-                    <span>{{ view.build.status }}</span>
-                </span>
-            </h1>
-        </div>
+        <a ng-href="#/builds" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
+        <h1>
+            <span tooltip="Build #{{ view.build._id }}" tooltip-popup-delay="1000">Build #{{ view.build._id }}</span>
+            <span class="label pull-right" ng-class="{'label-success': view.build.status === 'success', 'label-info': view.build.status === 'running', 'label-danger': view.build.status === 'failure', 'label-warning': view.build.status === 'pending'}">
+                <i class="fa {{ view.build.status }}" ng-class="{'fa-check-circle': view.build.status === 'success', 'fa-repeat': view.build.status === 'running', 'fa-remove-circle': view.build.status === 'failure', 'fa-time': view.build.status === 'pending'}"></i>
+                <span>{{ view.build.status }}</span>
+            </span>
+        </h1>
     </div>
     <!-- # .heading -->
 
-    <div ng-if="!view.loading" class="container" id="log-content">
+    <div ng-if="!view.loading" class="content" id="log-content">
 
         <div class="description">
 
@@ -75,5 +73,5 @@
         <!-- # .snippet.log-->
 
     </div>
-    <!-- # .container -->
+    <!-- # .content -->
 </div>

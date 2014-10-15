@@ -9,9 +9,7 @@ angular.module('clicheApp')
          */
         self.getApps = function(params) {
 
-            var promise = Api.apps.get(params).$promise;
-
-            return promise;
+            return Api.apps.get(params).$promise;
 
         };
 
@@ -45,6 +43,18 @@ angular.module('clicheApp')
             var promise = Api.revisions.add({}, {tool: Data.tool, app_id: Data.appId}).$promise;
 
             return promise;
+
+        };
+
+        /**
+         * Validate json format on the server side
+         *
+         * @param json
+         * @returns {Object} $promise
+         */
+        self.validateJson = function (json) {
+
+            return Api.validate.post({}, json).$promise;
 
         };
 

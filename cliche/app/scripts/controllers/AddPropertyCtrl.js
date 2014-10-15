@@ -6,7 +6,6 @@ angular.module('clicheApp')
         $scope.options = options;
 
         $scope.view = {};
-        $scope.view.inputs = _.keys(Data.tool.inputs.properties);
 
         switch (options.type) {
         case 'input':
@@ -18,7 +17,7 @@ angular.module('clicheApp')
         case 'output':
             $scope.view.property = {
                 type: 'file',
-                adapter: {meta: []}
+                adapter: {meta: {}}
             };
             break;
         case 'arg':
@@ -45,26 +44,6 @@ angular.module('clicheApp')
 
         };
 
-        /**
-         * Add meta data to the output
-         */
-        $scope.addMeta = function () {
-            $scope.view.property.adapter.meta.push({key: '', value: ''});
-        };
-
-        /**
-         * Remove meta data from the output
-         *
-         * @param {integer} index
-         * @returns {boolean}
-         */
-        $scope.removeMeta = function (index) {
-
-            if ($scope.view.property.adapter.meta.length === 1) { return false; }
-
-            $scope.view.property.adapter.meta.splice(index, 1);
-        };
-
         $scope.ok = function () {
             $modalInstance.close();
         };
@@ -72,5 +51,6 @@ angular.module('clicheApp')
         $scope.cancel = function () {
             $modalInstance.dismiss('cancel');
         };
+
 
     }]);

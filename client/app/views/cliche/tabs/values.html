@@ -1,0 +1,50 @@
+<ng-form class="form" name="forms.jobForm" role="form" novalidate>
+
+    <div class="input-property">
+        <div class="form-group">
+            <label class="control-label">Allocated Resources</label>
+            <div class="input-property-body">
+                <div class="col-md-4">
+                    <label class="control-label">CPU</label>
+                    <input type="{{ view.toolForm.requirements.resources.cpu.expr ? 'text' : 'number' }}"
+                           class="form-control" ng-model="view.jobForm.allocatedResources.cpu"
+                           ng-readonly="view.toolForm.requirements.resources.cpu.expr"
+                           min="{{ view.toolForm.requirements.resources.cpu.expr ? 0 : view.toolForm.requirements.resources.cpu }}"
+                           >
+                </div>
+                <div class="col-md-4">
+                    <label class="control-label">Memory</label>
+                    <input type="{{ view.toolForm.requirements.resources.mem.expr ? 'text' : 'number' }}"
+                           class="form-control" ng-model="view.jobForm.allocatedResources.mem"
+                           ng-readonly="view.toolForm.requirements.resources.mem.expr"
+                           min="{{ view.toolForm.requirements.resources.mem.expr ? 0 : view.toolForm.requirements.resources.mem }}"
+                           >
+                </div>
+                <div class="col-md-4">
+                    <label class="control-label">Disk Space</label>
+                    <input type="{{ view.toolForm.requirements.resources.diskSpace.expr ? 'text' : 'number' }}"
+                           class="form-control" ng-model="view.jobForm.allocatedResources.diskSpace"
+                           ng-readonly="view.toolForm.requirements.resources.diskSpace.expr"
+                           min="{{ view.toolForm.requirements.resources.diskSpace.expr ? 0 : view.toolForm.requirements.resources.diskSpace }}"
+                           >
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <legend class="legend-small">Inputs</legend>
+
+    <div class="input-container">
+        <input-field
+                ng-repeat="(key, property) in view.toolForm.inputs.properties"
+                ng-model="view.jobForm.inputs[key]"
+                key="{{ key }}"
+                prop="property"
+                index="{{ $index }}"
+                form="forms.jobForm">
+        </input-field>
+    </div>
+
+    <p class="alert alert-info" ng-if="view.toolForm.inputs.properties | isEmpty">There are no values to be set at this moment.</p>
+
+</ng-form>

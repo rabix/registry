@@ -1,0 +1,16 @@
+<div class="modal-body">
+
+    <form class="expression-form form-inline">
+        <div class="form-group">
+            <label class="control-label">Context:</label>
+            <span ng-if="view.self">
+                <input type="text" class="form-control input-sm" ng-model="view.arg" placeholder="$self" />
+                <span>, </span>
+            </span>
+            <span>$job</span>
+        </div>
+    </form>
+
+    <codemirror code="view.expr" arg="view.arg" handle-load="ok(expr)" handle-cancel="cancel()" handle-clear="clear()"></codemirror>
+
+</div>

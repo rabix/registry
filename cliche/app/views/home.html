@@ -70,7 +70,7 @@
         <div class="tabs right col-body" ng-switch="view.trace">
             <div class="tab" ng-switch-when="tool">
                 <zclip data="tool"></zclip>
-                <app-actions ng-if="!view.loading && view.user" form="forms.toolForm" user="view.user" handle-import="importApp(app)" handle-save="setOwnerAndAppId(user_id, app_id)"></app-actions>
+                <app-actions ng-if="!view.loading && view.user" form="forms.toolForm" user="view.user" handle-import="importApp(app)" handle-import-json="importAppAsJson(json)" handle-save="setOwnerAndAppId(user_id, app_id)"></app-actions>
                 <pre class="json-trace" pretty-json="view.toolForm"></pre>
             </div>
 

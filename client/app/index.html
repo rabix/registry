@@ -20,9 +20,9 @@
         <![endif]-->
 
         <!-- Add your site or application content here -->
-        <div class="main" ng-controller="MasterCtrl">
-            <header></header>
-            <div class="content" ng-view=""></div>
+        <div class="container-fluid" ng-controller="MasterCtrl">
+            <sidebar></sidebar>
+            <div class="main" ng-view=""></div>
         </div>
 
         <error></error>
@@ -49,9 +49,7 @@
         <!--[if lt IE 9]>
         <script src="bower_components/es5-shim/es5-shim.js"></script>
         <script src="bower_components/json3/lib/json3.min.js"></script>
-        <script src="bower_components/jquery/dist/jquery.min.js"></script>
         <![endif]-->
-        <script src="bower_components/jquery/dist/jquery.min.js"></script>
 
         <!-- build:js({.tmp,app}) scripts/vendor.js -->
         <script src="bower_components/angular/angular.js"></script>
@@ -87,7 +85,6 @@
         <script src="scripts/controllers/AddYourGitHubRepoCtrl.js"></script>
         <script src="scripts/controllers/RepoInstructionsCtrl.js"></script>
         <script src="scripts/controllers/RevisionCtrl.js"></script>
-        <script src="scripts/controllers/PipelineEditorCtrl.js"></script>
 
         <script src="scripts/directives/header.js"></script>
         <script src="scripts/directives/error.js"></script>
@@ -108,7 +105,5 @@
         <script src="scripts/models/Build.js"></script>
         <script src="scripts/models/Repo.js"></script>
         <!-- endbuild -->
-
-        <script src="/pipeline-editor/pipeline-editor.js"></script>
     </body>
 </html>

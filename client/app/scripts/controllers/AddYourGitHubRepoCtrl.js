@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('registryApp')
-    .controller('AddYourGitHubRepoCtrl', ['$scope', '$timeout', '$location', '$filter', 'Repo', 'Header', 'Loading', function ($scope, $timeout, $location, $filter, Repo, Header, Loading) {
+    .controller('AddYourGitHubRepoCtrl', ['$scope', '$timeout', '$location', '$filter', 'Repo', 'Sidebar', 'Loading', function ($scope, $timeout, $location, $filter, Repo, Sidebar, Loading) {
 
-        Header.setActive('repos');
+        Sidebar.setActive('repos');
 
         $scope.view = {};
         $scope.view.loading = true;

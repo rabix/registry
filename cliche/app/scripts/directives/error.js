@@ -20,7 +20,7 @@ angular.module('clicheApp')
                  * Close the error alert
                  */
                 scope.closeErrors = function () {
-                    scope.errors = {};
+                    scope.errors = [];
                 };
 
             }

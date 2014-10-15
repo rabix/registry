@@ -13,42 +13,31 @@ body {
   font-family: 'Open Sans', sans-serif;
 }
 
-.main {
+.container-fluid {
+  padding: 0;
   height: 100%;
-  .content {
-    height: 90%;
-
-    @media screen and (max-height: 800) {
-      height: 90%;
-    }
-
-    .page {
-      height: 100%;
-      &.auto {
-        height: auto;
-      }
-      & > .container {
-        height: 90%;
-        overflow: auto;
-        margin-top: 2px;
-        @include scrollBar($orange);
-        @include flex(1);
-      }
-    }
-  }
+  @include flex-box();
 }
 
-@import "header";
+.main {
+  height: 100%;
+  //margin-left: $sidebar;
+  @include flex(1);
+}
+
+@import "sidebar";
 @import "loader";
 @import "error";
 @import "elements";
 @import "overrides";
+@import "cliche";
 
 /* PAGE
 ================================================ */
 .page {
   position: relative;
   background-color: #fff;
+  height: 100%;
   @include flex-box();
   @include flex-flow(column nowrap);
 
@@ -99,10 +88,27 @@ body {
     margin: 0 0 20px 0;
   }
 
+  .content {
+    overflow: auto;
+    padding-top: 20px;
+    @include scrollBar($orange);
+    @include flex(1);
+  }
+
+  /* Builds page */
+  &.builds {
+    .content {
+      padding-top: 0;
+    }
+  }
+
   /* Build page */
   &.build {
     .heading {
       margin: 0;
+    }
+    .content {
+      padding: 20px 10px 0;
     }
   }
 
@@ -114,12 +120,18 @@ body {
       background-position: center left 6px;
       padding-left: 30px;
     }
+    .content {
+      padding-top: 0;
+    }
   }
 
   /* Repo page */
   &.repo {
     .created-by {
       font-size: 15px;
+    }
+    .content {
+      padding: 20px 10px 0;
     }
   }
 
@@ -132,6 +144,16 @@ body {
     }
     .heading {
       margin: 0;
+    }
+    .content {
+      padding-top: 0;
+    }
+  }
+
+  /* Repo instructions page */
+  &.repo-instructions {
+    .content {
+      padding: 20px 10px 0;
     }
   }
 
@@ -152,12 +174,15 @@ body {
       text-align: center;
       font-size: 16px;
     }
+    .content {
+      padding: 20px 10px 0;
+    }
   }
 
   /* Home page */
   &.home {
-    & > .container {
-      height: auto !important;
+    .content {
+      padding: 20px 10px 0;
     }
     .log-in-btn {
       width: 300px;
@@ -178,10 +203,20 @@ body {
     }
   }
 
+  /* Apps page */
+  &.apps {
+    .content {
+      padding-top: 0;
+    }
+  }
+
   /* App page */
   &.app {
     .heading {
       margin: 0;
+    }
+    .content {
+      padding: 0px 10px;
     }
     section {
       table {
@@ -191,6 +226,20 @@ body {
           }
         }
       }
+    }
+  }
+
+  /* Revision page */
+  &.revision {
+    .content {
+      padding: 20px 10px 0;
+    }
+  }
+
+  /* Jobs page */
+  &.jobs {
+    .content {
+      padding-top: 0;
     }
   }
 

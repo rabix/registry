@@ -1,0 +1,20 @@
+<div class="form-group" ng-class="{required: prop.required, 'has-error': ((model.length < prop.minItems && prop.minItems > 0) || (model.length > prop.maxItems && prop.maxItems > 0))}">
+    <label class="control-label">
+        {{ key }}
+        <span ng-if="prop.minItems || prop.maxItems">
+            (<strong ng-if="prop.minItems">min: {{ prop.minItems }} </strong>
+            <strong ng-if="prop.maxItems">max: {{ prop.maxItems }}</strong>)
+        </span>
+    </label>
+    <div class="input-property-body">
+        <enum
+             ng-model="model"
+             type="prop.items.type"
+             min="prop.minItems"
+             max="prop.maxItems"
+             properties="prop.items.properties"
+             is-required="prop.required"
+             form="form">
+        </enum>
+    </div>
+</div>

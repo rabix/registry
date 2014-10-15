@@ -1,12 +1,12 @@
 'use strict';
 
 angular.module('registryApp')
-    .controller('BuildCtrl', ['$scope', '$routeParams', '$interval', '$document', '$timeout', 'Build', 'Header', 'Loading', function ($scope, $routeParams, $interval, $document, $timeout, Build, Header, Loading) {
+    .controller('BuildCtrl', ['$scope', '$routeParams', '$interval', '$document', '$timeout', 'Build', 'Sidebar', 'Loading', function ($scope, $routeParams, $interval, $document, $timeout, Build, Sidebar, Loading) {
 
         var logIntervalId;
         var scrollTimeoutId;
 
-        Header.setActive('builds');
+        Sidebar.setActive('builds');
 
         $scope.view = {};
         $scope.view.loading = true;

@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('registryApp')
-    .controller('ReposCtrl', ['$scope', '$window', 'Repo', 'Header', 'Loading', 'User', function ($scope, $window, Repo, Header, Loading, User) {
+    .controller('ReposCtrl', ['$scope', '$window', 'Repo', 'Sidebar', 'Loading', 'User', function ($scope, $window, Repo, Sidebar, Loading, User) {
 
-        Header.setActive('repos');
+        Sidebar.setActive('repos');
 
         /**
          * Callback when repos are loaded

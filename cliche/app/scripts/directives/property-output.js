@@ -194,8 +194,6 @@ angular.module('clicheApp')
                     scope.prop.adapter.meta[index] = value;
                 };
 
-
-
             }
         };
     }]);
