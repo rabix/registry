@@ -6,7 +6,7 @@
 angular.module('registryApp')
     .controller('PipelineEditorCtrl', ['$scope', '$timeout', '$location', '$filter', 'Sidebar', 'Loading', '$http', function ($scope, $timeout, $location, $filter, Sidebar, Loading, $http) {
 
-        Sidebar.setActive('pipeline-editor');
+        Sidebar.setActive('_dyole');
 
         $.ajax({
             url: '/pipeline-editor/data/pipeline.json',
