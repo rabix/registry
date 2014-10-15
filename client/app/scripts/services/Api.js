@@ -25,6 +25,8 @@ angular.module('registryApp')
 
         self.myApps = $resource(apiUrl + '/my-apps');
 
+        self.groupedApps = $resource(apiUrl + '/repositories/:type', {type: '@type'});
+
         self.revisions = $resource(apiUrl + '/revisions/:id', {id: '@id'}, {
             add: {method: 'POST'},
             update: {method: 'PUT'}

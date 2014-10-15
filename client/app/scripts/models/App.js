@@ -145,6 +145,17 @@ angular.module('registryApp')
             return promise;
 
         };
+
+        /**
+         * Get apps grouped by repositories
+         *
+         * @returns {*}
+         */
+        self.getGroupedApps = function (type, searchTerm) {
+
+            return Api.groupedApps.get({type: type, q: searchTerm}).$promise;
+
+        };
         
         self.getMyApps = function () {
             var promise = Api.myApps.get().$promise;

@@ -77,7 +77,7 @@ router.get('/jobs/:name', function (req, res, next) {
 router.put('/jobs', function (req, res, next) {
 
     var tmpDir = config.tmpDir.path;
-    var jobs = req.param('jobs');
+    var jobs = req.param('jobs') || [];
 
     fs.exists(tmpDir, function (exists) {
         if (!exists) { fs.mkdirSync(tmpDir); }

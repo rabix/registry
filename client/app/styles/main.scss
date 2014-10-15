@@ -243,6 +243,25 @@ body {
     }
   }
 
+  /* Pipeline Editor page */
+  &.dyole {
+    & > .content {
+      padding: 0;
+      @include flex-box();
+    }
+    .sidebar-col {
+      width: 350px;
+      border-left: 2px solid $orange;
+    }
+    .nav-tabs {
+      &.nav-tabs-steps {
+        li {
+          width: 25%;
+        }
+      }
+    }
+  }
+
   .table {
     margin: 0;
     td {

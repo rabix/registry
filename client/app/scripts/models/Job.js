@@ -46,6 +46,8 @@ angular.module('registryApp')
             return $localForage.getItem('tmp-jobs')
                 .then(function (jobs) {
 
+                    jobs = jobs || [];
+
                     return Api.jobs.clean({}, {jobs: jobs}).$promise.then(function (result) {
 
                         if (result.jobs.length !== jobs.length) {

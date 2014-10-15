@@ -53,7 +53,45 @@ router.get('/apps', function (req, res, next) {
 
 });
 
-router.get('/apps/:id', function (req, res, next) {
+router.get('/repositories/:type', function (req, res, next) {
+
+    var type = req.params.type;
+    var where = {};
+
+    if (req.query.q) {
+        where.$or = [
+            {repo_name: new RegExp(req.query.q, 'i')},
+            {repo_owner: new RegExp(req.query.q, 'i')},
+            {name: new RegExp(req.query.q, 'i')},
+            {description: new RegExp(req.query.q, 'i')}
+        ];
+    }
+
+    if (type === 'my') {
+        if (!req.user) {
+            res.json({message: 'Log in to see your repositories'});
+            return false;
+        }
+        where.user_id = req.user.id;
+    } else {
+        if (req.user) {
+            where.user_id = {$ne: req.user.id};
+        }
+    }
+
+    App.find(where, 'repo_name repo_owner name description user_id json').sort({_id: 'desc'}).exec(function(err, apps) {
+        if (err) { return next(err); }
+
+        var grouped = _.groupBy(apps, function (app) {
+            return app.repo_owner + '/' + app.repo_name;
+        });
+
+        res.json({list: grouped});
+    });
+
+});
+
+router.get('/apps/:id', filters.authenticated, function (req, res, next) {
 
     App.findById(req.params.id).populate('user_id').exec(function(err, app) {
         if (err) { return next(err); }

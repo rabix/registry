@@ -6,19 +6,19 @@
     }
 
     .col {
-      @include flex-box();
-      @include flex-flow(column nowrap);
+//      @include flex-box();
+//      @include flex-flow(column nowrap);
 
-      & > .heading {
-        padding: 0;
-        @include flex(0 0 auto);
-      }
+//      & > .heading {
+//        padding: 0;
+//        @include flex(0 0 auto);
+//      }
 
       & > .content {
-        padding: 0;
-        @include flex(1);
-        @include flex-box();
-        @include flex-flow(column nowrap);
+//        padding: 0;
+//        @include flex(1);
+//        @include flex-box();
+//        @include flex-flow(column nowrap);
 
         & > .tabs {
           @include flex(1);
@@ -42,14 +42,6 @@
             }
           }
         }
-      }
-
-      &.cliche-tabs {
-        @include flex(1);
-      }
-      &.trace-tabs {
-        width: 450px;
-        @include flex(0 0 auto);
       }
 
     }

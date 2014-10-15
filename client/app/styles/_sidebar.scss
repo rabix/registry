@@ -1,9 +1,6 @@
 /* SIDEBAR
 ================================================ */
 
-$dark-blue: #1A3852;
-$sidebar-blue: #29567D;
-
 %opacity-anim {
   opacity: 1;
   @include transition(opacity 0.5s ease);
@@ -16,6 +13,7 @@ $sidebar-blue: #29567D;
 }
 
 .sidebar {
+  overflow: hidden;
   width: $sidebar;
   float: left;
   background-color: $sidebar-blue;
