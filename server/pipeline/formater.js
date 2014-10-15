@@ -6,8 +6,23 @@ var formater = {
 
     toRabixSchema: function (json) {
 
-        this._transformRelationsToSteps(json.relations);
+        _.map(json.nodes, function (node) {
+            var nodeWrapper = node.wrapper,
+                app;
 
+            app = _.find(json.schemas, function (app) {
+                var wrapper = app.wrapper;
+                return wrapper.repo_id === nodeWrapper.repo_id && wrapper.image_id === nodeWrapper.image_id && wrapper.classname === nodeWrapper.classname;
+            });
+
+//                node.schema = app.app.schema;
+            json.display.nodes[node.id].schema = app.app.schema;
+//                return self.mergeNodeAndApp(app, node, displayNodes[node.id] || {x: 0, y: 0});
+        });
+
+        this._transformRelationsToSteps(json.relations, json.display.nodes);
+
+        return this.packedSchema;
     },
     
     toPipelineSchema: function (json) {
@@ -29,7 +44,6 @@ var formater = {
                     node = n;
                 }
             });
-
             node_schema = node.schema;
 
             step = {
@@ -40,16 +54,7 @@ var formater = {
 
             var from, out_name = false;
 
-            _.each(nodes, function (n) {
-                _.each(n.schema.outputs, function (out) {
-                    if (out.name === rel.output_name) {
-                        from = n.id;
-                        if ( n.type !== 'input' ) {
-                            out_name = out.name;
-                        }
-                    }
-                });
-            });
+            from = rel.start_node + '.' + rel.output_name;
 
             if (out_name) {
                 from = from + '.' + out_name;
@@ -61,6 +66,7 @@ var formater = {
 
             _self.packedSchema.steps.push(step);
         });
+
     },
     
     _transformStepsToRelations: function () {
