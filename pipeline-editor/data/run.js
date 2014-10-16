@@ -26,6 +26,9 @@ fs.readFile('/Users/filip/SBG/rabix/registry/pipeline-editor/data/new_pipeline.j
             }
         });
 
+        delete app.wrapper.schema;
+        delete app.wrapper.scheduler_hints;
+
     });
 
 
