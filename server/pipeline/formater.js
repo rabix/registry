@@ -6,6 +6,9 @@ var formater = {
 
     toRabixSchema: function (json) {
 
+        // reset schema
+        this.packedSchema = {};
+
         _.map(json.nodes, function (node) {
             var nodeWrapper = node.wrapper,
                 app;
@@ -26,6 +29,13 @@ var formater = {
     },
     
     toPipelineSchema: function (json) {
+
+        // reset schema
+        this.packedSchema = {};
+
+        this._transformStepsToRelations(json.steps);
+
+        return this.packedSchema;
 
     },
 
@@ -56,9 +66,9 @@ var formater = {
 
             from = rel.start_node + '.' + rel.output_name;
 
-            if (out_name) {
-                from = from + '.' + out_name;
-            }
+//            if (out_name) {
+//                from = from + '.' + out_name;
+//            }
 
             step.inputs[rel.input_name] = {
                 $from: from
@@ -69,8 +79,42 @@ var formater = {
 
     },
     
-    _transformStepsToRelations: function () {
-        
+    _transformStepsToRelations: function (steps) {
+
+        var relations = [];
+
+        _.forEach(steps, function (step) {
+            var end_node = step._id, input_name, output_name, start_node;
+
+            _.forEach(step.inputs, function (from, input) {
+                var relation, s;
+
+                s = from.$from.split('.');
+
+                if (s.length !== 1) {
+                    start_node = s[0];
+                    output_name = s[1];
+                } else {
+
+                }
+
+                input_name = input;
+
+                relation = {
+                    end_node: end_node,
+                    input_name: input_name,
+                    output_name: output_name,
+                    start_node: start_node,
+                    type: 'connection',
+                    id: _.random(100000, 999999) +''
+                };
+
+                relations.push(relation);
+            });
+
+        });
+
+        this.packedSchema.relations = relations;
     },
 
     _packIO: function () {

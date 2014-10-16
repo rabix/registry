@@ -22,16 +22,6 @@ angular.module('registryApp')
             if (n !== o) { $scope.view.classes = n; }
         });
 
-        $.ajax({
-            url: '/pipeline-editor/data/pipeline.json',
-            type: "GET",
-            dataType: 'JSON',
-
-            complete: function(data, status, headers, config) {
-
-                Pipeline.init(data.responseJSON, document.getElementsByClassName('pipeline-editor'), {});
-            }
-        });
 
         $scope.view.myRepositories = {};
         $scope.view.otherRepositories = {};
@@ -44,6 +34,17 @@ angular.module('registryApp')
 
             $scope.view.myRepositories = result[0].list || {};
             $scope.view.otherRepositories = result[1].list || {};
+
+            $.ajax({
+                url: '/pipeline-editor/data/new_pipeline.json',
+                type: "GET",
+                dataType: 'JSON',
+
+                complete: function(data, status, headers, config) {
+
+                    Pipeline.init(data.responseJSON, document.getElementsByClassName('pipeline-editor'), {});
+                }
+            });
 
         };
 

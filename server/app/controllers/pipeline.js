@@ -17,12 +17,13 @@ module.exports = function (app) {
 };
 
 router.get('/pipeline/format', function (req, res, next) {
-    fs.readFile('/home/filip/Projects/rabix/registry/pipeline-editor/data/pipeline.json', 'utf8', function (err, data) {
+    fs.readFile('/Users/filip/SBG/rabix/registry/pipeline-editor/data/new_pipeline.json', 'utf8', function (err, data) {
         var json = JSON.parse(data);
 
         var r = formater.toRabixSchema(json);
 
-        res.json(r);
+        var t = formater.toPipelineSchema(r);
+        res.json(t);
     })
 });
 
@@ -60,16 +61,47 @@ router.get('/pipeline', function (req, res, next) {
     });
 });
 
-router.post('/pipeline', function (req, res, next) {
+router.get('/pipeline/:id', function (req, res, next) {
+   Pipeline.findOne({_id: req.params.id}, function (err, pipeline) {
+       if (err) { return next(err); }
+
+       res.json({data: pipeline});
+   });
+});
+
+router.post('/pipeline', filters.authenticated, function (req, res, next) {
     
 });
 
-router.put('/pipeline', function (req, res, next) {
+router.put('/pipeline', filters.authenticated, function (req, res, next) {
     var pipeline = new Pipeline();
+    var model = _.clone(pipeline_model);
 
-    pipeline = _.extend(pipeline, req.body);
+    pipeline = _.extend(pipeline, model);
 
     pipeline.save();
+
+    res.json(pipeline);
 });
+
+var pipeline_model = {
+
+    // visualization propreties
+    display: {
+        canvas: {
+            x: 0,
+            y: 0,
+            zoom: 1
+        },
+        name: '',
+        description: '',
+        nodes: {}
+    },
+
+    // placeholder for connections
+    relations: [],
+    // placeholder for app schemas
+    schemas: {}
+};
 
 

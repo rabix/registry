@@ -70,7 +70,7 @@ module.exports = function (grunt) {
           expand: true,
           cwd: '',
           dest: '<%= config.dist %>',
-          src: 'data/pipeline.json'
+          src: 'data/*.json'
 
       }
     },
