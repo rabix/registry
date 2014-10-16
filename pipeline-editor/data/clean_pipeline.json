@@ -4,7 +4,7 @@
     "modified_by": "admin",
     "created_by": "admin",
     "changelog": ""
-}, "type": "PRIVATE", "_rev": 3, "_deleted": false, "project_id": "a34d2f9e-5ac3-4403-94d1-aa03f7f3678f", "relations": [
+}, "_rev": 3, "relations": [
     {
         "end_node": "208569",
         "output_name": "output",
@@ -39,53 +39,6 @@
     }
 ], "nodes": [
     {
-        "app": {
-            "repo_id": "53173e5fc511e7441b74fe83",
-            "app_revision": 1,
-            "stamp": {
-                "modified_on": 1396547028,
-                "created_on": 1396547026,
-                "modified_by": "sevenbridges",
-                "created_by": "sevenbridges"
-            },
-            "docs": {
-                "toolkit_version": "0.7.4",
-                "tech_compatibility": "",
-                "pipelines": [],
-                "description": "Burrows-Wheeler Aligner (BWA) is an efficient program that aligns relatively short nucleotide sequences against a long reference sequence such as the human genome.\nIt implements two algorithms, bwa-short and BWA-SW.\nThe former works for query sequences shorter than 200bp and the latter for longer sequences up to around 100kbp. Both algorithms do gapped alignment.\nThey are usually more accurate and faster on queries with low error rates.",
-                "links": "",
-                "author": "",
-                "toolkitVersion": "0.7.4",
-                "toolkit": "bwa",
-                "className": "sbg_bwa.Bwa",
-                "short_description": "Burrows-Wheeler Aligner (BWA) is an efficient program that aligns relatively short nucleotide sequences against a long reference sequence such as the human genome.",
-                "packageVersion": "1.2.1",
-                "categories": ["Aligners"],
-                "name": "BWA"
-            },
-            "_rev": 1,
-            "app_id": "533d9dd2aec8551045f667b9",
-            "_deleted": false,
-            "wrapper": {
-                "classname": "sbg_bwa.Bwa",
-                "image_data": {
-                    "tag": "72c649afc01c6221",
-                    "id": "images.sbgenomics.com/sevenbridges/sbg_bwa"
-                },
-                "repo_id": "53173e5fc511e7441b74fe83",
-                "type": "app",
-                "image_id": "53176093c511e75cd1f9a977"
-            },
-            "_id": "533d9dd2aec8551045f667b9",
-            "_revs": [
-                {
-                    "_rev": 0,
-                    "_id": "533d9dd4aec8551045f667ba"
-                }
-            ],
-            "scheduler_hints": {}
-        },
-        "params": {},
         "id": "208569",
         "wrapper": {
             "repo_id": "53173e5fc511e7441b74fe83",
@@ -95,56 +48,10 @@
                 "tag": "72c649afc01c6221",
                 "id": "images.sbgenomics.com/sevenbridges/sbg_bwa"
             },
-            "type": "app",
-            "scheduler_hints": {
-                "ForceInstance": "r3.2xlarge",
-                "parallel": true
-            }
-        },
-        "exposed": []
+            "type": "app"
+        }
     },
     {
-        "app": {
-            "repo_id": "53175880c511e756f0e4bbbe",
-            "app_revision": 0,
-            "stamp": {
-                "modified_on": 1396546897,
-                "created_on": 1396546897,
-                "modified_by": "sevenbridges",
-                "created_by": "sevenbridges"
-            },
-            "docs": {
-                "tech_compatibility": "",
-                "pipelines": [],
-                "name": "Input File(s)",
-                "links": "",
-                "author": "",
-                "toolkitVersion": "1.0.8",
-                "toolkit": "system",
-                "toolkit_version": "",
-                "short_description": "Downloads input files to local cluster for further processing.",
-                "packageVersion": "1.0.8",
-                "categories": ["Input/Output"],
-                "description": "Downloads input files to local cluster for further processing."
-            },
-            "_rev": 0,
-            "app_id": "533d9d51aec8551045f6677e",
-            "_deleted": false,
-            "wrapper": {
-                "classname": "sbg_io.input_file.wrapper.InputWrapper",
-                "image_data": {
-                    "tag": "8618ec8872f74458",
-                    "id": "images.sbgenomics.com/sevenbridges/sbg_io"
-                },
-                "repo_id": "53175880c511e756f0e4bbbe",
-                "type": "input/list",
-                "image_id": "53175880c511e756f0e4bbbf"
-            },
-            "_id": "533d9d51aec8551045f6677e",
-            "_revs": [],
-            "scheduler_hints": {}
-        },
-        "params": {},
         "id": "425135",
         "wrapper": {
             "classname": "sbg_io.input_file.wrapper.InputWrapper",
@@ -155,51 +62,9 @@
             "repo_id": "53175880c511e756f0e4bbbe",
             "type": "input/list",
             "image_id": "53175880c511e756f0e4bbbf"
-        },
-        "exposed": []
+        }
     },
     {
-        "app": {
-            "repo_id": "53175880c511e756f0e4bbbe",
-            "app_revision": 0,
-            "stamp": {
-                "modified_on": 1396546140,
-                "created_on": 1396546140,
-                "modified_by": "sevenbridges",
-                "created_by": "sevenbridges"
-            },
-            "docs": {
-                "tech_compatibility": "",
-                "pipelines": [],
-                "name": "Output File(s)",
-                "links": "",
-                "author": "",
-                "toolkitVersion": "1.0.8",
-                "toolkit": "system",
-                "toolkit_version": "",
-                "short_description": "Uploads resulting files from processing cluster to user storage.",
-                "packageVersion": "1.0.8",
-                "categories": ["Input/Output"],
-                "description": "Uploads resulting files from processing cluster to user storage."
-            },
-            "_rev": 0,
-            "app_id": "533d9a5caec8551045f66613",
-            "_deleted": false,
-            "wrapper": {
-                "classname": "sbg_io.output_file.wrapper.OutputWrapper",
-                "image_data": {
-                    "tag": "8618ec8872f74458",
-                    "id": "images.sbgenomics.com/sevenbridges/sbg_io"
-                },
-                "repo_id": "53175880c511e756f0e4bbbe",
-                "type": "output/list",
-                "image_id": "53175880c511e756f0e4bbbf"
-            },
-            "_id": "533d9a5caec8551045f66613",
-            "_revs": [],
-            "scheduler_hints": {}
-        },
-        "params": {},
         "id": "269510",
         "wrapper": {
             "classname": "sbg_io.output_file.wrapper.OutputWrapper",
@@ -210,57 +75,9 @@
             "repo_id": "53175880c511e756f0e4bbbe",
             "type": "output/list",
             "image_id": "53175880c511e756f0e4bbbf"
-        },
-        "exposed": []
+        }
     },
     {
-        "app": {
-            "repo_id": "53173e5fc511e7441b74fe83",
-            "app_revision": 1,
-            "stamp": {
-                "modified_on": 1396547028,
-                "created_on": 1396547026,
-                "modified_by": "sevenbridges",
-                "created_by": "sevenbridges"
-            },
-            "docs": {
-                "toolkit_version": "0.7.4",
-                "tech_compatibility": "",
-                "pipelines": [],
-                "description": "Burrows-Wheeler Aligner (BWA) is an efficient program that aligns relatively short nucleotide sequences against a long reference sequence such as the human genome.\nIt implements two algorithms, bwa-short and BWA-SW.\nThe former works for query sequences shorter than 200bp and the latter for longer sequences up to around 100kbp. Both algorithms do gapped alignment.\nThey are usually more accurate and faster on queries with low error rates.",
-                "links": "",
-                "author": "",
-                "toolkitVersion": "0.7.4",
-                "toolkit": "bwa",
-                "className": "sbg_bwa.Bwa",
-                "short_description": "Burrows-Wheeler Aligner (BWA) is an efficient program that aligns relatively short nucleotide sequences against a long reference sequence such as the human genome.",
-                "packageVersion": "1.2.1",
-                "categories": ["Aligners"],
-                "name": "BWA"
-            },
-            "_rev": 1,
-            "app_id": "533d9dd2aec8551045f667b9",
-            "_deleted": false,
-            "wrapper": {
-                "classname": "sbg_bwa.Bwa",
-                "image_data": {
-                    "tag": "72c649afc01c6221",
-                    "id": "images.sbgenomics.com/sevenbridges/sbg_bwa"
-                },
-                "repo_id": "53173e5fc511e7441b74fe83",
-                "type": "app",
-                "image_id": "53176093c511e75cd1f9a977"
-            },
-            "_id": "533d9dd2aec8551045f667b9",
-            "_revs": [
-                {
-                    "_rev": 0,
-                    "_id": "533d9dd4aec8551045f667ba"
-                }
-            ],
-            "scheduler_hints": {}
-        },
-        "params": {},
         "id": "869672",
         "wrapper": {
             "repo_id": "53173e5fc511e7441b74fe83",
@@ -270,44 +87,10 @@
                 "tag": "72c649afc01c6221",
                 "id": "images.sbgenomics.com/sevenbridges/sbg_bwa"
             },
-            "type": "app",
-            "scheduler_hints": {
-                "ForceInstance": "",
-                "parallel": false
-            }
-        },
-        "exposed": []
+            "type": "app"
+        }
     }
-], "_id": "5406f4b274b3ba681e91dbbb", "_revs": [
-    {
-        "modified_on": 1409742002,
-        "_rev": 0,
-        "_id": "5406f54774b3ba681e91dbbc",
-        "modified_by": "admin",
-        "changelog": "Pipeline created"
-    },
-    {
-        "modified_on": 1409742151,
-        "_rev": 1,
-        "_id": "542d6f2c2eed8c2fb6c41884",
-        "modified_by": "admin",
-        "changelog": ""
-    },
-    {
-        "modified_on": 1412263724,
-        "_rev": 2,
-        "_id": "542d6fd42eed8c2fb6c41885",
-        "modified_by": "admin",
-        "changelog": ""
-    },
-    {
-        "modified_on": 1412263892,
-        "_rev": 3,
-        "_id": "5406f4b274b3ba681e91dbbb",
-        "modified_by": "admin",
-        "changelog": ""
-    }
-], "display": {
+], "_id": "5406f4b274b3ba681e91dbbb", "display": {
     "canvas": {
         "y": 4,
         "x": 427,

@@ -11,6 +11,22 @@ fs.readFile('/Users/filip/SBG/rabix/registry/pipeline-editor/data/new_pipeline.j
 
     var json = JSON.parse(data);
 
+    // delete root stuff
+    delete json._revs;
+    delete json.project_id;
+    delete json._deleted;
+    delete json.type;
+
+    _.forEach(json.nodes, function (node) {
+        delete node.app;
+        delete node.params;
+        delete node.exposed;
+
+        if (node.wrapper.scheduler_hints) {
+            delete node.wrapper.scheduler_hints
+        }
+    });
+
     _.forEach(json.schemas, function (app) {
 
         _.forEach(app.app.schema, function (val, key) {
@@ -32,7 +48,7 @@ fs.readFile('/Users/filip/SBG/rabix/registry/pipeline-editor/data/new_pipeline.j
     });
 
 
-    fs.writeFile('najnaj.json', JSON.stringify(json), function (err, data) {
+    fs.writeFile('clean_pipeline.json', JSON.stringify(json), function (err, data) {
         if (err) throw err;
     });
 
