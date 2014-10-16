@@ -45,7 +45,7 @@ angular.module('registryApp')
             $scope.view.otherRepositories = result[1].list || {};
 
             $.ajax({
-                url: '/pipeline-editor/data/new_pipeline.json',
+                url: '/pipeline-editor/data/clean_pipeline.json',
                 type: "GET",
                 dataType: 'JSON',
 

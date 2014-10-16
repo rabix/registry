@@ -43,7 +43,6 @@ var formater = {
 
         var _self = this;
 
-        this.packedSchema = {};
         this.packedSchema.steps = [];
 
         _.each(relations, function (rel) {
@@ -106,7 +105,8 @@ var formater = {
                     output_name: output_name,
                     start_node: start_node,
                     type: 'connection',
-                    id: _.random(100000, 999999) +''
+                    // id needs to be a string
+                    id: _.random(100000, 999999) + ''
                 };
 
                 relations.push(relation);
@@ -115,6 +115,14 @@ var formater = {
         });
 
         this.packedSchema.relations = relations;
+    },
+
+    _addSchema: function (json) {
+
+    },
+
+    _removeSchema: function () {
+
     },
 
     _packIO: function () {
