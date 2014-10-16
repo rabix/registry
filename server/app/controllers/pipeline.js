@@ -62,18 +62,20 @@ router.get('/pipeline', function (req, res, next) {
 });
 
 router.get('/pipeline/:id', function (req, res, next) {
-   Pipeline.findOne({_id: req.params.id}, function (err, pipeline) {
-       if (err) { return next(err); }
 
-       res.json({data: pipeline});
-   });
+    Pipeline.findById(req.params.id).exec(function(err, pipeline) {
+        if (err) { return next(err); }
+
+        res.json({data: pipeline});
+    });
+
 });
 
-router.post('/pipeline', filters.authenticated, function (req, res, next) {
-    
+router.post('/pipeline', function (req, res, next) {
+
 });
 
-router.put('/pipeline', filters.authenticated, function (req, res, next) {
+router.put('/pipeline', function (req, res, next) {
     var pipeline = new Pipeline();
     var model = _.clone(pipeline_model);
 
@@ -83,25 +85,5 @@ router.put('/pipeline', filters.authenticated, function (req, res, next) {
 
     res.json(pipeline);
 });
-
-var pipeline_model = {
-
-    // visualization propreties
-    display: {
-        canvas: {
-            x: 0,
-            y: 0,
-            zoom: 1
-        },
-        name: '',
-        description: '',
-        nodes: {}
-    },
-
-    // placeholder for connections
-    relations: [],
-    // placeholder for app schemas
-    schemas: {}
-};
 
 

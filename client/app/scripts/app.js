@@ -78,7 +78,11 @@ angular
                 templateUrl: 'views/repo-instructions.html',
                 controller: 'RepoInstructionsCtrl'
             })
-            .when('/pipeline-editor', {
+            .when('/pipelines', {
+                templateUrl: 'views/pipelines.html',
+                controller: 'PipelinesCtrl'
+            })
+            .when('/pipeline/:id', {
                 templateUrl: 'views/pipeline-editor.html',
                 controller: 'PipelineEditorCtrl'
             })
