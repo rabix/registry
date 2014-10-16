@@ -23,6 +23,11 @@ angular.module('registryApp')
             post: {method: 'POST'}
         });
 
+        self.pipelines = $resource(apiUrl + '/pipeline/:id', {id: '@id'}, {
+            add: {method: 'POST'},
+            update: {method: 'PUT'}
+        });
+
         self.myApps = $resource(apiUrl + '/my-apps');
 
         self.groupedApps = $resource(apiUrl + '/repositories/:type', {type: '@type'});

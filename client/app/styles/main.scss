@@ -243,6 +243,13 @@ body {
     }
   }
 
+  /* Pipelines page */
+  &.pipelines {
+    .content {
+      padding-top: 0;
+    }
+  }
+
   /* Pipeline Editor page */
   &.dyole {
     & > .content {

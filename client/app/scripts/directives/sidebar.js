@@ -52,7 +52,7 @@ angular.module('registryApp')
                     {name: 'jobs', link: 'jobs', desc: 'Jobs', icon: 'plug'},
                     {name: 'builds', link: 'builds', desc: 'Builds', icon: 'cube'},
                     {name: 'repos', link: 'repos', desc: 'Repositories', icon: 'code-fork'},
-                    {name: '_dyole', link: 'pipeline-editor', desc: 'Workflow editor', icon: 'cogs'},
+                    {name: '_dyole', link: 'pipelines', desc: 'Pipelines', icon: 'cogs'},
                     {name: 'settings',link: 'settings',  desc: 'Settings', icon: 'gear'}
                 ];
 

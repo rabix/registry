@@ -1,0 +1,53 @@
+<div ng-class="view.classes" loading="view.loading">
+
+    <div class="filters">
+        <div class="row no-margin">
+            <div class="col-md-4">
+                <form class="search-form" ng-submit="searchPipelines()" novalidate>
+                    <div class="input-group">
+                        <input type="text" class="form-control" ng-model="view.searchTerm" placeholder="Search pipelines" required>
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
+                            <a ng-if="!(view.searchTerm | isEmpty)" class="btn btn-default" href ng-click="resetSearch()"><i class="fa fa-ban"></i></a>
+                        </span>
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-8">
+                <a ng-href="#/pipeline/new" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> Add New Pipeline</a>
+            </div>
+        </div>
+    </div>
+    <!-- # .filters -->
+
+    <div ng-if="!view.loading" class="content">
+        <table class="table table-hover pipelines">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Author</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="pipeline in view.pipelines">
+                    <td><a ng-href="#/pipeline/{{ pipeline._id }}">{{ pipeline.name }}</a></td>
+                    <td><p tooltip="{{ pipeline.description }}" tooltip-popup-delay="1000">{{ pipeline.description }}</p></td>
+                    <td><p tooltip="{{ pipeline.author }}" tooltip-popup-delay="1000">{{ pipeline.author }}</p></td>
+                </tr>
+                <tr class="empty" ng-if="view.pipelines.length === 0">
+                    <td colspan="3"><p class="alert alert-info">There are no pipelines found</p></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- # .content -->
+
+    <div class="paginate" ng-if="!view.loading && view.pipelines.length !== 0">
+        <button ng-disabled="!view.paginator.prev" class="btn btn-default pull-left" ng-click="goToPage('prev')"><i class="fa fa-chevron-left"></i></button>
+        <span class="page-number">{{ view.page }} / {{ view.total }}</span>
+        <button ng-disabled="!view.paginator.next" class="btn btn-default pull-right" ng-click="goToPage('next')"><i class="fa fa-chevron-right"></i></button>
+    </div>
+    <!-- # .paginate -->
+
+</div>

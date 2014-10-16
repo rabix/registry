@@ -66,6 +66,10 @@ angular
                 templateUrl: 'views/repo.html',
                 controller: 'RepoCtrl'
             })
+            .when('/pipelines', {
+                templateUrl: 'views/pipelines.html',
+                controller: 'PipelinesCtrl'
+            })
             .when('/settings', {
                 templateUrl: 'views/settings.html',
                 controller: 'SettingsCtrl'
