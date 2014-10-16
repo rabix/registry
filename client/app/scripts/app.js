@@ -83,6 +83,10 @@ angular
                 controller: 'PipelinesCtrl'
             })
             .when('/pipeline/:id', {
+                templateUrl: 'views/pipeline.html',
+                controller: 'PipelineCtrl'
+            })
+            .when('/pipeline/:id/:mode', {
                 templateUrl: 'views/pipeline-editor.html',
                 controller: 'PipelineEditorCtrl'
             })

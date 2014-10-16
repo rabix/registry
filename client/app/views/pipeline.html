@@ -1,0 +1,17 @@
+<div ng-class="view.classes" loading="view.loading">
+
+    <div class="heading">
+        <a ng-href="#/pipelines" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
+        <h1>
+            {{ view.pipeline.name }}
+            <a ng-href="#/pipeline/{{ view.pipeline._id }}/edit" class="btn btn-primary pull-right"><i class="fa fa-pencil"></i> Edit</a>
+        </h1>
+    </div>
+    <!-- # .heading -->
+
+    <div ng-if="!view.loading" class="content">
+        <div class="pipeline-editor"></div>
+    </div>
+    <!-- # .content -->
+
+</div>

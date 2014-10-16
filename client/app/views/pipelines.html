@@ -14,7 +14,7 @@
                 </form>
             </div>
             <div class="col-md-8">
-                <a ng-href="#/pipeline/new" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> Add New Pipeline</a>
+                <a ng-href="#/pipeline/0/new" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> Add New Pipeline</a>
             </div>
         </div>
     </div>
@@ -27,6 +27,7 @@
                     <th>Name</th>
                     <th>Description</th>
                     <th>Author</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -34,6 +35,10 @@
                     <td><a ng-href="#/pipeline/{{ pipeline._id }}">{{ pipeline.name }}</a></td>
                     <td><p tooltip="{{ pipeline.description }}" tooltip-popup-delay="1000">{{ pipeline.description }}</p></td>
                     <td><p tooltip="{{ pipeline.author }}" tooltip-popup-delay="1000">{{ pipeline.author }}</p></td>
+                    <td>
+                        <a class="btn btn-default" tooltip="Edit Pipeline" ng-href="#/pipeline/{{ pipeline._id }}/edit"><i class="fa fa-pencil"></i></a>
+                        <a class="btn btn-default" tooltip="Previw Pipeline" ng-href="#/pipeline/{{ pipeline._id }}"><i class="fa fa-eye"></i></a>
+                    </td>
                 </tr>
                 <tr class="empty" ng-if="view.pipelines.length === 0">
                     <td colspan="3"><p class="alert alert-info">There are no pipelines found</p></td>

@@ -4,17 +4,17 @@
 'use strict';
 
 angular.module('registryApp')
-    .controller('PipelineEditorCtrl', ['$scope','$q', '$routeParams', 'Sidebar', 'Loading', 'App', 'Pipeline', function ($scope, $q, $routeParams, Sidebar, Loading, App, PipelineMdl) {
+    .controller('PipelineEditorCtrl', ['$scope','$q', '$routeParams', '$http', 'Sidebar', 'Loading', 'App', 'Pipeline', function ($scope, $q, $routeParams, $http, Sidebar, Loading, App, PipelineMdl) {
 
         Sidebar.setActive('_dyole');
 
         $scope.view = {};
-        //$scope.view.loading = true;
+        $scope.view.loading = true;
         $scope.view.tab = 'apps';
         $scope.view.pipeline = null;
         $scope.view.groups = {my: false, other: false};
         $scope.view.repoGroups = {};
-        $scope.view.id = $routeParams.id;
+        $scope.view.mode = $routeParams.mode;
 
         $scope.view.classes = ['page', 'dyole'];
         Loading.setClasses($scope.view.classes);
@@ -28,13 +28,14 @@ angular.module('registryApp')
         $scope.view.myRepositories = {};
         $scope.view.otherRepositories = {};
 
-        if ($routeParams.id !== 'new') {
+        if ($routeParams.mode === 'edit') {
             PipelineMdl.getPipeline($routeParams.id)
                 .then(function(result) {
                     $scope.view.pipeline = result.data;
                 });
+        } else {
+            $scope.view.pipeline = {name: 'New Pipeline'};
         }
-
 
         var appsLoaded = function (result) {
 
@@ -44,16 +45,10 @@ angular.module('registryApp')
             $scope.view.myRepositories = result[0].list || {};
             $scope.view.otherRepositories = result[1].list || {};
 
-            $.ajax({
-                url: '/pipeline-editor/data/clean_pipeline.json',
-                type: "GET",
-                dataType: 'JSON',
-
-                complete: function(data, status, headers, config) {
-
-                    Pipeline.init(data.responseJSON, document.getElementsByClassName('pipeline-editor'), {});
-                }
-            });
+            $http.get('/pipeline-editor/data/clean_pipeline.json')
+                .success(function(data) {
+                    Pipeline.init(data, document.getElementsByClassName('pipeline-editor'), {});
+                });
 
         };
 

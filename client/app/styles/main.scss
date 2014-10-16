@@ -272,6 +272,7 @@ body {
   .table {
     margin: 0;
     td {
+      vertical-align: middle;
       p {
         margin: 0;
         &:not(.alert) {
@@ -285,11 +286,13 @@ body {
         }
       }
       a {
-        width: 100%;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        display: block;
-        white-space: nowrap;
+        &:not(.btn) {
+          width: 100%;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          display: block;
+          white-space: nowrap;
+        }
       }
       &.revision {
         text-align: center;
@@ -323,6 +326,23 @@ body {
         &:nth-child(1),
         &:nth-child(2) { width: 20%; }
         &:nth-child(3) { width: 60%; }
+      }
+      td {
+        p {
+          &:not(.alert) {
+            max-width: 500px;
+          }
+        }
+      }
+    }
+
+    /* Pipelines table */
+    &.pipelines {
+      th {
+        &:nth-child(1),
+        &:nth-child(3),
+        &:nth-child(4) { width: 20%; }
+        &:nth-child(2) { width: 40%; }
       }
       td {
         p {
