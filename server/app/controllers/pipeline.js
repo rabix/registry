@@ -60,6 +60,16 @@ router.get('/pipeline', function (req, res, next) {
     });
 });
 
+router.get('/pipeline/:id', function (req, res, next) {
+
+    Pipeline.findById(req.params.id).exec(function(err, pipeline) {
+        if (err) { return next(err); }
+
+        res.json({data: pipeline});
+    });
+
+});
+
 router.post('/pipeline', function (req, res, next) {
     
 });

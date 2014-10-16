@@ -66,10 +66,6 @@ angular
                 templateUrl: 'views/repo.html',
                 controller: 'RepoCtrl'
             })
-            .when('/pipelines', {
-                templateUrl: 'views/pipelines.html',
-                controller: 'PipelinesCtrl'
-            })
             .when('/settings', {
                 templateUrl: 'views/settings.html',
                 controller: 'SettingsCtrl'
@@ -82,7 +78,11 @@ angular
                 templateUrl: 'views/repo-instructions.html',
                 controller: 'RepoInstructionsCtrl'
             })
-            .when('/pipeline-editor', {
+            .when('/pipelines', {
+                templateUrl: 'views/pipelines.html',
+                controller: 'PipelinesCtrl'
+            })
+            .when('/pipeline/:id', {
                 templateUrl: 'views/pipeline-editor.html',
                 controller: 'PipelineEditorCtrl'
             })

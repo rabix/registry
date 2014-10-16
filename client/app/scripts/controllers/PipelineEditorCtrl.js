@@ -4,15 +4,17 @@
 'use strict';
 
 angular.module('registryApp')
-    .controller('PipelineEditorCtrl', ['$scope','$q', 'Sidebar', 'Loading', 'App', function ($scope, $q, Sidebar, Loading, App) {
+    .controller('PipelineEditorCtrl', ['$scope','$q', '$routeParams', 'Sidebar', 'Loading', 'App', 'Pipeline', function ($scope, $q, $routeParams, Sidebar, Loading, App, PipelineMdl) {
 
         Sidebar.setActive('_dyole');
 
         $scope.view = {};
-        $scope.view.loading = true;
+        //$scope.view.loading = true;
         $scope.view.tab = 'apps';
+        $scope.view.pipeline = null;
         $scope.view.groups = {my: false, other: false};
         $scope.view.repoGroups = {};
+        $scope.view.id = $routeParams.id;
 
         $scope.view.classes = ['page', 'dyole'];
         Loading.setClasses($scope.view.classes);
@@ -35,6 +37,13 @@ angular.module('registryApp')
 
         $scope.view.myRepositories = {};
         $scope.view.otherRepositories = {};
+
+        if ($routeParams.id !== 'new') {
+            PipelineMdl.getPipeline($routeParams.id)
+                .then(function(result) {
+                    $scope.view.pipeline = result.data;
+                });
+        }
 
 
         var appsLoaded = function (result) {
