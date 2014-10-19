@@ -17,7 +17,7 @@ module.exports = function (app) {
 };
 
 router.get('/pipeline/format', function (req, res, next) {
-    fs.readFile('/Users/filip/SBG/rabix/registry/pipeline-editor/data/new_pipeline.json', 'utf8', function (err, data) {
+    fs.readFile('/Users/filip/SBG/rabix/registry/pipeline-editor/data/clean_pipeline.json', 'utf8', function (err, data) {
         var json = JSON.parse(data);
 
         var r = formater.toRabixSchema(json);

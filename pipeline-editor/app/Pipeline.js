@@ -44,6 +44,13 @@ var Pipeline = (function () {
                 console.log('scrolbars:draw');
                 _self._drawScrollbars();
             });
+            
+            this.Event.subscribe('node:add', function (model) {
+
+                var _id = model._id || _.random(100000, 999999);
+
+                _self.nodes[_id] = new _self.Node(model);
+            });
 
             this.Event.subscribe('connection:create', function (endTerminal, startTerminal) {
                 var end = endTerminal.model.input ? endTerminal : startTerminal,
@@ -389,7 +396,9 @@ var Pipeline = (function () {
         },
 
         Public: {
-
+            addNode: function (model) {
+                Pipeline.Event.trigger('node:add', model);
+            }
         }
 
     };

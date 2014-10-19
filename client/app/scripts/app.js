@@ -18,7 +18,8 @@ angular
         'ui.bootstrap',
         'ngPrettyJson',
         'LocalForageModule',
-        'registryApp.cliche'
+        'registryApp.cliche',
+        'ngDragDrop'
     ])
     .config(['$routeProvider', '$httpProvider', '$localForageProvider', function ($routeProvider, $httpProvider, $localForageProvider) {
         $routeProvider
