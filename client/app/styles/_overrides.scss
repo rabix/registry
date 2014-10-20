@@ -328,3 +328,6 @@ ul {
   margin-right: 10px;
 }
 
+[draggable] {
+  @include user-select(none);
+}

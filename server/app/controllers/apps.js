@@ -79,7 +79,7 @@ router.get('/repositories/:type', function (req, res, next) {
         }
     }
 
-    App.find(where, 'repo_name repo_owner name description user_id json').sort({_id: 'desc'}).exec(function(err, apps) {
+    App.find(where, 'repo_name repo_owner name description').sort({_id: 'desc'}).exec(function(err, apps) {
         if (err) { return next(err); }
 
         var grouped = _.groupBy(apps, function (app) {
@@ -91,7 +91,7 @@ router.get('/repositories/:type', function (req, res, next) {
 
 });
 
-router.get('/apps/:id', filters.authenticated, function (req, res, next) {
+router.get('/apps/:id', function (req, res, next) {
 
     App.findById(req.params.id).populate('user_id').exec(function(err, app) {
         if (err) { return next(err); }

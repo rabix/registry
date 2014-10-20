@@ -423,8 +423,19 @@ legend {
     li {
       a {
         cursor: move;
-        padding-left: 60px;
         background-color: #fdfdfd;
+        color: #555;
+        padding: 7px 15px 7px 60px;
+        display: block;
+        @include user-select(none);
+
+        i {
+          color: $sidebar-blue;
+        }
+
+        &.drag {
+          opacity: 0.7;
+        }
       }
     }
   }

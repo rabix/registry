@@ -13,7 +13,7 @@
     <div ng-if="!view.loading" class="content">
 
         <div class="col content-col">
-            <div class="pipeline-editor"></div>
+            <div class="pipeline-editor" drop="dropApp(id)"></div>
         </div>
 
         <div class="col sidebar-col">
@@ -59,7 +59,7 @@
                                         </a>
                                         <ul class="apps-inner-list">
                                             <li ng-repeat="app in apps">
-                                                <a href><i class="fa fa-puzzle-piece"></i> {{ app.name }}</a>
+                                                <a href drag="app"><i class="fa fa-puzzle-piece"></i> {{ app.name }}</a>
                                             </li>
                                         </ul>
                                     </li>
@@ -79,8 +79,8 @@
                                             {{ repoName }}
                                         </a>
                                         <ul class="apps-inner-list">
-                                            <li ng-repeat="app in apps" >
-                                                <a class="ui-draggable" data-drag="true" data-jqyoui-options="{revert: 'invalid'}" ng-model="list1" jqyoui-draggable="{animate:true}" href><i class="fa fa-puzzle-piece"></i>  {{ app.name }}</a>
+                                            <li ng-repeat="app in apps">
+                                                <a href drag="app"><i class="fa fa-puzzle-piece"></i>  {{ app.name }}</a>
                                             </li>
                                         </ul>
                                     </li>

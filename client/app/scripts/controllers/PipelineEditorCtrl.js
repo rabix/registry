@@ -126,5 +126,18 @@ angular.module('registryApp')
 
         };
 
+        $scope.dropApp = function(id) {
+
+            $scope.view.loading = true;
+
+            App.getApp(id).then(function(result) {
+
+                $scope.view.loading = false;
+                Pipeline.Public.addNode(result.data);
+
+            });
+
+        };
+
 
     }]);
