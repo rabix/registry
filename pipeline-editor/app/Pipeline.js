@@ -3,7 +3,7 @@
  */
 var Pipeline = (function () {
 
-    return {
+    var self = {
 
         init: function (model, $parent, services) {
             this.model = model;
@@ -47,9 +47,21 @@ var Pipeline = (function () {
             
             this.Event.subscribe('node:add', function (model) {
 
-                var _id = model._id || _.random(100000, 999999);
+                var _id = model.id || _.random(100000, 999999);
 
-                _self.nodes[_id] = new _self.Node(model);
+                model.id = _id;
+
+                var node = new _self.Node({
+                    pipeline: _self,
+                    model: model,
+                    canvas: _self.canvas,
+                    pipelineWrap: _self.pipelineWrap
+                });
+
+                _self.nodes[_id] = node;
+
+                _self.pipelineWrap.push(node.render().el);
+
             });
 
             this.Event.subscribe('connection:create', function (endTerminal, startTerminal) {
@@ -395,12 +407,67 @@ var Pipeline = (function () {
 
         },
 
+        _transformModel: function (nodeModel) {
+
+            var model = nodeModel.json,
+                schema = {
+                    inputs: [],
+                    outputs: []
+                };
+
+            _.each(model.inputs.properties, function (input, name) {
+
+                input.name = name;
+                input.id = input.id || name;
+
+                schema.inputs.push(input);
+            });
+
+            _.each(model.outputs.properties, function (output, name) {
+                output.name = name;
+                output.id = output.id || name;
+
+                schema.outputs.push(output);
+            });
+
+            model.schema = schema;
+
+            return model;
+
+        },
+
         Public: {
-            addNode: function (model) {
+
+            canvasEl: null,
+
+            addNode: function (nodeModel, clientX, clientY) {
+
+                var model = self._transformModel(nodeModel);
+
+                if (!this.canvasEl) {
+                    this.canvasEl = $(self.$parent).find('svg')[0];
+                }
+
+
+                var canvas = this.canvasEl.getBoundingClientRect();
+
+                console.log('x: %s, y: %s, canvas: ', clientX, clientY, canvas);
+
+                var x = clientX - canvas.left - self.pipelineWrap.getTranslation().x,
+                    y = clientY - canvas.top - self.pipelineWrap.getTranslation().y;
+
+                console.log('x: %s, y: %s', x, y);
+
+
+                model.x = x;
+                model.y = y;
+
                 Pipeline.Event.trigger('node:add', model);
             }
         }
 
     };
+
+    return self;
 
 })();
