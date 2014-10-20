@@ -118,7 +118,7 @@
 
             this.pipeline.Event.subscribe('terminal:selectAvailable', function (terminal, nodeId) {
                 console.log(terminal,nodeId);
-                self.checkAvailibility(terminal, nodeId);
+//                self.checkAvailibility(terminal, nodeId);
 
             });
 
@@ -135,17 +135,17 @@
                 available;
 
             if (self.mouseoverTerminal) {
-                console.log(this.mouseoverTerminal);
-                available = this.checkAvailibility(this.mouseoverTerminal.model, this.mouseoverTerminal.parent.model.id);
+//                console.log(this.mouseoverTerminal);
+//                available = this.checkAvailibility(this.mouseoverTerminal.model, this.mouseoverTerminal.parent.model.id);
 
-                if (available.status) {
+//                if (available.status) {
                     this.pipeline.Event.trigger('connection:create', self.mouseoverTerminal, self);
 
                     self.mouseoverTerminal = null;
-                } else {
+//                } else {
 //                    Notify.show('Cannot connect terminal: ' + available.error);
-                    console.error('Node cannot connect');
-                }
+//                    console.error('Node cannot connect');
+//                }
 
             }
 

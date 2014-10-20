@@ -7,7 +7,7 @@ var Pipeline = (function () {
 
         init: function (model, $parent, services) {
             this.model = model;
-            this.$parent = $parent;
+            this.$parent = $($parent);
             this.services = services || {};
 
 
@@ -89,7 +89,15 @@ var Pipeline = (function () {
 
         _initCanvas: function () {
             var width = 600,
-                height = 600;
+                height = 600,
+                $parent = this.$parent,
+                $parentDim = {
+                    width: $parent.width() - 10,
+                    height: $parent.height() || $parent.parent().height()
+                };
+
+            width = $parentDim.width || width;
+            height = $parentDim.height || height;
 
             this.canvas = new Raphael(this.$parent[0], width, height);
             this.pipelineWrap = this.canvas.group();
@@ -436,6 +444,17 @@ var Pipeline = (function () {
 
         },
 
+        destroy: function () {
+            var events = ['node:add', 'connection:create', 'scrollbars:draw', 'node:add'];
+
+            this.canvas = null;
+            this.model = null;
+
+            this.$parent.find('svg').remove();
+            this.nodes = null;
+            this.Event.unsubscribe();
+        },
+
         Public: {
 
             canvasEl: null,
@@ -447,7 +466,6 @@ var Pipeline = (function () {
                 if (!this.canvasEl) {
                     this.canvasEl = $(self.$parent).find('svg')[0];
                 }
-
 
                 var canvas = this.canvasEl.getBoundingClientRect();
 
