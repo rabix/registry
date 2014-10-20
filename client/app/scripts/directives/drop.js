@@ -72,7 +72,9 @@ angular.module('registryApp')
 
                     var id = e.dataTransfer.getData('Text');
 
-                    scope.$apply('drop({id: "' + id + '"})');
+                    scope.$apply(function() {
+                        scope.drop({id: id, e: e});
+                    });
 
                     return false;
 

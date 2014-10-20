@@ -126,7 +126,13 @@ angular.module('registryApp')
 
         };
 
-        $scope.dropApp = function(id) {
+        /**
+         * Drop app on the canvas
+         *
+         * @param {MouseEvent} e
+         * @param {String} id
+         */
+        $scope.dropApp = function(e, id) {
 
             $scope.view.loading = true;
 

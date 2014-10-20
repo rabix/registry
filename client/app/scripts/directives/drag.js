@@ -30,9 +30,9 @@ angular.module('registryApp')
 
                     var dragIcon = document.createElement('img');
                     dragIcon.src = 'images/app-icon.png';
-                    dragIcon.width = 100;
+                    dragIcon.width = 70;
 
-                    e.dataTransfer.setDragImage(dragIcon, -10, -10);
+                    e.dataTransfer.setDragImage(dragIcon, 35, 35);
 
                     this.classList.add('drag');
 
