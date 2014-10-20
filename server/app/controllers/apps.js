@@ -79,7 +79,7 @@ router.get('/repositories/:type', function (req, res, next) {
         }
     }
 
-    App.find(where, 'repo_name repo_owner name description').sort({_id: 'desc'}).exec(function(err, apps) {
+    App.find(where, 'repo_name repo_owner name description json').sort({_id: 'desc'}).exec(function(err, apps) {
         if (err) { return next(err); }
 
         var grouped = _.groupBy(apps, function (app) {

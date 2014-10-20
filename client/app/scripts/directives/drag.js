@@ -20,6 +20,7 @@ angular.module('registryApp')
                  *
                  * @param {Object} e
                  * @param {Object} e.dataTransfer
+                 * @param {Object} e.dataTransfer.setData
                  * @param {Object} e.dataTransfer.setDragImage
                  * @returns {boolean}
                  */
@@ -27,12 +28,7 @@ angular.module('registryApp')
 
                     e.dataTransfer.effectAllowed = 'move';
                     e.dataTransfer.setData('Text', scope.drag._id);
-
-                    var dragIcon = document.createElement('img');
-                    dragIcon.src = 'images/app-icon.png';
-                    dragIcon.width = 70;
-
-                    e.dataTransfer.setDragImage(dragIcon, 35, 35);
+                    e.dataTransfer.setDragImage(angular.element('<img src="images/app-icon.png" width="70">')[0], 35, 35);
 
                     this.classList.add('drag');
 

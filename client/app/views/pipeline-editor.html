@@ -26,7 +26,7 @@
                 </ul>
             </div>
 
-            <div class="filter">
+            <div ng-if="view.tab === 'apps'" class="filter">
                 <form class="search-form" ng-submit="filterApps()" novalidate>
                     <div class="input-group">
                         <input type="text" class="form-control" ng-model="view.searchTerm" placeholder="Filter Apps" required>
@@ -39,6 +39,7 @@
             </div>
 
             <div class="content">
+
                 <div class="tabs right" ng-switch="view.tab">
 
                     <div class="tab" ng-switch-when="apps">
@@ -91,11 +92,24 @@
                     </div>
 
                     <div class="tab" ng-switch-when="params">
-                        params
+
+                        <form class="form" name="paramForms" novalidate>
+                            <div class="input-container">
+                                <input-field
+                                        ng-repeat="(key, property) in view.json.inputs.properties"
+                                        ng-model="view.params.inputs[key]"
+                                        key="{{ key }}"
+                                        prop="property"
+                                        form="paramForms">
+                                </input-field>
+                            </div>
+                            <p class="alert alert-info" ng-if="view.json.inputs.properties | isEmpty">There are no params set for this app.</p>
+                        </form>
+
                     </div>
 
                     <div class="tab" ng-switch-when="json">
-                        json
+                        <pre class="json-trace" pretty-json="view.params"></pre>
                     </div>
 
                 </div>

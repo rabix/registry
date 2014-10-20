@@ -240,6 +240,30 @@
       @include flex(1);
       @include flex-box();
       @include flex-flow(column nowrap);
+
+      & > .tabs {
+        @include flex(1);
+        @include flex-box();
+        @include flex-flow(column nowrap);
+
+        & > .tab {
+          @include flex(1);
+          @include flex-box();
+          @include flex-flow(column nowrap);
+          .json-trace,
+          .console-trace {
+            @include flex(1);
+            @include flex-box();
+            @include flex-flow(column nowrap);
+            pre {
+              overflow-y: auto;
+              @include flex(1);
+              @include scrollBar($orange);
+            }
+          }
+        }
+      }
+
     }
 
     &.content-col {
@@ -442,5 +466,11 @@ legend {
   .alert {
     margin: 0;
     padding: 5px 10px 5px 30px;
+  }
+}
+
+.pipeline-editor {
+  &.drag-over {
+    background-color: #f3f3f3;
   }
 }

@@ -18,7 +18,8 @@ angular.module('registryApp')
                 /**
                  * Callback when dragging over the element
                  *
-                 * @param e
+                 * @param {Object} e
+                 * @param {Object} e.dataTransfer
                  * @returns {boolean}
                  */
                 var handleDragOver = function(e) {
@@ -59,7 +60,7 @@ angular.module('registryApp')
                 /**
                  * Callback when dropping element on drop area
                  *
-                 * @param e
+                 * @param {Object} e
                  * @returns {boolean}
                  */
                 var handleDrop = function(e) {

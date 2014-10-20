@@ -14,6 +14,7 @@ angular.module('registryApp')
         $scope.view.pipeline = null;
         $scope.view.groups = {my: false, other: false};
         $scope.view.repoGroups = {};
+        $scope.view.params = {inputs: {}};
         $scope.view.mode = $routeParams.mode;
 
         $scope.view.classes = ['page', 'dyole'];
@@ -44,6 +45,11 @@ angular.module('registryApp')
 
             $scope.view.myRepositories = result[0].list || {};
             $scope.view.otherRepositories = result[1].list || {};
+
+            var repos = _.keys($scope.view.otherRepositories);
+            var repo = repos[_.random(0, repos.length - 1)];
+
+            $scope.view.json = $scope.view.otherRepositories[repo][0].json;
 
             $http.get('/pipeline-editor/data/clean_pipeline.json')
                 .success(function(data) {
