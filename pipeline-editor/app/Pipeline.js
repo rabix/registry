@@ -445,14 +445,17 @@ var Pipeline = (function () {
         },
 
         destroy: function () {
-            var events = ['node:add', 'connection:create', 'scrollbars:draw', 'node:add'];
+            var _self = this,
+                events = ['node:add', 'connection:create', 'scrollbars:draw', 'node:add'];
 
             this.canvas = null;
             this.model = null;
 
             this.$parent.find('svg').remove();
             this.nodes = null;
-            this.Event.unsubscribe();
+            _.each(events, function (event) {
+                _self.Event.unsubscribe(event);
+            })
         },
 
         Public: {

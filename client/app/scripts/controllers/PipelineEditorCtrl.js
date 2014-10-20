@@ -47,7 +47,8 @@ angular.module('registryApp')
 
             $http.get('/pipeline-editor/data/clean_pipeline.json')
                 .success(function(data) {
-                    Pipeline.init(data, document.getElementsByClassName('pipeline-editor'), {});
+                    $scope.Pipeline = Object.create(Pipeline);
+                    $scope.Pipeline.init(data, document.getElementsByClassName('pipeline-editor'), {});
                 });
 
         };
