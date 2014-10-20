@@ -331,3 +331,9 @@ ul {
 [draggable] {
   @include user-select(none);
 }
+
+.preload {
+  img {
+    display: none;
+  }
+}
