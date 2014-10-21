@@ -137,11 +137,26 @@
             return this;
         },
 
+        _filterInputs: function () {
+            var inputs = [],
+                filter = ['file', 'directory'];
+
+            _.each(this.model.inputs, function (input) {
+                if (typeof input.type !== 'undefined') {
+                    if (filter.indexOf(input.type) !== -1 || ( input.type === 'array' && filter.indexOf(input.items.type) !== -1 ) ) {
+                        inputs.push(input);
+                    }
+                }
+            });
+
+            return inputs.length === 0 ? this.model.inputs : inputs;
+        },
+
         _initTerminals: function () {
             var canvas = this.canvas,
                 inputs = this.inputs,
                 outputs = this.outputs,
-                modelInputs = this.model.inputs,
+                modelInputs = this._filterInputs(),
                 modelOutputs = this.model.outputs,
                 radius = this.constraints.radius,
                 inputStartingAngle = 120,
