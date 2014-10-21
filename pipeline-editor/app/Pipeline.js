@@ -3,7 +3,7 @@
  */
 var Pipeline = (function () {
 
-    var self = {
+    return {
 
         init: function (model, $parent, services) {
             this.model = model;
@@ -458,37 +458,27 @@ var Pipeline = (function () {
             })
         },
 
-        Public: {
+        addNode: function (nodeModel, clientX, clientY) {
 
-            canvasEl: null,
+            var model = this._transformModel(nodeModel);
 
-            addNode: function (nodeModel, clientX, clientY) {
+            var canvas = $(this.$parent).offset();
 
-                var model = self._transformModel(nodeModel);
+            console.log('x: %s, y: %s, canvas: ', clientX, clientY, canvas);
 
-                if (!this.canvasEl) {
-                    this.canvasEl = $(self.$parent).find('svg')[0];
-                }
+            var x = clientX - canvas.left - this.pipelineWrap.getTranslation().x,
+                y = clientY - canvas.top - this.pipelineWrap.getTranslation().y;
 
-                var canvas = this.canvasEl.getBoundingClientRect();
-
-                console.log('x: %s, y: %s, canvas: ', clientX, clientY, canvas);
-
-                var x = clientX - canvas.left - self.pipelineWrap.getTranslation().x,
-                    y = clientY - canvas.top - self.pipelineWrap.getTranslation().y;
-
-                console.log('x: %s, y: %s', x, y);
+            console.log('x: %s, y: %s', x, y);
 
 
-                model.x = x;
-                model.y = y;
+            model.x = x;
+            model.y = y;
 
-                Pipeline.Event.trigger('node:add', model);
-            }
+            Pipeline.Event.trigger('node:add', model);
         }
 
-    };
 
-    return self;
+    };
 
 })();

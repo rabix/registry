@@ -140,7 +140,7 @@ angular.module('registryApp')
             App.getApp(id).then(function(result) {
 
 //                $scope.view.loading = false;
-                Pipeline.Public.addNode(result.data, e.clientX, e.clientY);
+                $scope.Pipeline.addNode(result.data, e.clientX, e.clientY);
 
             });
 
