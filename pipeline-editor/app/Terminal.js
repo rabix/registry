@@ -117,8 +117,8 @@
             });
 
             this.pipeline.Event.subscribe('terminal:selectAvailable', function (terminal, nodeId) {
-                console.log(terminal,nodeId);
-//                self.checkAvailibility(terminal, nodeId);
+//                console.log(terminal,nodeId);
+                self.checkAvailibility(terminal, nodeId);
 
             });
 
@@ -136,50 +136,62 @@
 
             if (self.mouseoverTerminal) {
 //                console.log(this.mouseoverTerminal);
-//                available = this.checkAvailibility(this.mouseoverTerminal.model, this.mouseoverTerminal.parent.model.id);
+                available = this.checkAvailibility(this.mouseoverTerminal.model, this.mouseoverTerminal.parent.model.id);
 
-//                if (available.status) {
+                if (available.status) {
                     this.pipeline.Event.trigger('connection:create', self.mouseoverTerminal, self);
 
                     self.mouseoverTerminal = null;
-//                } else {
+                } else {
 //                    Notify.show('Cannot connect terminal: ' + available.error);
-//                    console.error('Node cannot connect');
-//                }
+                    console.error('Node cannot connect');
+                }
 
             }
 
         },
 
         checkAvailibility: function (terminal, nodeId) {
-            var crossIn, crossOut, bothSystem,
-                startNode = this.parent.model,
-                endNode = this.pipeline.nodes[nodeId].model;
+//            var crossIn, crossOut, bothSystem,
+//                startNode = this.parent.model,
+//                endNode = this.pipeline.nodes[nodeId].model;
+//
+//            crossIn = _.intersection(terminal.types, this.model.types);
+//            crossOut = _.intersection(this.model.types, terminal.types);
+//
+//            if ( ( (crossIn.length !== 0 || crossOut.length !== 0 ) || (terminal.types.length === 0 || this.model.types.length === 0) ) && nodeId !== this.parent.model.id && terminal.input !== this.model.input) {
+//
+//                if (!this.terminals[terminal.id] ||  ( this.terminals[terminal.id] && this.terminals[terminal.id] !== this.parent.model.id ) ) {
+//                    this.showAvailableState();
+//                    return {
+//                        status: true,
+//                        error: false
+//                    };
+//                } else {
+//                    return {
+//                        status: false,
+//                        error: 'Terminal already connected with same terminal'
+//                    };
+//                }
+//
+//            }
+//
+//            return {
+//                status: false,
+//                error: 'Terminal types are not compatible'
+//            };
 
-            crossIn = _.intersection(terminal.types, this.model.types);
-            crossOut = _.intersection(this.model.types, terminal.types);
+            var available = false;
 
-            if ( ( (crossIn.length !== 0 || crossOut.length !== 0 ) || (terminal.types.length === 0 || this.model.types.length === 0) ) && nodeId !== this.parent.model.id && terminal.input !== this.model.input) {
+            if (terminal.input !== this.model.input) {
+                this.showAvailableState();
 
-                if (!this.terminals[terminal.id] ||  ( this.terminals[terminal.id] && this.terminals[terminal.id] !== this.parent.model.id ) ) {
-                    this.showAvailableState();
-                    return {
-                        status: true,
-                        error: false
-                    };
-                } else {
-                    return {
-                        status: false,
-                        error: 'Terminal already connected with same terminal'
-                    };
-                }
-
+                available = true;
             }
 
             return {
-                status: false,
-                error: 'Terminal types are not compatible'
-            };
+                status: available
+            }
         },
 
         render: function () {

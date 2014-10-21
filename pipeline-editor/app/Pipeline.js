@@ -416,7 +416,7 @@ var Pipeline = (function () {
         },
 
         _transformModel: function (nodeModel) {
-
+            this.services.test();
             var model = nodeModel.json,
                 schema = {
                     inputs: [],
