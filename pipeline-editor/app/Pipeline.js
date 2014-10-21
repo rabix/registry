@@ -3,11 +3,11 @@
  */
 var Pipeline = (function () {
 
-    var self = {
+    return {
 
         init: function (model, $parent, services) {
             this.model = model;
-            this.$parent = $parent;
+            this.$parent = $($parent);
             this.services = services || {};
 
 
@@ -89,7 +89,15 @@ var Pipeline = (function () {
 
         _initCanvas: function () {
             var width = 600,
-                height = 600;
+                height = 600,
+                $parent = this.$parent,
+                $parentDim = {
+                    width: $parent.width() - 10,
+                    height: $parent.height() || $parent.parent().height()
+                };
+
+            width = $parentDim.width || width;
+            height = $parentDim.height || height;
 
             this.canvas = new Raphael(this.$parent[0], width, height);
             this.pipelineWrap = this.canvas.group();
@@ -436,38 +444,41 @@ var Pipeline = (function () {
 
         },
 
-        Public: {
+        destroy: function () {
+            var _self = this,
+                events = ['node:add', 'connection:create', 'scrollbars:draw', 'node:add'];
 
-            canvasEl: null,
+            this.canvas = null;
+            this.model = null;
 
-            addNode: function (nodeModel, clientX, clientY) {
+            this.$parent.find('svg').remove();
+            this.nodes = null;
+            _.each(events, function (event) {
+                _self.Event.unsubscribe(event);
+            })
+        },
 
-                var model = self._transformModel(nodeModel);
+        addNode: function (nodeModel, clientX, clientY) {
 
-                if (!this.canvasEl) {
-                    this.canvasEl = $(self.$parent).find('svg')[0];
-                }
+            var model = this._transformModel(nodeModel);
 
+            var canvas = $(this.$parent).offset();
 
-                var canvas = this.canvasEl.getBoundingClientRect();
+            console.log('x: %s, y: %s, canvas: ', clientX, clientY, canvas);
 
-                console.log('x: %s, y: %s, canvas: ', clientX, clientY, canvas);
+            var x = clientX - canvas.left - this.pipelineWrap.getTranslation().x,
+                y = clientY - canvas.top - this.pipelineWrap.getTranslation().y;
 
-                var x = clientX - canvas.left - self.pipelineWrap.getTranslation().x,
-                    y = clientY - canvas.top - self.pipelineWrap.getTranslation().y;
-
-                console.log('x: %s, y: %s', x, y);
+            console.log('x: %s, y: %s', x, y);
 
 
-                model.x = x;
-                model.y = y;
+            model.x = x;
+            model.y = y;
 
-                Pipeline.Event.trigger('node:add', model);
-            }
+            Pipeline.Event.trigger('node:add', model);
         }
 
-    };
 
-    return self;
+    };
 
 })();
