@@ -12,8 +12,8 @@
 
     <div ng-if="!view.loading" class="content">
 
-        <div class="col content-col">
-            <div class="pipeline-editor" drop="dropApp(e, id)"></div>
+        <div class="col content-col" drop="dropApp(e, id)">
+            <div pipeline="view.pipeline"></div>
         </div>
 
         <div class="col sidebar-col">

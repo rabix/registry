@@ -4,7 +4,7 @@
 'use strict';
 
 angular.module('registryApp')
-    .controller('PipelineEditorCtrl', ['$scope','$q', '$routeParams', '$http', 'Sidebar', 'Loading', 'App', 'Pipeline', function ($scope, $q, $routeParams, $http, Sidebar, Loading, App, PipelineMdl) {
+    .controller('PipelineEditorCtrl', ['$scope','$q', '$routeParams', '$http', 'Sidebar', 'Loading', 'App', 'pipeline',  'Pipeline', function ($scope, $q, $routeParams, $http, Sidebar, Loading, App, Pipeline, PipelineMdl) {
 
         Sidebar.setActive('_dyole');
 
@@ -50,12 +50,6 @@ angular.module('registryApp')
             var repo = repos[_.random(0, repos.length - 1)];
 
             $scope.view.json = $scope.view.otherRepositories[repo][0].json;
-
-            $http.get('/pipeline-editor/data/clean_pipeline.json')
-                .success(function(data) {
-                    $scope.Pipeline = Object.create(Pipeline);
-                    $scope.Pipeline.init(data, document.getElementsByClassName('pipeline-editor'), {});
-                });
 
         };
 
@@ -146,7 +140,7 @@ angular.module('registryApp')
             App.getApp(id).then(function(result) {
 
 //                $scope.view.loading = false;
-                $scope.Pipeline.addNode(result.data, e.clientX, e.clientY);
+                Pipeline.addNode(result.data, e.clientX, e.clientY);
 
             });
 

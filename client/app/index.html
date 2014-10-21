@@ -63,6 +63,10 @@
 
     <!-- build:js({.tmp,app}) scripts/vendor.js -->
     <script src="vendor/jsandbox/src/jsandbox.js"></script>
+    <script src="vendor/raphael/raphael.js"></script>
+    <script src="vendor/raphael/raphael.button.js"></script>
+    <script src="vendor/raphael/raphael.curve.js"></script>
+    <script src="vendor/raphael/raphael.group.js"></script>
 
     <script src="bower_components/jquery/dist/jquery.js"></script>
 
@@ -79,8 +83,6 @@
     <script src="bower_components/localforage/dist/localforage.js"></script>
     <script src="bower_components/angular-localForage/dist/angular-localForage.js"></script>
     <script src="bower_components/zeroclipboard/dist/ZeroClipboard.js"></script>
-    <script src="bower_components/jquery-ui/jquery-ui.js"></script>
-    <script src="bower_components/angular-dragdrop/src/angular-dragdrop.js"></script>
     <!-- endbuild -->
 
     <!-- build:js scripts/codemirror.js -->
@@ -109,7 +111,7 @@
     <script src="scripts/controllers/RevisionCtrl.js"></script>
     <script src="scripts/controllers/PipelineEditorCtrl.js"></script>
     <script src="scripts/controllers/PipelinesCtrl.js"></script>
-    <script src="scripts/controllers/PipelineCtrl.js"></script>
+    <script src="scripts/controllers/PipelineViewCtrl.js"></script>
 
     <script src="scripts/directives/error.js"></script>
     <script src="scripts/directives/height.js"></script>
@@ -133,6 +135,20 @@
     <script src="scripts/models/Build.js"></script>
     <script src="scripts/models/Repo.js"></script>
     <script src="scripts/models/Pipeline.js"></script>
+    <!-- endbuild -->
+
+    <!-- build:js({.tmp,app}) scripts/dyole.js -->
+    <script src="scripts/dyole/app.js"></script>
+
+    <script src="scripts/dyole/controllers/PipelineCtrl.js"></script>
+
+    <script src="scripts/dyole/directives/pipeline.js"></script>
+
+    <script src="scripts/dyole/factories/pipeline.js"></script>
+    <script src="scripts/dyole/factories/event.js"></script>
+    <script src="scripts/dyole/factories/node.js"></script>
+    <script src="scripts/dyole/factories/connection.js"></script>
+    <script src="scripts/dyole/factories/terminal.js"></script>
     <!-- endbuild -->
 
     <!-- build:js({.tmp,app}) scripts/cliche.js -->
@@ -167,7 +183,5 @@
     <script src="scripts/cliche/services/JSandbox.js"></script>
     <!-- endbuild -->
 
-    <!-- Pipeline editor (_dyole) -->
-    <script src="/pipeline-editor/pipeline-editor.js"></script>
 </body>
 </html>

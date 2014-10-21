@@ -4,7 +4,7 @@
 'use strict';
 
 angular.module('registryApp')
-    .controller('PipelineCtrl', ['$scope', '$routeParams', '$http', 'Sidebar', 'Loading', 'Pipeline', function ($scope, $routeParams, $http, Sidebar, Loading, PipelineMdl) {
+    .controller('PipelineViewCtrl', ['$scope', '$routeParams', '$http', 'Sidebar', 'Loading', 'Pipeline', function ($scope, $routeParams, $http, Sidebar, Loading, PipelineMdl) {
 
         Sidebar.setActive('_dyole');
 
