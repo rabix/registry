@@ -5,7 +5,7 @@
 'use strict';
 
 angular.module('registryApp.dyole')
-    .factory('pipeline', ['event', 'node', 'connection', function(Event, Node, Connection) {
+    .factory('pipeline', ['event', 'node', 'connection', '$rootScope', function(Event, Node, Connection, $rootScope) {
 
         var Pipeline = function (options) {
             this.model = options.model;
@@ -46,6 +46,13 @@ angular.module('registryApp.dyole')
                 Event.subscribe('scrollbars:draw', function () {
                     console.log('scrolbars:draw');
                     _self._drawScrollbars();
+                });
+
+                /**
+                 * @param type {string}
+                 */
+                Event.subscribe('pipeline:change', function () {
+                    $rootScope.$broadcast('pipeline:changed', true);
                 });
 
                 Event.subscribe('node:add', function (model) {
@@ -219,6 +226,7 @@ angular.module('registryApp.dyole')
 
                         self.rect.dragged = true;
                         self._drawScrollbars();
+                        Event.trigger('pipeline:change');
 
                     }
 
@@ -352,9 +360,11 @@ angular.module('registryApp.dyole')
                     output: output,
                     element: _self.$parent
                 });
-                console.log(connection, _self.nodes);
+
                 _self.nodes[connection.start_node].addConnection(_self.connections[connection.id]);
                 _self.nodes[connection.end_node].addConnection(_self.connections[connection.id]);
+
+                Event.trigger('pipeline:change');
 
             },
 

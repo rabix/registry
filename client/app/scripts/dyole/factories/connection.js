@@ -221,6 +221,8 @@ angular.module('registryApp.dyole')
                 }
 
                 console.log('Connection remove');
+                Event.trigger('pipeline:change');
+
 
 //            Event.trigger('pipeline:change', 'revision');
             },

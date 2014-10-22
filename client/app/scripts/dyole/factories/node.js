@@ -468,6 +468,7 @@ angular.module('registryApp.dyole')
 //            this.parentView.moveSelectedNodes((start.x + dx) - old.x, ( start.y + dy) - old.y , this.model.get('id'));
 
                 Event.trigger('scrollbars:draw');
+                Event.trigger('pipeline:change');
             },
 
             onMoveEnd: function () {
