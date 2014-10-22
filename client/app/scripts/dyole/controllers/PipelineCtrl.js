@@ -6,7 +6,7 @@
 'use strict';
 
 angular.module('registryApp.dyole')
-    .controller('PipelineCtrl', ['$scope', '$rootScope', '$element', '$http', '$window', '$timeout', 'pipeline', 'App', function ($scope, $rootScope, $element, $http, $window, $timeout, pipeline, App) {
+    .controller('PipelineCtrl', ['$scope', '$rootScope', '$element', '$http', '$window', '$timeout', 'pipeline', 'App', 'rawPipeline', 'Pipeline', function ($scope, $rootScope, $element, $http, $window, $timeout, pipeline, App, rawPipeline, PipelineMdl) {
 
         var Pipeline;
         var selector = '.pipeline';
@@ -14,15 +14,26 @@ angular.module('registryApp.dyole')
 
         $scope.view = {};
 
-        $http.get('data/clean_pipeline.json')
-            .success(function(data) {
 
-                Pipeline = pipeline.getInstance({
-                    model: data,
-                    $parent: angular.element($element[0].querySelector(selector))
+        Pipeline = pipeline.getInstance({
+            model: rawPipeline,
+            $parent: angular.element($element[0].querySelector(selector))
+        });
+
+        /**
+         * Save pipeline
+         */
+        $scope.$watch('save', function (n, o) {
+
+            if (n !== o && n) {
+                PipelineMdl.save($scope.pipeline._id, Pipeline.getJSON()).then(function (data) {
+                    console.log(data);
+                    $scope.save = false;
                 });
 
-            });
+            }
+
+        });
 
         /**
          * Drop node on the canvas

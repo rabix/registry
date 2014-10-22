@@ -165,4 +165,11 @@ angular.module('registryApp')
 
         };
 
+        $scope.view.save = false;
+        
+        $scope.save = function () {
+            $scope.view.save = true;
+        };
+
+
     }]);

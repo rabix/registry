@@ -12,7 +12,7 @@ angular.module('registryApp.dyole')
             this.$parent = options.$parent;
 
             this.nodes = {};
-            this.connections = [];
+            this.connections = {};
 
             // temporarily holding references to the terminals
             // needed for connection to render
@@ -364,6 +364,7 @@ angular.module('registryApp.dyole')
                 _self.nodes[connection.start_node].addConnection(_self.connections[connection.id]);
                 _self.nodes[connection.end_node].addConnection(_self.connections[connection.id]);
 
+
                 Event.trigger('pipeline:change');
 
             },
@@ -517,6 +518,7 @@ angular.module('registryApp.dyole')
                 return model;
 
             },
+            
 
             destroy: function () {
                 var _self = this,
@@ -583,6 +585,36 @@ angular.module('registryApp.dyole')
                     height: height
                 });
 
+            },
+
+            _getConnections: function () {
+                return _.pluck(this.connections, 'model');
+            },
+            
+            _getNodes: function () {
+                return _.pluck(this.nodes, 'model');
+            },
+            
+            getJSON: function () {
+                var json = this.model;
+
+                json.relations = this._getConnections();
+                json.nodes = this._getNodes();
+
+                _.each(json.nodes, function (node) {
+                    json.display.nodes[node.id] = {
+                        x: node.x,
+                        y: node.y
+                    };
+
+                    delete node.x;
+                    delete node.y;
+                });
+
+                json.display.canvas.x = this.getEl().getTranslation().x;
+                json.display.canvas.y = this.getEl().getTranslation().y;
+
+                return json;
             }
 
 

@@ -13,7 +13,8 @@ angular.module('registryApp.dyole')
             template: $templateCache.get('views/dyole/pipeline.html'),
             controller: 'PipelineCtrl',
             scope: {
-                pipeline: '='
+                pipeline: '=',
+                save: '='
             }
         };
     }]);
