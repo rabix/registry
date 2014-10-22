@@ -16,6 +16,9 @@ angular.module('registryApp')
         $scope.view.repoGroups = {};
         $scope.view.params = {inputs: {}};
         $scope.view.mode = $routeParams.mode;
+        $scope.view.myRepositories = {};
+        $scope.view.otherRepositories = {};
+        $scope.view.isChanged = false;
 
         $scope.view.classes = ['page', 'dyole'];
         Loading.setClasses($scope.view.classes);
@@ -24,10 +27,6 @@ angular.module('registryApp')
         $scope.$watch('Loading.classes', function(n, o) {
             if (n !== o) { $scope.view.classes = n; }
         });
-
-
-        $scope.view.myRepositories = {};
-        $scope.view.otherRepositories = {};
 
         if ($routeParams.mode === 'edit') {
             Pipeline.getPipeline($routeParams.id)
@@ -51,13 +50,41 @@ angular.module('registryApp')
             $scope.view.myRepositories = result[0].list || {};
             $scope.view.otherRepositories = result[1].list || {};
 
-            var repos = _.keys($scope.view.otherRepositories);
+            // TODO: remove later, this is mock
+            var repositories = _.isEmpty($scope.view.otherRepositories) ? $scope.view.myRepositories : $scope.view.otherRepositories;
+            var repos = _.keys(repositories);
             var repo = repos[_.random(0, repos.length - 1)];
 
-            $scope.view.json = $scope.view.otherRepositories[repo][0].json;
+            $scope.view.json = repositories[repo][0].json;
 
         };
 
+        /* params watcher reference */
+        var paramsWatcher;
+
+        /**
+         * Watch the params in order to recognizes changes
+         */
+        var watchParams = function () {
+            paramsWatcher = $scope.$watch('view.params', function(n, o) {
+                if (n !== o) {
+                    $scope.view.isChanged = true;
+                }
+            }, true);
+        };
+
+        /**
+         * Unwatch params
+         */
+        var unWatchParams = function () {
+
+            if (_.isFunction(paramsWatcher)) {
+                paramsWatcher.call();
+                paramsWatcher = undefined;
+            }
+        };
+
+        /* load apps grouped by repositories */
         $q.all([
             App.getGroupedApps('my'),
             App.getGroupedApps('other')
@@ -70,6 +97,12 @@ angular.module('registryApp')
          */
         $scope.switchTab = function (tab) {
             $scope.view.tab = tab;
+
+            if (tab === 'params') {
+                watchParams();
+            } else {
+                unWatchParams();
+            }
         };
 
         /**

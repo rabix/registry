@@ -469,8 +469,17 @@ legend {
   }
 }
 
-.pipeline-editor {
+.pipeline-drop-area {
   &.drag-over {
     background-color: #f3f3f3;
+  }
+}
+
+.changes-mark {
+  font-size: 13px;
+  color: #aa0000;
+  cursor: pointer;
+  .tooltip {
+    font-weight: normal;
   }
 }
