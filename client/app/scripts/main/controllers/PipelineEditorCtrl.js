@@ -4,7 +4,7 @@
 'use strict';
 
 angular.module('registryApp')
-    .controller('PipelineEditorCtrl', ['$scope','$q', '$routeParams', '$http', 'Sidebar', 'Loading', 'App', 'pipeline',  'Pipeline', function ($scope, $q, $routeParams, $http, Sidebar, Loading, App, Pipeline, PipelineMdl) {
+    .controller('PipelineEditorCtrl', ['$scope','$q', '$routeParams', 'Sidebar', 'Loading', 'App',  'Pipeline', function ($scope, $q, $routeParams, Sidebar, Loading, App, Pipeline) {
 
         Sidebar.setActive('_dyole');
 
@@ -30,7 +30,7 @@ angular.module('registryApp')
         $scope.view.otherRepositories = {};
 
         if ($routeParams.mode === 'edit') {
-            PipelineMdl.getPipeline($routeParams.id)
+            Pipeline.getPipeline($routeParams.id)
                 .then(function(result) {
                     $scope.view.pipeline = result.data;
                 });
@@ -38,6 +38,11 @@ angular.module('registryApp')
             $scope.view.pipeline = {name: 'New Pipeline'};
         }
 
+        /**
+         * Callback when apps are loaded
+         *
+         * @param {Object} result
+         */
         var appsLoaded = function (result) {
 
             $scope.view.loading = false;
@@ -126,25 +131,5 @@ angular.module('registryApp')
             ]).then(appsLoaded);
 
         };
-
-        /**
-         * Drop app on the canvas
-         *
-         * @param {MouseEvent} e
-         * @param {String} id
-         */
-        $scope.dropApp = function(e, id) {
-
-//            $scope.view.loading = true;
-
-            App.getApp(id).then(function(result) {
-
-//                $scope.view.loading = false;
-                Pipeline.addNode(result.data, e.clientX, e.clientY);
-
-            });
-
-        };
-
 
     }]);
