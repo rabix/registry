@@ -58,6 +58,8 @@ angular.module('registryApp.dyole')
                 var self = this,
                     $canvasArea = self.pipeline.$parent;
 
+                console.log('init handlers for terminal', this.model.id, this.parent.model.id);
+
                 this.mousedown = false;
 
                 this.terminal.mousedown(function (e) {
@@ -83,54 +85,58 @@ angular.module('registryApp.dyole')
                     self.mousedown = false;
                 });
 
-
-                $canvasArea.mousemove(function (e) {
-                    e.preventDefault();
-                    // e.stopPropagation();
-
-                    if (self.mousedown) {
-                        if (!self.tempConnection) {
-                            self.drawConnection(e);
-                        } else {
-                            self.redrawConnection(e);
-                        }
-                    }
-                });
-
-                $('body').mouseup(function () {
-                    self.parent.deselectAvailableTerminals();
-                    self._removeTempConnection();
-
-                    self.onMouseUpCallback();
-
-                    self.mouseoverTerminal = null;
-                    self.mousedown = false;
-                });
-
-
-                Event.subscribe('terminal:mouseover', function (terminal) {
+                var terMouseOver = function (terminal) {
 
                     if (self.mousedown && self.tempConnection) {
                         console.log('4 times' , terminal);
                         self.mouseoverTerminal = terminal;
                     }
-                });
 
-                Event.subscribe('terminal:mouseout', function () {
+                }, terMouseOut = function () {
+
                     self.mouseoverTerminal = null;
-                });
 
-                Event.subscribe('terminal:selectAvailable', function (terminal, nodeId) {
-//                console.log(terminal,nodeId);
+                }, terSelectAvail = function (terminal, nodeId) {
+
                     self.checkAvailibility(terminal, nodeId);
 
-                });
-
-                Event.subscribe('terminal:deselectAvailable', function () {
+                }, terDeselectAvail = function () {
 
                     self.setDefaultState();
 
+                };
+
+                var events = [];
+
+                Event.subscribe('terminal:mouseover', terMouseOver);
+
+                events.push({
+                    event: 'terminal:mouseover',
+                    handler: terMouseOver
                 });
+
+                Event.subscribe('terminal:mouseout', terMouseOut);
+
+                events.push({
+                    event: 'terminal:mouseout',
+                    handler: terMouseOut
+                });
+
+                Event.subscribe('terminal:selectAvailable', terSelectAvail);
+
+                events.push({
+                    event: 'terminal:selectAvailable',
+                    handler: terSelectAvail
+                });
+
+                Event.subscribe('terminal:deselectAvailable', terDeselectAvail);
+
+                events.push({
+                    event: 'terminal:deselectAvailable',
+                    handler: terDeselectAvail
+                });
+
+                this.events = events;
 
             },
 
@@ -443,6 +449,16 @@ angular.module('registryApp.dyole')
             },
             
             destroy: function () {
+                var _self = this;
+
+
+                console.log('Events', this.events);
+                _.each(this.events, function (ev) {
+                    Event.unsubscribe(ev.event, ev.handler);
+                });
+
+                this.terminal.unbindMouse().unhover().unclick().unkeyup();
+
                 this.el.remove();
                 this.el = null;
                 this.terminal = null;

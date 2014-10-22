@@ -66,6 +66,47 @@ angular.module('registryApp.dyole')
 
             },
 
+            buttons: {
+                radius: 14,
+                border: 4,
+
+                // if you want to change buttons distance from node uncomment and change distance
+//            distance: 5,
+
+                info: {
+                    fill: "#3FC380",
+                    disabled: "#ccc",
+
+                    image: {
+                        name: 'icon-info.png',
+                        width: 6,
+                        height: 11
+                    }
+
+                },
+
+                delete: {
+                    fill: "#EF4836",
+
+                    image: {
+                        name: 'icon-remove.png',
+                        width: 10,
+                        height: 10
+                    }
+
+                },
+
+                rename: {
+                    fill: "transparent",
+
+                    image: {
+                        name: 'icon-edit.png',
+                        width: 12,
+                        height: 12
+                    }
+                }
+            },
+
             render: function () {
 
                 var self = this,
@@ -354,7 +395,7 @@ angular.module('registryApp.dyole')
 
                     var dragged = this.dragged;
 
-//                if (typeof dragged !== 'undefined' && !dragged) {
+                if (typeof dragged !== 'undefined' && !dragged) {
 //                    if (!globals.pipelineEditMode) {
 //
 //                        this.showModal();
@@ -367,10 +408,10 @@ angular.module('registryApp.dyole')
 //
 //
 //
-//                        this._select();
-//
+                        this._select();
+
 //                    }
-//                }
+                }
 
                     this.dragged = false;
                 }, this);
@@ -500,8 +541,126 @@ angular.module('registryApp.dyole')
                 });
 
             },
+
+            _showButtons: function () {
+                var self = this,
+                    nodeRadius = this.constraints.radius,
+                    bbox,
+                    buttonDistance = typeof this.buttons.distance !== 'undefined' ? -this.buttons.distance - nodeRadius - this.buttons.radius : -nodeRadius * 1.5;
+
+                if (!self.infoButton && !self.removeNodeButton) {
+
+//                    this.buttons.delete.image.url = require.toUrl('sbg/pipeline-canvas/img/' + this.buttons.delete.image.name);
+//                    this.buttons.info.image.url = require.toUrl('sbg/pipeline-canvas/img/' + this.buttons.info.image.name);
+//                    this.buttons.rename.image.url = require.toUrl('sbg/pipeline-canvas/img/' + this.buttons.rename.image.name);
+
+                    self.infoButton = self.canvas.button({
+                        fill: this.buttons.info.fill,
+                        x: +16,
+                        y: buttonDistance,
+                        radius: this.buttons.radius,
+                        border: this.buttons.border,
+                        image: ''
+                    }, {
+                        scope: self
+                    });
+
+                    self.removeNodeButton = self.canvas.button({
+                        fill: this.buttons.delete.fill,
+                        x: -16,
+                        y: buttonDistance,
+                        radius: this.buttons.radius,
+                        border: this.buttons.border,
+                        image: ''
+                    }, {
+                        onClick: self.removeNodeButtonClick,
+                        scope: self
+                    });
+
+                    this.el.push(self.infoButton.getEl())
+                        .push(self.removeNodeButton.getEl());
+
+
+                }
+
+            },
+            
+            _destroyButtons: function () {
+
+                if (this.infoButton) {
+                    this.infoButton.remove();
+                    this.infoButton = null;
+                }
+
+                if (this.removeNodeButton) {
+                    this.removeNodeButton.remove();
+                    this.removeNodeButton = null;
+                }
+
+            },
+
+            removeNodeButtonClick: function () {
+                this._destroyButtons();
+                this.removeNode();
+            },
+
+            _select: function () {
+
+                this._showButtons();
+
+                // Show selected state
+                this._innerBorder.attr({
+                    gradient: this.constraints.selected.gradient
+                });
+
+                this.selected = true;
+            },
+
+            _deselect: function() {
+                this._destroyButtons();
+
+                if (this.inPlaceEdit) {
+                    this.inPlaceEdit.destroy();
+                    this.inPlaceEdit = null;
+                }
+
+                this.selected = false;
+
+            },
+            
+            removeNode: function () {
+
+                _.each(this.connections, function (connection) {
+                    if (connection) {
+                        connection.destroyConnection();
+                    }
+                });
+
+                console.log('Inputs', this.inputs);
+                _.each(this.inputs, function (t) {
+                    t.destroy();
+                });
+
+                console.log('Outputs', this.outputs);
+                _.each(this.outputs, function (t) {
+                    t.destroy();
+                });
+
+                this.connections = {};
+
+                delete this.Pipeline.nodes[this.model.id];
+
+                if (typeof this.glow !== 'undefined') {
+                    this.glow.remove();
+                }
+
+                this.destroy();
+            },
             
             destroy: function () {
+
+                this.circle.unbindMouse().unhover().unclick().unkeyup();
+
                 this.el.remove();
             }
         };

@@ -23,15 +23,16 @@ angular.module('registryApp.dyole')
 
 
             this._initCanvas();
-            this._atachEvents();
+            this._attachEvents();
             this._generateNodes();
             this._generateConnections();
         };
 
         Pipeline.prototype =  {
 
-            _atachEvents: function () {
-                var _self = this;
+            _attachEvents: function () {
+                var _self = this,
+                    $canvasArea = this.$parent;
 
                 Event.subscribe('temp:connection:state', function (state) {
                     console.log('temp:connection:state', state);
@@ -86,6 +87,65 @@ angular.module('registryApp.dyole')
 
                     _self.createConnection(model);
 
+                });
+
+                $canvasArea.mousemove(function (e) {
+                    _.each(_self.nodes, function (node) {
+
+                        _.each(node.inputs, function (i) {
+                            e.preventDefault();
+                            // e.stopPropagation();
+
+                            if (i.mousedown) {
+                                if (!i.tempConnection) {
+                                    i.drawConnection(e);
+                                } else {
+                                    i.redrawConnection(e);
+                                }
+                            }
+                        });
+
+                        _.each(node.outputs, function (o) {
+                            e.preventDefault();
+                            // e.stopPropagation();
+
+                            if (o.mousedown) {
+                                if (!o.tempConnection) {
+                                    o.drawConnection(e);
+                                } else {
+                                    o.redrawConnection(e);
+                                }
+                            }
+                        });
+
+                    });
+                });
+
+                $('body').mouseup(function () {
+
+                    _.each(_self.nodes, function (node) {
+
+                        _.each(node.inputs, function (i) {
+                            i.parent.deselectAvailableTerminals();
+                            i._removeTempConnection();
+
+                            i.onMouseUpCallback();
+
+                            i.mouseoverTerminal = null;
+                            i.mousedown = false;
+                        });
+
+                        _.each(node.outputs, function (o) {
+                            o.parent.deselectAvailableTerminals();
+                            o._removeTempConnection();
+
+                            o.onMouseUpCallback();
+
+                            o.mouseoverTerminal = null;
+                            o.mousedown = false;
+                        });
+
+                    });
                 });
             },
 
@@ -467,7 +527,7 @@ angular.module('registryApp.dyole')
                 });
 
                 _.each(events, function (event) {
-                    Event.unsubscribe(event);q
+                    Event.unsubscribe(event);
                 });
             },
 

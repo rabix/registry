@@ -73,8 +73,10 @@ angular.module('registryApp.dyole')
              * the scope to the Event watcher object.
              *
              * @param {string} name
+             * @param {function} handler
              */
-            unsubscribe: function(name) {
+            unsubscribe: function(name, handler) {
+
                 if (typeof name === 'undefined') {
                     throw 'Invalid parameter exception: No event name specified.';
                 }
@@ -87,7 +89,25 @@ angular.module('registryApp.dyole')
                     throw 'Error: Subscription "' + name  + '" does\'t exist';
                 }
 
-                delete this.subscriptions[name];
+                if (typeof handler === 'undefined') {
+                    delete this.subscriptions[name];
+                } else {
+                    for (var i = 0, l = this.subscriptions[name].length; i< l; i++) {
+
+                        if (this.subscriptions[name][i].handler === handler) {
+
+                            this.subscriptions[name].splice(i, 1);
+
+                            if (this.subscriptions[name].length === 0) {
+                                delete this.subscriptions[name];
+                            }
+
+                            break;
+                        }
+
+                    }
+                }
+
 
             },
 
