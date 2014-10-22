@@ -11,6 +11,8 @@ angular.module('registryApp.dyole')
         var Pipeline;
         var selector = '.pipeline';
 
+        $scope.view = {};
+
         $http.get('data/clean_pipeline.json')
             .success(function(data) {
 
@@ -29,7 +31,11 @@ angular.module('registryApp.dyole')
          */
         $scope.dropNode = function(e, id) {
 
+            $scope.view.loading = true;
+
             App.getApp(id).then(function(result) {
+
+                $scope.view.loading = false;
 
                 Pipeline.addNode(result.data, e.clientX, e.clientY);
 

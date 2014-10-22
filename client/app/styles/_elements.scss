@@ -376,7 +376,7 @@
   }
 }
 
-/* Legeng used as box heading */
+/* Legend used as box heading */
 legend {
   &.toggle {
     position: relative;
@@ -411,8 +411,6 @@ legend {
 .app-sidebar-list {
   border-bottom: 1px solid #ddd;
   & li {
-//    margin-top: -1px;
-//    border-top: 1px solid #ddd;
     border-bottom: 1px solid #ddd;
     &:first-child {
       border-top: 1px solid #ddd;
@@ -470,9 +468,16 @@ legend {
 }
 
 .pipeline-drop-area {
+  position: relative;
+
   &.drag-over {
     background-color: #f3f3f3;
   }
+
+  &.loading {
+    @extend .loading-abs;
+  }
+
 }
 
 .changes-mark {
