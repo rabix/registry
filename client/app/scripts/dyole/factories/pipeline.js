@@ -155,7 +155,7 @@ angular.module('registryApp.dyole')
                     $parent = this.$parent,
                     $parentDim = {
                         width: $parent[0].offsetWidth - 10,
-                        height: $parent[0].offsetHeight || $parent[0].parentNode.offsetHeight
+                        height: ($parent[0].offsetHeight || $parent[0].parentNode.offsetHeight) - 10
                     };
 
                 width = $parentDim.width || width;
@@ -559,6 +559,20 @@ angular.module('registryApp.dyole')
                 model.y = y;
 
                 Event.trigger('node:add', model);
+            },
+
+            adjustSize: function () {
+
+                var width = this.$parent[0].offsetWidth - 10;
+                var height = (this.$parent[0].offsetHeight || this.$parent[0].parentNode.offsetHeight) - 10;
+
+                this.canvas.setSize(width, height);
+
+                this.rect.attr({
+                    width: width,
+                    height: height
+                });
+
             }
 
 
@@ -568,6 +582,6 @@ angular.module('registryApp.dyole')
             getInstance: function(options) {
                 return new Pipeline(options);
             }
-        }
+        };
 
     }]);

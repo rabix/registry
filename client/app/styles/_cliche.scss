@@ -352,7 +352,6 @@
       border-bottom: 1px solid #ddd;
       display: block;
       background-color: #eee;
-      position: relative;
     }
 
     & > .input-property-body {
@@ -374,6 +373,14 @@
       }
     }
 
+  }
+}
+
+.input-container-small {
+  & > .input-property {
+    & > .form-group {
+      margin-bottom: 0;
+    }
   }
 }
 
