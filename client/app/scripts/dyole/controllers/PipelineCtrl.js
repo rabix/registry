@@ -8,7 +8,7 @@
 angular.module('registryApp.dyole')
     .controller('PipelineCtrl', ['$scope', '$element', '$http', 'pipeline', 'App', function ($scope, $element, $http, pipeline, App) {
 
-        $http.get('/pipeline-editor/data/clean_pipeline.json')
+        $http.get('data/clean_pipeline.json')
             .success(function(data) {
 
                 pipeline.init(data, $element);
