@@ -6,8 +6,7 @@
 
 'use strict';
 
-angular
-    .module('registryApp.cliche', [])
+angular.module('registryApp.cliche', [])
     .config(['$routeProvider', '$localForageProvider', function ($routeProvider, $localForageProvider) {
 
         $routeProvider

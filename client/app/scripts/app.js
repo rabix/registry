@@ -19,7 +19,7 @@ angular
         'ngPrettyJson',
         'LocalForageModule',
         'registryApp.cliche',
-        'ngDragDrop'
+        'registryApp.dyole'
     ])
     .config(['$routeProvider', '$httpProvider', '$localForageProvider', function ($routeProvider, $httpProvider, $localForageProvider) {
         $routeProvider
@@ -85,7 +85,7 @@ angular
             })
             .when('/pipeline/:id', {
                 templateUrl: 'views/pipeline.html',
-                controller: 'PipelineCtrl'
+                controller: 'PipelineViewCtrl'
             })
             .when('/pipeline/:id/:mode', {
                 templateUrl: 'views/pipeline-editor.html',

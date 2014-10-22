@@ -4,7 +4,7 @@
 'use strict';
 
 angular.module('registryApp')
-    .controller('PipelineCtrl', ['$scope', '$routeParams', '$http', 'Sidebar', 'Loading', 'Pipeline', function ($scope, $routeParams, $http, Sidebar, Loading, PipelineMdl) {
+    .controller('PipelineViewCtrl', ['$scope', '$routeParams', 'Sidebar', 'Loading', 'Pipeline', function ($scope, $routeParams, Sidebar, Loading, PipelineMdl) {
 
         Sidebar.setActive('_dyole');
 
@@ -19,11 +19,6 @@ angular.module('registryApp')
         $scope.$watch('Loading.classes', function(n, o) {
             if (n !== o) { $scope.view.classes = n; }
         });
-
-        $http.get('/pipeline-editor/data/clean_pipeline.json')
-            .success(function(data) {
-                Pipeline.init(data, document.getElementsByClassName('pipeline-editor'), {});
-            });
 
         PipelineMdl.getPipeline($routeParams.id)
             .then(function(result) {
