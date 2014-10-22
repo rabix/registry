@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('registryApp')
-    .service('Sidebar', [function () {
+    .service('Sidebar', ['$rootScope', function ($rootScope) {
 
         var self = {};
 
@@ -13,6 +13,7 @@ angular.module('registryApp')
          */
         self.toggleOpen = function () {
             self.open = !self.open;
+            $rootScope.$broadcast('sidebar-toggle', self.open);
         };
 
         /**
@@ -69,6 +70,9 @@ angular.module('registryApp')
                     }
                 });
 
+                /**
+                 * Toggle sidebar visibility
+                 */
                 scope.toggleSidebar = function () {
                     scope.view.open = !scope.view.open;
                     Sidebar.toggleOpen();

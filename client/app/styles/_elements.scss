@@ -467,18 +467,35 @@ legend {
   }
 }
 
-.pipeline-drop-area {
-  position: relative;
+/* Pipeline */
+.pipeline-wrap {
+  @include flex(1);
+  @include flex-box();
+  @include flex-flow(column nowrap);
 
-  &.drag-over {
-    background-color: #f3f3f3;
+  @at-root {
+    .pipeline-drop-area {
+      @include flex(1);
+      @include flex-box();
+      @include flex-flow(column nowrap);
+      position: relative;
+
+      &.drag-over {
+        background-color: #f3f3f3;
+      }
+
+      &.loading {
+        @extend .loading-abs;
+      }
+
+      .pipeline {
+        @include flex(1);
+      }
+
+    }
   }
-
-  &.loading {
-    @extend .loading-abs;
-  }
-
 }
+
 
 .changes-mark {
   font-size: 13px;

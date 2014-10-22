@@ -6,10 +6,11 @@
 'use strict';
 
 angular.module('registryApp.dyole')
-    .controller('PipelineCtrl', ['$scope', '$element', '$http', '$window', 'pipeline', 'App', function ($scope, $element, $http, $window, pipeline, App) {
+    .controller('PipelineCtrl', ['$scope', '$rootScope', '$element', '$http', '$window', '$timeout', 'pipeline', 'App', function ($scope, $rootScope, $element, $http, $window, $timeout, pipeline, App) {
 
         var Pipeline;
         var selector = '.pipeline';
+        var timeoutId;
 
         $scope.view = {};
 
@@ -44,19 +45,46 @@ angular.module('registryApp.dyole')
         };
 
         /**
-         * Change width of the canvas when window size changes
+         * Cancel timeout
+         */
+        var cancelTimeout = function () {
+            if (angular.isDefined(timeoutId)) {
+                $timeout.cancel(timeoutId);
+                timeoutId = undefined;
+            }
+        };
+
+        /**
+         * Adjust size of the canvas when window size changes
          */
         var changeWidth = function () {
-            Pipeline.changeWidth();
+            Pipeline.adjustSize();
         };
 
         var lazyChangeWidth = _.debounce(changeWidth, 150);
 
         angular.element($window).on('resize', lazyChangeWidth);
 
+        /**
+         * Track sidebar toggle in order to adjust canvas size
+         */
+        var cancelSidebarToggleEvent = $rootScope.$on('sidebar-toggle', function () {
+
+            cancelTimeout();
+
+            timeoutId = $timeout(function () {
+                Pipeline.adjustSize();
+            }, 300);
+
+        });
+
         $scope.$on('$destroy', function() {
             angular.element($window).off('resize', lazyChangeWidth);
+            cancelTimeout();
+            cancelSidebarToggleEvent();
         });
+
+
 
 
     }]);
