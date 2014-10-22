@@ -499,6 +499,10 @@ angular.module('registryApp.dyole')
                     terminal.setDefaultState();
                 });
 
+            },
+            
+            destroy: function () {
+                this.el.remove();
             }
         };
 

@@ -223,6 +223,10 @@ angular.module('registryApp.dyole')
                 console.log('Connection remove');
 
 //            Event.trigger('pipeline:change', 'revision');
+            },
+
+            destroy: function () {
+                this.destroyConnection();
             }
         };
 

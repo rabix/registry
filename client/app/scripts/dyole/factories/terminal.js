@@ -440,6 +440,15 @@ angular.module('registryApp.dyole')
 
                 }
 
+            },
+            
+            destroy: function () {
+                this.el.remove();
+                this.el = null;
+                this.terminal = null;
+                this.label = null;
+                this.terminalInner = null;
+                this.terminalBorder = null;
             }
 
         };

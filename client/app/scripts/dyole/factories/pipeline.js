@@ -7,30 +7,28 @@
 angular.module('registryApp.dyole')
     .factory('pipeline', ['event', 'node', 'connection', function(Event, Node, Connection) {
 
-        return {
+        var Pipeline = function (options) {
+            this.model = options.model;
+            this.$parent = options.$parent;
 
-            init: function (model, $parent, services) {
-                this.model = model;
-                this.$parent = $parent;
-                this.services = services || {};
+            this.nodes = {};
+            this.connections = [];
 
+            // temporarily holding references to the terminals
+            // needed for connection to render
+            this.tempConnectionRefs = null;
 
-                this.nodes = {};
-                this.connections = [];
-
-                // temporarily holding references to the terminals
-                // needed for connection to render
-                this.tempConnectionRefs = null;
-
-                // flag for temporary connection
-                this.tempConnectionActive = false;
+            // flag for temporary connection
+            this.tempConnectionActive = false;
 
 
-                this._initCanvas();
-                this._atachEvents();
-                this._generateNodes();
-                this._generateConnections();
-            },
+            this._initCanvas();
+            this._atachEvents();
+            this._generateNodes();
+            this._generateConnections();
+        };
+
+        Pipeline.prototype =  {
 
             _atachEvents: function () {
                 var _self = this;
@@ -422,7 +420,7 @@ angular.module('registryApp.dyole')
             },
 
             _transformModel: function (nodeModel) {
-                //this.services.test();
+
                 var model = nodeModel.json,
                     schema = {
                         inputs: [],
@@ -459,8 +457,17 @@ angular.module('registryApp.dyole')
 
                 this.$parent.find('svg').remove();
                 this.nodes = null;
+
+                _.each(this.nodes, function (node) {
+                    node.destroy();
+                });
+
+                _.each(this.connections, function (connection) {
+                    connection.destroy();
+                });
+
                 _.each(events, function (event) {
-                    Event.unsubscribe(event);
+                    Event.unsubscribe(event);q
                 });
             },
 
@@ -496,5 +503,11 @@ angular.module('registryApp.dyole')
 
 
         };
+        
+        return {
+            getInstance: function(options) {
+                return new Pipeline(options);
+            }
+        }
 
     }]);
