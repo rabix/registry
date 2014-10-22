@@ -25,6 +25,9 @@ var formater = {
 
         this._transformRelationsToSteps(json.relations, json.display.nodes);
 
+        delete json.relations;
+        json.steps = this.packedSchema.steps;
+
         return this.packedSchema;
     },
     
@@ -35,7 +38,11 @@ var formater = {
 
         this._transformStepsToRelations(json.steps);
 
-        return this.packedSchema;
+
+        delete json.steps;
+        json.relations = this.packedSchema.relations;
+
+        return json;
 
     },
 

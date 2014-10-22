@@ -72,18 +72,68 @@ router.get('/pipeline/:id', function (req, res, next) {
 });
 
 router.post('/pipeline', function (req, res, next) {
+    var pipeline = req.body;
 
+    formater.toRabixSchema(pipeline)
 });
 
 router.put('/pipeline', function (req, res, next) {
     var pipeline = new Pipeline();
-    var model = _.clone(pipeline_model);
+    var model = _.clone(packed_raw_pipeline_model);
 
     pipeline = _.extend(pipeline, model);
 
     pipeline.save();
 
-    res.json(pipeline);
+    res.json(raw_pipeline_model);
 });
 
+var raw_pipeline_model = {
+    stamp: {
+        created_by: '',
+        created_on: '',
+        modified_by: '',
+        modified_on: ''
+    },
+    display: {
+        canvas: {
+            x: 0,
+            y: 0,
+            zoom: 1
+        },
+        description: '',
+        name: '',
+        nodes: {}
+    },
+    nodes: [],
+    relations: [],
+    schemas: []
+};
+
+var packed_raw_pipeline_model = {
+    stamp: {
+        created_by: '',
+        created_on: '',
+        modified_by: '',
+        modified_on: ''
+    },
+    display: {
+        canvas: {
+            x: 0,
+            y: 0,
+            zoom: 1
+        },
+        description: '',
+        name: '',
+        nodes: {}
+    },
+    // realtions -> steps
+    steps: [],
+    // nodes -> apps
+    apps: {},
+    // inputs from relations -> inputs (remove relations)
+    inputs: {},
+    // outputs from relations -> outputs (remove relations)
+    outputs: {}
+};
 
