@@ -52,7 +52,7 @@ angular.module('registryApp.dyole')
                  * @param type {string}
                  */
                 Event.subscribe('pipeline:change', function () {
-                    $rootScope.$broadcast('pipeline:changed', true);
+                    $rootScope.$broadcast('pipeline:change', true);
                 });
 
                 Event.subscribe('node:add', function (model) {

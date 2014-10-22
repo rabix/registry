@@ -13,7 +13,7 @@ angular.module('registryApp')
          */
         self.toggleOpen = function () {
             self.open = !self.open;
-            $rootScope.$broadcast('sidebar-toggle', self.open);
+            $rootScope.$broadcast('sidebar:toggle', self.open);
         };
 
         /**
@@ -53,8 +53,8 @@ angular.module('registryApp')
                     {name: 'jobs', link: 'jobs', desc: 'Jobs', icon: 'plug'},
                     {name: 'builds', link: 'builds', desc: 'Builds', icon: 'cube'},
                     {name: 'repos', link: 'repos', desc: 'Repositories', icon: 'code-fork'},
-                    {name: '_dyole', link: 'pipelines', desc: 'Pipelines', icon: 'cogs'},
-                    {name: 'settings',link: 'settings',  desc: 'Settings', icon: 'gear'}
+                    {name: 'settings',link: 'settings',  desc: 'Settings', icon: 'gear'},
+                    {name: '_dyole', link: 'pipelines', desc: 'Pipelines', icon: 'cogs'}
                 ];
 
                 scope.SidebarService = Sidebar;

@@ -9,15 +9,35 @@ angular.module('registryApp')
         Sidebar.setActive('_dyole');
 
         $scope.view = {};
-        $scope.view.loading = true;
-        $scope.view.tab = 'apps';
-        $scope.view.pipeline = null;
-        $scope.view.groups = {my: false, other: false};
-        $scope.view.repoGroups = {};
-        $scope.view.params = {inputs: {}};
+
+        /* pipeline mode: new or edit */
         $scope.view.mode = $routeParams.mode;
+
+        /* loading state of the page */
+        $scope.view.loading = true;
+
+        /* current tab for the right sidebar */
+        $scope.view.tab = 'apps';
+
+        /* current pipeline */
+        $scope.view.pipeline = null;
+
+        /* group visibility flags for repos */
+        $scope.view.groups = {my: false, other: false};
+
+        /* visibility flags for repo groups that hold apps */
+        $scope.view.repoGroups = {};
+
+        /* params for the currently selected app */
+        $scope.view.params = {inputs: {}};
+
+        /* list of my repos */
         $scope.view.myRepositories = {};
+
+        /* list of other repos */
         $scope.view.otherRepositories = {};
+
+        /* flag if something is changed: params or pipeline */
         $scope.view.isChanged = false;
 
         $scope.view.classes = ['page', 'dyole'];
@@ -67,9 +87,7 @@ angular.module('registryApp')
          */
         var watchParams = function () {
             paramsWatcher = $scope.$watch('view.params', function(n, o) {
-                if (n !== o) {
-                    $scope.view.isChanged = true;
-                }
+                if (n !== o) { $scope.view.isChanged = true; }
             }, true);
         };
 
@@ -162,6 +180,16 @@ angular.module('registryApp')
                 App.getGroupedApps('my'),
                 App.getGroupedApps('other')
             ]).then(appsLoaded);
+
+        };
+
+        /**
+         * Callback when pipeline is changed
+         */
+        $scope.onPipelineChange = function () {
+
+            $scope.view.isChanged = true;
+            $scope.$digest();
 
         };
 
