@@ -1,7 +1,7 @@
 "use strict";
 
 angular.module('registryApp')
-    .service('Api', ['$resource', '$http', '$q', function ($resource, $http, $q) {
+    .service('Api', ['$resource', '$http', function ($resource, $http) {
 
         var self = {};
         var apiUrl = '/api';

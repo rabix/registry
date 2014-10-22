@@ -40,6 +40,9 @@ angular.module('registryApp')
         /* flag if something is changed: params or pipeline */
         $scope.view.isChanged = false;
 
+        /* flag when save is clicked */
+        $scope.view.saveing = false;
+
         $scope.view.classes = ['page', 'dyole'];
         Loading.setClasses($scope.view.classes);
 
@@ -186,17 +189,28 @@ angular.module('registryApp')
         /**
          * Callback when pipeline is changed
          */
-        $scope.onPipelineChange = function () {
+        $scope.onPipelineChange = function (value) {
 
-            $scope.view.isChanged = true;
-            $scope.$digest();
+            $scope.view.isChanged = value;
+
+            if (value) {
+                $scope.$digest();
+            } else {
+                $scope.view.saving = false;
+                $scope.view.loading = false;
+            }
 
         };
 
-        $scope.view.save = false;
-        
+        /**
+         * Initiate pipeline save
+         */
         $scope.save = function () {
-            $scope.view.save = true;
+
+            $scope.view.saving = true;
+            $scope.view.loading = true;
+
+            $scope.$broadcast('save', true);
         };
 
 

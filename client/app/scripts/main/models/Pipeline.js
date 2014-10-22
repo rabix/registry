@@ -39,9 +39,18 @@ angular.module('registryApp')
 
         };
 
+        /**
+         * Create new or update existing pipeline
+         *
+         * @param id
+         * @param data
+         * @returns {$promise}
+         */
         self.save = function(id, data) {
 
-            return Api.pipelines.add({id: id, data: data}).$promise;
+            var mode = id ? 'update' : 'add';
+
+            return Api.pipelines[mode]({id: id}, {data: data}).$promise;
 
         };
 

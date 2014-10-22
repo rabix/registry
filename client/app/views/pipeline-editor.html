@@ -5,7 +5,7 @@
         <a ng-if="view.mode === 'edit'" ng-href="#/pipeline/{{ view.pipeline._id }}" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
         <h1>
             <span>{{ view.pipeline.name }}</span> <strong class="changes-mark" ng-if="view.isChanged" tooltip="There are changes in your pipeline" tooltip-placement="right"><i class="fa fa-asterisk"></i></strong>
-            <a ng-click="save()" class="btn btn-primary pull-right"><i class="fa fa-check"></i> {{ view.mode === 'new' ? 'Create' : 'Update' }}</a>
+            <button ng-click="save()" class="btn btn-primary pull-right" ng-disabled="view.saving"><i class="fa fa-check"></i> {{ view.mode === 'new' ? 'Create' : 'Update' }}</button>
         </h1>
     </div>
     <!-- # .heading -->
@@ -13,7 +13,7 @@
     <div ng-if="!view.loading" class="content">
 
         <div class="col content-col">
-            <div pipeline="view.pipeline" pipeline-change-fn="onPipelineChange()" save="view.save"></div>
+            <div pipeline="view.pipeline" pipeline-change-fn="onPipelineChange(value)"></div>
         </div>
 
         <div class="col sidebar-col">

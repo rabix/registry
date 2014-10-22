@@ -121,21 +121,41 @@ router.get('/pipeline/:id', function (req, res, next) {
 
 });
 
-router.post('/pipeline', function (req, res, next) {
-    var pipeline = req.body.data;
+router.post('/pipeline', function (req, res) {
 
-    formater.toRabixSchema(pipeline);
-});
+    var data = req.body.data;
 
-router.put('/pipeline', function (req, res, next) {
     var pipeline = new Pipeline();
-    var model = _.clone(packed_raw_pipeline_model);
 
-    pipeline = _.extend(pipeline, model);
+    pipeline.json = data.json;
+    pipeline.name = data.name;
+    pipeline.author = data.author;
+    pipeline.description = data.description;
 
     pipeline.save();
 
-    res.json(raw_pipeline_model);
+    res.json({message: 'Pipeline successfully added', id: pipeline._id});
+
+
+});
+
+router.put('/pipeline/:id', function (req, res, next) {
+
+    var data = req.body.data;
+
+    Pipeline.findById(req.params.id).exec(function(err, pipeline) {
+        if (err) { return next(err); }
+
+        pipeline.json = data.json;
+        pipeline.name = data.name;
+        pipeline.author = data.author;
+        pipeline.description = data.description;
+
+        pipeline.save();
+
+        res.json({message: 'Pipeline successfully updated'});
+    });
+
 });
 
 

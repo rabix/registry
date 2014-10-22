@@ -1,3 +1,5 @@
+'use strict';
+
 var _ = require('lodash');
 
 var formater = {
@@ -18,8 +20,7 @@ var formater = {
                 return wrapper.repo_id === nodeWrapper.repo_id && wrapper.image_id === nodeWrapper.image_id && wrapper.classname === nodeWrapper.classname;
             });
 
-//                node.schema = app.app.schema;
-            json.display.nodes[node.id].schema = app.app.schema;
+                node.schema = app.app.schema;
 //                return self.mergeNodeAndApp(app, node, displayNodes[node.id] || {x: 0, y: 0});
         });
 

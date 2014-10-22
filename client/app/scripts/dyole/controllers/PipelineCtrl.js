@@ -6,7 +6,7 @@
 'use strict';
 
 angular.module('registryApp.dyole')
-    .controller('PipelineCtrl', ['$scope', '$rootScope', '$element', '$http', '$window', '$timeout', 'pipeline', 'App', 'rawPipeline', 'Pipeline', function ($scope, $rootScope, $element, $http, $window, $timeout, pipeline, App, rawPipeline, PipelineMdl) {
+    .controller('PipelineCtrl', ['$scope', '$rootScope', '$element', '$location', '$window', '$timeout', 'pipeline', 'App', 'rawPipeline', 'Pipeline', function ($scope, $rootScope, $element, $location, $window, $timeout, pipeline, App, rawPipeline, PipelineMdl) {
 
         var Pipeline;
         var selector = '.pipeline';
@@ -23,14 +23,21 @@ angular.module('registryApp.dyole')
         /**
          * Save pipeline
          */
-        $scope.$watch('save', function (n, o) {
+        $scope.$on('save', function (e, value) {
 
-            if (n !== o && n) {
-                PipelineMdl.save($scope.pipeline._id, Pipeline.getJSON()).then(function (data) {
-                    console.log(data);
-                    $scope.save = false;
-                });
+            if (value) {
 
+                $scope.pipeline.json = Pipeline.getJSON();
+
+                PipelineMdl.save($scope.pipeline._id, $scope.pipeline)
+                    .then(function (data) {
+
+                        if (data.id) {
+                            $location.path('/pipeline/' + data.id);
+                        } else {
+                            $scope.pipelineChangeFn({value: false});
+                        }
+                    });
             }
 
         });
@@ -93,7 +100,7 @@ angular.module('registryApp.dyole')
          * Track pipeline change
          */
         var cancelPipelineChangeEL = $rootScope.$on('pipeline:change', function (e, value) {
-            $scope.pipelineChangeFn();
+            $scope.pipelineChangeFn({value: true});
         });
 
         $scope.$on('$destroy', function() {
