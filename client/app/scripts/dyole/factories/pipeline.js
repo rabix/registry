@@ -499,6 +499,10 @@ angular.module('registryApp.dyole')
                 model.y = y;
 
                 Event.trigger('node:add', model);
+            },
+
+            changeWidth: function () {
+                console.log('change width');
             }
 
 
@@ -508,6 +512,6 @@ angular.module('registryApp.dyole')
             getInstance: function(options) {
                 return new Pipeline(options);
             }
-        }
+        };
 
     }]);

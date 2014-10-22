@@ -6,11 +6,10 @@
 'use strict';
 
 angular.module('registryApp.dyole')
-    .controller('PipelineCtrl', ['$scope', '$element', '$http', 'pipeline', 'App', function ($scope, $element, $http, pipeline, App) {
+    .controller('PipelineCtrl', ['$scope', '$element', '$http', '$window', 'pipeline', 'App', function ($scope, $element, $http, $window, pipeline, App) {
 
         var Pipeline;
         var selector = '.pipeline';
-
 
         $http.get('data/clean_pipeline.json')
             .success(function(data) {
@@ -37,5 +36,21 @@ angular.module('registryApp.dyole')
             });
 
         };
+
+        /**
+         * Change width of the canvas when window size changes
+         */
+        var changeWidth = function () {
+            Pipeline.changeWidth();
+        };
+
+        var lazyChangeWidth = _.debounce(changeWidth, 150);
+
+        angular.element($window).on('resize', lazyChangeWidth);
+
+        $scope.$on('$destroy', function() {
+            angular.element($window).off('resize', lazyChangeWidth);
+        });
+
 
     }]);
