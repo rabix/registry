@@ -13,7 +13,7 @@
     <div ng-if="!view.loading" class="content">
 
         <div class="col content-col">
-            <div pipeline="view.pipeline" pipeline-change-fn="onPipelineChange()"></div>
+            <div pipeline="view.pipeline" pipeline-change-fn="onPipelineChange()" save="view.save"></div>
         </div>
 
         <div class="col sidebar-col">

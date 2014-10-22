@@ -39,6 +39,12 @@ angular.module('registryApp')
 
         };
 
+        self.save = function(id, data) {
+
+            return Api.pipelines.add({id: id, data: data}).$promise;
+
+        };
+
         return self;
 
     }]);
