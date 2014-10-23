@@ -136,7 +136,6 @@ router.post('/pipeline', function (req, res) {
 
     res.json({message: 'Pipeline successfully added', id: pipeline._id});
 
-
 });
 
 router.put('/pipeline/:id', function (req, res, next) {

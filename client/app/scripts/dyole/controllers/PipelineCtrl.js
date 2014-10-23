@@ -16,7 +16,7 @@ angular.module('registryApp.dyole')
 
 
         Pipeline = pipeline.getInstance({
-            model: rawPipeline,
+            model: $scope.pipeline ? $scope.pipeline.json || rawPipeline : rawPipeline,
             $parent: angular.element($element[0].querySelector(selector))
         });
 
