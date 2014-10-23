@@ -4,7 +4,10 @@
         <a ng-if="view.mode === 'new'" ng-href="#/pipelines" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
         <a ng-if="view.mode === 'edit'" ng-href="#/pipeline/{{ view.pipeline._id }}" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
         <h1>
-            <span>{{ view.pipeline.name }}</span> <strong class="changes-mark" ng-if="view.isChanged" tooltip="There are changes in your pipeline" tooltip-placement="right"><i class="fa fa-asterisk"></i></strong>
+            <div class="form-group" ng-class="{'has-error': !view.pipeline.name}">
+                <input type="text" placeholder="Pipeline Name" ng-model="view.pipeline.name" class="form-control" />
+            </div>
+            <strong class="changes-mark" ng-if="view.isChanged" tooltip="There are changes in your pipeline" tooltip-placement="right"><i class="fa fa-asterisk"></i></strong>
             <button ng-click="save()" class="btn btn-primary pull-right" ng-disabled="view.saving"><i class="fa fa-check"></i> {{ view.mode === 'new' ? 'Create' : 'Update' }}</button>
         </h1>
     </div>

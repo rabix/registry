@@ -32,11 +32,10 @@ angular.module('registryApp.dyole')
                 PipelineMdl.save($scope.pipeline._id, $scope.pipeline)
                     .then(function (data) {
 
-                        if (data.id) {
-                            $location.path('/pipeline/' + data.id);
-                        } else {
-                            $scope.pipelineChangeFn({value: false});
-                        }
+                        var id = data.id ||  $scope.pipeline._id;
+
+                        $location.path('/pipeline/' + id);
+
                     });
             }
 

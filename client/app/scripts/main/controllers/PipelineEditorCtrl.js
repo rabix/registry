@@ -20,7 +20,7 @@ angular.module('registryApp')
         $scope.view.tab = 'apps';
 
         /* current pipeline */
-        $scope.view.pipeline = null;
+        $scope.view.pipeline = {};
 
         /* group visibility flags for repos */
         $scope.view.groups = {my: false, other: false};
@@ -56,8 +56,6 @@ angular.module('registryApp')
                 .then(function(result) {
                     $scope.view.pipeline = result.data;
                 });
-        } else {
-            $scope.view.pipeline = {name: 'New Pipeline'};
         }
 
         /**
@@ -206,6 +204,10 @@ angular.module('registryApp')
          * Initiate pipeline save
          */
         $scope.save = function () {
+
+            if (!$scope.view.pipeline.name) {
+                return false;
+            }
 
             $scope.view.saving = true;
             $scope.view.loading = true;
