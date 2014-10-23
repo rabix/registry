@@ -60,9 +60,10 @@ angular.module('registryApp.dyole')
                 },
 
                 //defaults
-                fill: '270-#3F7EB6-#7BA7CD',
-                stroke: 'none',
-                gradient: '90-#A3A3A3-#7A7A7A'
+//                fill: '270-#3F7EB6-#7BA7CD',
+                fill: '#29567D',
+                stroke: 'none'
+//                gradient: '90-#A3A3A3-#7A7A7A'
 
             },
 
@@ -74,8 +75,8 @@ angular.module('registryApp.dyole')
 //            distance: 5,
 
                 info: {
-                    fill: "#3FC380",
-                    disabled: "#ccc",
+                    fill: '#3FC380',
+                    disabled: '#ccc',
 
                     image: {
                         name: 'icon-info.png',
@@ -86,7 +87,7 @@ angular.module('registryApp.dyole')
                 },
 
                 delete: {
-                    fill: "#EF4836",
+                    fill: '#EF4836',
 
                     image: {
                         name: 'icon-remove.png',
@@ -97,7 +98,7 @@ angular.module('registryApp.dyole')
                 },
 
                 rename: {
-                    fill: "transparent",
+                    fill: 'transparent',
 
                     image: {
                         name: 'icon-edit.png',
@@ -125,7 +126,8 @@ angular.module('registryApp.dyole')
 
                 outerBorder = canvas.circle(0, 0, radius);
                 outerBorder.attr({
-                    fill: '90-#F4F4F4-#F4F4F4:50-#F4F4F4:50-#F4F4F4',
+//                    fill: '90-#F4F4F4-#F4F4F4:50-#F4F4F4:50-#F4F4F4',
+                    fill: '#FBFCFC',
                     stroke: '#dddddd'
                 });
 

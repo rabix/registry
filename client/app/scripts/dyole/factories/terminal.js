@@ -386,7 +386,7 @@ angular.module('registryApp.dyole')
                 };
 
                 attr = {
-                    stroke: '#EBEBEB',
+                    stroke: '#FBFCFC',
                     'stroke-width': this.connectionConfig.width * scale
                 };
 

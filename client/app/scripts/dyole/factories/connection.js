@@ -29,7 +29,8 @@ angular.module('registryApp.dyole')
         Connection.prototype = {
 
             strokeWidth: 7,
-            strokeColor: '#dddddd',
+//            strokeColor: '#dddddd',
+            strokeColor: '#FBFCFC',
 
             _attachEvents: function () {
 
