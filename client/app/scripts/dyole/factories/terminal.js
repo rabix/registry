@@ -4,7 +4,7 @@
 'use strict';
 
 angular.module('registryApp.dyole')
-    .factory('terminal', ['event', function(Event) {
+    .factory('terminal', [function() {
 
         var Terminal = function(options) {
             this.parent = options.parent;
@@ -12,7 +12,7 @@ angular.module('registryApp.dyole')
             this.canvas = options.canvas;
             this.mouseover = false;
             this.terminalConnected = false;
-            this.pipeline = options.pipeline;
+            this.Pipeline = options.pipeline;
 
             this.pipelineWrap = options.pipelineWrap;
             this.id = this.model.id;
@@ -55,8 +55,7 @@ angular.module('registryApp.dyole')
             },
 
             initHandlers: function () {
-                var self = this,
-                    $canvasArea = self.pipeline.$parent;
+                var _self = this;
 
                 console.log('init handlers for terminal', this.model.id, this.parent.model.id);
 
@@ -65,71 +64,71 @@ angular.module('registryApp.dyole')
                 this.terminal.mousedown(function (e) {
                     var translation;
 
-                    translation = self._getElTranslation();
+                    translation = _self._getElTranslation();
 
-                    self.startCoords = translation;
+                    _self.startCoords = translation;
 
-                    self.mousedown = true;
+                    _self.mousedown = true;
 
-                    Event.trigger('terminal:selectAvailable', self.model, self.parent.model.id);
+                    _self.Pipeline.Event.trigger('terminal:selectAvailable', _self.model, _self.parent.model.id);
 
                     e.preventDefault();
                     e.stopPropagation();
                 });
 
-                this.terminal.mouseup(function (e) {
-                    Event.trigger('terminal:deselectAvailable');
+                this.terminal.mouseup(function () {
+                    _self.Pipeline.Event.trigger('terminal:deselectAvailable');
 
-                    self._removeTempConnection(self.onMouseUpCallback);
+                    _self._removeTempConnection(_self.onMouseUpCallback);
 
-                    self.mousedown = false;
+                    _self.mousedown = false;
                 });
 
                 var terMouseOver = function (terminal) {
 
-                    if (self.mousedown && self.tempConnection) {
+                    if (_self.mousedown && _self.tempConnection) {
                         console.log('4 times' , terminal);
-                        self.mouseoverTerminal = terminal;
+                        _self.mouseoverTerminal = terminal;
                     }
 
                 }, terMouseOut = function () {
 
-                    self.mouseoverTerminal = null;
+                    _self.mouseoverTerminal = null;
 
                 }, terSelectAvail = function (terminal, nodeId) {
 
-                    self.checkAvailibility(terminal, nodeId);
+                    _self.checkAvailibility(terminal, nodeId);
 
                 }, terDeselectAvail = function () {
 
-                    self.setDefaultState();
+                    _self.setDefaultState();
 
                 };
 
                 var events = [];
 
-                Event.subscribe('terminal:mouseover', terMouseOver);
+                this.Pipeline.Event.subscribe('terminal:mouseover', terMouseOver);
 
                 events.push({
                     event: 'terminal:mouseover',
                     handler: terMouseOver
                 });
 
-                Event.subscribe('terminal:mouseout', terMouseOut);
+                this.Pipeline.Event.subscribe('terminal:mouseout', terMouseOut);
 
                 events.push({
                     event: 'terminal:mouseout',
                     handler: terMouseOut
                 });
 
-                Event.subscribe('terminal:selectAvailable', terSelectAvail);
+                this.Pipeline.Event.subscribe('terminal:selectAvailable', terSelectAvail);
 
                 events.push({
                     event: 'terminal:selectAvailable',
                     handler: terSelectAvail
                 });
 
-                Event.subscribe('terminal:deselectAvailable', terDeselectAvail);
+                this.Pipeline.Event.subscribe('terminal:deselectAvailable', terDeselectAvail);
 
                 events.push({
                     event: 'terminal:deselectAvailable',
@@ -141,17 +140,17 @@ angular.module('registryApp.dyole')
             },
 
             onMouseUpCallback: function () {
-                var self = this,
+                var _self = this,
                     available;
 
-                if (self.mouseoverTerminal) {
+                if (_self.mouseoverTerminal) {
 //                console.log(this.mouseoverTerminal);
                     available = this.checkAvailibility(this.mouseoverTerminal.model, this.mouseoverTerminal.parent.model.id);
 
                     if (available.status) {
-                        Event.trigger('connection:create', self.mouseoverTerminal, self);
+                        _self.Pipeline.Event.trigger('connection:create', _self.mouseoverTerminal, _self);
 
-                        self.mouseoverTerminal = null;
+                        _self.mouseoverTerminal = null;
                     } else {
 //                    Notify.show('Cannot connect terminal: ' + available.error);
                         console.error('Node cannot connect');
@@ -201,12 +200,12 @@ angular.module('registryApp.dyole')
 
                 return {
                     status: available
-                }
+                };
             },
 
             render: function () {
 
-                var self = this,
+                var _self = this,
                     model = this.model,
                     canvas = this.canvas,
                     xOffset = 12,
@@ -249,17 +248,17 @@ angular.module('registryApp.dyole')
                 borders.push(terminalBorder).push(terminalInner);
 
                 borders.hover(function () {
-                    self.mouseover = true;
+                    _self.mouseover = true;
 
-                    if (!self.pipeline.tempConnectionActive) {
-                        self.showTerminalName();
+                    if (!_self.Pipeline.tempConnectionActive) {
+                        _self.showTerminalName();
                     }
 
-                    Event.trigger('terminal:mouseover', self);
+                    _self.Pipeline.Event.trigger('terminal:mouseover', _self);
                 }, function () {
-                    self.mouseover = false;
-                    self.hideTerminalName();
-                    Event.trigger('terminal:mouseout');
+                    _self.mouseover = false;
+                    _self.hideTerminalName();
+                    _self.Pipeline.Event.trigger('terminal:mouseout');
                 });
 
                 el.push(borders).push(label);
@@ -346,9 +345,9 @@ angular.module('registryApp.dyole')
             _getElTranslation: function () {
                 var scale, translation, parent, pipeline;
 
-                scale = this.pipeline.getEl().getScale();
+                scale = this.Pipeline.getEl().getScale();
                 parent = this.parent.el.getTranslation();
-                pipeline = this.pipeline.getEl().getTranslation();
+                pipeline = this.Pipeline.getEl().getTranslation();
                 translation = this.el.getTranslation();
 
                 translation.x += parent.x + pipeline.x;
@@ -395,7 +394,7 @@ angular.module('registryApp.dyole')
                 this.tempConnection = this.canvas.curve(coords, attr);
                 this.tempConnection.toBack();
 
-                Event.trigger('temp:connection:state', true);
+                this.Pipeline.Event.trigger('temp:connection:state', true);
 
 
             },
@@ -441,7 +440,7 @@ angular.module('registryApp.dyole')
                         callback();
                     }
 
-                    Event.trigger('temp:connection:state', false);
+                    this.Pipeline.Event.trigger('temp:connection:state', false);
 
 
                 }
@@ -451,10 +450,9 @@ angular.module('registryApp.dyole')
             destroy: function () {
                 var _self = this;
 
-
                 console.log('Events', this.events);
                 _.each(this.events, function (ev) {
-                    Event.unsubscribe(ev.event, ev.handler);
+                    _self.Pipeline.Event.unsubscribe(ev.event, ev.handler);
                 });
 
                 this.terminal.unbindMouse().unhover().unclick().unkeyup();

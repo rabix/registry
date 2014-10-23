@@ -14,6 +14,8 @@ angular.module('registryApp.dyole')
             this.nodes = {};
             this.connections = {};
 
+            this.Event = _.clone(Event);
+
             // temporarily holding references to the terminals
             // needed for connection to render
             this.tempConnectionRefs = null;
@@ -33,16 +35,16 @@ angular.module('registryApp.dyole')
                 var _self = this,
                     $canvasArea = this.$parent;
 
-                Event.subscribe('temp:connection:state', function (state) {
+                this.Event.subscribe('temp:connection:state', function (state) {
                     console.log('temp:connection:state', state);
                     _self.tempConnectionActive = state;
                 });
 //
-//            Event.subscribe('temp:connection:state', function (state) {
+//            this.Event.subscribe('temp:connection:state', function (state) {
 //                _self.tempConnectionActive = state;
 //            });
 
-                Event.subscribe('scrollbars:draw', function () {
+                this.Event.subscribe('scrollbars:draw', function () {
                     console.log('scrolbars:draw');
                     _self._drawScrollbars();
                 });
@@ -50,11 +52,11 @@ angular.module('registryApp.dyole')
                 /**
                  * @param type {string}
                  */
-                Event.subscribe('pipeline:change', function () {
+                this.Event.subscribe('pipeline:change', function () {
                     $rootScope.$broadcast('pipeline:change', true);
                 });
 
-                Event.subscribe('node:add', function (model) {
+                this.Event.subscribe('node:add', function (model) {
 
                     var _id = model.id || _.random(100000, 999999);
 
@@ -73,7 +75,15 @@ angular.module('registryApp.dyole')
 
                 });
 
-                Event.subscribe('connection:create', function (endTerminal, startTerminal) {
+                this.Event.subscribe('node:deselect', function () {
+                    _.each(_self.nodes, function (node) {
+                        if (node.selected) {
+                            node._deselect();
+                        }
+                    })
+                });
+
+                this.Event.subscribe('connection:create', function (endTerminal, startTerminal) {
                     var end = endTerminal.model.input ? endTerminal : startTerminal,
                         start = endTerminal.model.input ? startTerminal : endTerminal;
 
@@ -199,7 +209,7 @@ angular.module('registryApp.dyole')
 
             _initCanvasMove: function () {
 
-                var self = this,
+                var _self = this,
                     canvas = this.getEl(),
                     currentZoomLevel = canvas.getScale(),
                     start, move, end, startCoords;
@@ -216,16 +226,16 @@ angular.module('registryApp.dyole')
                 move = function onMove(x, y) {
 
                     var translation = startCoords,
-                        canvasEmpty = Object.keys(self.nodes).length === 0;
+                        canvasEmpty = Object.keys(_self.nodes).length === 0;
 
                     if ( !canvasEmpty) {
 
                         canvas.translate((translation.x + x) / currentZoomLevel.x,
                             (translation.y + y) / currentZoomLevel.y);
 
-                        self.rect.dragged = true;
-                        self._drawScrollbars();
-                        Event.trigger('pipeline:change');
+                        _self.rect.dragged = true;
+                        _self._drawScrollbars();
+                        _self.Event.trigger('pipeline:change');
 
                     }
 
@@ -240,12 +250,12 @@ angular.module('registryApp.dyole')
                     canvasTranslation.zoom = currentZoomLevel.x;
 
                     // set it to the pipeline model
-                    can = self.model.display.canvas;
+                    can = _self.model.display.canvas;
 
                     can.x = canvasTranslation.x;
                     can.y = canvasTranslation.y;
 
-                    if (self.rect.dragged) {
+                    if (_self.rect.dragged) {
 //                    globals.vents.trigger('pipeline:change', 'display');
                     }
 
@@ -257,15 +267,15 @@ angular.module('registryApp.dyole')
 
                 this.rect.drag(move, start, end);
                 this.rect.click(function() {
-                    if (!self.rect.dragged) {
-//                    globals.vents.trigger('node:deselect');
+                    if (!_self.rect.dragged) {
+                        _self.Event.trigger('node:deselect');
                     }
 
-                    self.rect.dragged = false;
+                    _self.rect.dragged = false;
                 });
 
                 this.rect.mouseover(function () {
-//                globals.vents.trigger('remove:wire');
+                    _self.Event.trigger('remove:wire');
                 });
 
             },
@@ -350,7 +360,7 @@ angular.module('registryApp.dyole')
                 _self.nodes[connection.end_node].addConnection(_self.connections[connection.id]);
 
 
-                Event.trigger('pipeline:change');
+                this.Event.trigger('pipeline:change');
 
             },
 
@@ -507,7 +517,7 @@ angular.module('registryApp.dyole')
 
             destroy: function () {
                 var _self = this,
-                    events = ['node:add', 'connection:create', 'scrollbars:draw', 'node:add'];
+                    events = ['node:add', 'connection:create', 'scrollbars:draw', 'node:add', 'node:deselect', 'remove:wire'];
 
                 this.canvas = null;
                 this.model = null;
@@ -524,8 +534,10 @@ angular.module('registryApp.dyole')
                 });
 
                 _.each(events, function (event) {
-                    Event.unsubscribe(event);
+                    _self.Event.unsubscribe(event);
                 });
+
+                this.Event = null;
             },
 
             _getOffset: function(element) {
@@ -555,7 +567,7 @@ angular.module('registryApp.dyole')
                 model.x = x;
                 model.y = y;
 
-                Event.trigger('node:add', model);
+                this.Event.trigger('node:add', model);
             },
 
             adjustSize: function () {

@@ -34,38 +34,46 @@ angular.module('registryApp.dyole')
 
             _attachEvents: function () {
 
-                var self = this;
+                var _self = this,
+                    events = [], calcStroke, rmWire, conState;
 
-//            this.connection.click(function () {
-//                self.destroyConnection();
-//            });
+                calcStroke =  function () {
+                    _self.draw();
+                };
+
+                rmWire = function () {
+                    _self.removeWire();
+                };
+
+                conState = function (state) {
+                    _self.tempConnectionActive = state;
+                };
 
                 this.connection.mouseover(this.onMouseOver, this);
 
-                Event.subscribe('connection:stroke:calculate', function () {
+                this.Pipeline.Event.subscribe('connection:stroke:calculate', calcStroke);
 
+                events.push({
+                    event: 'connection:stroke:calculate',
+                    handler: calcStroke
                 });
 
-                Event.subscribe('remove:wire', function () {
+                this.Pipeline.Event.subscribe('remove:wire', rmWire);
 
+                events.push({
+                    event: 'remove:wire',
+                    handler: rmWire
                 });
 
-                Event.subscribe('temp:connection:state', function () {
+                this.Pipeline.Event.subscribe('temp:connection:state', conState);
 
+                events.push({
+                    event: 'temp:connection:state',
+                    handler: conState
                 });
 
-
-//            this.listenTo(globals.vents, 'connection:stroke:calculate', function () {
-//                self.draw();
-//            });
-//
-//            this.listenTo(globals.vents, 'remove:wire', function () {
-//                self.removeWire();
-//            });
-
-//            this.listenTo(globals.vents, 'temp:connection:state', function (state) {
-//                self.tempConnectionActive = state;
-//            });
+                // create pool of events to unsubscribe on destroy
+                this.events = events;
 
             },
 
@@ -105,8 +113,7 @@ angular.module('registryApp.dyole')
             },
 
             onMouseOut: function () {
-                var self = this,
-                    diff = this.startTime - Date.now();
+                var diff = this.startTime - Date.now();
 
                 if (this.wire && diff > 1000) {
                     this.wire.remove();
@@ -222,14 +229,17 @@ angular.module('registryApp.dyole')
                 }
 
                 console.log('Connection remove');
-                Event.trigger('pipeline:change');
-
-
-//            Event.trigger('pipeline:change', 'revision');
+                this.Pipeline.Event.trigger('pipeline:change');
             },
 
             destroy: function () {
+                var _self = this;
+
                 this.destroyConnection();
+
+                _.each(this.events, function (ev) {
+                    _self.Pipeline.Event.unsubscribe(ev.event, ev.handler);
+                });
             }
         };
 

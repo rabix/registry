@@ -5,7 +5,7 @@
 'use strict';
 
 angular.module('registryApp.dyole')
-    .factory('node', ['terminal', 'event', function(Terminal, Event) {
+    .factory('node', ['terminal', function(Terminal) {
 
         var Node = function(options) {
 
@@ -56,7 +56,8 @@ angular.module('registryApp.dyole')
                 },
 
                 selected: {
-                    gradient: '270-#3F7EB6-#7BA7CD'
+//                    gradient: '270-#3F7EB6-#7BA7CD'
+                    fill: '#F0AD4E'
                 },
 
                 //defaults
@@ -134,8 +135,8 @@ angular.module('registryApp.dyole')
                 innerBorder = canvas.circle(0, 0, radius - borderWidth);
                 innerBorder.attr({
                     fill: this.constraints.fill,
-                    stroke: this.constraints.stroke,
-                    gradient: this.constraints.gradient
+                    stroke: this.constraints.stroke
+//                    gradient: this.constraints.gradient
                 });
 
                 borders = canvas.group();
@@ -307,8 +308,7 @@ angular.module('registryApp.dyole')
 
             _attachEvents: function () {
 
-                var self = this,
-                    model = this.model,
+                var _self = this,
                     node = this.el,
                     borders = this.circle,
                     outerBorder = this._outerBorder,
@@ -356,7 +356,7 @@ angular.module('registryApp.dyole')
 
                     node.toFront();
 
-                    self.glow = outerBorder.glow({
+                    _self.glow = outerBorder.glow({
                         width: 15,
                         filled: true,
                         opacity: 0.3
@@ -372,15 +372,15 @@ angular.module('registryApp.dyole')
                         output.showTerminalName();
                     });
 
-//                if (!self.selected && self.model.get('isOutdated')) {
-//                    self.showTooltip();
+//                if (!_self.selected && _self.model.get('isOutdated')) {
+//                    _self.showTooltip();
 //                }
                 });
 
                 node.mouseout(function () {
 
-                    if (typeof self.glow !== 'undefined') {
-                        self.glow.remove();
+                    if (typeof _self.glow !== 'undefined') {
+                        _self.glow.remove();
                     }
                     // hide input and output terminals' labels
                     _.each(inputs, function (input) {
@@ -390,46 +390,34 @@ angular.module('registryApp.dyole')
                         output.hideTerminalName();
                     });
 
-//                self.hideTooltip();
+//                _self.hideTooltip();
                 });
 
-                borders.click(function (e) {
+                borders.click(function () {
 
                     var dragged = this.dragged;
 
-                if (typeof dragged !== 'undefined' && !dragged) {
-//                    if (!globals.pipelineEditMode) {
-//
-//                        this.showModal();
-//
-//                    } else if (!dragged) {
-//
-//                        if (!e.ctrlKey && !e.metaKey) {
-//                            globals.vents.trigger('node:deselect');
-//                        }
-//
-//
-//
-                        this._select();
+                    if (typeof dragged !== 'undefined' && !dragged) {
+    //                    if (!globals.pipelineEditMode) {
+    //
+    //                        this.showModal();
+    //
+    //                    } else if (!dragged) {
+    //
+    //                        if (!e.ctrlKey && !e.metaKey) {
+    //                        }
+    //
+                            this.Pipeline.Event.trigger('node:deselect');
+                            this._select();
 
-//                    }
-                }
+    //                    }
+                    }
 
                     this.dragged = false;
                 }, this);
 
                 borders.drag(this.onMove, this.onMoveStart, this.onMoveEnd, this, this, this);
-//
-//            this.listenTo(globals.vents, 'inPlaceEdit:destroy', function () {
-//                if (this.inPlaceEdit) {
-//                    this.inPlaceEdit.destroy();
-//                    this.inPlaceEdit = null;
-//                }
-//            });
 
-//            this.label.dblclick(function (e) {
-//                self.initNameChanging(e);
-//            });
             },
 
             onMoveStart: function(x, y, event, startCoords) {
@@ -451,8 +439,7 @@ angular.module('registryApp.dyole')
 
                 var parent = this.parent,
                     node = this.el,
-                    scale = parent.getScale(),
-                    old = node.getTranslation();
+                    scale = parent.getScale();
 
                 // divide movement proportionally
                 // so you get equal movement in zoom state
@@ -469,8 +456,8 @@ angular.module('registryApp.dyole')
 
 //            this.parentView.moveSelectedNodes((start.x + dx) - old.x, ( start.y + dy) - old.y , this.model.get('id'));
 
-                Event.trigger('scrollbars:draw');
-                Event.trigger('pipeline:change');
+                this.Pipeline.Event.trigger('scrollbars:draw');
+                this.Pipeline.Event.trigger('pipeline:change');
             },
 
             onMoveEnd: function () {
@@ -482,9 +469,9 @@ angular.module('registryApp.dyole')
                     model.x = position.x;
                     model.y = position.y;
 
-//                if (this.dragged) {
-//                    globals.vents.trigger('pipeline:change', 'display');
-//                }
+                    if (this.dragged) {
+                        this.Pipeline.Event.trigger('pipeline:change', 'display');
+                    }
                 }
             },
 
@@ -548,7 +535,6 @@ angular.module('registryApp.dyole')
             _showButtons: function () {
                 var self = this,
                     nodeRadius = this.constraints.radius,
-                    bbox,
                     buttonDistance = typeof this.buttons.distance !== 'undefined' ? -this.buttons.distance - nodeRadius - this.buttons.radius : -nodeRadius * 1.5;
 
                 if (!self.infoButton && !self.removeNodeButton) {
@@ -613,7 +599,7 @@ angular.module('registryApp.dyole')
 
                 // Show selected state
                 this._innerBorder.attr({
-                    gradient: this.constraints.selected.gradient
+                    fill: this.constraints.selected.fill
                 });
 
                 this.selected = true;
@@ -622,13 +608,14 @@ angular.module('registryApp.dyole')
             _deselect: function() {
                 this._destroyButtons();
 
-                if (this.inPlaceEdit) {
-                    this.inPlaceEdit.destroy();
-                    this.inPlaceEdit = null;
-                }
+                // Show default state
+                this._innerBorder.attr({
+                    fill: this.constraints.fill
+                });
+
+                console.log('deselect');
 
                 this.selected = false;
-
             },
             
             removeNode: function () {
