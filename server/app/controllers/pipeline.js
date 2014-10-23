@@ -67,14 +67,25 @@ module.exports = function (app) {
 };
 
 router.get('/pipeline/format', function (req, res, next) {
-    fs.readFile('/Users/filip/SBG/rabix/registry/pipeline-editor/data/clean_pipeline.json', 'utf8', function (err, data) {
-        var json = JSON.parse(data);
 
-        var r = formater.toRabixSchema(json);
+    Pipeline.findById('5448cadaaafdcef2111e81a5').exec(function(err, pipeline) {
+        if (err) { return next(err); }
 
-        var t = formater.toPipelineSchema(r);
-        res.json(t);
+        var p = formater.toRabixSchema(pipeline.json);
+//        delete pipeline.json.relations;
+//        pipeline.json.steps = p.steps;
+
+        p = formater.toPipelineSchema(p);
+//        delete pipeline.json.steps;
+//        pipeline.json.relations = p.relations;
+
+        res.json({data: p});
     });
+
+//    var r = formater.toRabixSchema(json);
+
+//    var t = formater.toPipelineSchema(r);
+//    res.json(t);
 });
 
 router.get('/pipeline', function (req, res, next) {

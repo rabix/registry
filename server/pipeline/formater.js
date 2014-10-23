@@ -11,25 +11,12 @@ var formater = {
         // reset schema
         this.packedSchema = {};
 
-        _.map(json.nodes, function (node) {
-            var nodeWrapper = node.wrapper,
-                app;
-
-            app = _.find(json.schemas, function (app) {
-                var wrapper = app.wrapper;
-                return wrapper.repo_id === nodeWrapper.repo_id && wrapper.image_id === nodeWrapper.image_id && wrapper.classname === nodeWrapper.classname;
-            });
-
-                node.schema = app.app.schema;
-//                return self.mergeNodeAndApp(app, node, displayNodes[node.id] || {x: 0, y: 0});
-        });
-
-        this._transformRelationsToSteps(json.relations, json.display.nodes);
+        this._transformRelationsToSteps(json.relations, json.nodes);
 
         delete json.relations;
         json.steps = this.packedSchema.steps;
 
-        return this.packedSchema;
+        return json;
     },
     
     toPipelineSchema: function (json) {
@@ -38,7 +25,6 @@ var formater = {
         this.packedSchema = {};
 
         this._transformStepsToRelations(json.steps);
-
 
         delete json.steps;
         json.relations = this.packedSchema.relations;

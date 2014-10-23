@@ -21,7 +21,6 @@ angular.module('registryApp.dyole')
             // flag for temporary connection
             this.tempConnectionActive = false;
 
-
             this._initCanvas();
             this._attachEvents();
             this._generateNodes();
