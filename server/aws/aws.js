@@ -1,10 +1,10 @@
 var AWS = require('aws-sdk');
 var mongoose = require('mongoose');
 var logger = require('../common/logger');
-//var config = require('../config/config');
+var config = require('../config/config');
 //var amazon_credentials = config.amazon;
 
-AWS.config.loadFromPath(__dirname + '/../config/amazon.json');
+AWS.config.loadFromPath(config.amazon.path);
 
 
 var s3 = new AWS.S3();

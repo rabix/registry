@@ -39,3 +39,4 @@ template.js
 /server/tmp/*
 
 /server/config/config.json
+/server/config/amazon.json

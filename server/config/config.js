@@ -23,6 +23,9 @@ var config = {
             path: '/data/log/rabix-registry',
             builds: '/data/log/rabix-registry/builds'
         },
+        amazon: {
+            path: __dirname + '/config.json'
+        },
         tmpDir: {
             path: rootPath + '/tmp'
         },
@@ -47,6 +50,9 @@ var config = {
             clientSecret: '3697d0796cb2ed6443495399a963eed96d47bea5',
             callbackURL: 'http://localhost:3000/auth/github/callback',
             scope: 'repo:status,read:org,read:repo_hook,write:repo_hook,admin:repo_hook,user'
+        },
+        amazon: {
+            path: '/data/config/rabix/config.json'
         },
         logging: {
             path: rootPath + '/logs',
@@ -80,6 +86,9 @@ var config = {
         logging: {
             path: '/data/log/rabix-registry',
             builds: '/data/log/rabix-registry/builds'
+        },
+        amazon: {
+            path: '/data/config/rabix/config.json'
         },
         tmpDir: {
             path: rootPath + '/tmp'
