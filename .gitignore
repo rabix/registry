@@ -37,3 +37,5 @@ template.js
 /test/*
 *.css
 /server/tmp/*
+
+/server/config/config.json
