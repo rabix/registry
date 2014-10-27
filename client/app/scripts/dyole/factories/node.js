@@ -595,6 +595,10 @@ angular.module('registryApp.dyole')
 
             _select: function () {
 
+                if (!this.Pipeline.editMode) {
+                    return;
+                }
+
                 this._showButtons();
 
                 // Show selected state

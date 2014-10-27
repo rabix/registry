@@ -4,9 +4,9 @@
 'use strict';
 
 angular.module('registryApp.dyole')
-    .factory('terminal', [function() {
+    .factory('terminal', [function () {
 
-        var Terminal = function(options) {
+        var Terminal = function (options) {
             this.parent = options.parent;
             this.model = options.model;
             this.canvas = options.canvas;
@@ -61,20 +61,24 @@ angular.module('registryApp.dyole')
 
                 this.mousedown = false;
 
-                this.terminal.mousedown(function (e) {
-                    var translation;
+                if (this.Pipeline.editMode) {
 
-                    translation = _self._getElTranslation();
+                    this.terminal.mousedown(function (e) {
+                        var translation;
 
-                    _self.startCoords = translation;
+                        translation = _self._getElTranslation();
 
-                    _self.mousedown = true;
+                        _self.startCoords = translation;
 
-                    _self.Pipeline.Event.trigger('terminal:selectAvailable', _self.model, _self.parent.model.id);
+                        _self.mousedown = true;
 
-                    e.preventDefault();
-                    e.stopPropagation();
-                });
+                        _self.Pipeline.Event.trigger('terminal:selectAvailable', _self.model, _self.parent.model.id);
+
+                        e.preventDefault();
+                        e.stopPropagation();
+                    });
+
+                }
 
                 this.terminal.mouseup(function () {
                     _self.Pipeline.Event.trigger('terminal:deselectAvailable');
@@ -87,7 +91,7 @@ angular.module('registryApp.dyole')
                 var terMouseOver = function (terminal) {
 
                     if (_self.mousedown && _self.tempConnection) {
-                        console.log('4 times' , terminal);
+                        console.log('4 times', terminal);
                         _self.mouseoverTerminal = terminal;
                     }
 
@@ -447,7 +451,7 @@ angular.module('registryApp.dyole')
                 }
 
             },
-            
+
             destroy: function () {
                 var _self = this;
 
@@ -469,7 +473,7 @@ angular.module('registryApp.dyole')
         };
 
         return {
-            getInstance: function(options) {
+            getInstance: function (options) {
                 return new Terminal(options);
             }
         };

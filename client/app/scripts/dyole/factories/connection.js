@@ -37,7 +37,7 @@ angular.module('registryApp.dyole')
                 var _self = this,
                     events = [], calcStroke, rmWire, conState;
 
-                calcStroke =  function () {
+                calcStroke = function () {
                     _self.draw();
                 };
 
@@ -49,7 +49,9 @@ angular.module('registryApp.dyole')
                     _self.tempConnectionActive = state;
                 };
 
-                this.connection.mouseover(this.onMouseOver, this);
+                if (this.Pipeline.editMode) {
+                    this.connection.mouseover(this.onMouseOver, this);
+                }
 
                 this.Pipeline.Event.subscribe('connection:stroke:calculate', calcStroke);
 

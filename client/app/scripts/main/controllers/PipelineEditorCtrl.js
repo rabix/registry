@@ -54,6 +54,7 @@ angular.module('registryApp')
         if ($routeParams.mode === 'edit') {
             Pipeline.getPipeline($routeParams.id)
                 .then(function(result) {
+                    $scope.view.editMode = true;
                     $scope.view.pipeline = result.data;
                 });
         }

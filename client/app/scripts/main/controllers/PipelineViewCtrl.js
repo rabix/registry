@@ -22,6 +22,8 @@ angular.module('registryApp')
 
         Pipeline.getPipeline($routeParams.id)
             .then(function(result) {
+                $scope.view.editMode = false;
+                console.log($scope.view.editMode, 'pipeline get finished');
                 $scope.view.pipeline = result.data;
                 $scope.view.loading = false;
             });

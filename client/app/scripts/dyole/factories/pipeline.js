@@ -16,6 +16,12 @@ angular.module('registryApp.dyole')
 
             this.Event = _.clone(Event);
 
+            /**
+             * Pipeline in preview?
+             * @type {.scope.editMode|*|Pipeline.editMode|$scope.view.editMode}
+             */
+            this.editMode = options.editMode;
+
             // temporarily holding references to the terminals
             // needed for connection to render
             this.tempConnectionRefs = null;

@@ -6,7 +6,7 @@
 'use strict';
 
 angular.module('registryApp.dyole')
-    .controller('PipelineCtrl', ['$scope', '$rootScope', '$element', '$location', '$window', '$timeout', 'pipeline', 'App', 'rawPipeline', 'Pipeline', function ($scope, $rootScope, $element, $location, $window, $timeout, pipeline, App, rawPipeline, PipelineMdl) {
+    .controller('PipelineCtrl', ['$scope', '$rootScope', '$routeParams', '$element', '$location', '$window', '$timeout', 'pipeline', 'App', 'rawPipeline', 'Pipeline', function ($scope, $rootScope, $routeParams, $element, $location, $window, $timeout, pipeline, App, rawPipeline, PipelineMdl) {
 
         var Pipeline;
         var selector = '.pipeline';
@@ -15,10 +15,33 @@ angular.module('registryApp.dyole')
         $scope.view = {};
 
 
-        Pipeline = pipeline.getInstance({
-            model: $scope.pipeline ? $scope.pipeline.json || rawPipeline : rawPipeline,
-            $parent: angular.element($element[0].querySelector(selector))
-        });
+        if (Object.keys($scope.pipeline).length !== 0 || $routeParams.mode === 'new') {
+            Pipeline = pipeline.getInstance({
+                model: $scope.pipeline ? $scope.pipeline.json || rawPipeline : rawPipeline,
+                $parent: angular.element($element[0].querySelector(selector)),
+                editMode: $scope.editMode
+            });
+
+            console.log('Pipeline loaded imidiatly', $scope.editMode);
+        } else {
+            var pipelineWatch = $scope.$watch('pipeline', function(n, o) {
+
+                if (n !== o) {
+
+                    Pipeline = pipeline.getInstance({
+                        model: $scope.pipeline ? $scope.pipeline.json || rawPipeline : rawPipeline,
+                        $parent: angular.element($element[0].querySelector(selector)),
+                        editMode: $scope.editMode
+                    });
+
+                    pipelineWatch();
+
+                    console.log('Pipeline loaded after watch', $scope.editMode);
+
+                }
+            });
+        }
+
 
         /**
          * Save pipeline

@@ -16,7 +16,7 @@
     <div ng-if="!view.loading" class="content">
 
         <div class="col content-col">
-            <div pipeline="view.pipeline" pipeline-change-fn="onPipelineChange(value)"></div>
+            <div pipeline="view.pipeline" edit-mode="view.editMode" pipeline-change-fn="onPipelineChange(value)"></div>
         </div>
 
         <div class="col sidebar-col">

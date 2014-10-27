@@ -68,14 +68,14 @@ module.exports = function (app) {
 
 router.get('/pipeline/format', function (req, res, next) {
 
-    Pipeline.findById('5448cadaaafdcef2111e81a5').exec(function(err, pipeline) {
+    Pipeline.findById('544e313368391d67121a4a39').exec(function(err, pipeline) {
         if (err) { return next(err); }
 
         var p = formater.toRabixSchema(pipeline.json);
 //        delete pipeline.json.relations;
 //        pipeline.json.steps = p.steps;
 
-        p = formater.toPipelineSchema(p);
+//        p = formater.toPipelineSchema(p);
 //        delete pipeline.json.steps;
 //        pipeline.json.relations = p.relations;
 
