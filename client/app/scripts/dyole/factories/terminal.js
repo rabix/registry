@@ -192,7 +192,7 @@ angular.module('registryApp.dyole')
 
                 var available = false;
 
-                if (terminal.input !== this.model.input) {
+                if (terminal.input !== this.model.input && nodeId !== this.parent.model.id) {
                     this.showAvailableState();
 
                     available = true;
@@ -389,10 +389,10 @@ angular.module('registryApp.dyole')
                     'stroke-width': this.connectionConfig.width * scale
                 };
 
-//            console.log(this.pipelineWrap.getScale().x);
-
                 this.tempConnection = this.canvas.curve(coords, attr);
                 this.tempConnection.toBack();
+
+                this.Pipeline.markDropArea(this.model.input);
 
                 this.Pipeline.Event.trigger('temp:connection:state', true);
 
@@ -433,6 +433,9 @@ angular.module('registryApp.dyole')
             _removeTempConnection: function (callback) {
 
                 if (this.tempConnection) {
+
+                    this.Pipeline.checkAreaIntersect(this.tempConnection.getEndPointCoords(), this);
+
                     this.tempConnection.remove();
                     this.tempConnection = null;
 
@@ -441,8 +444,6 @@ angular.module('registryApp.dyole')
                     }
 
                     this.Pipeline.Event.trigger('temp:connection:state', false);
-
-
                 }
 
             },

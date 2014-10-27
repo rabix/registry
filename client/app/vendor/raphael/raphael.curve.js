@@ -28,6 +28,11 @@ Raphael.fn.curve = function (config, attributes) {
     config = config || defaults;
     attributes = attributes || {};
 
+    var endCoords = {
+        x2: config.x2,
+        y2: config.y2
+    };
+
     function Curve(conf, attr) {
 
         var pub, path = r.group(),
@@ -74,6 +79,7 @@ Raphael.fn.curve = function (config, attributes) {
                 coords.y2 = temp;
             }
 
+            endCoords = coords;
             return coords;
 
         }
@@ -133,7 +139,9 @@ Raphael.fn.curve = function (config, attributes) {
                     'stroke-width': strokeWidth
                 });
 
-
+                endCoords.x2 = coords.x2;
+                endCoords.y2 = coords.y2;
+                
                 return this;
             },
 
@@ -147,6 +155,7 @@ Raphael.fn.curve = function (config, attributes) {
                 if (pathInner && pathOutter) {
                     pathInner.remove();
                     pathOutter.remove();
+                    path.remove();
                 }
             },
 
@@ -178,6 +187,14 @@ Raphael.fn.curve = function (config, attributes) {
 
             getPath: function () {
                 return path;
+            },
+            
+            getBBox: function () {
+                return path.getBBox();
+            },
+            
+            getEndPointCoords: function () {
+                return endCoords;
             }
 
         };

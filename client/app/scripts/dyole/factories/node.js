@@ -480,7 +480,7 @@ angular.module('registryApp.dyole')
                 var terminal;
 
                 terminal = _.find(this[type + 's'], function (term) {
-                    return term.id === id;
+                    return term.model.id === id;
                 });
 
                 return terminal;

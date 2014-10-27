@@ -5,7 +5,7 @@
 'use strict';
 
 angular.module('registryApp.dyole')
-    .factory('pipeline', ['event', 'node', 'connection', '$rootScope', function(Event, Node, Connection, $rootScope) {
+    .factory('pipeline', ['event', 'node', 'connection', '$rootScope', 'systemNodeModel', function(Event, Node, Connection, $rootScope, systemNodeModel) {
 
         var Pipeline = function (options) {
             this.model = options.model;
@@ -23,6 +23,8 @@ angular.module('registryApp.dyole')
             // flag for temporary connection
             this.tempConnectionActive = false;
 
+            console.log('Pipeline model: ', this.model);
+
             this._initCanvas();
             this._attachEvents();
             this._generateNodes();
@@ -31,12 +33,17 @@ angular.module('registryApp.dyole')
 
         Pipeline.prototype =  {
 
+            constraints: {
+                dropArea: {
+                    width: 140
+                }
+            },
+
             _attachEvents: function () {
                 var _self = this,
                     $canvasArea = this.$parent;
 
                 this.Event.subscribe('temp:connection:state', function (state) {
-                    console.log('temp:connection:state', state);
                     _self.tempConnectionActive = state;
                 });
 //
@@ -45,7 +52,6 @@ angular.module('registryApp.dyole')
 //            });
 
                 this.Event.subscribe('scrollbars:draw', function () {
-                    console.log('scrolbars:draw');
                     _self._drawScrollbars();
                 });
 
@@ -58,10 +64,6 @@ angular.module('registryApp.dyole')
 
                 this.Event.subscribe('node:add', function (model) {
 
-                    var _id = model.id || _.random(100000, 999999);
-
-                    model.id = _id;
-
                     var node = Node.getInstance({
                         pipeline: _self,
                         model: model,
@@ -69,7 +71,7 @@ angular.module('registryApp.dyole')
                         pipelineWrap: _self.pipelineWrap
                     });
 
-                    _self.nodes[_id] = node;
+                    _self.nodes[model.id] = node;
 
                     _self.pipelineWrap.push(node.render().el);
 
@@ -80,7 +82,7 @@ angular.module('registryApp.dyole')
                         if (node.selected) {
                             node._deselect();
                         }
-                    })
+                    });
                 });
 
                 this.Event.subscribe('connection:create', function (endTerminal, startTerminal) {
@@ -137,7 +139,7 @@ angular.module('registryApp.dyole')
                     });
                 });
 
-                $('body').mouseup(function () {
+                $('body').on('mouseup', function (e) {
 
                     _.each(_self.nodes, function (node) {
 
@@ -334,33 +336,95 @@ angular.module('registryApp.dyole')
                 _self.nodes[connection.end_node].addConnection(_self.connections[connection.id]);
             },
 
-            createConnection: function (connection) {
-                var _self = this,
-                    input, output;
+            _createSystemNode: function (isInput, x, y, terminal) {
+                var model = angular.copy(systemNodeModel),
+                    terminalId;
 
-                if (!this.tempConnectionRefs) {
-                    return;
+                if (isInput) {
+                    model.softwareDescription.name = 'Input File\'s';
+                    model.outputs.properties = {
+                        output: {
+                            'name': 'Output',
+                            'id': 'output',
+                            'required': false,
+                            'type' : 'file'
+                        }
+                    };
+
+                    terminalId = model.outputs.properties.output.id;
+                } else {
+                    model.softwareDescription.name = 'Output File\'s';
+
+                    model.inputs.properties = {
+                        input: {
+                            'name': 'Input',
+                            'id': 'input',
+                            'required': false,
+                            'type' : 'file'
+                        }
+                    };
+
+                    terminalId = model.inputs.properties.input.id;
+
                 }
 
-                input = this.tempConnectionRefs.end;
-                output = this.tempConnectionRefs.start;
+                var _id = model.id || this._generateNodeId(model);
 
-                _self.connections[connection.id] = Connection.getInstance({
-                    model: connection,
-                    canvas: _self.canvas,
-                    parent: _self.pipelineWrap,
-                    nodes: _self.nodes,
-                    pipeline: _self,
-                    input: input,
-                    output: output,
-                    element: _self.$parent
+                model.id = _id;
+
+                this.addNode(model, x, y, true);
+                this._connectSystemNode(terminal, _id, isInput, terminalId);
+            },
+            
+            _generateNodeId: function (model) {
+                var name = model.softwareDescription.name,
+                    n = 1;
+
+                var check = this._checkIdAvailable(name + '_' + n);
+
+                while(check) {
+                    n++;
+                    check = this._checkIdAvailable(name + '_' + n);
+                }
+
+                return name + '_' + n;
+            },
+            
+            _checkIdAvailable: function (id) {
+                return !!this.nodes[id];
+            },
+
+            _markCreateArea: function (isInput) {
+
+                var rect,
+                    areaWidth = this.constraints.dropArea.width;
+
+                if (isInput) {
+                    rect = this.canvas.rect(0, 0, areaWidth, this.canvas.height);
+                } else {
+                    rect = this.canvas.rect(this.canvas.width - areaWidth, 0, areaWidth, this.canvas.height);
+                }
+
+                rect.attr({
+                    stroke: 'none',
+                    fill: '#f0ad4e',
+                    opacity: '0.3'
                 });
 
-                _self.nodes[connection.start_node].addConnection(_self.connections[connection.id]);
-                _self.nodes[connection.end_node].addConnection(_self.connections[connection.id]);
+                rect.toBack().animate({opacity: 0}, 600, function(){
+                    this.animate({opacity: 0.3}, 600, function(){
+                        this.animate({opacity: 0}, 600, function () {
+                            this.animate({opacity: 0.3}, 600, function () {
 
+                            });
+                        });
+                    });
 
-                this.Event.trigger('pipeline:change');
+                });
+
+                rect.isInput = isInput;
+
+                this.dropZoneRect = rect;
 
             },
 
@@ -472,6 +536,114 @@ angular.module('registryApp.dyole')
             },
 
 
+            _transformModel: function (nodeModel) {
+
+                var model = nodeModel.json || nodeModel,
+                    schema = {
+                        inputs: [],
+                        outputs: []
+                    };
+
+                _.forEach(model.inputs.properties, function (input, name) {
+
+                    input.name = name;
+                    input.id = input.id || name;
+
+                    schema.inputs.push(input);
+                });
+
+                _.forEach(model.outputs.properties, function (output, name) {
+                    output.name = name;
+                    output.id = output.id || name;
+
+                    schema.outputs.push(output);
+                });
+
+                model.schema = schema;
+
+                return model;
+
+            },
+
+            _getOffset: function(element) {
+
+                var bodyRect = document.body.getBoundingClientRect();
+                var elemRect = element.getBoundingClientRect();
+                var top   = elemRect.top - bodyRect.top;
+                var left   = elemRect.left - bodyRect.left;
+
+                return {top: top, left: left};
+            },
+
+            _getConnections: function () {
+                return _.pluck(this.connections, 'model');
+            },
+
+            _getNodes: function () {
+                return _.pluck(this.nodes, 'model');
+            },
+
+            _connectSystemNode: function (terminal, nodeId, isInput, terminalId) {
+                var node = this.nodes[nodeId],
+                    type = !isInput ? 'input' : 'output',
+                    nodeTer = node.getTerminalById(terminalId, type);
+
+                this.Event.trigger('connection:create', terminal, nodeTer);
+            },
+
+            checkAreaIntersect: function (coords, terminal) {
+
+                var areaWidth = this.constraints.dropArea.width;
+
+                if (coords.x1 <= areaWidth && this.dropZoneRect.isInput) {
+                    this._createSystemNode(this.dropZoneRect.isInput, coords.x1, coords.y1, terminal);
+                }
+
+                if (coords.x2 >= (this.canvas.width - areaWidth) && !this.dropZoneRect.isInput) {
+                    this._createSystemNode(this.dropZoneRect.isInput, coords.x2, coords.y2, terminal);
+                }
+
+                if (this.dropZoneRect) {
+                    this.dropZoneRect.remove();
+                    this.dropZoneRect = null;
+                }
+
+            },
+
+            markDropArea: function (isInput) {
+                this._markCreateArea(isInput);
+            },
+
+            createConnection: function (connection) {
+                var _self = this,
+                    input, output;
+
+                if (!this.tempConnectionRefs) {
+                    return;
+                }
+
+                input = this.tempConnectionRefs.end;
+                output = this.tempConnectionRefs.start;
+
+                _self.connections[connection.id] = Connection.getInstance({
+                    model: connection,
+                    canvas: _self.canvas,
+                    parent: _self.pipelineWrap,
+                    nodes: _self.nodes,
+                    pipeline: _self,
+                    input: input,
+                    output: output,
+                    element: _self.$parent
+                });
+
+                _self.nodes[connection.start_node].addConnection(_self.connections[connection.id]);
+                _self.nodes[connection.end_node].addConnection(_self.connections[connection.id]);
+
+
+                this.Event.trigger('pipeline:change');
+
+            },
+
             getEl: function () {
                 return this.pipelineWrap;
             },
@@ -485,39 +657,9 @@ angular.module('registryApp.dyole')
 
             },
 
-            _transformModel: function (nodeModel) {
-
-                var model = nodeModel.json,
-                    schema = {
-                        inputs: [],
-                        outputs: []
-                    };
-
-                _.each(model.inputs.properties, function (input, name) {
-
-                    input.name = name;
-                    input.id = input.id || name;
-
-                    schema.inputs.push(input);
-                });
-
-                _.each(model.outputs.properties, function (output, name) {
-                    output.name = name;
-                    output.id = output.id || name;
-
-                    schema.outputs.push(output);
-                });
-
-                model.schema = schema;
-
-                return model;
-
-            },
-            
-
             destroy: function () {
                 var _self = this,
-                    events = ['node:add', 'connection:create', 'scrollbars:draw', 'node:add', 'node:deselect', 'remove:wire'];
+                    events = ['connection:create', 'scrollbars:draw', 'node:add', 'node:deselect', 'remove:wire'];
 
                 this.canvas = null;
                 this.model = null;
@@ -538,34 +680,37 @@ angular.module('registryApp.dyole')
                 });
 
                 this.Event = null;
+
+                $('body').off('mouseup');
             },
 
-            _getOffset: function(element) {
-
-                var bodyRect = document.body.getBoundingClientRect();
-                var elemRect = element.getBoundingClientRect();
-                var top   = elemRect.top - bodyRect.top;
-                var left   = elemRect.left - bodyRect.left;
-
-                return {top: top, left: left};
-            },
-
-            addNode: function (nodeModel, clientX, clientY) {
+            addNode: function (nodeModel, clientX, clientY, rawCoords) {
 
                 var model = this._transformModel(nodeModel);
 
                 var canvas = this._getOffset(this.$parent[0]);
+
+                rawCoords = rawCoords || false;
 
                 console.log('x: %s, y: %s, canvas: ', clientX, clientY, canvas);
 
                 var x = clientX - canvas.left - this.pipelineWrap.getTranslation().x,
                     y = clientY - canvas.top - this.pipelineWrap.getTranslation().y;
 
+                if (rawCoords) {
+                    x = clientX - this.pipelineWrap.getTranslation().x;
+                    y = clientY - this.pipelineWrap.getTranslation().y;
+                }
+
                 console.log('x: %s, y: %s', x, y);
 
 
                 model.x = x;
                 model.y = y;
+
+                var _id = model.id || this._generateNodeId(model);
+
+                model.id = _id;
 
                 this.Event.trigger('node:add', model);
             },
@@ -584,14 +729,6 @@ angular.module('registryApp.dyole')
 
             },
 
-            _getConnections: function () {
-                return _.pluck(this.connections, 'model');
-            },
-            
-            _getNodes: function () {
-                return _.pluck(this.nodes, 'model');
-            },
-            
             getJSON: function () {
                 var json = this.model;
 

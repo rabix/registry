@@ -21,4 +21,18 @@ angular.module('registryApp.dyole', [])
         nodes: [],
         relations: [],
         schemas: []
+    })
+    .constant('systemNodeModel', {
+        'softwareDescription': {
+            'repo_owner': 'rabix',
+            'repo_name': 'system',
+            'name': 'System app'
+        },
+        'documentAuthor': null,
+        'inputs': {
+            type: 'object'
+        },
+        'outputs': {
+            type: 'object'
+        }
     });
