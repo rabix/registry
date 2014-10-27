@@ -142,7 +142,7 @@ angular.module('registryApp.dyole')
                 borders = canvas.group();
                 borders.push(outerBorder).push(innerBorder);
 
-                label = canvas.text(0, radius + labelOffset, model.label || model.softwareDescription.name  + ' ' + model.id || model._id);
+                label = canvas.text(0, radius + labelOffset, model.label || model.softwareDescription.name);
 
                 label.attr({
                     'font-size': 14
