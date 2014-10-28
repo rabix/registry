@@ -43,7 +43,7 @@ angular.module('registryApp')
         /* flag when save is clicked */
         $scope.view.saveing = false;
 
-        $scope.view.classes = ['page', 'dyole'];
+        $scope.view.classes = ['page', 'pipeline-edit'];
         Loading.setClasses($scope.view.classes);
 
         $scope.Loading = Loading;
@@ -225,7 +225,6 @@ angular.module('registryApp')
 
             if (_.isUndefined(model.params)) { model.params = {}; }
 
-            console.log(model);
             $scope.view.json = model;
 
             $scope.$digest();

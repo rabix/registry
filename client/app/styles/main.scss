@@ -257,8 +257,9 @@ body {
     }
   }
 
-  /* Pipeline Editor page */
-  &.dyole {
+  /* Pipeline Editor/View page */
+  &.pipeline-edit,
+  &.pipeline-view {
     & > .content {
       padding: 0;
       @include flex-box();

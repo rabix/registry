@@ -1,7 +1,7 @@
 "use strict";
 
 angular.module('registryApp')
-    .service('Pipeline', ['Api', 'Data', function (Api, Data) {
+    .service('Pipeline', ['Api', function (Api) {
 
         var self = {};
 
