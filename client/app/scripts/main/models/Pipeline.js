@@ -1,7 +1,7 @@
 "use strict";
 
 angular.module('registryApp')
-    .service('Pipeline', ['Api', function (Api) {
+    .service('Pipeline', ['Api', '$localForage', function (Api, $localForage) {
 
         var self = {};
 
@@ -56,6 +56,21 @@ angular.module('registryApp')
         
         self.deletePipeline = function (id) {
             return Api.pipelines.delete({id: id}).$promise;
+        };
+
+        self.getLocalPipeline = function () {
+
+            return $localForage.getItem('pipeline')
+                .then(function (pipeline) {
+                    return pipeline || {};
+                });
+
+        };
+
+        self.saveLocalPipeline = function (pipeline) {
+
+            $localForage.setItem('pipeline', pipeline);
+
         };
 
         return self;
