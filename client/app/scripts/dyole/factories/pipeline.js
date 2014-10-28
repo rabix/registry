@@ -745,7 +745,7 @@ angular.module('registryApp.dyole')
 
                     rawCoords = rawCoords || false;
 
-                    var appName = rawModel.name || rawModel.json.softwareDescription
+                    var appName = rawModel.name || rawModel.softwareDescription.name
                         .name;
 
                     if (!this.model.schemas[appName]) {
