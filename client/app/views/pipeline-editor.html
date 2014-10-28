@@ -16,7 +16,7 @@
     <div ng-if="!view.loading" class="content">
 
         <div class="col content-col">
-            <div pipeline="view.pipeline" edit-mode="view.editMode" pipeline-change-fn="onPipelineChange(value)"></div>
+            <div pipeline="view.pipeline" edit-mode="true" pipeline-change-fn="onPipelineChange(value)"></div>
         </div>
 
         <div class="col sidebar-col">
@@ -102,7 +102,7 @@
                             <div class="input-container input-container-small">
                                 <input-field
                                         ng-repeat="(key, property) in view.json.inputs.properties"
-                                        ng-model="view.params[view.currentAppId][key]"
+                                        ng-model="view.json.params[key]"
                                         key="{{ key }}"
                                         prop="property"
                                         ignore-files="true"

@@ -31,9 +31,6 @@ angular.module('registryApp')
         /* visibility flags for repo groups that hold apps */
         $scope.view.repoGroups = {};
 
-        /* params for the currently selected app */
-        $scope.view.params = {};
-
         /* list of my repos */
         $scope.view.myRepositories = {};
 
@@ -45,12 +42,6 @@ angular.module('registryApp')
 
         /* flag when save is clicked */
         $scope.view.saveing = false;
-
-        /* Pipeline edit mode flag */
-        $scope.view.editMode = true;
-
-        /* ID of the currently selected node */
-        $scope.view.currentAppId = null;
 
         $scope.view.classes = ['page', 'dyole'];
         Loading.setClasses($scope.view.classes);
@@ -91,7 +82,7 @@ angular.module('registryApp')
          * Watch the params in order to recognizes changes
          */
         var watchParams = function () {
-            paramsWatcher = $scope.$watch('view.params', function (n, o) {
+            paramsWatcher = $scope.$watch('view.json.params', function (n, o) {
                 if (n !== o) {
                     $scope.view.isChanged = true;
                 }
@@ -224,7 +215,7 @@ angular.module('registryApp')
             $scope.view.saving = true;
             $scope.view.loading = true;
 
-            $scope.$broadcast('save', $scope.view.params);
+            $scope.$broadcast('save', true);
         };
 
         /**
@@ -232,15 +223,10 @@ angular.module('registryApp')
          */
         var cancelNodeSelectEL = $rootScope.$on('node:select', function (e, model) {
 
+            if (_.isUndefined(model.params)) { model.params = {}; }
+
             console.log(model);
-            $scope.view.currentAppId = model._id;
-            $scope.view.json = model.json;
-
-            if (_.isUndefined($scope.view.params[model._id])) {
-                $scope.view.params[model._id] = {};
-            }
-
-            console.log($scope.view.params);
+            $scope.view.json = model;
 
             $scope.$digest();
 
@@ -251,14 +237,13 @@ angular.module('registryApp')
          */
         var cancelNodeDeselectEL = $rootScope.$on('node:deselect', function () {
 
-            $scope.view.currentAppId = null;
             $scope.view.json = {};
 
             $scope.$digest();
 
         });
 
-        $scope.$on('$destroy', function() {
+        $scope.$on('$destroy', function () {
             cancelNodeSelectEL();
             cancelNodeDeselectEL();
         });

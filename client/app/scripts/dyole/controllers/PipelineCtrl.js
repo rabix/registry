@@ -30,10 +30,15 @@ angular.module('registryApp.dyole')
         initPipeline();
 
         $scope.$watch('pipeline', function(n, o) {
+
             if (n !== o) {
 
-                Pipeline.destroy();
-                Pipeline = null;
+                $scope.pipeline = n;
+
+                if (angular.isDefined(Pipeline)) {
+                    Pipeline.destroy();
+                    Pipeline = null;
+                }
 
                 initPipeline();
             }
@@ -42,21 +47,21 @@ angular.module('registryApp.dyole')
         /**
          * Save pipeline
          */
-        $scope.$on('save', function (e, params) {
+        $scope.$on('save', function (e, value) {
 
-            $scope.pipeline.json = Pipeline.getJSON();
+            if (value) {
+                $scope.pipeline.json = Pipeline.getJSON();
 
-            $scope.pipeline.json.params = params;
+                PipelineMdl.save($scope.pipeline._id, $scope.pipeline)
+                    .then(function (data) {
 
-            PipelineMdl.save($scope.pipeline._id, $scope.pipeline)
-                .then(function (data) {
-
-                    if (data.id) {
-                        $location.path('/pipeline/' + data.id);
-                    } else {
-                        $scope.pipelineChangeFn({value: false});
-                    }
-                });
+                        if (data.id) {
+                            $location.path('/pipeline/' + data.id);
+                        } else {
+                            $scope.pipelineChangeFn({value: false});
+                        }
+                    });
+            }
 
         });
 

@@ -1,4 +1,4 @@
-<div ng-if="!ignoreFiles" class="form-group" ng-class="{required: prop.required, 'has-error': inputForm.inputFile.$invalid}">
+<div ng-hide="ignoreFiles" class="form-group" ng-class="{required: prop.required, 'has-error': inputForm.inputFile.$invalid}">
     <label class="control-label">{{ key }}</label>
 
     <div class="input-property-body">

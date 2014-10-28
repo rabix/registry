@@ -14,7 +14,7 @@ angular.module('registryApp.dyole')
             controller: 'PipelineCtrl',
             scope: {
                 pipeline: '=',
-                editMode: '=',
+                editMode: '@',
                 pipelineChangeFn: '&'
             }
         };
