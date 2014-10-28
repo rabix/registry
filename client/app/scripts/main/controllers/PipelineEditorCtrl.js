@@ -4,7 +4,7 @@
 'use strict';
 
 angular.module('registryApp')
-    .controller('PipelineEditorCtrl', ['$scope', '$rootScope', '$q', '$routeParams', 'Sidebar', 'Loading', 'App', 'Pipeline', function ($scope, $rootScope, $q, $routeParams, Sidebar, Loading, App, Pipeline) {
+    .controller('PipelineEditorCtrl', ['$scope', '$rootScope', '$q', '$routeParams', 'Sidebar', 'Loading', 'App', 'Pipeline', 'User', function ($scope, $rootScope, $q, $routeParams, Sidebar, Loading, App, Pipeline, User) {
 
         Sidebar.setActive('_dyole');
 
@@ -47,10 +47,15 @@ angular.module('registryApp')
         Loading.setClasses($scope.view.classes);
 
         $scope.Loading = Loading;
+
         $scope.$watch('Loading.classes', function (n, o) {
             if (n !== o) {
                 $scope.view.classes = n;
             }
+        });
+
+        User.getUser().then(function (result) {
+            $scope.user = result.user;
         });
 
         if ($routeParams.mode === 'edit') {
