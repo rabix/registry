@@ -98,8 +98,7 @@ angular.module('registryApp.dyole')
 
                     this.Event.subscribe('node:select', function (model) {
 
-                        $rootScope.$broadcast('node:select', _self.model.schemas[
-                            model.softwareDescription.name]);
+                        $rootScope.$broadcast('node:select', model);
 
                     });
 
