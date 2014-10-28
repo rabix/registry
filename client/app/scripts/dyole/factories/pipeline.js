@@ -193,11 +193,13 @@ angular.module('registryApp.dyole')
                         $parent = this.$parent,
                         $parentDim = {
                             width: $parent[0].offsetWidth - 10,
-                            height: ($parent[0].offsetHeight || $parent[0].parentNode.offsetHeight)
+                            height: $parent[0].offsetHeight || $parent[0].parentNode.offsetHeight
                         };
 
                     width = $parentDim.width || width;
                     height = $parentDim.height || height;
+
+                    if (height > 0) { height -= 10; }
 
                     this.canvas = new Raphael(this.$parent[0], width, height);
                     this.pipelineWrap = this.canvas.group();
@@ -779,7 +781,7 @@ angular.module('registryApp.dyole')
                 adjustSize: function () {
 
                     var width = this.$parent[0].offsetWidth - 10;
-                    var height = (this.$parent[0].offsetHeight || this.$parent[0].parentNode.offsetHeight) - 10;
+                    var height = (this.$parent[0].offsetHeight || this.$parent[0].parentNode.offsetHeight);
 
                     this.canvas.setSize(width, height);
 

@@ -102,9 +102,10 @@
                             <div class="input-container input-container-small">
                                 <input-field
                                         ng-repeat="(key, property) in view.json.inputs.properties"
-                                        ng-model="view.params[key]"
+                                        ng-model="view.params[view.currentAppId][key]"
                                         key="{{ key }}"
                                         prop="property"
+                                        ignore-files="true"
                                         form="paramForms">
                                 </input-field>
                             </div>

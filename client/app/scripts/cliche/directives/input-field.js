@@ -19,6 +19,7 @@ angular.module('registryApp.cliche')
                 model: '=ngModel',
                 prop: '=',
                 key: '@',
+                ignoreFiles: '@',
                 form: '='
             },
             compile: function(element) {

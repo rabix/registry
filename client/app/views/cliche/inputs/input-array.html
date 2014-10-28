@@ -1,4 +1,4 @@
-<div class="form-group" ng-class="{required: prop.required, 'has-error': ((model.length < prop.minItems && prop.minItems > 0) || (model.length > prop.maxItems && prop.maxItems > 0))}">
+<div ng-if="!(ignoreFiles && prop.items.type === 'file')" class="form-group" ng-class="{required: prop.required, 'has-error': ((model.length < prop.minItems && prop.minItems > 0) || (model.length > prop.maxItems && prop.maxItems > 0))}">
     <label class="control-label">
         {{ key }}
         <span ng-if="prop.minItems || prop.maxItems">

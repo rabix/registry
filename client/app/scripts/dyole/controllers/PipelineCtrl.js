@@ -14,44 +14,51 @@ angular.module('registryApp.dyole')
 
         $scope.view = {};
 
-        if ($routeParams.mode === 'new') {
+        /**
+         * Initialize pipeline
+         */
+        var initPipeline = function () {
+
             Pipeline = pipeline.getInstance({
-                model: rawPipeline,
+                model: $scope.pipeline ? $scope.pipeline.json || rawPipeline : rawPipeline,
                 $parent: angular.element($element[0].querySelector(selector)),
                 editMode: $scope.editMode
             });
-        }
+
+        };
+
+        initPipeline();
 
         $scope.$watch('pipeline', function(n, o) {
-            if (n !== o) {
-                Pipeline = pipeline.getInstance({
-                    model: $scope.pipeline ? $scope.pipeline.json || rawPipeline : rawPipeline,
-                    $parent: angular.element($element[0].querySelector(selector)),
-                    editMode: $scope.editMode
-                });
-            }
+            if (n !== o) { initPipeline(); }
         });
-
 
         /**
          * Save pipeline
          */
-        $scope.$on('save', function (e, value) {
+        $scope.$on('save', function (e, params) {
 
-            if (value) {
+            $scope.pipeline.json = Pipeline.getJSON();
 
-                $scope.pipeline.json = Pipeline.getJSON();
+            _.each(params, function (values, appId) {
+                // TODO: remove check later
+                if (_.isUndefined($scope.pipeline.json.schemas[appId])) {
+                    $scope.pipeline.json.schemas[appId] = {};
+                }
+                $scope.pipeline.json.schemas[appId].inputs = values;
+            });
 
-                PipelineMdl.save($scope.pipeline._id, $scope.pipeline)
-                    .then(function (data) {
+            console.log($scope.pipeline.json);
 
-                        if (data.id) {
-                            $location.path('/pipeline/' + data.id);
-                        } else {
-                            $scope.pipelineChangeFn({value: false});
-                        }
-                    });
-            }
+            PipelineMdl.save($scope.pipeline._id, $scope.pipeline)
+                .then(function (data) {
+
+                    if (data.id) {
+                        $location.path('/pipeline/' + data.id);
+                    } else {
+                        $scope.pipelineChangeFn({value: false});
+                    }
+                });
 
         });
 

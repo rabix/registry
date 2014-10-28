@@ -49,6 +49,9 @@ angular.module('registryApp')
         /* Pipeline edit mode flag */
         $scope.view.editMode = true;
 
+        /* ID of the currently selected node */
+        $scope.view.currentAppId = null;
+
         $scope.view.classes = ['page', 'dyole'];
         Loading.setClasses($scope.view.classes);
 
@@ -78,14 +81,6 @@ angular.module('registryApp')
 
             $scope.view.myRepositories = result[0].list || {};
             $scope.view.otherRepositories = result[1].list || {};
-
-            // TODO: remove later, this is mock
-            var repositories = _.isEmpty($scope.view.otherRepositories) ?
-                $scope.view.myRepositories : $scope.view.otherRepositories;
-            var repos = _.keys(repositories);
-            var repo = repos[_.random(0, repos.length - 1)];
-
-            $scope.view.json = repositories[repo][0].json;
 
         };
 
@@ -210,6 +205,9 @@ angular.module('registryApp')
             } else {
                 $scope.view.saving = false;
                 $scope.view.loading = false;
+
+                $scope.view.currentAppId = null;
+                $scope.view.json = {};
             }
 
         };
@@ -226,7 +224,7 @@ angular.module('registryApp')
             $scope.view.saving = true;
             $scope.view.loading = true;
 
-            $scope.$broadcast('save', true);
+            $scope.$broadcast('save', $scope.view.params);
         };
 
         /**
@@ -234,22 +232,27 @@ angular.module('registryApp')
          */
         var cancelNodeSelectEL = $rootScope.$on('node:select', function (e, model) {
 
-            var inputs = {};
+            $scope.view.currentAppId = model._id;
+            $scope.view.json = model.json;
 
-            _.each(_.pluck(model.json.inputs, 'id'), function (key, index) {
-                inputs[key] = model.json.inputs[index];
-            });
+            if (_.isUndefined($scope.view.params[model._id])) {
+                $scope.view.params[model._id] = {};
+            }
 
-            console.log(inputs);
-            view.params = inputs;
+            $scope.$digest();
 
         });
 
         /**
          * Track node deselect
          */
-        var cancelNodeDeselectEL = $rootScope.$on('node:deselect', function (e) {
-            console.log('node deselected');
+        var cancelNodeDeselectEL = $rootScope.$on('node:deselect', function () {
+
+            $scope.view.currentAppId = null;
+            $scope.view.json = {};
+
+            $scope.$digest();
+
         });
 
         $scope.$on('$destroy', function() {
