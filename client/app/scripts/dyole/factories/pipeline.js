@@ -367,10 +367,15 @@ angular.module('registryApp.dyole')
 
                 _createSystemNode: function (isInput, x, y, terminal) {
                     var model = angular.copy(systemNodeModel),
-                        terminalId;
+                        terminalId, count, name;
 
                     if (isInput) {
-                        model.softwareDescription.name = 'Input File\'s';
+
+                        count = _.filter(this.nodes, function (n) {
+                            return n.model.softwareDescription.repo_name === 'system' && n.model.softwareDescription.name.indexOf('Input') !== '-1';
+                        }).length;
+
+                        model.softwareDescription.name = 'Input' + '_' + (count + 1);
                         model.outputs.properties = {
                             output: {
                                 'name': 'Output',
@@ -382,8 +387,12 @@ angular.module('registryApp.dyole')
 
                         terminalId = model.outputs.properties.output.id;
                     } else {
-                        model.softwareDescription.name = 'Output File\'s';
 
+                        count = _.filter(this.nodes, function (n) {
+                            return n.model.softwareDescription.repo_name === 'system' && n.model.softwareDescription.name.indexOf('Output') !== '-1';
+                        }).length;
+
+                        model.softwareDescription.name = 'Output' + '_' + (count + 1);
                         model.inputs.properties = {
                             input: {
                                 'name': 'Input',
