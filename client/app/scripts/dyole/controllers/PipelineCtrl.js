@@ -46,15 +46,7 @@ angular.module('registryApp.dyole')
 
             $scope.pipeline.json = Pipeline.getJSON();
 
-            _.each(params, function (values, appId) {
-                // TODO: remove check later
-                if (_.isUndefined($scope.pipeline.json.schemas[appId])) {
-                    $scope.pipeline.json.schemas[appId] = {};
-                }
-                $scope.pipeline.json.schemas[appId].inputs = values;
-            });
-
-            console.log($scope.pipeline.json);
+            $scope.pipeline.json.params = params;
 
             PipelineMdl.save($scope.pipeline._id, $scope.pipeline)
                 .then(function (data) {

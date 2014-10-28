@@ -418,8 +418,8 @@ legend {
     &:last-child {
       border-bottom: none;
     }
-    a {
-      text-decoration: none;
+    span {
+      cursor: pointer;
       color: #555;
       padding: 7px 15px;
       display: block;
@@ -430,7 +430,7 @@ legend {
     & > ul {
       display: none;
       & > li {
-        a {
+        span {
           padding-left: 40px;
         }
       }
@@ -449,6 +449,7 @@ legend {
         color: #555;
         padding: 7px 15px 7px 60px;
         display: block;
+        text-decoration: none;
         @include user-select(none);
 
         i {

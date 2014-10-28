@@ -232,12 +232,15 @@ angular.module('registryApp')
          */
         var cancelNodeSelectEL = $rootScope.$on('node:select', function (e, model) {
 
+            console.log(model);
             $scope.view.currentAppId = model._id;
             $scope.view.json = model.json;
 
             if (_.isUndefined($scope.view.params[model._id])) {
                 $scope.view.params[model._id] = {};
             }
+
+            console.log($scope.view.params);
 
             $scope.$digest();
 

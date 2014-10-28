@@ -49,18 +49,18 @@
 
                         <ul class="app-sidebar-list">
                             <li ng-class="{open: view.groups.my}">
-                                <a href ng-click="toggleGroup('my')">
+                                <span ng-click="toggleGroup('my')">
                                     <i class="fa" ng-class="{'fa-plus-square': !view.groups.my, 'fa-minus-square': view.groups.my}"></i>
                                     My Repository
-                                </a>
+                                </span>
                                 <ul>
                                     <li ng-if="view.message"><p class="alert alert-warning">{{ view.message }}</p></li>
                                     <li ng-if="!view.message && (view.myRepositories | isEmpty)"><p class="alert alert-info">You don't have any repository yet</p></li>
                                     <li ng-repeat="(repoName, apps) in view.myRepositories" ng-class="{open: view.repoGroups[repoName]}">
-                                        <a href ng-click="toggleRepo(repoName)">
+                                        <span ng-click="toggleRepo(repoName)">
                                             <i class="fa" ng-class="{'fa-plus-square': !view.repoGroups[repoName], 'fa-minus-square': view.repoGroups[repoName]}"></i>
                                             {{ repoName }}
-                                        </a>
+                                        </span>
                                         <ul class="apps-inner-list">
                                             <li ng-repeat="app in apps">
                                                 <a href drag="app"><i class="fa fa-puzzle-piece"></i> {{ app.name }}</a>
@@ -71,17 +71,17 @@
                             </li>
 
                             <li ng-class="{open: view.groups.other}">
-                                <a href ng-click="toggleGroup('other')">
+                                <span ng-click="toggleGroup('other')">
                                     <i class="fa" ng-class="{'fa-plus-square': !view.groups.other, 'fa-minus-square': view.groups.other}"></i>
                                     Other Repositories
-                                </a>
+                                </span>
                                 <ul>
                                     <li ng-if="(view.otherRepositories | isEmpty)"><p class="alert alert-info">There are no repositories yet</p></li>
                                     <li ng-repeat="(repoName, apps) in view.otherRepositories" ng-class="{open: view.repoGroups[repoName]}">
-                                        <a href ng-click="toggleRepo(repoName)">
+                                        <span ng-click="toggleRepo(repoName)">
                                             <i class="fa" ng-class="{'fa-plus-square': !view.repoGroups[repoName], 'fa-minus-square': view.repoGroups[repoName]}"></i>
                                             {{ repoName }}
-                                        </a>
+                                        </span>
                                         <ul class="apps-inner-list">
                                             <li ng-repeat="app in apps">
                                                 <a href drag="app"><i class="fa fa-puzzle-piece"></i>  {{ app.name }}</a>

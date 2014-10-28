@@ -10,7 +10,7 @@ angular.module('registryApp')
 
         $scope.view = {};
         $scope.view.loading = true;
-        $scope.view.pipeline = null;
+        $scope.view.pipeline = {};
 
         $scope.view.classes = ['page', 'pipeline'];
         Loading.setClasses($scope.view.classes);
