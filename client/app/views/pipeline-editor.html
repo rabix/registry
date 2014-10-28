@@ -96,11 +96,13 @@
 
                     <div class="tab" ng-switch-when="params">
 
-                        <form class="form" name="paramForms" novalidate>
+                        <p class="alert alert-info" ng-if="view.json | isEmpty">Select node in order to change its parameters</p>
+
+                        <form ng-if="!(view.json | isEmpty)" class="form" name="paramForms" novalidate>
                             <div class="input-container input-container-small">
                                 <input-field
                                         ng-repeat="(key, property) in view.json.inputs.properties"
-                                        ng-model="view.params.inputs[key]"
+                                        ng-model="view.params[key]"
                                         key="{{ key }}"
                                         prop="property"
                                         form="paramForms">
@@ -112,7 +114,7 @@
                     </div>
 
                     <div class="tab" ng-switch-when="json">
-                        <pre class="json-trace" pretty-json="view.params"></pre>
+                        <pre class="json-trace" pretty-json="view.pipeline"></pre>
                     </div>
 
                 </div>

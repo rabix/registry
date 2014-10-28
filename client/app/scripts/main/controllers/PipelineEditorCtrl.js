@@ -29,7 +29,7 @@ angular.module('registryApp')
         $scope.view.repoGroups = {};
 
         /* params for the currently selected app */
-        $scope.view.params = {inputs: {}};
+        $scope.view.params = {};
 
         /* list of my repos */
         $scope.view.myRepositories = {};
@@ -77,7 +77,7 @@ angular.module('registryApp')
             var repos = _.keys(repositories);
             var repo = repos[_.random(0, repos.length - 1)];
 
-            $scope.view.json = repositories[repo][0].json;
+            //$scope.view.json = repositories[repo][0].json;
 
         };
 
