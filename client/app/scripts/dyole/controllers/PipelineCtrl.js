@@ -14,34 +14,7 @@ angular.module('registryApp.dyole')
 
         $scope.view = {};
 
-//        if (Object.keys($scope.pipeline).length !== 0 || $routeParams.mode === 'new') {
-//            Pipeline = pipeline.getInstance({
-//                model: $scope.pipeline ? $scope.pipeline.json || rawPipeline : rawPipeline,
-//                $parent: angular.element($element[0].querySelector(selector)),
-//                editMode: $scope.editMode
-//            });
-//
-//            console.log('Pipeline loaded imidiatly', $scope.editMode);
-//        } else {
-//            var pipelineWatch = $scope.$watch('pipeline', function(n, o) {
-//
-//                if (n !== o) {
-//
-//                    Pipeline = pipeline.getInstance({
-//                        model: $scope.pipeline ? $scope.pipeline.json || rawPipeline : rawPipeline,
-//                        $parent: angular.element($element[0].querySelector(selector)),
-//                        editMode: $scope.editMode
-//                    });
-//
-//                    pipelineWatch();
-//
-//                    console.log('Pipeline loaded after watch', $scope.editMode);
-//
-//                }
-//            });
-//        }
-
-        var pipelineWatch = $scope.$watch('pipeline', function(n, o) {
+        $scope.$watch('pipeline', function(n, o) {
 
             if (n !== o) {
 
@@ -51,7 +24,6 @@ angular.module('registryApp.dyole')
                     editMode: $scope.editMode
                 });
 
-                pipelineWatch();
             }
         });
 
