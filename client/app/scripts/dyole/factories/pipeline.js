@@ -98,7 +98,9 @@ angular.module('registryApp.dyole')
 
                     this.Event.subscribe('node:select', function (model) {
 
-                        $rootScope.$broadcast('node:select', model);
+                        if (model.softwareDescription.repo_name !== 'system') {
+                            $rootScope.$broadcast('node:select', model);
+                        }
 
                     });
 
