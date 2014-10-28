@@ -98,8 +98,7 @@ angular.module('registryApp.dyole')
 
                     this.Event.subscribe('node:select', function (model) {
 
-                        $rootScope.$broadcast('node:select', _self.model.schemas[
-                            model.softwareDescription.name]);
+                        $rootScope.$broadcast('node:select', model);
 
                     });
 
@@ -580,28 +579,20 @@ angular.module('registryApp.dyole')
 
                 _transformModel: function (nodeModel) {
 
-                    var model = nodeModel.json || nodeModel,
-                        schema = {
-                            inputs: [],
-                            outputs: []
-                        };
+                    var model = nodeModel.json || nodeModel;
 
                     _.forEach(model.inputs.properties, function (input, name) {
 
                         input.name = name;
                         input.id = input.id || name;
 
-                        schema.inputs.push(input);
                     });
 
                     _.forEach(model.outputs.properties, function (output, name) {
                         output.name = name;
                         output.id = output.id || name;
 
-                        schema.outputs.push(output);
                     });
-
-                    model.schema = schema;
 
                     return model;
 
