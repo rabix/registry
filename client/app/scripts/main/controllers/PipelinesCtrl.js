@@ -97,4 +97,16 @@ angular.module('registryApp')
 
         };
 
+        /**
+         * Delete pipeline
+         */
+        $scope.deletePipeline = function (pipeline) {
+
+            Pipeline.deletePipeline(pipeline._id).then(function () {
+                _.remove($scope.view.pipelines, function (p) {
+                    return p._id === pipeline._id;
+                });
+            });
+        };
+
     }]);

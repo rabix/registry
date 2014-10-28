@@ -10,6 +10,7 @@ var PipelineSchema = new Schema({
     name: String,
     description: String,
     author: String,
+    user_id: String,
     json: Schema.Types.Mixed
 });
 
