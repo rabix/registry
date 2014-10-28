@@ -793,7 +793,7 @@ angular.module('registryApp.dyole')
                 },
 
                 getJSON: function () {
-                    var json = this.model;
+                    var json = angular.copy(this.model);
 
                     json.relations = this._getConnections();
                     json.nodes = this._getNodes();

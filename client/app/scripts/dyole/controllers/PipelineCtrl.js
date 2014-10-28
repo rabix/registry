@@ -30,7 +30,13 @@ angular.module('registryApp.dyole')
         initPipeline();
 
         $scope.$watch('pipeline', function(n, o) {
-            if (n !== o) { initPipeline(); }
+            if (n !== o) {
+
+                Pipeline.destroy();
+                Pipeline = null;
+
+                initPipeline();
+            }
         });
 
         /**
