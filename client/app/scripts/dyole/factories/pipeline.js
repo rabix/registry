@@ -779,8 +779,7 @@ angular.module('registryApp.dyole')
         adjustSize: function() {
 
           var width = this.$parent[0].offsetWidth - 10;
-          var height = (this.$parent[0].offsetHeight || this.$parent[0].parentNode
-            .offsetHeight);
+          var height = (this.$parent[0].offsetHeight || this.$parent[0].parentNode.offsetHeight) - 10;
 
           this.canvas.setSize(width, height);
 

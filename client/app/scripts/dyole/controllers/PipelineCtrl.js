@@ -14,16 +14,21 @@ angular.module('registryApp.dyole')
 
         $scope.view = {};
 
+        if ($routeParams.mode === 'new') {
+            Pipeline = pipeline.getInstance({
+                model: rawPipeline,
+                $parent: angular.element($element[0].querySelector(selector)),
+                editMode: $scope.editMode
+            });
+        }
+
         $scope.$watch('pipeline', function(n, o) {
-
             if (n !== o) {
-
                 Pipeline = pipeline.getInstance({
                     model: $scope.pipeline ? $scope.pipeline.json || rawPipeline : rawPipeline,
                     $parent: angular.element($element[0].querySelector(selector)),
                     editMode: $scope.editMode
                 });
-
             }
         });
 
@@ -107,7 +112,7 @@ angular.module('registryApp.dyole')
         /**
          * Track pipeline change
          */
-        var cancelPipelineChangeEL = $rootScope.$on('pipeline:change', function (e, value) {
+        var cancelPipelineChangeEL = $rootScope.$on('pipeline:change', function () {
             $scope.pipelineChangeFn({value: true});
         });
 

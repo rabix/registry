@@ -4,7 +4,7 @@
 'use strict';
 
 angular.module('registryApp')
-    .controller('PipelineEditorCtrl', ['$scope', '$q', '$routeParams', 'Sidebar', 'Loading', 'App', 'Pipeline', function ($scope, $q, $routeParams, Sidebar, Loading, App, Pipeline) {
+    .controller('PipelineEditorCtrl', ['$scope', '$rootScope', '$q', '$routeParams', 'Sidebar', 'Loading', 'App', 'Pipeline', function ($scope, $rootScope, $q, $routeParams, Sidebar, Loading, App, Pipeline) {
 
         Sidebar.setActive('_dyole');
 
@@ -228,6 +228,34 @@ angular.module('registryApp')
 
             $scope.$broadcast('save', true);
         };
+
+        /**
+         * Track node select
+         */
+        var cancelNodeSelectEL = $rootScope.$on('node:select', function (e, model) {
+
+            var inputs = {};
+
+            _.each(_.pluck(model.json.inputs, 'id'), function (key, index) {
+                inputs[key] = model.json.inputs[index];
+            });
+
+            console.log(inputs);
+            view.params = inputs;
+
+        });
+
+        /**
+         * Track node deselect
+         */
+        var cancelNodeDeselectEL = $rootScope.$on('node:deselect', function (e) {
+            console.log('node deselected');
+        });
+
+        $scope.$on('$destroy', function() {
+            cancelNodeSelectEL();
+            cancelNodeDeselectEL();
+        });
 
 
     }
