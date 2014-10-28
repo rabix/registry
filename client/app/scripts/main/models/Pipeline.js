@@ -53,6 +53,10 @@ angular.module('registryApp')
             return Api.pipelines[mode]({id: id}, {data: data}).$promise;
 
         };
+        
+        self.deletePipeline = function (id) {
+            return Api.pipelines.delete({id: id}).$promise;
+        };
 
         return self;
 

@@ -25,7 +25,8 @@ angular.module('registryApp')
 
         self.pipelines = $resource(apiUrl + '/pipeline/:id', {id: '@id'}, {
             add: {method: 'POST'},
-            update: {method: 'PUT'}
+            update: {method: 'PUT'},
+            'delete': {method: 'DELETE'}
         });
 
         self.myApps = $resource(apiUrl + '/my-apps');

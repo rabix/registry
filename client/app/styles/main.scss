@@ -347,9 +347,9 @@ body {
     &.pipelines {
       th {
         &:nth-child(1),
-        &:nth-child(3) { width: 25%; }
+        &:nth-child(3) { width: 20%; }
         &:nth-child(2) { width: 40%; }
-        &:nth-child(4) { width: 10%; }
+        &:nth-child(4) { width: 15%; }
       }
       td {
         p {

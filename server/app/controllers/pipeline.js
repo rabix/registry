@@ -113,10 +113,10 @@ router.get('/pipeline', function (req, res, next) {
     Pipeline.count(where).exec(function(err, total) {
         if (err) { return next(err); }
 
-        Pipeline.find(where).skip(skip).limit(limit).exec(function(err, apps) {
+        Pipeline.find(where).skip(skip).limit(limit).exec(function(err, pipelines) {
             if (err) { return next(err); }
 
-            res.json({list: apps, total: total});
+            res.json({list: pipelines, total: total});
         });
 
     });
@@ -140,13 +140,23 @@ router.post('/pipeline', function (req, res) {
 
     pipeline.json = data.json;
     pipeline.name = data.name;
-    pipeline.author = data.author;
+    pipeline.author = req.user.email;
+    pipeline.user_id = req.user.id;
     pipeline.description = data.description;
 
     pipeline.save();
 
     res.json({message: 'Pipeline successfully added', id: pipeline._id});
 
+});
+
+router.delete('/pipeline/:id', filters.authenticated, function (req, res, next) {
+    Pipeline.remove({_id: req.params.id}, function (err) {
+        if (err) { return next(err); }
+
+        res.json({message: 'Pipeline successfully deleted'});
+
+    });
 });
 
 router.put('/pipeline/:id', function (req, res, next) {
