@@ -747,14 +747,6 @@ angular.module('registryApp.dyole')
 
                     rawCoords = rawCoords || false;
 
-                    var appName = rawModel.name || rawModel.softwareDescription.name
-                        .name;
-
-                    if (!this.model.schemas[appName]) {
-                        this.model.schemas[appName] = rawModel;
-                    }
-
-
                     console.log('x: %s, y: %s, canvas: ', clientX, clientY, canvas);
 
                     var x = clientX - canvas.left - this.pipelineWrap.getTranslation()
@@ -776,6 +768,8 @@ angular.module('registryApp.dyole')
                     var _id = model.id || this._generateNodeId(model);
 
                     model.id = _id;
+
+                    this.model.schemas[model.id] = rawModel;
 
                     this.Event.trigger('node:add', model);
                 },
@@ -814,6 +808,8 @@ angular.module('registryApp.dyole')
 
                     json.display.canvas.x = this.getEl().getTranslation().x;
                     json.display.canvas.y = this.getEl().getTranslation().y;
+
+                    console.log(json);
 
                     return json;
                 }

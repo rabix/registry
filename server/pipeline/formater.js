@@ -11,7 +11,7 @@ var formater = {
         // reset schema
         this.packedSchema = {};
 
-        this._transformRelationsToSteps(json.relations, json.nodes);
+        this._transformRelationsToSteps(json.relations, json.nodes, json.schemas);
 
         delete json.relations;
         json.steps = this.packedSchema.steps;
@@ -33,7 +33,7 @@ var formater = {
 
     },
 
-    _transformRelationsToSteps: function (relations, nodes) {
+    _transformRelationsToSteps: function (relations, nodes, schemas) {
 
         var _self = this;
 
@@ -41,13 +41,8 @@ var formater = {
 
         _.each(relations, function (rel) {
             var step, node_schema, node;
-            
-            _.each(nodes, function (n) {
-                if (n.id = rel.end_node) {
-                    node = n;
-                }
-            });
-            node_schema = node.schema;
+
+            node_schema = schemas[rel.end_node];
 
             step = {
                 _id: rel.end_node,
