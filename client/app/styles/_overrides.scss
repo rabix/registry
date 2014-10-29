@@ -17,6 +17,7 @@
         cursor: pointer;
       }
     }
+
   }
 
   &.nav-tabs-steps,
@@ -189,6 +190,19 @@ form, .form {
   &:active, &:focus {
     outline: none;
   }
+
+  &.btn-flush {
+    color: #fff;
+    font-size: 20px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    opacity: 0.5;
+    &:hover {
+      opacity: 1;
+      background-color: #000;
+    }
+  }
 }
 
 .input-group {
@@ -226,7 +240,6 @@ form, .form {
       border-left: 1px solid transparent;
       border-right: 1px solid transparent;
       td {
-        padding: 4px 8px;
         &.center {
           text-align: center;
         }

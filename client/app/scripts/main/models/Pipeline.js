@@ -22,7 +22,7 @@ angular.module('registryApp')
                 params.q = searchTerm;
             }
 
-            params.mine = mine || false;
+            params.mine = mine || null;
 
             return Api.pipelines.get(params).$promise;
 

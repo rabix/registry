@@ -409,6 +409,36 @@ angular.module('registryApp.cliche')
             }
         };
 
+        /**
+         * Set fresh structure for the cliche playground
+         */
+        $scope.flush = function() {
+
+            $scope.view.loading = true;
+
+            Data.flush().then(function(result) {
+
+                $scope.view.toolForm = result.tool;
+                $scope.view.jobForm = result.job;
+                $scope.view.appId = null;
+                $scope.view.owner = null;
+                $scope.view.command = '';
+
+                if ($scope.view.user) {
+
+                    Data.setOwner($scope.view.user.id);
+                    $scope.view.owner = $scope.view.user.id;
+
+                    $scope.view.toolForm.documentAuthor = $scope.view.user.email;
+                    $scope.view.toolForm.softwareDescription.repo_owner = $scope.view.user.login;
+                }
+
+                $scope.view.loading = false;
+
+            });
+
+        };
+
         $scope.$on('$destroy', function() {
             if (angular.isDefined(saveIntervalId)) {
                 $interval.cancel(saveIntervalId);

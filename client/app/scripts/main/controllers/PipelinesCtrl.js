@@ -28,6 +28,7 @@ angular.module('registryApp')
         $scope.view.loading = true;
         $scope.view.pipelines = [];
         $scope.view.searchTerm = '';
+        $scope.view.mine = false;
 
         $scope.view.classes = ['page', 'pipelines'];
         Loading.setClasses($scope.view.classes);
@@ -67,7 +68,7 @@ angular.module('registryApp')
                 $scope.view.loading = true;
                 var offset = ($scope.view.page - 1) * $scope.view.perPage;
 
-                Pipeline.getPipelines(offset, $scope.view.searchTerm).then(pipelinesLoaded);
+                Pipeline.getPipelines(offset, $scope.view.searchTerm, $scope.view.mine).then(pipelinesLoaded);
 
             }
         };
@@ -80,7 +81,7 @@ angular.module('registryApp')
             $scope.view.page = 1;
             $scope.view.loading = true;
 
-            Pipeline.getPipelines(0, $scope.view.searchTerm).then(pipelinesLoaded);
+            Pipeline.getPipelines(0, $scope.view.searchTerm, $scope.view.mine).then(pipelinesLoaded);
 
         };
 
@@ -93,7 +94,7 @@ angular.module('registryApp')
             $scope.view.searchTerm = '';
             $scope.view.loading = true;
 
-            Pipeline.getPipelines(0).then(pipelinesLoaded);
+            Pipeline.getPipelines(0, '', $scope.view.mine).then(pipelinesLoaded);
 
         };
 

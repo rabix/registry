@@ -242,6 +242,7 @@
       @include flex-flow(column nowrap);
 
       & > .tabs {
+        position: relative;
         @include flex(1);
         @include flex-box();
         @include flex-flow(column nowrap);

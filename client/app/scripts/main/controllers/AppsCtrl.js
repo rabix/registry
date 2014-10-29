@@ -70,7 +70,7 @@ angular.module('registryApp')
                 $scope.view.loading = true;
                 var offset = ($scope.view.page - 1) * $scope.view.perPage;
 
-                App.getApps(offset, $scope.view.searchTerm, $routeParams.repo).then(appsLoaded);
+                App.getApps(offset, $scope.view.searchTerm, $routeParams.repo, $scope.view.mine).then(appsLoaded);
 
             }
         };
@@ -83,7 +83,7 @@ angular.module('registryApp')
             $scope.view.page = 1;
             $scope.view.loading = true;
 
-            App.getApps(0, $scope.view.searchTerm, $routeParams.repo).then(appsLoaded);
+            App.getApps(0, $scope.view.searchTerm, $routeParams.repo, $scope.view.mine).then(appsLoaded);
 
         };
 
@@ -96,7 +96,7 @@ angular.module('registryApp')
             $scope.view.searchTerm = '';
             $scope.view.loading = true;
 
-            App.getApps(0, '', $routeParams.repo).then(appsLoaded);
+            App.getApps(0, '', $routeParams.repo, $scope.view.mine).then(appsLoaded);
 
         };
 

@@ -27,7 +27,7 @@ angular.module('registryApp')
                 params.field_repo_id = repo.replace(/&/g, '/');
             }
 
-            params.mine = mine ||  false;
+            params.mine = mine || null;
 
             return Api.apps.get(params).$promise;
 
@@ -153,12 +153,6 @@ angular.module('registryApp')
 
         };
         
-        self.getMyApps = function () {
-            var promise = Api.myApps.get().$promise;
-
-            return promise;
-        };
-
         return self;
 
     }]);
