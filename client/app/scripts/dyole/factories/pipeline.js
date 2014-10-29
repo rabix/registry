@@ -372,7 +372,7 @@ angular.module('registryApp.dyole')
                     if (isInput) {
 
                         count = _.filter(this.nodes, function (n) {
-                            return n.model.softwareDescription.repo_name === 'system' && n.model.softwareDescription.name.indexOf('Input') !== '-1';
+                            return n.model.softwareDescription.name.indexOf('Input') !== -1 && n.model.softwareDescription.repo_name === 'system';
                         }).length;
 
                         model.softwareDescription.name = 'Input' + '_' + (count + 1);
@@ -389,7 +389,7 @@ angular.module('registryApp.dyole')
                     } else {
 
                         count = _.filter(this.nodes, function (n) {
-                            return n.model.softwareDescription.repo_name === 'system' && n.model.softwareDescription.name.indexOf('Output') !== '-1';
+                            return n.model.softwareDescription.name.indexOf('Output') !== -1 && n.model.softwareDescription.repo_name === 'system';
                         }).length;
 
                         model.softwareDescription.name = 'Output' + '_' + (count + 1);
