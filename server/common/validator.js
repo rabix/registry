@@ -9,6 +9,7 @@ var mapDefinition = {
     root: {
         softwareDescription: {type: 'object', required: true},
         documentAuthor: {type: 'string', required: true},
+        softwareRelease: {type: 'object'},
         requirements: {type: 'object', required: true},
         inputs: {type: 'object', required: true},
         outputs: {type: 'object', required: true},
@@ -51,7 +52,8 @@ var mapDefinition = {
     adapter: {
         baseCmd: {type: 'array', required: true},
         stdout: {type: ['string', 'object'], required: true},
-        args: {type: 'object_custom', name: 'adapter', required: true}
+        args: {type: 'object_custom', name: 'adapter', required: true},
+        environment: {type: 'object'}
     },
     properties: {
         inputs: {
@@ -61,6 +63,7 @@ var mapDefinition = {
                 adapter: {type: 'object'}
             },
             adapter: {
+                stdin: {type: 'boolean'},
                 order: {type: 'number'},
                 transform: {type: 'object'},
                 separator: {type: 'string'},
@@ -71,7 +74,8 @@ var mapDefinition = {
                 file: {
                     root: {},
                     adapter: {
-                        streamable: {type: 'boolean'}
+                        streamable: {type: 'boolean'},
+                        secondaryFiles: {type: 'array'}
                     }
                 },
                 string: {
@@ -113,8 +117,9 @@ var mapDefinition = {
                 adapter: {type: 'object', required: true}
             },
             adapter: {
+                stdout: {type: 'boolean'},
                 glob: {type: 'string'},
-                indexFiles: {type: 'array'},
+                secondaryFiles: {type: 'array'},
                 meta: {type: 'object'}
             },
             types: {

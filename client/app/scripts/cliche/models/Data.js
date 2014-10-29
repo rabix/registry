@@ -16,7 +16,7 @@ angular.module('registryApp.cliche')
          *
          * @type {number}
          */
-        self.version = 9;
+        self.version = 12;
 
         /**
          * Tool json object
@@ -269,14 +269,14 @@ angular.module('registryApp.cliche')
                             type: 'string',
                             required: false
                         },
-                        adapter: {streamable: false, glob: '', meta: {}, indexFiles: []}
+                        adapter: {streamable: false, glob: '', meta: {}, secondaryFiles: []}
                     },
                     directory: {
                         root: {
                             type: 'string',
                             required: false
                         },
-                        adapter: {glob: '', meta: {}, indexFiles: []}
+                        adapter: {glob: '', meta: {}, secondaryFiles: []}
                     },
                     array: {
                         root: {
@@ -286,7 +286,7 @@ angular.module('registryApp.cliche')
                             maxItems: undefined,
                             items: {type: 'file'}
                         },
-                        adapter: {listStreamable: false, meta: {}, indexFiles: []}
+                        adapter: {listStreamable: false, meta: {}, secondaryFiles: []}
                     }
                 }
             };

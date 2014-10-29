@@ -121,7 +121,7 @@
                     </div>
 
                     <div ng-repeat="(metaKey, metaValue) in prop.adapter.meta" class="form-group meta-group with-expression">
-                        <div ng-if="metaKey !== '_inherit'" class="input-group">
+                        <div ng-if="metaKey !== '__inherit__'" class="input-group">
                             <div class="col-md-6 no-padding">
                                 <key-changer key="metaKey" items="prop.adapter.meta"></key-changer>
                             </div>
@@ -143,7 +143,7 @@
 
                 <div class="form-group">
                     <label for="property-meta-inherit-{{ view.uniqueId }}" class="control-label inline">Inherit From Input</label>
-                    <select class="form-control inline" id="property-meta-inherit-{{ view.uniqueId }}" name="{{ name }}-meta-inherit" ng-model="prop.adapter.meta._inherit">
+                    <select class="form-control inline" id="property-meta-inherit-{{ view.uniqueId }}" name="{{ name }}-meta-inherit" ng-model="prop.adapter.meta.__inherit__">
                         <option value>-- choose --</option>
                         <option ng-repeat="key in view.inputs" value="{{ key }}">{{ key }}</option>
                     </select>
@@ -156,7 +156,7 @@
         <div class="row">
             <div class="col-md-12">
                 <label class="control-label">Index Files</label>
-                <enum ng-model="prop.adapter.indexFiles" type="'string'"></enum>
+                <enum ng-model="prop.adapter.secondaryFiles" type="'string'"></enum>
             </div>
         </div>
         <!-- END index files -->

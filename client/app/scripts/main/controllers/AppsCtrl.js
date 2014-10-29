@@ -21,7 +21,7 @@ angular.module('registryApp')
         };
 
         User.getUser().then(function (result) {
-            $scope.user = result.user;
+            $scope.view.user = result.user;
         });
 
         $scope.view = {};
@@ -109,7 +109,7 @@ angular.module('registryApp')
             $scope.view.searchTerm = '';
             $scope.view.loading = true;
 
-            App.getApps(0, '', $routeParams.repo, $scope.view.myApps).then(appsLoaded);
+            App.getApps(0, '', $routeParams.repo, $scope.view.mine).then(appsLoaded);
         };
 
     }]);

@@ -214,12 +214,23 @@ form, .form {
       background-image: url(../images/bg.png);
       border-left: 1px solid #ddd;
       border-right: 1px solid #ddd;
+      th {
+        &.center {
+          text-align: center;
+        }
+      }
     }
   }
   tbody {
     tr {
       border-left: 1px solid transparent;
       border-right: 1px solid transparent;
+      td {
+        padding: 4px 8px;
+        &.center {
+          text-align: center;
+        }
+      }
     }
   }
   &.table-hover {
@@ -227,8 +238,6 @@ form, .form {
       tr {
         &:hover {
           background-image: url(../images/bg.png);
-          //border-left: 1px solid #ddd;
-          //border-right: 1px solid #ddd;
           td {
             background-color: transparent;
           }

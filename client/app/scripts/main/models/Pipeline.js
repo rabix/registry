@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 angular.module('registryApp')
     .service('Pipeline', ['Api', '$localForage', function (Api, $localForage) {
@@ -8,11 +8,12 @@ angular.module('registryApp')
         /**
          * Get list of pipelines
          *
-         * @params {integer} skip
-         * @params {string} searchTerm
+         * @param {integer} skip
+         * @param {string} searchTerm
+         * @param {boolean} mine
          * @returns {object} $promise
          */
-        self.getPipelines = function(skip, searchTerm) {
+        self.getPipelines = function(skip, searchTerm, mine) {
 
             var isSearch = !(_.isUndefined(searchTerm) || _.isEmpty(searchTerm));
             var params = {skip: skip};
@@ -21,9 +22,9 @@ angular.module('registryApp')
                 params.q = searchTerm;
             }
 
-            var promise = Api.pipelines.get(params).$promise;
+            params.mine = mine || false;
 
-            return promise;
+            return Api.pipelines.get(params).$promise;
 
         };
 

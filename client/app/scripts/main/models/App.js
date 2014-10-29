@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 angular.module('registryApp')
     .service('App', ['Api', 'Data', function (Api, Data) {
@@ -8,13 +8,13 @@ angular.module('registryApp')
         /**
          * Get list of apps
          *
-         * @params {integer} skip
-         * @params {string} searchTerm
-         * @params {string} repo
-         * @params {boolean} myApps
+         * @param {integer} skip
+         * @param {string} searchTerm
+         * @param {string} repo
+         * @param {boolean} mine
          * @returns {object} $promise
          */
-        self.getApps = function(skip, searchTerm, repo, myApps) {
+        self.getApps = function(skip, searchTerm, repo, mine) {
 
             var isSearch = !(_.isUndefined(searchTerm) || _.isEmpty(searchTerm));
             var params = {skip: skip};
@@ -27,13 +27,9 @@ angular.module('registryApp')
                 params.field_repo_id = repo.replace(/&/g, '/');
             }
 
-            if (myApps) {
-                params.myApps = true;
-            }
+            params.mine = mine ||  false;
 
-            var promise = Api.apps.get(params).$promise;
-
-            return promise;
+            return Api.apps.get(params).$promise;
 
         };
 

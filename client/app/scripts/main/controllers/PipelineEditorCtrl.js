@@ -298,5 +298,4 @@ angular.module('registryApp')
         });
 
 
-    }
-    ]);
+    }]);

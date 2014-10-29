@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('registryApp')
-    .controller('PipelinesCtrl', ['$scope', '$routeParams', 'Pipeline', 'Sidebar', 'Api', 'Loading', 'User',function ($scope, $routeParams, Pipeline, Sidebar, Api, Loading, User) {
+    .controller('PipelinesCtrl', ['$scope', '$routeParams', '$injector', 'Pipeline', 'Sidebar', 'Api', 'Loading', 'User',function ($scope, $routeParams, $injector, Pipeline, Sidebar, Api, Loading, User) {
 
         Sidebar.setActive('_dyole');
 
@@ -21,7 +21,7 @@ angular.module('registryApp')
         };
 
         User.getUser().then(function (result) {
-            $scope.user = result.user;
+            $scope.view.user = result.user;
         });
 
         $scope.view = {};
@@ -102,11 +102,37 @@ angular.module('registryApp')
          */
         $scope.deletePipeline = function (pipeline) {
 
-            Pipeline.deletePipeline(pipeline._id).then(function () {
-                _.remove($scope.view.pipelines, function (p) {
-                    return p._id === pipeline._id;
+            var $modal = $injector.get('$modal');
+            var $templateCache = $injector.get('$templateCache');
+
+            var modalInstance = $modal.open({
+                template: $templateCache.get('views/cliche/partials/confirm-delete.html'),
+                controller: 'ModalCtrl',
+                windowClass: 'modal-confirm',
+                resolve: {data: function () { return {}; }}
+            });
+
+            modalInstance.result.then(function () {
+                Pipeline.deletePipeline(pipeline._id).then(function () {
+                    _.remove($scope.view.pipelines, function (p) {
+                        return p._id === pipeline._id;
+                    });
                 });
             });
+
+
+        };
+
+        /**
+         * Toggle query for myPipelines filter
+         */
+        $scope.toggleMyPipelines = function () {
+
+            $scope.view.page = 1;
+            $scope.view.searchTerm = '';
+            $scope.view.loading = true;
+
+            Pipeline.getPipelines(0, '', $scope.view.mine).then(pipelinesLoaded);
         };
 
     }]);

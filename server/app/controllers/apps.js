@@ -36,7 +36,7 @@ router.get('/apps', function (req, res, next) {
         }
     });
 
-    if (req.user && req.param('myApps')) {
+    if (req.user && req.param('mine')) {
         where.user_id = req.user.id;
     }
 

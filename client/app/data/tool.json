@@ -73,13 +73,13 @@
                         "streamable": true,
                         "glob": "output.sam",
                         "meta": {
-                            "_inherit": "",
+                            "__inherit__": "",
                             "key1": {
                                 "expr": "$job"
                             },
                             "key2": "test"
                         },
-                        "indexFiles": []
+                        "secondaryFiles": []
                     }
                 }
             }
