@@ -651,7 +651,6 @@ angular.module('registryApp.dyole')
 
                 this.connections = {};
 
-
                 if (typeof this.glow !== 'undefined') {
                     this.glow.remove();
                 }

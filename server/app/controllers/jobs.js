@@ -136,18 +136,26 @@ router.post('/job/upload', function (req, res, next) {
 
         file_name = 'job-json-' + (new Date()).getTime() + '.json';
 
-        var tmpDir = config.tmpDir.path;
+//        var tmpDir = config.tmpDir.path;
+//
+//        fs.exists(tmpDir, function (exists) {
+//            if (!exists) { fs.mkdirSync(tmpDir); }
+//
+//            fs.writeFile(tmpDir + '/' + file_name, JSON.stringify(json), function (err) {
+//                if (err) { return next(err); }
+//
+//                res.json({url: file_name});
+//
+//            });
+//
+//        });
 
-        fs.exists(tmpDir, function (exists) {
-            if (!exists) { fs.mkdirSync(tmpDir); }
-
-            fs.writeFile(tmpDir + '/' + file_name, JSON.stringify(json), function (err) {
-                if (err) { return next(err); }
-
-                res.json({url: file_name});
-
+        Amazon.uploadJSON(file_name, json, 'others').then(function () {
+            Amazon.getFileUrl(file_name, 'others', function (url) {
+                res.json({
+                    url: url
+                });
             });
-
         });
 
     }
