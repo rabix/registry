@@ -4,7 +4,7 @@
 'use strict';
 
 angular.module('registryApp')
-    .controller('PipelineEditorCtrl', ['$scope', '$rootScope', '$q', '$routeParams', 'Sidebar', 'Loading', 'App', 'Pipeline', 'User', function ($scope, $rootScope, $q, $routeParams, Sidebar, Loading, App, Pipeline, User) {
+    .controller('PipelineEditorCtrl', ['$scope', '$rootScope', '$q', '$routeParams', '$injector', 'Sidebar', 'Loading', 'App', 'Pipeline', 'User', function ($scope, $rootScope, $q, $routeParams, $injector, Sidebar, Loading, App, Pipeline, User) {
 
         Sidebar.setActive('_dyole');
 
@@ -41,7 +41,10 @@ angular.module('registryApp')
         $scope.view.isChanged = false;
 
         /* flag when save is clicked */
-        $scope.view.saveing = false;
+        $scope.view.saving = false;
+
+        /* flag to enforce page reload */
+        $scope.view.reload = false;
 
         $scope.view.classes = ['page', 'pipeline-edit'];
         Loading.setClasses($scope.view.classes);
@@ -217,6 +220,7 @@ angular.module('registryApp')
                 return false;
             }
 
+            $scope.view.reload = true;
             $scope.view.saving = true;
             $scope.view.loading = true;
 
@@ -226,7 +230,7 @@ angular.module('registryApp')
         /**
          * Track node select
          */
-        var cancelNodeSelectEL = $rootScope.$on('node:select', function (e, model) {
+        var onNodeSelect = function (e, model) {
 
             if (_.isUndefined(model.params)) { model.params = {}; }
 
@@ -234,22 +238,63 @@ angular.module('registryApp')
 
             $scope.$digest();
 
-        });
+        };
 
         /**
          * Track node deselect
          */
-        var cancelNodeDeselectEL = $rootScope.$on('node:deselect', function () {
+        var onNodeDeselect = function () {
 
             $scope.view.json = {};
 
             $scope.$digest();
 
-        });
+        };
+
+        /**
+         * Track route change in order to prevent loss of changes
+         *
+         * @param e
+         * @param nextLocation
+         */
+        var onRouteChange = function(e, nextLocation) {
+
+            if($scope.view.reload) { return; }
+
+            var $templateCache = $injector.get('$templateCache');
+            var $modal = $injector.get('$modal');
+            var $location = $injector.get('$location');
+
+            var modalInstance = $modal.open({
+                template: $templateCache.get('views/partials/confirm-leave.html'),
+                controller: 'ModalCtrl',
+                windowClass: 'modal-confirm',
+                resolve: {data: function () {return {};}}
+            });
+
+            modalInstance.result.then(function () {
+
+                onRouteChangeOff();
+
+                $scope.view.reload = true;
+
+                if ($routeParams.mode === 'new') { $scope.$broadcast('save-local', true); }
+
+                $location.path(nextLocation.split('#\/')[1]);
+
+            });
+
+            e.preventDefault();
+
+        };
+
+        var onNodeSelectOff = $rootScope.$on('node:select', onNodeSelect);
+        var onNodeDeselectOff = $rootScope.$on('node:deselect', onNodeDeselect);
+        var onRouteChangeOff = $rootScope.$on('$locationChangeStart', onRouteChange);
 
         $scope.$on('$destroy', function () {
-            cancelNodeSelectEL();
-            cancelNodeDeselectEL();
+            onNodeSelectOff();
+            onNodeDeselectOff();
         });
 
 

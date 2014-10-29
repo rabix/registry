@@ -6,12 +6,11 @@
 'use strict';
 
 angular.module('registryApp.dyole')
-    .controller('PipelineCtrl', ['$scope', '$rootScope', '$routeParams', '$element', '$location', '$window', '$timeout', '$interval', 'pipeline', 'App', 'rawPipeline', 'Pipeline', function ($scope, $rootScope, $routeParams, $element, $location, $window, $timeout, $interval, pipeline, App, rawPipeline, PipelineMdl) {
+    .controller('PipelineCtrl', ['$scope', '$rootScope', '$routeParams', '$element', '$location', '$window', '$timeout', 'pipeline', 'App', 'rawPipeline', 'Pipeline', function ($scope, $rootScope, $routeParams, $element, $location, $window, $timeout, pipeline, App, rawPipeline, PipelineMdl) {
 
         var Pipeline;
         var selector = '.pipeline';
         var timeoutId;
-        var saveIntervalId;
 
         $scope.view = {};
 
@@ -21,7 +20,6 @@ angular.module('registryApp.dyole')
         var initPipeline = function (obj) {
 
             Pipeline = pipeline.getInstance({
-                //model: $scope.pipeline ? $scope.pipeline.json || rawPipeline : rawPipeline,
                 model: obj ? obj.json || rawPipeline : rawPipeline,
                 $parent: angular.element($element[0].querySelector(selector)),
                 editMode: $scope.editMode
@@ -30,23 +28,15 @@ angular.module('registryApp.dyole')
         };
 
         if ($routeParams.mode === 'new') {
-
-            saveIntervalId = $interval(function() {
-                var json = Pipeline.getJSON();
-                PipelineMdl.saveLocalPipeline(json);
-            }, 5000);
-
             PipelineMdl.getLocalPipeline()
                 .then(function (json) {
-                    // TODO fix this!
-                    initPipeline({});
+                    initPipeline(json);
                 });
         } else {
             initPipeline($scope.pipeline);
         }
 
         $scope.$watch('pipeline', function(n, o) {
-
             if (n !== o) {
 
                 $scope.pipeline = n;
@@ -68,7 +58,7 @@ angular.module('registryApp.dyole')
             if (value) {
                 $scope.pipeline.json = Pipeline.getJSON();
 
-                PipelineMdl.save($scope.pipeline._id, $scope.pipeline)
+                PipelineMdl.savePipeline($scope.pipeline._id, $scope.pipeline)
                     .then(function (data) {
 
                         if (data.id) {
@@ -79,6 +69,15 @@ angular.module('registryApp.dyole')
                     });
             }
 
+        });
+
+        /**
+         * Save pipeline locally
+         */
+        $scope.$on('save-local', function (e, value) {
+            if (value) {
+                PipelineMdl.saveLocalPipeline(Pipeline.getJSON());
+            }
         });
 
         /**
@@ -108,16 +107,6 @@ angular.module('registryApp.dyole')
             if (angular.isDefined(timeoutId)) {
                 $timeout.cancel(timeoutId);
                 timeoutId = undefined;
-            }
-        };
-
-        /**
-         * Cancel interval
-         */
-        var cancelInterval = function () {
-            if (angular.isDefined(saveIntervalId)) {
-                $interval.cancel(saveIntervalId);
-                saveIntervalId = undefined;
             }
         };
 
@@ -157,12 +146,9 @@ angular.module('registryApp.dyole')
             angular.element($window).off('resize', lazyChangeWidth);
 
             cancelTimeout();
-            cancelInterval();
             cancelSidebarToggleEL();
             cancelPipelineChangeEL();
         });
-
-
 
 
     }]);
