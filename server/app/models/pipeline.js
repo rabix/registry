@@ -11,6 +11,9 @@ var PipelineSchema = new Schema({
     description: String,
     author: String,
     user_id: String,
+    repo_name: String,
+    repo_owner: String,
+    repo_id: String,
     json: Schema.Types.Mixed
 });
 

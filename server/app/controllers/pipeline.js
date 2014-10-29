@@ -178,4 +178,24 @@ router.put('/pipeline/:id', function (req, res, next) {
 
 });
 
+router.post('/pipeline/fork', function (req, res, next) {
+    Pipeline.findOne({_id: req.body.id}, function (err, pipeline) {
+        if (err) { return next(err); }
+
+        var p = new Pipeline();
+
+        p = _.extend(p, pipeline);
+
+        p.user_id = req.user.id;
+
+        p.save();
+
+        res.json({
+            id: p._id,
+            message: 'Pipeline successfully updated'
+        });
+
+    });
+});
+
 
