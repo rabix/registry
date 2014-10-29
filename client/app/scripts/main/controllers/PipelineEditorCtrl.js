@@ -58,7 +58,7 @@ angular.module('registryApp')
         });
 
         User.getUser().then(function (result) {
-            $scope.user = result.user;
+            $scope.view.user = result.user;
         });
 
         if ($routeParams.mode === 'edit') {
