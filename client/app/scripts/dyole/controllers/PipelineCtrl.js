@@ -38,8 +38,8 @@ angular.module('registryApp.dyole')
 
             PipelineMdl.getLocalPipeline()
                 .then(function (json) {
-                    //$scope.pipeline = json;
-                    initPipeline(json);
+                    // TODO fix this!
+                    initPipeline({});
                 });
         } else {
             initPipeline($scope.pipeline);

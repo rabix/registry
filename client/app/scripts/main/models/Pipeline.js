@@ -62,14 +62,14 @@ angular.module('registryApp')
 
             return $localForage.getItem('pipeline')
                 .then(function (pipeline) {
-                    return pipeline || {};
+                    return _.isNull(pipeline) ? {} : {json: pipeline};
                 });
 
         };
 
-        self.saveLocalPipeline = function (pipeline) {
+        self.saveLocalPipeline = function (json) {
 
-            $localForage.setItem('pipeline', pipeline);
+            $localForage.setItem('pipeline', json);
 
         };
 
