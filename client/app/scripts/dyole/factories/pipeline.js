@@ -98,7 +98,9 @@ angular.module('registryApp.dyole')
 
                     this.Event.subscribe('node:select', function (model) {
 
-                        $rootScope.$broadcast('node:select', model);
+                        if (model.softwareDescription.repo_name !== 'system') {
+                            $rootScope.$broadcast('node:select', model);
+                        }
 
                     });
 
@@ -365,10 +367,15 @@ angular.module('registryApp.dyole')
 
                 _createSystemNode: function (isInput, x, y, terminal) {
                     var model = angular.copy(systemNodeModel),
-                        terminalId;
+                        terminalId, count, name;
 
                     if (isInput) {
-                        model.softwareDescription.name = 'Input File\'s';
+
+                        count = _.filter(this.nodes, function (n) {
+                            return n.model.softwareDescription.name.indexOf('Input') !== -1 && n.model.softwareDescription.repo_name === 'system';
+                        }).length;
+
+                        model.softwareDescription.name = 'Input' + '_' + (count + 1);
                         model.outputs.properties = {
                             output: {
                                 'name': 'Output',
@@ -380,8 +387,12 @@ angular.module('registryApp.dyole')
 
                         terminalId = model.outputs.properties.output.id;
                     } else {
-                        model.softwareDescription.name = 'Output File\'s';
 
+                        count = _.filter(this.nodes, function (n) {
+                            return n.model.softwareDescription.name.indexOf('Output') !== -1 && n.model.softwareDescription.repo_name === 'system';
+                        }).length;
+
+                        model.softwareDescription.name = 'Output' + '_' + (count + 1);
                         model.inputs.properties = {
                             input: {
                                 'name': 'Input',
@@ -736,14 +747,6 @@ angular.module('registryApp.dyole')
 
                     rawCoords = rawCoords || false;
 
-                    var appName = rawModel.name || rawModel.softwareDescription.name
-                        .name;
-
-                    if (!this.model.schemas[appName]) {
-                        this.model.schemas[appName] = rawModel;
-                    }
-
-
                     console.log('x: %s, y: %s, canvas: ', clientX, clientY, canvas);
 
                     var x = clientX - canvas.left - this.pipelineWrap.getTranslation()
@@ -765,6 +768,8 @@ angular.module('registryApp.dyole')
                     var _id = model.id || this._generateNodeId(model);
 
                     model.id = _id;
+
+                    this.model.schemas[model.id] = rawModel;
 
                     this.Event.trigger('node:add', model);
                 },
@@ -803,6 +808,8 @@ angular.module('registryApp.dyole')
 
                     json.display.canvas.x = this.getEl().getTranslation().x;
                     json.display.canvas.y = this.getEl().getTranslation().y;
+
+                    console.log(json);
 
                     return json;
                 }

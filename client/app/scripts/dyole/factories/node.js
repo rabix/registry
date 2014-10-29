@@ -651,13 +651,15 @@ angular.module('registryApp.dyole')
 
                 this.connections = {};
 
-                delete this.Pipeline.nodes[this.model.id];
 
                 if (typeof this.glow !== 'undefined') {
                     this.glow.remove();
                 }
 
                 this.destroy();
+
+                delete this.Pipeline.model.schemas[this.model.id];
+                delete this.Pipeline.nodes[this.model.id];
 
             },
 
