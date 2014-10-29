@@ -192,15 +192,26 @@ form, .form {
   }
 
   &.btn-flush {
-    color: #fff;
     font-size: 20px;
     position: absolute;
+    z-index: 100;
     top: 0;
     right: 0;
-    opacity: 0.5;
-    &:hover {
-      opacity: 1;
-      background-color: #000;
+    color: #555;
+    background-color: transparent;
+
+    &.btn-flush-cliche {
+      color: #fff;
+      opacity: 0.5;
+      &:hover {
+        opacity: 1;
+        background-color: #000;
+      }
+    }
+
+    &:active, &:focus {
+      outline: none;
+      @include box-shadow(none);
     }
   }
 }

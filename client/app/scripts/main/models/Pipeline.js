@@ -91,6 +91,16 @@ angular.module('registryApp')
 
         };
 
+        /**
+         * Remove pipeline from local db
+         * @returns {*}
+         */
+        self.flush = function() {
+
+            return $localForage.removeItem('pipeline');
+
+        };
+
         return self;
 
     }]);

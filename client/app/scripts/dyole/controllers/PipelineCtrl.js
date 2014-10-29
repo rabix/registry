@@ -141,6 +141,23 @@ angular.module('registryApp.dyole')
             $scope.pipelineChangeFn({value: true});
         });
 
+        /**
+         * Set fresh canvas
+         */
+        $scope.flush = function() {
+
+            if (!_.contains(['new', 'edit'], $routeParams.mode)) { return false; }
+
+            PipelineMdl.flush();
+
+            if (angular.isDefined(Pipeline)) {
+                Pipeline.destroy();
+                Pipeline = null;
+                initPipeline({});
+            }
+
+        };
+
         $scope.$on('$destroy', function() {
 
             angular.element($window).off('resize', lazyChangeWidth);
