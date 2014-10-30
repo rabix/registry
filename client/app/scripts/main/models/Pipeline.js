@@ -22,7 +22,7 @@ angular.module('registryApp')
                 params.q = searchTerm;
             }
 
-            params.mine = mine || false;
+            params.mine = mine || null;
 
             return Api.pipelines.get(params).$promise;
 
@@ -88,6 +88,16 @@ angular.module('registryApp')
         self.saveLocalPipeline = function (json) {
 
             $localForage.setItem('pipeline', json);
+
+        };
+
+        /**
+         * Remove pipeline from local db
+         * @returns {*}
+         */
+        self.flush = function() {
+
+            return $localForage.removeItem('pipeline');
 
         };
 

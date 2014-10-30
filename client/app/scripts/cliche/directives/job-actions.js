@@ -34,7 +34,8 @@ angular.module('registryApp.cliche')
                         scope.view.saving = false;
                         var trace = {};
 
-                        trace.url = (_.isEmpty(scope.user)) ? $location.protocol() + '://' + $location.host() + ':' + $location.port() + '/api/jobs/' + result.url : result.url;
+//                        trace.url = (_.isEmpty(scope.user)) ? $location.protocol() + '://' + $location.host() + ':' + $location.port() + '/api/jobs/' + result.url : result.url;
+                        trace.url = result.url;
                         trace.message = 'Job json URL' + (_.isEmpty(scope.user) ? ' (this url will expire in 24 hours)' : '');
 
                         $modal.open({

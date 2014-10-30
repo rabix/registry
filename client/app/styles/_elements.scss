@@ -242,6 +242,7 @@
       @include flex-flow(column nowrap);
 
       & > .tabs {
+        position: relative;
         @include flex(1);
         @include flex-box();
         @include flex-flow(column nowrap);
@@ -470,6 +471,7 @@ legend {
 
 /* Pipeline */
 .pipeline-wrap {
+  position: relative;
   @include flex(1);
   @include flex-box();
   @include flex-flow(column nowrap);

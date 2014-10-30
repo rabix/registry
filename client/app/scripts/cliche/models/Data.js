@@ -719,6 +719,36 @@ angular.module('registryApp.cliche')
 
         };
 
+        /**
+         * Cleanup the local db and prepare fresh cliche vars
+         *
+         * @returns {Object}
+         */
+        self.flush = function() {
+
+            var tool = $injector.get('rawTool');
+            var job = $injector.get('rawJob');
+
+            self.tool = tool;
+            self.job = job;
+            self.owner = null;
+            self.appId = null;
+            self.command = '';
+
+            return $q.all([
+                    $localForage.setItem('tool', tool),
+                    $localForage.setItem('job', job),
+                    $localForage.removeItem('owner'),
+                    $localForage.removeItem('app_id')
+                ]).then(function() {
+                    return {
+                        tool: tool,
+                        job: job
+                    };
+                });
+
+        };
+
         return self;
 
 

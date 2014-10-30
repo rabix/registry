@@ -29,8 +29,6 @@ angular.module('registryApp')
             'delete': {method: 'DELETE'}
         });
 
-        self.myApps = $resource(apiUrl + '/my-apps');
-
         self.groupedApps = $resource(apiUrl + '/repositories/:type', {type: '@type'});
 
         self.revisions = $resource(apiUrl + '/revisions/:id', {id: '@id'}, {
