@@ -15,7 +15,7 @@ angular.module('registryApp')
 
             return Api.jobs.get({skip: skip}).$promise
                 .then(function (result) {
-                    return {list: _.pluck(result.list, 'url'), total: result.total}
+                    return {list: _.pluck(result.list, 'url'), total: result.total};
                 });
 
         };
@@ -31,22 +31,6 @@ angular.module('registryApp')
             json.app = angular.copy(Data.tool);
 
             return Api.job.upload({}, json).$promise;
-
-        };
-
-        /**
-         * Store jobs locally
-         * @param jobFileName
-         */
-        self.storeJobLocally = function (jobFileName) {
-
-            $localForage.getItem('tmp-jobs').then(function(jobs) {
-
-                jobs = jobs || [];
-                jobs.push(jobFileName);
-
-                $localForage.setItem('tmp-jobs', jobs);
-            });
 
         };
 
