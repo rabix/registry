@@ -4,7 +4,7 @@
 'use strict';
 
 angular.module('registryApp')
-    .controller('PipelineEditorCtrl', ['$scope', '$rootScope', '$q', '$routeParams', '$injector', 'Sidebar', 'Loading', 'App', 'Pipeline', 'User', function ($scope, $rootScope, $q, $routeParams, $injector, Sidebar, Loading, App, Pipeline, User) {
+    .controller('PipelineEditorCtrl', ['$scope', '$rootScope', '$q', '$routeParams', '$modal', '$templateCache', '$location', 'Sidebar', 'Loading', 'App', 'Pipeline', 'User', function ($scope, $rootScope, $q, $routeParams, $modal, $templateCache, $location, Sidebar, Loading, App, Pipeline, User) {
 
         Sidebar.setActive('_dyole');
 
@@ -220,6 +220,15 @@ angular.module('registryApp')
         $scope.save = function () {
 
             if (!$scope.view.pipeline.name) {
+
+                $modal.open({
+                    template: $templateCache.get('views/partials/validation.html'),
+                    size: 'sm',
+                    controller: 'ModalCtrl',
+                    windowClass: 'modal-validation',
+                    resolve: {data: function () { return {messages: ['You must enter pipeline name']}; }}
+                });
+
                 return false;
             }
 
@@ -238,10 +247,6 @@ angular.module('registryApp')
         $scope.delete = function() {
 
             if (_.isEmpty($scope.view.pipeline)) { return false; }
-
-            var $modal = $injector.get('$modal');
-            var $templateCache = $injector.get('$templateCache');
-            var $location = $injector.get('$location');
 
             var modalInstance = $modal.open({
                 template: $templateCache.get('views/cliche/partials/confirm-delete.html'),
@@ -299,10 +304,6 @@ angular.module('registryApp')
         var onRouteChange = function(e, nextLocation) {
 
             if($scope.view.reload) { return; }
-
-            var $templateCache = $injector.get('$templateCache');
-            var $modal = $injector.get('$modal');
-            var $location = $injector.get('$location');
 
             var modalInstance = $modal.open({
                 template: $templateCache.get('views/partials/confirm-leave.html'),
