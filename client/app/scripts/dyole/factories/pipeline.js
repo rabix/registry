@@ -642,16 +642,21 @@ angular.module('registryApp.dyole')
 
                     var areaWidth = this.constraints.dropArea.width;
 
-                    if (coords.x1 <= areaWidth && this.dropZoneRect.isInput) {
-                        this._createSystemNode(this.dropZoneRect.isInput, coords.x1,
-                            coords.y1, terminal);
+                    if (!this.mouseoverTerminal) {
+
+                        if (coords.x1 <= areaWidth && this.dropZoneRect.isInput) {
+                            this._createSystemNode(this.dropZoneRect.isInput, coords.x1,
+                                coords.y1, terminal);
+                        }
+
+                        if (coords.x2 >= (this.canvas.width - areaWidth) && !this.dropZoneRect
+                            .isInput) {
+                            this._createSystemNode(this.dropZoneRect.isInput, coords.x2,
+                                coords.y2, terminal);
+                        }
+
                     }
 
-                    if (coords.x2 >= (this.canvas.width - areaWidth) && !this.dropZoneRect
-                        .isInput) {
-                        this._createSystemNode(this.dropZoneRect.isInput, coords.x2,
-                            coords.y2, terminal);
-                    }
 
                     if (this.dropZoneRect) {
                         this.dropZoneRect.remove();
