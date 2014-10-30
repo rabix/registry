@@ -52,7 +52,7 @@
 
                 <div class="tabs right" ng-switch="view.tab">
 
-                    <div class="tab" ng-switch-when="apps">
+                    <div class="tab" ng-class="{loading: view.filtering}" ng-switch-when="apps">
 
                         <ul class="app-sidebar-list">
                             <li ng-class="{open: view.groups.my}">

@@ -79,6 +79,7 @@ angular.module('registryApp')
         var appsLoaded = function (result) {
 
             $scope.view.loading = false;
+            $scope.view.filtering = false;
             $scope.view.message = result[0].message;
 
             $scope.view.myRepositories = result[0].list || {};
@@ -157,12 +158,13 @@ angular.module('registryApp')
          */
         $scope.filterApps = function () {
 
-            $scope.view.loading = true;
+            $scope.view.filtering = true;
 
             $q.all([
                 App.getGroupedApps('my', $scope.view.searchTerm),
                 App.getGroupedApps('other', $scope.view.searchTerm)
             ]).then(function (result) {
+
                 appsLoaded(result);
 
                 $scope.view.repoGroups = {};
@@ -186,7 +188,7 @@ angular.module('registryApp')
         $scope.resetFilter = function () {
 
             $scope.view.searchTerm = '';
-            $scope.view.loading = true;
+            $scope.view.filtering = false;
 
             $q.all([
                 App.getGroupedApps('my'),
