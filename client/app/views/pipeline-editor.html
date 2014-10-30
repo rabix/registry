@@ -83,7 +83,7 @@
                                     Other Repositories
                                 </span>
                                 <ul>
-                                    <li ng-if="(view.otherRepositories | isEmpty)"><p class="alert alert-info">There are no repositories yet</p></li>
+                                    <li ng-if="(view.otherRepositories | isEmpty)"><p class="alert alert-info">There are no other repositories</p></li>
                                     <li ng-repeat="(repoName, apps) in view.otherRepositories" ng-class="{open: view.repoGroups[repoName]}">
                                         <span ng-click="toggleRepo(repoName)">
                                             <i class="fa" ng-class="{'fa-plus-square': !view.repoGroups[repoName], 'fa-minus-square': view.repoGroups[repoName]}"></i>

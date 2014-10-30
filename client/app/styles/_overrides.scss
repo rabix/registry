@@ -212,6 +212,11 @@ form, .form {
       }
     }
 
+    &.btn-flush-pipeline {
+      padding: 1px 10px;
+      background-color: #fff;
+    }
+
     &:active, &:focus {
       outline: none;
       @include box-shadow(none);

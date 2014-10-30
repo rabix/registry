@@ -231,6 +231,7 @@ angular.module('registryApp')
         $scope.toggleSidebar = function() {
 
             $scope.view.showSidebar = !$scope.view.showSidebar;
+            $rootScope.$broadcast('sidebar:toggle', $scope.view.showSidebar);
 
         };
 
