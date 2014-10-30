@@ -711,7 +711,7 @@ angular.module('registryApp.dyole')
 
                 destroy: function () {
                     var _self = this,
-                        events = ['connection:create', 'scrollbars:draw', 'node:add', 'node:deselect', 'remove:wire'];
+                        events = ['connection:create', 'scrollbars:draw', 'node:add', 'node:deselect'];
 
                     this.canvas = null;
                     this.model = null;
