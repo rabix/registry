@@ -177,6 +177,7 @@ form, .form {
 
 .form-control {
   color: #555;
+  @include border-radius(0);
 }
 
 .alert {

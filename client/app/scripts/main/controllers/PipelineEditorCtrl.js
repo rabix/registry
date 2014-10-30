@@ -230,6 +230,35 @@ angular.module('registryApp')
             $scope.$broadcast('save', true);
         };
 
+        /**
+         * Delete current pipeline
+         *
+         * @returns {boolean}
+         */
+        $scope.delete = function() {
+
+            if (_.isEmpty($scope.view.pipeline)) { return false; }
+
+            var $modal = $injector.get('$modal');
+            var $templateCache = $injector.get('$templateCache');
+            var $location = $injector.get('$location');
+
+            var modalInstance = $modal.open({
+                template: $templateCache.get('views/cliche/partials/confirm-delete.html'),
+                controller: 'ModalCtrl',
+                windowClass: 'modal-confirm',
+                resolve: {data: function () { return {}; }}
+            });
+
+            modalInstance.result.then(function () {
+                Pipeline.deletePipeline($scope.view.pipeline._id).then(function () {
+                    $scope.view.reload = true;
+                    $location.path('/pipelines');
+                });
+            });
+
+        };
+
         $scope.toggleSidebar = function() {
 
             $scope.view.showSidebar = !$scope.view.showSidebar;
