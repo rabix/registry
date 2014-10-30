@@ -199,9 +199,7 @@ angular.module('registryApp')
 
             $scope.view.isChanged = value;
 
-            if (value) {
-                $scope.$digest();
-            } else {
+            if (!value) {
                 $scope.view.saving = false;
                 $scope.view.loading = false;
 

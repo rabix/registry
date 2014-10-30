@@ -124,7 +124,7 @@ angular.module('registryApp.dyole')
         /**
          * Track sidebar toggle in order to adjust canvas size
          */
-        var cancelSidebarToggleEL = $rootScope.$on('sidebar:toggle', function () {
+        var onSidebarToggleOff = $rootScope.$on('sidebar:toggle', function () {
 
             cancelTimeout();
 
@@ -137,7 +137,7 @@ angular.module('registryApp.dyole')
         /**
          * Track pipeline change
          */
-        var cancelPipelineChangeEL = $rootScope.$on('pipeline:change', function () {
+        var onPipelineChangeOff = $rootScope.$on('pipeline:change', function () {
             $scope.pipelineChangeFn({value: true});
         });
 
@@ -163,8 +163,8 @@ angular.module('registryApp.dyole')
             angular.element($window).off('resize', lazyChangeWidth);
 
             cancelTimeout();
-            cancelSidebarToggleEL();
-            cancelPipelineChangeEL();
+            onSidebarToggleOff();
+            onPipelineChangeOff();
         });
 
 
