@@ -17,7 +17,7 @@
 
 (function (self, globalEval) {
     "use strict";
-    self.importScripts('//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js');
+//    self.importScripts('//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js');
     var
         postMessage   = self.postMessage,
         importScripts = self.importScripts,
