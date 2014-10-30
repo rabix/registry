@@ -678,6 +678,10 @@ angular.module('registryApp.dyole')
 
                         delete this.Pipeline.model.schemas[this.model.id].outputs.properties[ter.model.id];
 
+                        this.model.outputs.properties[name] = old;
+
+                        delete this.model.outputs.properties[ter.model.id];
+
                         ter.model.name = ter.model.id = name;
 
                         ter.changeTerminalName(name);
@@ -690,7 +694,11 @@ angular.module('registryApp.dyole')
 
                         this.Pipeline.model.schemas[this.model.id].inputs.properties[name] = old;
 
-                        delete this.Pipeline.model.schemas[this.model.id].outputs.properties[ter.model.id];
+                        delete this.Pipeline.model.schemas[this.model.id].inputs.properties[ter.model.id];
+
+                        this.model.inputs.properties[name] = old;
+
+                        delete this.model.inputs.properties[ter.model.id];
 
                         ter.model.name = ter.model.id = name;
 
