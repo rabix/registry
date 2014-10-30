@@ -8,7 +8,12 @@
                 <input type="text" placeholder="Pipeline Name" ng-model="view.pipeline.name" class="form-control" />
             </div>
             <strong class="changes-mark" ng-if="view.isChanged" tooltip="There are changes in your pipeline" tooltip-placement="right"><i class="fa fa-asterisk"></i></strong>
-            <button ng-show="view.user" ng-click="save()" class="btn btn-primary pull-right" ng-disabled="view.saving"><i class="fa fa-check"></i> {{ view.mode === 'new' ? 'Create' : 'Update' }}</button>
+
+            <div ng-if="view.user" class="actions pull-right">
+                <button ng-click="save()" class="btn btn-primary" ng-disabled="view.saving"><i class="fa fa-check"></i> {{ view.mode === 'new' ? 'Create' : 'Update' }}</button>
+                <button ng-if="view.mode === 'edit'" ng-click="delete()" class="btn btn-danger" ng-disabled="view.deleting"><i class="fa fa-trash"></i> Delete</button>
+            </div>
+
         </h1>
     </div>
     <!-- # .heading -->
@@ -52,7 +57,7 @@
 
                 <div class="tabs right" ng-switch="view.tab">
 
-                    <div class="tab" ng-switch-when="apps">
+                    <div class="tab" ng-class="{loading: view.filtering}" ng-switch-when="apps">
 
                         <ul class="app-sidebar-list">
                             <li ng-class="{open: view.groups.my}">
@@ -83,7 +88,7 @@
                                     Other Repositories
                                 </span>
                                 <ul>
-                                    <li ng-if="(view.otherRepositories | isEmpty)"><p class="alert alert-info">There are no repositories yet</p></li>
+                                    <li ng-if="(view.otherRepositories | isEmpty)"><p class="alert alert-info">There are no other repositories</p></li>
                                     <li ng-repeat="(repoName, apps) in view.otherRepositories" ng-class="{open: view.repoGroups[repoName]}">
                                         <span ng-click="toggleRepo(repoName)">
                                             <i class="fa" ng-class="{'fa-plus-square': !view.repoGroups[repoName], 'fa-minus-square': view.repoGroups[repoName]}"></i>

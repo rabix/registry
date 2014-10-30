@@ -177,6 +177,7 @@ form, .form {
 
 .form-control {
   color: #555;
+  @include border-radius(0);
 }
 
 .alert {
@@ -210,6 +211,11 @@ form, .form {
         opacity: 1;
         background-color: #000;
       }
+    }
+
+    &.btn-flush-pipeline {
+      padding: 1px 10px;
+      background-color: #fff;
     }
 
     &:active, &:focus {

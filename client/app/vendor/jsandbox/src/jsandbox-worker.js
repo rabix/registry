@@ -16,17 +16,14 @@
 /*! @source http://purl.eligrey.com/github/jsandbox/blob/master/src/jsandbox-worker.js*/
 
 (function (self, globalEval) {
-    "use strict";
-//    self.importScripts('//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min.js');
-    var
-        postMessage   = self.postMessage,
+    'use strict';
+    var postMessage   = self.postMessage,
         importScripts = self.importScripts,
-        messageEventType  = "message",
+        messageEventType  = 'message',
 
         messageHandler = function (event) {
             var request = event.data,
-                response = {
-                };
+                response = {};
 
             response.id = request.id;
 
@@ -34,25 +31,22 @@
             self.input = request.input;
 
             if (typeof self.input === 'object') {
-                _.each(self.input, function(value, key){
-                    self[key] = value;
-                });
-
+                for (var key in self.input) {
+                    self[key] = self.input[key];
+                }
             }
 
             try {
                 switch (request.method) {
-
-                    case "eval": // JSLint has something against indenting cases
-                        response.results = globalEval(data);
-                        break;
-                    case "exec":
-                        importScripts("data:application/javascript," +
-                            encodeURIComponent(data));
-                        break;
-                    case "load":
-                        importScripts.apply(self, data);
-                        break;
+                case 'eval': // JSLint has something against indenting cases
+                    response.results = globalEval(data);
+                    break;
+                case 'exec':
+                    importScripts('data:application/javascript,' + encodeURIComponent(data));
+                    break;
+                case 'load':
+                    importScripts.apply(self, data);
+                    break;
 
                 }
             } catch (e) {
@@ -74,7 +68,7 @@
     if (self.addEventListener) {
         self.addEventListener(messageEventType, messageHandler, false);
     } else if (self.attachEvent) { // for future compatibility with IE
-        self.attachEvent("on" + messageEventType, messageHandler);
+        self.attachEvent('on' + messageEventType, messageHandler);
     }
 
     self.window = self; // provide a window object for scripts

@@ -79,6 +79,7 @@ angular.module('registryApp')
         var appsLoaded = function (result) {
 
             $scope.view.loading = false;
+            $scope.view.filtering = false;
             $scope.view.message = result[0].message;
 
             $scope.view.myRepositories = result[0].list || {};
@@ -157,12 +158,13 @@ angular.module('registryApp')
          */
         $scope.filterApps = function () {
 
-            $scope.view.loading = true;
+            $scope.view.filtering = true;
 
             $q.all([
                 App.getGroupedApps('my', $scope.view.searchTerm),
                 App.getGroupedApps('other', $scope.view.searchTerm)
             ]).then(function (result) {
+
                 appsLoaded(result);
 
                 $scope.view.repoGroups = {};
@@ -186,7 +188,7 @@ angular.module('registryApp')
         $scope.resetFilter = function () {
 
             $scope.view.searchTerm = '';
-            $scope.view.loading = true;
+            $scope.view.filtering = false;
 
             $q.all([
                 App.getGroupedApps('my'),
@@ -228,9 +230,39 @@ angular.module('registryApp')
             $scope.$broadcast('save', true);
         };
 
+        /**
+         * Delete current pipeline
+         *
+         * @returns {boolean}
+         */
+        $scope.delete = function() {
+
+            if (_.isEmpty($scope.view.pipeline)) { return false; }
+
+            var $modal = $injector.get('$modal');
+            var $templateCache = $injector.get('$templateCache');
+            var $location = $injector.get('$location');
+
+            var modalInstance = $modal.open({
+                template: $templateCache.get('views/cliche/partials/confirm-delete.html'),
+                controller: 'ModalCtrl',
+                windowClass: 'modal-confirm',
+                resolve: {data: function () { return {}; }}
+            });
+
+            modalInstance.result.then(function () {
+                Pipeline.deletePipeline($scope.view.pipeline._id).then(function () {
+                    $scope.view.reload = true;
+                    $location.path('/pipelines');
+                });
+            });
+
+        };
+
         $scope.toggleSidebar = function() {
 
             $scope.view.showSidebar = !$scope.view.showSidebar;
+            $rootScope.$broadcast('sidebar:toggle', $scope.view.showSidebar);
 
         };
 

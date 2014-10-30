@@ -87,6 +87,12 @@ body {
       vertical-align: middle;
       margin: 0;
     }
+
+    .actions {
+      .btn {
+        margin-left: 10px;
+      }
+    }
   }
 
   h2 {
@@ -262,26 +268,32 @@ body {
   &.pipeline-view {
     & > .content {
       padding: 0;
+      overflow-x: hidden;
       @include flex-box();
     }
 
     .sidebar-col {
       width: 350px;
       border-left: 2px solid $orange;
-      @include transition(width 0.1s ease);
+      overflow-x: hidden;
+      @include transition(width 0.2s ease);
 
       .filter,
-      .content {
+      .content,
+      .heading {
         overflow-x: hidden;
         white-space: nowrap;
       }
 
-      //.filter,
-      //.content,
-      //.nav-tabs-steps li:not(.toggle-action) {
-      //  opacity: 1;
-      //  @include transition(opacity 0.3s ease);
-      //}
+      .filter {
+        min-width: 150px;
+        .form-control {
+          border: {
+            left: none;
+            top: none;
+          }
+        }
+      }
 
       &.closed {
         width: 35px;

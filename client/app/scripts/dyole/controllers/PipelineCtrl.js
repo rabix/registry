@@ -6,7 +6,7 @@
 'use strict';
 
 angular.module('registryApp.dyole')
-    .controller('PipelineCtrl', ['$scope', '$rootScope', '$routeParams', '$element', '$location', '$window', '$timeout', 'pipeline', 'App', 'rawPipeline', 'Pipeline', function ($scope, $rootScope, $routeParams, $element, $location, $window, $timeout, pipeline, App, rawPipeline, PipelineMdl) {
+    .controller('PipelineCtrl', ['$scope', '$rootScope', '$routeParams', '$element', '$location', '$window', '$timeout', '$injector', 'pipeline', 'App', 'rawPipeline', 'Pipeline', function ($scope, $rootScope, $routeParams, $element, $location, $window, $timeout, $injector, pipeline, App, rawPipeline, PipelineMdl) {
 
         var Pipeline;
         var selector = '.pipeline';
@@ -159,6 +159,28 @@ angular.module('registryApp.dyole')
 
         };
 
+        /**
+         * Open modal with info for selected node
+         *
+         * @param e
+         * @param model
+         */
+        var onNodeInfo = function(e, model) {
+
+            var $modal = $injector.get('$modal');
+            var $templateCache = $injector.get('$templateCache');
+
+            $modal.open({
+                template: $templateCache.get('views/dyole/node-info.html'),
+                controller: 'NodeCtrl',
+                windowClass: 'modal-node',
+                resolve: {data: function () { return {model: model}; }}
+            });
+
+        };
+
+        //var onNodeInfoOff = $rootScope.$on('node:select', onNodeInfo);
+
         $scope.$on('$destroy', function() {
 
             angular.element($window).off('resize', lazyChangeWidth);
@@ -166,6 +188,7 @@ angular.module('registryApp.dyole')
             cancelTimeout();
             onSidebarToggleOff();
             onPipelineChangeOff();
+            //onNodeInfoOff();
         });
 
 
