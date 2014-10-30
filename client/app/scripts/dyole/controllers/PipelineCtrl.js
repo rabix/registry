@@ -174,12 +174,12 @@ angular.module('registryApp.dyole')
                 template: $templateCache.get('views/dyole/node-info.html'),
                 controller: 'ModalCtrl',
                 windowClass: 'modal-node',
-                resolve: {data: function () { return {model: model}; }}
+                resolve: {data: function () { return model; }}
             });
 
         };
 
-        var onNodeInfoOff = $rootScope.$on('node:select', onNodeInfo);
+        var onNodeInfoOff = $rootScope.$on('node:info', onNodeInfo);
 
         $scope.$on('$destroy', function() {
 
