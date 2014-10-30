@@ -312,7 +312,7 @@ angular.module('registryApp.dyole')
                     _.each(this.model.nodes, function (nodeModel) {
 
                         var model = _.extend(nodeModel, _self.model.display.nodes[
-                            nodeModel.id]);
+                            nodeModel.id], _self.model.schemas[nodeModel.id]);
 
                         _self.nodes[nodeModel.id] = Node.getInstance({
                             pipeline: _self,
@@ -367,7 +367,7 @@ angular.module('registryApp.dyole')
 
                 _createSystemNode: function (isInput, x, y, terminal) {
                     var model = angular.copy(systemNodeModel),
-                        terminalId, count, name;
+                        terminalId, count;
 
                     if (isInput) {
 

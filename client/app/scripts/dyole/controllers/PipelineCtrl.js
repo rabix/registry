@@ -179,7 +179,27 @@ angular.module('registryApp.dyole')
 
         };
 
+        var onNodeLabelEdit = function(e, name, onEdit, onSave, scope) {
+
+            var $modal = $injector.get('$modal');
+            var $templateCache = $injector.get('$templateCache');
+
+            $modal.open({
+                template: $templateCache.get('views/dyole/node-label-edit.html'),
+                controller: 'NodeEditCtrl',
+                windowClass: 'modal-node',
+                resolve: {data: function () { return {
+                    name: name,
+                    onEdit: onEdit,
+                    onSave: onSave,
+                    scope: scope
+                }; }}
+            });
+
+        };
+
         var onNodeInfoOff = $rootScope.$on('node:info', onNodeInfo);
+        var onNodeLabelEditOff = $rootScope.$on('node:label:edit', onNodeLabelEdit);
 
         $scope.$on('$destroy', function() {
 
@@ -189,7 +209,10 @@ angular.module('registryApp.dyole')
             onSidebarToggleOff();
             onPipelineChangeOff();
             onNodeInfoOff();
+            onNodeLabelEditOff();
         });
+
+
 
 
     }]);

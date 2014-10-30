@@ -647,41 +647,66 @@ angular.module('registryApp.dyole')
             _initNameChanging: function () {
                 var _self = this;
 
-                $rootScope.$broadcast('node:label:edit', function check(name) {
+                $rootScope.$broadcast('node:label:edit', this.model.softwareDescription.name, function check(name) {
 
                     var test = _.filter(_self.Pipeline.nodes, function (n) {
                         return n.model.softwareDescription.repo_name === 'system' && n.model.id === name;
                     });
 
                     return test.length === 0;
-                }, _self._changeNodeName);
+                }, this._changeNodeName, this);
             },
 
             _changeNodeName: function (name) {
 
-                var ter;
+                var ter, old,
+                    isInput = this.inputs.length === 0;
 
                 if (this.model.softwareDescription.repo_name === 'system') {
 
                     this.model.softwareDescription.name = name;
+                    this.Pipeline.model.schemas[this.model.id].softwareDescription.name = name;
 
-                    delete this.Pipeline.nodes[this.model.id];
-
-                    this.model.id = name;
-
-                    this.Pipeline.nodes[this.model.id] = this;
-
-                    if (this.inputs.length === 0) {
+                    if (isInput) {
                         ter = this.outputs[0];
 
+                        old = this.Pipeline.model.schemas[this.model.id].outputs.properties[ter.model.id];
+
+                        old.id = old.name = name;
+
+                        this.Pipeline.model.schemas[this.model.id].outputs.properties[name] = old;
+
+                        delete this.Pipeline.model.schemas[this.model.id].outputs.properties[ter.model.id];
+
+                        ter.model.name = ter.model.id = name;
+
                         ter.changeTerminalName(name);
-                        ter.model.id = name;
                     } else {
                         ter = this.inputs[0];
 
+                        old = this.Pipeline.model.schemas[this.model.id].inputs.properties[ter.model.id];
+
+                        old.id = old.name = name;
+
+                        this.Pipeline.model.schemas[this.model.id].inputs.properties[name] = old;
+
+                        delete this.Pipeline.model.schemas[this.model.id].outputs.properties[ter.model.id];
+
+                        ter.model.name = ter.model.id = name;
+
                         ter.changeTerminalName(name);
-                        ter.model.id = name;
                     }
+
+                    _.each(this.connections, function (c) {
+                        if (isInput) {
+                            c.model.output_name = name;
+                        } else {
+                            c.model.input_name = name;
+                        }
+                    });
+
+                    this.label.attr('text', name);
+
                 }
             },
 
