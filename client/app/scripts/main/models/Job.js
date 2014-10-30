@@ -35,38 +35,6 @@ angular.module('registryApp')
         };
 
         /**
-         * Get temp list of jobs
-         *
-         * @param skip
-         * @param limit
-         * @returns {*}
-         */
-        self.getTmpJobs = function (skip, limit) {
-
-            return $localForage.getItem('tmp-jobs')
-                .then(function (jobs) {
-
-                    jobs = jobs || [];
-
-                    return Api.jobs.clean({}, {jobs: jobs}).$promise.then(function (result) {
-
-                        if (result.jobs.length !== jobs.length) {
-                            $localForage.setItem('tmp-jobs', result.jobs);
-                        }
-
-                        var total = result.jobs.length;
-                        jobs = result.jobs.reverse().splice(skip, limit);
-
-                        return {list: jobs, total: total};
-
-                    });
-
-
-                });
-
-        };
-
-        /**
          * Store jobs locally
          * @param jobFileName
          */

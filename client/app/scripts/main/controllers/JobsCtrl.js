@@ -47,14 +47,8 @@ angular.module('registryApp')
 
             $scope.view.user = result.user;
 
-            if (!_.isEmpty(result.user)) {
-                Job.getJobs(0).then(jobsLoaded);
-            } else {
+            Job.getJobs(0).then(jobsLoaded);
 
-                $scope.view.prefix = $location.protocol() + '://' + $location.host() + ':' + $location.port() + '/api/jobs/';
-
-                Job.getTmpJobs(0, $scope.view.perPage).then(jobsLoaded);
-            }
         });
 
         /**
@@ -76,11 +70,7 @@ angular.module('registryApp')
                 $scope.view.loading = true;
                 var offset = ($scope.view.page - 1) * $scope.view.perPage;
 
-                if (!_.isEmpty($scope.view.user)) {
-                    Job.getJobs(offset).then(jobsLoaded);
-                } else {
-                    Job.getTmpJobs(offset, $scope.view.perPage).then(jobsLoaded);
-                }
+                Job.getJobs(offset).then(jobsLoaded);
 
             }
         };

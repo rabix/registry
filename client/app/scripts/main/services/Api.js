@@ -11,9 +11,7 @@ angular.module('registryApp')
             update: {method: 'PUT'}
         });
 
-        self.jobs = $resource(apiUrl + '/jobs', {}, {
-            clean: {method: 'PUT'}
-        });
+        self.jobs = $resource(apiUrl + '/jobs');
 
         self.job = $resource(apiUrl + '/job/upload', {}, {
             upload: {method: 'POST'}

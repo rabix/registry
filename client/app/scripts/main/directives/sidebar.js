@@ -50,7 +50,6 @@ angular.module('registryApp')
 
                 scope.view.navigation = [
                     {name: 'apps', link: 'apps', desc: 'Applications', icon: 'puzzle-piece'},
-                    {name: 'jobs', link: 'jobs', desc: 'Jobs', icon: 'plug'},
                     {name: 'builds', link: 'builds', desc: 'Builds', icon: 'cube'},
                     {name: 'repos', link: 'repos', desc: 'Repositories', icon: 'code-fork'},
                     {name: 'settings',link: 'settings',  desc: 'Settings', icon: 'gear'},
@@ -62,6 +61,11 @@ angular.module('registryApp')
                 User.getUser().then(function(result) {
                     scope.view.user = result.user;
                     scope.view.loading = false;
+
+                    if (!_.isEmpty(result.user)) {
+                        scope.view.navigation.unshift({name: 'jobs', link: 'jobs', desc: 'Jobs', icon: 'plug'});
+                    }
+
                 });
 
                 scope.$watch('SidebarService.active', function (n, o) {
