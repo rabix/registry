@@ -93,11 +93,13 @@ angular.module('registryApp.dyole')
                     if (_self.mousedown && _self.tempConnection) {
                         console.log('4 times', terminal);
                         _self.mouseoverTerminal = terminal;
+                        _self.Pipeline.mouseoverTerminal = terminal;
                     }
 
                 }, terMouseOut = function () {
 
                     _self.mouseoverTerminal = null;
+                    _self.Pipeline.mouseoverTerminal = null;
 
                 }, terSelectAvail = function (terminal, nodeId) {
 
