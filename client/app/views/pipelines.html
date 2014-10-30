@@ -14,8 +14,8 @@
                 </form>
             </div>
 
-            <div ng-show="view.user" class="col-md-3">
-                <label class="checkbox">
+            <div class="col-md-3">
+                <label class="checkbox" ng-show="view.user">
                     <input type="checkbox" ng-model="view.mine" ng-change="toggleMyPipelines()" /> Show only mine
                 </label>
             </div>

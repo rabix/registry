@@ -93,6 +93,10 @@ angular.module('registryApp.cliche')
                                         $modalInstance.close();
                                     };
 
+                                    $scope.$on('$routeChangeStart', function() {
+                                        $modalInstance.close();
+                                    });
+
                                 }],
                                 resolve: { data: function () { return { trace: trace }; }}
                             });
@@ -148,6 +152,10 @@ angular.module('registryApp.cliche')
                                     $scope.ok = function () {
                                         $modalInstance.close();
                                     };
+
+                                    $scope.$on('$routeChangeStart', function() {
+                                        $modalInstance.close();
+                                    });
 
                                 }],
                                 resolve: { data: function () { return { trace: trace }; }}
