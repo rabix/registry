@@ -1,5 +1,5 @@
 <div class="pipeline-wrap">
-    <button class="btn btn-flush" ng-click="flush()" tooltip="Start with clean canvas" tooltip-placement="left" tooltip-append-to-body="true">
+    <button ng-if="view.canFlush" class="btn btn-flush" ng-click="flush()" tooltip="Start with clean canvas" tooltip-placement="left" tooltip-append-to-body="true">
         <i class="fa fa-trash"></i>
     </button>
     <div class="pipeline-drop-area" ng-class="{loading: view.loading}" drop="dropNode(e, id)">

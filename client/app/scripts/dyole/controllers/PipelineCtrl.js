@@ -13,6 +13,7 @@ angular.module('registryApp.dyole')
         var timeoutId;
 
         $scope.view = {};
+        $scope.view.canFlush = _.contains(['new', 'edit'], $routeParams.mode);
 
         /**
          * Initialize pipeline
@@ -146,7 +147,7 @@ angular.module('registryApp.dyole')
          */
         $scope.flush = function() {
 
-            if (!_.contains(['new', 'edit'], $routeParams.mode)) { return false; }
+            if (!$scope.view.canFlush) { return false; }
 
             PipelineMdl.flush();
 
