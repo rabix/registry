@@ -46,6 +46,9 @@ angular.module('registryApp')
         /* flag to enforce page reload */
         $scope.view.reload = false;
 
+        /* flag for sidebar visibility */
+        $scope.view.showSidebar = true;
+
         $scope.view.classes = ['page', 'pipeline-edit'];
         Loading.setClasses($scope.view.classes);
 
@@ -223,6 +226,12 @@ angular.module('registryApp')
             $scope.view.loading = true;
 
             $scope.$broadcast('save', true);
+        };
+
+        $scope.toggleSidebar = function() {
+
+            $scope.view.showSidebar = !$scope.view.showSidebar;
+
         };
 
         /**

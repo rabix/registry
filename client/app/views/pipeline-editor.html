@@ -19,10 +19,17 @@
             <div pipeline="view.pipeline" edit-mode="true" pipeline-change-fn="onPipelineChange(value)"></div>
         </div>
 
-        <div class="col sidebar-col">
+        <div class="col sidebar-col" ng-class="{closed: !view.showSidebar}">
 
             <div class="heading">
                 <ul class="nav nav-tabs nav-tabs-steps">
+
+                    <li class="toggle-action">
+                        <a href ng-click="toggleSidebar()">
+                            <i ng-class="{'fa-chevron-right': view.showSidebar, 'fa-chevron-left': !view.showSidebar}" class="fa"></i>
+                        </a>
+                    </li>
+
                     <li ng-class="{active: view.tab === 'apps'}"><a href ng-click="switchTab('apps')">Apps</a></li>
                     <li ng-class="{active: view.tab === 'params'}"><a href ng-click="switchTab('params')">Params</a></li>
                     <li ng-class="{active: view.tab === 'json'}"><a href ng-click="switchTab('json')">JSON</a></li>

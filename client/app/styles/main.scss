@@ -264,14 +264,48 @@ body {
       padding: 0;
       @include flex-box();
     }
+
     .sidebar-col {
       width: 350px;
       border-left: 2px solid $orange;
+      @include transition(width 0.1s ease);
+
+      .filter,
+      .content {
+        overflow-x: hidden;
+        white-space: nowrap;
+      }
+
+      //.filter,
+      //.content,
+      //.nav-tabs-steps li:not(.toggle-action) {
+      //  opacity: 1;
+      //  @include transition(opacity 0.3s ease);
+      //}
+
+      &.closed {
+        width: 35px;
+
+        .filter,
+        .content,
+        .nav-tabs-steps li:not(.toggle-action) {
+          display: none;
+        }
+      }
     }
+
     .nav-tabs {
       &.nav-tabs-steps {
         li {
           width: 25%;
+
+          &.toggle-action {
+            width: auto;
+            float: left;
+            a {
+              color: #555;
+            }
+          }
         }
       }
     }

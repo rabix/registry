@@ -29,12 +29,15 @@
       float: none;
       display: inline-block;
       vertical-align: middle;
+      
       a {
         font-size: 14px;
         text-transform: uppercase;
         padding: 5px 10px;
         margin: 0;
         border: none;
+        text-overflow: ellipsis;
+        overflow: hidden;
       }
       &.active {
         a,
