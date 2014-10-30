@@ -350,6 +350,15 @@ ul {
   @include border-radius(0);
 }
 
+.modal-body {
+  &.alert {
+    margin: 0;
+    .messages {
+      margin-bottom: 20px;
+    }
+  }
+}
+
 .codemirror {
   .CodeMirror {
     margin-bottom: 10px;

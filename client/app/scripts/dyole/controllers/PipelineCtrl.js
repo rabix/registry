@@ -172,14 +172,14 @@ angular.module('registryApp.dyole')
 
             $modal.open({
                 template: $templateCache.get('views/dyole/node-info.html'),
-                controller: 'NodeCtrl',
+                controller: 'ModalCtrl',
                 windowClass: 'modal-node',
-                resolve: {data: function () { return {model: model}; }}
+                resolve: {data: function () { return model; }}
             });
 
         };
 
-        //var onNodeInfoOff = $rootScope.$on('node:select', onNodeInfo);
+        var onNodeInfoOff = $rootScope.$on('node:info', onNodeInfo);
 
         $scope.$on('$destroy', function() {
 
@@ -188,7 +188,7 @@ angular.module('registryApp.dyole')
             cancelTimeout();
             onSidebarToggleOff();
             onPipelineChangeOff();
-            //onNodeInfoOff();
+            onNodeInfoOff();
         });
 
 
