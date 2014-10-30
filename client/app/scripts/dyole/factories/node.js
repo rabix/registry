@@ -5,7 +5,7 @@
 'use strict';
 
 angular.module('registryApp.dyole')
-    .factory('node', ['terminal', function (Terminal) {
+    .factory('node', ['$rootScope', 'terminal', function ($rootScope, Terminal) {
 
         var Node = function (options) {
 
@@ -101,7 +101,7 @@ angular.module('registryApp.dyole')
                     fill: 'transparent',
 
                     image: {
-                        name: 'icon-edit.png',
+                        name: 'icon-pencil.png',
                         width: 12,
                         height: 12
                     }
@@ -412,7 +412,12 @@ angular.module('registryApp.dyole')
                         //                        }
                         //
                         this.Pipeline.Event.trigger('node:deselect');
-                        this._select();
+
+                        if (this.Pipeline.editMode) {
+                            this._select();
+                        } else {
+                            this._showInfo();
+                        }
 
                         //                    }
                     }
@@ -538,19 +543,20 @@ angular.module('registryApp.dyole')
             },
 
             _showButtons: function () {
-                var self = this,
+                var _self = this,
+                    bbox,
                     nodeRadius = this.constraints.radius,
                     buttonDistance = typeof this.buttons.distance !== 'undefined' ?
                         -this.buttons.distance - nodeRadius - this.buttons.radius : -
                         nodeRadius * 1.5;
 
-                if (!self.infoButton && !self.removeNodeButton) {
+                if (!_self.infoButton && !_self.removeNodeButton) {
 
                     //                    this.buttons.delete.image.url = require.toUrl('sbg/pipeline-canvas/img/' + this.buttons.delete.image.name);
                     //                    this.buttons.info.image.url = require.toUrl('sbg/pipeline-canvas/img/' + this.buttons.info.image.name);
-                    //                    this.buttons.rename.image.url = require.toUrl('sbg/pipeline-canvas/img/' + this.buttons.rename.image.name);
+                    this.buttons.rename.image.url = 'images/' + this.buttons.rename.image.name;
 
-                    self.infoButton = self.canvas.button({
+                    _self.infoButton = _self.canvas.button({
                         fill: this.buttons.info.fill,
                         x: +16,
                         y: buttonDistance,
@@ -558,10 +564,11 @@ angular.module('registryApp.dyole')
                         border: this.buttons.border,
                         image: ''
                     }, {
-                        scope: self
+                        onClick: _self._showInfo,
+                        scope: _self
                     });
 
-                    self.removeNodeButton = self.canvas.button({
+                    _self.removeNodeButton = _self.canvas.button({
                         fill: this.buttons.delete.fill,
                         x: -16,
                         y: buttonDistance,
@@ -569,13 +576,29 @@ angular.module('registryApp.dyole')
                         border: this.buttons.border,
                         image: ''
                     }, {
-                        onClick: self.removeNodeButtonClick,
-                        scope: self
+                        onClick: _self._removeNodeButtonClick,
+                        scope: _self
                     });
 
-                    this.el.push(self.infoButton.getEl())
-                        .push(self.removeNodeButton.getEl());
+                    bbox = _self.label.getBBox();
+                    _self.editLabelButton = _self.canvas.button({
+                        fill: _self.buttons.rename.fill,
+                        x: bbox.x + bbox.width + 20,
+                        y: bbox.y + 8,
+                        radius: 10,
+                        border: _self.buttons.border,
+                        image: _self.buttons.rename.image,
 
+                        borderFill: 'transparent',
+                        borderStroke: 'transparent'
+                    }, {
+                        onClick: _self._initNameChanging,
+                        scope: _self
+                    });
+
+                    _self.el.push(_self.infoButton.getEl())
+                        .push(_self.removeNodeButton.getEl())
+                        .push(_self.editLabelButton.getEl());
 
                 }
 
@@ -593,11 +616,25 @@ angular.module('registryApp.dyole')
                     this.removeNodeButton = null;
                 }
 
+                if (this.editLabelButton) {
+                    this.editLabelButton.remove();
+                    this.editLabelButton = null;
+                }
+
             },
 
-            removeNodeButtonClick: function () {
+            _removeNodeButtonClick: function () {
                 this._destroyButtons();
                 this.removeNode();
+            },
+
+            _showInfo: function () {
+
+                $rootScope.$broadcast('node:info', this.model);
+            },
+
+            _initNameChanging: function () {
+
             },
 
             _select: function () {

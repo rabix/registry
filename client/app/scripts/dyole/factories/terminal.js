@@ -454,10 +454,14 @@ angular.module('registryApp.dyole')
 
             },
 
+            changeTerminalName: function (name) {
+                this.model.name = name;
+                this.label.attr('text', this.model.name);
+            },
+
             destroy: function () {
                 var _self = this;
 
-                console.log('Events', this.events);
                 _.each(this.events, function (ev) {
                     _self.Pipeline.Event.unsubscribe(ev.event, ev.handler);
                 });
