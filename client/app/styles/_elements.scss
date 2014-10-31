@@ -228,6 +228,7 @@
 
     & > .heading {
       padding: 0;
+      position: relative;
       @include flex(0 0 auto);
     }
 

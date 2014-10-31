@@ -202,19 +202,13 @@ form, .form {
     top: 0;
     right: 0;
     color: #555;
-    background-color: transparent;
+    padding: 1px 10px;
 
     &.btn-flush-cliche {
-      color: #fff;
-      opacity: 0.5;
-      &:hover {
-        opacity: 1;
-        background-color: #000;
-      }
+      background-color: transparent;
     }
 
     &.btn-flush-pipeline {
-      padding: 1px 10px;
       background-color: #fff;
     }
 

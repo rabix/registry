@@ -7,7 +7,7 @@ var _ = require('lodash');
 
 var mapDefinition = {
     root: {
-        softwareDescription: {type: 'object', required: true},
+        softwareDescription: {type: 'string', required: true},
         documentAuthor: {type: 'string', required: true},
         softwareRelease: {type: 'object'},
         requirements: {type: 'object', required: true},
