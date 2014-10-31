@@ -421,7 +421,8 @@ module.exports = function (grunt) {
                             'bower_components/es5-shim/es5-shim.js',
                             'bower_components/json3/lib/json3.min.js',
                             'data/*',
-                            'vendor/jsandbox/src/jsandbox-worker.js'
+                            'vendor/jsandbox/src/jsandbox-worker.js',
+                            'vendor/raphael/*'
                         ]
                     },
                     {

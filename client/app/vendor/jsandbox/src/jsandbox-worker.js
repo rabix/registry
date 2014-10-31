@@ -16,7 +16,6 @@
 /*! @source http://purl.eligrey.com/github/jsandbox/blob/master/src/jsandbox-worker.js*/
 
 (function (self, globalEval) {
-    'use strict';
     var postMessage   = self.postMessage,
         importScripts = self.importScripts,
         messageEventType  = 'message',

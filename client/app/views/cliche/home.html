@@ -13,6 +13,10 @@
                     <li ng-class="{active: view.tab === 'values'}"><a href ng-click="switchTab('values')">Values</a></li>
 
                 </ul>
+
+                <a class="btn btn-flush btn-flush-cliche" href ng-click="flush()" tooltip="Start with clean template" tooltip-placement="left" tooltip-append-to-body="true">
+                    <i class="fa fa-trash"></i>
+                </a>
             </div>
             <!-- # .heading -->
 
@@ -55,10 +59,6 @@
                         <zclip data="command"></zclip>
                         <pre class="console-trace" ng-class="{wait: view.generatingCommand}">{{ view.command }}</pre>
                     </div>
-
-                    <a class="btn btn-flush btn-flush-cliche" href ng-click="flush()" tooltip="Start with clean template" tooltip-placement="left" tooltip-append-to-body="true">
-                        <i class="fa fa-trash"></i>
-                    </a>
 
                 </div>
             </div>
