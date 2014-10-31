@@ -372,7 +372,7 @@ angular.module('registryApp')
                         };
 
                     }],
-                    resolve: { data: function () { return { trace: url }; }}
+                    resolve: { data: function () { return {message: 'Pipeline link:', trace: url}; }}
                 });
 
                 $scope.view.saving = false;

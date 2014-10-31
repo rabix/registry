@@ -724,6 +724,8 @@ angular.module('registryApp.dyole')
                     return;
                 }
 
+                this.Pipeline.selectedNodes.push(this);
+
                 this._showButtons();
 
                 // Show selected state

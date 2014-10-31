@@ -24,6 +24,13 @@ angular.module('registryApp.dyole')
                  */
                 this.editMode = options.editMode;
 
+                /**
+                 * Cache selected nodes
+                 *
+                 * @type {Array}
+                 */
+                this.selectedNodes = [];
+
                 // temporarily holding references to the terminals
                 // needed for connection to render
                 this.tempConnectionRefs = null;
@@ -86,7 +93,8 @@ angular.module('registryApp.dyole')
                     });
 
                     this.Event.subscribe('node:deselect', function () {
-                        _.each(_self.nodes, function (node) {
+
+                        _.each(_self.selectedNodes, function (node) {
                             if (node.selected) {
                                 node._deselect();
                             }
@@ -752,8 +760,6 @@ angular.module('registryApp.dyole')
 
                     rawCoords = rawCoords || false;
 
-                    console.log('x: %s, y: %s, canvas: ', clientX, clientY, canvas);
-
                     var x = clientX - canvas.left - this.pipelineWrap.getTranslation()
                             .x,
                         y = clientY - canvas.top - this.pipelineWrap.getTranslation()
@@ -763,8 +769,6 @@ angular.module('registryApp.dyole')
                         x = clientX - this.pipelineWrap.getTranslation().x;
                         y = clientY - this.pipelineWrap.getTranslation().y;
                     }
-
-                    console.log('x: %s, y: %s', x, y);
 
 
                     model.x = x;
