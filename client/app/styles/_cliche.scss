@@ -94,6 +94,38 @@
   }
 }
 
+.revisions-list {
+  margin: 0;
+  max-height: 456px;
+  overflow: auto;
+  border-bottom: 1px solid #ddd;
+  padding: 1px 0;
+  @include scrollBar($blue);
+
+  & > li {
+    cursor: pointer;
+    border-bottom: 1px solid #ddd;
+    padding: 10px 15px;
+
+    a {
+      display: block;
+      text-decoration: none;
+      color: #555;
+      .version-tag {
+        margin-right: 10px;
+        font-weight: bold;
+      }
+      .label {
+        margin-left: 10px;
+      }
+    }
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+}
+
 /* App listing in modal (for the import) */
 .app-list {
   margin: 10px 0;

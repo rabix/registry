@@ -1,0 +1,23 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="cancel()"><span>&times;</span><span class="sr-only">Close</span></button>
+    <h4 class="modal-title">Pick revision you want to load</h4>
+</div>
+
+<div class="modal-body no-padding">
+
+    <ul class="revisions-list">
+        <li ng-repeat="revision in view.revisions">
+            <a href ng-click="choose(revision._id)">
+                <span class="version-tag"><i class="fa fa-tag"></i> {{ 'v' + view.versions[$index] }}</span>
+                {{ revision.name }}
+                <span ng-if="revision._id === view.app.revision_id" class="label label-primary pull-right">public</span>
+                <span ng-if="view.current.id === revision._id" class="label label-warning pull-right">current</span>
+            </a>
+        </li>
+    </ul>
+
+    <div class="main-actions center-block">
+        <button class="btn btn-default" ng-click="cancel()">Cancel</button>
+    </div>
+
+</div>

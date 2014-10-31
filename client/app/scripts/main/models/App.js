@@ -46,33 +46,37 @@ angular.module('registryApp')
          * Get app by id
          *
          * @param id
+         * @param revision
          * @returns {object} $promise
          */
-        self.getApp = function(id) {
+        self.getApp = function(id, revision) {
 
-            var promise = Api.apps.get({id: id}).$promise;
+            var promise = Api.apps.get({id: id, revision: revision}).$promise;
 
             return promise;
 
         };
 
         /**
-         * Add an app
+         * Save changes for the app
          *
-         * @params {string} mode
-         * @returns {object} $promise
+         * @param {string} action - save|publish|create
+         * @param id
+         * @returns {*}
          */
-        self.addApp = function(mode) {
+        self.save = function(action, id, revision) {
 
-            var promise;
+            var mode = 'add';
 
-            if (mode === 'update') {
-                promise = Api.apps.update({}, {tool: Data.tool, app_id: Data.appId}).$promise;
+            if (action === 'save') {
+                return Api.revisions[mode]({}, {tool: Data.tool, app_id: id}).$promise;
             } else {
-                promise = Api.apps.add({}, Data.tool).$promise;
-            }
 
-            return promise;
+                var revisionId = revision ? revision.id : null;
+                if (action === 'publish') { mode = 'update'; }
+
+                return Api.apps[mode]({id: id, revision: revisionId}, {tool: Data.tool}).$promise;
+            }
 
         };
 

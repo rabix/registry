@@ -7,7 +7,7 @@
 'use strict';
 
 angular.module('registryApp.cliche')
-    .controller('ClicheCtrl', ['$scope','$q', '$injector', '$interval', 'Data', 'User', 'Loading', 'SandBox', 'Sidebar', function ($scope, $q, $injector, $interval, Data, User, Loading, SandBox, Sidebar) {
+    .controller('ClicheCtrl', ['$scope', '$rootScope', '$q', '$injector', '$routeParams', '$location', 'Data', 'User', 'App', 'Loading', 'SandBox', 'Sidebar', function ($scope, $rootScope, $q, $injector, $routeParams, $location, Data, User, App, Loading, SandBox, Sidebar) {
 
         Sidebar.setActive('cliche');
 
@@ -17,6 +17,8 @@ angular.module('registryApp.cliche')
         $scope.view.tab = 'general';
         $scope.view.trace = 'tool';
         $scope.view.saving = false;
+        $scope.view.reload = false;
+        $scope.view.app = {};
 
         $scope.view.tabViewPath = 'views/cliche/tabs/general.html';
 
@@ -42,20 +44,6 @@ angular.module('registryApp.cliche')
             if (n !== o) { $scope.view.classes = n; }
         });
 
-        var saveIntervalId = $interval(function() {
-
-            $scope.view.saving = true;
-
-            Data.save()
-                .then(function() {
-                    $scope.view.saving = false;
-                }, function() {
-                    $scope.view.saving = false;
-                    console.error('save failed fo some reason...');
-                });
-
-        }, 5000);
-
         /* tool form obj */
         $scope.view.toolForm = Data.tool;
         /* job form obj */
@@ -63,56 +51,50 @@ angular.module('registryApp.cliche')
 
         $scope.view.loading = true;
 
-        Data.checkStructure().then(function() {
+        if ($routeParams.id) {
+
+            $q.all([
+                    App.getApp($routeParams.id, $routeParams.revision),
+                    User.getUser()
+                ]).then(function(result) {
+
+                    $scope.view.loading = false;
+
+                    $scope.view.app = result[0].data;
+                    $scope.view.currentRevision = result[0].revision;
+                    $scope.view.user = result[1].user;
+
+                    Data.setTool($scope.view.app.json);
+                    $scope.view.toolForm = Data.tool;
+
+                    Data.setJob();
+                    $scope.view.jobForm = Data.job;
+
+                });
+
+        } else {
 
             $q.all([
                     Data.fetchTool(),
                     Data.fetchJob(),
-                    Data.fetchOwner(),
-                    Data.fetchAppId()
-                ]).then(function() {
-
-                    $scope.view.toolForm = Data.tool;
-                    $scope.view.toolForm.documentAuthor = null;
-
-                    User.getUser().then(function(result) {
-                        $scope.view.user = result.user;
-                        if (result.user) {
-                            $scope.view.toolForm.documentAuthor = result.user.email;
-                            $scope.view.toolForm.softwareDescription.repo_owner = result.user.login;
-                            //$scope.view.toolForm.softwareDescription.repo_name = '';
-                        }
-                    });
-
-                    $scope.view.jobForm = Data.job;
-
-                    $scope.view.owner = Data.owner;
-                    $scope.view.appId = Data.appId;
+                    User.getUser()
+                ]).then(function(result) {
 
                     $scope.view.loading = false;
 
-                    /* add additional prop attributes */
-                    _.each($scope.view.toolForm.inputs.properties, function(prop) {
+                    $scope.view.user = result[2].user;
 
-                        if (_.isUndefined(prop.adapter.separator)) {
-                            prop.adapter.separator = '_';
-                        }
-//                            if (_.isUndefined(prop.adapter.listSeparator)) {
-//                                prop.adapter.listSeparator = 'repeat';
-//                            }
-                    });
+                    $scope.view.toolForm = Data.tool;
+                    if ($scope.view.user) {
+                        $scope.view.toolForm.documentAuthor = $scope.view.user.email;
+                        $scope.view.toolForm.softwareDescription.repo_owner = $scope.view.user.login;
+                    }
 
-                    /* add additional args attributes */
-                    _.each($scope.view.toolForm.adapter.args, function(arg) {
-                        if (_.isUndefined(arg.separator)) {
-                            arg.separator = '_';
-                        }
-                    });
+                    $scope.view.jobForm = Data.job;
 
                 });
 
-        });
-
+        }
 
         /**
          * Toggle properties visibility (expand/collapse)
@@ -261,6 +243,7 @@ angular.module('registryApp.cliche')
          * @param tab
          */
         $scope.switchTrace = function(tab) {
+
             $scope.view.trace = tab;
 
             if (tab === 'console') {
@@ -272,42 +255,11 @@ angular.module('registryApp.cliche')
         };
 
         /**
-         * Import existing app or app revision
-         *
-         * @param app
-         */
-        $scope.importApp = function(appObj) {
-
-            var app = angular.copy(appObj);
-
-            app.json.documentAuthor = $scope.view.user.email;
-            app.json.softwareDescription.repo_owner = $scope.view.user.login;
-            app.json.softwareDescription.repo_name = '';
-
-
-            Data.setTool(app.json);
-            $scope.view.toolForm = app.json;
-
-            var job = angular.copy($scope.view.jobForm);
-            job.inputs = {};
-
-            Data.setJob(job);
-            $scope.view.jobForm = job;
-
-            Data.setOwner(app.user_id);
-            $scope.view.owner = app.user_id;
-
-            Data.setAppId(app._id);
-            $scope.view.appId = app._id;
-
-        };
-
-        /**
          * Import json to create app
          *
          * @param json
          */
-        $scope.importAppAsJson = function(json) {
+        $scope.import = function(json) {
 
             json = JSON.parse(json);
 
@@ -319,29 +271,6 @@ angular.module('registryApp.cliche')
 
             Data.setJob(job);
             $scope.view.jobForm = job;
-
-            Data.setOwner($scope.view.user.id);
-            $scope.view.owner = $scope.view.user.id;
-
-            Data.setAppId(null);
-            $scope.view.appId = null;
-
-
-        };
-
-        /**
-         * Store the owner and the app id for the current app
-         *
-         * @param user_id
-         * @param app_id
-         */
-        $scope.setOwnerAndAppId = function(user_id, app_id) {
-
-            Data.setOwner(user_id);
-            $scope.view.owner = user_id;
-
-            Data.setAppId(app_id);
-            $scope.view.appId = app_id;
 
         };
 
@@ -420,14 +349,9 @@ angular.module('registryApp.cliche')
 
                 $scope.view.toolForm = result.tool;
                 $scope.view.jobForm = result.job;
-                $scope.view.appId = null;
-                $scope.view.owner = null;
                 $scope.view.command = '';
 
                 if ($scope.view.user) {
-
-                    Data.setOwner($scope.view.user.id);
-                    $scope.view.owner = $scope.view.user.id;
 
                     $scope.view.toolForm.documentAuthor = $scope.view.user.email;
                     $scope.view.toolForm.softwareDescription.repo_owner = $scope.view.user.login;
@@ -439,11 +363,90 @@ angular.module('registryApp.cliche')
 
         };
 
-        $scope.$on('$destroy', function() {
-            if (angular.isDefined(saveIntervalId)) {
-                $interval.cancel(saveIntervalId);
-                saveIntervalId = undefined;
-            }
-        });
+        $scope.redirect = function(url) {
+
+            $scope.view.reload = true;
+            $location.path(url);
+
+        };
+
+        $scope.changeRevision = function() {
+
+            App.getRevisions(0, '', $routeParams.id)
+                .then(function(result) {
+
+                    var $modal = $injector.get('$modal');
+                    var $templateCache = $injector.get('$templateCache');
+
+                    var modalInstance = $modal.open({
+                        template: $templateCache.get('views/cliche/partials/revisions.html'),
+                        controller: ['$scope', '$modalInstance', 'data', function ($scope, $modalInstance, data) {
+
+                            $scope.view = data;
+
+                            $scope.view.versions = _.times($scope.view.revisions.length).reverse();
+
+                            $scope.cancel = function () {
+                                $modalInstance.dismiss('cancel');
+                            };
+
+                            $scope.choose = function(id) {
+                                $modalInstance.close(id);
+                            };
+
+                        }],
+                        windowClass: 'modal-revisions',
+                        resolve: {data: function () {return {revisions: result.list, app: $scope.view.app, current: $scope.view.currentRevision};}}
+                    });
+
+                    modalInstance.result.then(function (revisionId) {
+                        $scope.view.reload = true;
+                        $location.path('/cliche/' + $routeParams.id + '/' + revisionId);
+                    });
+
+                });
+
+        };
+
+        /**
+         * Track route change in order to prevent loss of changes
+         *
+         * @param e
+         * @param nextLocation
+         */
+        var onRouteChange = function(e, nextLocation) {
+
+            if($scope.view.reload) { return; }
+
+            var $modal = $injector.get('$modal');
+            var $templateCache = $injector.get('$templateCache');
+
+            var modalInstance = $modal.open({
+                template: $templateCache.get('views/partials/confirm-leave.html'),
+                controller: 'ModalCtrl',
+                windowClass: 'modal-confirm',
+                resolve: {data: function () {return {};}}
+            });
+
+            modalInstance.result.then(function () {
+
+                onRouteChangeOff();
+
+                $scope.view.reload = true;
+
+                Data.save()
+                    .then(function() {
+                        $location.path(nextLocation.split('#\/')[1]);
+                    });
+            });
+
+            e.preventDefault();
+
+        };
+
+        var onRouteChangeOff = $rootScope.$on('$locationChangeStart', onRouteChange);
+
+
+
 
     }]);

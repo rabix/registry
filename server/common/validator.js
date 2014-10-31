@@ -252,23 +252,25 @@ var validator = function() {
 
         _.each(map, function (attr, key) {
 
-            if (_.isUndefined(prop[key])) {
-                if (attr.required) {
-                    required.push(prefix + ':' + key);
-                }
-            } else {
-                if (!isValidType(prop[key], attr.type)) {
-                    invalid.push(prefix + ':' + key);
-                }
+            if (prop) {
+                if (_.isUndefined(prop[key])) {
+                    if (attr.required) {
+                        required.push(prefix + ':' + key);
+                    }
+                } else {
+                    if (!isValidType(prop[key], attr.type)) {
+                        invalid.push(prefix + ':' + key);
+                    }
 
-                if (attr.type === 'object' && isRecursive) {
+                    if (attr.type === 'object' && isRecursive) {
 
-                    validateInputs(prop[key].properties, propName);
+                        validateInputs(prop[key].properties, propName);
 
-                } else if (!isValidType(prop[key], attr.type)) {
+                    } else if (!isValidType(prop[key], attr.type)) {
 
-                    invalid.push(prefix + ':' + key);
+                        invalid.push(prefix + ':' + key);
 
+                    }
                 }
             }
 

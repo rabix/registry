@@ -8,6 +8,7 @@ angular.module('registryApp')
         $scope.view = {};
         $scope.view.loading = true;
         $scope.view.revision = null;
+        $scope.view.repo = null;
 
         $scope.view.classes = ['page', 'revision'];
         Loading.setClasses($scope.view.classes);
@@ -21,6 +22,7 @@ angular.module('registryApp')
             .then(
                 function(result) {
                     $scope.view.revision = result.data;
+                    $scope.view.repo = result.repo;
                     $scope.view.loading = false;
                 });
 

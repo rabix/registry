@@ -1,3 +1,11 @@
+<div class="row" ng-if="view.currentRevision">
+    <div class="col-md-6">
+        <div class="form-group">
+            <a href class="btn btn-orange" ng-click="changeRevision()"><i class="fa fa-tag"></i> {{ view.currentRevision.name }}</a>
+        </div>
+    </div>
+</div>
+
 <div class="row">
     <div class="col-md-12">
         <div class="form-group form-group-email required" ng-class="{'has-error': (forms.toolForm.documentAuthor.$invalid && forms.toolForm.$dirty)}">
@@ -32,7 +40,7 @@
     <div class="col-md-6">
         <div class="form-group required" ng-class="{'has-error': (forms.toolForm.repoName.$invalid && forms.toolForm.$dirty)}">
             <label for="repoName" class="control-label">Repo Name</label>
-            <input type="text" class="form-control" id="repoName" name="repoName" ng-model="view.toolForm.softwareDescription.repo_name" required>
+            <input type="text" class="form-control" id="repoName" name="repoName" ng-model="view.toolForm.softwareDescription.repo_name" ng-readonly="view.app._id" required>
         </div>
     </div>
 </div>

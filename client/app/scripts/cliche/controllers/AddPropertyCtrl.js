@@ -41,6 +41,12 @@ angular.module('registryApp.cliche')
                 return false;
             }
 
+            if (options.type === 'input') {
+                if ($scope.view.property.type === 'array') {
+                    $scope.view.property.items = {type: 'string'};
+                }
+            }
+
             Data.addProperty(options.type, $scope.view.name, $scope.view.property, options.properties)
                 .then(function() {
                     $modalInstance.close();

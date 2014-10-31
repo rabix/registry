@@ -2,7 +2,10 @@
 
     <div class="heading">
         <a ng-href="#/apps" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
-        <h1>{{ view.app.name }}</h1>
+        <h1>
+            {{ view.app.name }}
+            <a ng-href="#/cliche/{{ view.app._id }}/latest" class="btn btn-primary pull-right"><i class="fa fa-pencil"></i> Edit</a>
+        </h1>
     </div>
     <!-- # .heading -->
 
@@ -73,7 +76,7 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="revision in view.revisions">
-                        <td class="revision"><strong ng-class="{'label label-primary': revision.current}">{{ revision.order }}</strong></td>
+                        <td class="revision"><strong ng-class="{'label label-primary': revision._id === view.app.revision_id}"><i class="fa fa-tag"></i> {{ 'v' + view.versions[$index] }}</strong></td>
                         <td><a ng-href="#/revision/{{ revision._id }}">{{ revision.name }}</a></td>
                         <td>
                             <a ng-if="revision.repo_id && revision.repo_owner && revision.repo_name" ng-href="#/repo/{{ revision.repo_id }}">{{ revision.repo_owner }}/{{ revision.repo_name }}</a>

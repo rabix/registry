@@ -12,6 +12,7 @@ var AppSchema = new Schema({
     repo_name: String,
     repo_owner: String,
     repo_id: String,
+    revision_id: { type: Schema.Types.ObjectId, ref: 'Revision' },
     user_id: { type: Schema.Types.ObjectId, ref: 'User' },
     revisions: [{type : Schema.Types.ObjectId, ref : 'Revision'}]
 });

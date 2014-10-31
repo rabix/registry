@@ -44,6 +44,8 @@ angular.module('registryApp.cliche')
 
                         inputScheme = [];
 
+                        scope.prop.items = scope.prop.items || {type: 'string'};
+
                         switch(scope.prop.items.type) {
                         case 'object':
                             _.each(scope.model, function(value) {

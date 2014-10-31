@@ -13,6 +13,10 @@ angular.module('registryApp.cliche', [])
             .when('/cliche', {
                 templateUrl: 'views/cliche/home.html',
                 controller: 'ClicheCtrl'
+            })
+            .when('/cliche/:id/:revision', {
+                templateUrl: 'views/cliche/home.html',
+                controller: 'ClicheCtrl'
             });
 
         ZeroClipboard.config({swfPath: 'bower_components/zeroclipboard/dist/ZeroClipboard.swf'});

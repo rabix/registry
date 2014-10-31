@@ -8,19 +8,19 @@ angular.module('registryApp')
             template: $templateCache.get('views/partials/error.html'),
             link: function(scope) {
 
-                scope.errorMessages = [];
+                scope.errors = [];
 
                 scope.$on('httpError', function (obj, message) {
-                    if (scope.errorMessages.indexOf(message) === -1) {
-                        scope.errorMessages.push(message);
+                    if (scope.errors.indexOf(message) === -1) {
+                        scope.errors.push(message);
                     }
                 });
 
                 /**
                  * Close the error alert
                  */
-                scope.closeError = function () {
-                    scope.errorMessages = [];
+                scope.closeErrors = function () {
+                    scope.errors = {};
                 };
 
             }

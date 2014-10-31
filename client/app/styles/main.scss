@@ -378,8 +378,9 @@ body {
     &.apps {
       th {
         &:nth-child(1),
-        &:nth-child(2) { width: 20%; }
-        &:nth-child(3) { width: 60%; }
+        &:nth-child(2) { width: 15%; }
+        &:nth-child(3) { width: 50%; }
+        &:nth-child(4) { width: 20%; }
       }
       td {
         p {
@@ -394,9 +395,8 @@ body {
     &.pipelines {
       th {
         &:nth-child(1),
-        &:nth-child(3) { width: 20%; }
         &:nth-child(2) { width: 40%; }
-        &:nth-child(4) { width: 15%; }
+        &:nth-child(4) { width: 20%; }
       }
       td {
         p {

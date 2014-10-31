@@ -7,7 +7,6 @@ var _ = require('lodash');
 
 var App = mongoose.model('App');
 var Revision = mongoose.model('Revision');
-var Repo = mongoose.model('Repo');
 
 var filters = require('../../common/route-filters');
 var validator = require('../../common/validator');
@@ -52,7 +51,18 @@ router.get('/revisions/:id', function (req, res, next) {
     Revision.findById(req.params.id).exec(function(err, revision) {
         if (err) { return next(err); }
 
-        res.json({data: revision});
+        App.findById(revision.app_id, function(err, app) {
+            if (err) { return next(err); }
+
+            var repo = {};
+
+            repo.repo_name = app.repo_name;
+            repo.repo_owner = app.repo_owner;
+            repo.repo_id = app.repo_id;
+
+            res.json({data: revision, repo: repo});
+        });
+
     });
 
 });
@@ -62,8 +72,7 @@ router.post('/revisions', filters.authenticated, function (req, res, next) {
 
     var data = req.body;
 
-//    var check = validator.validateApp(data.tool);
-    var check = true;
+    var check = validator.validate(data.tool);
 
     if (!_.isEmpty(check.invalid) || !_.isEmpty(check.obsolete) || !_.isEmpty(check.required)) {
         res.status(400).json({message: 'There are some errors in your json scheme', json: check});
@@ -74,41 +83,22 @@ router.post('/revisions', filters.authenticated, function (req, res, next) {
 
     var revision = new Revision();
 
-    revision = _.extend(revision, data.tool);
-
     revision.name = desc.name;
     revision.description = desc.description;
     revision.author = data.tool.documentAuthor;
     revision.json = data.tool;
+    revision.app_id = data.app_id;
 
-    revision.repo_name = desc.repo_name || '';
-    revision.repo_owner = desc.repo_owner || '';
+    revision.save(function(err) {
+        if (err) { return next(err); }
 
-    Repo.findOne({'name': desc.repo_name, 'owner': desc.repo_owner}, function (err, repo) {
-
-        if (repo) { revision.repo_id = repo._id; }
-
-        revision.app_id = data.app_id;
-
-        Revision.count(function(err, total) {
+        App.findById(data.app_id, function(err, app) {
             if (err) { return next(err); }
 
-            revision.order = total + 1;
+            app.revisions.push(revision._id);
+            app.save();
 
-            revision.save(function(err) {
-                if (err) { return next(err); }
-
-                App.findById(data.app_id, function(err, app) {
-                    if (err) { return next(err); }
-
-                    app.revisions.push(revision._id);
-                    app.save();
-
-                    res.json(revision);
-                });
-
-            });
-
+            res.json({revision: revision, message: 'Revision has been successfully created'});
         });
 
     });

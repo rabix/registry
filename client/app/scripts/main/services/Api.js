@@ -6,7 +6,7 @@ angular.module('registryApp')
         var self = {};
         var apiUrl = '/api';
 
-        self.apps = $resource(apiUrl + '/apps/:id', {id: '@id'}, {
+        self.apps = $resource(apiUrl + '/apps/:id/:revision', {id: '@id', revision: '@revision'}, {
             add: {method: 'POST'},
             update: {method: 'PUT'}
         });

@@ -33,20 +33,6 @@ angular.module('registryApp.cliche')
         self.job = null;
 
         /**
-         * Current app owner
-         *
-         * @type {string}
-         */
-        self.owner = null;
-
-        /**
-         * Current app id
-         *
-         * @type {string}
-         */
-        self.appId = null;
-
-        /**
          * Command generated from input and adapter values
          * @type {string}
          */
@@ -113,48 +99,6 @@ angular.module('registryApp.cliche')
         };
 
         /**
-         * Fetch owner from storage
-         *
-         * @returns {*}
-         */
-        self.fetchOwner = function() {
-
-            var deferred = $q.defer();
-
-            $localForage.getItem('owner')
-                .then(function(owner) {
-
-                    self.owner = owner;
-                    deferred.resolve(owner);
-
-                });
-
-            return deferred.promise;
-
-        };
-
-        /**
-         * Fetch app id from storage
-         *
-         * @returns {*}
-         */
-        self.fetchAppId = function() {
-
-            var deferred = $q.defer();
-
-            $localForage.getItem('app_id')
-                .then(function(appId) {
-
-                    self.appId = appId;
-                    deferred.resolve(appId);
-
-                });
-
-            return deferred.promise;
-
-        };
-
-        /**
          * Set tool object
          *
          * @param {Object} tool
@@ -174,35 +118,11 @@ angular.module('registryApp.cliche')
          */
         self.setJob = function(job) {
 
+            job = job || $injector.get('rawJob');
+
             self.job = job;
 
             $localForage.setItem('job', job);
-
-        };
-
-        /**
-         * Set owner
-         *
-         * @param {string} owner
-         */
-        self.setOwner = function(owner) {
-
-            self.owner = owner;
-
-            $localForage.setItem('owner', owner);
-
-        };
-
-        /**
-         * Set app id
-         *
-         * @param {string} appId
-         */
-        self.setAppId = function(appId) {
-
-            self.appId = appId;
-
-            $localForage.setItem('app_id', appId);
 
         };
 
@@ -707,8 +627,6 @@ angular.module('registryApp.cliche')
                             $localForage.setItem('version', self.version),
                             $localForage.setItem('tool', {}),
                             $localForage.setItem('job', {}),
-                            $localForage.removeItem('owner'),
-                            $localForage.removeItem('app_id')
                         ]).then(function() {
                             deferred.resolve();
                         });
@@ -731,15 +649,11 @@ angular.module('registryApp.cliche')
 
             self.tool = tool;
             self.job = job;
-            self.owner = null;
-            self.appId = null;
             self.command = '';
 
             return $q.all([
                     $localForage.setItem('tool', tool),
                     $localForage.setItem('job', job),
-                    $localForage.removeItem('owner'),
-                    $localForage.removeItem('app_id')
                 ]).then(function() {
                     return {
                         tool: tool,

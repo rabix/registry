@@ -29,7 +29,7 @@ angular.module('registryApp')
         $scope.view.total = 0;
 
         $q.all([
-            App.getApp($routeParams.id),
+            App.getApp($routeParams.id, 'public'),
             App.getRevisions(0, '', $routeParams.id)
         ]).then(
             function(result) {
@@ -51,6 +51,7 @@ angular.module('registryApp')
             $scope.view.total = Math.ceil(result.total / $scope.view.perPage);
 
             $scope.view.revisions = result.list;
+            $scope.view.versions = _.times($scope.view.revisions.length).reverse();
 
             $scope.view.loading = false;
         };

@@ -43,7 +43,7 @@ router.get('/apps', function (req, res, next) {
     App.count(where).exec(function(err, total) {
         if (err) { return next(err); }
 
-        App.find(where).populate('revisions', 'name order json').skip(skip).limit(limit).sort({_id: 'desc'}).exec(function(err, apps) {
+        App.find(where).populate('revisions', 'name json').skip(skip).limit(limit).sort({_id: 'desc'}).exec(function(err, apps) {
             if (err) { return next(err); }
 
             res.json({list: apps, total: total});
@@ -91,30 +91,49 @@ router.get('/repositories/:type', function (req, res, next) {
 
 });
 
-router.get('/apps/:id', function (req, res, next) {
+router.get('/apps/:id/:revision', function (req, res, next) {
 
     App.findById(req.params.id).populate('user_id').exec(function(err, app) {
         if (err) { return next(err); }
 
-        res.json({data: app});
+        if (req.params.revision === 'public') {
+
+            res.json({data: app});
+
+        } else {
+
+            var params = (req.params.revision === 'latest') ? {} : {_id: req.params.revision};
+
+            Revision.findOne(params).sort({_id: 'desc'}).exec(function(err, revision) {
+                if (err) { return next(err); }
+
+                app.name = revision.name;
+                app.description = revision.description;
+                app.author = revision.author;
+                app.json = revision.json;
+
+                res.json({data: app, revision: {id: revision._id, name: revision.name}});
+            });
+        }
+
     });
 
 });
 
 
-router.put('/apps', filters.authenticated, function (req, res, next) {
+router.put('/apps/:id/:revision', filters.authenticated, function (req, res, next) {
 
     var data = req.body;
+    var app_id = req.params.id;
 
-//    var check = validator.validateApp(data.tool);
-    var check = true;
+    var check = validator.validate(data.tool);
 
     if (!_.isEmpty(check.invalid) || !_.isEmpty(check.obsolete) || !_.isEmpty(check.required)) {
         res.status(400).json({message: 'There are some errors in your json scheme', json: check});
         return false;
     }
 
-    App.findById(data.app_id, function(err, app) {
+    App.findById(app_id, function(err, app) {
         if (err) { return next(err); }
 
         var desc = data.tool.softwareDescription;
@@ -123,75 +142,49 @@ router.put('/apps', filters.authenticated, function (req, res, next) {
         app.description = desc.description;
         app.author = data.tool.documentAuthor;
         app.json = data.tool;
-        app.links = {
-            json: ''
-        };
-        app.revisions = [];
+        app.links = {json: ''};
 
-        app.repo_name = desc.repo_name || '';
-        app.repo_owner = desc.repo_owner || '';
+        var folder = app.repo_owner + '-' + app.repo_name;
 
-        Repo.findOne({'name': desc.repo_name, 'owner': desc.repo_owner}, function (err, repo) {
+        Amazon.createFolder(folder)
+            .then(function () {
 
-            if (repo) { app.repo_id = repo._id; }
+                Amazon.uploadJSON(app.name + '.json', app.json, folder)
+                    .then(function () {
 
-            var folder = app.repo_owner + '-' + app.repo_name;
+                        Amazon.getFileUrl(app.name + '.json', folder, function (url) {
 
-            Amazon.createFolder(folder).then(
-                function () {
-                    Amazon.uploadJSON(app.name+'.json', app.json, folder).then(
-                        function () {
+                            app.links.json = url;
 
-                            Amazon.getFileUrl(app.name+'.json', folder, function (url) {
+                            Revision.findOne({_id: req.params.revision, app_id: app_id}, function(err, revision) {
+                                if (err) { return next(err); }
 
-                                app.links.json = url;
+                                if (revision) {
 
-                                app.save(function(err) {
-                                    if (err) { return next(err); }
+                                    revision.name = app.name;
+                                    revision.description = app.description;
+                                    revision.author = app.author;
+                                    revision.json = app.json;
 
-                                    Revision.findOne({app_id: data.app_id, current: true}).exec(function(err, oldCurrentRevision) {
+                                    revision.save();
 
-                                        if (err) { return next(err); }
+                                    app.revision_id = revision._id;
+                                }
 
-                                        if (oldCurrentRevision) {
-                                            oldCurrentRevision.current = false;
-                                            oldCurrentRevision.save(function () {
+                                app.save();
 
-                                                Revision.findOne({app_id: data.app_id}).sort({_id: 'desc'}).exec(function(err, newCurrentRevision) {
-                                                    if (err) { return next(err); }
+                                res.json({app: app, message: 'App has been successfully updated'});
 
-                                                    newCurrentRevision.current = true;
-                                                    newCurrentRevision.save();
-
-                                                    res.json(app);
-                                                });
-
-                                            });
-                                        } else {
-                                            Revision.findOne({app_id: data.app_id}).sort({_id: 'desc'}).exec(function(err, newCurrentRevision) {
-                                                if (err) { return next(err); }
-
-                                                if (newCurrentRevision) {
-                                                    newCurrentRevision.current = true;
-                                                    newCurrentRevision.save();
-                                                }
-
-                                                res.json(app);
-                                            });
-                                        }
-                                    });
-
-                                });
                             });
 
-                        }, function (error) {
-                            res.status(500).json(error);
                         });
-                }, function (error) {
-                    res.status(500).json(error);
-                });
 
-        });
+                    }, function (error) {
+                        res.status(500).json(error);
+                    });
+            }, function (error) {
+                res.status(500).json(error);
+            });
 
     });
 
@@ -202,27 +195,22 @@ router.post('/apps', filters.authenticated, function (req, res, next) {
 
     var data = req.body;
 
-//    var check = validator.validateApp(data);
-    var check = true;
+    var check = validator.validate(data.tool);
 
     if (!_.isEmpty(check.invalid) || !_.isEmpty(check.obsolete) || !_.isEmpty(check.required)) {
         res.status(400).json({message: 'There are some errors in your json scheme', json: check});
         return false;
     }
 
-    var desc = data.softwareDescription;
+    var desc = data.tool.softwareDescription;
 
     var app = new App();
 
-    app = _.extend(app, data);
-
     app.name = desc.name;
     app.description = desc.description;
-    app.author = data.documentAuthor;
-    app.json = data;
-    app.links = {
-        json: ''
-    };
+    app.author = data.tool.documentAuthor;
+    app.json = data.tool;
+    app.links = {json: ''};
 
     app.repo_name = desc.repo_name || '';
     app.repo_owner = desc.repo_owner || '';
@@ -233,18 +221,35 @@ router.post('/apps', filters.authenticated, function (req, res, next) {
 
         var folder = 'apps/' + app.repo_owner + '-' + app.repo_name;
 
-        Amazon.createFolder(folder).then(
-            function () {
-                Amazon.uploadJSON(app.name+'.json', app.json, folder).then(
-                    function () {
+        Amazon.createFolder(folder)
+            .then(function () {
+                Amazon.uploadJSON(app.name + '.json', app.json, folder)
+                    .then(function () {
 
-                        Amazon.getFileUrl(app.name+'.json', folder, function (url) {
+                        Amazon.getFileUrl(app.name + '.json', folder, function (url) {
+
                             app.links.json = url;
-
                             app.user_id = req.user.id;
-                            app.save();
 
-                            res.json(app);
+                            var revision = new Revision();
+
+                            revision.name = app.name;
+                            revision.description = app.description;
+                            revision.author = app.author;
+                            revision.json = app.json;
+                            revision.app_id = app._id;
+
+                            revision.save(function(err) {
+                                if (err) { return next(err); }
+
+                                app.revision_id = revision._id;
+                                app.revisions.push(revision._id);
+
+                                app.save();
+
+                                res.json({app: app, message: 'App has been successfully created'});
+                            });
+
                         });
 
                     }, function (error) {
@@ -273,36 +278,6 @@ router.post('/validate', filters.authenticated, function (req, res, next) {
 });
 
 router.delete('/apps', filters.authenticated, function (req, res, next) {
-
+    // TODO delete app
 });
 
-router.get('/my-apps', filters.authenticated, function (req, res, next) {
-
-    App.find({
-        author: req.user.email
-    }, function (err, data) {
-
-        if (err) {
-            console.log('Error fetching apps for user: ', req.user.email , err);
-            data = null
-        }
-
-        var result = {
-            apps: data,
-            revisions: null
-        };
-
-        Revision.find({        
-            author: req.user.email
-        }, function (err, data) {
-            if (err) {
-                console.log('Error fetching revisions for user: ', req.user.email , err);
-                data = null
-            }
-            result.revisions = data;
-            console.log(result);
-            res.json(result)
-        });
-
-    });
-});

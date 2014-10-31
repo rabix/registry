@@ -41,7 +41,7 @@
 
                     <div class="tab" ng-switch-when="tool">
                         <zclip data="tool"></zclip>
-                        <app-actions ng-if="!view.loading && view.user" form="forms.toolForm" user="view.user" handle-import="importApp(app)" handle-import-json="importAppAsJson(json)" handle-save="setOwnerAndAppId(user_id, app_id)"></app-actions>
+                        <app-actions ng-if="!view.loading && view.user" app="view.app" current-revision="view.currentRevision" form="forms.toolForm" user="view.user" handle-import="import(json)" handle-redirect="redirect(url)"></app-actions>
                         <pre class="json-trace" pretty-json="view.toolForm"></pre>
                     </div>
 

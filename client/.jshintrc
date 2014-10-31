@@ -21,6 +21,7 @@
     "globals": {
         "angular": false,
         "_": false,
-        "Raphael": false
+        "Raphael": false,
+        "ZeroClipboard": false
     }
 }

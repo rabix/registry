@@ -1,15 +1,22 @@
 <div class="app-actions-wrap">
 
     <div class="app-action-btns">
-        <button ng-if="view.canSave" ng-disabled="view.saving" class="app-save-btn btn btn-default" ng-click="saveApp()">
+
+        <button ng-if="user.id === app.user_id._id" ng-disabled="view.saving" class="app-save-btn btn btn-default" ng-click="save('save')">
             <i class="fa fa-check"></i> Save
         </button>
-        <button ng-disabled="view.saving" class="app-publish-btn btn btn-primary" ng-click="publishApp()">
+
+        <button ng-if="user.id === app.user_id._id" ng-disabled="view.saving" class="app-publish-btn btn btn-primary" ng-click="save('publish')">
             <i class="fa fa-plus"></i> Publish
         </button>
-        <label><i class="fa fa-cloud-download"></i> Import</label>
-        <button class="app-publish-btn btn btn-default btn-sm" ng-click="getAppsList()">App</button>
-        <button class="app-publish-btn btn btn-default btn-sm" ng-click="loadJsonEditor()">JSON</button>
+
+        <button ng-if="app | isEmpty" ng-disabled="view.saving" class="app-create-btn btn btn-primary" ng-click="save('create')">
+            <i class="fa fa-plus"></i> Create
+        </button>
+
+        <button class="app-publish-btn btn btn-default" ng-click="loadJsonEditor()">
+            <i class="fa fa-cloud-download"></i> Import
+        </button>
     </div>
 
     <p ng-if="view.error">{{ view.error }}</p>
