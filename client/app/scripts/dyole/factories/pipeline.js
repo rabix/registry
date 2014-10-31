@@ -375,7 +375,7 @@ angular.module('registryApp.dyole')
 
                 _createSystemNode: function (isInput, x, y, terminal) {
                     var model = angular.copy(systemNodeModel),
-                        terminalId, count;
+                        terminalId, count, terId, terName;
 
                     if (isInput) {
 
@@ -383,34 +383,38 @@ angular.module('registryApp.dyole')
                             return n.model.softwareDescription.name.indexOf('Input') !== -1 && n.model.softwareDescription.repo_name === 'system';
                         }).length;
 
-                        model.softwareDescription.name = 'Input' + '_' + (count + 1);
-                        model.outputs.properties = {
-                            output: {
-                                'name': 'Output',
-                                'id': 'output',
-                                'required': false,
-                                'type': 'file'
-                            }
+                        terId = 'input' + '_' + (count + 1);
+                        terName = 'Input' + '_' + (count + 1);
+
+                        model.softwareDescription.name = terName;
+                        model.outputs.properties = {};
+                        model.outputs.properties[terId] = {
+                            'name': terName,
+                            'id': terId,
+                            'required': false,
+                            'type': 'file'
                         };
 
-                        terminalId = model.outputs.properties.output.id;
+                        terminalId = terId;
                     } else {
 
                         count = _.filter(this.nodes, function (n) {
                             return n.model.softwareDescription.name.indexOf('Output') !== -1 && n.model.softwareDescription.repo_name === 'system';
                         }).length;
 
-                        model.softwareDescription.name = 'Output' + '_' + (count + 1);
-                        model.inputs.properties = {
-                            input: {
-                                'name': 'Input',
-                                'id': 'input',
-                                'required': false,
-                                'type': 'file'
-                            }
+                        terId = 'output' + '_' + (count + 1);
+                        terName = 'Output' + '_' + (count + 1);
+
+                        model.softwareDescription.name = terName;
+                        model.inputs.properties = {};
+                        model.inputs.properties[terId] = {
+                            'name': terName,
+                            'id': terId,
+                            'required': false,
+                            'type': 'file'
                         };
 
-                        terminalId = model.inputs.properties.input.id;
+                        terminalId = terId;
 
                     }
 
@@ -653,14 +657,11 @@ angular.module('registryApp.dyole')
                     if (!this.mouseoverTerminal) {
 
                         if (coords.x1 <= areaWidth && this.dropZoneRect.isInput) {
-                            this._createSystemNode(this.dropZoneRect.isInput, coords.x1,
-                                coords.y1, terminal);
+                            this._createSystemNode(this.dropZoneRect.isInput, coords.x1, coords.y1, terminal);
                         }
 
-                        if (coords.x2 >= (this.canvas.width - areaWidth) && !this.dropZoneRect
-                            .isInput) {
-                            this._createSystemNode(this.dropZoneRect.isInput, coords.x2,
-                                coords.y2, terminal);
+                        if (coords.x2 >= (this.canvas.width - areaWidth) && !this.dropZoneRect.isInput) {
+                            this._createSystemNode(this.dropZoneRect.isInput, coords.x2, coords.y2, terminal);
                         }
 
                     }
@@ -699,10 +700,8 @@ angular.module('registryApp.dyole')
                         element: _self.$parent
                     });
 
-                    _self.nodes[connection.start_node].addConnection(_self.connections[
-                        connection.id]);
-                    _self.nodes[connection.end_node].addConnection(_self.connections[
-                        connection.id]);
+                    _self.nodes[connection.start_node].addConnection(_self.connections[connection.id]);
+                    _self.nodes[connection.end_node].addConnection(_self.connections[connection.id]);
 
 
                     this.Event.trigger('pipeline:change');
@@ -760,10 +759,8 @@ angular.module('registryApp.dyole')
 
                     rawCoords = rawCoords || false;
 
-                    var x = clientX - canvas.left - this.pipelineWrap.getTranslation()
-                            .x,
-                        y = clientY - canvas.top - this.pipelineWrap.getTranslation()
-                            .y;
+                    var x = clientX - canvas.left - this.pipelineWrap.getTranslation().x,
+                        y = clientY - canvas.top - this.pipelineWrap.getTranslation().y;
 
                     if (rawCoords) {
                         x = clientX - this.pipelineWrap.getTranslation().x;

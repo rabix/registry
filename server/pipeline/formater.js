@@ -6,8 +6,9 @@ var formater = {
 
     packedSchema: null,
 
-    toRabixSchema: function (json) {
+    toRabixSchema: function (j) {
 
+        var json = _.clone(j);
         // reset schema
         this.packedSchema = {};
 
@@ -38,7 +39,8 @@ var formater = {
 
     _transformRelationsToSteps: function (relations, nodes, schemas) {
 
-        var _self = this, from;
+        var _self = this, from, to, pseudoStep = null;
+
 
         this.packedSchema.steps = [];
 
@@ -47,25 +49,70 @@ var formater = {
 
             node_schema = schemas[rel.end_node];
 
-            step = {
-                _id: rel.end_node,
-                app: node_schema,
-                inputs: {}
-            };
+            if (node_schema.softwareDescription && node_schema.softwareDescription.repo_name === 'system') {
 
-            from = rel.start_node + '.' + rel.output_name;
+                var s = _.filter(_self.packedSchema.steps, function (st) {
+                    return st._id === rel.start_node;
+                });
 
-            if (schemas[rel.start_node].softwareDescription && schemas[rel.start_node].softwareDescription.repo_name === 'system') {
-                from = rel.output_name;
+                pseudoStep = s.length === 0 ? {
+                    _id: rel.start_node,
+                    app: schemas[rel.start_node],
+                    inputs: {},
+                    outputs: {}
+                } : s[0];
+
+                if (node_schema.softwareDescription && node_schema.softwareDescription.repo_name !== 'system') {
+                    to = rel.start_node + '.' + rel.input_name;
+                } else {
+                    to = rel.input_name;
+                }
+
+                pseudoStep.outputs[rel.output_name] = {
+                    $to: to
+                };
+
+            } else {
+
+                var exists = _.filter(_self.packedSchema.steps, function (s) {
+                    return s._id === rel.end_node;
+                });
+
+                if (exists.length !== 0) {
+                    step = exists[0];
+                } else {
+                    step = {
+                        _id: rel.end_node,
+                        app: node_schema,
+                        inputs: {},
+                        outputs: {}
+                    };
+                }
+
+                from = rel.start_node + '.' + rel.output_name;
+
+                if (schemas[rel.start_node].softwareDescription && schemas[rel.start_node].softwareDescription.repo_name === 'system') {
+                    from = rel.output_name;
+                }
+
+                step.inputs[rel.input_name] = {
+                    $from: from
+                };
+
+
             }
 
-            step.inputs[rel.input_name] = {
-                $from: from
-            };
+            if (step) {
+                step.app = _.clone(node_schema);
+            } else {
+                pseudoStep.app = _.clone(node_schema);
+            }
 
-            step.app = _.clone(node_schema);
-
-            _self.packedSchema.steps.push(step);
+            if ( exists && exists.length === 0) {
+                _self.packedSchema.steps.push(step);
+            } else if (pseudoStep) {
+                _self.packedSchema.steps.push(pseudoStep);
+            }
         });
 
     },

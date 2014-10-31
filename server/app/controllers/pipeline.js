@@ -69,8 +69,7 @@ module.exports = function (app) {
 
 router.post('/pipeline/format', function (req, res, next) {
 
-        var p = formater.toRabixSchema(req.body.pipeline.json);
-
+        var p = formater.toRabixSchema(req.body.pipeline.json || req.body.pipeline.json);
         res.json({json: p});
 
 });
@@ -78,7 +77,7 @@ router.post('/pipeline/format', function (req, res, next) {
 router.post('/pipeline/format/upload', function (req, res, next) {
     var p = req.body.pipeline;
     console.log(p);
-    var folder, pipeline = formater.toRabixSchema(p);
+    var folder, pipeline = p.json;
 
     if (req.user) {
         folder = 'users/' + req.user.login + '/pipelines/' + p.name;

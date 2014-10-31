@@ -129,7 +129,9 @@
 
                     <div class="tab" ng-switch-when="json">
                         <pre class="json-trace" pretty-json="view.pipelineJSON"></pre>
-                        <button ng-disabled="view.saving" class="job-save-btn btn btn-primary" ng-click="getUrl()"><i class="fa fa-external-link-square"></i> Get URL</button>
+                        <div class="pipeline-get-url">
+                            <button ng-disabled="view.saving" class="job-save-btn btn btn-primary" ng-click="getUrl()"><i class="fa fa-external-link-square"></i> Get URL</button>
+                        </div>
                     </div>
 
                 </div>
