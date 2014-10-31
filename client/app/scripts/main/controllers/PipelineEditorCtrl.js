@@ -349,8 +349,35 @@ angular.module('registryApp')
         var formatPipeline = function () {
             Pipeline.formatPipeline($scope.view.pipeline).then(function (pipeline) {
                 $scope.view.pipelineJSON = pipeline;
-                console.log(pipeline);
             });
+        };
+        
+        $scope.getUrl = function () {
+            $scope.view.saving = true;
+
+            Pipeline.getPipelineURL($scope.view.pipeline).then(function (url) {
+
+                $modal.open({
+                    template: $templateCache.get('views/cliche/partials/job-url-response.html'),
+                    controller: ['$scope', '$modalInstance', 'data', function($scope, $modalInstance, data) {
+
+                        $scope.view = {};
+                        $scope.view.trace = data.trace;
+
+                        /**
+                         * Close the modal window
+                         */
+                        $scope.ok = function () {
+                            $modalInstance.close();
+                        };
+
+                    }],
+                    resolve: { data: function () { return { trace: url }; }}
+                });
+
+                $scope.view.saving = false;
+
+            })  
         };
 
     }]);

@@ -7,6 +7,7 @@ var _ = require('lodash');
 var fs = require('fs');
 
 var Pipeline = mongoose.model('Pipeline');
+var PipelineUrl = mongoose.model('PipelineUrl');
 
 var filters = require('../../common/route-filters');
 var formater = require('../../pipeline/formater');
@@ -71,6 +72,53 @@ router.post('/pipeline/format', function (req, res, next) {
         var p = formater.toRabixSchema(req.body.pipeline.json);
 
         res.json({json: p});
+
+});
+
+router.post('/pipeline/format/upload', function (req, res, next) {
+    var p = req.body.pipeline;
+    console.log(p);
+    var folder, pipeline = formater.toRabixSchema(p);
+
+    if (req.user) {
+        folder = 'users/' + req.user.login + '/pipelines/' + p.name;
+    } else {
+        folder = 'others/pipelines';
+    }
+
+    var timeStamp = Date.now();
+
+    Amazon.createFolder(folder).then(
+        function () {
+            Amazon.uploadJSON(p.name + timeStamp + '.json', pipeline, folder).then(
+                function () {
+
+                    Amazon.getFileUrl(p.name + timeStamp + '.json', folder, function (u) {
+
+                        if (req.user && req.user.id) {
+
+                            var url = new PipelineUrl();
+
+                            url.url = u;
+
+                            url.pipeline_id = p._id;
+
+                            url.user_id = req.user.id;
+
+                            url.save();
+
+                        }
+
+                        res.json({url: u});
+
+                    });
+
+                }, function (error) {
+                    res.status(500).json(error);
+                });
+        }, function (error) {
+            res.status(500).json(error);
+        });
 
 });
 

@@ -102,7 +102,12 @@ angular.module('registryApp')
         };
 
         self.formatPipeline = function (pipeline) {
-            return Api.formatPipeline.format({pipeline: pipeline}).$promise;
+            console.log(pipeline)
+            return Api.formatPipeline.format({action: ''}, {pipeline: pipeline}).$promise;
+        };
+
+        self.getPipelineURL = function (pipeline) {
+            return Api.formatPipeline.format({action: 'upload'}, {pipeline: pipeline}).$promise;
         };
 
         return self;

@@ -27,7 +27,7 @@ angular.module('registryApp')
             'delete': {method: 'DELETE'}
         });
 
-        self.formatPipeline = $resource(apiUrl + '/pipeline/format', {pipeline: '@pipeline'}, {
+        self.formatPipeline = $resource(apiUrl + '/pipeline/format/:action', {action: '@action'}, {
             format: {method: 'POST'}
         });
 
