@@ -102,7 +102,6 @@ angular.module('registryApp')
         };
 
         self.formatPipeline = function (pipeline) {
-            console.log(pipeline)
             return Api.formatPipeline.format({action: ''}, {pipeline: pipeline}).$promise;
         };
 

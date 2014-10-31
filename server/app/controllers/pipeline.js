@@ -211,16 +211,23 @@ router.put('/pipeline/:id', function (req, res, next) {
 
 });
 
-router.post('/pipeline/fork', function (req, res, next) {
+router.post('/pipeline/fork', filters.authenticated, function (req, res, next) {
 
     var pipeline = req.body.pipeline;
-    delete pipeline._id;
 
     var p = new Pipeline();
 
-    p = _.extend(p, pipeline);
-
+    p.json = pipeline.json;
     p.user_id = req.user.id;
+    p.author = pipeline.author;
+
+    //TODO: FIX THIS, repo name should be taken from user that is forking
+    p.repo_name = pipeline.repo_name;
+    p.repo_id = pipeline.repo_id;
+
+    p.description = pipeline.description;
+    p.name = pipeline.name;
+    p.repo_owner = req.user.login;
 
     p.save();
 

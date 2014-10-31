@@ -392,11 +392,8 @@ angular.module('registryApp')
 
             modal.result.then(function () {
                 console.log('fork');
-                Pipeline.fork($scope.view.pipeline).then(function (pipeline) {
-                    console.log('forked !!');
-
-                    $location.path('/pipeline/' + pipeline._id + '/edit');
-                });
+                $scope.view.reload = true;
+                $scope.$broadcast('pipeline:fork', true);
             }, function () {
                 console.log('dont fork');
             });
