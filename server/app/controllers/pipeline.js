@@ -66,26 +66,12 @@ module.exports = function (app) {
     app.use('/api', router);
 };
 
-router.get('/pipeline/format', function (req, res, next) {
+router.post('/pipeline/format', function (req, res, next) {
 
-    Pipeline.findById('544e313368391d67121a4a39').exec(function(err, pipeline) {
-        if (err) { return next(err); }
+        var p = formater.toRabixSchema(req.body.pipeline.json);
 
-        var p = formater.toRabixSchema(pipeline.json);
-//        delete pipeline.json.relations;
-//        pipeline.json.steps = p.steps;
+        res.json({json: p});
 
-//        p = formater.toPipelineSchema(p);
-//        delete pipeline.json.steps;
-//        pipeline.json.relations = p.relations;
-
-        res.json({data: p});
-    });
-
-//    var r = formater.toRabixSchema(json);
-
-//    var t = formater.toPipelineSchema(r);
-//    res.json(t);
 });
 
 router.get('/pipeline', function (req, res, next) {

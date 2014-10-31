@@ -101,6 +101,10 @@ angular.module('registryApp')
 
         };
 
+        self.formatPipeline = function (pipeline) {
+            return Api.formatPipeline.format({pipeline: pipeline}).$promise;
+        };
+
         return self;
 
     }]);

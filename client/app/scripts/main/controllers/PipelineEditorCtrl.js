@@ -28,6 +28,12 @@ angular.module('registryApp')
             other: false
         };
 
+        /**
+         * Place holder for formated pipeline json
+         * @type {{Object}}
+         */
+        $scope.view.pipelineJSON = {};
+
         /* visibility flags for repo groups that hold apps */
         $scope.view.repoGroups = {};
 
@@ -128,6 +134,8 @@ angular.module('registryApp')
 
             if (tab === 'params') {
                 watchParams();
+            } else if (tab === 'json') {
+                formatPipeline();
             } else {
                 unWatchParams();
             }
@@ -335,7 +343,14 @@ angular.module('registryApp')
         $scope.$on('$destroy', function () {
             onNodeSelectOff();
             onNodeDeselectOff();
+            onRouteChangeOff();
         });
 
+        var formatPipeline = function () {
+            Pipeline.formatPipeline($scope.view.pipeline).then(function (pipeline) {
+                $scope.view.pipelineJSON = pipeline;
+                console.log(pipeline);
+            });
+        };
 
     }]);

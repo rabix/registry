@@ -14,6 +14,9 @@ var formater = {
         this._transformRelationsToSteps(json.relations, json.nodes, json.schemas);
 
         delete json.relations;
+        delete json.schemas;
+        delete json.nodes;
+
         json.steps = this.packedSchema.steps;
 
         return json;
@@ -35,7 +38,7 @@ var formater = {
 
     _transformRelationsToSteps: function (relations, nodes, schemas) {
 
-        var _self = this;
+        var _self = this, from;
 
         this.packedSchema.steps = [];
 
@@ -50,17 +53,17 @@ var formater = {
                 inputs: {}
             };
 
-            var from, out_name = false;
-
             from = rel.start_node + '.' + rel.output_name;
 
-//            if (out_name) {
-//                from = from + '.' + out_name;
-//            }
+            if (schemas[rel.start_node].softwareDescription && schemas[rel.start_node].softwareDescription.repo_name === 'system') {
+                from = rel.output_name;
+            }
 
             step.inputs[rel.input_name] = {
                 $from: from
             };
+
+            step.app = _.clone(node_schema);
 
             _self.packedSchema.steps.push(step);
         });
