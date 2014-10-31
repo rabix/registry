@@ -57,8 +57,6 @@ angular.module('registryApp.dyole')
             initHandlers: function () {
                 var _self = this;
 
-                console.log('init handlers for terminal', this.model.id, this.parent.model.id);
-
                 this.mousedown = false;
 
                 if (this.Pipeline.editMode) {

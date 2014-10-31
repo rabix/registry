@@ -7,6 +7,7 @@ var _ = require('lodash');
 var fs = require('fs');
 
 var Pipeline = mongoose.model('Pipeline');
+var PipelineUrl = mongoose.model('PipelineUrl');
 
 var filters = require('../../common/route-filters');
 var formater = require('../../pipeline/formater');
@@ -66,26 +67,58 @@ module.exports = function (app) {
     app.use('/api', router);
 };
 
-router.get('/pipeline/format', function (req, res, next) {
+router.post('/pipeline/format', function (req, res, next) {
 
-    Pipeline.findById('544e313368391d67121a4a39').exec(function(err, pipeline) {
-        if (err) { return next(err); }
+        var p = formater.toRabixSchema(req.body.pipeline.json || req.body.pipeline.json);
+        res.json({json: p});
 
-        var p = formater.toRabixSchema(pipeline.json);
-//        delete pipeline.json.relations;
-//        pipeline.json.steps = p.steps;
+});
 
-//        p = formater.toPipelineSchema(p);
-//        delete pipeline.json.steps;
-//        pipeline.json.relations = p.relations;
+router.post('/pipeline/format/upload', function (req, res, next) {
+    var p = req.body.pipeline;
+    console.log(p);
+    var folder, pipeline = p.json;
 
-        res.json({data: p});
-    });
+    if (req.user) {
+        folder = 'users/' + req.user.login + '/pipelines/' + p.name;
+    } else {
+        folder = 'others/pipelines';
+    }
 
-//    var r = formater.toRabixSchema(json);
+    var timeStamp = Date.now();
 
-//    var t = formater.toPipelineSchema(r);
-//    res.json(t);
+    Amazon.createFolder(folder).then(
+        function () {
+            Amazon.uploadJSON(p.name + timeStamp + '.json', pipeline, folder).then(
+                function () {
+
+                    Amazon.getFileUrl(p.name + timeStamp + '.json', folder, function (u) {
+
+                        if (req.user && req.user.id) {
+
+                            var url = new PipelineUrl();
+
+                            url.url = u;
+
+                            url.pipeline_id = p._id;
+
+                            url.user_id = req.user.id;
+
+                            url.save();
+
+                        }
+
+                        res.json({url: u});
+
+                    });
+
+                }, function (error) {
+                    res.status(500).json(error);
+                });
+        }, function (error) {
+            res.status(500).json(error);
+        });
+
 });
 
 router.get('/pipeline', function (req, res, next) {
@@ -179,23 +212,23 @@ router.put('/pipeline/:id', function (req, res, next) {
 });
 
 router.post('/pipeline/fork', function (req, res, next) {
-    Pipeline.findOne({_id: req.body.id}, function (err, pipeline) {
-        if (err) { return next(err); }
 
-        var p = new Pipeline();
+    var pipeline = req.body.pipeline;
+    delete pipeline._id;
 
-        p = _.extend(p, pipeline);
+    var p = new Pipeline();
 
-        p.user_id = req.user.id;
+    p = _.extend(p, pipeline);
 
-        p.save();
+    p.user_id = req.user.id;
 
-        res.json({
-            id: p._id,
-            message: 'Pipeline successfully updated'
-        });
+    p.save();
 
+    res.json({
+        _id: p._id,
+        message: 'Pipeline successfully updated'
     });
+
 });
 
 

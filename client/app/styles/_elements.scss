@@ -503,7 +503,6 @@ legend {
 
 }
 
-
 .changes-mark {
   font-size: 13px;
   color: #aa0000;
@@ -512,4 +511,10 @@ legend {
   .tooltip {
     font-weight: normal;
   }
+}
+
+.pipeline-get-url {
+  position: absolute;
+  bottom: 5px;
+  right: 15px;
 }

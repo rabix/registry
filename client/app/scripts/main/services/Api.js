@@ -27,6 +27,14 @@ angular.module('registryApp')
             'delete': {method: 'DELETE'}
         });
 
+        self.formatPipeline = $resource(apiUrl + '/pipeline/format/:action', {action: '@action'}, {
+            format: {method: 'POST'}
+        });
+
+        self.forkPipeline = $resource(apiUrl + '/pipeline/fork', {}, {
+            fork: {method: 'POST'}
+        });
+
         self.groupedApps = $resource(apiUrl + '/repositories/:type', {type: '@type'});
 
         self.revisions = $resource(apiUrl + '/revisions/:id', {id: '@id'}, {

@@ -546,17 +546,15 @@ angular.module('registryApp.dyole')
                 var _self = this,
                     bbox,
                     nodeRadius = this.constraints.radius,
-                    buttonDistance = typeof this.buttons.distance !== 'undefined' ?
-                        -this.buttons.distance - nodeRadius - this.buttons.radius : -
-                        nodeRadius * 1.5;
+                    buttonDistance = typeof this.buttons.distance !== 'undefined' ? -this.buttons.distance - nodeRadius - this.buttons.radius : -nodeRadius * 1.5;
 
-                if (!_self.infoButton && !_self.removeNodeButton) {
+                if (!this.infoButton && !this.removeNodeButton) {
 
                     //                    this.buttons.delete.image.url = require.toUrl('sbg/pipeline-canvas/img/' + this.buttons.delete.image.name);
                     //                    this.buttons.info.image.url = require.toUrl('sbg/pipeline-canvas/img/' + this.buttons.info.image.name);
                     this.buttons.rename.image.url = 'images/' + this.buttons.rename.image.name;
 
-                    _self.infoButton = _self.canvas.button({
+                    this.infoButton = this.canvas.button({
                         fill: this.buttons.info.fill,
                         x: +16,
                         y: buttonDistance,
@@ -564,11 +562,11 @@ angular.module('registryApp.dyole')
                         border: this.buttons.border,
                         image: ''
                     }, {
-                        onClick: _self._showInfo,
-                        scope: _self
+                        onClick: this._showInfo,
+                        scope: this
                     });
 
-                    _self.removeNodeButton = _self.canvas.button({
+                    this.removeNodeButton = this.canvas.button({
                         fill: this.buttons.delete.fill,
                         x: -16,
                         y: buttonDistance,
@@ -576,29 +574,33 @@ angular.module('registryApp.dyole')
                         border: this.buttons.border,
                         image: ''
                     }, {
-                        onClick: _self._removeNodeButtonClick,
-                        scope: _self
+                        onClick: this._removeNodeButtonClick,
+                        scope: this
                     });
 
-                    bbox = _self.label.getBBox();
-                    _self.editLabelButton = _self.canvas.button({
-                        fill: _self.buttons.rename.fill,
-                        x: bbox.x + bbox.width + 20,
-                        y: bbox.y + 8,
-                        radius: 10,
-                        border: _self.buttons.border,
-                        image: _self.buttons.rename.image,
+                    if (this.model.softwareDescription.repo_name === 'system') {
 
-                        borderFill: 'transparent',
-                        borderStroke: 'transparent'
-                    }, {
-                        onClick: _self._initNameChanging,
-                        scope: _self
-                    });
+                        bbox = this.label.getBBox();
+                        this.editLabelButton = this.canvas.button({
+                            fill: this.buttons.rename.fill,
+                            x: bbox.x + bbox.width + 20,
+                            y: bbox.y + 8,
+                            radius: 10,
+                            border: this.buttons.border,
+                            image: this.buttons.rename.image,
+
+                            borderFill: 'transparent',
+                            borderStroke: 'transparent'
+                        }, {
+                            onClick: this._initNameChanging,
+                            scope: this
+                        });
+
+                        this.el.push(this.editLabelButton.getEl())
+                    }
 
                     _self.el.push(_self.infoButton.getEl())
-                        .push(_self.removeNodeButton.getEl())
-                        .push(_self.editLabelButton.getEl());
+                        .push(_self.removeNodeButton.getEl());
 
                 }
 
@@ -628,13 +630,92 @@ angular.module('registryApp.dyole')
                 this.removeNode();
             },
 
+            /**
+             * Lunch modal box with node description
+             *
+             * @private
+             */
             _showInfo: function () {
-
                 $rootScope.$broadcast('node:info', this.model);
             },
 
+            /**
+             * Triggered only on system Nodes
+             *
+             * @private
+             */
             _initNameChanging: function () {
+                var _self = this;
 
+                $rootScope.$broadcast('node:label:edit', this.model.softwareDescription.name, function check(name) {
+
+                    var test = _.filter(_self.Pipeline.nodes, function (n) {
+                        return n.model.softwareDescription.repo_name === 'system' && n.model.id === name;
+                    });
+
+                    return test.length === 0;
+                }, this._changeNodeName, this);
+            },
+
+            _changeNodeName: function (name) {
+
+                var ter, old,
+                    isInput = this.inputs.length === 0;
+
+                if (this.model.softwareDescription.repo_name === 'system') {
+
+                    this.model.softwareDescription.name = name;
+                    this.Pipeline.model.schemas[this.model.id].softwareDescription.name = name;
+
+                    if (isInput) {
+                        ter = this.outputs[0];
+
+                        old = this.Pipeline.model.schemas[this.model.id].outputs.properties[ter.model.id];
+
+                        old.id = old.name = name;
+
+                        this.Pipeline.model.schemas[this.model.id].outputs.properties[name] = old;
+
+                        delete this.Pipeline.model.schemas[this.model.id].outputs.properties[ter.model.id];
+
+                        this.model.outputs.properties[name] = old;
+
+                        delete this.model.outputs.properties[ter.model.id];
+
+                        ter.model.name = ter.model.id = name;
+
+                        ter.changeTerminalName(name);
+                    } else {
+                        ter = this.inputs[0];
+
+                        old = this.Pipeline.model.schemas[this.model.id].inputs.properties[ter.model.id];
+
+                        old.id = old.name = name;
+
+                        this.Pipeline.model.schemas[this.model.id].inputs.properties[name] = old;
+
+                        delete this.Pipeline.model.schemas[this.model.id].inputs.properties[ter.model.id];
+
+                        this.model.inputs.properties[name] = old;
+
+                        delete this.model.inputs.properties[ter.model.id];
+
+                        ter.model.name = ter.model.id = name;
+
+                        ter.changeTerminalName(name);
+                    }
+
+                    _.each(this.connections, function (c) {
+                        if (isInput) {
+                            c.model.output_name = name;
+                        } else {
+                            c.model.input_name = name;
+                        }
+                    });
+
+                    this.label.attr('text', name);
+
+                }
             },
 
             _select: function () {
@@ -642,6 +723,8 @@ angular.module('registryApp.dyole')
                 if (!this.Pipeline.editMode) {
                     return;
                 }
+
+                this.Pipeline.selectedNodes.push(this);
 
                 this._showButtons();
 

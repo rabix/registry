@@ -28,6 +28,12 @@ angular.module('registryApp')
             other: false
         };
 
+        /**
+         * Place holder for formated pipeline json
+         * @type {{Object}}
+         */
+        $scope.view.pipelineJSON = {};
+
         /* visibility flags for repo groups that hold apps */
         $scope.view.repoGroups = {};
 
@@ -128,6 +134,8 @@ angular.module('registryApp')
 
             if (tab === 'params') {
                 watchParams();
+            } else if (tab === 'json') {
+                formatPipeline();
             } else {
                 unWatchParams();
             }
@@ -335,7 +343,64 @@ angular.module('registryApp')
         $scope.$on('$destroy', function () {
             onNodeSelectOff();
             onNodeDeselectOff();
+            onRouteChangeOff();
         });
 
+        var formatPipeline = function () {
+            Pipeline.formatPipeline($scope.view.pipeline).then(function (pipeline) {
+                $scope.view.pipelineJSON = pipeline;
+            });
+        };
+        
+        $scope.getUrl = function () {
+            $scope.view.saving = true;
+
+            Pipeline.getPipelineURL($scope.view.pipeline).then(function (url) {
+
+                $modal.open({
+                    template: $templateCache.get('views/cliche/partials/job-url-response.html'),
+                    controller: ['$scope', '$modalInstance', 'data', function($scope, $modalInstance, data) {
+
+                        $scope.view = {};
+                        $scope.view.trace = data.trace;
+
+                        /**
+                         * Close the modal window
+                         */
+                        $scope.ok = function () {
+                            $modalInstance.close();
+                        };
+
+                    }],
+                    resolve: { data: function () { return {message: 'Pipeline link:', trace: url}; }}
+                });
+
+                $scope.view.saving = false;
+
+            })  
+        };
+        
+        $scope.fork = function () {
+            $scope.view.saving = true;
+
+            var modal = $modal.open({
+                template: $templateCache.get('views/partials/confirm-fork.html'),
+                controller: 'ModalCtrl',
+                resolve: { data: function () { return {}; }}
+
+            });
+
+            modal.result.then(function () {
+                console.log('fork');
+                Pipeline.fork($scope.view.pipeline).then(function (pipeline) {
+                    console.log('forked !!');
+
+                    $location.path('/pipeline/' + pipeline._id + '/edit');
+                });
+            }, function () {
+                console.log('dont fork');
+            });
+
+        };
 
     }]);
