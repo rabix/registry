@@ -10,7 +10,7 @@ var config = {
         },
         port: 3000,
         db: 'mongodb://localhost/server-development',
-        clientPath: '../../client/dist',
+        clientPath: '../../client/app',
         clichePath: '../../cliche/app',
         pipelineEditorPath: '../../pipeline-editor/dist',
         github: {
