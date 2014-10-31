@@ -23,16 +23,6 @@ grunt
 
 cd ..
 
-cd cliche
-
-npm install
-
-bower install
-
-grunt
-
-cd ..
-
 cd server
 
 npm install
