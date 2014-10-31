@@ -481,27 +481,26 @@ legend {
   @include flex-box();
   @include flex-flow(column nowrap);
 
-  @at-root {
-    .pipeline-drop-area {
-      @include flex(1);
-      @include flex-box();
-      @include flex-flow(column nowrap);
-      position: relative;
+  .pipeline-drop-area {
+    @include flex(1);
+    @include flex-box();
+    @include flex-flow(column nowrap);
+    position: relative;
 
-      &.drag-over {
-        background-color: #f3f3f3;
-      }
-
-      &.loading {
-        @extend .loading-abs;
-      }
-
-      .pipeline {
-        @include flex(1);
-      }
-
+    &.drag-over {
+      background-color: #f3f3f3;
     }
+
+    &.loading {
+      @extend .loading-abs;
+    }
+
+    .pipeline {
+      @include flex(1);
+    }
+
   }
+
 }
 
 
