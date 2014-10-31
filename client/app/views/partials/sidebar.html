@@ -10,7 +10,7 @@
         <ul class="nav nav-tabs nav-stacked">
 
             <li ng-repeat="page in view.navigation" ng-class="{active: view.active === page.name}">
-                <a ng-href="#/{{ page.link }}" tooltip="{{ page.desc }}" tooltip-placement="right">
+                <a ng-href="#/{{ page.link }}" tooltip="{{ page.desc }}" tooltip-placement="right" tooltip-append-to-body="true">
                     <i ng-class="['fa', 'fa-' + page.icon]"></i>
                     <span>{{ page.name }}</span>
                 </a>
