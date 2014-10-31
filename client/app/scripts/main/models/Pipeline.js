@@ -109,6 +109,10 @@ angular.module('registryApp')
         self.getPipelineURL = function (pipeline) {
             return Api.formatPipeline.format({action: 'upload'}, {pipeline: pipeline}).$promise;
         };
+        
+        self.fork = function (pipeline) {
+            return Api.forkPipeline.fork({}, { pipeline: pipeline }).$promise;
+        };
 
         return self;
 

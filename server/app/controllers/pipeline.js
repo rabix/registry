@@ -212,23 +212,23 @@ router.put('/pipeline/:id', function (req, res, next) {
 });
 
 router.post('/pipeline/fork', function (req, res, next) {
-    Pipeline.findOne({_id: req.body.id}, function (err, pipeline) {
-        if (err) { return next(err); }
 
-        var p = new Pipeline();
+    var pipeline = req.body.pipeline;
+    delete pipeline._id;
 
-        p = _.extend(p, pipeline);
+    var p = new Pipeline();
 
-        p.user_id = req.user.id;
+    p = _.extend(p, pipeline);
 
-        p.save();
+    p.user_id = req.user.id;
 
-        res.json({
-            id: p._id,
-            message: 'Pipeline successfully updated'
-        });
+    p.save();
 
+    res.json({
+        _id: p._id,
+        message: 'Pipeline successfully updated'
     });
+
 });
 
 

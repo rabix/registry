@@ -379,5 +379,28 @@ angular.module('registryApp')
 
             })  
         };
+        
+        $scope.fork = function () {
+            $scope.view.saving = true;
+
+            var modal = $modal.open({
+                template: $templateCache.get('views/partials/confirm-fork.html'),
+                controller: 'ModalCtrl',
+                resolve: { data: function () { return {}; }}
+
+            });
+
+            modal.result.then(function () {
+                console.log('fork');
+                Pipeline.fork($scope.view.pipeline).then(function (pipeline) {
+                    console.log('forked !!');
+
+                    $location.path('/pipeline/' + pipeline._id + '/edit');
+                });
+            }, function () {
+                console.log('dont fork');
+            });
+
+        };
 
     }]);
