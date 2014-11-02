@@ -184,12 +184,23 @@ router.post('/pipeline', function (req, res) {
 });
 
 router.delete('/pipeline/:id', filters.authenticated, function (req, res, next) {
-    Pipeline.remove({_id: req.params.id}, function (err) {
+
+    Pipeline.findOne({_id: req.params.id}, function (err, pipeline) {
         if (err) { return next(err); }
 
-        res.json({message: 'Pipeline successfully deleted'});
+        if (req.user.id = pipeline.user_id) {
+            Pipeline.remove({_id: req.params.id}, function (err) {
+                if (err) { return next(err); }
 
+                res.json({message: 'Pipeline successfully deleted'});
+
+            });
+        } else {
+            res.status(500).json({message: 'Unauthorized'});
+        }
     });
+
+
 });
 
 router.put('/pipeline/:id', function (req, res, next) {
@@ -229,7 +240,7 @@ router.post('/pipeline/fork', filters.authenticated, function (req, res, next) {
     p.name = pipeline.name;
     p.repo_owner = req.user.login;
 
-    p.save();
+`    p.save();
 
     res.json({
         _id: p._id,
