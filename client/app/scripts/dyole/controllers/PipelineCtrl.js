@@ -71,6 +71,16 @@ angular.module('registryApp.dyole')
             }
 
         });
+        
+        $scope.$on('pipeline:fork', function (e) {
+            $scope.pipeline.json = Pipeline.getJSON();
+
+            PipelineMdl.fork($scope.pipeline).then(function (pipeline) {
+                console.log('forked !!');
+
+                $location.path('/pipeline/' + pipeline._id + '/edit');
+            });
+        });
 
         /**
          * Save pipeline locally
@@ -91,7 +101,7 @@ angular.module('registryApp.dyole')
 
             $scope.view.loading = true;
 
-            App.getApp(id).then(function(result) {
+            App.getApp(id, 'public').then(function(result) {
 
                 $scope.view.loading = false;
 

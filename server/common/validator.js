@@ -435,7 +435,9 @@ var validator = function() {
                 output.required = _.cloneDeep(required);
             }
 
-            return output;
+//            return output;
+            //TODO: Test validation and uncomment line above
+            return {};
         }
     };
 }();

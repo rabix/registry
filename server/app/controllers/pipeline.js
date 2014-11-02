@@ -184,12 +184,23 @@ router.post('/pipeline', function (req, res) {
 });
 
 router.delete('/pipeline/:id', filters.authenticated, function (req, res, next) {
-    Pipeline.remove({_id: req.params.id}, function (err) {
+
+    Pipeline.findOne({_id: req.params.id}, function (err, pipeline) {
         if (err) { return next(err); }
 
-        res.json({message: 'Pipeline successfully deleted'});
+        if (req.user.id = pipeline.user_id) {
+            Pipeline.remove({_id: req.params.id}, function (err) {
+                if (err) { return next(err); }
 
+                res.json({message: 'Pipeline successfully deleted'});
+
+            });
+        } else {
+            res.status(500).json({message: 'Unauthorized'});
+        }
     });
+
+
 });
 
 router.put('/pipeline/:id', function (req, res, next) {
@@ -211,18 +222,25 @@ router.put('/pipeline/:id', function (req, res, next) {
 
 });
 
-router.post('/pipeline/fork', function (req, res, next) {
+router.post('/pipeline/fork', filters.authenticated, function (req, res, next) {
 
     var pipeline = req.body.pipeline;
-    delete pipeline._id;
 
     var p = new Pipeline();
 
-    p = _.extend(p, pipeline);
-
+    p.json = pipeline.json;
     p.user_id = req.user.id;
+    p.author = pipeline.author;
 
-    p.save();
+    //TODO: FIX THIS, repo name should be taken from user that is forking
+    p.repo_name = pipeline.repo_name;
+    p.repo_id = pipeline.repo_id;
+
+    p.description = pipeline.description;
+    p.name = pipeline.name;
+    p.repo_owner = req.user.login;
+
+`    p.save();
 
     res.json({
         _id: p._id,
