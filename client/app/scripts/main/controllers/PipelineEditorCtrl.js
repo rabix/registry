@@ -6,7 +6,7 @@
 angular.module('registryApp')
     .controller('PipelineEditorCtrl', ['$scope', '$rootScope', '$q', '$routeParams', '$modal', '$templateCache', '$location', 'Sidebar', 'Loading', 'App', 'Pipeline', 'User', function ($scope, $rootScope, $q, $routeParams, $modal, $templateCache, $location, Sidebar, Loading, App, Pipeline, User) {
 
-        Sidebar.setActive('_dyole');
+        Sidebar.setActive('dyole');
 
         $scope.view = {};
 
@@ -377,25 +377,22 @@ angular.module('registryApp')
 
                 $scope.view.saving = false;
 
-            })  
+            });
         };
         
         $scope.fork = function () {
+
             $scope.view.saving = true;
 
-            var modal = $modal.open({
+            var modalInstance = $modal.open({
                 template: $templateCache.get('views/partials/confirm-fork.html'),
                 controller: 'ModalCtrl',
-                resolve: { data: function () { return {}; }}
-
+                resolve: { data: function () { return {message: 'Are you sure you want to fork this workflow?'}; }}
             });
 
-            modal.result.then(function () {
-                console.log('fork');
+            modalInstance.result.then(function () {
                 $scope.view.reload = true;
                 $scope.$broadcast('pipeline:fork', true);
-            }, function () {
-                console.log('dont fork');
             });
 
         };

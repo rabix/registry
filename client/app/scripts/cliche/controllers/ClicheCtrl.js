@@ -20,6 +20,9 @@ angular.module('registryApp.cliche')
         $scope.view.reload = false;
         $scope.view.app = {};
 
+        /* cliche mode: new or edit */
+        $scope.view.mode = $routeParams.id ? 'edit' : 'new';
+
         $scope.view.tabViewPath = 'views/cliche/tabs/general.html';
 
         $scope.view.propsExpanded = {
@@ -363,6 +366,11 @@ angular.module('registryApp.cliche')
 
         };
 
+        /**
+         * Redirect to the other page
+         *
+         * @param url
+         */
         $scope.redirect = function(url) {
 
             $scope.view.reload = true;
@@ -370,6 +378,9 @@ angular.module('registryApp.cliche')
 
         };
 
+        /**
+         * Switch to another revision of the app
+         */
         $scope.changeRevision = function() {
 
             App.getRevisions(0, '', $routeParams.id)
@@ -405,6 +416,33 @@ angular.module('registryApp.cliche')
                     });
 
                 });
+
+        };
+
+        /**
+         * Fork the current app
+         */
+        $scope.fork = function () {
+
+            $scope.view.saving = true;
+
+            var $modal = $injector.get('$modal');
+            var $templateCache = $injector.get('$templateCache');
+
+            var modalInstance = $modal.open({
+                template: $templateCache.get('views/partials/confirm-fork.html'),
+                controller: 'ModalCtrl',
+                resolve: { data: function () { return {message: 'Are you sure you want to fork this app?'}; }}
+            });
+
+            modalInstance.result.then(function () {
+                $scope.view.reload = true;
+
+                App.fork().then(function (result) {
+                    $location.path('/cliche/' + result.app._id + '/latest');
+                });
+
+            });
 
         };
 

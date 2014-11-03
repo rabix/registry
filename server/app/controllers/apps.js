@@ -191,7 +191,7 @@ router.put('/apps/:id/:revision', filters.authenticated, function (req, res, nex
 });
 
 
-router.post('/apps', filters.authenticated, function (req, res, next) {
+router.post('/apps/:action', filters.authenticated, function (req, res, next) {
 
     var data = req.body;
 
@@ -208,12 +208,13 @@ router.post('/apps', filters.authenticated, function (req, res, next) {
 
     app.name = desc.name;
     app.description = desc.description;
+    // TODO: on fork should we change author's email as well??
     app.author = data.tool.documentAuthor;
     app.json = data.tool;
     app.links = {json: ''};
 
     app.repo_name = desc.repo_name || '';
-    app.repo_owner = desc.repo_owner || '';
+    app.repo_owner = (req.params.action === 'fork') ? req.user.login : desc.repo_owner || '';
 
     Repo.findOne({'name': desc.repo_name, 'owner': desc.repo_owner}, function (err, repo) {
 

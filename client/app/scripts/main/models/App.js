@@ -81,6 +81,17 @@ angular.module('registryApp')
         };
 
         /**
+         * Fork the current app
+         *
+         * @returns {*}
+         */
+        self.fork = function() {
+
+            return Api.apps.add({id: 'fork'}, {tool: Data.tool}).$promise;
+
+        };
+
+        /**
          * Add app revision
          *
          * @returns {object} $promise
