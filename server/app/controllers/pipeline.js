@@ -240,7 +240,7 @@ router.post('/pipeline/fork', filters.authenticated, function (req, res, next) {
     p.name = pipeline.name;
     p.repo_owner = req.user.login;
 
-`    p.save();
+    p.save();
 
     res.json({
         _id: p._id,
