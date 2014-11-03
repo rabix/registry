@@ -32,6 +32,7 @@ angular.module('registryApp.cliche')
                         template: $templateCache.get('views/cliche/partials/add-property-' + scope.type + '.html'),
                         controller: 'AddPropertyCtrl',
                         windowClass: 'modal-prop',
+                        size: 'lg',
                         resolve: {
                             options: function () {
                                 return {

@@ -209,7 +209,7 @@
         a, a:hover, a:focus {
           text-shadow: 1px 1px 1px #fff;
           border-bottom: 1px solid lighten($sidebar-blue, 10%);
-          i {
+          span, i {
             color: #555;
           }
         }

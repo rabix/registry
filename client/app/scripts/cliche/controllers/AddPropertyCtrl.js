@@ -13,6 +13,8 @@ angular.module('registryApp.cliche')
 
         $scope.view = {};
 
+        var map = Data.getMap()[options.type];
+
         switch (options.type) {
         case 'input':
             $scope.view.property = {
@@ -41,12 +43,6 @@ angular.module('registryApp.cliche')
                 return false;
             }
 
-            if (options.type === 'input') {
-                if ($scope.view.property.type === 'array') {
-                    $scope.view.property.items = {type: 'string'};
-                }
-            }
-
             Data.addProperty(options.type, $scope.view.name, $scope.view.property, options.properties)
                 .then(function() {
                     $modalInstance.close();
@@ -64,5 +60,40 @@ angular.module('registryApp.cliche')
             $modalInstance.dismiss('cancel');
         };
 
+        /* watch for the type change in order to adjust the property structure */
+        $scope.$watch('view.property.type', function(n, o) {
+            if (n !== o) {
+
+                _.each($scope.view.property, function(fields, key) {
+
+                    if (!_.contains(_.keys(map[n].root), key) && key !== 'adapter') {
+                        delete $scope.view.property[key];
+                        if (key === 'enum') { $scope.view.isEnum = false; }
+                    }
+
+                    _.each(map[n].root, function(value, field) {
+                        if (_.isUndefined($scope.view.property[field])) {
+                            $scope.view.property[field] = value;
+                        }
+                    });
+
+                });
+
+                _.each($scope.view.property.adapter, function(fields, key) {
+
+                    if (!_.contains(_.keys(map[n].adapter), key)) {
+                        delete $scope.view.property.adapter[key];
+                    }
+
+                    _.each(map[n].adapter, function(value, field) {
+                        if (_.isUndefined($scope.view.property.adapter[field])) {
+                            $scope.view.property.adapter[field] = value;
+                        }
+                    });
+
+                });
+
+            }
+        });
 
     }]);

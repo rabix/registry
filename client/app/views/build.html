@@ -5,7 +5,7 @@
         <h1>
             <span tooltip="Build #{{ view.build._id }}" tooltip-popup-delay="1000">Build #{{ view.build._id }}</span>
             <span class="label pull-right" ng-class="{'label-success': view.build.status === 'success', 'label-info': view.build.status === 'running', 'label-danger': view.build.status === 'failure', 'label-warning': view.build.status === 'pending'}">
-                <i class="fa {{ view.build.status }}" ng-class="{'fa-check-circle': view.build.status === 'success', 'fa-repeat': view.build.status === 'running', 'fa-remove-circle': view.build.status === 'failure', 'fa-time': view.build.status === 'pending'}"></i>
+                <i class="fa {{ view.build.status }}" ng-class="{'fa-check-circle': view.build.status === 'success', 'fa-repeat': view.build.status === 'running', 'fa-times-circle': view.build.status === 'failure', 'fa-clock-o': view.build.status === 'pending'}"></i>
                 <span>{{ view.build.status }}</span>
             </span>
         </h1>

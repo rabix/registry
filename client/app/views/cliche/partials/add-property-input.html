@@ -9,7 +9,7 @@
         <p ng-if="view.error" class="alert alert-danger">{{ view.error }}</p>
 
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <div class="form-group" ng-class="{'has-error': (view.form.name.$invalid && view.form.$dirty)}">
                     <label class="control-label" for="name">Name</label>
                     <input type="text" class="form-control" id="name" name="name" ng-model="view.name" required>
@@ -17,7 +17,7 @@
             </div>
             <!-- END Name -->
 
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <div class="form-group" ng-class="{'has-error': (view.form.type.$invalid && view.form.$dirty)}">
                     <label class="control-label" for="type">Type</label>
                     <select class="form-control" id="type" name="type" ng-model="view.property.type" required>
@@ -31,7 +31,7 @@
             </div>
             <!-- END Type -->
 
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <div class="form-group">
                     <label class="control-label" for="prefix">Prefix</label>
                     <input type="text" class="form-control" id="prefix" name="prefix" ng-model="view.property.adapter.prefix">
@@ -39,7 +39,7 @@
             </div>
             <!-- END Prefix -->
 
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <div class="form-group" ng-class="{'has-error': (view.form.separator.$invalid && view.form.$dirty)}">
                     <label class="control-label" for="separator">Separator</label>
                     <select class="form-control" id="separator" name="separator" ng-model="view.property.adapter.separator" required>
@@ -50,11 +50,8 @@
                 </div>
             </div>
             <!-- END Separator -->
-        </div>
 
-        <div class="row">
-
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <div class="form-group" ng-class="{'has-error': (view.form.order.$invalid && view.form.$dirty)}">
                     <label class="control-label" for="order">Order</label>
                     <input type="number" class="form-control" id="order" name="order" ng-model="view.property.adapter.order">
@@ -62,7 +59,7 @@
             </div>
             <!-- END Order -->
 
-            <div class="col-md-4" ng-if="view.property.type === 'string'">
+            <div class="col-md-2" ng-if="view.property.type === 'string'">
                 <div class="form-group">
                     <label class="empty-label">&nbsp;</label>
                     <div class="checkbox">
@@ -72,7 +69,7 @@
             </div>
             <!-- END Eum -->
 
-            <div class="col-md-4" ng-if="view.property.type === 'file'">
+            <div class="col-md-2" ng-if="view.property.type === 'file'">
                 <div class="form-group">
                     <label class="empty-label">&nbsp;</label>
                     <div class="checkbox">
@@ -102,7 +99,7 @@
             </div>
             <!-- END Max -->
 
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <div class="form-group">
                     <label class="control-label" for="item-type" class="control-label">Item Type</label>
 
@@ -115,7 +112,7 @@
             </div>
             <!-- END Item Type -->
 
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <div class="form-group">
                     <label class="control-label" for="item-separator" class="control-label">Item Separator</label>
 

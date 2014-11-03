@@ -21,7 +21,7 @@
                     <td class="field-status">
                         <span class="status fa {{ build.status }}"
                               tooltip="{{ build.status }}"
-                              ng-class="{'fa-check-circle': build.status === 'success', 'fa-time': build.status === 'pending', 'fa-remove-circle': build.status === 'failure', 'fa-repeat': build.status === 'running'}">
+                              ng-class="{'fa-check-circle': build.status === 'success', 'fa-clock-o': build.status === 'pending', 'fa-times-circle': build.status === 'failure', 'fa-repeat': build.status === 'running'}">
                         </span>
                     </td>
                     <td class="field-id">
