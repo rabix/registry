@@ -85,11 +85,10 @@ module.exports = function (app) {
 
 router.get('/login',
     function (req, res, next) {
-        req.session.redirect_to = req.header('Referer') ? '/' + req.header('Referer').split('/').splice(3).join('/') : '/';
         return next();
     },
     function (req, res) {
-        res.redirect('/auth/github')
+        res.redirect('/auth/github');
     });
 
 router.get('/github',
@@ -101,7 +100,7 @@ router.get('/github',
 router.get('/github/callback',
     passport.authenticate('github', { failureRedirect: '/' }),
     function (req, res) {
-        res.redirect(req.session.redirect_to);
+        res.redirect('/');
     });
 
 router.get('/logout', function (req, res) {

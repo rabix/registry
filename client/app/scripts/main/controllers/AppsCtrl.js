@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('registryApp')
-    .controller('AppsCtrl', ['$scope', '$routeParams', 'App', 'Sidebar', 'Api', 'Loading', 'User',function ($scope, $routeParams, App, Sidebar, Api, Loading, User) {
+    .controller('AppsCtrl', ['$scope', '$routeParams', '$injector', 'App', 'Sidebar', 'Api', 'Loading', 'User',function ($scope, $routeParams, $injector, App, Sidebar, Api, Loading, User) {
 
         Sidebar.setActive('apps');
 
@@ -110,6 +110,32 @@ angular.module('registryApp')
             $scope.view.loading = true;
 
             App.getApps(0, '', $routeParams.repo, $scope.view.mine).then(appsLoaded);
+        };
+
+        /**
+         * Delete app
+         */
+        $scope.deleteApp = function (app) {
+
+            var $modal = $injector.get('$modal');
+            var $templateCache = $injector.get('$templateCache');
+
+            var modalInstance = $modal.open({
+                template: $templateCache.get('views/cliche/partials/confirm-delete.html'),
+                controller: 'ModalCtrl',
+                windowClass: 'modal-confirm',
+                resolve: {data: function () { return {}; }}
+            });
+
+            modalInstance.result.then(function () {
+                App.deleteApp(app._id).then(function () {
+                    _.remove($scope.view.apps, function (p) {
+                        return p._id === app._id;
+                    });
+                });
+            });
+
+
         };
 
     }]);

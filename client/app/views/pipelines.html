@@ -44,8 +44,7 @@
                     <!--<td><p tooltip="{{ pipeline.description }}" tooltip-popup-delay="1000">{{ pipeline.description }}</p></td>-->
                     <td><p tooltip="{{ pipeline.author }}" tooltip-popup-delay="1000">{{ pipeline.author }}</p></td>
                     <td class="center">
-                        <a class="btn btn-default" ng-if="pipeline.user_id === view.user.id" tooltip="Edit Pipeline" ng-href="#/pipeline/{{ pipeline._id }}/edit"><i class="fa fa-pencil"></i></a>
-                        <a class="btn btn-default" tooltip="Previw Pipeline" ng-href="#/pipeline/{{ pipeline._id }}"><i class="fa fa-eye"></i></a>
+                        <a class="btn btn-default" tooltip="Edit Pipeline" ng-href="#/pipeline/{{ pipeline._id }}/edit"><i class="fa fa-pencil"></i></a>
                         <a class="btn btn-default" ng-if="pipeline.user_id === view.user.id" tooltip="Delete Pipeline" ng-click="deletePipeline(pipeline)"><i class="fa fa-trash"></i></a>
                     </td>
                 </tr>
