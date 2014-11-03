@@ -105,7 +105,7 @@ BuildClass.prototype.startBuild = function () {
                     stderrLog = fs.openSync(err_log_dir, 'a');
 
 
-                var rabix = spawn('rabix', ['build'], {
+                var rabix = spawn('rabix-tools', ['build'], {
                     cwd: folder,
                     detached: true,
                     stdio: [ 'ignore', stdoutLog, stderrLog ]

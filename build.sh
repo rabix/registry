@@ -9,11 +9,14 @@ echo " ******* Starting build.. ******* "
 
 cd $DIR
 
+pwd
+
 git checkout .
 git pull origin master
 
 cd client
 
+pwd
 
 npm install
 
@@ -25,13 +28,15 @@ cd ..
 
 cd server
 
+pwd
+
 npm install
 
 cd ..
 
 pwd
 
-echo "Frontend build done"
+echo "Frontend build done, starting application.."
 
 service rabix-registry start
 
