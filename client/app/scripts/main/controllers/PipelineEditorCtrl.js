@@ -381,21 +381,18 @@ angular.module('registryApp')
         };
         
         $scope.fork = function () {
+
             $scope.view.saving = true;
 
-            var modal = $modal.open({
+            var modalInstance = $modal.open({
                 template: $templateCache.get('views/partials/confirm-fork.html'),
                 controller: 'ModalCtrl',
-                resolve: { data: function () { return {}; }}
-
+                resolve: { data: function () { return {message: 'Are you sure you want to fork this workflow?'}; }}
             });
 
-            modal.result.then(function () {
-                console.log('fork');
+            modalInstance.result.then(function () {
                 $scope.view.reload = true;
                 $scope.$broadcast('pipeline:fork', true);
-            }, function () {
-                console.log('dont fork');
             });
 
         };
