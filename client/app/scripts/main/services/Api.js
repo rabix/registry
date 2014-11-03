@@ -8,7 +8,8 @@ angular.module('registryApp')
 
         self.apps = $resource(apiUrl + '/apps/:id/:revision', {id: '@id', revision: '@revision'}, {
             add: {method: 'POST'},
-            update: {method: 'PUT'}
+            update: {method: 'PUT'},
+            'delete': {method: 'DELETE'}
         });
 
         self.jobs = $resource(apiUrl + '/jobs');
@@ -64,7 +65,7 @@ angular.module('registryApp')
 
         self.user = $resource(apiUrl + '/user/:action', {action: '@action'}, {
             update: {method: 'PUT'},
-            delete: {method: 'DELETE'}
+            'delete': {method: 'DELETE'}
         });
 
         self.subscribe = $resource(apiUrl + '/subscribe', {}, {

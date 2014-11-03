@@ -278,7 +278,28 @@ router.post('/validate', filters.authenticated, function (req, res, next) {
 
 });
 
-router.delete('/apps', filters.authenticated, function (req, res, next) {
-    // TODO delete app
+router.delete('/apps/:id', filters.authenticated, function (req, res, next) {
+
+    App.findOne({_id: req.params.id}, function (err, app) {
+        if (err) { return next(err); }
+
+        var user_id = req.user.id.toString();
+        var app_user_id = app.user_id.toString();
+
+        if (user_id === app_user_id) {
+
+            Revision.remove({app_id: req.params.id});
+
+            App.remove({_id: req.params.id}, function (err) {
+                if (err) { return next(err); }
+
+                res.json({message: 'App successfully deleted'});
+
+            });
+        } else {
+            res.status(500).json({message: 'Unauthorized'});
+        }
+    });
+
 });
 

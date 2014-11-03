@@ -51,18 +51,18 @@ router.get('/repos', function (req, res, next) {
 
 });
 
-router.get('/repos/:user', function (req, res, next) {
-
-    var limit = req.query.limit ? req.query.limit : 25;
-    var skip = req.query.skip ? req.query.skip : 0;
-
-    Repo.find({owner: req.params.user}).skip(skip).limit(limit).sort({_id: 'desc'}).exec(function (err, repos) {
-        if (err) { return next(err); }
-
-        res.json({list: repos, total: total});
-    });
-
-});
+//router.get('/repos/:user', function (req, res, next) {
+//
+//    var limit = req.query.limit ? req.query.limit : 25;
+//    var skip = req.query.skip ? req.query.skip : 0;
+//
+//    Repo.find({owner: req.params.user}).skip(skip).limit(limit).sort({_id: 'desc'}).exec(function (err, repos) {
+//        if (err) { return next(err); }
+//
+//        res.json({list: repos, total: total});
+//    });
+//
+//});
 
 router.get('/repos/:id', function (req, res, next) {
 

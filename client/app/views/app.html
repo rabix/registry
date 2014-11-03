@@ -52,14 +52,14 @@
                 <div><a class="s3-link" ng-href="{{ view.app.links.json }}" target="_blank">{{ view.app.links.json }}</a></div>
             </div>
 
-            <div class="snippet">
+            <div class="snippet" style="display: none;">
                 <p>Use this code snippet for your pipeline</p>
                 <pre pretty-json="view.app.json"></pre>
             </div>
 
             <div class="snippet">
                 <p>Use this command to run the app</p>
-                <pre>$ rabix run "{{ view.app.links.app_ref }}"</pre>
+                <pre>$ rabix run "<a href="/api/apps/{{ view.app._id }}/public" target="_blank">http://rabix.org/api/apps/{{ view.app._id }}/public</a>"</pre>
             </div>
         </section>
 

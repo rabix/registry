@@ -167,6 +167,18 @@ angular.module('registryApp')
             return Api.groupedApps.get({type: type, q: searchTerm}).$promise;
 
         };
+
+        /**
+         * Delete app by id
+         *
+         * @param id
+         * @returns {*}
+         */
+        self.deleteApp = function (id) {
+
+            return Api.apps.delete({id: id}).$promise;
+
+        };
         
         return self;
 
