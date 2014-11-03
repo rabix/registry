@@ -140,7 +140,7 @@ BuildClass.prototype.startBuild = function () {
 
                     _self.endBuild(message, build);
 
-                    exec('rm -rf ' + folder, function(err,out) {
+                    exec('docker run -i -t -v /data/rabix-registry/builds:/builds:rw ubuntu /bin/bash -c "rm -rf /builds/'+ 'build_' + repository.name + '_' + sha +'"', function(err,out) {
 
                         if (err) {
                             logger.error('Error removing a temp build dir', 'DIR: ' + folder, 'err', err);
