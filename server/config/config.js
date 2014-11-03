@@ -2,7 +2,7 @@ var path = require('path'),
     rootPath = path.normalize(__dirname + '/..'),
     env = process.env.NODE_ENV || 'development',
     fs = require('fs'),
-    confPath = env === 'development' ? __dirname + '/config.json' : '/data/config/rabix/amazon.json',
+    confPath = env === 'development' ? __dirname + '/config.json' : '/data/config/rabix/config.json',
     conf = JSON.parse(fs.readFileSync(confPath).toString());
 
 var config = {

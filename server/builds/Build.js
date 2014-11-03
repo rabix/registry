@@ -12,7 +12,7 @@ var sys = require('sys');
 
 var path = require('path');
 
-//    var exec = require('child_process').exec;
+var exec = require('child_process').exec;
 var spawn = require('child_process').spawn;
 
 var mkdir = require('mkdirp');
@@ -140,6 +140,15 @@ BuildClass.prototype.startBuild = function () {
 
                     _self.endBuild(message, build);
 
+                    exec('rm -rf ' + folder, function(err,out) {
+
+                        if (err) {
+                            logger.error('Error removing a temp build dir', 'DIR: ' + folder, 'err', err);
+                        } else {
+                            logger.info('Removed build folder: ', folder, 'STDOUT: ' + out);
+                        }
+
+                    });
 
                 });
 
@@ -191,7 +200,7 @@ BuildClass.prototype.endBuild = function (message, build) {
 var uploadToS3 = function (build) {
     var log_arr = build.log_dir.split('/');
     var file_name = log_arr[log_arr.length-1];
-    
+
     fs.readFile(build.log_dir, 'utf8', function (err, data) {
         if (err) return false;
 
@@ -212,7 +221,34 @@ var uploadToS3 = function (build) {
 
         });
 
-    })
+    });
+
+    var err_log_arr = build.log_dir.split('/');
+    var file_name_err = err_log_arr[err_log_arr.length-1];
+
+    fs.readFile(build.err_log_dir, 'utf8', function (err, data) {
+        if (err) return false;
+
+        Amazon.uploadFile(file_name_err, data, 'build-logs', function () {
+
+            fs.unlink(build.err_log_dir, function (err) {
+
+                if (err) {
+                    console.log('error while deleting file %s', build.err_log_dir);
+                    return false;
+                }
+
+                Build.findOneAndUpdate({"head_commit.id": build.head_commit.id}, {err_log_dir: file_name_err}, function (err, build) {
+                    if (err) console.log('Error updating build for repo "' + JSON.stringify(build) + '" ', err);
+                });
+
+            });
+
+        });
+
+    });
+
+
 };
 
 exports.Build = BuildClass;
