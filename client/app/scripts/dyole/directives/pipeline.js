@@ -15,7 +15,8 @@ angular.module('registryApp.dyole')
             scope: {
                 pipeline: '=',
                 editMode: '@',
-                pipelineChangeFn: '&'
+                pipelineChangeFn: '&',
+                handlePipelineJson: '&'
             }
         };
     }]);

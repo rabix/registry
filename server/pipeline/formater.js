@@ -12,7 +12,7 @@ var formater = {
         // reset schema
         this.packedSchema = {};
 
-        this._transformRelationsToSteps(json.relations, json.nodes, json.schemas);
+        this._transformRelationsToSteps(json.relations || [], json.nodes, json.schemas);
 
         delete json.relations;
         delete json.schemas;

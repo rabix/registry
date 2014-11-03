@@ -347,9 +347,7 @@ angular.module('registryApp')
         });
 
         var formatPipeline = function () {
-            Pipeline.formatPipeline($scope.view.pipeline).then(function (pipeline) {
-                $scope.view.pipelineJSON = pipeline;
-            });
+            $scope.$broadcast('pipeline:format');
         };
         
         $scope.getUrl = function () {
@@ -397,4 +395,9 @@ angular.module('registryApp')
 
         };
 
+
+        $scope.formatPipeline = function(pipeline) {
+            console.log(pipeline);
+            $scope.view.pipelineJSON = pipeline;
+        };
     }]);

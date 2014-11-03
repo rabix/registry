@@ -23,7 +23,7 @@
     <div ng-if="!view.loading" class="content">
 
         <div class="col content-col">
-            <div pipeline="view.pipeline" edit-mode="true" pipeline-change-fn="onPipelineChange(value)"></div>
+            <div pipeline="view.pipeline" edit-mode="true" pipeline-change-fn="onPipelineChange(value)" handle-pipeline-json="formatPipeline(pipeline)"></div>
         </div>
 
         <div class="col sidebar-col" ng-class="{closed: !view.showSidebar}">

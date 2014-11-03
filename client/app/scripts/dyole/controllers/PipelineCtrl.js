@@ -89,6 +89,13 @@ angular.module('registryApp.dyole')
             }
         });
 
+        $scope.$on('pipeline:format', function () {
+            PipelineMdl.formatPipeline(Pipeline.getJSON()).then(function (pipeline) {
+                console.log(pipeline);
+                $scope.handlePipelineJson({pipeline: pipeline.json});
+            });
+        });
+
         /**
          * Drop node on the canvas
          *
