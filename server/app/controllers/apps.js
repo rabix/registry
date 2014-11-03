@@ -214,7 +214,14 @@ router.post('/apps/:action', filters.authenticated, function (req, res, next) {
     app.links = {json: ''};
 
     app.repo_name = desc.repo_name || '';
-    app.repo_owner = (req.params.action === 'fork') ? req.user.login : desc.repo_owner || '';
+
+    if (req.params.action === 'fork') {
+        app.repo_owner = req.user.login;
+        app.json.softwareDescription.repo_owner = req.user.login;
+        desc.repo_owner = req.user.login;
+    } else {
+        app.repo_owner = desc.repo_owner || '';
+    }
 
     Repo.findOne({'name': desc.repo_name, 'owner': desc.repo_owner}, function (err, repo) {
 

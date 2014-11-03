@@ -416,7 +416,7 @@ module.exports = function (grunt) {
                             '*.html',
                             //'views/{,*/}*.html',
                             '!**/views/**',
-                            'images/{,*/}*.{webp}',
+                            'images/{,*/}*.{png,jpg,jpeg,gif,webp,svg,ico}',
                             'fonts/*',
 //                            'bower_components/*'
                             'bower_components/es5-shim/es5-shim.js',

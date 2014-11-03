@@ -50,11 +50,11 @@ angular.module('registryApp')
 
                 scope.view.navigation = [
                     {name: 'apps', link: 'apps', desc: 'Applications', icon: 'puzzle-piece'},
-                    {name: 'pipelines', link: 'pipelines', desc: 'Pipelines', icon: 'cogs'},
+                    {name: 'workflows', link: 'pipelines', desc: 'Workflows', icon: 'cogs'},
                     {name: 'builds', link: 'builds', desc: 'Builds', icon: 'cube'},
                     {name: 'repos', link: 'repos', desc: 'Repositories', icon: 'code-fork'},
                     {name: 'settings',link: 'settings',  desc: 'Settings', icon: 'gear'},
-                    {name: 'dyole', link: 'pipeline/0/new', desc: 'Pipelines', icon: 'terminal'}
+                    {name: 'dyole', link: 'pipeline/0/new', desc: 'Workflow Editor', icon: 'terminal'}
                 ];
 
                 scope.SidebarService = Sidebar;

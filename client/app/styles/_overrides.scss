@@ -66,21 +66,23 @@
 }
 
 .nav-pills {
-  margin: 5px 0;
-  li {
-    a {
-      padding: 5px 15px;
-      border: 1px solid transparent;
-    }
-    &.active {
-      a,
-      a:focus,
-      a:hover {
-        color: #555;
-        background-color: $gray;
-        background-image: url(../images/bg.png);
-        border: 1px solid #ddd;
-        cursor: pointer;
+  &.nav-page {
+    margin: 5px 0;
+    li {
+      a {
+        padding: 5px 15px;
+        border: 1px solid transparent;
+      }
+      &.active {
+        a,
+        a:focus,
+        a:hover {
+          color: #555;
+          background-color: $gray;
+          background-image: url(../images/bg.png);
+          border: 1px solid #ddd;
+          cursor: pointer;
+        }
       }
     }
   }
@@ -190,6 +192,9 @@ form, .form {
     background-color: $orange;
     color: #fff;
     cursor: pointer;
+    &:active, &:focus {
+      color: #fff;
+    }
   }
   &:active, &:focus {
     outline: none;
