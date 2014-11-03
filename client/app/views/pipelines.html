@@ -5,7 +5,7 @@
             <div class="col-md-4">
                 <form class="search-form" ng-submit="searchPipelines()" novalidate>
                     <div class="input-group">
-                        <input type="text" class="form-control" ng-model="view.searchTerm" placeholder="Search pipelines" required>
+                        <input type="text" class="form-control" ng-model="view.searchTerm" placeholder="Search workflows" required>
                         <span class="input-group-btn">
                             <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
                             <a ng-if="!(view.searchTerm | isEmpty)" class="btn btn-default" href ng-click="resetSearch()"><i class="fa fa-ban"></i></a>
@@ -21,7 +21,7 @@
             </div>
 
             <div class="col-md-5">
-                <a ng-href="#/pipeline/0/new" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> Add New Pipeline</a>
+                <a ng-href="#/pipeline/0/new" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> Add New Workflow</a>
             </div>
 
         </div>
@@ -44,12 +44,12 @@
                     <!--<td><p tooltip="{{ pipeline.description }}" tooltip-popup-delay="1000">{{ pipeline.description }}</p></td>-->
                     <td><p tooltip="{{ pipeline.author }}" tooltip-popup-delay="1000">{{ pipeline.author }}</p></td>
                     <td class="center">
-                        <a class="btn btn-default" tooltip="Edit Pipeline" ng-href="#/pipeline/{{ pipeline._id }}/edit"><i class="fa fa-pencil"></i></a>
-                        <a class="btn btn-default" ng-if="pipeline.user_id === view.user.id" tooltip="Delete Pipeline" ng-click="deletePipeline(pipeline)"><i class="fa fa-trash"></i></a>
+                        <a class="btn btn-default" tooltip="Edit Workflow" ng-href="#/pipeline/{{ pipeline._id }}/edit"><i class="fa fa-pencil"></i></a>
+                        <a class="btn btn-default" ng-if="pipeline.user_id === view.user.id" tooltip="Delete Workflow" ng-click="deletePipeline(pipeline)"><i class="fa fa-trash"></i></a>
                     </td>
                 </tr>
                 <tr class="empty" ng-if="view.pipelines.length === 0">
-                    <td colspan="4"><p class="alert alert-info">There are no pipelines found</p></td>
+                    <td colspan="4"><p class="alert alert-info">There are no workflows found</p></td>
                 </tr>
             </tbody>
         </table>

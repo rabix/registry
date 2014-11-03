@@ -73,9 +73,12 @@ angular.module('registryApp')
             } else {
 
                 var revisionId = revision ? revision.id : null;
-                if (action === 'publish') { mode = 'update'; }
+                var params = {id: id, revision: revisionId};
 
-                return Api.apps[mode]({id: id, revision: revisionId}, {tool: Data.tool}).$promise;
+                if (action === 'publish') { mode = 'update'; }
+                if (action === 'create') { params.id = 'create'; }
+
+                return Api.apps[mode](params, {tool: Data.tool}).$promise;
             }
 
         };

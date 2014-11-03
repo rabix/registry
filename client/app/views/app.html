@@ -11,7 +11,7 @@
 
     <div ng-if="!view.loading" class="content">
 
-        <div ng-if="view.revisions.length > 0" class="nav nav-pills">
+        <div ng-if="view.revisions.length > 0" class="nav nav-pills nav-page">
             <li ng-class="{active: view.tab === 'info'}"><a ng-href="#/app/{{ view.app._id }}">Info</a></li>
             <li ng-class="{active: view.tab === 'revisions'}"><a ng-href="#/app/{{ view.app._id }}/revisions">Revisions</a></li>
         </div>
