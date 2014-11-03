@@ -140,12 +140,12 @@ BuildClass.prototype.startBuild = function () {
 
                     _self.endBuild(message, build);
 
-                    exec('rm -rf ' + buildDir, function(err,out) {
+                    exec('rm -rf ' + folder, function(err,out) {
 
                         if (err) {
-                            logger.error('Error removing a temp build dir', err);
+                            logger.error('Error removing a temp build dir', 'DIR: ' + folder, 'err', err);
                         } else {
-                            logger.info('Removed build folder: ', buildDir, 'STDOUT: ' + out);
+                            logger.info('Removed build folder: ', folder, 'STDOUT: ' + out);
                         }
 
                     });
@@ -238,7 +238,7 @@ var uploadToS3 = function (build) {
                     return false;
                 }
 
-                Build.findOneAndUpdate({"head_commit.id": build.head_commit.id}, {log_dir: file_name_err}, function (err, build) {
+                Build.findOneAndUpdate({"head_commit.id": build.head_commit.id}, {err_log_dir: file_name_err}, function (err, build) {
                     if (err) console.log('Error updating build for repo "' + JSON.stringify(build) + '" ', err);
                 });
 
