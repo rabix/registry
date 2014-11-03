@@ -3,7 +3,7 @@
 angular.module('registryApp')
     .controller('PipelinesCtrl', ['$scope', '$routeParams', '$injector', 'Pipeline', 'Sidebar', 'Api', 'Loading', 'User',function ($scope, $routeParams, $injector, Pipeline, Sidebar, Api, Loading, User) {
 
-        Sidebar.setActive('_dyole');
+        Sidebar.setActive('pipelines');
 
         /**
          * Callback when pipelines are loaded

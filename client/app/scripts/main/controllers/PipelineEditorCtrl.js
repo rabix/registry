@@ -6,7 +6,7 @@
 angular.module('registryApp')
     .controller('PipelineEditorCtrl', ['$scope', '$rootScope', '$q', '$routeParams', '$modal', '$templateCache', '$location', 'Sidebar', 'Loading', 'App', 'Pipeline', 'User', function ($scope, $rootScope, $q, $routeParams, $modal, $templateCache, $location, Sidebar, Loading, App, Pipeline, User) {
 
-        Sidebar.setActive('_dyole');
+        Sidebar.setActive('dyole');
 
         $scope.view = {};
 
@@ -377,7 +377,7 @@ angular.module('registryApp')
 
                 $scope.view.saving = false;
 
-            })  
+            });
         };
         
         $scope.fork = function () {
