@@ -1,6 +1,9 @@
 var path = require('path'),
     rootPath = path.normalize(__dirname + '/..'),
-    env = process.env.NODE_ENV || 'development';
+    env = process.env.NODE_ENV || 'development',
+    fs = require('fs'),
+    confPath = env === 'development' ? __dirname + '/config.json' : '/data/config/rabix/amazon.json',
+    conf = JSON.parse(fs.readFileSync(confPath).toString());
 
 var config = {
     development: {
@@ -24,15 +27,12 @@ var config = {
             builds: '/data/log/rabix-registry/builds'
         },
         amazon: {
-            path: __dirname + '/config.json'
+            path: __dirname + '/amazon.json'
         },
         tmpDir: {
             path: rootPath + '/tmp'
         },
-        mail: {
-            user: 'ci.rabix@gmail.com',
-            pass: 'Damns3cr3t.'
-        }
+        mail: conf.mail
     },
 
     test: {
@@ -52,7 +52,7 @@ var config = {
             scope: 'repo:status,read:org,read:repo_hook,write:repo_hook,admin:repo_hook,user'
         },
         amazon: {
-            path: '/data/config/rabix/config.json'
+            path: '/data/config/rabix/amazon.json'
         },
         logging: {
             path: rootPath + '/logs',
@@ -61,10 +61,8 @@ var config = {
         tmpDir: {
             path: rootPath + '/tmp'
         },
-        mail: {
-            user: 'ci.rabix@gmail.com',
-            pass: 'Damns3cr3t.'
-        }
+        mail: conf.mail
+
     },
 
     production: {
@@ -88,15 +86,12 @@ var config = {
             builds: '/data/log/rabix-registry/builds'
         },
         amazon: {
-            path: '/data/config/rabix/config.json'
+            path: '/data/config/rabix/amazon.json'
         },
         tmpDir: {
             path: rootPath + '/tmp'
         },
-        mail: {
-            user: 'ci.rabix@gmail.com',
-            pass: 'Damns3cr3t.'
-        }
+        mail: conf.mail
     }
 };
 

@@ -92,6 +92,28 @@ var Amazon = {
 
             callback(err, data);
         });
+    },
+    
+    deleteFile: function (file_name, bucket) {
+        var promise = new mongoose.Promise;
+
+        var params = {
+            Bucket: bucket, /* required */
+            Key: file_name /* required */
+        };
+
+        s3.deleteObject(params, function(err, data) {
+
+            if (err) {
+                console.log(err, err.stack);
+                promise.reject(err);
+            } else {
+                promise.fulfill(data);
+            }
+
+        });
+
+        return promise;
     }
 
 };
