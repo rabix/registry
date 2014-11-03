@@ -188,7 +188,7 @@ router.delete('/pipeline/:id', filters.authenticated, function (req, res, next) 
     Pipeline.findOne({_id: req.params.id}, function (err, pipeline) {
         if (err) { return next(err); }
 
-        if (req.user.id = pipeline.user_id) {
+        if (req.user.id === pipeline.user_id) {
             Pipeline.remove({_id: req.params.id}, function (err) {
                 if (err) { return next(err); }
 

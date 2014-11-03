@@ -38,9 +38,7 @@ router.get('/repos', function (req, res, next) {
     var skip = req.query.skip ? req.query.skip : 0;
 
     Repo.count(function (err, total) {
-        if (err) {
-            return next(err);
-        }
+        if (err) { return next(err); }
 
         Repo.find({}).skip(skip).limit(limit).sort({_id: 'desc'}).exec(function (err, repos) {
             if (err) {
@@ -49,6 +47,19 @@ router.get('/repos', function (req, res, next) {
 
             res.json({list: repos, total: total});
         });
+    });
+
+});
+
+router.get('/repos/:user', function (req, res, next) {
+
+    var limit = req.query.limit ? req.query.limit : 25;
+    var skip = req.query.skip ? req.query.skip : 0;
+
+    Repo.find({owner: req.params.user}).skip(skip).limit(limit).sort({_id: 'desc'}).exec(function (err, repos) {
+        if (err) { return next(err); }
+
+        res.json({list: repos, total: total});
     });
 
 });
@@ -159,7 +170,7 @@ router.post('/github-webhook', function (req, res, next) {
     if (event_type === 'push') {
 //        R.startBuild(repo);
         logger.info('[commit/push]: Author: "' + head_commit.author.username + '"  "' + head_commit.id + '". There goes push to a repo: ' + repo.name);
-        logger.info('[build/trigger]: starting build for repo "'+ repo.name +'"');
+        logger.info('[build/trigger]: starting build for repo "' + repo.name + '"');
 
 //        startBuild(repo, head_commit);
 
@@ -173,7 +184,7 @@ router.post('/github-webhook', function (req, res, next) {
 
 
     } else {
-        logger.info('[event]:"'+ event_type +'". There was activity on repo: ' + JSON.stringify(repo));
+        logger.info('[event]:"' + event_type + '". There was activity on repo: ' + JSON.stringify(repo));
 
     }
 
@@ -212,7 +223,7 @@ var addWebhook = function (owner, r, currentUser) {
         var token = user.github.accessToken;
 
         if (!token) {
-            logger.error('Token not found for user: "'+owner+'"');
+            logger.error('Token not found for user: "' + owner + '"');
 //            throw Error('Token not found');
             return false;
         }
