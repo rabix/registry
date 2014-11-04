@@ -47,10 +47,6 @@ angular
                 templateUrl: 'views/revision.html',
                 controller: 'RevisionCtrl'
             })
-            .when('/jobs', {
-                templateUrl: 'views/jobs.html',
-                controller: 'JobsCtrl'
-            })
             .when('/builds', {
                 templateUrl: 'views/builds.html',
                 controller: 'BuildsCtrl'
