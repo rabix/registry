@@ -72,12 +72,19 @@
     }
 
     .logo {
-      padding: 0px 13px;
+      padding: 0 0 0 50px;
       color: #fff;
       text-decoration: none;
       text-shadow: 2px 2px 2px $dark-blue;
       float: left;
+
+      background-image: inline-image('logo.png');
+      background-repeat: no-repeat;
+      background-position: left 15px center;
+      @include background-size(20px 28px);
+
       @extend %opacity-anim;
+
     }
 
     .toggle-sidebar {
