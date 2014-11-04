@@ -51,18 +51,64 @@ router.get('/repos', function (req, res, next) {
 
 });
 
-//router.get('/repos/:user', function (req, res, next) {
-//
-//    var limit = req.query.limit ? req.query.limit : 25;
-//    var skip = req.query.skip ? req.query.skip : 0;
-//
-//    Repo.find({owner: req.params.user}).skip(skip).limit(limit).sort({_id: 'desc'}).exec(function (err, repos) {
-//        if (err) { return next(err); }
-//
-//        res.json({list: repos, total: total});
-//    });
-//
-//});
+router.get('/repos/user', function (req, res, next) {
+
+    var limit = req.query.limit ? req.query.limit : 25;
+    var skip = req.query.skip ? req.query.skip : 0;
+
+    Repo.count(function (err, total) {
+        if (err) { return next(err); }
+
+        Repo.find({owner: req.user.login}).skip(skip).limit(limit).sort({_id: 'desc'}).exec(function (err, repos) {
+            if (err) { return next(err); }
+
+            res.json({list: repos, total: total});
+        });
+
+    });
+
+});
+
+router.post('/repos', filters.authenticated, function (req, res, next) {
+    var repo = req.body.repo,
+        r;
+
+    Repo.findOne({name: repo.name, owner: req.user.login}, function (err, check) {
+        if (!check) {
+            r = new Repo();
+
+            r.name = repo.name;
+            r.owner = req.user.login;
+            r.created_by = req.user.login;
+            //TODO: Ask boysha about this secret
+            r.secret = uuid.v4();
+            r.git = false;
+
+            r.save();
+
+            res.json({repo: r});
+        } else {
+            res.status(400).json({message: 'Repo name already in use'});
+        }
+    });
+
+});
+
+router.put('/repos', filters.authenticated, function (req, res, next) {
+    var repo = req.body.repo;
+
+    Repo.findOne({_id: repo._id}, function (err, r) {
+
+        if (r.owner === req.user.login) {
+            Repo.findOneAndUpdate({_id: repo._id}, {name: repo.name});
+
+            res.json({message: 'Successfully updated repo'});
+        } else {
+            res.status(401).json({message: 'Unauthorized'});
+        }
+
+    })
+});
 
 router.get('/repos/:id', function (req, res, next) {
 
@@ -76,20 +122,11 @@ router.get('/repos/:id', function (req, res, next) {
 
 });
 
-router.post('/repos', function (req, res, next) {
+router.post('/repos/github', function (req, res, next) {
 
     var name = req.param('name');
     var owner = req.param('owner');
     var currentUser = req.user.email;
-//
-//    if (req.user.username !== owner) {
-//        res.statusCode = 403;
-//        res.json({message: 'You can only setup repos owned by you'});
-//
-//        //TODO: check if you can return just without next
-//
-////        return next()
-//    }
 
     Repo.count({name: name, owner: owner}, function (err, count) {
         if (err) {
@@ -102,6 +139,7 @@ router.post('/repos', function (req, res, next) {
             repo.owner = owner;
             repo.created_by = owner;
             repo.secret = uuid.v4();
+            repo.git = true;
 
             repo.save();
 

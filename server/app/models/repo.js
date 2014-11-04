@@ -7,7 +7,8 @@ var RepoSchema = new Schema({
     name: String,
     owner: String,
     created_by: String,
-    secret: String
+    secret: String,
+    git: Boolean
 });
 
 RepoSchema.virtual('date')
