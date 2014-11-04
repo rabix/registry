@@ -80,6 +80,9 @@ router.post('/repos', filters.authenticated, function (req, res, next) {
             r.name = repo.name;
             r.owner = req.user.login;
             r.created_by = req.user.login;
+            //TODO: Ask boysha about this secret
+            r.secret = uuid.v4();
+            r.git = false;
 
             r.save();
 
@@ -136,6 +139,7 @@ router.post('/repos/github', function (req, res, next) {
             repo.owner = owner;
             repo.created_by = owner;
             repo.secret = uuid.v4();
+            repo.git = true;
 
             repo.save();
 
