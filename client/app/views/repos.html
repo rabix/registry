@@ -14,9 +14,9 @@
                 </form>
             </div>
             <div class="col-md-8">
-                <div class="actions pull-right">
+                <div class="actions pull-right" ng-if="view.user">
                     <a href ng-click="manageRepoModal()" class="btn btn-primary"><i class="fa fa-plus"></i> Add New Repo</a>
-                    <a ng-if="view.user" ng-href="#/add-your-github-repo" class="btn btn-default add-github">Add Your GitHub Repo</a>
+                    <a ng-href="#/add-your-github-repo" class="btn btn-default add-github">Add Your GitHub Repo</a>
                 </div>
             </div>
         </div>
@@ -29,17 +29,24 @@
                 <tr>
                     <th class="field-id">User/Repo</th>
                     <th class="field-created-by">Created By</th>
+                    <th class="center">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 <tr ng-repeat="repo in view.repos">
                     <td class="field-id">
-                        <a ng-href="#/repo/{{ repo._id }}">{{ repo.owner }}/{{ repo.name }}</a>
+                        <a ng-href="#/repo/{{ repo._id }}">
+                            <i ng-if="repo.git" class="fa fa-github"></i>
+                            {{ repo.owner }}/{{ repo.name }}
+                        </a>
                     </td>
                     <td class="field-created-by">{{ repo.created_by }}</td>
+                    <td class="center">
+                        <a ng-if="!repo.git && view.user.login === repo.owner" href ng-click="manageRepoModal(repo)" class="btn btn-default" tooltip="Edit Repo"><i class="fa fa-pencil"></i></a>
+                    </td>
                 </tr>
                 <tr class="empty" ng-if="view.repos.length === 0">
-                    <td colspan="2"><p class="alert alert-info">There are no repos</p></td>
+                    <td colspan="3"><p class="alert alert-info">There are no repos</p></td>
                 </tr>
             </tbody>
         </table>

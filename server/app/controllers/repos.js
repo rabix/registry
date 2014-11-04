@@ -94,20 +94,36 @@ router.post('/repos', filters.authenticated, function (req, res, next) {
 
 });
 
-router.put('/repos', filters.authenticated, function (req, res, next) {
+router.put('/repos/:id', filters.authenticated, function (req, res, next) {
+
     var repo = req.body.repo;
 
-    Repo.findOne({_id: repo._id}, function (err, r) {
+    Repo.findOne({_id: req.params.id}, function (err, r) {
 
         if (r.owner === req.user.login) {
-            Repo.findOneAndUpdate({_id: repo._id}, {name: repo.name});
 
-            res.json({message: 'Successfully updated repo'});
+            Repo.findOne({name: repo.name, owner: req.user.login}, function (err, check) {
+                if (err) { return next(err); }
+
+                if (!check) {
+
+                    Repo.findOneAndUpdate({_id: req.params.id}, {name: repo.name}, function(err) {
+                        if (err) { return next(err); }
+
+                        res.json({message: 'Successfully updated repo'});
+
+                    });
+
+                } else {
+                    res.status(400).json({message: 'Repo name already in use'});
+                }
+            });
+
         } else {
             res.status(401).json({message: 'Unauthorized'});
         }
 
-    })
+    });
 });
 
 router.get('/repos/:id', function (req, res, next) {
@@ -122,7 +138,7 @@ router.get('/repos/:id', function (req, res, next) {
 
 });
 
-router.post('/repos/github', function (req, res, next) {
+router.post('/github-repos', function (req, res, next) {
 
     var name = req.param('name');
     var owner = req.param('owner');

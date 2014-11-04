@@ -1,10 +1,12 @@
 'use strict';
 
 angular.module('registryApp')
-    .controller('ManageRepoCtrl', ['$scope', '$modalInstance', 'data', function ($scope, $modalInstance, data) {
+    .controller('ManageRepoCtrl', ['$scope', '$modalInstance', 'data', 'Repo', function ($scope, $modalInstance, data, Repo) {
 
         $scope.view = {};
-        $scope.view.repo = data.repo || {};
+        $scope.view.action = data.repo ? 'update' : 'add';
+        $scope.view.repo = angular.copy(data.repo) || {};
+        $scope.view.id = data.repo ? data.repo._id : null;
 
         $scope.ok = function () {
             $modalInstance.close();
@@ -20,6 +22,11 @@ angular.module('registryApp')
                 $scope.view.form.$setDirty();
                 return false;
             }
+
+            Repo.manageRepo($scope.view.id, $scope.view.action, $scope.view.repo.name)
+                .then(function() {
+                    $modalInstance.close();
+                });
 
         };
 

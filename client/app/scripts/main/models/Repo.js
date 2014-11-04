@@ -8,8 +8,8 @@ angular.module('registryApp')
         /**
          * Get list of repos
          *
-         * @params {integer} skip
-         * @params {string} searchTerm
+         * @param {integer} skip
+         * @param {string} searchTerm
          * @returns {object} $promise
          */
         self.getRepos = function(skip, searchTerm) {
@@ -35,10 +35,6 @@ angular.module('registryApp')
          */
         self.getRepo = function(id) {
 
-//            var params = id.split('/');
-//            var owner = params[0];
-//            var name = params[1];
-
             var promise = Api.repos.get({id: id}).$promise;
 
             return promise;
@@ -46,20 +42,26 @@ angular.module('registryApp')
         };
 
         /**
-         * Add repo to the user
+         * Add github repo of the user into rabix db
          *
          * @param repo
          * @returns {object} $promise
          */
-        self.addRepo = function(repo) {
+        self.addGitHubRepo = function(repo) {
 
             var params = repo.full_name.split('/');
             var owner = params[0];
             var name = params[1];
 
-            var promise = Api.repos.add({}, {owner: owner, name: name}).$promise;
+            return Api.gitHubRepos.add({}, {owner: owner, name: name}).$promise;
 
-            return promise;
+        };
+
+        self.manageRepo = function(id, action, repoName) {
+
+            var repo = {name: repoName};
+
+            return Api.repos[action]({id: id}, {repo: repo}).$promise;
 
         };
 
@@ -70,9 +72,7 @@ angular.module('registryApp')
          */
         self.getGitHubRepos = function() {
 
-            var promise = Api.gitHubRepos.get().$promise;
-
-            return promise;
+            return Api.gitHubRepos.get().$promise;
 
         };
 

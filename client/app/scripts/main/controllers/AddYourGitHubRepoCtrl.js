@@ -30,7 +30,7 @@ angular.module('registryApp')
 
             repo.adding = true;
 
-            Repo.addRepo(repo).then(function(result) {
+            Repo.addGitHubRepo(repo).then(function(result) {
                 repo.adding = false;
                 $location.path('/repo-instructions/' + result.repo._id);
 

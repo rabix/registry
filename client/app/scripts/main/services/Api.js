@@ -57,11 +57,15 @@ angular.module('registryApp')
             });
         };
 
-        self.repos = $resource(apiUrl + '/repos/github/:id', {id: '@id'}, {
-            add: {method: 'POST'}
+        self.repos = $resource(apiUrl + '/repos/:id', {id: '@id'}, {
+            add: {method: 'POST'},
+            update: {method: 'PUT'}
         });
 
-        self.gitHubRepos = $resource(apiUrl + '/github-repos');
+        self.gitHubRepos = $resource(apiUrl + '/github-repos', {}, {
+            add: {method: 'POST'},
+            update: {method: 'PUT'}
+        });
 
         self.user = $resource(apiUrl + '/user/:action', {action: '@action'}, {
             update: {method: 'PUT'},

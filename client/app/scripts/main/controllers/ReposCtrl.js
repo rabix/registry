@@ -105,11 +105,15 @@ angular.module('registryApp')
             var $modal = $injector.get('$modal');
             var $templateCache = $injector.get('$templateCache');
 
-            $modal.open({
+            var modalInstance = $modal.open({
                 template: $templateCache.get('views/partials/manage-repo.html'),
                 controller: 'ManageRepoCtrl',
                 windowClass: 'modal-add-repo',
                 resolve: {data: function () { return {repo: repo}; }}
+            });
+
+            modalInstance.result.then(function() {
+                $scope.resetSearch();
             });
 
         };

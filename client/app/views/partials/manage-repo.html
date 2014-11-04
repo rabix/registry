@@ -4,7 +4,7 @@
 </div>
 <div class="modal-body">
 
-    <form ng-click="save()" name="view.form" novalidate>
+    <form ng-submit="save()" name="view.form" novalidate>
 
         <div class="form-group" ng-class="{'has-error': (view.form.name.$invalid && view.form.$dirty)}">
             <label for="name" class="control-label">Value</label>

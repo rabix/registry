@@ -346,6 +346,9 @@ body {
           overflow: hidden;
           display: block;
           white-space: nowrap;
+          i {
+            color: #555;
+          }
         }
       }
       &.revision {

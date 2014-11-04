@@ -11,7 +11,10 @@ angular.module('registryApp')
                 scope.errors = [];
 
                 scope.$on('httpError', function (obj, message) {
-                    if (scope.errors.indexOf(message) === -1) {
+
+                    var messages = _.pluck(scope.errors, 'message');
+
+                    if (!_.contains(messages, message.message)) {
                         scope.errors.push(message);
                     }
                 });
