@@ -63,11 +63,11 @@
                     <label for="property-transform-{{ view.uniqueId }}" class="control-label">Transform</label>
                     <input type="text"
                            ng-click="editExpression('transform')"
-                           tooltip="{{ prop.adapter.transform ? prop.adapter.transform.expr : 'There is no expression defined' }}"
+                           tooltip="{{ prop.adapter.transform ? prop.adapter.transform.expr.value : 'There is no expression defined' }}"
                            class="form-control"
                            id="property-transform-{{ view.uniqueId }}"
                            name="{{ name }}-transform"
-                           ng-model="prop.adapter.transform.expr"
+                           ng-model="prop.adapter.transform.expr.value"
                            ng-disabled="view.disabled"
                            readonly>
                 </div>
@@ -157,11 +157,11 @@
                     <label for="property-item-transform-{{ view.uniqueId }}" class="control-label">Transform</label>
                     <input type="text"
                            ng-click="editExpression('listTransform')"
-                           tooltip="{{ prop.adapter.listTransform ? prop.adapter.listTransform.expr : 'There is no expression defined' }}"
+                           tooltip="{{ prop.adapter.listTransform ? prop.adapter.listTransform.expr.value : 'There is no expression defined' }}"
                            class="form-control"
                            id="property-item-transform-{{ view.uniqueId }}"
                            name="{{ name }}-item-transform"
-                           ng-model="prop.adapter.listTransform.expr"
+                           ng-model="prop.adapter.listTransform.expr.value"
                            readonly>
                 </div>
             </div>
