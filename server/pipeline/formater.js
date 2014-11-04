@@ -12,7 +12,16 @@ var formater = {
         // reset schema
         this.packedSchema = {};
 
-        this._transformRelationsToSteps(json.relations || [], json.nodes, json.schemas);
+        console.log(!json.relations && json.nodes.length === 1);
+        if ( (!json.relations || json.relations.length === 0 ) && json.nodes.length === 1) {
+
+            console.log('I am in');
+            this.packedSchema.steps = [];
+            this.packedSchema.steps.push(this._createOneAppStep(json));
+
+        } else {
+            this._transformRelationsToSteps(json.relations || [], json.nodes, json.schemas);
+        }
 
         delete json.relations;
         delete json.schemas;
@@ -21,6 +30,27 @@ var formater = {
         json.steps = this.packedSchema.steps;
 
         return json;
+    },
+
+    _createOneAppStep: function (json) {
+        var step = {},
+            node = json.nodes[0],
+            schema = json.schemas[node.id].json;
+
+        step._id = node.id;
+        step.app = schema;
+        step.inputs = {};
+        step.outputs = {};
+
+        _.forEach(schema.inputs.properties, function (i, n) {
+            step.inputs[n] = i;
+        });
+
+        _.forEach(schema.outputs.properties, function (o, n) {
+            step.outputs[n] = o;
+        });
+
+        return step;
     },
     
     toPipelineSchema: function (json) {

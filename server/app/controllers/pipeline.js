@@ -70,7 +70,12 @@ module.exports = function (app) {
 router.post('/pipeline/format', function (req, res, next) {
         console.log(req.body.pipeline);
         var p = formater.toRabixSchema(req.body.pipeline.json || req.body.pipeline);
-        res.json({json: p});
+
+        if (p.steps.length === 0) {
+            res.status(400).json({message: "Invalid pipeline"});
+        } else {
+            res.json({json: p});
+        }
 
 });
 
