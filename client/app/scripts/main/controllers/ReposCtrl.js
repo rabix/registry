@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('registryApp')
-    .controller('ReposCtrl', ['$scope', '$window', 'Repo', 'Sidebar', 'Loading', 'User', function ($scope, $window, Repo, Sidebar, Loading, User) {
+    .controller('ReposCtrl', ['$scope', '$window', '$injector', 'Repo', 'Sidebar', 'Loading', 'User', function ($scope, $window, $injector, Repo, Sidebar, Loading, User) {
 
         Sidebar.setActive('repos');
 
@@ -92,6 +92,25 @@ angular.module('registryApp')
             $scope.view.page = 1;
             $scope.view.searchTerm = '';
             Repo.getRepos(0).then(reposLoaded);
+
+        };
+
+        /**
+         * Manage repo name
+         *
+         * @param {Object} repo
+         */
+        $scope.manageRepoModal = function(repo) {
+
+            var $modal = $injector.get('$modal');
+            var $templateCache = $injector.get('$templateCache');
+
+            $modal.open({
+                template: $templateCache.get('views/partials/manage-repo.html'),
+                controller: 'ManageRepoCtrl',
+                windowClass: 'modal-add-repo',
+                resolve: {data: function () { return {repo: repo}; }}
+            });
 
         };
 
