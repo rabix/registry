@@ -12,10 +12,8 @@ var formater = {
         // reset schema
         this.packedSchema = {};
 
-        console.log(!json.relations && json.nodes.length === 1);
         if ( (!json.relations || json.relations.length === 0 ) && json.nodes.length === 1) {
 
-            console.log('I am in');
             this.packedSchema.steps = [];
             this.packedSchema.steps.push(this._createOneAppStep(json));
 

@@ -68,7 +68,7 @@ module.exports = function (app) {
 };
 
 router.post('/pipeline/format', function (req, res, next) {
-        console.log(req.body.pipeline);
+
         var p = formater.toRabixSchema(req.body.pipeline.json || req.body.pipeline);
 
         if (p.steps.length === 0) {
