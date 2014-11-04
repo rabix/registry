@@ -99,7 +99,7 @@ angular.module('registryApp.dyole')
 
                     this.removeWire();
 
-                    this.wire = this.canvas.image(src, x - canvasOffset.left - 15, y - canvasOffset.top - 15, 30, 30);
+                    this.wire = this.canvas.image(src, x - canvasOffset.left - 15, y - canvasOffset.top - 15, 25, 25);
 
                     this.wire.click(function () {
                         self.removeWire();
