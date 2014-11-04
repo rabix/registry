@@ -16,7 +16,7 @@ angular.module('registryApp.cliche')
          *
          * @type {number}
          */
-        self.version = 12;
+        self.version = 13;
 
         /**
          * Tool json object
@@ -301,7 +301,7 @@ angular.module('registryApp.cliche')
             var deferred = $q.defer();
             var SandBox = $injector.get('SandBox');
 
-            var expr = (transform && transform.expr) ? transform.expr : null;
+            var expr = (transform && transform.expr) ? transform.expr.value : null;
             var selfInput = self ? {$self: value} : {};
 
             if (expr) {

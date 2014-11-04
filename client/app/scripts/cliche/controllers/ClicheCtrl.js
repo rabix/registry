@@ -77,25 +77,27 @@ angular.module('registryApp.cliche')
 
         } else {
 
-            $q.all([
-                    Data.fetchTool(),
-                    Data.fetchJob(),
-                    User.getUser()
-                ]).then(function(result) {
+            Data.checkStructure().then(function() {
+                $q.all([
+                        Data.fetchTool(),
+                        Data.fetchJob(),
+                        User.getUser()
+                    ]).then(function(result) {
 
-                    $scope.view.loading = false;
+                        $scope.view.loading = false;
 
-                    $scope.view.user = result[2].user;
+                        $scope.view.user = result[2].user;
 
-                    $scope.view.toolForm = Data.tool;
-                    if ($scope.view.user) {
-                        $scope.view.toolForm.documentAuthor = $scope.view.user.email;
-                        $scope.view.toolForm.softwareDescription.repo_owner = $scope.view.user.login;
-                    }
+                        $scope.view.toolForm = Data.tool;
+                        if ($scope.view.user) {
+                            $scope.view.toolForm.documentAuthor = $scope.view.user.email;
+                            $scope.view.toolForm.softwareDescription.repo_owner = $scope.view.user.login;
+                        }
 
-                    $scope.view.jobForm = Data.job;
+                        $scope.view.jobForm = Data.job;
 
-                });
+                    });
+            });
 
         }
 
@@ -187,8 +189,8 @@ angular.module('registryApp.cliche')
 
             _.each($scope.view.toolForm.requirements.resources, function (resource, key) {
 
-                if (_.isObject(resource) && resource.expr && _.contains(resource.expr, '$job')) {
-                    SandBox.evaluate(resource.expr, {})
+                if (_.isObject(resource) && resource.expr && _.contains(resource.expr.value, '$job')) {
+                    SandBox.evaluate(resource.expr.value, {})
                         .then(function (result) {
                             $scope.view.jobForm.allocatedResources[key] = result;
                         }, function (error) {
@@ -328,7 +330,7 @@ angular.module('registryApp.cliche')
 
             if (_.isObject(value)) {
 
-                SandBox.evaluate(value.expr, {})
+                SandBox.evaluate(value.expr.value, {})
                     .then(function (result) {
                         $scope.view.jobForm.allocatedResources[key] = result;
                     }, function (error) {

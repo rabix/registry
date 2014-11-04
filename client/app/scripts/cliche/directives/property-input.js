@@ -238,7 +238,7 @@ angular.module('registryApp.cliche')
                      */
                     scope.editExpression = function (transformKey) {
 
-                        var expr = (scope.prop.adapter[transformKey] && scope.prop.adapter[transformKey].expr) ? scope.prop.adapter[transformKey].expr : '';
+                        var expr = (scope.prop.adapter[transformKey] && scope.prop.adapter[transformKey].expr) ? scope.prop.adapter[transformKey].expr.value : '';
 
                         var modalInstance = $modal.open({
                             template: $templateCache.get('views/cliche/partials/edit-expression.html'),
@@ -261,7 +261,7 @@ angular.module('registryApp.cliche')
                                 if (_.isUndefined(scope.prop.adapter[transformKey]) || !_.isObject(scope.prop.adapter[transformKey])) {
                                     scope.prop.adapter[transformKey] = {};
                                 }
-                                scope.prop.adapter[transformKey].expr = expr;
+                                scope.prop.adapter[transformKey].expr = {value: expr, lang: 'javascript'};
                             }
 
                         });
