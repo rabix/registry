@@ -5,7 +5,7 @@ angular.module('registryApp')
 
         $scope.view = {};
         $scope.view.action = data.repo ? 'update' : 'add';
-        $scope.view.repo = angular.copy(data.repo) || {};
+        $scope.view.repo = data.repo || {};
         $scope.view.id = data.repo ? data.repo._id : null;
 
         $scope.ok = function () {

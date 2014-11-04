@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('registryApp')
-    .controller('RepoCtrl', ['$scope', '$routeParams', '$q', 'Repo', 'App', 'Build', 'Sidebar', 'Loading', function ($scope, $routeParams, $q, Repo, App, Build, Sidebar, Loading) {
+    .controller('RepoCtrl', ['$scope', '$routeParams', '$q', '$injector', 'Repo', 'App', 'Build', 'User', 'Sidebar', 'Loading', function ($scope, $routeParams, $q, $injector, Repo, App, Build, User, Sidebar, Loading) {
 
         Sidebar.setActive('repos');
 
@@ -31,6 +31,12 @@ angular.module('registryApp')
                 loading: false
             }
         };
+
+        $scope.view.user = {};
+
+        User.getUser().then(function(result) {
+            $scope.view.user = result.user;
+        });
 
         $scope.view.classes = ['page', 'repo'];
         Loading.setClasses($scope.view.classes);
@@ -115,6 +121,25 @@ angular.module('registryApp')
                     });
                 }
             }
+        };
+
+        /**
+         * Manage repo name
+         *
+         * @param {Object} repo
+         */
+        $scope.manageRepoModal = function() {
+
+            var $modal = $injector.get('$modal');
+            var $templateCache = $injector.get('$templateCache');
+
+            $modal.open({
+                template: $templateCache.get('views/partials/manage-repo.html'),
+                controller: 'ManageRepoCtrl',
+                windowClass: 'modal-add-repo',
+                resolve: {data: function () { return {repo: $scope.view.repo}; }}
+            });
+
         };
 
 
