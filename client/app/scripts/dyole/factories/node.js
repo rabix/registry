@@ -67,6 +67,12 @@ angular.module('registryApp.dyole')
 
             },
 
+            icons: {
+                input: '/images/icon-input-1.png',
+                output: '/images/icon-output-2.png',
+                default: '/images/logo.png'
+            },
+
             buttons: {
                 radius: 14,
                 border: 4,
@@ -148,17 +154,34 @@ angular.module('registryApp.dyole')
                 label.attr({
                     'font-size': 14
                 });
-                //
-                //            img = new Image();
-                //            img.src = imgUrl;
-                //
-                //            $(img).load( function () {
-                //                icon = canvas.image(imgUrl, - img.width/2, - img.height/2, img.width , img.height);
-                //                borders.push(icon);
-                //
-                //
-                //                self._attachEvents();
-                //            });
+
+                imgUrl = this.icons.default;
+                var modification = {
+                    left: 0,
+                    top: 0
+                };
+
+                if (model.softwareDescription.repo_name === 'system') {
+                    if (this.inputs.length === 0) {
+                        imgUrl = this.icons.input;
+                        modification.left = -2;
+                    } else {
+                        imgUrl = this.icons.output;
+                        modification.left = 1;
+                    }
+                } else {
+                    modification.left = 2;
+                }
+
+                img = new Image();
+                img.src = imgUrl;
+
+                $(img).load( function () {
+                    icon = canvas.image(imgUrl, - img.width/2 + modification.left, - img.height/2 + modification.top, img.width , img.height);
+                    borders.push(icon);
+
+                    self._attachEvents();
+                });
 
 
                 // add all elements to the group container
@@ -182,9 +205,6 @@ angular.module('registryApp.dyole')
                 this._innerBorder = innerBorder;
                 this._outerBorder = outerBorder;
                 this.circle = borders;
-
-                this._attachEvents();
-                //            self.checkNodeState();
 
                 return this;
             },
