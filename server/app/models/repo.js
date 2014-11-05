@@ -7,6 +7,7 @@ var RepoSchema = new Schema({
     name: String,
     owner: String,
     created_by: String,
+    user_id: String,
     secret: String,
     git: Boolean
 });

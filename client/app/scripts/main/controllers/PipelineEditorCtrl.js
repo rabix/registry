@@ -4,7 +4,7 @@
 'use strict';
 
 angular.module('registryApp')
-    .controller('PipelineEditorCtrl', ['$scope', '$rootScope', '$q', '$routeParams', '$modal', '$templateCache', '$location', 'Sidebar', 'Loading', 'App', 'Pipeline', 'User', function ($scope, $rootScope, $q, $routeParams, $modal, $templateCache, $location, Sidebar, Loading, App, Pipeline, User) {
+    .controller('PipelineEditorCtrl', ['$scope', '$rootScope', '$q', '$routeParams', '$modal', '$templateCache', '$location', 'Sidebar', 'Loading', 'App', 'Pipeline', 'User', 'Repo', function ($scope, $rootScope, $q, $routeParams, $modal, $templateCache, $location, Sidebar, Loading, App, Pipeline, User, Repo) {
 
         Sidebar.setActive('dyole');
 
@@ -43,6 +43,9 @@ angular.module('registryApp')
         /* list of other repos */
         $scope.view.otherRepositories = {};
 
+        /* list of user repos*/
+        $scope.view.userRepos= [];
+
         /* flag if something is changed: params or pipeline */
         $scope.view.isChanged = false;
 
@@ -68,6 +71,11 @@ angular.module('registryApp')
 
         User.getUser().then(function (result) {
             $scope.view.user = result.user;
+        });
+
+        Repo.getRepos(0, '', true).then(function (repos) {
+            console.log(repos.list);
+            $scope.view.userRepos = repos.list;
         });
 
         if ($routeParams.mode === 'edit') {

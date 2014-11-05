@@ -12,7 +12,7 @@ angular.module('registryApp')
          * @param {string} searchTerm
          * @returns {object} $promise
          */
-        self.getRepos = function(skip, searchTerm) {
+        self.getRepos = function(skip, searchTerm, mine) {
 
             var isSearch = !(_.isUndefined(searchTerm) || _.isEmpty(searchTerm));
             var params = {skip: skip};
@@ -20,6 +20,8 @@ angular.module('registryApp')
             if (isSearch) {
                 params.q = searchTerm;
             }
+
+            params.mine = mine || null;
 
             var promise = Api.repos.get(params).$promise;
 
