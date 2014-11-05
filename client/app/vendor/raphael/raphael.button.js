@@ -35,27 +35,33 @@ Raphael.fn.button = function (config, cb) {
 
             if (typeof conf.image !== 'undefined') {
 
-//                    var x, y, img, fake, width, height;
-//
-//                    fake = new Image();
-//                    fake.src = conf.image.url;
-//
-//                    width = fake.width;
-//                    height = fake.height;
-//
-//                    x = - width / 2;
-//                    y =  - height / 2;
+                var x, y, img, fake, width, height;
 
-                var x, y, img;
+                fake = new Image();
+                fake.src = conf.image.url;
 
-                x = - conf.image.width / 2;
-                y =  - conf.image.height / 2;
 
-                img = r.image(conf.image.url, x, y, conf.image.width, conf.image.height);
+
+                $(fake).load(function () {
+                    if (group) {
+                        console.log(fake.width, fake.height);
+                        width = conf.image.width || fake.width;
+                        height = conf.image.height ||  fake.height;
+
+                        x = - width / 2;
+                        y =  - height / 2;
+
+//                        x = - conf.image.width / 2;
+//                        y =  - conf.image.height / 2;
+
+                        img = r.image(conf.image.url, x, y, width, height);
+                        group.push(img)
+                    }
+                })
 
             }
 
-            group.push(outer).push(inner).push(img);
+            group.push(outer).push(inner);
 
             group.translate(conf.x, conf.y);
 

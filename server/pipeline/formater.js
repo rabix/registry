@@ -182,18 +182,6 @@ var formater = {
         });
 
         this.packedSchema.relations = relations;
-    },
-
-    _addSchema: function (json) {
-
-    },
-
-    _removeSchema: function () {
-
-    },
-
-    _packIO: function () {
-        
     }
 
 };

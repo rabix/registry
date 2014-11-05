@@ -570,8 +570,6 @@ angular.module('registryApp.dyole')
 
                 if (!this.infoButton && !this.removeNodeButton) {
 
-                    //                    this.buttons.delete.image.url = require.toUrl('sbg/pipeline-canvas/img/' + this.buttons.delete.image.name);
-                    //                    this.buttons.info.image.url = require.toUrl('sbg/pipeline-canvas/img/' + this.buttons.info.image.name);
                     this.buttons.rename.image.url = 'images/' + this.buttons.rename.image.name;
 
                     this.infoButton = this.canvas.button({
@@ -580,7 +578,11 @@ angular.module('registryApp.dyole')
                         y: buttonDistance,
                         radius: this.buttons.radius,
                         border: this.buttons.border,
-                        image: 'images/' + this.buttons.info.image.name
+                        image: {
+                            url: 'images/' + this.buttons.info.image.name,
+                            width: 11,
+                            height: 11
+                        }
                     }, {
                         onClick: this._showInfo,
                         scope: this
@@ -592,7 +594,11 @@ angular.module('registryApp.dyole')
                         y: buttonDistance,
                         radius: this.buttons.radius,
                         border: this.buttons.border,
-                        image: 'images/' + this.buttons.delete.image.name
+                        image: {
+                            url: 'images/' + this.buttons.delete.image.name,
+                            width: 11,
+                            height: 11
+                        }
                     }, {
                         onClick: this._removeNodeButtonClick,
                         scope: this
@@ -608,7 +614,11 @@ angular.module('registryApp.dyole')
                             y: bbox.y + 8,
                             radius: 10,
                             border: this.buttons.border,
-                            image: this.buttons.rename.image,
+                            image: {
+                                url: 'images/' + this.buttons.rename.image.name,
+                                width: 13,
+                                height: 13
+                            },
 
                             borderFill: 'transparent',
                             borderStroke: 'transparent'
