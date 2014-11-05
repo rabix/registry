@@ -53,8 +53,8 @@ angular.module('registryApp')
                     {name: 'workflows', link: 'pipelines', desc: 'Workflows', icon: 'cogs'},
                     {name: 'builds', link: 'builds', desc: 'Builds', icon: 'cube'},
                     {name: 'repos', link: 'repos', desc: 'Repositories', icon: 'code-fork'},
-                    {name: 'settings',link: 'settings',  desc: 'Settings', icon: 'gear'},
-                    {name: 'dyole', link: 'pipeline/0/new', desc: 'Workflow Editor', icon: 'terminal'}
+                    {name: 'dyole', link: 'pipeline/0/new', desc: 'Workflow Editor', icon: 'terminal'},
+                    {name: 'cliche', link: 'cliche', desc: 'Tool Editorr', icon: 'terminal'}
                 ];
 
                 scope.SidebarService = Sidebar;
@@ -64,7 +64,7 @@ angular.module('registryApp')
                     scope.view.loading = false;
 
                     if (!_.isEmpty(result.user)) {
-                        scope.view.navigation.unshift({name: 'jobs', link: 'jobs', desc: 'Jobs', icon: 'plug'});
+                        scope.view.navigation.push({name: 'settings',link: 'settings',  desc: 'Settings', icon: 'gear'});
                     }
 
                 });

@@ -96,7 +96,7 @@ angular.module('registryApp.dyole')
                     fill: '#EF4836',
 
                     image: {
-                        name: 'icon-remove.png',
+                        name: 'icon-delete.png',
                         width: 10,
                         height: 10
                     }
@@ -580,7 +580,7 @@ angular.module('registryApp.dyole')
                         y: buttonDistance,
                         radius: this.buttons.radius,
                         border: this.buttons.border,
-                        image: ''
+                        image: 'images/' + this.buttons.info.image.name
                     }, {
                         onClick: this._showInfo,
                         scope: this
@@ -592,11 +592,12 @@ angular.module('registryApp.dyole')
                         y: buttonDistance,
                         radius: this.buttons.radius,
                         border: this.buttons.border,
-                        image: ''
+                        image: 'images/' + this.buttons.delete.image.name
                     }, {
                         onClick: this._removeNodeButtonClick,
                         scope: this
                     });
+
 
                     if (this.model.softwareDescription.repo_name === 'system') {
 

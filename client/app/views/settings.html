@@ -1,31 +1,38 @@
-<div class="page settings">
+<div ng-class="view.classes" loading="view.loading">
 
     <div class="heading">
         <a ng-href="#/" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
-        <h1>Settings</h1>
+        <h1>
+            Settings
+            <div class="actions pull-right">
+                <button class="btn btn-primary" ng-click="generateToken()" ng-disabled="view.generating" tooltip="You can (re)generate your token" tooltip-placement="bottom">(Re)generate Token</button>
+                <button class="btn btn-danger" ng-click="revokeToken()" ng-disabled="view.revoking" tooltip="You can revoke your token" tooltip-placement="bottom">Revoke Token</button>
+                <button class="btn btn-default" ng-click="getToken()" ng-disabled="view.getting" tooltip="Check your token" tooltip-placement="bottom">Check Token</button>
+            </div>
+        </h1>
     </div>
     <!-- # .heading -->
 
-    <div class="content">
+    <div class="content" ng-if="!view.loading">
 
-        <div class="snippet token">
-            <p>You can (re)generate your token</p>
-            <button class="btn btn-primary" ng-click="generateToken()" ng-disabled="view.generating">(Re)generate Token</button>
-            <p ng-class="{show: view.trace.generate}" class="trace alert alert-success">{{ view.trace.generate }}</p>
-        </div>
-
-        <div class="snippet token">
-            <p>You can revoke your token</p>
-            <button class="btn btn-danger" ng-click="revokeToken()" ng-disabled="view.revoking">Revoke Token</button>
-            <p ng-class="{show: view.trace.revoke}" class="trace alert alert-success">{{ view.trace.revoke }}</p>
-        </div>
-
-        <div class="snippet token">
-            <p>Check your token</p>
-            <button class="btn btn-default" ng-click="getToken()" ng-disabled="view.getting">Check Token</button>
-            <p ng-class="{show: view.trace.token}" class="trace alert alert-success">{{ view.trace.token }}</p>
-        </div>
+        <table class="table table-hover jobs">
+            <thead><tr><th>History of generated job JSONs</th></tr></thead>
+            <tbody>
+            <tr ng-repeat="job in view.jobs track by $index">
+                <td><a ng-href="{{ job }}" target="_blank">{{ job }}</a></td>
+            </tr>
+            <tr class="empty" ng-if="view.jobs.length === 0">
+                <td colspan="3"><p class="alert alert-info">There are no jobs found</p></td>
+            </tr>
+            </tbody>
+        </table>
 
     </div>
-    <!-- # .content -->
+
+    <div class="paginate" ng-if="!view.loading && view.jobs.length !== 0">
+        <button ng-disabled="!view.paginator.prev" class="btn btn-default pull-left" ng-click="goToPage('prev')"><i class="fa fa-chevron-left"></i></button>
+        <span class="page-number">{{ view.page }} / {{ view.total }}</span>
+        <button ng-disabled="!view.paginator.next" class="btn btn-default pull-right" ng-click="goToPage('next')"><i class="fa fa-chevron-right"></i></button>
+    </div>
+    <!-- # .paginate -->
 </div>

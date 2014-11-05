@@ -183,10 +183,14 @@
         }
 
         &.dyole,
-        &.cliche-logo {
+        &.cliche {
           span {
             text-transform: none;
           }
+        }
+
+        &.settings {
+          border-top: 3px solid $dark-blue;
         }
 
         span {
