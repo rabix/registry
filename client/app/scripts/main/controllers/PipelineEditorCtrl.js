@@ -234,7 +234,7 @@ angular.module('registryApp')
          * Initiate pipeline save
          */
         $scope.save = function () {
-            var modalInstance;
+            var modalInstance, mode = $scope.view.mode;
 
             if (!$scope.view.pipeline.name) {
 
@@ -247,34 +247,19 @@ angular.module('registryApp')
                 });
 
                 return false;
+            } else if (mode === 'update') {
+
+                $scope.$broadcast('save', true);
+
             } else {
 
                 modalInstance = $modal.open({
-                    controller: ['$scope', '$modalInstance', 'data', function ($scope, $modalInstance, data) {
-
-                        $scope.repos = data;
-                        $scope.view = {};
-
-                        console.log($scope.repos);
-
-                        $scope.ok = function () {
-                            $modalInstance.close($scope.view.repoSelected);
-                        };
-
-                        $scope.cancel = function () {
-                            $modalInstance.dismiss('cancel');
-                        };
-
-                    }],
-
-//                    template: $templateCache.get('views/dyole/pick-repo-name.html'),
-                    templateUrl: 'views/dyole/pick-repo-name.html',
+                    controller: 'PickRepoModalCtrl',
+                    template: $templateCache.get('views/dyole/pick-repo-name.html'),
                     windowClass: 'modal-confirm',
-                    resolve: {data: function () { return $scope.view.userRepos; }}
+                    resolve: {data: function () { return {repos: $scope.view.userRepos, type: 'save'};}}
 
                 });
-
-
 
             }
 
@@ -442,17 +427,26 @@ angular.module('registryApp')
         
         $scope.fork = function () {
 
-            $scope.view.saving = true;
-
             var modalInstance = $modal.open({
-                template: $templateCache.get('views/partials/confirm-fork.html'),
-                controller: 'ModalCtrl',
-                resolve: { data: function () { return {message: 'Are you sure you want to fork this workflow?'}; }}
+                controller: 'PickRepoModalCtrl',
+                template: $templateCache.get('views/dyole/pick-repo-name.html'),
+                resolve: { data: function () { return { repos: $scope.view.userRepos, type: 'fork', message: 'Are you sure you want to fork this workflow?'}; }}
             });
 
-            modalInstance.result.then(function () {
-                $scope.view.reload = true;
-                $scope.$broadcast('pipeline:fork', true);
+            modalInstance.result.then(function (repoId) {
+                if (repoId) {
+                    $scope.view.reload = true;
+                    $scope.$broadcast('pipeline:fork', repoId);
+                } else {
+                    $modal.open({
+                        template: $templateCache.get('views/partials/validation.html'),
+                        size: 'sm',
+                        controller: 'ModalCtrl',
+                        windowClass: 'modal-validation',
+                        resolve: {data: function () { return {messages: ['You must pick repo name']}; }}
+                    });
+
+                }
             });
 
         };

@@ -33,7 +33,7 @@
             <thead>
                 <tr>
                     <th>Name</th>
-                    <!--<th>Description</th>-->
+                    <th>Repo name</th>
                     <th>Author</th>
                     <th class="center">Actions</th>
                 </tr>
@@ -41,7 +41,7 @@
             <tbody>
                 <tr ng-repeat="pipeline in view.pipelines">
                     <td><a ng-href="#/pipeline/{{ pipeline._id }}">{{ pipeline.name }}</a></td>
-                    <!--<td><p tooltip="{{ pipeline.description }}" tooltip-popup-delay="1000">{{ pipeline.description }}</p></td>-->
+                    <td><p tooltip="{{ pipeline.repo.name }}" tooltip-popup-delay="1000">{{pipeline.repo.owner}}/{{ pipeline.repo.name }}</p></td>
                     <td><p tooltip="{{ pipeline.author }}" tooltip-popup-delay="1000">{{ pipeline.author }}</p></td>
                     <td class="center">
                         <a class="btn btn-default" tooltip="Edit Workflow" ng-href="#/pipeline/{{ pipeline._id }}/edit"><i class="fa fa-pencil"></i></a>

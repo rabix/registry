@@ -82,8 +82,8 @@ router.post('/pipeline/format', function (req, res, next) {
 
 router.post('/pipeline/format/upload', function (req, res, next) {
     var p = req.body.pipeline;
-    console.log(p);
-    var folder, pipeline = p.json;
+
+    var folder, pipeline = formater.toRabixSchema(p.json);
 
     if (req.user) {
         folder = 'users/' + req.user.login + '/pipelines/' + p.name;
@@ -108,7 +108,7 @@ router.post('/pipeline/format/upload', function (req, res, next) {
 
                             url.pipeline_id = p._id;
 
-                            url.user_id = req.user.id;
+                            url.user = req.user.id;
 
                             url.save();
 
@@ -146,13 +146,13 @@ router.get('/pipeline', function (req, res, next) {
     });
 
     if (req.user && req.param('mine')) {
-        where.user_id = req.user.id;
+        where.user = req.user.id;
     }
 
     Pipeline.count(where).exec(function(err, total) {
         if (err) { return next(err); }
 
-        Pipeline.find(where).skip(skip).limit(limit).exec(function(err, pipelines) {
+        Pipeline.find(where).populate('repo').populate('user', '_id email username').skip(skip).limit(limit).exec(function(err, pipelines) {
             if (err) { return next(err); }
 
             res.json({list: pipelines, total: total});
@@ -163,7 +163,7 @@ router.get('/pipeline', function (req, res, next) {
 
 router.get('/pipeline/:id', function (req, res, next) {
 
-    Pipeline.findById(req.params.id).exec(function(err, pipeline) {
+    Pipeline.findById(req.params.id).populate('repo').populate('user', '_id email username').exec(function(err, pipeline) {
         if (err) { return next(err); }
 
         res.json({data: pipeline});
@@ -175,7 +175,7 @@ router.post('/pipeline', function (req, res) {
 
     var data = req.body.data;
     
-    Repo.findOne({_id: data.repo_id}, function (err, repo) {
+    Repo.findOne({_id: data.repo}, function (err, repo) {
         if (err) {return next(err);}
 
         if (repo) {
@@ -185,12 +185,10 @@ router.post('/pipeline', function (req, res) {
             pipeline.json = data.json;
             pipeline.name = data.name;
             pipeline.author = req.user.email;
-            pipeline.user_id = req.user.id;
+            pipeline.user = req.user.id;
             pipeline.description = data.description;
 
-            pipeline.repo_id = data.repo_id;
-            pipeline.repo_owner = repo.owner;
-            pipeline.repo_name = repo.name;
+            pipeline.repo = data.repo;
 
             pipeline.save();
 
@@ -198,7 +196,7 @@ router.post('/pipeline', function (req, res) {
 
 
         } else {
-            res.status(400).json({message: 'There is no repo with id: ' + data.repo_id });
+            res.status(400).json({message: 'There is no repo with id: ' + data.repo });
         }
     });
 
@@ -207,13 +205,13 @@ router.post('/pipeline', function (req, res) {
 
 router.delete('/pipeline/:id', filters.authenticated, function (req, res, next) {
 
-    Pipeline.findOne({_id: req.params.id}, function (err, pipeline) {
+    Pipeline.findOne({_id: req.params.id}).exec(function (err, pipeline) {
         if (err) { return next(err); }
 
-        var user_id = req.user.id.toString();
-        var app_user_id = pipeline.user_id.toString();
+        var user = req.user.id.toString();
+        var app_user = pipeline.user.toString();
 
-        if (user_id === app_user_id) {
+        if (user === app_user) {
             Pipeline.remove({_id: req.params.id}, function (err) {
                 if (err) { return next(err); }
 
@@ -232,7 +230,7 @@ router.put('/pipeline/:id', function (req, res, next) {
 
     var data = req.body.data;
 
-    Pipeline.findById(req.params.id).exec(function(err, pipeline) {
+    Pipeline.findById(req.params.id).populate('repo').populate('user', '_id email username').exec(function(err, pipeline) {
         if (err) { return next(err); }
 
         pipeline.json = data.json;
@@ -251,26 +249,35 @@ router.post('/pipeline/fork', filters.authenticated, function (req, res, next) {
 
     var pipeline = req.body.pipeline;
 
-    var p = new Pipeline();
+    Repo.findOne({_id: pipeline.repo}).populate('repo').populate('user', '_id email username').exec(function (err, repo) {
+        if (err) {return next(err);}
 
-    p.json = pipeline.json;
-    p.user_id = req.user.id;
-    p.author = pipeline.author;
+        if (repo) {
 
-    //TODO: FIX THIS, repo name should be taken from user that is forking
-    p.repo_name = pipeline.repo_name;
-    p.repo_id = pipeline.repo_id;
+            var p = new Pipeline();
 
-    p.description = pipeline.description;
-    p.name = pipeline.name;
-    p.repo_owner = req.user.login;
+            p.json = pipeline.json;
+            p.user = req.user.id;
+            p.author = pipeline.author;
 
-    p.save();
+            p.description = pipeline.description;
+            p.name = pipeline.name;
+            p.repo = pipeline.repo;
 
-    res.json({
-        _id: p._id,
-        message: 'Pipeline successfully updated'
+            p.save();
+
+            res.json({
+                _id: p._id,
+                message: 'Pipeline successfully updated'
+            });
+
+        } else {
+            res.status(400).json({message: 'There is no repo with id: ' + pipeline.repo });
+        }
+
     });
+
+
 
 });
 

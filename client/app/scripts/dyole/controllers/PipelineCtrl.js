@@ -58,7 +58,7 @@ angular.module('registryApp.dyole')
 
             if (repoId) {
                 $scope.pipeline.json = Pipeline.getJSON();
-                $scope.pipeline.repo_id = repoId;
+                $scope.pipeline.repo = repoId;
 
                 PipelineMdl.savePipeline($scope.pipeline._id, $scope.pipeline)
                     .then(function (data) {
@@ -73,8 +73,10 @@ angular.module('registryApp.dyole')
 
         });
         
-        $scope.$on('pipeline:fork', function () {
+        $scope.$on('pipeline:fork', function (e, repoId) {
             $scope.pipeline.json = Pipeline.getJSON();
+
+            $scope.pipeline.repo = repoId;
 
             PipelineMdl.fork($scope.pipeline).then(function (pipeline) {
                 $location.path('/pipeline/' + pipeline._id + '/edit');

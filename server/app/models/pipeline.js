@@ -10,10 +10,8 @@ var PipelineSchema = new Schema({
     name: String,
     description: String,
     author: String,
-    user_id: String,
-    repo_name: String,
-    repo_owner: String,
-    repo_id: String,
+    user: { type: Schema.Types.ObjectId, ref: 'User' },
+    repo: { type: Schema.Types.ObjectId, ref: 'Repo' },
     json: Schema.Types.Mixed
 });
 

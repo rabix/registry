@@ -13,6 +13,8 @@ angular.module('registryApp.dyole')
                 this.model = options.model;
                 this.$parent = options.$parent;
 
+                this.model.schemas = this.model.schemas || {};
+
                 this.nodes = {};
                 this.connections = {};
 
