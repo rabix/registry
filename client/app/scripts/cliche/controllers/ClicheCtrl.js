@@ -7,7 +7,7 @@
 'use strict';
 
 angular.module('registryApp.cliche')
-    .controller('ClicheCtrl', ['$scope', '$rootScope', '$q', '$injector', '$routeParams', '$location', 'Data', 'User', 'App', 'Loading', 'SandBox', 'Sidebar', function ($scope, $rootScope, $q, $injector, $routeParams, $location, Data, User, App, Loading, SandBox, Sidebar) {
+    .controller('ClicheCtrl', ['$scope', '$rootScope', '$q', '$modal', '$templateCache', '$routeParams', '$location', 'Data', 'User', 'App', 'Loading', 'SandBox', 'Sidebar', function ($scope, $rootScope, $q, $modal, $templateCache, $routeParams, $location, Data, User, App, Loading, SandBox, Sidebar) {
 
         Sidebar.setActive('cliche');
 
@@ -22,6 +22,9 @@ angular.module('registryApp.cliche')
 
         /* cliche mode: new or edit */
         $scope.view.mode = $routeParams.id ? 'edit' : 'new';
+
+        /* flag for sidebar visibility */
+        $scope.view.showSidebar = true;
 
         $scope.view.tabViewPath = 'views/cliche/tabs/general.html';
 
@@ -388,16 +391,11 @@ angular.module('registryApp.cliche')
             App.getRevisions(0, '', $routeParams.id)
                 .then(function(result) {
 
-                    var $modal = $injector.get('$modal');
-                    var $templateCache = $injector.get('$templateCache');
-
                     var modalInstance = $modal.open({
                         template: $templateCache.get('views/cliche/partials/revisions.html'),
                         controller: ['$scope', '$modalInstance', 'data', function ($scope, $modalInstance, data) {
 
                             $scope.view = data;
-
-                            $scope.view.versions = _.times($scope.view.revisions.length).reverse();
 
                             $scope.cancel = function () {
                                 $modalInstance.dismiss('cancel');
@@ -428,9 +426,6 @@ angular.module('registryApp.cliche')
 
             $scope.view.saving = true;
 
-            var $modal = $injector.get('$modal');
-            var $templateCache = $injector.get('$templateCache');
-
             var modalInstance = $modal.open({
                 template: $templateCache.get('views/partials/confirm-fork.html'),
                 controller: 'ModalCtrl',
@@ -449,6 +444,92 @@ angular.module('registryApp.cliche')
         };
 
         /**
+         * Save revision or create/publish current app
+         */
+        $scope.save = function(action) {
+
+            if ($scope.forms.toolForm.$invalid) {
+                $scope.forms.toolForm.$setDirty();
+
+                $modal.open({
+                    template: $templateCache.get('views/partials/validation.html'),
+                    size: 'sm',
+                    controller: 'ModalCtrl',
+                    windowClass: 'modal-validation',
+                    resolve: {data: function () { return {messages: ['Please fill in all required fields!']}; }}
+                });
+
+                return false;
+            }
+
+            $scope.view.saving = true;
+
+            App.save(action, $scope.view.app._id, $scope.view.currentRevision)
+                .then(function(result) {
+
+                    $scope.view.saving = false;
+
+                    var trace = {
+                        message: result.message
+                    };
+
+                    var modalInstance = $modal.open({
+                        template: $templateCache.get('views/cliche/partials/app-save-response.html'),
+                        controller: 'ModalCtrl',
+                        backdrop: 'static',
+                        resolve: { data: function () { return { trace: trace }; }}
+                    });
+
+                    modalInstance.result.then(function() {
+
+                        if (_.contains(['create', 'save'], action)) {
+
+                            var revisionId = (action === 'save') ? result.revision._id : 'latest';
+                            var appId = result.app ? result.app._id : $scope.view.app._id;
+
+                            $scope.redirect('/cliche/' + appId + '/' + revisionId);
+                        }
+
+                        if (action === 'publish') {
+                            $scope.view.app.revision_id = $scope.view.currentRevision.id;
+                        }
+
+                    });
+
+
+                }, function () {
+                    $scope.view.saving = false;
+                });
+
+        };
+
+        /**
+         * Load json editor
+         */
+        $scope.loadJsonEditor = function() {
+
+            var modalInstance = $modal.open({
+                template: $templateCache.get('views/cliche/partials/json-editor.html'),
+                controller: 'JsonEditorCtrl',
+                resolve: { options: function () { return {user: $scope.view.user}; }}
+            });
+
+            modalInstance.result.then(function (json) {
+                $scope.import(json);
+            });
+
+        };
+
+        /**
+         * Toggle right sidebar visibility
+         */
+        $scope.toggleSidebar = function() {
+
+            $scope.view.showSidebar = !$scope.view.showSidebar;
+
+        };
+
+        /**
          * Track route change in order to prevent loss of changes
          *
          * @param e
@@ -457,9 +538,6 @@ angular.module('registryApp.cliche')
         var onRouteChange = function(e, nextLocation) {
 
             if($scope.view.reload) { return; }
-
-            var $modal = $injector.get('$modal');
-            var $templateCache = $injector.get('$templateCache');
 
             var modalInstance = $modal.open({
                 template: $templateCache.get('views/partials/confirm-leave.html'),

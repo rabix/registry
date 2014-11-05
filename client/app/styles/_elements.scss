@@ -278,7 +278,28 @@
     }
     &.sidebar-col {
       width: 450px;
+      border-left: 2px solid $orange;
+      overflow-x: hidden;
+      @include transition(width 0.2s ease);
       @include flex(0 0 auto);
+
+      .filter,
+      .content,
+      .heading {
+        overflow-x: hidden;
+        white-space: nowrap;
+      }
+
+      &.closed {
+        width: 35px;
+
+        .filter,
+        .content,
+        .nav-tabs-steps li:not(.toggle-action),
+        .nav-tabs-trace li:not(.toggle-action) {
+          display: none;
+        }
+      }
     }
   }
 }

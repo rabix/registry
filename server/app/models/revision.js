@@ -8,6 +8,7 @@ var RevisionSchema = new Schema({
     description: String,
     author: String,
     json: Schema.Types.Mixed,
+    version: {type: Number, default: 1},
     //repo_name: String,
     //repo_owner: String,
     //repo_id: String,

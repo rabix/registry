@@ -89,19 +89,27 @@ router.post('/revisions', filters.authenticated, function (req, res, next) {
     revision.json = data.tool;
     revision.app_id = data.app_id;
 
-    revision.save(function(err) {
+    Revision.count(function(err, total) {
         if (err) { return next(err); }
 
-        App.findById(data.app_id, function(err, app) {
+        revision.version = total + 1;
+
+        revision.save(function(err) {
             if (err) { return next(err); }
 
-            app.revisions.push(revision._id);
-            app.save();
+            App.findById(data.app_id, function(err, app) {
+                if (err) { return next(err); }
 
-            res.json({revision: revision, message: 'Revision has been successfully created'});
+                app.revisions.push(revision._id);
+                app.save();
+
+                res.json({revision: revision, message: 'Revision has been successfully created'});
+            });
+
         });
-
     });
+
+
 
 });
 

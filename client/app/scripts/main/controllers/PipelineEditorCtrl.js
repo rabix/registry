@@ -247,6 +247,7 @@ angular.module('registryApp')
                 });
 
                 return false;
+
             } else if (mode === 'update') {
 
                 $scope.$broadcast('save', true);

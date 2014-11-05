@@ -49,6 +49,14 @@
           border: none;
         }
       }
+
+      &.toggle-action {
+        width: auto !important;
+        float: left;
+        a {
+          color: #555;
+        }
+      }
     }
   }
 

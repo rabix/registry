@@ -112,7 +112,7 @@ router.get('/apps/:id/:revision', function (req, res, next) {
                 app.author = revision.author;
                 app.json = revision.json;
 
-                res.json({data: app, revision: {id: revision._id, name: revision.name}});
+                res.json({data: app, revision: {id: revision._id, version: revision.version}});
             });
         }
 

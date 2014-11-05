@@ -258,16 +258,6 @@ body {
 
     .sidebar-col {
       width: 350px;
-      border-left: 2px solid $orange;
-      overflow-x: hidden;
-      @include transition(width 0.2s ease);
-
-      .filter,
-      .content,
-      .heading {
-        overflow-x: hidden;
-        white-space: nowrap;
-      }
 
       .filter {
         min-width: 150px;
@@ -278,30 +268,12 @@ body {
           }
         }
       }
-
-      &.closed {
-        width: 35px;
-
-        .filter,
-        .content,
-        .nav-tabs-steps li:not(.toggle-action) {
-          display: none;
-        }
-      }
     }
 
     .nav-tabs {
       &.nav-tabs-steps {
         li {
           width: 25%;
-
-          &.toggle-action {
-            width: auto;
-            float: left;
-            a {
-              color: #555;
-            }
-          }
         }
       }
     }

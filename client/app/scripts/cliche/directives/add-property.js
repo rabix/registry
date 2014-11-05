@@ -12,7 +12,7 @@ angular.module('registryApp.cliche')
         return {
             restrict: 'E',
             replace: true,
-            template: '<a href ng-click="addItem($event)" class="btn btn-default"><i class="glyphicon glyphicon-plus"></i></a>',
+            template: '<a href ng-click="addItem($event)" class="btn btn-default"><i class="fa fa-plus"></i></a>',
             scope: {
                 type: '@',
                 properties: '='

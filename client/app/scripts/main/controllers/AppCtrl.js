@@ -51,7 +51,6 @@ angular.module('registryApp')
             $scope.view.total = Math.ceil(result.total / $scope.view.perPage);
 
             $scope.view.revisions = result.list;
-            $scope.view.versions = _.times($scope.view.revisions.length).reverse();
 
             $scope.view.loading = false;
         };
