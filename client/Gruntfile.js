@@ -44,9 +44,13 @@ module.exports = function (grunt) {
 //        files: ['test/spec/{,*/}*.js'],
 //        tasks: ['newer:jshint:test', 'karma']
 //      },
-            compass: {
+//            compass: {
+//                files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
+//                tasks: ['compass:server', 'autoprefixer']
+//            },
+            sass: {
                 files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
-                tasks: ['compass:server', 'autoprefixer']
+                tasks: ['sass:server']
             },
             gruntfile: {
                 files: ['Gruntfile.js']
@@ -266,6 +270,36 @@ module.exports = function (grunt) {
             }
         },
 
+        sass: {
+            options: {
+                sourcemap: 'none'
+            },
+            server: {
+                options: {
+                    style: 'expanded'
+                },
+                files: [{
+                    expand: true,
+                    cwd: '<%= yeoman.app %>/styles',
+                    src: ['*.scss'],
+                    dest: '<%= yeoman.app %>/styles',
+                    ext: '.css'
+                }]
+            },
+            dist: {
+                options: {
+                    style: 'compressed'
+                },
+                files: [{
+                    expand: true,
+                    cwd: '<%= yeoman.app %>/styles',
+                    src: ['*.scss'],
+                    dest: '.tmp/styles',
+                    ext: '.css'
+                }]
+            }
+        },
+
         // Renames files for browser caching purposes
         filerev: {
             dist: {
@@ -446,12 +480,15 @@ module.exports = function (grunt) {
         // Run some tasks in parallel to speed up the build process
         concurrent: {
             server: [
-                'compass:server'
+                //'compass:server'
+                'sass:server'
             ],
             test: [
-                'compass'
+                //'compass'
+                'sass'
             ],
             dist: [
+                //'sass:dist',
                 'compass:dist',
                 'imagemin',
                 'svgmin'

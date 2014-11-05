@@ -6,7 +6,7 @@
 angular.module('registryApp')
     .controller('PipelineViewCtrl', ['$scope', '$routeParams', 'Sidebar', 'Loading', 'Pipeline', function ($scope, $routeParams, Sidebar, Loading, Pipeline) {
 
-        Sidebar.setActive('dyole');
+        Sidebar.setActive('pipelines');
 
         $scope.view = {};
         $scope.view.loading = true;

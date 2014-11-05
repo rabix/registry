@@ -1,5 +1,5 @@
 @import "variables";
-//@import "bootstrap";
+@import "bootstrap";
 @import "mixins";
 
 html, body {
@@ -21,7 +21,6 @@ body {
 
 .main {
   height: 100%;
-  //margin-left: $sidebar;
   @include flex(1);
 }
 

@@ -1,7 +1,6 @@
 {
   "name": "registry",
   "version": "0.0.0",
-  "dependencies": {},
   "devDependencies": {
     "grunt": "^0.4.1",
     "grunt-angular-templates": "^0.5.5",
@@ -33,7 +32,8 @@
     "imagemin-svgo": "^0.1.0",
     "jshint-stylish": "^0.2.0",
     "load-grunt-tasks": "^0.4.0",
-    "time-grunt": "^0.3.1"
+    "time-grunt": "^0.3.1",
+    "grunt-contrib-sass": "~0.8.1"
   },
   "engines": {
     "node": ">=0.10.0"
