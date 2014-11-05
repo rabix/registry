@@ -44,11 +44,6 @@
             </div>
 
             <div ng-if="view.tab === 'apps'" class="filter">
-                <div ng-if="view.user">
-                    <select ng-show="view.userRepos.length !== 0" class="form-control">
-                        <option ng-repeat="repo in view.userRepos" value="{{ repo._id }}">{{ repo.name }}</option>
-                    </select>
-                </div>
                 <form class="search-form" ng-submit="filterApps()" novalidate>
                     <div class="input-group">
                         <input type="text" class="form-control" ng-model="view.searchTerm" placeholder="Filter Apps" required>

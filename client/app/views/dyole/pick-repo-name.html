@@ -1,0 +1,15 @@
+<div class="modal-body">
+    <div ng-show="repos.length === 0"  class="alert alert-warning">You don't have any repositories to bind the workflow to.</div>
+
+    <div class="pick-repo-wrap" ng-show="repos.length !== 0">
+        <p>Pick repository for workflow: </p>
+
+        <select  ng-model="view.repoSelected" class="form-control" ng-options="repo._id as repo.name for repo in repos">
+            <option value="">-- choose repo --</option>
+        </select>
+    </div>
+
+    <button class="btn btn-primary" ng-click="ok()">save</button>
+    <button class="btn btn-default" ng-click="cancel()">cancel</button>
+
+</div>

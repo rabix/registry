@@ -234,6 +234,7 @@ angular.module('registryApp')
          * Initiate pipeline save
          */
         $scope.save = function () {
+            var modalInstance;
 
             if (!$scope.view.pipeline.name) {
 
@@ -246,13 +247,66 @@ angular.module('registryApp')
                 });
 
                 return false;
+            } else {
+
+                modalInstance = $modal.open({
+                    controller: ['$scope', '$modalInstance', 'data', function ($scope, $modalInstance, data) {
+
+                        $scope.repos = data;
+                        $scope.view = {};
+
+                        console.log($scope.repos);
+
+                        $scope.ok = function () {
+                            $modalInstance.close($scope.view.repoSelected);
+                        };
+
+                        $scope.cancel = function () {
+                            $modalInstance.dismiss('cancel');
+                        };
+
+                    }],
+
+//                    template: $templateCache.get('views/dyole/pick-repo-name.html'),
+                    templateUrl: 'views/dyole/pick-repo-name.html',
+                    windowClass: 'modal-confirm',
+                    resolve: {data: function () { return $scope.view.userRepos; }}
+
+                });
+
+
+
             }
 
-            $scope.view.reload = true;
-            $scope.view.saving = true;
-            $scope.view.loading = true;
+            if (typeof modalInstance !== 'undefined') {
 
-            $scope.$broadcast('save', true);
+                modalInstance.result.then(function (repoId) {
+
+                    if (typeof repoId !== 'undefined') {
+
+                        $scope.view.reload = true;
+                        $scope.view.saving = true;
+                        $scope.view.loading = true;
+                        $scope.$broadcast('save', repoId);
+
+                    } else {
+
+                        $modal.open({
+                            template: $templateCache.get('views/partials/validation.html'),
+                            size: 'sm',
+                            controller: 'ModalCtrl',
+                            windowClass: 'modal-validation',
+                            resolve: {data: function () { return {messages: ['You must pick repo name']}; }}
+                        });
+
+                    }
+
+
+
+                });
+            }
+
+
         };
 
         /**

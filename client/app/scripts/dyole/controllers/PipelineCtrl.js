@@ -54,10 +54,11 @@ angular.module('registryApp.dyole')
         /**
          * Save pipeline
          */
-        $scope.$on('save', function (e, value) {
+        $scope.$on('save', function (e, repoId) {
 
-            if (value) {
+            if (repoId) {
                 $scope.pipeline.json = Pipeline.getJSON();
+                $scope.pipeline.repo_id = repoId;
 
                 PipelineMdl.savePipeline($scope.pipeline._id, $scope.pipeline)
                     .then(function (data) {

@@ -8,6 +8,7 @@ var fs = require('fs');
 
 var Pipeline = mongoose.model('Pipeline');
 var PipelineUrl = mongoose.model('PipelineUrl');
+var Repo = mongoose.model('Repo');
 
 var filters = require('../../common/route-filters');
 var formater = require('../../pipeline/formater');
@@ -173,18 +174,34 @@ router.get('/pipeline/:id', function (req, res, next) {
 router.post('/pipeline', function (req, res) {
 
     var data = req.body.data;
+    
+    Repo.findOne({_id: data.repo_id}, function (err, repo) {
+        if (err) {return next(err);}
 
-    var pipeline = new Pipeline();
+        if (repo) {
 
-    pipeline.json = data.json;
-    pipeline.name = data.name;
-    pipeline.author = req.user.email;
-    pipeline.user_id = req.user.id;
-    pipeline.description = data.description;
+            var pipeline = new Pipeline();
 
-    pipeline.save();
+            pipeline.json = data.json;
+            pipeline.name = data.name;
+            pipeline.author = req.user.email;
+            pipeline.user_id = req.user.id;
+            pipeline.description = data.description;
 
-    res.json({message: 'Pipeline successfully added', id: pipeline._id});
+            pipeline.repo_id = data.repo_id;
+            pipeline.repo_owner = repo.owner;
+            pipeline.repo_name = repo.name;
+
+            pipeline.save();
+
+            res.json({message: 'Pipeline successfully added', id: pipeline._id});
+
+
+        } else {
+            res.status(400).json({message: 'There is no repo with id: ' + data.repo_id });
+        }
+    });
+
 
 });
 
