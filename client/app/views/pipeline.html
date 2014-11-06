@@ -3,7 +3,7 @@
     <div class="heading">
         <a ng-href="#/pipelines" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
         <h1>
-            {{ view.pipeline.name }}
+            {{ view.pipeline.name }} <span class="pipeline-repo">({{view.pipeline.repo.owner}}/{{view.pipeline.repo.name}})</span>
             <a ng-href="#/pipeline/{{ view.pipeline._id }}/edit" class="btn btn-primary pull-right"><i class="fa fa-pencil"></i> Edit</a>
         </h1>
     </div>

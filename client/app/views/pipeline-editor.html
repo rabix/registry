@@ -4,8 +4,8 @@
         <a ng-if="view.mode === 'new'" ng-href="#/pipelines" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
         <a ng-if="view.mode === 'edit'" ng-href="#/pipeline/{{ view.pipeline._id }}" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
         <h1>
-            <div class="form-group">
-                <input type="text" placeholder="Workflow Name" ng-model="view.pipeline.name" class="form-control" />
+            <div class="form-group workflow-name">
+                <span ng-show="view.pipeline.repo">{{view.pipeline.repo.owner}}/{{view.pipeline.repo.name}}/</span><input type="text" placeholder="Workflow Name" ng-model="view.pipeline.name" class="form-control" />
             </div>
 
             <strong class="changes-mark" ng-if="view.isChanged" tooltip="There are changes in your workflow" tooltip-placement="right"><i class="fa fa-asterisk"></i></strong>

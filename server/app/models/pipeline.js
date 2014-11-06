@@ -7,12 +7,12 @@ var PipelineSchema = new Schema({
 //    errors: Schema.Types.Mixed,
     stamp: Schema.Types.Mixed,
     _rev: String,
-    name: String,
+    name: { type: String, required: true },
     description: String,
     author: String,
-    user: { type: Schema.Types.ObjectId, ref: 'User' },
-    repo: { type: Schema.Types.ObjectId, ref: 'Repo' },
-    json: Schema.Types.Mixed
+    user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    repo: { type: Schema.Types.ObjectId, ref: 'Repo', required: true },
+    json: { type: Schema.Types.Mixed, required: true}
 });
 
 PipelineSchema.virtual('date')
@@ -21,4 +21,3 @@ PipelineSchema.virtual('date')
     });
 
 mongoose.model('Pipeline', PipelineSchema);
-

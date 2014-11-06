@@ -248,9 +248,9 @@ angular.module('registryApp')
 
                 return false;
 
-            } else if (mode === 'update') {
+            } else if (mode === 'edit') {
 
-                $scope.$broadcast('save', true);
+                $scope.$broadcast('save', null);
 
             } else {
 
