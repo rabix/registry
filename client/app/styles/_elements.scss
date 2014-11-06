@@ -11,10 +11,37 @@
 
   /* Page heading */
   .heading {
+
+    h1 {
+
+      span.pipeline-repo {
+        font-size: 14px;
+        line-height: 22px;
+      }
+
+      .form-group.workflow-name {
+
+        width: auto;
+
+        span {
+          font-size: 20px;
+        }
+
+        input {
+          display: inline-block;
+          margin-left: 5px;
+          width: auto;
+
+        }
+      }
+
+    }
+
     @include flex(0 0 auto);
     .go-back {
       margin: 12.5px 0;
     }
+
   }
 
   /* Page filters */
@@ -544,3 +571,4 @@ legend {
 .pick-repo-wrap {
   margin: 15px 0;
 }
+

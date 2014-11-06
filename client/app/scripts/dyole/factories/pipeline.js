@@ -14,6 +14,8 @@ angular.module('registryApp.dyole')
                 this.$parent = options.$parent;
 
                 this.model.schemas = this.model.schemas || {};
+                this.model.display = this.model.display || {};
+
 
                 this.nodes = {};
                 this.connections = {};
@@ -336,8 +338,8 @@ angular.module('registryApp.dyole')
                         _self.pipelineWrap.push(node.render().el);
                     });
 
-                    this.pipelineWrap.translate(this.model.display.canvas.x, this.model
-                        .display.canvas.y);
+                    this.pipelineWrap.translate(this.model.display.canvas.x, this.model.display.canvas.y);
+
                     this.rect.toBack();
                 },
 
@@ -816,8 +818,6 @@ angular.module('registryApp.dyole')
 
                     json.display.canvas.x = this.getEl().getTranslation().x;
                     json.display.canvas.y = this.getEl().getTranslation().y;
-
-                    console.log(json);
 
                     return json;
                 }

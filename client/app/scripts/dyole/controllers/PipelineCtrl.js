@@ -57,19 +57,20 @@ angular.module('registryApp.dyole')
         $scope.$on('save', function (e, repoId) {
 
             if (repoId) {
-                $scope.pipeline.json = Pipeline.getJSON();
                 $scope.pipeline.repo = repoId;
-
-                PipelineMdl.savePipeline($scope.pipeline._id, $scope.pipeline)
-                    .then(function (data) {
-
-                        if (data.id) {
-                            $location.path('/pipeline/' + data.id);
-                        } else {
-                            $scope.pipelineChangeFn({value: false});
-                        }
-                    });
             }
+
+            $scope.pipeline.json = Pipeline.getJSON();
+
+            PipelineMdl.savePipeline($scope.pipeline._id, $scope.pipeline)
+                .then(function (data) {
+
+                    if (data.id) {
+                        $location.path('/pipeline/' + data.id);
+                    } else {
+                        $scope.pipelineChangeFn({value: false});
+                    }
+                });
 
         });
         
