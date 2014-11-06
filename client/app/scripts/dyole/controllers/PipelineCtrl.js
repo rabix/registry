@@ -15,10 +15,18 @@ angular.module('registryApp.dyole')
         $scope.view = {};
         $scope.view.canFlush = _.contains(['new', 'edit'], $routeParams.mode);
 
+        /* show usage hints to user flag */
+        $scope.view.explanation = false;
+
+
         /**
          * Initialize pipeline
          */
         var initPipeline = function (obj) {
+
+            if (!obj.json || obj.json.nodes.length === 0) {
+                $scope.view.explanation = true;
+            }
 
             Pipeline = pipeline.getInstance({
                 model: obj ? obj.json || rawPipeline : rawPipeline,
@@ -33,7 +41,7 @@ angular.module('registryApp.dyole')
                 .then(function (json) {
                     initPipeline(json);
                 });
-        } else {
+        } else if (Object.keys($scope.pipeline).length !== 0){
             initPipeline($scope.pipeline);
         }
 
@@ -109,6 +117,7 @@ angular.module('registryApp.dyole')
         $scope.dropNode = function(e, id) {
 
             $scope.view.loading = true;
+            $scope.view.explanation = false;
 
             App.getRevision(id).then(function(result) {
 
