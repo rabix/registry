@@ -79,14 +79,33 @@ router.get('/repositories/:type', function (req, res, next) {
         }
     }
 
-    App.find(where, 'repo_name repo_owner name description json').sort({_id: 'desc'}).exec(function(err, apps) {
+    App.find(where, '_id repo_name repo_owner repo_id user_id').sort({_id: 'desc'}).exec(function(err, apps) {
         if (err) { return next(err); }
 
-        var grouped = _.groupBy(apps, function (app) {
-            return app.repo_owner + '/' + app.repo_name;
+        var whereRev = {};
+
+        if (type === 'other') { whereRev.is_public = true; }
+        whereRev.app_id = {$in: _.pluck(apps, '_id')};
+
+        Revision.find(whereRev, function(err, revisions) {
+            if (err) { return next(err); }
+
+            var groupedRevisions = _.groupBy(revisions, 'app_id');
+
+            var appsWithRevisions = apps.map(function(app) {
+                var tmp = app.toObject();
+                tmp.revisions = groupedRevisions[tmp._id];
+                return tmp;
+            });
+
+            var grouped = _.groupBy(appsWithRevisions, function (app) {
+                return app.repo_owner + '/' + app.repo_name;
+            });
+
+            res.json({list: grouped});
+
         });
 
-        res.json({list: grouped});
     });
 
 });

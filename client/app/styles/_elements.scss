@@ -473,7 +473,7 @@ legend {
     &:last-child {
       border-bottom: none;
     }
-    span {
+    & > span {
       cursor: pointer;
       color: #555;
       padding: 7px 15px;
@@ -485,7 +485,7 @@ legend {
     & > ul {
       display: none;
       & > li {
-        span {
+        & > span {
           padding-left: 40px;
         }
       }
@@ -507,13 +507,16 @@ legend {
         text-decoration: none;
         @include user-select(none);
 
-        i {
+        & > i {
           color: $sidebar-blue;
         }
 
         &.drag {
           opacity: 0.7;
         }
+      }
+      .revisions-list {
+        border-bottom: 1px solid #ddd;
       }
     }
   }

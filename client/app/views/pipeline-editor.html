@@ -77,7 +77,16 @@
                                         </span>
                                         <ul class="apps-inner-list">
                                             <li ng-repeat="app in apps">
-                                                <a href drag="app"><i class="fa fa-puzzle-piece"></i> {{ app.name }}</a>
+                                                <div ng-repeat="revision in app.revisions" class="revisions-list">
+                                                    <a href drag="revision">
+                                                        <i class="fa fa-puzzle-piece"></i>
+                                                        {{ revision.name }}
+                                                        <div class="pull-right">
+                                                            <span class="label label-warning"><i class="fa fa-tag"></i> {{ 'v' + revision.version }}</span>
+                                                            <span ng-if="view.user.id === app.user_id && revision.is_public" class="label label-primary">public</span>
+                                                        </div>
+                                                    </a>
+                                                </div>
                                             </li>
                                         </ul>
                                     </li>
@@ -98,9 +107,19 @@
                                         </span>
                                         <ul class="apps-inner-list">
                                             <li ng-repeat="app in apps">
-                                                <a href drag="app"><i class="fa fa-puzzle-piece"></i>  {{ app.name }}</a>
+                                                <div ng-repeat="revision in app.revisions" class="revisions-list">
+                                                    <a href drag="revision">
+                                                        <i class="fa fa-puzzle-piece"></i>
+                                                        {{ revision.name }}
+                                                        <div class="pull-right">
+                                                            <span class="label label-warning"><i class="fa fa-tag"></i> {{ 'v' + revision.version }}</span>
+                                                            <span ng-if="view.user.id === app.user_id && revision.is_public" class="label label-primary">public</span>
+                                                        </div>
+                                                    </a>
+                                                </div>
                                             </li>
                                         </ul>
+
                                     </li>
                                 </ul>
                             </li>

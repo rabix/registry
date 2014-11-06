@@ -110,9 +110,10 @@ angular.module('registryApp.dyole')
 
             $scope.view.loading = true;
 
-            App.getApp(id, 'public').then(function(result) {
+            App.getRevision(id).then(function(result) {
 
                 $scope.view.loading = false;
+                console.log(result.data);
 
                 Pipeline.addNode(result.data, e.clientX, e.clientY);
 

@@ -46,10 +46,10 @@ router.get('/revisions', function (req, res, next) {
         Revision.count(where).exec(function(err, total) {
             if (err) { return next(err); }
 
-            Revision.find(where).skip(skip).limit(limit).sort({_id: 'desc'}).exec(function(err, apps) {
+            Revision.find(where).skip(skip).limit(limit).sort({_id: 'desc'}).exec(function(err, revisions) {
                 if (err) { return next(err); }
 
-                res.json({list: apps, total: total});
+                res.json({list: revisions, total: total});
             });
 
         });
@@ -66,13 +66,23 @@ router.get('/revisions/:id', function (req, res, next) {
         App.findById(revision.app_id, function(err, app) {
             if (err) { return next(err); }
 
-            var repo = {};
+            var user_id = (req.user ? req.user.id : '').toString();
+            var app_user_id = app.user_id.toString();
 
-            repo.repo_name = app.repo_name;
-            repo.repo_owner = app.repo_owner;
-            repo.repo_id = app.repo_id;
+            if (revision.is_public || user_id === app_user_id) {
 
-            res.json({data: revision, repo: repo});
+                var repo = {};
+
+                repo.repo_name = app.repo_name;
+                repo.repo_owner = app.repo_owner;
+                repo.repo_id = app.repo_id;
+
+                res.json({data: revision, repo: repo});
+
+            } else {
+                res.status(401).json({message: 'Unauthorized'});
+            }
+
         });
 
     });
@@ -93,34 +103,42 @@ router.post('/revisions', filters.authenticated, function (req, res, next) {
 
     var desc = data.tool.softwareDescription;
 
-    var revision = new Revision();
+    App.findById(data.app_id, function(err, app) {
 
-    revision.name = desc.name;
-    revision.description = desc.description;
-    revision.author = data.tool.documentAuthor;
-    revision.json = data.tool;
-    revision.app_id = data.app_id;
+        var user_id = req.user.id.toString();
+        var app_user_id = app.user_id.toString();
 
-    Revision.count({app_id: data.app_id}, function(err, total) {
-        if (err) { return next(err); }
+        if (user_id === app_user_id) {
 
-        revision.version = total + 1;
-
-        revision.save(function(err) {
-            if (err) { return next(err); }
-
-            App.findById(data.app_id, function(err, app) {
+            Revision.count({app_id: data.app_id}, function(err, total) {
                 if (err) { return next(err); }
 
-                app.revisions.push(revision._id);
-                app.save();
+                var revision = new Revision();
 
-                res.json({revision: revision, message: 'Revision has been successfully created'});
+                revision.name = desc.name;
+                revision.description = desc.description;
+                revision.author = data.tool.documentAuthor;
+                revision.json = data.tool;
+                revision.app_id = data.app_id;
+
+                revision.version = total + 1;
+
+                revision.save(function(err) {
+                    if (err) { return next(err); }
+
+                    app.revisions.push(revision._id);
+                    app.save();
+
+                    res.json({revision: revision, message: 'Revision has been successfully created'});
+
+                });
             });
 
-        });
-    });
+        } else {
+            res.status(401).json({message: 'Unauthorized'});
+        }
 
+    });
 
 
 });

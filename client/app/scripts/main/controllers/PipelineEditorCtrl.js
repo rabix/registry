@@ -74,7 +74,6 @@ angular.module('registryApp')
         });
 
         Repo.getRepos(0, '', true).then(function (repos) {
-            console.log(repos.list);
             $scope.view.userRepos = repos.list;
         });
 
