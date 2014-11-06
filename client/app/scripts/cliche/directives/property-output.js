@@ -204,6 +204,14 @@ angular.module('registryApp.cliche')
                     scope.prop.adapter.meta[index] = value;
                 };
 
+                scope.$watch('prop.adapter.meta.__inherit__', function(n, o) {
+                    if (n !== o) {
+                        if (_.isEmpty(n)) {
+                            delete scope.prop.adapter.meta.__inherit__;
+                        }
+                    }
+                });
+
             }
         };
     }]);

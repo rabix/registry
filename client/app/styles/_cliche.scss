@@ -323,17 +323,29 @@
   }
 
   .property-name {
-    margin: 5px 0;
-    float: left;
+    margin: 5px 110px 5px 0;
+    //float: left;
+    //max-width: 70%;
+    span {
+      text-overflow: ellipsis;
+      max-width: 85%;
+      overflow: hidden;
+      white-space: nowrap;
+    }
     a {
-      padding: 10px 5px;
+      padding: 0px 5px;
       color: #555;
+    }
+    span, a {
+      display: inline-block;
+      vertical-align: middle;
     }
   }
   .property-name-form {
     font-weight: normal;
     width: 240px;
     float: left;
+    margin: 1px 0;
     .input-group {
       margin-left: -5px;
       input {

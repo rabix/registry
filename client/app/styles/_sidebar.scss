@@ -125,37 +125,35 @@
       }
     }
 
-    @at-root {
-      .log-out-btn {
+    .log-out-btn {
+      text-decoration: none;
+      color: #fff;
+      font-size: 20px;
+      margin: 0 5px 0 0;
+      text-shadow: 1px 1px 1px $dark-blue;
+      float: right;
+      line-height: 30px;
+      position: absolute;
+      top: 0;
+      right: 0;
+      z-index: 100;
+      background-color: lighten($sidebar-blue, 10%);
+
+      &:hover {
+        color: #f3f3f3;
         text-decoration: none;
-        color: #fff;
-        font-size: 20px;
-        margin: 0 5px 0 0;
-        text-shadow: 1px 1px 1px $dark-blue;
-        float: right;
-        line-height: 30px;
-        position: absolute;
-        top: 0;
-        right: 0;
-        z-index: 100;
-        background-color: lighten($sidebar-blue, 10%);
-
-        &:hover {
-          color: #f3f3f3;
-          text-decoration: none;
-        }
       }
+    }
 
-      .log-in-btn {
-        text-align: left;
-        i {
-          font-size: 20px;
-          float: left;
-          margin: 0 10px 0 20px;
-        }
-        span {
-          @extend %opacity-anim;
-        }
+    .log-in-btn {
+      text-align: left;
+      i {
+        font-size: 20px;
+        float: left;
+        margin: 0 10px 0 20px;
+      }
+      span {
+        @extend %opacity-anim;
       }
     }
   }

@@ -100,6 +100,8 @@
       }
       p {
         white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
         strong {
           width: 110px;
           display: inline-block;
@@ -554,21 +556,20 @@ legend {
     .pipeline-user-guide {
       width: 400px;
       height: 100px;
-
       font-size: 18px;
-
-      box-sizing: border-box;
-
       padding: 20px;
-
-      background: rgba(0, 0, 0, 0.5);
-
+      background: #f3f3f3;
       position: absolute;
-      left: 50%;
-
-      margin: 150px 0 0 -200px;
-
-      color: #fff9e5;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      margin: auto;
+      color: #999;
+      text-align: center;
+      border: 1px solid #ddd;
+      @include box-sizing();
+      @include border-radius(5px);
     }
 
   }

@@ -452,37 +452,54 @@ angular.module('registryApp.cliche')
 
                     var prop = _.merge({key: key, order: property.adapter.order, value: '', prefix: prefix, separator: separator}, property);
 
-                    /* if input is ARRAY */
-                    if (property.type === 'array') {
+                    switch (property.type) {
+                    case 'array':
+                        /* if input is ARRAY */
                         self.parseArrayInput(property, inputs[key], prefix, separator, listSeparator)
                             .then(function (result) {
                                 prop.value = result;
                                 deferred.resolve(prop);
                             });
-                    /* if input is FILE */
-                    } else if (property.type === 'file') {
+                        break;
+                    case 'file':
+                        /* if input is FILE */
                         self.applyTransform(property.adapter.transform, inputs[key].path, true)
                             .then(function (result) {
                                 prop.value = result;
                                 deferred.resolve(prop);
                             });
-                    /* if input is OBJECT */
-                    } else if (property.type === 'object') {
+                        break;
+                    case 'object':
+                        /* if input is OBJECT */
                         self.parseObjectInput(property.properties, inputs[key])
                             .then(function (result) {
                                 prop.value = result;
                                 deferred.resolve(prop);
                             });
-                    /* if input is anything else (STRING, INTEGER, BOOLEAN) */
-                    } else {
+                        break;
+                    case 'boolean':
+                        /* if input is BOOLEAN */
+                        prop.value = '';
+                        deferred.resolve(prop);
+                        if (inputs[key]) {
+                            promises.push(deferred.promise);
+                        }
+                        break;
+                    default:
+                        /* if input is anything else (STRING, INTEGER) */
                         self.applyTransform(property.adapter.transform, inputs[key], true)
                             .then(function (result) {
                                 prop.value = result;
                                 deferred.resolve(prop);
                             });
+
+                        break;
                     }
 
-                    promises.push(deferred.promise);
+                    if (prop.type !== 'boolean') {
+                        promises.push(deferred.promise);
+                    }
+
                 }
             });
 
@@ -565,11 +582,14 @@ angular.module('registryApp.cliche')
                         var separator = self.parseSeparator(arg.prefix, arg.separator);
                         var value = _.isUndefined(arg.value) ? '' : arg.value;
 
-                        var cmd = arg.prefix + separator + value;
+                        if (!(arg.type && arg.type !== 'boolean' && (arg.value === '' || _.isNull(arg.value) || _.isUndefined(arg.value)))) {
+                            var cmd = arg.prefix + separator + value;
 
-                        if (!_.isEmpty(cmd)) {
-                            command.push(cmd);
+                            if (!_.isEmpty(cmd)) {
+                                command.push(cmd);
+                            }
                         }
+
                     });
 
                     _.each(self.tool.adapter.baseCmd, function (baseCmd) {
