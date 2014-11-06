@@ -33,13 +33,25 @@ router.get('/revisions', function (req, res, next) {
         }
     });
 
-    Revision.count(where).exec(function(err, total) {
+    App.findById(req.query.field_app_id, function(err, app) {
         if (err) { return next(err); }
 
-        Revision.find(where).skip(skip).limit(limit).sort({_id: 'desc'}).exec(function(err, apps) {
+        var user_id = (req.user ? req.user.id : '').toString();
+        var app_user_id = app.user_id.toString();
+
+        if (user_id !== app_user_id) {
+            where.is_public = true;
+        }
+
+        Revision.count(where).exec(function(err, total) {
             if (err) { return next(err); }
 
-            res.json({list: apps, total: total});
+            Revision.find(where).skip(skip).limit(limit).sort({_id: 'desc'}).exec(function(err, apps) {
+                if (err) { return next(err); }
+
+                res.json({list: apps, total: total});
+            });
+
         });
 
     });
@@ -89,7 +101,7 @@ router.post('/revisions', filters.authenticated, function (req, res, next) {
     revision.json = data.tool;
     revision.app_id = data.app_id;
 
-    Revision.count(function(err, total) {
+    Revision.count({app_id: data.app_id}, function(err, total) {
         if (err) { return next(err); }
 
         revision.version = total + 1;

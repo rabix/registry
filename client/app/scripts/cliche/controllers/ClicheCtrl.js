@@ -490,10 +490,6 @@ angular.module('registryApp.cliche')
                             $scope.redirect('/cliche/' + appId + '/' + revisionId);
                         }
 
-                        if (action === 'publish') {
-                            $scope.view.app.revision_id = $scope.view.currentRevision.id;
-                        }
-
                     });
 
 

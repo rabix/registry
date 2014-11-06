@@ -76,7 +76,12 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="revision in view.revisions">
-                        <td class="revision"><strong ng-class="{'label label-primary': revision._id === view.app.revision_id}"><i class="fa fa-tag"></i> {{ 'v' + revision.version }}</strong></td>
+                        <td class="revision">
+                            <strong ng-class="{'label label-primary': revision.is_public}">
+                                <i class="fa fa-tag"></i>
+                                {{ 'v' + revision.version }}
+                            </strong>
+                        </td>
                         <td><a ng-href="#/revision/{{ revision._id }}">{{ revision.name }}</a></td>
                         <td>
                             <a ng-if="revision.repo_id && revision.repo_owner && revision.repo_name" ng-href="#/repo/{{ revision.repo_id }}">{{ revision.repo_owner }}/{{ revision.repo_name }}</a>
@@ -85,7 +90,7 @@
                         <td><p tooltip="{{ revision.description }}" tooltip-popup-delay="1000">{{ revision.description }}</p></td>
                     </tr>
                     <tr class="empty" ng-if="view.revisions.length === 0">
-                        <td colspan="3"><p class="alert alert-info">There are no revisions for this app found</p></td>
+                        <td colspan="4"><p class="alert alert-info">There are no revisions for this app found</p></td>
                     </tr>
                 </tbody>
             </table>
