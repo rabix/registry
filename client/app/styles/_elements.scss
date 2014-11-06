@@ -548,6 +548,26 @@ legend {
       @include flex(1);
     }
 
+    .pipeline-user-guide {
+      width: 400px;
+      height: 100px;
+
+      font-size: 18px;
+
+      box-sizing: border-box;
+
+      padding: 20px;
+
+      background: rgba(0, 0, 0, 0.5);
+
+      position: absolute;
+      left: 50%;
+
+      margin: 150px 0 0 -200px;
+
+      color: #fff9e5;
+    }
+
   }
 
 }
