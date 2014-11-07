@@ -22,28 +22,6 @@
     </div>
 </div>
 
-<div class="row">
-    <div class="col-md-6">
-        <div class="form-group required" ng-class="{'has-error': (forms.toolForm.repoOwner.$invalid && forms.toolForm.$dirty)}">
-            <label for="repoOwner" class="control-label">Repo Owner</label>
-            <input type="text" class="form-control" id="repoOwner" name="repoOwner" ng-model="view.toolForm.softwareDescription.repo_owner" readonly required>
-        </div>
-    </div>
-    <div class="col-md-6">
-        <div class="form-group required" ng-class="{'has-error': (forms.toolForm.repoName.$invalid && forms.toolForm.$dirty)}">
-            <label for="repoName" class="control-label">Repo Name</label>
-
-            <div ng-class="{'input-group': view.mode === 'edit' && view.user}">
-                <input type="text" class="form-control" id="repoName" name="repoName" ng-model="view.toolForm.softwareDescription.repo_name" ng-readonly="view.app._id" required>
-                <span ng-if="view.mode === 'edit' && view.user" class="input-group-btn">
-                    <button ng-disabled="view.saving" ng-click="fork()" class="btn btn-default"><i class="fa fa-code-fork"></i></button>
-                </span>
-            </div>
-
-        </div>
-    </div>
-</div>
-
 <legend class="legend-small">Environment</legend>
 
 <div class="row">

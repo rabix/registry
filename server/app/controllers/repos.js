@@ -6,29 +6,18 @@ var https = require('https');
 var _ = require('lodash');
 var uuid = require('node-uuid');
 var Q = require('q');
-var path = require('path');
-
-var config = require('../../config/config');
 
 var mongoose = require('mongoose');
 var Repo = mongoose.model('Repo');
 var User = mongoose.model('User');
-var Build = mongoose.model('Build');
 
 var BuildClass = require('../../builds/Build');
-
-var bodyParser = require('body-parser');
 
 var filters = require('../../common/route-filters');
 
 var logger = require('../../common/logger');
 
 module.exports = function (app) {
-//    app.use(bodyParser.urlencoded({
-//        extended: true
-//    }));
-//    app.use(bodyParser.json());
-
     app.use('/api', router);
 };
 

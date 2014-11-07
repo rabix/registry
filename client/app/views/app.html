@@ -31,15 +31,14 @@
                             <h5>App Details</h5>
                             <p>
                                 <strong>Repo:</strong>
-                                <a ng-if="view.app.repo_id && view.app.repo_owner && view.app.repo_name" ng-href="#/repo/{{ view.app.repo_id }}">{{ view.app.repo_owner }}/{{ view.app.repo_name }}</a>
-                                <span ng-if="!view.app.repo_id">{{ view.app.repo_owner | repo:view.app.repo_name }}</span>
+                                <a ng-href="#/repo/{{ view.app.repo.id }}">{{ view.app.repo.owner }}/{{ view.app.repo.name }}</a>
                             </p>
                         </section>
 
                         <section>
                             <h5>Author</h5>
-                            <p><strong>Username:</strong> <a href="http://github.com/{{ view.app.user_id.github.login }}" target="_blank">{{ view.app.user_id.github.login }}</a> </p>
-                            <p><strong>Name:</strong> {{ view.app.user_id.github.name }} </p>
+                            <p><strong>Username:</strong> <a href="http://github.com/{{ view.app.user.github.login }}" target="_blank">{{ view.app.user.github.login }}</a> </p>
+                            <p><strong>Name:</strong> {{ view.app.user.github.name }} </p>
                         </section>
                     </div>
                 </div>
@@ -70,7 +69,6 @@
                     <tr>
                         <th>Revision</th>
                         <th>Name</th>
-                        <th>Repo</th>
                         <th>Description</th>
                     </tr>
                 </thead>
@@ -83,10 +81,6 @@
                             </strong>
                         </td>
                         <td><a ng-href="#/revision/{{ revision._id }}">{{ revision.name }}</a></td>
-                        <td>
-                            <a ng-if="revision.repo_id && revision.repo_owner && revision.repo_name" ng-href="#/repo/{{ revision.repo_id }}">{{ revision.repo_owner }}/{{ revision.repo_name }}</a>
-                            <span ng-if="!revision.repo_id">{{ revision.repo_owner | repo:revision.repo_name }}</span>
-                        </td>
                         <td><p tooltip="{{ revision.description }}" tooltip-popup-delay="1000">{{ revision.description }}</p></td>
                     </tr>
                     <tr class="empty" ng-if="view.revisions.length === 0">

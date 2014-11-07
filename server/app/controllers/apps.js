@@ -37,13 +37,13 @@ router.get('/apps', function (req, res, next) {
     });
 
     if (req.user && req.param('mine')) {
-        where.user_id = req.user.id;
+        where.user = req.user.id;
     }
 
     App.count(where).exec(function(err, total) {
         if (err) { return next(err); }
 
-        App.find(where).populate('revisions', 'name json').skip(skip).limit(limit).sort({_id: 'desc'}).exec(function(err, apps) {
+        App.find(where).populate('repo').populate('revisions', 'name json').skip(skip).limit(limit).sort({_id: 'desc'}).exec(function(err, apps) {
             if (err) { return next(err); }
 
             res.json({list: apps, total: total});
@@ -60,8 +60,6 @@ router.get('/repositories/:type', function (req, res, next) {
 
     if (req.query.q) {
         where.$or = [
-            {repo_name: new RegExp(req.query.q, 'i')},
-            {repo_owner: new RegExp(req.query.q, 'i')},
             {name: new RegExp(req.query.q, 'i')},
             {description: new RegExp(req.query.q, 'i')}
         ];
@@ -72,14 +70,14 @@ router.get('/repositories/:type', function (req, res, next) {
             res.json({message: 'Log in to see your repositories'});
             return false;
         }
-        where.user_id = req.user.id;
+        where.user = req.user.id;
     } else {
         if (req.user) {
-            where.user_id = {$ne: req.user.id};
+            where.user = {$ne: req.user.id};
         }
     }
 
-    App.find(where, '_id repo_name repo_owner repo_id user_id').sort({_id: 'desc'}).exec(function(err, apps) {
+    App.find(where, '_id repo_name repo user').populate('repo').sort({_id: 'desc'}).exec(function(err, apps) {
         if (err) { return next(err); }
 
         var whereRev = {};
@@ -99,7 +97,7 @@ router.get('/repositories/:type', function (req, res, next) {
             });
 
             var grouped = _.groupBy(appsWithRevisions, function (app) {
-                return app.repo_owner + '/' + app.repo_name;
+                return app.repo.owner + '/' + app.repo.name;
             });
 
             res.json({list: grouped});
@@ -112,7 +110,7 @@ router.get('/repositories/:type', function (req, res, next) {
 
 router.get('/apps/:id/:revision', function (req, res, next) {
 
-    App.findById(req.params.id).populate('user_id').exec(function(err, app) {
+    App.findById(req.params.id).populate('user').populate('repo').exec(function(err, app) {
         if (err) { return next(err); }
 
         if (req.params.revision === 'public') {
@@ -121,7 +119,7 @@ router.get('/apps/:id/:revision', function (req, res, next) {
 
         } else {
 
-            var params = (req.params.revision === 'latest') ? {} : {_id: req.params.revision};
+            var params = (req.params.revision === 'latest') ? {app_id: req.params.id} : {_id: req.params.revision};
 
             Revision.findOne(params).sort({_id: 'desc'}).exec(function(err, revision) {
                 if (err) { return next(err); }
@@ -141,7 +139,7 @@ router.get('/apps/:id/:revision', function (req, res, next) {
 
 router.get('/run/:id', function (req, res, next) {
 
-    App.findById(req.params.id).populate('user_id').exec(function(err, app) {
+    App.findById(req.params.id).populate('user').exec(function(err, app) {
         if (err) { return next(err); }
 
         if (app) {
@@ -166,7 +164,7 @@ router.put('/apps/:id/:revision', filters.authenticated, function (req, res, nex
         return false;
     }
 
-    App.findById(app_id, function(err, app) {
+    App.findById(app_id).populate('repo').exec(function(err, app) {
         if (err) { return next(err); }
 
         var desc = data.tool.softwareDescription;
@@ -177,7 +175,7 @@ router.put('/apps/:id/:revision', filters.authenticated, function (req, res, nex
         app.json = data.tool;
         app.links = {json: ''};
 
-        var folder = 'users/' + req.user.login + '/apps/' + app.repo_owner + '-' + app.repo_name;
+        var folder = 'users/' + req.user.login + '/apps/' + app.repo.owner + '-' + app.repo.name;
 
         Amazon.createFolder(folder)
             .then(function () {
@@ -246,21 +244,14 @@ router.post('/apps/:action', filters.authenticated, function (req, res, next) {
     app.json = data.tool;
     app.links = {json: ''};
 
-    app.repo_name = desc.repo_name || '';
+    Repo.findById(data.repo_id, function (err, repo) {
 
-    if (req.params.action === 'fork') {
-        app.repo_owner = req.user.login;
-        app.json.softwareDescription.repo_owner = req.user.login;
-        desc.repo_owner = req.user.login;
-    } else {
-        app.repo_owner = desc.repo_owner || '';
-    }
+        app.repo = repo._id;
 
-    Repo.findOne({'name': desc.repo_name, 'owner': desc.repo_owner}, function (err, repo) {
+        app.json.softwareDescription.repo_name = repo.name;
+        app.json.softwareDescription.repo_owner = repo.owner;
 
-        if (repo) { app.repo_id = repo._id; }
-
-        var folder = 'users/' + req.user.login + '/apps/' + app.repo_owner + '-' + app.repo_name;
+        var folder = 'users/' + req.user.login + '/apps/' + repo.owner + '-' + repo.name;
 
         Amazon.createFolder(folder)
             .then(function () {
@@ -270,7 +261,7 @@ router.post('/apps/:action', filters.authenticated, function (req, res, next) {
                         Amazon.getFileUrl(app.name + '.json', folder, function (url) {
 
                             app.links.json = url;
-                            app.user_id = req.user.id;
+                            app.user = req.user.id;
 
                             var revision = new Revision();
 
@@ -324,7 +315,7 @@ router.delete('/apps/:id', filters.authenticated, function (req, res, next) {
         if (err) { return next(err); }
 
         var user_id = req.user.id.toString();
-        var app_user_id = app.user_id.toString();
+        var app_user_id = app.user.toString();
 
         if (user_id === app_user_id) {
 

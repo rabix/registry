@@ -7,7 +7,7 @@
 'use strict';
 
 angular.module('registryApp.cliche')
-    .controller('ClicheCtrl', ['$scope', '$rootScope', '$q', '$modal', '$templateCache', '$routeParams', '$location', 'Data', 'User', 'App', 'Loading', 'SandBox', 'Sidebar', function ($scope, $rootScope, $q, $modal, $templateCache, $routeParams, $location, Data, User, App, Loading, SandBox, Sidebar) {
+    .controller('ClicheCtrl', ['$scope', '$rootScope', '$q', '$modal', '$templateCache', '$routeParams', '$location', 'Data', 'User', 'App', 'Repo', 'Loading', 'SandBox', 'Sidebar', function ($scope, $rootScope, $q, $modal, $templateCache, $routeParams, $location, Data, User, App, Repo, Loading, SandBox, Sidebar) {
 
         Sidebar.setActive('cliche');
 
@@ -25,6 +25,9 @@ angular.module('registryApp.cliche')
 
         /* flag for sidebar visibility */
         $scope.view.showSidebar = true;
+
+        /* list of user repos*/
+        $scope.view.userRepos= [];
 
         $scope.view.tabViewPath = 'views/cliche/tabs/general.html';
 
@@ -56,6 +59,10 @@ angular.module('registryApp.cliche')
         $scope.view.jobForm = Data.job;
 
         $scope.view.loading = true;
+
+        Repo.getRepos(0, '', true).then(function (repos) {
+            $scope.view.userRepos = repos.list;
+        });
 
         if ($routeParams.id) {
 
@@ -424,22 +431,25 @@ angular.module('registryApp.cliche')
          */
         $scope.fork = function () {
 
-            $scope.view.saving = true;
-
             var modalInstance = $modal.open({
-                template: $templateCache.get('views/partials/confirm-fork.html'),
-                controller: 'ModalCtrl',
-                resolve: { data: function () { return {message: 'Are you sure you want to fork this app?'}; }}
+                controller: 'PickRepoModalCtrl',
+                template: $templateCache.get('views/dyole/pick-repo-name.html'),
+                windowClass: 'modal-confirm',
+                resolve: {data: function () { return {repos: $scope.view.userRepos, type: 'save'};}}
+
             });
 
-            modalInstance.result.then(function () {
+            modalInstance.result.then(function(repoId) {
+
+                $scope.view.saving = true;
                 $scope.view.reload = true;
 
-                App.fork().then(function (result) {
+                App.fork(repoId).then(function (result) {
                     $location.path('/cliche/' + result.app._id + '/latest');
                 });
 
             });
+
 
         };
 
@@ -447,6 +457,8 @@ angular.module('registryApp.cliche')
          * Save revision or create/publish current app
          */
         $scope.save = function(action) {
+
+            var modalInstance;
 
             if ($scope.forms.toolForm.$invalid) {
                 $scope.forms.toolForm.$setDirty();
@@ -460,11 +472,39 @@ angular.module('registryApp.cliche')
                 });
 
                 return false;
+            } else if (action === 'create') {
+
+                modalInstance = $modal.open({
+                    controller: 'PickRepoModalCtrl',
+                    template: $templateCache.get('views/dyole/pick-repo-name.html'),
+                    windowClass: 'modal-confirm',
+                    resolve: {data: function () { return {repos: $scope.view.userRepos, type: 'save'};}}
+
+                });
             }
+
+            if (!_.isUndefined(modalInstance)) {
+                modalInstance.result.then(function(repoId) {
+                    saveApp(action, repoId);
+
+                });
+            } else {
+                saveApp(action);
+            }
+
+        };
+
+        /**
+         * The actual saving
+         *
+         * @param action
+         * @param repoId
+         */
+        var saveApp = function(action, repoId) {
 
             $scope.view.saving = true;
 
-            App.save(action, $scope.view.app._id, $scope.view.currentRevision)
+            App.save(action, $scope.view.app._id, $scope.view.currentRevision, repoId)
                 .then(function(result) {
 
                     $scope.view.saving = false;
@@ -481,7 +521,6 @@ angular.module('registryApp.cliche')
                     });
 
                     modalInstance.result.then(function() {
-
                         if (_.contains(['create', 'save'], action)) {
 
                             var revisionId = (action === 'save') ? result.revision._id : 'latest';
@@ -489,9 +528,7 @@ angular.module('registryApp.cliche')
 
                             $scope.redirect('/cliche/' + appId + '/' + revisionId);
                         }
-
                     });
-
 
                 }, function () {
                     $scope.view.saving = false;

@@ -41,13 +41,12 @@
                 <tr ng-repeat="app in view.apps">
                     <td><a ng-href="#/app/{{ app._id }}">{{ app.name }}</a></td>
                     <td>
-                        <a ng-if="app.repo_id && app.repo_owner && app.repo_name" ng-href="#/repo/{{ app.repo_id }}">{{ app.repo_owner }}/{{ app.repo_name }}</a>
-                        <span ng-if="!app.repo_id">{{ app.repo_owner | repo:app.repo_name }}</span>
+                        <a ng-href="#/repo/{{ app.repo._id }}">{{ app.repo.owner }}/{{ app.repo.name }}</a>
                     </td>
                     <td><p tooltip="{{ app.description }}" tooltip-popup-delay="1000">{{ app.description }}</p></td>
                     <td class="center">
                         <a class="btn btn-default" tooltip="Edit App" ng-href="#/cliche/{{ app._id }}/latest"><i class="fa fa-pencil"></i></a>
-                        <a class="btn btn-default" ng-if="app.user_id === view.user.id" tooltip="Delete App" ng-click="deleteApp(app)"><i class="fa fa-trash"></i></a>
+                        <a class="btn btn-default" ng-if="app.user === view.user.id" tooltip="Delete App" ng-click="deleteApp(app)"><i class="fa fa-trash"></i></a>
                     </td>
                 </tr>
                 <tr class="empty" ng-if="view.apps.length === 0">
