@@ -21,7 +21,7 @@ angular.module('registryApp')
             if (n !== o) { $scope.view.classes = n; }
         });
 
-        Pipeline.getPipeline($routeParams.id)
+        Pipeline.getRevision($routeParams.id)
             .then(function(result) {
                 $scope.view.pipeline = result.data;
                 $scope.view.loading = false;

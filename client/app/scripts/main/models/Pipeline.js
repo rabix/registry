@@ -112,6 +112,11 @@ angular.module('registryApp')
         self.fork = function (pipeline) {
             return Api.forkPipeline.fork({}, { pipeline: pipeline }).$promise;
         };
+        
+        self.getRevision = function (id) {
+            return Api.pipelineRevs.get({id: id}).$promise;
+
+        };
 
         return self;
 

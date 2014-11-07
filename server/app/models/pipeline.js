@@ -6,6 +6,7 @@ var Schema = mongoose.Schema;
 var PipelineSchema = new Schema({
 //    errors: Schema.Types.Mixed,
     stamp: Schema.Types.Mixed,
+    author: String,
     user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     repo: { type: Schema.Types.ObjectId, ref: 'Repo', required: true },
     latest: {type : Schema.Types.ObjectId, ref : 'PipelineRevision'},

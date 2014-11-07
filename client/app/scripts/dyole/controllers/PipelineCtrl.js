@@ -41,8 +41,8 @@ angular.module('registryApp.dyole')
                 .then(function (json) {
                     initPipeline(json);
                 });
-        } else if (Object.keys($scope.pipeline).length !== 0){
-            initPipeline($scope.pipeline.latest);
+        } else if ($scope.pipeline && Object.keys($scope.pipeline).length !== 0){
+            initPipeline($scope.pipeline);
         }
 
         $scope.$watch('pipeline', function(n, o) {
@@ -70,7 +70,7 @@ angular.module('registryApp.dyole')
 
             $scope.pipeline.json = Pipeline.getJSON();
 
-            PipelineMdl.savePipeline($scope.pipeline._id, $scope.pipeline)
+            PipelineMdl.savePipeline($scope.pipeline.pipeline ? $scope.pipeline.pipeline._id : '', $scope.pipeline)
                 .then(function (data) {
 
                     if (data.id) {
