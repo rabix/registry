@@ -806,6 +806,10 @@ angular.module('registryApp.dyole')
                     json.relations = this._getConnections();
                     json.nodes = this._getNodes();
 
+                    if (typeof json.display.nodes === 'undefined') {
+                        json.display.nodes = {};
+                    }
+
                     _.each(json.nodes, function (node) {
                         json.display.nodes[node.id] = {
                             x: node.x,

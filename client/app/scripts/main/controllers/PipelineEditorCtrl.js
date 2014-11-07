@@ -248,6 +248,7 @@ angular.module('registryApp')
                 return false;
 
             } else if (mode === 'edit') {
+                console.log('update!!!!');
 
                 $scope.$broadcast('save', null);
 
@@ -350,47 +351,12 @@ angular.module('registryApp')
 
         };
 
-        /**
-         * Track route change in order to prevent loss of changes
-         *
-         * @param e
-         * @param nextLocation
-         */
-        var onRouteChange = function(e, nextLocation) {
-
-            if($scope.view.reload) { return; }
-
-            var modalInstance = $modal.open({
-                template: $templateCache.get('views/partials/confirm-leave.html'),
-                controller: 'ModalCtrl',
-                windowClass: 'modal-confirm',
-                resolve: {data: function () {return {};}}
-            });
-
-            modalInstance.result.then(function () {
-
-                onRouteChangeOff();
-
-                $scope.view.reload = true;
-
-                if ($routeParams.mode === 'new') { $scope.$broadcast('save-local', true); }
-
-                $location.path(nextLocation.split('#\/')[1]);
-
-            });
-
-            e.preventDefault();
-
-        };
-
         var onNodeSelectOff = $rootScope.$on('node:select', onNodeSelect);
         var onNodeDeselectOff = $rootScope.$on('node:deselect', onNodeDeselect);
-        var onRouteChangeOff = $rootScope.$on('$locationChangeStart', onRouteChange);
 
         $scope.$on('$destroy', function () {
             onNodeSelectOff();
             onNodeDeselectOff();
-            onRouteChangeOff();
         });
 
         var formatPipeline = function () {

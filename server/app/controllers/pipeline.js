@@ -264,32 +264,42 @@ router.put('/pipeline/:id', filters.authenticated, function (req, res, next) {
 
     var data = req.body.data;
 
-    Pipeline.findById(req.params.id).populate('repo').populate('user', '_id email username').exec(function(err, pipeline) {
+    Pipeline.findById(req.params.id).populate('repo').populate('user').exec(function(err, pipeline) {
         if (err) {
             return next(err);
         }
 
-        if (req.user.id !== pipeline.user._id) {
-            res.status(401).json('Unauthorized');
-            return false;
-        }
+
 
         if (pipeline) {
+
+            var p_u_id = pipeline.user._id.toString();
+
+            if (req.user.id !== p_u_id) {
+                res.status(401).json('Unauthorized');
+                return false;
+            }
+
             var revision = new PipelineRevision();
 
             revision.json = data.json;
             revision.name = data.name;
-            revision.author = data.author;
             revision.description = data.description;
-            revision.version = pipeline.version + 1;
-            revision.pipeline = pipeline._id;
+            revision.pipeline = pipeline._id.toString();
 
-            revision.save();
+            revision.save(function (err, rev) {
+                if (err) {
+                    return next(err);
+                }
 
-            res.json({message: 'Successfully created new pipeline revision'});
+                pipeline.revisions.push(rev._id);
+
+                res.json({id: revision._id, message: 'Successfully created new pipeline revision'});
+            });
+
 
         } else {
-            res.status(400).json({message: 'There is no pipeline with id: '+ req.params.id});
+            res.status(404).json({message: 'There is no pipeline with id: '+ req.params.id});
 
         }
     });
