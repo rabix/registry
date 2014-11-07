@@ -139,6 +139,20 @@ router.get('/apps/:id/:revision', function (req, res, next) {
 
 });
 
+router.get('/run/:id', function (req, res, next) {
+
+    App.findById(req.params.id).populate('user_id').exec(function(err, app) {
+        if (err) { return next(err); }
+
+        if (app) {
+            res.json(app.json);
+        } else {
+            res.status(400).json({message: 'This app doesn\'t exist'});
+        }
+    });
+
+});
+
 
 router.put('/apps/:id/:revision', filters.authenticated, function (req, res, next) {
 

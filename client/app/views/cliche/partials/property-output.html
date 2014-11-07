@@ -2,6 +2,11 @@
 
     <legend class="legend-tiny toggle" ng-class="{active: active}" ng-click="toggleProperty()">
 
+        <div class="pull-right">
+            <div class="checkbox"><label><input type="checkbox" ng-model="prop.required"> required</label></div>
+            <span class="remove" ng-click="removeItem($event)">&times;</span>
+        </div>
+
         <div class="property-name" ng-hide="view.edit">
             <span>{{ name }}</span>
             <a href ng-click="toggleEdit($event)"><i class="fa fa-pencil"></i></a>
@@ -17,8 +22,7 @@
             </div>
         </div>
 
-        <div class="checkbox"><label><input type="checkbox" ng-model="prop.required"> required</label></div>
-        <span class="remove" ng-click="removeItem($event)">&times;</span>
+
     </legend>
 
     <div class="property-body">
@@ -144,7 +148,7 @@
                 <div class="form-group">
                     <label for="property-meta-inherit-{{ view.uniqueId }}" class="control-label inline">Inherit From Input</label>
                     <select class="form-control inline" id="property-meta-inherit-{{ view.uniqueId }}" name="{{ name }}-meta-inherit" ng-model="prop.adapter.meta.__inherit__">
-                        <option value>-- choose --</option>
+                        <option value>-- none --</option>
                         <option ng-repeat="key in view.inputs" value="{{ key }}">{{ key }}</option>
                     </select>
                 </div>
