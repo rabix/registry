@@ -42,7 +42,7 @@ angular.module('registryApp.dyole')
                     initPipeline(json);
                 });
         } else if (Object.keys($scope.pipeline).length !== 0){
-            initPipeline($scope.pipeline);
+            initPipeline($scope.pipeline.latest);
         }
 
         $scope.$watch('pipeline', function(n, o) {

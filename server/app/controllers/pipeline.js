@@ -7,8 +7,10 @@ var _ = require('lodash');
 var fs = require('fs');
 
 var Pipeline = mongoose.model('Pipeline');
+var PipelineRevision = mongoose.model('PipelineRevision');
 var PipelineUrl = mongoose.model('PipelineUrl');
 var Repo = mongoose.model('Repo');
+var User = mongoose.model('User');
 
 var filters = require('../../common/route-filters');
 var formater = require('../../pipeline/formater');
@@ -131,7 +133,7 @@ router.get('/pipeline', function (req, res, next) {
 
     var limit = req.query.limit ? req.query.limit : 25;
     var skip = req.query.skip ? req.query.skip : 0;
-    var where = {};
+    var where = {is_public: true};
 
     _.each(req.query, function(paramVal, paramKey) {
         if (_.contains(paramKey, 'field_')) {
@@ -146,16 +148,29 @@ router.get('/pipeline', function (req, res, next) {
     });
 
     if (req.user && req.param('mine')) {
+        delete where.is_public;
         where.user = req.user.id;
     }
 
-    Pipeline.count(where).exec(function(err, total) {
+    PipelineRevision.count(where).exec(function(err, total) {
         if (err) { return next(err); }
 
-        Pipeline.find(where).populate('repo').populate('user', '_id email username').skip(skip).limit(limit).exec(function(err, pipelines) {
+        PipelineRevision.find(where).populate('pipeline_id').skip(skip).limit(limit).exec(function(err, pipelines) {
             if (err) { return next(err); }
+//
 
-            res.json({list: pipelines, total: total});
+            Repo.populate(pipelines, 'pipeline_id.repo', function (err, p) {
+
+                User.populate(p, {
+                    path: 'pipeline_id.user',
+                    select:  '_id email username'
+                }, function (err, pipes) {
+
+                    res.json({list: pipes, total: total});
+
+                });
+
+            });
         });
 
     });
@@ -163,7 +178,7 @@ router.get('/pipeline', function (req, res, next) {
 
 router.get('/pipeline/:id', function (req, res, next) {
 
-    Pipeline.findById(req.params.id).populate('repo').populate('user', '_id email username').exec(function(err, pipeline) {
+    Pipeline.findById(req.params.id).populate('repo').populate('user', '_id email username').populate('latest').exec(function(err, pipeline) {
         if (err) { return next(err); }
 
         res.json({data: pipeline});
@@ -171,7 +186,7 @@ router.get('/pipeline/:id', function (req, res, next) {
 
 });
 
-router.post('/pipeline', function (req, res) {
+router.post('/pipeline', filters.authenticated, function (req, res) {
 
     var data = req.body.data;
     
@@ -179,26 +194,112 @@ router.post('/pipeline', function (req, res) {
         if (err) {return next(err);}
 
         if (repo) {
+            var now = Date.now(),
+                stamp = {
+                created_on: now,
+                modified_on: now
+            };
+
+            var revision = new PipelineRevision();
+
+            revision.name = data.name;
+            revision.description = data.description;
+            revision.json = data.json;
+            revision.stamp = stamp;
+
+            revision.save();
 
             var pipeline = new Pipeline();
 
-            pipeline.json = data.json;
-            pipeline.name = data.name;
             pipeline.author = req.user.email;
             pipeline.user = req.user.id;
-            pipeline.description = data.description;
-
             pipeline.repo = data.repo;
+            pipeline.latest = revision._id;
+            pipeline.stamp = stamp;
 
-            pipeline.save();
+            pipeline.save(function(err) {
+                if (err) { return next(err); }
 
-            res.json({message: 'Pipeline successfully added', id: pipeline._id});
+                pipeline.revisions.push(revision._id);
 
+                revision.pipeline_id = pipeline._id;
+
+                revision.save();
+                pipeline.save();
+
+                res.json({message: 'Pipeline successfully added', id: pipeline._id});
+
+            });
 
         } else {
             res.status(400).json({message: 'There is no repo with id: ' + data.repo });
         }
     });
+
+});
+
+router.put('/pipeline/:id', filters.authenticated, function (req, res, next) {
+
+    var data = req.body.data;
+
+    Pipeline.findById(req.params.id).populate('repo').populate('user', '_id email username').exec(function(err, pipeline) {
+        if (err) {
+            return next(err);
+        }
+
+        if (req.user.id !== pipeline.user._id) {
+            res.status(401).json('Unauthorized');
+            return false;
+        }
+
+        if (pipeline) {
+            var revision = new PipelineRevision();
+
+            revision.json = data.json;
+            revision.name = data.name;
+            revision.author = data.author;
+            revision.description = data.description;
+            revision.version = pipeline.version + 1;
+            revision.pipeline = pipeline._id;
+
+            revision.save();
+
+            res.json({message: 'Successfully created new pipeline revision'});
+
+        } else {
+            res.status(400).json({message: 'There is no pipeline with id: '+ req.params.id});
+
+        }
+    });
+
+});
+
+router.put('/pipeline/:id/:revision', filters.authenticated, function (req, res, next) {
+    var pipeline_id = req.params.id,
+        revision_id = req.params.revision,
+        isPublic = req.body.public || true;
+
+        PipelineRevision.findOneAndUpdate({_id: revision_id, pipeline_id: pipeline_id}, {is_public: isPublic}, function (err) {
+            if (err) {
+                return next(err);
+            }
+
+            Pipeline.findOneAndUpdate({_id: pipeline_id}, {latest: revision_id}, function (err) {
+
+                if (err) {
+                    return next(err);
+                }
+
+                res.json({message: 'Revision successfully ' + isPublic ? 'published' : 'unpublished'});
+            });
+        });
+
+});
+
+router.delete('/pipeline/:id/:revision', filters.authenticated, function (req, res, next) {
+    var pipeline_id = req.params.id,
+        revision_id = req.parmas.revision;
+
 
 
 });
@@ -223,25 +324,6 @@ router.delete('/pipeline/:id', filters.authenticated, function (req, res, next) 
         }
     });
 
-
-});
-
-router.put('/pipeline/:id', function (req, res, next) {
-
-    var data = req.body.data;
-
-    Pipeline.findById(req.params.id).populate('repo').populate('user', '_id email username').exec(function(err, pipeline) {
-        if (err) { return next(err); }
-
-        pipeline.json = data.json;
-        pipeline.name = data.name;
-        pipeline.author = data.author;
-        pipeline.description = data.description;
-
-        pipeline.save();
-
-        res.json({message: 'Pipeline successfully updated'});
-    });
 
 });
 
