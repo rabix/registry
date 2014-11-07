@@ -78,7 +78,7 @@
       text-shadow: 2px 2px 2px $dark-blue;
       float: left;
 
-      background-image: inline-image('logo.png');
+      background-image: url('../images/logo.png');
       background-repeat: no-repeat;
       background-position: left 15px center;
       @include background-size(20px 28px);
