@@ -37,7 +37,7 @@ router.get('/revisions', function (req, res, next) {
         if (err) { return next(err); }
 
         var user_id = (req.user ? req.user.id : '').toString();
-        var app_user_id = app.user_id.toString();
+        var app_user_id = app.user.toString();
 
         if (user_id !== app_user_id) {
             where.is_public = true;
@@ -63,21 +63,15 @@ router.get('/revisions/:id', function (req, res, next) {
     Revision.findById(req.params.id).exec(function(err, revision) {
         if (err) { return next(err); }
 
-        App.findById(revision.app_id, function(err, app) {
+        App.findById(revision.app_id).populate('repo').exec(function(err, app) {
             if (err) { return next(err); }
 
             var user_id = (req.user ? req.user.id : '').toString();
-            var app_user_id = app.user_id.toString();
+            var app_user_id = app.user.toString();
 
             if (revision.is_public || user_id === app_user_id) {
 
-                var repo = {};
-
-                repo.repo_name = app.repo_name;
-                repo.repo_owner = app.repo_owner;
-                repo.repo_id = app.repo_id;
-
-                res.json({data: revision, repo: repo});
+                res.json({data: revision, repo: app.repo});
 
             } else {
                 res.status(401).json({message: 'Unauthorized'});
@@ -106,7 +100,7 @@ router.post('/revisions', filters.authenticated, function (req, res, next) {
     App.findById(data.app_id, function(err, app) {
 
         var user_id = req.user.id.toString();
-        var app_user_id = app.user_id.toString();
+        var app_user_id = app.user.toString();
 
         if (user_id === app_user_id) {
 

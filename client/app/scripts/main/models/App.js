@@ -62,9 +62,11 @@ angular.module('registryApp')
          *
          * @param {string} action - save|publish|create
          * @param id
+         * @param revision
+         * @param repoId
          * @returns {*}
          */
-        self.save = function(action, id, revision) {
+        self.save = function(action, id, revision, repoId) {
 
             var mode = 'add';
 
@@ -73,12 +75,19 @@ angular.module('registryApp')
             } else {
 
                 var revisionId = revision ? revision.id : null;
-                var params = {id: id, revision: revisionId};
+                var getParams = {id: id, revision: revisionId};
+                var postParams = {tool: Data.tool};
 
-                if (action === 'publish') { mode = 'update'; }
-                if (action === 'create') { params.id = 'create'; }
+                if (action === 'publish') {
+                    mode = 'update';
+                }
 
-                return Api.apps[mode](params, {tool: Data.tool}).$promise;
+                if (action === 'create') {
+                    getParams.id = 'create';
+                    postParams.repo_id = repoId;
+                }
+
+                return Api.apps[mode](getParams, postParams).$promise;
             }
 
         };
@@ -86,11 +95,12 @@ angular.module('registryApp')
         /**
          * Fork the current app
          *
+         * @param repoId
          * @returns {*}
          */
-        self.fork = function() {
+        self.fork = function(repoId) {
 
-            return Api.apps.add({id: 'fork'}, {tool: Data.tool}).$promise;
+            return Api.apps.add({id: 'fork'}, {tool: Data.tool, repo_id: repoId}).$promise;
 
         };
 

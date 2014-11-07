@@ -11,16 +11,20 @@
 
             {{ (view.mode === 'new') ? 'New App' : view.app.name }}
             <div ng-if="view.user" class="actions pull-right">
-                <button ng-if="view.user.id === view.app.user_id._id" ng-disabled="view.saving" class="app-save-btn btn btn-default" ng-click="save('save')">
+                <button ng-if="view.user.id === view.app.user._id" ng-disabled="view.saving" class="app-save-btn btn btn-default" ng-click="save('save')">
                     <i class="fa fa-check"></i> Save
                 </button>
 
-                <button ng-if="view.user.id === view.app.user_id._id" ng-disabled="view.saving" class="app-publish-btn btn btn-primary" ng-click="save('publish')">
+                <button ng-if="view.user.id === view.app.user._id" ng-disabled="view.saving" class="app-publish-btn btn btn-primary" ng-click="save('publish')">
                     <i class="fa fa-plus"></i> Publish
                 </button>
 
                 <button ng-if="view.app | isEmpty" ng-disabled="view.saving" class="app-create-btn btn btn-primary" ng-click="save('create')">
                     <i class="fa fa-plus"></i> Create
+                </button>
+
+                <button ng-if="view.mode === 'edit' && view.user" ng-disabled="view.saving" ng-click="fork()" class="btn btn-default">
+                    <i class="fa fa-code-fork"></i> Fork
                 </button>
 
                 <button class="app-publish-btn btn btn-default" ng-click="loadJsonEditor()">

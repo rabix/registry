@@ -25,8 +25,7 @@
                         <h5>App Details</h5>
                         <p>
                             <strong>Repo:</strong>
-                            <a ng-if="view.repo.repo_id && view.repo.repo_owner && view.repo.repo_name" ng-href="#/repo/{{ view.repo.repo_id }}">{{ view.repo.repo_owner }}/{{ view.repo.repo_name }}</a>
-                            <span ng-if="!view.repo.repo_id">{{ view.repo.repo_owner | repo:view.repo.repo_name }}</span>
+                            <a ng-href="#/repo/{{ view.repo._id }}">{{ view.repo.owner }}/{{ view.repo.name }}</a>
                         </p>
                     </section>
 
