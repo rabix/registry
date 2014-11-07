@@ -78,7 +78,7 @@ angular.module('registryApp')
         });
 
         if ($routeParams.mode === 'edit') {
-            Pipeline.getPipeline($routeParams.id)
+            Pipeline.getRevision($routeParams.id)
                 .then(function (result) {
                     $scope.view.pipeline = result.data;
                 });

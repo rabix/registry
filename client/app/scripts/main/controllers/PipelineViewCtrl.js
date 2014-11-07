@@ -11,6 +11,7 @@ angular.module('registryApp')
         $scope.view = {};
         $scope.view.loading = true;
         $scope.view.pipeline = {};
+        $scope.view.explanation = false;
 
         $scope.view.classes = ['page', 'pipeline-view'];
         Loading.setClasses($scope.view.classes);
@@ -20,7 +21,7 @@ angular.module('registryApp')
             if (n !== o) { $scope.view.classes = n; }
         });
 
-        Pipeline.getPipeline($routeParams.id)
+        Pipeline.getRevision($routeParams.id)
             .then(function(result) {
                 $scope.view.pipeline = result.data;
                 $scope.view.loading = false;

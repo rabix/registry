@@ -28,6 +28,12 @@ angular.module('registryApp')
             'delete': {method: 'DELETE'}
         });
 
+        self.pipelineRevs = $resource(apiUrl + '/pipeline-revisions/:id', {id: '@id'}, {
+            add: {method: 'POST'},
+            update: {method: 'PUT'},
+            'delete': {method: 'DELETE'}
+        });
+
         self.formatPipeline = $resource(apiUrl + '/pipeline/format/:action', {action: '@action'}, {
             format: {method: 'POST'}
         });

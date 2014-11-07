@@ -11,6 +11,7 @@ angular.module('registryApp')
          * @param result
          */
         var pipelinesLoaded = function(result) {
+            console.log('Pipeline', result);
 
             $scope.view.paginator.prev = $scope.view.page > 1;
             $scope.view.paginator.next = ($scope.view.page * $scope.view.perPage) < result.total;
@@ -21,6 +22,7 @@ angular.module('registryApp')
         };
 
         User.getUser().then(function (result) {
+            console.log('User', result.user);
             $scope.view.user = result.user;
         });
 
