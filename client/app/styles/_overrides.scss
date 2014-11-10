@@ -108,23 +108,12 @@
       }
     }
   }
-  &.with-expression {
-    position: relative;
-    .btn-expression {
-      position: absolute;
-      bottom: 0px;
-      right: 0px;
-      z-index: 100;
-      i {
-        font-weight: bold;
-      }
-    }
-  }
 }
 
 form, .form {
   .form-control {
     color: #555;
+    height: 33px;
     @include border-radius(0);
   }
   input {

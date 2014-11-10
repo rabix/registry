@@ -53,19 +53,19 @@
 
 <div class="row">
     <div class="col-md-3">
-        <div class="form-group required with-expression" ng-class="{'has-error': (forms.toolForm.RRcpu.$invalid && forms.toolForm.$dirty)}">
+        <div class="form-group required" ng-class="{'has-error': (forms.toolForm.RRcpu.$invalid && forms.toolForm.$dirty)}">
             <label class="control-label">CPU</label>
             <expr ng-model="view.toolForm.requirements.resources.cpu" type="number" handle-item-update="updateResource(value, 'cpu')"></expr>
         </div>
     </div>
     <div class="col-md-3">
-        <div class="form-group required with-expression" ng-class="{'has-error': (forms.toolForm.RRmem.$invalid && forms.toolForm.$dirty)}">
+        <div class="form-group required" ng-class="{'has-error': (forms.toolForm.RRmem.$invalid && forms.toolForm.$dirty)}">
             <label class="control-label">Memory</label>
             <expr ng-model="view.toolForm.requirements.resources.mem" type="number" handle-item-update="updateResource(value, 'mem')"></expr>
         </div>
     </div>
     <div class="col-md-3">
-        <div class="form-group required with-expression" ng-class="{'has-error': (forms.toolForm.RRdiskSpace.$invalid && forms.toolForm.$dirty)}">
+        <div class="form-group required" ng-class="{'has-error': (forms.toolForm.RRdiskSpace.$invalid && forms.toolForm.$dirty)}">
             <label class="control-label">Disk Space</label>
             <expr ng-model="view.toolForm.requirements.resources.diskSpace" type="number" handle-item-update="updateResource(value, 'diskSpace')"></expr>
         </div>

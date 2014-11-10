@@ -6,7 +6,7 @@
         <div class="enum-list-container">
             <ul class="enum-list" ng-class="{wide: view.toolForm.adapter.baseCmd.length === 1}">
                 <li ng-repeat="baseCmd in view.toolForm.adapter.baseCmd track by $index">
-                    <div class="enum-field form-group form-group-file with-expression">
+                    <div class="enum-field form-group form-group-file">
                         <expr ng-model="baseCmd" index="{{ $index }}" handle-item-update="updateBaseCmd(index, value)"></expr>
                     </div>
                     <a href ng-hide="view.toolForm.adapter.baseCmd.length === 1" class="fa fa-remove remove-btn" ng-click="removeBaseCmd($index)"></a>
@@ -17,7 +17,7 @@
 
 </div>
 
-<div class="form-group with-expression">
+<div class="form-group">
     <label class="control-label">Stdout</label>
     <expr ng-model="view.toolForm.adapter.stdout" handle-item-update="updateStdOut(value)"></expr>
 </div>
