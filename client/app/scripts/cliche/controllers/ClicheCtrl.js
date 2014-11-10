@@ -563,6 +563,30 @@ angular.module('registryApp.cliche')
         };
 
         /**
+         * Delete app
+         */
+        $scope.delete = function () {
+
+            var modalInstance = $modal.open({
+                template: $templateCache.get('views/cliche/partials/confirm-delete.html'),
+                controller: 'ModalCtrl',
+                windowClass: 'modal-confirm',
+                resolve: {data: function () { return {}; }}
+            });
+
+            modalInstance.result.then(function () {
+                $scope.view.saving = true;
+                App.deleteApp($scope.view.app._id).then(function () {
+                    $scope.view.saving = false;
+                    $scope.view.reload = true;
+                    $location.path('/apps');
+                });
+            });
+
+
+        };
+
+        /**
          * Track route change in order to prevent loss of changes
          *
          * @param e

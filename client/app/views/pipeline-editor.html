@@ -12,7 +12,7 @@
 
             <div ng-if="view.user" class="actions pull-right">
                 <button ng-if="view.mode === 'edit'" ng-click="fork()" class="btn btn-default" ng-disabled="view.saving" ><i class="fa fa-code-fork"></i> Fork</button>
-                <button ng-click="save()" class="btn btn-primary" ng-disabled="view.saving"><i class="fa fa-check"></i> {{ view.mode === 'new' ? 'Create' : 'Update' }}</button>
+                <button ng-click="save()" class="btn btn-primary" ng-disabled="view.saving"><i ng-class="{'fa-plus': view.mode === 'new', 'fa-check': view.mode === 'edit'}" class="fa"></i> {{ view.mode === 'new' ? 'Create' : 'Update' }}</button>
                 <button ng-if="view.mode === 'edit'" ng-click="delete()" class="btn btn-danger" ng-disabled="view.saving || view.deleting"><i class="fa fa-trash"></i> Delete</button>
             </div>
 

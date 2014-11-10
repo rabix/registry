@@ -3,7 +3,7 @@
         <i class="fa fa-trash"></i>
     </button>
     <div class="pipeline-drop-area" ng-class="{loading: view.loading}" drop="dropNode(e, id)">
-        <div ng-show="view.explanation" class="pipeline-user-guide">Drag apps from sidebar on the left on the drawing area</div>
+        <div ng-show="view.explanation && view.canFlush" class="pipeline-user-guide">Drag apps from sidebar on the left on the drawing area</div>
         <div class="pipeline"></div>
     </div>
 </div>

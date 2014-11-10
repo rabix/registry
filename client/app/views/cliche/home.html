@@ -30,6 +30,10 @@
                 <button class="app-publish-btn btn btn-default" ng-click="loadJsonEditor()">
                     <i class="fa fa-cloud-download"></i> Import
                 </button>
+
+                <button ng-if="view.user.id === view.app.user._id" ng-disabled="view.saving" class="app-delete-btn btn btn-danger" ng-click="delete()">
+                    <i class="fa fa-trash"></i> Delete
+                </button>
             </div>
 
         </h1>

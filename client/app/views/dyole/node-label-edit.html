@@ -3,6 +3,7 @@
     <h4 class="modal-title">{{ data.name }}</strong></h4>
 </div>
 <div class="modal-body">
+
     <form ng-submit="ok()" class="form">
         <div class="form-group">
             <label class="control-label">Name</label>
@@ -15,8 +16,5 @@
     </form>
 
     <div class="alert alert-danger" ng-if="view.error">{{view.error}}</div>
-
-
-
 
 </div>
