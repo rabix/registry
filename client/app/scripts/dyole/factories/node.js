@@ -580,8 +580,8 @@ angular.module('registryApp.dyole')
                         border: this.buttons.border,
                         image: {
                             url: 'images/' + this.buttons.info.image.name,
-                            width: 11,
-                            height: 11
+                            width: 14,
+                            height: 14
                         }
                     }, {
                         onClick: this._showInfo,
@@ -596,8 +596,8 @@ angular.module('registryApp.dyole')
                         border: this.buttons.border,
                         image: {
                             url: 'images/' + this.buttons.delete.image.name,
-                            width: 11,
-                            height: 11
+                            width: 14,
+                            height: 14
                         }
                     }, {
                         onClick: this._removeNodeButtonClick,

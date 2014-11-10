@@ -560,11 +560,9 @@ legend {
       padding: 20px;
       background: #f3f3f3;
       position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      margin: auto;
+      top: 50%;
+      left: 50%;
+      margin: -150px 0 0 -200px;
       color: #999;
       text-align: center;
       border: 1px solid #ddd;
