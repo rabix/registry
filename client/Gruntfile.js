@@ -44,10 +44,6 @@ module.exports = function (grunt) {
 //        files: ['test/spec/{,*/}*.js'],
 //        tasks: ['newer:jshint:test', 'karma']
 //      },
-//            compass: {
-//                files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
-//                tasks: ['compass:server', 'autoprefixer']
-//            },
             sass: {
                 files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
                 tasks: ['sass:server']
@@ -85,63 +81,8 @@ module.exports = function (grunt) {
             livereload: {
                 options: {
                     open: true
-                    /*
-                    middleware: function (connect, options) {
-                        if (!Array.isArray(options.base)) {
-                            options.base = [options.base];
-                        }
-
-                        // Setup the proxy
-                        var middlewares = [require('grunt-connect-proxy/lib/utils').proxyRequest];
-
-                        // Serve static files.
-                        options.base.forEach(function(base) {
-                            middlewares.push(connect.static(base));
-                        });
-
-                        // Make directory browse-able.
-                        var directory = options.directory || options.base[options.base.length - 1];
-                        middlewares.push(connect.directory(directory));
-
-                        return middlewares;
-                    }
-                    */
                 }
-//                proxies: [
-//                    {
-//                        context: '/api',
-//                        host: '5e9e1fd7.ngrok.com',
-//                        rewrite: {
-//                            '^/api': '/'
-//                        }
-//                    }
-//                ]
             },
-            /*
-            server: {
-                options: {
-                    port: 4280,
-                    hostname: 'localhost',
-                    middleware: function (connect, options) {
-                        var proxy = require('grunt-connect-proxy/lib/utils').proxyRequest;
-                        return [
-                            // Include the proxy first
-                            proxy,
-                            // Serve static files.
-                            connect.static(options.base),
-                            // Make empty directories browsable.
-                            connect.directory(options.base)
-                        ];
-                    }
-                },
-                proxies: [
-                    {
-                        context: '/',
-                        host: '5e9e1fd7.ngrok.com'
-                    }
-                ]
-            },
-            */
             test: {
                 options: {
                     port: 9001,
@@ -236,37 +177,6 @@ module.exports = function (grunt) {
             sass: {
                 src: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
                 ignorePath: /(\.\.\/){1,2}bower_components\//
-            }
-        },
-
-        // Compiles Sass to CSS and generates necessary files if requested
-        compass: {
-            options: {
-                sassDir: '<%= yeoman.app %>/styles',
-//                cssDir: '.tmp/styles',
-                cssDir: '<%= yeoman.app %>/styles',
-                generatedImagesDir: '.tmp/images/generated',
-                imagesDir: '<%= yeoman.app %>/images',
-                javascriptsDir: '<%= yeoman.app %>/scripts',
-                fontsDir: '<%= yeoman.app %>/fonts',
-                importPath: './app/bower_components',
-                httpImagesPath: '/images',
-                httpGeneratedImagesPath: '/images/generated',
-                httpFontsPath: '/fonts',
-                relativeAssets: false,
-                assetCacheBuster: false,
-                raw: 'Sass::Script::Number.precision = 10\n'
-            },
-            dist: {
-                options: {
-                    cssDir: '.tmp/styles',
-                    generatedImagesDir: '<%= yeoman.dist %>/images/generated'
-                }
-            },
-            server: {
-                options: {
-                    debugInfo: true
-                }
             }
         },
 
@@ -428,6 +338,22 @@ module.exports = function (grunt) {
             }
         },
 
+        ngAnnotate: {
+            options: {
+                singleQuotes: true
+            },
+            registryApp: {
+                files: [
+                    {
+                        expand: true,
+                        cwd: '.tmp/concat/scripts',
+                        src: '*.js',
+                        dest: '.tmp/concat/scripts'
+                    }
+                ]
+            }
+        },
+
         // Replace Google CDN references
         cdnify: {
             dist: {
@@ -480,16 +406,13 @@ module.exports = function (grunt) {
         // Run some tasks in parallel to speed up the build process
         concurrent: {
             server: [
-                //'compass:server'
                 'sass:server'
             ],
             test: [
-                //'compass'
                 'sass'
             ],
             dist: [
-                //'sass:dist',
-                'compass:dist',
+                'sass:dist',
                 'imagemin',
                 'svgmin'
             ]
@@ -560,7 +483,7 @@ module.exports = function (grunt) {
         'ngtemplates:app',
         'autoprefixer',
         'concat',
-        'ngmin',
+        'ngAnnotate',
         'copy:dist',
         'cdnify',
         'cssmin',
