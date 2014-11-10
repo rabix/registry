@@ -179,6 +179,11 @@ form, .form {
   @include border-radius(0);
 }
 
+.help-block {
+  margin: 0;
+  font-size: 12px;
+}
+
 .alert {
   @include border-radius(0);
 }

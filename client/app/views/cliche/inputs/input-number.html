@@ -1,0 +1,12 @@
+<div class="form-group" ng-class="{required: prop.required, 'has-error': inputForm.inputNumber.$invalid}">
+    <label class="control-label">{{ key }}</label>
+
+    <div class="input-property-body">
+
+        <input type="number" class="form-control" name="inputNumber" ng-model="model" ng-required="prop.required">
+
+        <span ng-if="inputForm.inputNumber.$invalid" class="help-block">Please provide correct value</span>
+
+    </div>
+
+</div>

@@ -5,15 +5,25 @@
         <a ng-if="view.mode === 'edit'" ng-href="#/pipeline/{{ view.pipeline._id }}" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
         <h1>
             <div class="form-group workflow-name">
-                <span ng-show="view.pipeline.repo">{{view.pipeline.repo.owner}}/{{view.pipeline.repo.name}}/</span><input type="text" placeholder="Workflow Name" ng-model="view.pipeline.name" class="form-control" />
+                <span ng-show="view.pipeline.repo">{{view.pipeline.repo.owner}}/{{view.pipeline.repo.name}}/</span>
+                <input type="text" placeholder="Workflow Name" ng-model="view.pipeline.name" class="form-control" />
             </div>
 
-            <strong class="changes-mark" ng-if="view.isChanged" tooltip="There are changes in your workflow" tooltip-placement="right"><i class="fa fa-asterisk"></i></strong>
+            <strong class="changes-mark" ng-if="view.isChanged" tooltip="There are changes in your workflow" tooltip-placement="right">
+                (<i class="fa fa-asterisk"></i>)
+            </strong>
 
             <div ng-if="view.user" class="actions pull-right">
-                <button ng-if="view.mode === 'edit'" ng-click="fork()" class="btn btn-default" ng-disabled="view.saving" ><i class="fa fa-code-fork"></i> Fork</button>
-                <button ng-click="save()" class="btn btn-primary" ng-disabled="view.saving"><i ng-class="{'fa-plus': view.mode === 'new', 'fa-check': view.mode === 'edit'}" class="fa"></i> {{ view.mode === 'new' ? 'Create' : 'Update' }}</button>
-                <button ng-if="view.mode === 'edit'" ng-click="delete()" class="btn btn-danger" ng-disabled="view.saving || view.deleting"><i class="fa fa-trash"></i> Delete</button>
+                <button ng-if="view.mode === 'edit'" ng-click="fork()" class="btn btn-default" ng-disabled="view.saving" >
+                    <i class="fa fa-code-fork"></i> Fork
+                </button>
+                <button ng-click="save()" class="btn btn-primary" ng-disabled="view.saving">
+                    <i ng-class="{'fa-plus': view.mode === 'new', 'fa-check': view.mode === 'edit'}" class="fa"></i>
+                    {{ view.mode === 'new' ? 'Create' : 'Update' }}
+                </button>
+                <button ng-if="view.mode === 'edit'" ng-click="delete()" class="btn btn-danger" ng-disabled="view.saving || view.deleting">
+                    <i class="fa fa-trash"></i> Delete
+                </button>
             </div>
 
         </h1>

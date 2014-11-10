@@ -9,5 +9,7 @@
             <option value>-- choose --</option>
             <option ng-repeat="option in prop.enum track by $index" value="{{ option }}">{{ (option === '') ? 'empty value' : option }}</option>
         </select>
+
+        <span ng-if="inputForm.inputString.$invalid" class="help-block">Please provide correct value</span>
     </div>
 </div>

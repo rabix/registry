@@ -157,6 +157,13 @@ angular.module('registryApp.cliche')
                         },
                         adapter: {prefix: '', separator: '_', order: 0, transform: undefined}
                     },
+                    number: {
+                        root: {
+                            type: 'string',
+                            required: false
+                        },
+                        adapter: {prefix: '', separator: '_', order: 0, transform: undefined}
+                    },
                     array: {
                         root: {
                             type: 'string',
@@ -396,7 +403,7 @@ angular.module('registryApp.cliche')
             var joiner = ' ';
             var promises = [];
 
-            if (property.items.type !== 'object') {
+            if (property.items && property.items.type !== 'object') {
                 joiner = listSeparator === 'repeat' ? (' ' + prefix + separator) : listSeparator;
             }
 
@@ -404,7 +411,7 @@ angular.module('registryApp.cliche')
 
                 var deferred = $q.defer();
 
-                if (property.items.type === 'object') {
+                if (property.items && property.items.type === 'object') {
                     self.parseObjectInput(property.items.properties, val)
                         .then(function (result) {
                             deferred.resolve(result);
@@ -646,7 +653,7 @@ angular.module('registryApp.cliche')
                     $q.all([
                             $localForage.setItem('version', self.version),
                             $localForage.setItem('tool', {}),
-                            $localForage.setItem('job', {}),
+                            $localForage.setItem('job', {})
                         ]).then(function() {
                             deferred.resolve();
                         });
@@ -673,7 +680,7 @@ angular.module('registryApp.cliche')
 
             return $q.all([
                     $localForage.setItem('tool', tool),
-                    $localForage.setItem('job', job),
+                    $localForage.setItem('job', job)
                 ]).then(function() {
                     return {
                         tool: tool,

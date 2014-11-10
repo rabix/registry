@@ -5,5 +5,7 @@
 
         <input type="text" class="form-control" name="inputFile" ng-model="model.path" ng-required="prop.required">
 
+        <span ng-if="inputForm.inputFile.$invalid" class="help-block">Please provide correct value</span>
+
     </div>
 </div>
