@@ -181,12 +181,10 @@ module.exports = function (grunt) {
         },
 
         sass: {
-            options: {
-                sourcemap: 'none'
-            },
             server: {
                 options: {
-                    style: 'expanded'
+                    style: 'expanded',
+                    sourcemap: 'auto'
                 },
                 files: [{
                     expand: true,
@@ -198,7 +196,8 @@ module.exports = function (grunt) {
             },
             dist: {
                 options: {
-                    style: 'compressed'
+                    style: 'compressed',
+                    sourcemap: 'none'
                 },
                 files: [{
                     expand: true,

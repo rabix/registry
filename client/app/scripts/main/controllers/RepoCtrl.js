@@ -48,7 +48,6 @@ angular.module('registryApp')
 
         Repo.getRepo($routeParams.id).then(function (result) {
 
-            console.log(result);
             $scope.view.repo = result.data;
 
             $q.all([

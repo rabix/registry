@@ -351,6 +351,12 @@ ul {
   @include border-radius(0);
 }
 
+.modal-header {
+  .close {
+    margin-top: 0;
+  }
+}
+
 .modal-body {
   &.alert {
     margin: 0;

@@ -24,7 +24,7 @@ angular.module('registryApp')
             }
 
             if (angular.isDefined(repo)) {
-                params.field_repo_id = repo.replace(/&/g, '/');
+                params.field_repo = repo.replace(/&/g, '/');
             }
 
             params.mine = mine || null;
