@@ -192,7 +192,7 @@ angular.module('registryApp')
             return Api.apps.delete({id: id}).$promise;
 
         };
-        
+
         return self;
 
     }]);

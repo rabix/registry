@@ -38,15 +38,38 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="app in view.apps">
+                <tr ng-repeat-start="app in view.apps">
                     <td><a ng-href="#/app/{{ app._id }}">{{ app.name }}</a></td>
-                    <td>
-                        <a ng-href="#/repo/{{ app.repo._id }}">{{ app.repo.owner }}/{{ app.repo.name }}</a>
-                    </td>
+                    <td><a ng-href="#/repo/{{ app.repo._id }}">{{ app.repo.owner }}/{{ app.repo.name }}</a></td>
                     <td><p tooltip="{{ app.description }}" tooltip-popup-delay="1000">{{ app.description }}</p></td>
                     <td class="center">
                         <a class="btn btn-default" tooltip="Edit App" ng-href="#/cliche/{{ app._id }}/latest"><i class="fa fa-pencil"></i></a>
                         <a class="btn btn-default" ng-if="app.user === view.user.id" tooltip="Delete App" ng-click="deleteApp(app)"><i class="fa fa-trash"></i></a>
+                    </td>
+                </tr>
+                <tr class="inner-table" ng-repeat-end>
+                    <td colspan="4">
+                        <table class="table table-hover app-revisions">
+                            <thead>
+                                <tr>
+                                    <th>Revisions</th>
+                                    <th>&nbsp;</th>
+                                    <th class="center">&nbsp;</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="revision in app.revisions">
+                                    <td><a ng-href="#/revision/{{ revision._id }}">{{ revision.name }}</a></td>
+                                    <td><p tooltip="{{ revision.description }}" tooltip-popup-delay="1000">{{ revision.description }}</p></td>
+                                    <td class="center">
+                                        <a class="btn btn-sm btn-default" tooltip="Edit Revision" ng-href="#/cliche/{{ app._id }}/{{ revision._id }}"><i class="fa fa-pencil"></i></a>
+                                    </td>
+                                </tr>
+                                <tr class="empty" ng-if="app.revisions.length === 0">
+                                    <td colspan="4"><p class="alert alert-info">There are no public revisions for this app</p></td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </td>
                 </tr>
                 <tr class="empty" ng-if="view.apps.length === 0">

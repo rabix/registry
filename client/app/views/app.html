@@ -3,18 +3,17 @@
     <div class="heading">
         <a ng-href="#/apps" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
         <h1>
-            {{ view.app.name }}
+            <span>{{ view.app.name }}</span>
+            <div ng-if="view.revisions.length > 0" class="nav nav-pills nav-page">
+                <li ng-class="{active: view.tab === 'info'}"><a ng-href="#/app/{{ view.app._id }}">Info</a></li>
+                <li ng-class="{active: view.tab === 'revisions'}"><a ng-href="#/app/{{ view.app._id }}/revisions">Revisions</a></li>
+            </div>
             <a ng-href="#/cliche/{{ view.app._id }}/latest" class="btn btn-primary pull-right"><i class="fa fa-pencil"></i> Edit</a>
         </h1>
     </div>
     <!-- # .heading -->
 
     <div ng-if="!view.loading" class="content">
-
-        <div ng-if="view.revisions.length > 0" class="nav nav-pills nav-page">
-            <li ng-class="{active: view.tab === 'info'}"><a ng-href="#/app/{{ view.app._id }}">Info</a></li>
-            <li ng-class="{active: view.tab === 'revisions'}"><a ng-href="#/app/{{ view.app._id }}/revisions">Revisions</a></li>
-        </div>
 
         <section ng-if="view.tab === 'info'">
             <div class="description">

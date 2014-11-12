@@ -114,6 +114,8 @@ angular.module('registryApp')
 
         /**
          * Delete app
+         *
+         * @param app
          */
         $scope.deleteApp = function (app) {
 
@@ -129,12 +131,11 @@ angular.module('registryApp')
 
             modalInstance.result.then(function () {
                 App.deleteApp(app._id).then(function () {
-                    _.remove($scope.view.apps, function (p) {
-                        return p._id === app._id;
+                    _.remove($scope.view.apps, function (a) {
+                        return a._id === app._id;
                     });
                 });
             });
-
 
         };
 

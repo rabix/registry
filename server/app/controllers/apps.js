@@ -28,12 +28,6 @@ router.get('/apps', function (req, res, next) {
         if (_.contains(paramKey, 'field_')) {
             where[paramKey.replace('field_', '')] = paramVal;
         }
-        if (paramKey === 'q') {
-            where.$or = [
-                {name: new RegExp(paramVal, 'i')},
-                {description: new RegExp(paramVal, 'i')}
-            ];
-        }
     });
 
     if (req.user && req.param('mine')) {
@@ -43,11 +37,31 @@ router.get('/apps', function (req, res, next) {
     App.count(where).exec(function(err, total) {
         if (err) { return next(err); }
 
-        App.find(where).populate('repo').populate('revisions', 'name json').skip(skip).limit(limit).sort({_id: 'desc'}).exec(function(err, apps) {
-            if (err) { return next(err); }
+        var match = {is_public: true};
 
-            res.json({list: apps, total: total});
-        });
+        if (req.query.q) {
+            match.$or = [
+                {name: new RegExp(req.query.q, 'i')},
+                {description: new RegExp(req.query.q, 'i')}
+            ];
+        }
+
+        App.find(where)
+            .populate('repo')
+            .populate({
+                path: 'revisions',
+                select: 'name description json',
+                match: match,
+                options: { limit: 25 }
+            })
+            .skip(skip)
+            .limit(limit)
+            .sort({_id: 'desc'})
+            .exec(function(err, apps) {
+                if (err) { return next(err); }
+
+                res.json({list: apps, total: total});
+            });
 
     });
 

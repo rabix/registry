@@ -75,19 +75,21 @@
 
 .nav-pills {
   &.nav-page {
-    margin: 5px 0;
+    margin: 0 10px;
+    display: inline-block;
+    vertical-align: middle;
     li {
       a {
         padding: 5px 15px;
         border: 1px solid transparent;
+        font-size: 14px;
       }
       &.active {
         a,
         a:focus,
         a:hover {
           color: #555;
-          background-color: $gray;
-          background-image: url(../images/bg.png);
+          background-color: #fff;
           border: 1px solid #ddd;
           cursor: pointer;
         }
