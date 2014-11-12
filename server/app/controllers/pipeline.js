@@ -422,28 +422,65 @@ router.delete('/pipeline/:id', filters.authenticated, function (req, res, next) 
 
 router.post('/pipeline/fork', filters.authenticated, function (req, res, next) {
 
-    var pipeline = req.body.pipeline;
+    var pipeline_to_fork = req.body.pipeline;
 
-    Repo.findOne({_id: pipeline.repo}).populate('repo').populate('user', '_id email username').exec(function (err, repo) {
+    Repo.findOne({_id: pipeline_to_fork.repo}).populate('repo').populate('user', '_id email username').exec(function (err, repo) {
         if (err) {return next(err);}
 
         if (repo) {
 
-            var p = new Pipeline();
+//            var p = new Pipeline();
+//
+//            p.json = pipeline.json;
+//            p.user = req.user.id;
+//            p.author = pipeline.author;
+//
+//            p.description = pipeline.description;
+//            p.name = pipeline.name;
+//            p.repo = pipeline.repo;
+//
+//            p.save();
+//
+//            res.json({
+//                _id: p._id,
+//                message: 'Pipeline successfully updated'
+//            });
 
-            p.json = pipeline.json;
-            p.user = req.user.id;
-            p.author = pipeline.author;
+            var now = Date.now(),
+                stamp = {
+                    created_on: now,
+                    modified_on: now
+                };
 
-            p.description = pipeline.description;
-            p.name = pipeline.name;
-            p.repo = pipeline.repo;
+            var revision = new PipelineRevision();
 
-            p.save();
+            revision.name = pipeline_to_fork.name;
+            revision.description = pipeline_to_fork.description;
+            revision.json = pipeline_to_fork.json;
+            revision.stamp = stamp;
 
-            res.json({
-                _id: p._id,
-                message: 'Pipeline successfully updated'
+            revision.save();
+
+            var pipeline = new Pipeline();
+
+            pipeline.author = req.user.email;
+            pipeline.user = req.user.id;
+            pipeline.repo = repo._id;
+            pipeline.latest = revision._id;
+            pipeline.stamp = stamp;
+
+            pipeline.save(function(err) {
+                if (err) { return next(err); }
+
+                pipeline.revisions.push(revision._id);
+
+                revision.pipeline = pipeline._id;
+
+                revision.save();
+                pipeline.save();
+
+                res.json({message: 'Pipeline successfully added', id: revision._id});
+
             });
 
         } else {
