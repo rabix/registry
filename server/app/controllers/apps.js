@@ -50,7 +50,7 @@ router.get('/apps', function (req, res, next) {
             .populate('repo')
             .populate({
                 path: 'revisions',
-                select: 'name description json',
+                select: 'name description version',
                 match: match,
                 options: { limit: 25 }
             })

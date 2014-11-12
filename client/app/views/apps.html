@@ -5,7 +5,7 @@
             <div class="col-md-4">
                 <form class="search-form" ng-submit="searchApps()" novalidate>
                     <div class="input-group">
-                        <input type="text" class="form-control" ng-model="view.searchTerm" placeholder="Search apps" required>
+                        <input type="text" class="form-control" ng-model="view.searchTerm" placeholder="Search tools" required>
                         <span class="input-group-btn">
                             <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
                             <a ng-if="!(view.searchTerm | isEmpty)" class="btn btn-default" href ng-click="resetSearch()"><i class="fa fa-ban"></i></a>
@@ -21,7 +21,7 @@
             </div>
 
             <div class="col-md-5">
-                <a ng-href="#/cliche" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> Add New App</a>
+                <a ng-href="#/cliche" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> Add New Tool</a>
             </div>
         </div>
     </div>
@@ -34,7 +34,7 @@
                     <th>Name</th>
                     <th>Repo</th>
                     <th>Description</th>
-                    <th class="center">Actions</th>
+                    <th class="right">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -42,9 +42,9 @@
                     <td><a ng-href="#/app/{{ app._id }}">{{ app.name }}</a></td>
                     <td><a ng-href="#/repo/{{ app.repo._id }}">{{ app.repo.owner }}/{{ app.repo.name }}</a></td>
                     <td><p tooltip="{{ app.description }}" tooltip-popup-delay="1000">{{ app.description }}</p></td>
-                    <td class="center">
-                        <a class="btn btn-default" tooltip="Edit App" ng-href="#/cliche/{{ app._id }}/latest"><i class="fa fa-pencil"></i></a>
-                        <a class="btn btn-default" ng-if="app.user === view.user.id" tooltip="Delete App" ng-click="deleteApp(app)"><i class="fa fa-trash"></i></a>
+                    <td class="right">
+                        <a class="btn btn-default" tooltip="Edit Tool" ng-href="#/cliche/{{ app._id }}/latest"><i class="fa fa-pencil"></i></a>
+                        <a class="btn btn-default" ng-if="app.user === view.user.id" tooltip="Delete Tool" ng-click="deleteApp(app)"><i class="fa fa-trash"></i></a>
                     </td>
                 </tr>
                 <tr class="inner-table" ng-repeat-end>
@@ -54,26 +54,26 @@
                                 <tr>
                                     <th>Revisions</th>
                                     <th>&nbsp;</th>
-                                    <th class="center">&nbsp;</th>
+                                    <th class="right">&nbsp;</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr ng-repeat="revision in app.revisions">
-                                    <td><a ng-href="#/revision/{{ revision._id }}">{{ revision.name }}</a></td>
+                                    <td><a ng-href="#/revision/{{ revision._id }}" class="version"><strong><i class="fa fa-tag"></i> {{ 'v' + revision.version }}</strong></a></td>
                                     <td><p tooltip="{{ revision.description }}" tooltip-popup-delay="1000">{{ revision.description }}</p></td>
-                                    <td class="center">
+                                    <td class="right">
                                         <a class="btn btn-sm btn-default" tooltip="Edit Revision" ng-href="#/cliche/{{ app._id }}/{{ revision._id }}"><i class="fa fa-pencil"></i></a>
                                     </td>
                                 </tr>
                                 <tr class="empty" ng-if="app.revisions.length === 0">
-                                    <td colspan="4"><p class="alert alert-info">There are no public revisions for this app</p></td>
+                                    <td colspan="4"><p class="alert alert-info">There are no public revisions for this tool</p></td>
                                 </tr>
                             </tbody>
                         </table>
                     </td>
                 </tr>
                 <tr class="empty" ng-if="view.apps.length === 0">
-                    <td colspan="4"><p class="alert alert-info">There are no apps found</p></td>
+                    <td colspan="4"><p class="alert alert-info">There are no tools found</p></td>
                 </tr>
             </tbody>
         </table>

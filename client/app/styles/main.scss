@@ -373,13 +373,13 @@ body {
     }
 
     /* App revisions table */
-    &.app-revisions {
-      th {
-        &:nth-child(1) { width: 30%; }
-        &:nth-child(2) { width: 50%; }
-        &:nth-child(3) { width: 20%; }
-      }
-    }
+    //&.app-revisions {
+    //  th {
+    //    &:nth-child(1) { width: 30%; }
+    //    &:nth-child(2) { width: 50%; }
+    //    &:nth-child(3) { width: 20%; }
+    //  }
+    //}
 
     /* Pipelines table */
     &.pipelines {
@@ -469,9 +469,17 @@ body {
     }
 
     .inner-table {
+      &:hover {
+        background-image: none;
+      }
+      &:last-child {
+        border-bottom: 1px solid #ddd;
+      }
       & > td {
-        padding: 0;
+        padding: 0 0 0 30px;
+        background-image: url(../images/bg.png);
         .table {
+          border-left: 2px solid #ddd;
           th {
             padding: 1px 8px;
           }

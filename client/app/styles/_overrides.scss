@@ -255,6 +255,9 @@ form, .form {
         &.center {
           text-align: center;
         }
+        &.right {
+          text-align: right;
+        }
       }
     }
   }
@@ -265,6 +268,15 @@ form, .form {
       td {
         &.center {
           text-align: center;
+        }
+        &.right {
+          text-align: right;
+        }
+        .version {
+          color: #555;
+          &:hover {
+            text-decoration: none;
+          }
         }
       }
     }
