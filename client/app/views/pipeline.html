@@ -3,7 +3,11 @@
     <div class="heading">
         <a ng-href="#/pipelines" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
         <h1>
-            {{ view.pipeline.name }} <span class="pipeline-repo">({{view.pipeline.pipeline.repo.owner}}/{{view.pipeline.pipeline.repo.name}})</span>
+            <span>{{ view.pipeline.name }} <span class="pipeline-repo">({{view.pipeline.pipeline.repo.owner}}/{{view.pipeline.pipeline.repo.name}})</span></span>
+            <div ng-if="view.revisions.length > 0" class="nav nav-pills nav-page">
+                <li ng-class="{active: view.tab === 'info'}"><a href="" ng-click="switchTab('info')">Info</a></li>
+                <li ng-class="{active: view.tab === 'revisions'}"><a href="" ng-click="switchTab('revisions')">Revisions</a></li>
+            </div>
             <a ng-href="#/pipeline/{{ view.pipeline._id }}/edit" class="btn btn-primary pull-right"><i class="fa fa-pencil"></i> Edit</a>
         </h1>
     </div>
@@ -11,16 +15,11 @@
 
     <div class="content">
 
-        <div ng-if="view.revisions.length > 0" class="nav nav-pills nav-page">
-            <li ng-class="{active: view.tab === 'info'}"><a href="" ng-click="switchTab('info')">Info</a></li>
-            <li ng-class="{active: view.tab === 'revisions'}"><a href="" ng-click="switchTab('revisions')">Revisions</a></li>
-        </div>
-
-        <section ng-show="view.tab === 'info'">
+        <section class="tab info" ng-show="view.tab === 'info'">
             <div pipeline="view.pipeline"></div>
         </section>
 
-        <section ng-if="view.tab === 'revisions'">
+        <section class="tab revisions" ng-if="view.tab === 'revisions'">
 
             <table class="table table-hover revisions">
                 <thead>

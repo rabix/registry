@@ -247,7 +247,27 @@ body {
     }
   }
 
-  /* Pipeline Editor/View page */
+  /* Pipeline View page */
+  &.pipeline-view {
+    .content {
+      padding: 0px;
+      @include flex-box();
+      @include flex-flow(column nowrap);
+      & > .tab {
+        &.info {
+          margin: 0;
+          @include flex(1);
+          @include flex-box();
+          @include flex-flow(column nowrap);
+        }
+        &.revisions {
+          padding: 0 10px;
+        }
+      }
+    }
+  }
+
+  /* Pipeline Editor page */
   &.pipeline-edit {
     & > .content {
       padding: 0;
