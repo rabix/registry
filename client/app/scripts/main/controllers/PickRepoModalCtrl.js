@@ -9,9 +9,15 @@ angular.module('registryApp')
         $scope.view = {};
         $scope.view.repos = data.repos;
         $scope.view.type = data.type;
+        $scope.view.pickName = data.pickName || false;
 
         $scope.ok = function () {
-            $modalInstance.close($scope.view.repoSelected);
+
+            if ($scope.view.pickName && $scope.view.form.$invalid) {
+                return false;
+            }
+
+            $modalInstance.close({repoId: $scope.view.repoSelected, name: $scope.view.name});
         };
 
         $scope.cancel = function () {

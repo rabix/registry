@@ -85,13 +85,18 @@ angular.module('registryApp.dyole')
 
         });
         
-        $scope.$on('pipeline:fork', function (e, repoId) {
+        $scope.$on('pipeline:fork', function (e, repoId, name) {
             $scope.pipeline.json = Pipeline.getJSON();
 
             $scope.pipeline.repo = repoId;
 
+            if (name) {
+                $scope.pipeline.name = name;
+                debugger;
+            }
+
             PipelineMdl.fork($scope.pipeline).then(function (pipeline) {
-                $location.path('/pipeline/' + pipeline._id + '/edit');
+                $location.path('/pipeline/' + pipeline.id + '/edit');
             });
         });
 

@@ -1,15 +1,24 @@
 <div class="modal-body">
     <div ng-show="view.repos.length === 0"  class="alert alert-warning">You don't have any repositories to bind the workflow to.</div>
 
-    <div class="pick-repo-wrap" ng-show="view.repos.length !== 0">
-        <p>Pick repository for workflow: </p>
+    <form ng-submit="ok()" name="view.form" novalidate>
 
-        <select  ng-model="view.repoSelected" class="form-control" ng-options="repo._id as repo.name for repo in view.repos">
-            <option value="">-- choose repo --</option>
-        </select>
-    </div>
+        <div ng-show="view.pickName" class="form-group" ng-class="{ 'has-error' : view.form.name.$invalid }">
+            <label>Pick name for forked workflow: </label>
+            <input class="form-control" type="text" name="name" ng-model="view.name" required/>
+            <span ng-if="view.form.name.$invalid" class="help-block" >Please pick workflow name.</span>
+        </div>
 
-    <button class="btn btn-primary" ng-click="ok()">{{view.type}}</button>
-    <button class="btn btn-default" ng-click="cancel()">cancel</button>
 
+        <div class="pick-repo-wrap" ng-show="view.repos.length !== 0">
+            <p>Pick repository for workflow: </p>
+
+            <select  ng-model="view.repoSelected" class="form-control" ng-options="repo._id as repo.name for repo in view.repos">
+                <option value="">-- choose repo --</option>
+            </select>
+        </div>
+
+        <button class="btn btn-primary" type="submit">{{view.type}}</button>
+        <a class="btn btn-default" href="" ng-click="cancel()">cancel</a>
+    </form>
 </div>

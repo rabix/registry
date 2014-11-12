@@ -428,13 +428,13 @@ angular.module('registryApp')
             var modalInstance = $modal.open({
                 controller: 'PickRepoModalCtrl',
                 template: $templateCache.get('views/dyole/pick-repo-name.html'),
-                resolve: { data: function () { return { repos: $scope.view.userRepos, type: 'fork', message: 'Are you sure you want to fork this workflow?'}; }}
+                resolve: { data: function () { return { repos: $scope.view.userRepos, pickName: true, type: 'fork', message: 'Are you sure you want to fork this workflow?'}; }}
             });
 
-            modalInstance.result.then(function (repoId) {
-                if (repoId) {
+            modalInstance.result.then(function (data) {
+                if (data.repoId) {
                     $scope.view.reload = true;
-                    $scope.$broadcast('pipeline:fork', repoId);
+                    $scope.$broadcast('pipeline:fork', data.repoId, data.name);
                 } else {
                     $modal.open({
                         template: $templateCache.get('views/partials/validation.html'),
