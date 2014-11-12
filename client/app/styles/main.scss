@@ -250,11 +250,11 @@ body {
   /* Pipeline Editor/View page */
   &.pipeline-edit,
   &.pipeline-view {
-    & > .content {
-      padding: 0;
-      overflow-x: hidden;
-      @include flex-box();
-    }
+//    & > .content {
+//      padding: 0;
+//      overflow-x: hidden;
+//      @include flex-box();
+//    }
 
     .sidebar-col {
       width: 350px;

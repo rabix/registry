@@ -115,7 +115,29 @@ angular.module('registryApp')
         
         self.getRevision = function (id) {
             return Api.pipelineRevs.get({id: id}).$promise;
+        };
 
+        self.getRevisions = function(skip, searchTerm, pipelineId) {
+
+            var isSearch = !(_.isUndefined(searchTerm) || _.isEmpty(searchTerm));
+            var params = {skip: skip};
+
+            if (isSearch) {
+                params.q = searchTerm;
+            }
+
+            if (angular.isDefined(pipelineId)) {
+                params.field_pipeline = pipelineId;
+            }
+
+            var promise = Api.pipelineRevs.get(params).$promise;
+
+            return promise;
+
+        };
+        
+        self.publishRevision = function (id, data) {
+            return Api.pipelineRevs.update({id: id}, data || {}).$promise;
         };
 
         return self;

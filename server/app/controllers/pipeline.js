@@ -157,17 +157,13 @@ router.get('/pipeline', function (req, res, next) {
 
         PipelineRevision.find(where).populate('pipeline').skip(skip).limit(limit).exec(function(err, pipelines) {
             if (err) { return next(err); }
-//
 
             Repo.populate(pipelines, 'pipeline.repo', function (err, p) {
-
                 User.populate(p, {
                     path: 'pipeline.user',
                     select:  '_id email username'
                 }, function (err, pipes) {
-
                     res.json({list: pipes, total: total});
-
                 });
 
             });
@@ -204,6 +200,51 @@ router.get('/pipeline-revisions/:id', function (req, res, next) {
 
         });
     });
+
+});
+
+router.get('/pipeline-revisions', function (req, res, next) {
+
+    var limit = req.query.limit ? req.query.limit : 25;
+    var skip = req.query.skip ? req.query.skip : 0;
+    var where = {};
+
+    _.each(req.query, function(paramVal, paramKey) {
+        if (_.contains(paramKey, 'field_')) {
+            where[paramKey.replace('field_', '')] = paramVal;
+        }
+        if (paramKey === 'q') {
+            where.$or = [
+                {name: new RegExp(paramVal, 'i')},
+                {description: new RegExp(paramVal, 'i')}
+            ];
+        }
+    });
+    
+
+    Pipeline.findById(req.query.field_pipeline, function(err, pipeline) {
+        if (err) { return next(err); }
+
+        var user_id = (req.user ? req.user.id : '').toString();
+        var pipeline_user_id = pipeline.user.toString();
+
+        if (user_id !== pipeline_user_id) {
+            where.is_public = true;
+        }
+
+        PipelineRevision.count(where).exec(function(err, total) {
+            if (err) { return next(err); }
+
+            PipelineRevision.find(where).skip(skip).limit(limit).sort({_id: 'desc'}).exec(function(err, revisions) {
+                if (err) { return next(err); }
+
+                res.json({list: revisions, total: total});
+            });
+
+        });
+
+    });
+
 
 });
 
@@ -286,6 +327,7 @@ router.put('/pipeline/:id', filters.authenticated, function (req, res, next) {
             revision.name = data.name;
             revision.description = data.description;
             revision.pipeline = pipeline._id.toString();
+            revision.version = pipeline.revisions.length + 1;
 
             revision.save(function (err, rev) {
                 if (err) {
@@ -306,32 +348,37 @@ router.put('/pipeline/:id', filters.authenticated, function (req, res, next) {
 
 });
 
-router.put('/pipeline/:id/:revision', filters.authenticated, function (req, res, next) {
-    var pipeline_id = req.params.id,
-        revision_id = req.params.revision,
-        isPublic = req.body.public || true;
+router.put('/pipeline-revisions/:revision', filters.authenticated, function (req, res, next) {
+    var revision_id = req.params.revision,
+        isPublic = req.body ? req.body.public || true : true;
 
-        PipelineRevision.findOneAndUpdate({_id: revision_id, pipeline: pipeline_id}, {is_public: isPublic}, function (err) {
+        PipelineRevision.findOneAndUpdate({_id: revision_id }, {is_public: isPublic}, function (err, revision) {
             if (err) {
                 return next(err);
             }
-
-            Pipeline.findOneAndUpdate({_id: pipeline_id}, {latest: revision_id}, function (err) {
-
+            
+            Pipeline.populate(revision, 'rev.pipeline', function (err, rev) {
                 if (err) {
                     return next(err);
                 }
 
-                res.json({message: 'Revision successfully ' + isPublic ? 'published' : 'unpublished'});
-            });
-        });
+                Pipeline.findOneAndUpdate({_id: rev.pipeline._id}, {latest: revision_id}, function (err) {
 
+                    if (err) {
+                        return next(err);
+                    }
+
+                    res.json({message: 'Revision successfully ' + isPublic ? 'published' : 'unpublished'});
+                });
+
+            });
+
+        });
 });
 
-router.delete('/pipeline/:id/:revision', filters.authenticated, function (req, res, next) {
+router.delete('/pipeline-revisions/:revision', filters.authenticated, function (req, res, next) {
     var pipeline_id = req.params.id,
-        revision_id = req.parmas.revision;
-
+        revision_id = req.params.revision;
 
 
 });

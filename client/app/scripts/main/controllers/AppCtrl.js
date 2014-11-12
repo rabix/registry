@@ -3,7 +3,7 @@
 angular.module('registryApp')
     .controller('AppCtrl', ['$scope', '$routeParams', '$q', 'App', 'Sidebar', 'Loading', function ($scope, $routeParams, $q, App, Sidebar, Loading) {
 
-        Sidebar.setActive('apps');
+        Sidebar.setActive('tools');
 
         $scope.view = {};
         $scope.view.loading = true;

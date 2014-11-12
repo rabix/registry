@@ -17,8 +17,6 @@ angular.module('registryApp.dyole')
 
         /* show usage hints to user flag */
         $scope.view.explanation = false;
-        $scope.view.reload = false;
-
 
         /**
          * Initialize pipeline
@@ -78,7 +76,6 @@ angular.module('registryApp.dyole')
                         if (repoId) {
                             $location.path('/pipeline/' + data.id);
                         } else {
-                            $scope.view.reload = true;
                             $location.path('/pipeline/' + data.id + '/edit');
                         }
                     } else {
@@ -233,42 +230,9 @@ angular.module('registryApp.dyole')
 
         };
 
-        /**
-         * Track route change in order to prevent loss of changes
-         *
-         * @param e
-         * @param nextLocation
-         */
-        var onRouteChange = function(e, nextLocation) {
-            console.log('$scope.view.reload', $scope.view.reload);
-            if($scope.view.reload) { return; }
-
-            var modalInstance = $modal.open({
-                template: $templateCache.get('views/partials/confirm-leave.html'),
-                controller: 'ModalCtrl',
-                windowClass: 'modal-confirm',
-                resolve: {data: function () {return {};}}
-            });
-
-            modalInstance.result.then(function () {
-
-                onRouteChangeOff();
-
-                $scope.view.reload = true;
-
-                if ($routeParams.mode === 'new') { $scope.$broadcast('save-local', true); }
-
-                $location.path(nextLocation.split('#\/')[1]);
-
-            });
-
-            e.preventDefault();
-
-        };
 
         var onNodeInfoOff = $rootScope.$on('node:info', onNodeInfo);
         var onNodeLabelEditOff = $rootScope.$on('node:label:edit', onNodeLabelEdit);
-        var onRouteChangeOff = $rootScope.$on('$locationChangeStart', onRouteChange);
 
         $scope.$on('$destroy', function() {
 
@@ -279,8 +243,6 @@ angular.module('registryApp.dyole')
             onPipelineChangeOff();
             onNodeInfoOff();
             onNodeLabelEditOff();
-
-            onRouteChangeOff();
 
         });
 

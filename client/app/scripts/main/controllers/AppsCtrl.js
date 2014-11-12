@@ -3,7 +3,7 @@
 angular.module('registryApp')
     .controller('AppsCtrl', ['$scope', '$routeParams', '$injector', 'App', 'Sidebar', 'Api', 'Loading', 'User',function ($scope, $routeParams, $injector, App, Sidebar, Api, Loading, User) {
 
-        Sidebar.setActive('apps');
+        Sidebar.setActive('tools');
 
         /**
          * Callback when apps are loaded

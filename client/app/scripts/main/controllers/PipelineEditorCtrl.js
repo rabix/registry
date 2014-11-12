@@ -248,20 +248,15 @@ angular.module('registryApp')
                 return false;
 
             } else if (mode === 'edit') {
-                console.log('update!!!!');
-
+                $scope.view.reload = true;
                 $scope.$broadcast('save', null);
-
             } else {
-
                 modalInstance = $modal.open({
                     controller: 'PickRepoModalCtrl',
                     template: $templateCache.get('views/dyole/pick-repo-name.html'),
                     windowClass: 'modal-confirm',
                     resolve: {data: function () { return {repos: $scope.view.userRepos, type: 'save'};}}
-
                 });
-
             }
 
             if (typeof modalInstance !== 'undefined') {
@@ -351,12 +346,49 @@ angular.module('registryApp')
 
         };
 
+
+        /**
+         * Track route change in order to prevent loss of changes
+         *
+         * @param e
+         * @param nextLocation
+         */
+        var onRouteChange = function(e, nextLocation) {
+            console.log('$scope.view.reload', $scope.view.reload);
+            if($scope.view.reload) { return; }
+
+            var modalInstance = $modal.open({
+                template: $templateCache.get('views/partials/confirm-leave.html'),
+                controller: 'ModalCtrl',
+                windowClass: 'modal-confirm',
+                resolve: {data: function () {return {};}}
+            });
+
+            modalInstance.result.then(function () {
+
+                onRouteChangeOff();
+
+                $scope.view.reload = true;
+
+                if ($routeParams.mode === 'new') { $scope.$broadcast('save-local', true); }
+
+                $location.path(nextLocation.split('#\/')[1]);
+
+            });
+
+            e.preventDefault();
+
+        };
+
         var onNodeSelectOff = $rootScope.$on('node:select', onNodeSelect);
         var onNodeDeselectOff = $rootScope.$on('node:deselect', onNodeDeselect);
+        var onRouteChangeOff = $rootScope.$on('$locationChangeStart', onRouteChange);
 
         $scope.$on('$destroy', function () {
             onNodeSelectOff();
             onNodeDeselectOff();
+            onRouteChangeOff();
+
         });
 
         var formatPipeline = function () {
@@ -416,7 +448,20 @@ angular.module('registryApp')
             });
 
         };
+        
+        $scope.publish = function () {
+            Pipeline.publishRevision($scope.view.pipeline._id, {publish: true}).then(function (data) {
+                var trace = data;
 
+                var modalInstance = $modal.open({
+                    template: $templateCache.get('views/cliche/partials/app-save-response.html'),
+                    controller: 'ModalCtrl',
+                    backdrop: 'static',
+                    resolve: { data: function () { return { trace: trace }; }}
+                });
+
+            });
+        };
 
         $scope.formatPipeline = function(pipeline) {
             console.log(pipeline);

@@ -41,8 +41,8 @@
             <tbody>
                 <tr ng-repeat="pipeline in view.pipelines">
                     <td><a ng-href="#/pipeline/{{ pipeline._id }}">{{ pipeline.name }}</a></td>
-                    <td><p tooltip="{{ pipeline.repo.name }}" tooltip-popup-delay="1000">{{pipeline.pipeline.repo.owner}}/{{ pipeline.pipeline.repo.name }}</p></td>
-                    <td><p tooltip="{{ pipeline.author }}" tooltip-popup-delay="1000">{{ pipeline.author }}</p></td>
+                    <td><p tooltip="{{ pipeline.repo.name }}" tooltip-popup-delay="1000"><a ng-href="#/repo/{{pipeline.pipeline.repo._id}}">{{pipeline.pipeline.repo.owner}}/{{ pipeline.pipeline.repo.name }}</a></p></td>
+                    <td><p tooltip="{{ pipeline.pipeline.author }}" tooltip-popup-delay="1000">{{ pipeline.pipeline.author }}</p></td>
                     <td class="center">
                         <a class="btn btn-default" tooltip="Edit Workflow" ng-href="#/pipeline/{{ pipeline._id }}/edit"><i class="fa fa-pencil"></i></a>
                         <a class="btn btn-default" ng-if="view.user && pipeline.pipeline.user._id === view.user.id" tooltip="Delete Workflow" ng-click="deletePipeline(pipeline)"><i class="fa fa-trash"></i></a>
