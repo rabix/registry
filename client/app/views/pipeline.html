@@ -38,7 +38,7 @@
                             {{ 'v' + revision.version }}
                         </strong>
                     </td>
-                    <td><a ng-href="#/revision/{{ revision._id }}">{{ revision.name }}</a></td>
+                    <td><a ng-href="#/pipeline/{{ revision._id }}">{{ revision.name }}</a></td>
                     <td><p tooltip="{{ revision.description }}" tooltip-popup-delay="1000">{{ revision.description }}</p></td>
                 </tr>
                 <tr class="empty" ng-if="view.revisions.length === 0">

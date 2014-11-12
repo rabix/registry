@@ -335,6 +335,7 @@ router.put('/pipeline/:id', filters.authenticated, function (req, res, next) {
                 }
 
                 pipeline.revisions.push(rev._id);
+                pipeline.save();
 
                 res.json({id: revision._id, message: 'Successfully created new pipeline revision'});
             });
