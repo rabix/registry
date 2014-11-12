@@ -6,7 +6,8 @@
         <h1>
             <div class="form-group workflow-name">
                 <span ng-show="view.pipeline.repo">{{view.pipeline.repo.owner}}/{{view.pipeline.repo.name}}/</span>
-                <input type="text" placeholder="Workflow Name" ng-model="view.pipeline.name" class="form-control" />
+                <input ng-show="view.mode === 'new'" type="text" placeholder="Workflow Name" ng-model="view.pipeline.name" class="form-control" />
+                <span ng-hide="view.mode === 'new'">{{ view.pipeline.name }}</span>
             </div>
 
             <strong class="changes-mark" ng-if="view.isChanged" tooltip="There are changes in your workflow" tooltip-placement="right">

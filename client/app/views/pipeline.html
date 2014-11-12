@@ -33,12 +33,12 @@
                 <tbody>
                 <tr ng-repeat="revision in view.revisions">
                     <td class="revision">
-                        <strong ng-class="{'label label-primary': revision.is_public}">
+                        <strong tooltip="{{ revision.version ? 'published revision' : 'unpublished revision' }}" tooltip-placement="right" ng-class="{'label label-primary': revision.is_public}">
                             <i class="fa fa-tag"></i>
-                            {{ 'v' + revision.version }}
+                            <span ng-show="revision.version" >{{ 'v' + revision.version }}</span>
                         </strong>
                     </td>
-                    <td><a ng-href="#/revision/{{ revision._id }}">{{ revision.name }}</a></td>
+                    <td><a ng-href="#/pipeline/{{ revision._id }}">{{ revision.name }}</a></td>
                     <td><p tooltip="{{ revision.description }}" tooltip-popup-delay="1000">{{ revision.description }}</p></td>
                 </tr>
                 <tr class="empty" ng-if="view.revisions.length === 0">

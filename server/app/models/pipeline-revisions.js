@@ -11,7 +11,7 @@ var PipelineRevisionSchema = new Schema({
     stamp: Schema.Types.Mixed,
     description: String,
     json: Schema.Types.Mixed,
-    version: {type: Number, default: 1},
+    version: Number,
     is_public: {type: Boolean, default: false},
     pipeline: { type: Schema.Types.ObjectId, ref: 'Pipeline' }
 });

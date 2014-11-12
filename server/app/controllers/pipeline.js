@@ -268,7 +268,6 @@ router.post('/pipeline', filters.authenticated, function (req, res) {
             revision.description = data.description;
             revision.json = data.json;
             revision.stamp = stamp;
-            revision.is_public = true;
 
             revision.save();
 
@@ -327,7 +326,6 @@ router.put('/pipeline/:id', filters.authenticated, function (req, res, next) {
             revision.name = data.name;
             revision.description = data.description;
             revision.pipeline = pipeline._id.toString();
-            revision.version = pipeline.revisions.length + 1;
 
             revision.save(function (err, rev) {
                 if (err) {
@@ -335,6 +333,7 @@ router.put('/pipeline/:id', filters.authenticated, function (req, res, next) {
                 }
 
                 pipeline.revisions.push(rev._id);
+                pipeline.save();
 
                 res.json({id: revision._id, message: 'Successfully created new pipeline revision'});
             });
@@ -350,26 +349,41 @@ router.put('/pipeline/:id', filters.authenticated, function (req, res, next) {
 
 router.put('/pipeline-revisions/:revision', filters.authenticated, function (req, res, next) {
     var revision_id = req.params.revision,
-        isPublic = req.body ? req.body.public || true : true;
+        isPublic = true;
 
         PipelineRevision.findOneAndUpdate({_id: revision_id }, {is_public: isPublic}, function (err, revision) {
             if (err) {
                 return next(err);
             }
-            
-            Pipeline.populate(revision, 'rev.pipeline', function (err, rev) {
+
+            PipelineRevision.count({pipeline: revision.pipeline, is_public: true}, function (err, total) {
                 if (err) {
                     return next(err);
                 }
 
-                Pipeline.findOneAndUpdate({_id: rev.pipeline._id}, {latest: revision_id}, function (err) {
+                revision.version = total;
 
-                    if (err) {
-                        return next(err);
-                    }
+                revision.save(function () {
 
-                    res.json({message: 'Revision successfully ' + isPublic ? 'published' : 'unpublished'});
+                    Pipeline.populate(revision, 'rev.pipeline', function (err, rev) {
+
+                        if (err) {
+                            return next(err);
+                        }
+
+                        Pipeline.findOneAndUpdate({_id: rev.pipeline._id}, {latest: revision_id}, function (err) {
+
+                            if (err) {
+                                return next(err);
+                            }
+
+                            res.json({message: 'Revision successfully ' + isPublic ? 'published' : 'unpublished'});
+                        });
+
+                    });
+
                 });
+
 
             });
 
