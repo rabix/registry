@@ -31,8 +31,7 @@ angular.module('registryApp')
         $q.all([
             App.getApp($routeParams.id, 'public'),
             App.getRevisions(0, '', $routeParams.id)
-        ]).then(
-            function(result) {
+        ]).then(function(result) {
 
                 $scope.view.app = result[0].data;
                 revisionsLoaded(result[1]);

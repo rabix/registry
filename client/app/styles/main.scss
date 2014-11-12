@@ -248,13 +248,12 @@ body {
   }
 
   /* Pipeline Editor/View page */
-  &.pipeline-edit,
-  &.pipeline-view {
-//    & > .content {
-//      padding: 0;
-//      overflow-x: hidden;
-//      @include flex-box();
-//    }
+  &.pipeline-edit {
+    & > .content {
+      padding: 0;
+      overflow-x: hidden;
+      @include flex-box();
+    }
 
     .sidebar-col {
       width: 350px;
