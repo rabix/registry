@@ -72,13 +72,13 @@ module.exports = function (app) {
 
 router.post('/pipeline/format', function (req, res, next) {
 
-        var p = formater.toRabixSchema(req.body.pipeline.json || req.body.pipeline);
+    var p = formater.toRabixSchema(req.body.pipeline.json || req.body.pipeline);
 
-        if (p.steps.length === 0) {
-            res.status(400).json({message: "Invalid pipeline"});
-        } else {
-            res.json({json: p});
-        }
+    if (p.steps.length === 0) {
+        res.status(400).json({message: "Invalid pipeline"});
+    } else {
+        res.json({json: p});
+    }
 
 });
 
@@ -133,41 +133,73 @@ router.get('/pipeline', function (req, res, next) {
 
     var limit = req.query.limit ? req.query.limit : 25;
     var skip = req.query.skip ? req.query.skip : 0;
-    var where = {is_public: true};
+    var where = {};
 
     _.each(req.query, function(paramVal, paramKey) {
         if (_.contains(paramKey, 'field_')) {
             where[paramKey.replace('field_', '')] = paramVal;
         }
-        if (paramKey === 'q') {
-            where.$or = [
-                {name: new RegExp(paramVal, 'i')},
-                {description: new RegExp(paramVal, 'i')}
-            ];
-        }
+//        if (paramKey === 'q') {
+//            where.$or = [
+//                {name: new RegExp(paramVal, 'i')},
+//                {description: new RegExp(paramVal, 'i')}
+//            ];
+//        }
     });
 
     if (req.user && req.param('mine')) {
-        delete where.is_public;
         where.user = req.user.id;
     }
 
-    PipelineRevision.count(where).exec(function(err, total) {
+//    PipelineRevision.count(where).exec(function(err, total) {
+//        if (err) { return next(err); }
+//
+//        PipelineRevision.find(where).populate('pipeline').skip(skip).limit(limit).exec(function(err, pipelines) {
+//            if (err) { return next(err); }
+//
+//            Repo.populate(pipelines, 'pipeline.repo', function (err, p) {
+//                User.populate(p, {
+//                    path: 'pipeline.user',
+//                    select:  '_id email username'
+//                }, function (err, pipes) {
+//                    res.json({list: pipes, total: total});
+//                });
+//
+//            });
+//        });
+//
+//    });
+
+    Pipeline.count(where).exec(function(err, total) {
         if (err) { return next(err); }
 
-        PipelineRevision.find(where).populate('pipeline').skip(skip).limit(limit).exec(function(err, pipelines) {
-            if (err) { return next(err); }
+        var match = {is_public: true};
 
-            Repo.populate(pipelines, 'pipeline.repo', function (err, p) {
-                User.populate(p, {
-                    path: 'pipeline.user',
-                    select:  '_id email username'
-                }, function (err, pipes) {
-                    res.json({list: pipes, total: total});
-                });
+        if (req.query.q) {
+            match.$or = [
+                {name: new RegExp(req.query.q, 'i')},
+                {description: new RegExp(req.query.q, 'i')}
+            ];
+        }
 
+        Pipeline.find(where)
+            .populate('repo')
+            .populate('user', '_id email username')
+            .populate('latest', 'name description')
+            .populate({
+                path: 'revisions',
+                select: 'name description version',
+                match: match,
+                options: { limit: 25 }
+            })
+            .skip(skip)
+            .limit(limit)
+            .sort({_id: 'desc'})
+            .exec(function(err, apps) {
+                if (err) { return next(err); }
+
+                res.json({list: apps, total: total});
             });
-        });
 
     });
 });

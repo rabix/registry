@@ -48,6 +48,7 @@ router.get('/apps', function (req, res, next) {
 
         App.find(where)
             .populate('repo')
+            .populate('user')
             .populate({
                 path: 'revisions',
                 select: 'name description version',
@@ -183,7 +184,7 @@ router.put('/apps/:id/:revision', filters.authenticated, function (req, res, nex
 
         var desc = data.tool.softwareDescription;
 
-        app.name = desc.name;
+        //app.name = desc.name;
         app.description = desc.description;
         app.author = data.tool.documentAuthor;
         app.json = data.tool;
@@ -194,10 +195,10 @@ router.put('/apps/:id/:revision', filters.authenticated, function (req, res, nex
         Amazon.createFolder(folder)
             .then(function () {
 
-                Amazon.uploadJSON(app.name + '.json', app.json, folder)
+                Amazon.uploadJSON(desc.name + '.json', app.json, folder)
                     .then(function () {
 
-                        Amazon.getFileUrl(app.name + '.json', folder, function (url) {
+                        Amazon.getFileUrl(desc.name + '.json', folder, function (url) {
 
                             app.links.json = url;
 
@@ -206,7 +207,7 @@ router.put('/apps/:id/:revision', filters.authenticated, function (req, res, nex
 
                                 if (revision) {
 
-                                    revision.name = app.name;
+                                    revision.name = desc.name;
                                     revision.description = app.description;
                                     revision.author = app.author;
                                     revision.json = app.json;

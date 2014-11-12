@@ -11,7 +11,7 @@
     <div class="col-md-6">
         <div class="form-group required" ng-class="{'has-error': (forms.toolForm.appName.$invalid && forms.toolForm.$dirty)}">
             <label for="appName" class="control-label">App Name</label>
-            <input type="text" class="form-control" id="appName" name="appName" ng-model="view.toolForm.softwareDescription.name" required>
+            <input type="text" class="form-control" id="appName" name="appName" ng-model="view.toolForm.softwareDescription.name" ng-readonly="view.mode === 'edit'" required>
         </div>
     </div>
     <div class="col-md-6">
