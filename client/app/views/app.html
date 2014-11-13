@@ -86,6 +86,7 @@
                         <td class="right">
                             <a class="btn btn-sm btn-default" tooltip="View Revision" ng-href="#/revision/{{ revision._id }}"><i class="fa fa-eye"></i></a>
                             <a class="btn btn-sm btn-default" tooltip="Edit Revision" ng-href="#/cliche/{{ view.app._id }}/{{ revision._id }}"><i class="fa fa-pencil"></i></a>
+                            <a ng-if="!revision.is_public" href class="btn btn-sm btn-default" tooltip="Delete Revision" ng-click="deleteRevision(revision._id)"><i class="fa fa-trash"></i></a>
                         </td>
                     </tr>
                     <tr class="empty" ng-if="view.revisions.length === 0">

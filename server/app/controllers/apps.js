@@ -261,65 +261,65 @@ router.post('/apps/:action', filters.authenticated, function (req, res, next) {
         if (err) { return next(err); }
 
         if (count > 0) {
-            res.status(400).json({message: 'This name is already taken, please choose another one!'});
-        }
-    });
+            res.status(400).json({message: 'The "'+name+'" tool already exists, please choose another name!'});
+        } else {
 
-    var app = new App();
+            var app = new App();
 
-    app.name = name;
-    app.description = desc.description;
-    // TODO: on fork should we change author's email as well??
-    app.author = data.tool.documentAuthor;
-    app.json = data.tool;
-    app.links = {json: ''};
+            app.name = name;
+            app.description = desc.description;
+            // TODO: on fork should we change author's email as well??
+            app.author = data.tool.documentAuthor;
+            app.json = data.tool;
+            app.links = {json: ''};
 
-    Repo.findById(data.repo_id, function (err, repo) {
+            Repo.findById(data.repo_id, function (err, repo) {
 
-        app.repo = repo._id;
+                app.repo = repo._id;
 
-        app.json.softwareDescription.name = name;
-        app.json.softwareDescription.repo_name = repo.name;
-        app.json.softwareDescription.repo_owner = repo.owner;
+                app.json.softwareDescription.name = name;
+                app.json.softwareDescription.repo_name = repo.name;
+                app.json.softwareDescription.repo_owner = repo.owner;
 
-        var folder = 'users/' + req.user.login + '/apps/' + repo.owner + '-' + repo.name;
+                var folder = 'users/' + req.user.login + '/apps/' + repo.owner + '-' + repo.name;
 
-        Amazon.createFolder(folder)
-            .then(function () {
-                Amazon.uploadJSON(app.name + '.json', app.json, folder)
+                Amazon.createFolder(folder)
                     .then(function () {
+                        Amazon.uploadJSON(app.name + '.json', app.json, folder)
+                            .then(function () {
 
-                        Amazon.getFileUrl(app.name + '.json', folder, function (url) {
+                                Amazon.getFileUrl(app.name + '.json', folder, function (url) {
 
-                            app.links.json = url;
-                            app.user = req.user.id;
+                                    app.links.json = url;
+                                    app.user = req.user.id;
 
-                            var revision = new Revision();
+                                    var revision = new Revision();
 
-                            revision.description = app.description;
-                            revision.author = app.author;
-                            revision.json = app.json;
-                            revision.app_id = app._id;
-                            //revision.is_public = true;
+                                    revision.description = app.description;
+                                    revision.author = app.author;
+                                    revision.json = app.json;
+                                    revision.app_id = app._id;
 
-                            revision.save(function(err) {
-                                if (err) { return next(err); }
+                                    revision.save(function(err) {
+                                        if (err) { return next(err); }
 
-                                app.revisions.push(revision._id);
+                                        app.revisions.push(revision._id);
 
-                                app.save();
+                                        app.save();
 
-                                res.json({app: app, message: 'App has been successfully created'});
+                                        res.json({app: app, message: 'App has been successfully created'});
+                                    });
+
+                                });
+
+                            }, function (error) {
+                                res.status(500).json(error);
                             });
-
-                        });
-
                     }, function (error) {
                         res.status(500).json(error);
                     });
-            }, function (error) {
-                res.status(500).json(error);
             });
+        }
     });
 
 });
