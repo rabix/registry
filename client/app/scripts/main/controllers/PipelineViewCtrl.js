@@ -4,7 +4,7 @@
 'use strict';
 
 angular.module('registryApp')
-    .controller('PipelineViewCtrl', ['$scope', '$q', '$routeParams', 'Sidebar', 'Loading', 'Pipeline', function ($scope, $q, $routeParams, Sidebar, Loading, Pipeline) {
+    .controller('PipelineViewCtrl', ['$scope', '$q', '$location', '$routeParams', 'Sidebar', 'Loading', 'Pipeline', function ($scope, $q, $location, $routeParams, Sidebar, Loading, Pipeline) {
 
         Sidebar.setActive('workflows');
 
@@ -37,9 +37,10 @@ angular.module('registryApp')
         Pipeline.getRevision($routeParams.id).then(function (result) {
             $scope.view.pipeline = result.data;
 
-            Pipeline.getRevisions(0, '', $scope.view.pipeline.pipeline._id).then(function (res) {
-                revisionsLoaded(res);
-            });
+                Pipeline.getRevisions(0, '', $scope.view.pipeline.pipeline._id).then(function (res) {
+                    revisionsLoaded(res);
+                });
+
         });
 
         /**
@@ -79,5 +80,18 @@ angular.module('registryApp')
 
                 Pipeline.getRevisions(offset, '', $routeParams.id).then(revisionsLoaded);
             }
+        };
+        
+        $scope.deleteRevision = function (id) {
+            Pipeline.deleteRevision(id).then(function (data) {
+
+                _.remove($scope.view.revisions, function (rev) {
+                    return rev._id === id;
+                });
+
+                console.log(data.latest, data);
+                $location.path('/pipeline/' + data.latest);
+
+            });
         };
     }]);

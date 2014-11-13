@@ -139,6 +139,10 @@ angular.module('registryApp')
         self.publishRevision = function (id, data) {
             return Api.pipelineRevs.update({id: id}, data || {}).$promise;
         };
+        
+        self.deleteRevision = function (id) {
+            return Api.pipelineRevs.delete({id: id}).$promise;
+        };
 
         return self;
 
