@@ -8,8 +8,11 @@
     <ul class="revisions-list">
         <li ng-repeat="revision in view.revisions">
             <a href ng-click="choose(revision._id)">
-                <span class="version-tag"><i class="fa fa-tag"></i> {{ 'v' + revision.version }}</span>
-                <span ng-if="revision.is_public" class="label label-primary pull-right">public</span>
+                revision <strong>{{  revision.order}}</strong>
+                <!--<span ng-if="revision.version" class="version-tag label label-primary pull-right"><i class="fa fa-tag"></i> {{ 'v' + revision.version }}</span>-->
+                <span ng-if="revision.version && revision.is_public" class="label label-primary pull-right">
+                    <i class="fa fa-tag"></i> {{ 'v' + revision.version }}
+                </span>
                 <span ng-if="view.current.id === revision._id" class="label label-warning pull-right">current</span>
             </a>
         </li>

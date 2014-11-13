@@ -93,6 +93,14 @@ body {
         margin-left: 10px;
       }
     }
+
+    .version {
+      font-size: 13px;
+      background-color: #555;
+      color: #fff;
+      padding: 3px 5px;
+      @include border-radius(2px);
+    }
   }
 
   h2 {
@@ -392,12 +400,13 @@ body {
     /* Revisions table */
     &.revisions {
       th {
-        &:nth-child(1) {
+        &:nth-child(1),
+        &:nth-child(2) {
           text-align: center;
           width: 10%;
         }
-        &:nth-child(2) { width: 30%; }
-        &:nth-child(3) { width: 60%; }
+        &:nth-child(3) { width: 30%; }
+        &:nth-child(4) { width: 50%; }
       }
       td {
         p {

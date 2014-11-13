@@ -101,27 +101,22 @@ router.post('/revisions', filters.authenticated, function (req, res, next) {
 
         if (user_id === app_user_id) {
 
-            Revision.count({app_id: data.app_id}, function(err, total) {
+            var revision = new Revision();
+
+            revision.description = desc.description;
+            revision.author = data.tool.documentAuthor;
+            revision.json = data.tool;
+            revision.app_id = data.app_id;
+            revision.order = app.revisions.length + 1;
+
+            revision.save(function(err) {
                 if (err) { return next(err); }
 
-                var revision = new Revision();
+                app.revisions.push(revision._id);
+                app.save();
 
-                revision.description = desc.description;
-                revision.author = data.tool.documentAuthor;
-                revision.json = data.tool;
-                revision.app_id = data.app_id;
+                res.json({revision: revision, message: 'Revision has been successfully created'});
 
-                revision.version = total + 1;
-
-                revision.save(function(err) {
-                    if (err) { return next(err); }
-
-                    app.revisions.push(revision._id);
-                    app.save();
-
-                    res.json({revision: revision, message: 'Revision has been successfully created'});
-
-                });
             });
 
         } else {

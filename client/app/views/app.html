@@ -67,6 +67,7 @@
                 <thead>
                     <tr>
                         <th>Revision</th>
+                        <th>Version</th>
                         <th>Description</th>
                         <th class="right">&nbsp;</th>
                     </tr>
@@ -74,10 +75,10 @@
                 <tbody>
                     <tr ng-repeat="revision in view.revisions">
                         <td class="revision">
-                            <strong ng-class="{'label label-primary': revision.is_public}">
-                                <i class="fa fa-tag"></i>
-                                {{ 'v' + revision.version }}
-                            </strong>
+                            <strong>{{ revision.order }}</strong>
+                        </td>
+                        <td class="revision">
+                            <strong ng-if="revision.version"><i class="fa fa-tag"></i>{{ 'v' + revision.version }}</strong>
                         </td>
                         <td><p tooltip="{{ revision.description }}" tooltip-popup-delay="1000">{{ revision.description }}</p></td>
                         <td class="right">

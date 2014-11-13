@@ -7,7 +7,8 @@ var RevisionSchema = new Schema({
     description: String,
     author: String,
     json: Schema.Types.Mixed,
-    version: {type: Number, default: 1},
+    version: Number,
+    order: {type: Number, default: 1},
     is_public: {type: Boolean, default: false},
     app_id: { type: Schema.Types.ObjectId, ref: 'App' }
 });

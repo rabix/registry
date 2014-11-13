@@ -145,7 +145,7 @@ router.get('/apps/:id/:revision', function (req, res, next) {
                 app.author = revision.author;
                 app.json = revision.json;
 
-                res.json({data: app, revision: {id: revision._id, version: revision.version}});
+                res.json({data: app, revision: {id: revision._id, version: revision.version, order: revision.order}});
             });
         }
 
@@ -203,25 +203,31 @@ router.put('/apps/:id/:revision', filters.authenticated, function (req, res, nex
 
                             app.links.json = url;
 
-                            Revision.findOne({_id: req.params.revision, app_id: app_id}, function(err, revision) {
+                            Revision.count({app_id: app_id, is_public: true}, function(err, total) {
                                 if (err) { return next(err); }
 
-                                if (revision) {
+                                Revision.findOne({_id: req.params.revision, app_id: app_id}, function(err, revision) {
+                                    if (err) { return next(err); }
 
-                                    revision.description = app.description;
-                                    revision.author = app.author;
-                                    revision.json = app.json;
-                                    revision.is_public = true;
+                                    if (revision) {
 
-                                    revision.save();
+                                        revision.description = app.description;
+                                        revision.author = app.author;
+                                        revision.json = app.json;
+                                        revision.is_public = true;
+                                        revision.version = total + 1;
 
-                                }
+                                        revision.save();
 
-                                app.save();
+                                    }
 
-                                res.json({app: app, message: 'App has been successfully updated'});
+                                    app.save();
 
+                                    res.json({app: app, message: 'App has been successfully updated'});
+
+                                });
                             });
+
 
                         });
 
@@ -294,7 +300,7 @@ router.post('/apps/:action', filters.authenticated, function (req, res, next) {
                             revision.author = app.author;
                             revision.json = app.json;
                             revision.app_id = app._id;
-                            revision.is_public = true;
+                            //revision.is_public = true;
 
                             revision.save(function(err) {
                                 if (err) { return next(err); }
