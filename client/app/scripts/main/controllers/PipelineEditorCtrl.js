@@ -235,7 +235,7 @@ angular.module('registryApp')
         $scope.save = function () {
             var modalInstance, mode = $scope.view.mode;
 
-            if (!$scope.view.pipeline.name) {
+            if (!$scope.view.pipeline.name && mode === 'new') {
 
                 $modal.open({
                     template: $templateCache.get('views/partials/validation.html'),

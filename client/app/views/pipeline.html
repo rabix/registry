@@ -25,20 +25,30 @@
                 <thead>
                 <tr>
                     <th>Revision</th>
-                    <th>Name</th>
+                    <th>Version</th>
                     <th>Description</th>
+                    <th class="right">&nbsp;</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr ng-repeat="revision in view.revisions">
+
                     <td class="revision">
-                        <strong tooltip="{{ revision.version ? 'published revision' : 'unpublished revision' }}" tooltip-placement="right" ng-class="{'label label-primary': revision.is_public}">
-                            <i class="fa fa-tag"></i>
-                            <span ng-show="revision.version" >{{ 'v' + revision.version }}</span>
-                        </strong>
+                        <strong>{{ revision.rev }}</strong>
                     </td>
-                    <td><a ng-href="#/pipeline/{{ revision._id }}">{{ revision.name }}</a></td>
+
+                    <td class="revision">
+                        <strong class="label label-primary" ng-if="revision.version"><i class="fa fa-tag"></i> {{ 'v' + revision.version }}</strong>
+                        <i ng-if="!revision.version">Not published</i>
+                    </td>
+
                     <td><p tooltip="{{ revision.description }}" tooltip-popup-delay="1000">{{ revision.description }}</p></td>
+
+                    <td class="right">
+                        <a class="btn btn-sm btn-default" tooltip="View Revision" ng-href="#/pipeline/{{ revision._id }}"><i class="fa fa-eye"></i></a>
+                        <a class="btn btn-sm btn-default" tooltip="Edit Revision" ng-href="#/pipeline/{{ revision._id }}/edit"><i class="fa fa-pencil"></i></a>
+                    </td>
+
                 </tr>
                 <tr class="empty" ng-if="view.revisions.length === 0">
                     <td colspan="4"><p class="alert alert-info">There are no revisions for this workflow</p></td>
