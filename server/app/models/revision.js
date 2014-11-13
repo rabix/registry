@@ -4,7 +4,6 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var RevisionSchema = new Schema({
-    name: String,
     description: String,
     author: String,
     json: Schema.Types.Mixed,

@@ -9,7 +9,6 @@
         <li ng-repeat="revision in view.revisions">
             <a href ng-click="choose(revision._id)">
                 <span class="version-tag"><i class="fa fa-tag"></i> {{ 'v' + revision.version }}</span>
-                {{ revision.name }}
                 <span ng-if="revision.is_public" class="label label-primary pull-right">public</span>
                 <span ng-if="view.current.id === revision._id" class="label label-warning pull-right">current</span>
             </a>

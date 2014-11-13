@@ -24,6 +24,10 @@ router.get('/apps', function (req, res, next) {
     var skip = req.query.skip ? req.query.skip : 0;
     var where = {};
 
+    if (req.query.q) {
+        where.name = new RegExp(req.query.q, 'i');
+    }
+
     _.each(req.query, function(paramVal, paramKey) {
         if (_.contains(paramKey, 'field_')) {
             where[paramKey.replace('field_', '')] = paramVal;
@@ -40,10 +44,7 @@ router.get('/apps', function (req, res, next) {
         var match = {is_public: true};
 
         if (req.query.q) {
-            match.$or = [
-                {name: new RegExp(req.query.q, 'i')},
-                {description: new RegExp(req.query.q, 'i')}
-            ];
+            match.description = new RegExp(req.query.q, 'i');
         }
 
         App.find(where)
@@ -51,7 +52,7 @@ router.get('/apps', function (req, res, next) {
             .populate('user')
             .populate({
                 path: 'revisions',
-                select: 'name description version',
+                select: 'description version',
                 match: match,
                 options: { limit: 25 }
             })
@@ -92,7 +93,7 @@ router.get('/repositories/:type', function (req, res, next) {
         }
     }
 
-    App.find(where, '_id repo_name repo user').populate('repo').sort({_id: 'desc'}).exec(function(err, apps) {
+    App.find(where, '_id repo_name repo user name').populate('repo').sort({_id: 'desc'}).exec(function(err, apps) {
         if (err) { return next(err); }
 
         var whereRev = {};
@@ -107,6 +108,7 @@ router.get('/repositories/:type', function (req, res, next) {
 
             var appsWithRevisions = apps.map(function(app) {
                 var tmp = app.toObject();
+                tmp.name = app.name;
                 tmp.revisions = groupedRevisions[tmp._id];
                 return tmp;
             });
@@ -139,7 +141,6 @@ router.get('/apps/:id/:revision', function (req, res, next) {
             Revision.findOne(params).sort({_id: 'desc'}).exec(function(err, revision) {
                 if (err) { return next(err); }
 
-                app.name = revision.name;
                 app.description = revision.description;
                 app.author = revision.author;
                 app.json = revision.json;
@@ -207,7 +208,6 @@ router.put('/apps/:id/:revision', filters.authenticated, function (req, res, nex
 
                                 if (revision) {
 
-                                    revision.name = desc.name;
                                     revision.description = app.description;
                                     revision.author = app.author;
                                     revision.json = app.json;
@@ -290,7 +290,6 @@ router.post('/apps/:action', filters.authenticated, function (req, res, next) {
 
                             var revision = new Revision();
 
-                            revision.name = app.name;
                             revision.description = app.description;
                             revision.author = app.author;
                             revision.json = app.json;
