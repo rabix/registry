@@ -283,47 +283,57 @@ router.get('/pipeline-revisions', function (req, res, next) {
 router.post('/pipeline', filters.authenticated, function (req, res, next) {
 
     var data = req.body.data;
-    
+
     Repo.findOne({_id: data.repo}, function (err, repo) {
         if (err) {return next(err);}
 
         if (repo) {
-            var now = Date.now(),
-                stamp = {
-                created_on: now,
-                modified_on: now
-            };
 
-            var revision = new PipelineRevision();
+            Pipeline.findOne({name: data.name, repo: repo._id}, function (err, exists) {
+                if (err) { return next(err);}
 
-            revision.name = data.name;
-            revision.description = data.description;
-            revision.json = data.json;
-            revision.stamp = stamp;
+                if (!exists) {
+                    var now = Date.now(),
+                        stamp = {
+                            created_on: now,
+                            modified_on: now
+                        };
 
-            revision.save();
+                    var revision = new PipelineRevision();
 
-            var pipeline = new Pipeline();
+                    revision.description = data.description;
+                    revision.json = data.json;
+                    revision.stamp = stamp;
 
-            pipeline.author = req.user.email;
-            pipeline.user = req.user.id;
-            pipeline.repo = data.repo;
-            pipeline.latest = revision._id;
-            pipeline.stamp = stamp;
+                    revision.save();
 
-            pipeline.save(function(err) {
-                if (err) { return next(err); }
+                    var pipeline = new Pipeline();
 
-                pipeline.revisions.push(revision._id);
+                    pipeline.name = data.name;
+                    pipeline.author = req.user.email;
+                    pipeline.user = req.user.id;
+                    pipeline.repo = data.repo;
+                    pipeline.latest = revision._id;
+                    pipeline.stamp = stamp;
 
-                revision.pipeline = pipeline._id;
+                    pipeline.save(function(err) {
+                        if (err) { return next(err); }
 
-                revision.save();
-                pipeline.save();
+                        pipeline.revisions.push(revision._id);
 
-                res.json({message: 'Pipeline successfully added', id: revision._id});
+                        revision.pipeline = pipeline._id;
 
-            });
+                        revision.save();
+                        pipeline.save();
+
+                        res.json({message: 'Pipeline successfully added', id: revision._id});
+
+                    });
+
+                } else {
+                    res.status(400).json({message: 'There is already a workflow with name: ' + data.name + ' in repo: ' + repo.name});
+                }
+            })
 
         } else {
             res.status(400).json({message: 'There is no repo with id: ' + data.repo });
@@ -456,65 +466,60 @@ router.post('/pipeline/fork', filters.authenticated, function (req, res, next) {
 
     var pipeline_to_fork = req.body.pipeline;
 
+
+
     Repo.findOne({_id: pipeline_to_fork.repo}).populate('repo').populate('user', '_id email username').exec(function (err, repo) {
         if (err) {return next(err);}
 
         if (repo) {
 
-//            var p = new Pipeline();
-//
-//            p.json = pipeline.json;
-//            p.user = req.user.id;
-//            p.author = pipeline.author;
-//
-//            p.description = pipeline.description;
-//            p.name = pipeline.name;
-//            p.repo = pipeline.repo;
-//
-//            p.save();
-//
-//            res.json({
-//                _id: p._id,
-//                message: 'Pipeline successfully updated'
-//            });
+            Pipeline.findOne({name: pipeline_to_fork.name, repo: repo._id}, function (err, exists) {
+                if (err) {return next(err);}
 
-            var now = Date.now(),
-                stamp = {
-                    created_on: now,
-                    modified_on: now
-                };
+                if (!exists) {
 
-            var revision = new PipelineRevision();
+                    var now = Date.now(),
+                        stamp = {
+                            created_on: now,
+                            modified_on: now
+                        };
 
-            revision.name = pipeline_to_fork.name;
-            revision.description = pipeline_to_fork.description;
-            revision.json = pipeline_to_fork.json;
-            revision.stamp = stamp;
+                    var revision = new PipelineRevision();
 
-            revision.save();
+                    revision.description = pipeline_to_fork.description;
+                    revision.json = pipeline_to_fork.json;
+                    revision.stamp = stamp;
 
-            var pipeline = new Pipeline();
+                    revision.save();
 
-            pipeline.author = req.user.email;
-            pipeline.user = req.user.id;
-            pipeline.repo = repo._id;
-            pipeline.latest = revision._id;
-            pipeline.stamp = stamp;
+                    var pipeline = new Pipeline();
 
-            pipeline.save(function(err) {
-                if (err) { return next(err); }
+                    pipeline.name = pipeline_to_fork.name;
+                    pipeline.author = req.user.email;
+                    pipeline.user = req.user.id;
+                    pipeline.repo = repo._id;
+                    pipeline.latest = revision._id;
+                    pipeline.stamp = stamp;
 
-                pipeline.revisions.push(revision._id);
+                    pipeline.save(function(err) {
+                        if (err) { return next(err); }
 
-                revision.pipeline = pipeline._id;
+                        pipeline.revisions.push(revision._id);
 
-                revision.save();
-                pipeline.save();
+                        revision.pipeline = pipeline._id;
 
-                res.json({message: 'Pipeline successfully added', id: revision._id});
+                        revision.save();
+                        pipeline.save();
 
-            });
+                        res.json({message: 'Pipeline successfully added', id: revision._id});
 
+                    });
+
+                } else {
+                    res.status(400).json({message: 'There is already a workflow with name: "' + pipeline_to_fork.name + '" in repo: "' + repo.name + '"'});
+                }
+            })
+            
         } else {
             res.status(400).json({message: 'There is no repo with id: ' + pipeline.repo });
         }

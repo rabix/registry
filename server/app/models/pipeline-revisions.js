@@ -7,7 +7,6 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var PipelineRevisionSchema = new Schema({
-    name: { type: String, required: true },
     stamp: Schema.Types.Mixed,
     description: String,
     json: Schema.Types.Mixed,
