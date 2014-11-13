@@ -101,22 +101,24 @@ router.post('/revisions', filters.authenticated, function (req, res, next) {
 
         if (user_id === app_user_id) {
 
-            var revision = new Revision();
+            Revision.findOne({app_id: data.app_id}).sort({_id: 'desc'}).exec(function(err, r) {
+                var revision = new Revision();
 
-            revision.description = desc.description;
-            revision.author = data.tool.documentAuthor;
-            revision.json = data.tool;
-            revision.app_id = data.app_id;
-            revision.order = app.revisions.length + 1;
+                revision.description = desc.description;
+                revision.author = data.tool.documentAuthor;
+                revision.json = data.tool;
+                revision.app_id = data.app_id;
+                revision.order = r ? (r.order + 1) : 1;
 
-            revision.save(function(err) {
-                if (err) { return next(err); }
+                revision.save(function(err) {
+                    if (err) { return next(err); }
 
-                app.revisions.push(revision._id);
-                app.save();
+                    app.revisions.push(revision._id);
+                    app.save();
 
-                res.json({revision: revision, message: 'Revision has been successfully created'});
+                    res.json({revision: revision, message: 'Revision has been successfully created'});
 
+                });
             });
 
         } else {
@@ -125,6 +127,35 @@ router.post('/revisions', filters.authenticated, function (req, res, next) {
 
     });
 
+});
+
+router.delete('/revisions/:id', filters.authenticated, function (req, res, next) {
+
+    Revision.findOne({_id: req.params.id}).populate('app_id').exec(function (err, revision) {
+        if (err) { return next(err); }
+
+        var user_id = req.user.id.toString();
+        var app_user_id = revision.app_id.user.toString();
+
+        if (user_id === app_user_id) {
+
+            if (revision.is_public) {
+
+                res.status(403).json({message: 'This is public revision, you can\'t delete it'});
+
+            } else {
+                Revision.remove({_id: req.params.id}, function (err) {
+                    if (err) { return next(err); }
+
+                    res.json({message: 'Revision successfully deleted'});
+
+                });
+            }
+
+        } else {
+            res.status(401).json({message: 'Unauthorized'});
+        }
+    });
 
 });
 

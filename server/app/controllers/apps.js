@@ -300,7 +300,6 @@ router.post('/apps/:action', filters.authenticated, function (req, res, next) {
                             revision.author = app.author;
                             revision.json = app.json;
                             revision.app_id = app._id;
-                            //revision.is_public = true;
 
                             revision.save(function(err) {
                                 if (err) { return next(err); }

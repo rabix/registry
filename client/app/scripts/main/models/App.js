@@ -193,6 +193,18 @@ angular.module('registryApp')
 
         };
 
+        /**
+         * Delete revision by id
+         *
+         * @param id
+         * @returns {*}
+         */
+        self.deleteRevision = function (id) {
+
+            return Api.revisions.delete({id: id}).$promise;
+
+        };
+
         return self;
 
     }]);

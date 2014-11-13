@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('registryApp')
-    .controller('AppCtrl', ['$scope', '$routeParams', '$q', 'App', 'Sidebar', 'Loading', function ($scope, $routeParams, $q, App, Sidebar, Loading) {
+    .controller('AppCtrl', ['$scope', '$routeParams', '$q', '$injector', 'App', 'Sidebar', 'Loading', function ($scope, $routeParams, $q, $injector, App, Sidebar, Loading) {
 
         Sidebar.setActive('tools');
 
@@ -72,6 +72,33 @@ angular.module('registryApp')
                 App.getRevisions(offset, '', $routeParams.id).then(revisionsLoaded);
 
             }
+        };
+
+        /**
+         * Delete revision
+         *
+         * @param revision
+         */
+        $scope.deleteRevision = function (id) {
+
+            var $modal = $injector.get('$modal');
+            var $templateCache = $injector.get('$templateCache');
+
+            var modalInstance = $modal.open({
+                template: $templateCache.get('views/cliche/partials/confirm-delete.html'),
+                controller: 'ModalCtrl',
+                windowClass: 'modal-confirm',
+                resolve: {data: function () { return {}; }}
+            });
+
+            modalInstance.result.then(function () {
+                App.deleteRevision(id).then(function () {
+                    _.remove($scope.view.revisions, function (r) {
+                        return r._id === id;
+                    });
+                });
+            });
+
         };
 
     }]);
