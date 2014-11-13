@@ -92,7 +92,6 @@ angular.module('registryApp.dyole')
 
             if (name) {
                 $scope.pipeline.name = name;
-                debugger;
             }
 
             PipelineMdl.fork($scope.pipeline).then(function (pipeline) {

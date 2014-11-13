@@ -28,10 +28,10 @@ router.get('/repos', function (req, res, next) {
     var where = {};
 
     if (req.user && req.param('mine')) {
-        where.user_id = req.user.id;
+        where.user = req.user.id;
     }
 
-    Repo.count(function (err, total) {
+    Repo.count(where, function (err, total) {
         if (err) { return next(err); }
 
         Repo.find(where).skip(skip).limit(limit).sort({_id: 'desc'}).exec(function (err, repos) {
@@ -72,7 +72,7 @@ router.post('/repos', filters.authenticated, function (req, res, next) {
             r.name = repo.name;
             r.owner = req.user.login;
             r.created_by = req.user.login;
-            r.user_id = req.user.id;
+            r.user = req.user.id;
             //TODO: Ask boysha about this secret (answered) but ask him again when the time comes
             r.secret = uuid.v4();
             r.git = false;
@@ -147,7 +147,7 @@ router.post('/github-repos', function (req, res, next) {
             repo.name = name;
             repo.owner = owner;
             repo.created_by = owner;
-            repo.user_id = req.user.id;
+            repo.user = req.user.id;
             repo.secret = uuid.v4();
             repo.git = true;
 

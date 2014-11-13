@@ -284,7 +284,7 @@ router.post('/pipeline', filters.authenticated, function (req, res, next) {
 
     var data = req.body.data;
     
-    Repo.findOne({_id: data.repo.repoId}, function (err, repo) {
+    Repo.findOne({_id: data.repo}, function (err, repo) {
         if (err) {return next(err);}
 
         if (repo) {
@@ -307,7 +307,7 @@ router.post('/pipeline', filters.authenticated, function (req, res, next) {
 
             pipeline.author = req.user.email;
             pipeline.user = req.user.id;
-            pipeline.repo = data.repo.repoId;
+            pipeline.repo = data.repo;
             pipeline.latest = revision._id;
             pipeline.stamp = stamp;
 
