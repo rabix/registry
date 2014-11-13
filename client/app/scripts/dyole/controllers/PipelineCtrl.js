@@ -81,6 +81,9 @@ angular.module('registryApp.dyole')
                     } else {
                         $scope.pipelineChangeFn({value: false});
                     }
+                }, function () {
+                    $scope.$parent.view.saving = false;
+                    $scope.$parent.view.loading = false;
                 });
 
         });

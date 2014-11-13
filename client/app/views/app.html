@@ -78,7 +78,9 @@
                             <strong>{{ revision.order }}</strong>
                         </td>
                         <td class="revision">
-                            <strong ng-if="revision.version"><i class="fa fa-tag"></i>{{ 'v' + revision.version }}</strong>
+                            <strong class="label label-primary" ng-if="revision.version"><i class="fa fa-tag"></i> {{ 'v' + revision.version }}</strong>
+                            <i ng-if="!revision.version">Not published</i>
+
                         </td>
                         <td><p tooltip="{{ revision.description }}" tooltip-popup-delay="1000">{{ revision.description }}</p></td>
                         <td class="right">
