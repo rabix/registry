@@ -25,6 +25,12 @@
 
         span {
           font-size: 20px;
+          margin-top: -7px;
+
+          &.pipeline-repo {
+            font-size: 14px;
+            line-height: 21px;
+          }
         }
 
         input {

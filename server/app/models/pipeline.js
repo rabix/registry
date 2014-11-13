@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var PipelineSchema = new Schema({
-//    errors: Schema.Types.Mixed,
+    name: { type: String, required: true },
     stamp: Schema.Types.Mixed,
     author: String,
     user: { type: Schema.Types.ObjectId, ref: 'User', required: true },

@@ -40,7 +40,7 @@
             </thead>
             <tbody>
                 <tr ng-repeat-start="pipeline in view.pipelines">
-                    <td><a ng-href="#/pipeline/{{ pipeline.latest._id }}">{{ pipeline.latest.name }}</a></td>
+                    <td><a ng-href="#/pipeline/{{ pipeline.latest._id }}">{{ pipeline.name }}</a></td>
                     <td><p tooltip="{{ pipeline.repo.name }}" tooltip-popup-delay="1000"><a ng-href="#/repo/{{pipeline.repo._id}}">{{pipeline.repo.owner}}/{{ pipeline.repo.name }}</a></p></td>
                     <td><p tooltip="{{ pipeline.author }}" tooltip-popup-delay="1000">{{ pipeline.author }}</p></td>
                     <td class="right">
