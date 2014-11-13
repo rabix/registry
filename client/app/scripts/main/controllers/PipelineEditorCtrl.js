@@ -261,14 +261,14 @@ angular.module('registryApp')
 
             if (typeof modalInstance !== 'undefined') {
 
-                modalInstance.result.then(function (repoId) {
+                modalInstance.result.then(function (data) {
 
-                    if (typeof repoId !== 'undefined') {
+                    if (typeof data.repoId !== 'undefined') {
 
                         $scope.view.reload = true;
                         $scope.view.saving = true;
                         $scope.view.loading = true;
-                        $scope.$broadcast('save', repoId);
+                        $scope.$broadcast('save', data.repoId);
 
                     } else {
 

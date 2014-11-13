@@ -13,7 +13,11 @@ angular.module('registryApp')
 
         $scope.ok = function () {
 
-            if ($scope.view.pickName && $scope.view.form.$invalid) {
+            if ($scope.view.pickName && $scope.view.form.name.$invalid) {
+                return false;
+            }
+
+            if ($scope.view.form.repo.$invalid) {
                 return false;
             }
 

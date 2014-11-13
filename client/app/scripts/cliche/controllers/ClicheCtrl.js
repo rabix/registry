@@ -435,16 +435,16 @@ angular.module('registryApp.cliche')
                 controller: 'PickRepoModalCtrl',
                 template: $templateCache.get('views/dyole/pick-repo-name.html'),
                 windowClass: 'modal-confirm',
-                resolve: {data: function () { return {repos: $scope.view.userRepos, type: 'save'};}}
+                resolve: {data: function () { return {repos: $scope.view.userRepos, type: 'save', pickName: true};}}
 
             });
 
-            modalInstance.result.then(function(repoId) {
+            modalInstance.result.then(function(data) {
 
                 $scope.view.saving = true;
                 $scope.view.reload = true;
 
-                App.fork(repoId).then(function (result) {
+                App.fork(data).then(function (result) {
                     $location.path('/cliche/' + result.app._id + '/latest');
                 });
 
@@ -484,8 +484,8 @@ angular.module('registryApp.cliche')
             }
 
             if (!_.isUndefined(modalInstance)) {
-                modalInstance.result.then(function(repoId) {
-                    saveApp(action, repoId);
+                modalInstance.result.then(function(data) {
+                    saveApp(action, data.repoId);
 
                 });
             } else {

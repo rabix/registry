@@ -266,6 +266,11 @@ router.post('/apps/:action', filters.authenticated, function (req, res, next) {
         app.json.softwareDescription.repo_name = repo.name;
         app.json.softwareDescription.repo_owner = repo.owner;
 
+        if (req.params.action === 'fork') {
+            app.name = data.name;
+            app.json.softwareDescription.name = data.name;
+        }
+
         var folder = 'users/' + req.user.login + '/apps/' + repo.owner + '-' + repo.name;
 
         Amazon.createFolder(folder)

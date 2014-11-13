@@ -95,12 +95,12 @@ angular.module('registryApp')
         /**
          * Fork the current app
          *
-         * @param repoId
+         * @param data
          * @returns {*}
          */
-        self.fork = function(repoId) {
+        self.fork = function(data) {
 
-            return Api.apps.add({id: 'fork'}, {tool: Data.tool, repo_id: repoId}).$promise;
+            return Api.apps.add({id: 'fork'}, {tool: Data.tool, repo_id: data.repoId, name: data.name}).$promise;
 
         };
 

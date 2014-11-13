@@ -479,6 +479,14 @@ body {
           }
         }
       }
+      .empty {
+        td {
+          padding: 0 !important;
+          .alert {
+            padding: 8px 10px;
+          }
+        }
+      }
     }
   }
 }
