@@ -446,6 +446,9 @@ angular.module('registryApp.cliche')
 
                 App.fork(data).then(function (result) {
                     $location.path('/cliche/' + result.app._id + '/latest');
+                }, function() {
+                    $scope.view.saving = false;
+                    $scope.view.reload = false;
                 });
 
             });

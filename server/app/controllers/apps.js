@@ -249,10 +249,19 @@ router.post('/apps/:action', filters.authenticated, function (req, res, next) {
     }
 
     var desc = data.tool.softwareDescription;
+    var name = (req.params.action === 'fork') ? data.name : desc.name;
+
+    App.count({name: name}).exec(function(err, count) {
+        if (err) { return next(err); }
+
+        if (count > 0) {
+            res.status(400).json({message: 'This name is already taken, please choose another one!'});
+        }
+    });
 
     var app = new App();
 
-    app.name = desc.name;
+    app.name = name;
     app.description = desc.description;
     // TODO: on fork should we change author's email as well??
     app.author = data.tool.documentAuthor;
@@ -263,13 +272,9 @@ router.post('/apps/:action', filters.authenticated, function (req, res, next) {
 
         app.repo = repo._id;
 
+        app.json.softwareDescription.name = name;
         app.json.softwareDescription.repo_name = repo.name;
         app.json.softwareDescription.repo_owner = repo.owner;
-
-        if (req.params.action === 'fork') {
-            app.name = data.name;
-            app.json.softwareDescription.name = data.name;
-        }
 
         var folder = 'users/' + req.user.login + '/apps/' + repo.owner + '-' + repo.name;
 
