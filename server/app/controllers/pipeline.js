@@ -407,23 +407,63 @@ router.put('/pipeline-revisions/:revision', filters.authenticated, function (req
         });
 });
 
+/**
+ * Delete pipeline revision
+ *
+ * @param :revision - reivison id
+ */
 router.delete('/pipeline-revisions/:revision', filters.authenticated, function (req, res, next) {
     var revision_id = req.params.revision;
 
-    PipelineRevision.findById(revision_id, function (err, revision) {
-        if (!revision.is_public && revision.pipeline.user._id === req.user.id) {
-            PipelineRevision.remove({_id: revision_id}, function (err) {
-                if (err) {return next(err);}
+    PipelineRevision.findById(revision_id).populate('pipeline').exec(function (err, revision) {
 
-                res.json({message: 'Successfully deleted pipeline revision'})
-            });
-        } else {
-            res.status(403).json({message: 'Forbidden'});
-        }
+        User.populate(revision, {
+            path: 'pipeline.user',
+            select:  '_id email username'
+        }, function (err, rev) {
+            if (err) { return next(err); }
+
+            if (!rev.is_public && rev.pipeline.user._id.toString() === req.user.id) {
+
+                var pipeline_id = rev.pipeline._id;
+                Pipeline.findById(pipeline_id, function (err, pipeline) {
+                    if (err) {return next(err);}
+
+                    if (pipeline.revisions.length > 1) {
+
+                        PipelineRevision.remove({_id: revision_id}, function (err) {
+                            if (err) {return next(err);}
+
+                            var index = pipeline.revisions.indexOf(revision_id);
+
+                            pipeline.revisions.splice(index, 1);
+
+                            pipeline.latest = pipeline.revisions[pipeline.revisions.length - 1];
+
+                            pipeline.save(function () {
+                                res.json({message: 'Successfully deleted workflow revision', latest: pipeline.latest})
+                            });
+
+                        });
+
+                    } else {
+                        res.status(403).json({message: 'Last workflow revision cannot be deleted'});
+                    }
+
+                });
+
+            } else {
+                res.status(403).json({message: 'Workflow revision cannot be deleted - Forbidden'});
+            }
+
+        });
     });
 
 });
 
+/**
+ * Not used for now. Pipeline as abstracion cannot be deleted
+ */
 router.delete('/pipeline/:id', filters.authenticated, function (req, res, next) {
 
     Pipeline.findOne({_id: req.params.id}).exec(function (err, pipeline) {
@@ -433,15 +473,37 @@ router.delete('/pipeline/:id', filters.authenticated, function (req, res, next) 
         var app_user = pipeline.user.toString();
 
         if (user === app_user) {
-            Pipeline.remove({_id: req.params.id}, function (err) {
+
+            PipelineRevision.find({pipeline: pipeline._id, is_public: true}, function (err, revs) {
                 if (err) { return next(err); }
 
-                res.json({message: 'Pipeline successfully deleted'});
+                if (revs && revs.length === 0) {
+
+                    PipelineRevision.remove({pipeline: pipeline._id}, function (err) {
+                        if (err) { return next(err); }
+
+                        Pipeline.remove({_id: req.params.id}, function (err) {
+                            if (err) { return next(err); }
+
+                            res.json({message: 'Workflow successfully deleted'});
+
+                        });
+
+
+                    });
+
+                } else {
+                    res.status(403).json({message: 'Workflow cannot be deleted, it has published revisions'});
+                }
 
             });
+
+
         } else {
             res.status(500).json({message: 'Unauthorized'});
         }
+
+
     });
 
 

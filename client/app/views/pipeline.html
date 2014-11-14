@@ -9,6 +9,8 @@
                 <li ng-class="{active: view.tab === 'revisions'}"><a href="" ng-click="switchTab('revisions')">Revisions</a></li>
             </div>
             <a ng-href="#/pipeline/{{ view.pipeline._id }}/edit" class="btn btn-primary pull-right"><i class="fa fa-pencil"></i> Edit</a>
+            <span ng-if="view.showDelete" class="pull-right"> | </span>
+            <a href="" ng-if="view.showDelete" ng-click="deletePipeline()" class="btn btn-danger pull-right" tooltip="Delete workflow" tooltip-placement="bottom"><i class="fa fa-pencil"></i> Delete</a>
         </h1>
     </div>
     <!-- # .heading -->
@@ -16,7 +18,7 @@
     <div class="content">
 
         <section class="tab info" ng-show="view.tab === 'info'">
-            <div pipeline="view.pipeline"></div>
+            <div ng-if="view.pipeline.json" pipeline="view.pipeline"></div>
         </section>
 
         <section class="tab revisions" ng-if="view.tab === 'revisions'">
@@ -47,6 +49,7 @@
                     <td class="right">
                         <a class="btn btn-sm btn-default" tooltip="View Revision" ng-href="#/pipeline/{{ revision._id }}"><i class="fa fa-eye"></i></a>
                         <a class="btn btn-sm btn-default" tooltip="Edit Revision" ng-href="#/pipeline/{{ revision._id }}/edit"><i class="fa fa-pencil"></i></a>
+                        <a ng-if="view.user.id === view.pipeline.user._id && view.revisions.length > 1" class="btn btn-sm btn-default" href="" tooltip="Delete Revision" ng-click="deleteRevision(revision._id)"><i class="fa fa-trash"></i></a>
                     </td>
 
                 </tr>
