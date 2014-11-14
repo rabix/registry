@@ -479,20 +479,16 @@ router.delete('/pipeline/:id', filters.authenticated, function (req, res, next) 
 
                 if (revs && revs.length === 0) {
 
-                    PipelineRevision.findById(pipeline.revisions[0], function (err, rev) {
+                    PipelineRevision.remove({pipeline: pipeline._id}, function (err) {
                         if (err) { return next(err); }
 
-                        if (!rev.is_public) {
-                            Pipeline.remove({_id: req.params.id}, function (err) {
-                                if (err) { return next(err); }
+                        Pipeline.remove({_id: req.params.id}, function (err) {
+                            if (err) { return next(err); }
 
-                                res.json({message: 'Workflow successfully deleted'});
+                            res.json({message: 'Workflow successfully deleted'});
 
-                            });
+                        });
 
-                        } else {
-                            res.status(403).json({message: 'Workflow has public public revisions and cannot be deleted'});
-                        }
 
                     });
 

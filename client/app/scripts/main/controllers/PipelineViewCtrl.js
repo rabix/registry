@@ -4,7 +4,7 @@
 'use strict';
 
 angular.module('registryApp')
-    .controller('PipelineViewCtrl', ['$scope', '$q', '$location', '$routeParams', 'Sidebar', 'Loading', 'Pipeline', function ($scope, $q, $location, $routeParams, Sidebar, Loading, Pipeline) {
+    .controller('PipelineViewCtrl', ['$scope', '$q', '$location', '$routeParams', 'Sidebar', 'Loading', 'Pipeline', '$modal', '$templateCache', function ($scope, $q, $location, $routeParams, Sidebar, Loading, Pipeline, $modal, $templateCache) {
 
         Sidebar.setActive('workflows');
 
@@ -38,9 +38,9 @@ angular.module('registryApp')
         Pipeline.getRevision($routeParams.id).then(function (result) {
             $scope.view.pipeline = result.data;
 
-                Pipeline.getRevisions(0, '', $scope.view.pipeline.pipeline._id).then(function (res) {
-                    revisionsLoaded(res);
-                });
+            Pipeline.getRevisions(0, '', $scope.view.pipeline.pipeline._id).then(function (res) {
+                revisionsLoaded(res);
+            });
 
         });
 
@@ -92,23 +92,45 @@ angular.module('registryApp')
         };
         
         $scope.deleteRevision = function (id) {
-            Pipeline.deleteRevision(id).then(function (data) {
 
-                _.remove($scope.view.revisions, function (rev) {
-                    return rev._id === id;
-                });
-
-                console.log(data.latest, data);
-                $location.path('/pipeline/' + data.latest);
-
+            var modalInstance = $modal.open({
+                template: $templateCache.get('views/cliche/partials/confirm-delete.html'),
+                controller: 'ModalCtrl',
+                windowClass: 'modal-confirm',
+                resolve: {data: function () { return {message: "Are you sure you want to delete this revision?"}; }}
             });
+
+            modalInstance.result.then(function () {
+                Pipeline.deleteRevision(id).then(function (data) {
+
+                    _.remove($scope.view.revisions, function (rev) {
+                        return rev._id === id;
+                    });
+
+                    console.log(data.latest, data);
+                    $location.path('/pipeline/' + data.latest);
+
+                });
+            });
+
+
         };
         
         $scope.deletePipeline = function () {
             var id = $scope.view.pipeline.pipeline._id;
 
-            Pipeline.deletePipeline(id).then(function () {
-                $location.path('/pipelines');
+            var modalInstance = $modal.open({
+                template: $templateCache.get('views/cliche/partials/confirm-delete.html'),
+                controller: 'ModalCtrl',
+                windowClass: 'modal-confirm',
+                resolve: {data: function () { return {message: "Are you sure you want to delete this workflow?"}; }}
             });
+
+            modalInstance.result.then(function () {
+                Pipeline.deletePipeline(id).then(function () {
+                    $location.path('/pipelines');
+                });
+            });
+
         }
     }]);
