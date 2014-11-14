@@ -10,11 +10,11 @@ angular.module('registryApp')
          *
          * @param {integer} skip
          * @param {string} searchTerm
-         * @param {string} repo
          * @param {boolean} mine
+         * @param {string} repoId
          * @returns {object} $promise
          */
-        self.getApps = function(skip, searchTerm, repo, mine) {
+        self.getApps = function(skip, searchTerm, mine, repoId) {
 
             var isSearch = !(_.isUndefined(searchTerm) || _.isEmpty(searchTerm));
             var params = {skip: skip};
@@ -23,8 +23,8 @@ angular.module('registryApp')
                 params.q = searchTerm;
             }
 
-            if (angular.isDefined(repo)) {
-                params.field_repo = repo.replace(/&/g, '/');
+            if (angular.isDefined(repoId)) {
+                params.field_repo = repoId;
             }
 
             params.mine = mine || null;

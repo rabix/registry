@@ -31,10 +31,6 @@ angular
                 templateUrl: 'views/apps.html',
                 controller: 'AppsCtrl'
             })
-            .when('/apps/:repo', {
-                templateUrl: 'views/apps.html',
-                controller: 'AppsCtrl'
-            })
             .when('/app/:id', {
                 templateUrl: 'views/app.html',
                 controller: 'AppCtrl'

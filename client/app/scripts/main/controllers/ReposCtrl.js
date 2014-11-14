@@ -1,44 +1,17 @@
 'use strict';
 
 angular.module('registryApp')
-    .controller('ReposCtrl', ['$scope', '$window', '$injector', 'Repo', 'Sidebar', 'Loading', 'User', function ($scope, $window, $injector, Repo, Sidebar, Loading, User) {
+    .controller('ReposCtrl', ['$scope', '$q', '$injector', 'Repo', 'Sidebar', 'Loading', 'User', function ($scope, $q, $injector, Repo, Sidebar, Loading, User) {
 
         Sidebar.setActive('repos');
 
-        /**
-         * Callback when repos are loaded
-         *
-         * @param result
-         */
-        var reposLoaded = function(result) {
-
-            $scope.view.paginator.prev = $scope.view.page > 1;
-            $scope.view.paginator.next = ($scope.view.page * $scope.view.perPage) < result.total;
-            $scope.view.total = Math.ceil(result.total / $scope.view.perPage);
-
-            $scope.view.repos = result.list;
-            $scope.view.loading = false;
-
-        };
-
         $scope.view = {};
+        $scope.view.page = 1;
+        $scope.view.total = 0;
         $scope.view.loading = true;
         $scope.view.repos = [];
         $scope.view.searchTerm = '';
         $scope.view.user = {};
-
-        User.getUser().then(function(result) {
-            $scope.view.user = result.user;
-        });
-
-        $scope.view.paginator = {
-            prev: false,
-            next: false
-        };
-
-        $scope.view.page = 1;
-        $scope.view.perPage = 25;
-        $scope.view.total = 0;
 
         $scope.view.classes = ['page', 'repos'];
         Loading.setClasses($scope.view.classes);
@@ -48,30 +21,37 @@ angular.module('registryApp')
             if (n !== o) { $scope.view.classes = n; }
         });
 
-        Repo.getRepos(0).then(reposLoaded);
+        /**
+         * Callback when repos are loaded
+         *
+         * @param result
+         */
+        var reposLoaded = function(result) {
+
+            $scope.view.repos = result.list;
+            $scope.view.total = result.total;
+            $scope.view.loading = false;
+        };
+
+        $q.all([
+                Repo.getRepos(0),
+                User.getUser()
+            ]).then(function(result) {
+                reposLoaded(result[0]);
+                $scope.view.user = result[1].user;
+            });
 
         /**
-         * Go to the next/prev page
+         * Get more repos by offset
          *
-         * @param dir
+         * @param offset
          */
-        $scope.goToPage = function(dir) {
+        $scope.getMoreRepos = function(offset) {
 
-            if (!$scope.view.loading) {
+            $scope.view.loading = true;
 
-                if (dir === 'prev') {
-                    $scope.view.page -= 1;
-                }
-                if (dir === 'next') {
-                    $scope.view.page += 1;
-                }
+            Repo.getRepos(offset).then(reposLoaded);
 
-                $scope.view.loading = true;
-                var offset = ($scope.view.page - 1) * $scope.view.perPage;
-
-                Repo.getRepos(offset).then(reposLoaded);
-
-            }
         };
 
         /**

@@ -38,32 +38,34 @@ router.get('/apps', function (req, res, next) {
         where.user = req.user.id;
     }
 
-    App.count(where).exec(function(err, total) {
-        if (err) { return next(err); }
+    App.count(where)
+        .exec(function(err, total) {
 
-        var match = {is_public: true};
+            if (err) { return next(err); }
 
-        if (req.query.q) {
-            match.description = new RegExp(req.query.q, 'i');
-        }
+            var match = {is_public: true};
 
-        App.find(where)
-            .populate('repo')
-            .populate('user')
-            .populate({
-                path: 'revisions',
-                select: 'description version',
-                match: match,
-                options: { limit: 25 }
-            })
-            .skip(skip)
-            .limit(limit)
-            .sort({_id: 'desc'})
-            .exec(function(err, apps) {
-                if (err) { return next(err); }
+            if (req.query.q) {
+                match.description = new RegExp(req.query.q, 'i');
+            }
 
-                res.json({list: apps, total: total});
-            });
+            App.find(where)
+                .populate('repo')
+                .populate('user')
+                .populate({
+                    path: 'revisions',
+                    select: 'description version',
+                    match: match,
+                    options: { limit: 25 }
+                })
+                .skip(skip)
+                .limit(limit)
+                .sort({_id: 'desc'})
+                .exec(function(err, apps) {
+                    if (err) { return next(err); }
+
+                    res.json({list: apps, total: total});
+                });
 
     });
 
