@@ -5,7 +5,7 @@ angular.module('registryApp')
 
         $scope.data = data;
         $scope.view = {};
-        
+
         $scope.view.message = data.message ? data.message : "Are you sure you want to delete this item?";
 
         $scope.ok = function () {

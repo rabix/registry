@@ -8,6 +8,8 @@ var Schema = mongoose.Schema;
 
 var PipelineRevisionSchema = new Schema({
     stamp: Schema.Types.Mixed,
+    //storing name as a copy of workflow name for easier search
+    name: String,
     description: String,
     json: Schema.Types.Mixed,
     version: Number,

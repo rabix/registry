@@ -190,72 +190,6 @@ router.get('/pipeline/:id', function (req, res, next) {
 
 });
 
-router.get('/pipeline-revisions/:id', function (req, res, next) {
-    console.log('Rev id: ',req.params.id);
-    PipelineRevision.findById(req.params.id).populate('pipeline').exec(function(err, pipeline) {
-        if (err) { return next(err); }
-
-        Repo.populate(pipeline, 'pipeline.repo', function (err, p) {
-
-            User.populate(p, {
-                path: 'pipeline.user',
-                select:  '_id email username'
-            }, function (err, pipe) {
-
-                res.json({data: pipe});
-
-            });
-
-        });
-    });
-
-});
-
-router.get('/pipeline-revisions', function (req, res, next) {
-
-    var limit = req.query.limit ? req.query.limit : 25;
-    var skip = req.query.skip ? req.query.skip : 0;
-    var where = {};
-
-    _.each(req.query, function(paramVal, paramKey) {
-        if (_.contains(paramKey, 'field_')) {
-            where[paramKey.replace('field_', '')] = paramVal;
-        }
-        if (paramKey === 'q') {
-            where.$or = [
-                {name: new RegExp(paramVal, 'i')},
-                {description: new RegExp(paramVal, 'i')}
-            ];
-        }
-    });
-    
-
-    Pipeline.findById(req.query.field_pipeline, function(err, pipeline) {
-        if (err) { return next(err); }
-
-        var user_id = (req.user ? req.user.id : '').toString();
-        var pipeline_user_id = pipeline.user.toString();
-
-        if (user_id !== pipeline_user_id) {
-            where.is_public = true;
-        }
-
-        PipelineRevision.count(where).exec(function(err, total) {
-            if (err) { return next(err); }
-
-            PipelineRevision.find(where).skip(skip).limit(limit).sort({_id: 'desc'}).exec(function(err, revisions) {
-                if (err) { return next(err); }
-
-                res.json({list: revisions, total: total});
-            });
-
-        });
-
-    });
-
-
-});
-
 router.post('/pipeline', filters.authenticated, function (req, res, next) {
 
     var data = req.body.data;
@@ -280,6 +214,7 @@ router.post('/pipeline', filters.authenticated, function (req, res, next) {
                     revision.description = data.description;
                     revision.json = data.json;
                     revision.stamp = stamp;
+                    revision.name = data.name;
 
                     revision.save();
 
@@ -323,9 +258,7 @@ router.put('/pipeline/:id', filters.authenticated, function (req, res, next) {
     var data = req.body.data;
 
     Pipeline.findById(req.params.id).populate('repo').populate('user').exec(function(err, pipeline) {
-        if (err) {
-            return next(err);
-        }
+        if (err) { return next(err);}
 
         if (pipeline) {
 
@@ -345,14 +278,17 @@ router.put('/pipeline/:id', filters.authenticated, function (req, res, next) {
             revision.rev = pipeline.revisions.length + 1;
 
             revision.save(function (err, rev) {
-                if (err) {
-                    return next(err);
-                }
+                if (err) { return next(err);}
 
                 pipeline.revisions.push(rev._id);
-                pipeline.save();
+                pipeline.latest = rev._id;
+                
+                pipeline.save(function (err) {
+                    if (err) { return next(err);}
 
-                res.json({id: revision._id, message: 'Successfully created new pipeline revision'});
+                    res.json({id: revision._id, message: 'Successfully created new pipeline revision'});
+                });
+
             });
 
 
@@ -364,105 +300,8 @@ router.put('/pipeline/:id', filters.authenticated, function (req, res, next) {
 
 });
 
-router.put('/pipeline-revisions/:revision', filters.authenticated, function (req, res, next) {
-    var revision_id = req.params.revision,
-        isPublic = true;
-
-        PipelineRevision.findOneAndUpdate({_id: revision_id }, {is_public: isPublic}, function (err, revision) {
-            if (err) {
-                return next(err);
-            }
-
-            PipelineRevision.count({pipeline: revision.pipeline, is_public: true}, function (err, total) {
-                if (err) {
-                    return next(err);
-                }
-
-                revision.version = total;
-
-                revision.save(function () {
-
-                    Pipeline.populate(revision, 'rev.pipeline', function (err, rev) {
-
-                        if (err) {
-                            return next(err);
-                        }
-
-                        Pipeline.findOneAndUpdate({_id: rev.pipeline._id}, {latest: revision_id}, function (err) {
-
-                            if (err) {
-                                return next(err);
-                            }
-
-                            res.json({message: 'Revision successfully ' + isPublic ? 'published' : 'unpublished'});
-                        });
-
-                    });
-
-                });
-
-
-            });
-
-        });
-});
-
 /**
- * Delete pipeline revision
- *
- * @param :revision - reivison id
- */
-router.delete('/pipeline-revisions/:revision', filters.authenticated, function (req, res, next) {
-    var revision_id = req.params.revision;
-
-    PipelineRevision.findById(revision_id).populate('pipeline').exec(function (err, revision) {
-
-        User.populate(revision, {
-            path: 'pipeline.user',
-            select:  '_id email username'
-        }, function (err, rev) {
-            if (err) { return next(err); }
-
-            if (!rev.is_public && rev.pipeline.user._id.toString() === req.user.id) {
-
-                var pipeline_id = rev.pipeline._id;
-                Pipeline.findById(pipeline_id, function (err, pipeline) {
-                    if (err) {return next(err);}
-
-                    if (pipeline.revisions.length > 1) {
-
-                        PipelineRevision.remove({_id: revision_id}, function (err) {
-                            if (err) {return next(err);}
-
-                            var index = pipeline.revisions.indexOf(revision_id);
-
-                            pipeline.revisions.splice(index, 1);
-
-                            pipeline.latest = pipeline.revisions[pipeline.revisions.length - 1];
-
-                            pipeline.save(function () {
-                                res.json({message: 'Successfully deleted workflow revision', latest: pipeline.latest})
-                            });
-
-                        });
-
-                    } else {
-                        res.status(403).json({message: 'Last workflow revision cannot be deleted'});
-                    }
-
-                });
-
-            } else {
-                res.status(403).json({message: 'Workflow revision cannot be deleted - Forbidden'});
-            }
-
-        });
-    });
-
-});
-
-/**
- * Not used for now. Pipeline as abstracion cannot be deleted
+ * Delete workflow if it has only unpublished revisions
  */
 router.delete('/pipeline/:id', filters.authenticated, function (req, res, next) {
 
@@ -536,6 +375,7 @@ router.post('/pipeline/fork', filters.authenticated, function (req, res, next) {
                     revision.description = pipeline_to_fork.description;
                     revision.json = pipeline_to_fork.json;
                     revision.stamp = stamp;
+                    revision.name = pipeline_to_fork.name;
 
                     revision.save();
 
@@ -566,15 +406,169 @@ router.post('/pipeline/fork', filters.authenticated, function (req, res, next) {
                     res.status(400).json({message: 'There is already a workflow with name: "' + pipeline_to_fork.name + '" in repo: "' + repo.name + '"'});
                 }
             })
-            
+
         } else {
             res.status(400).json({message: 'There is no repo with id: ' + pipeline.repo });
         }
 
     });
 
+});
+
+router.get('/pipeline-revisions', function (req, res, next) {
+
+    var limit = req.query.limit ? req.query.limit : 25;
+    var skip = req.query.skip ? req.query.skip : 0;
+    var where = {};
+
+    _.each(req.query, function(paramVal, paramKey) {
+        if (_.contains(paramKey, 'field_')) {
+            where[paramKey.replace('field_', '')] = paramVal;
+        }
+        if (paramKey === 'q') {
+            where.$or = [
+                {name: new RegExp(paramVal, 'i')},
+                {description: new RegExp(paramVal, 'i')}
+            ];
+        }
+    });
+
+
+    Pipeline.findById(req.query.field_pipeline, function(err, pipeline) {
+        if (err) { return next(err); }
+
+        var user_id = (req.user ? req.user.id : '').toString();
+        var pipeline_user_id = pipeline.user.toString();
+
+        if (user_id !== pipeline_user_id) {
+            where.is_public = true;
+        }
+
+        PipelineRevision.count(where).exec(function(err, total) {
+            if (err) { return next(err); }
+
+            PipelineRevision.find(where).skip(skip).limit(limit).sort({_id: 'desc'}).exec(function(err, revisions) {
+                if (err) { return next(err); }
+
+                res.json({list: revisions, total: total});
+            });
+
+        });
+
+    });
 
 
 });
 
+router.get('/pipeline-revisions/:id', function (req, res, next) {
+    console.log('Rev id: ',req.params.id);
+    PipelineRevision.findById(req.params.id).populate('pipeline').exec(function(err, pipeline) {
+        if (err) { return next(err); }
+
+        Repo.populate(pipeline, 'pipeline.repo', function (err, p) {
+
+            User.populate(p, {
+                path: 'pipeline.user',
+                select:  '_id email username'
+            }, function (err, pipe) {
+
+                res.json({data: pipe});
+
+            });
+
+        });
+    });
+
+});
+
+router.put('/pipeline-revisions/:revision', filters.authenticated, function (req, res, next) {
+    var revision_id = req.params.revision,
+        isPublic = true;
+
+    PipelineRevision.findOneAndUpdate({_id: revision_id }, {is_public: isPublic}, function (err, revision) {
+        if (err) { return next(err);}
+
+        PipelineRevision.count({pipeline: revision.pipeline, is_public: true}, function (err, total) {
+            if (err) { return next(err);}
+
+            revision.version = total;
+
+            revision.save(function () {
+
+                Pipeline.findOne({_id: revision.pipeline}, function (err, pipe) {
+
+                    if (err) { return next(err);}
+
+                    pipe.latest_public = revision_id;
+
+                    pipe.save(function () {
+
+                        if (err) { return next(err);}
+
+                        res.json({message: 'Revision successfully published'});
+                    });
+
+                });
+
+            });
+
+
+        });
+
+    });
+});
+
+/**
+ * Delete pipeline revision
+ *
+ * @param :revision - reivison id
+ */
+router.delete('/pipeline-revisions/:revision', filters.authenticated, function (req, res, next) {
+    var revision_id = req.params.revision;
+
+    PipelineRevision.findById(revision_id).populate('pipeline').exec(function (err, revision) {
+
+        User.populate(revision, {
+            path: 'pipeline.user',
+            select:  '_id email username'
+        }, function (err, rev) {
+            if (err) { return next(err); }
+
+            if (!rev.is_public && rev.pipeline.user._id.toString() === req.user.id) {
+
+                var pipeline_id = rev.pipeline._id;
+                Pipeline.findById(pipeline_id, function (err, pipeline) {
+                    if (err) {return next(err);}
+
+                    if (pipeline.revisions.length > 1) {
+
+                        PipelineRevision.remove({_id: revision_id}, function (err) {
+                            if (err) {return next(err);}
+
+                            var index = pipeline.revisions.indexOf(revision_id);
+
+                            pipeline.revisions.splice(index, 1);
+
+                            pipeline.latest = pipeline.revisions[pipeline.revisions.length - 1];
+
+                            pipeline.save(function () {
+                                res.json({message: 'Successfully deleted workflow revision', latest: pipeline.latest})
+                            });
+
+                        });
+
+                    } else {
+                        res.status(403).json({message: 'Last workflow revision cannot be deleted'});
+                    }
+
+                });
+
+            } else {
+                res.status(403).json({message: 'Workflow revision cannot be deleted - Forbidden'});
+            }
+
+        });
+    });
+
+});
 
