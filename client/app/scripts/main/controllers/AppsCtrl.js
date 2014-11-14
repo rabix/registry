@@ -1,36 +1,16 @@
 'use strict';
 
 angular.module('registryApp')
-    .controller('AppsCtrl', ['$scope', '$routeParams', '$injector', 'App', 'Sidebar', 'Api', 'Loading', 'User',function ($scope, $routeParams, $injector, App, Sidebar, Api, Loading, User) {
+    .controller('AppsCtrl', ['$scope', '$q', '$injector', 'App', 'Sidebar', 'Api', 'Loading', 'User',function ($scope, $q, $injector, App, Sidebar, Api, Loading, User) {
 
         Sidebar.setActive('tools');
 
-        /**
-         * Callback when apps are loaded
-         *
-         * @param result
-         */
-        var appsLoaded = function(result) {
-
-            $scope.view.paginator.prev = $scope.view.page > 1;
-            $scope.view.paginator.next = ($scope.view.page * $scope.view.perPage) < result.total;
-            $scope.view.total = Math.ceil(result.total / $scope.view.perPage);
-
-            $scope.view.apps = result.list;
-            $scope.view.loading = false;
-        };
-
-        User.getUser().then(function (result) {
-            $scope.view.user = result.user;
-        });
-
         $scope.view = {};
+        $scope.view.page = 1;
+        $scope.view.total = 0;
         $scope.view.loading = true;
         $scope.view.apps = [];
         $scope.view.searchTerm = '';
-        if ($routeParams.repo) {
-            $scope.view.repo = $routeParams.repo.replace(/&/g, '/');
-        }
 
         $scope.view.classes = ['page', 'apps'];
         Loading.setClasses($scope.view.classes);
@@ -40,39 +20,37 @@ angular.module('registryApp')
             if (n !== o) { $scope.view.classes = n; }
         });
 
-        $scope.view.paginator = {
-            prev: false,
-            next: false
+        /**
+         * Callback when apps are loaded
+         *
+         * @param result
+         */
+        var appsLoaded = function(result) {
+
+            $scope.view.apps = result.list;
+            $scope.view.loading = false;
+
+            $scope.view.total = result.total;
         };
 
-        $scope.view.page = 1;
-        $scope.view.perPage = 25;
-        $scope.view.total = 0;
-
-        App.getApps(0, '', $routeParams.repo).then(appsLoaded);
+        $q.all([
+                App.getApps(0),
+                User.getUser()
+            ]).then(function(result) {
+                appsLoaded(result[0]);
+                $scope.view.user = result[1].user;
+            });
 
         /**
-         * Go to the next/prev page
+         * Get more apps by offset
          *
-         * @param dir
+         * @param offset
          */
-        $scope.goToPage = function(dir) {
+        $scope.getMoreApps = function(offset) {
 
-            if (!$scope.view.loading) {
+            $scope.view.loading = true;
 
-                if (dir === 'prev') {
-                    $scope.view.page -= 1;
-                }
-                if (dir === 'next') {
-                    $scope.view.page += 1;
-                }
-
-                $scope.view.loading = true;
-                var offset = ($scope.view.page - 1) * $scope.view.perPage;
-
-                App.getApps(offset, $scope.view.searchTerm, $routeParams.repo, $scope.view.mine).then(appsLoaded);
-
-            }
+            App.getApps(offset, $scope.view.searchTerm, $scope.view.mine).then(appsLoaded);
         };
 
         /**
@@ -83,7 +61,7 @@ angular.module('registryApp')
             $scope.view.page = 1;
             $scope.view.loading = true;
 
-            App.getApps(0, $scope.view.searchTerm, $routeParams.repo, $scope.view.mine).then(appsLoaded);
+            App.getApps(0, $scope.view.searchTerm, $scope.view.mine).then(appsLoaded);
 
         };
 
@@ -96,7 +74,7 @@ angular.module('registryApp')
             $scope.view.searchTerm = '';
             $scope.view.loading = true;
 
-            App.getApps(0, '', $routeParams.repo, $scope.view.mine).then(appsLoaded);
+            App.getApps(0, '', $scope.view.mine).then(appsLoaded);
 
         };
 
@@ -109,7 +87,7 @@ angular.module('registryApp')
             $scope.view.searchTerm = '';
             $scope.view.loading = true;
 
-            App.getApps(0, '', $routeParams.repo, $scope.view.mine).then(appsLoaded);
+            App.getApps(0, '', $scope.view.mine).then(appsLoaded);
         };
 
         /**

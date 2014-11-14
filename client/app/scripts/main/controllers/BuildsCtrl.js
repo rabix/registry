@@ -5,23 +5,9 @@ angular.module('registryApp')
 
         Sidebar.setActive('builds');
 
-        /**
-         * Callback when builds are loaded
-         *
-         * @param result
-         */
-        var buildsLoaded = function(result) {
-
-            $scope.view.paginator.prev = $scope.view.page > 1;
-            $scope.view.paginator.next = ($scope.view.page * $scope.view.perPage) < result.total;
-            $scope.view.total = Math.ceil(result.total / $scope.view.perPage);
-
-            $scope.view.builds = result.list;
-            $scope.view.loading = false;
-
-        };
-
         $scope.view = {};
+        $scope.view.page = 1;
+        $scope.view.total = 0;
         $scope.view.loading = true;
         $scope.view.builds = [];
         $scope.view.repo = $routeParams.repo;
@@ -34,39 +20,31 @@ angular.module('registryApp')
             if (n !== o) { $scope.view.classes = n; }
         });
 
-        $scope.view.paginator = {
-            prev: false,
-            next: false
-        };
+        /**
+         * Callback when builds are loaded
+         *
+         * @param result
+         */
+        var buildsLoaded = function(result) {
 
-        $scope.view.page = 1;
-        $scope.view.perPage = 25;
-        $scope.view.total = 0;
+            $scope.view.builds = result.list;
+            $scope.view.total = result.total;
+            $scope.view.loading = false;
+
+        };
 
         Build.getBuilds(0, $routeParams.repo).then(buildsLoaded);
 
         /**
-         * Go to the next/prev page
+         * Get more builds by offset
          *
-         * @param dir
+         * @param offset
          */
-        $scope.goToPage = function(dir) {
+        $scope.getMoreBuilds = function(offset) {
 
-            if (!$scope.view.loading) {
+            $scope.view.loading = true;
 
-                if (dir === 'prev') {
-                    $scope.view.page -= 1;
-                }
-                if (dir === 'next') {
-                    $scope.view.page += 1;
-                }
-
-                $scope.view.loading = true;
-                var offset = ($scope.view.page - 1) * $scope.view.perPage;
-
-                Build.getBuilds(offset, $routeParams.repo).then(buildsLoaded);
-
-            }
+            Build.getBuilds(offset, $routeParams.repo).then(buildsLoaded);
         };
 
 

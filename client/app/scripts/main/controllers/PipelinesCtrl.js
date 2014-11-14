@@ -1,32 +1,13 @@
 'use strict';
 
 angular.module('registryApp')
-    .controller('PipelinesCtrl', ['$scope', '$routeParams', '$injector', 'Pipeline', 'Sidebar', 'Api', 'Loading', 'User',function ($scope, $routeParams, $injector, Pipeline, Sidebar, Api, Loading, User) {
+    .controller('PipelinesCtrl', ['$scope', '$q', '$injector', 'Pipeline', 'Sidebar', 'Api', 'Loading', 'User',function ($scope, $q, $injector, Pipeline, Sidebar, Api, Loading, User) {
 
         Sidebar.setActive('workflows');
 
-        /**
-         * Callback when pipelines are loaded
-         *
-         * @param result
-         */
-        var pipelinesLoaded = function(result) {
-            console.log('Pipeline', result);
-
-            $scope.view.paginator.prev = $scope.view.page > 1;
-            $scope.view.paginator.next = ($scope.view.page * $scope.view.perPage) < result.total;
-            $scope.view.total = Math.ceil(result.total / $scope.view.perPage);
-
-            $scope.view.pipelines = result.list;
-            $scope.view.loading = false;
-        };
-
-        User.getUser().then(function (result) {
-            console.log('User', result.user);
-            $scope.view.user = result.user;
-        });
-
         $scope.view = {};
+        $scope.view.page = 1;
+        $scope.view.total = 0;
         $scope.view.loading = true;
         $scope.view.pipelines = [];
         $scope.view.searchTerm = '';
@@ -40,39 +21,36 @@ angular.module('registryApp')
             if (n !== o) { $scope.view.classes = n; }
         });
 
-        $scope.view.paginator = {
-            prev: false,
-            next: false
+        /**
+         * Callback when pipelines are loaded
+         *
+         * @param result
+         */
+        var pipelinesLoaded = function(result) {
+
+            $scope.view.pipelines = result.list;
+            $scope.view.total = result.total;
+            $scope.view.loading = false;
         };
 
-        $scope.view.page = 1;
-        $scope.view.perPage = 25;
-        $scope.view.total = 0;
-
-        Pipeline.getPipelines(0).then(pipelinesLoaded);
+        $q.all([
+                Pipeline.getPipelines(0),
+                User.getUser()
+            ]).then(function(result) {
+                pipelinesLoaded(result[0]);
+                $scope.view.user = result[1].user;
+            });
 
         /**
-         * Go to the next/prev page
+         * Get more pipelines by offset
          *
-         * @param dir
+         * @param offset
          */
-        $scope.goToPage = function(dir) {
+        $scope.getMorePipelines = function(offset) {
 
-            if (!$scope.view.loading) {
+            $scope.view.loading = true;
 
-                if (dir === 'prev') {
-                    $scope.view.page -= 1;
-                }
-                if (dir === 'next') {
-                    $scope.view.page += 1;
-                }
-
-                $scope.view.loading = true;
-                var offset = ($scope.view.page - 1) * $scope.view.perPage;
-
-                Pipeline.getPipelines(offset, $scope.view.searchTerm, $scope.view.mine).then(pipelinesLoaded);
-
-            }
+            Pipeline.getPipelines(offset, $scope.view.searchTerm, $scope.view.mine).then(pipelinesLoaded);
         };
 
         /**
@@ -122,7 +100,6 @@ angular.module('registryApp')
                     });
                 });
             });
-
 
         };
 

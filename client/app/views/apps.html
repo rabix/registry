@@ -80,11 +80,6 @@
     </div>
     <!-- # .content -->
 
-    <div class="paginate" ng-if="!view.loading && view.apps.length !== 0">
-        <button ng-disabled="!view.paginator.prev" class="btn btn-default pull-left" ng-click="goToPage('prev')"><i class="fa fa-chevron-left"></i></button>
-        <span class="page-number">{{ view.page }} / {{ view.total }}</span>
-        <button ng-disabled="!view.paginator.next" class="btn btn-default pull-right" ng-click="goToPage('next')"><i class="fa fa-chevron-right"></i></button>
-    </div>
-    <!-- # .paginate -->
+    <paginator page="view.page" total="view.total" handler="getMoreApps(offset)"></paginator>
 
 </div>
