@@ -42,7 +42,10 @@ angular.module('registryApp.dyole')
                 // flag for temporary connection
                 this.tempConnectionActive = false;
 
+                this.currentScale = this.model.display.canvas.zoom || 1.0;
+
                 console.log('Pipeline model: ', this.model);
+
 
                 this._initCanvas();
                 this._attachEvents();
@@ -237,6 +240,14 @@ angular.module('registryApp.dyole')
                         fill: '#fff',
                         opacity: '0'
                     });
+
+                },
+
+                _initZoomLevel: function (step) {
+
+                    this.getEl().scale(step, step);
+
+                    this._drawScrollbars();
 
                 },
 
@@ -758,13 +769,14 @@ angular.module('registryApp.dyole')
 
                     var rawModel = angular.copy(nodeModel);
                     var model = this._transformModel(nodeModel);
+                    var zoom = this.getEl().getScale().x;
 
                     var canvas = this._getOffset(this.$parent[0]);
 
                     rawCoords = rawCoords || false;
 
-                    var x = clientX - canvas.left - this.pipelineWrap.getTranslation().x,
-                        y = clientY - canvas.top - this.pipelineWrap.getTranslation().y;
+                    var x = ( clientX - canvas.left ) / zoom  - this.pipelineWrap.getTranslation().x,
+                        y = ( clientY - canvas.top  ) / zoom - this.pipelineWrap.getTranslation().y;
 
                     if (rawCoords) {
                         x = clientX - this.pipelineWrap.getTranslation().x;
@@ -824,6 +836,75 @@ angular.module('registryApp.dyole')
                     json.display.canvas.y = this.getEl().getTranslation().y;
 
                     return json;
+                },
+
+                _zoomingFinish: function () {
+                    this._drawScrollbars();
+                    this.model.display.canvas.zoom = this.currentScale;
+                },
+                
+                initZoom: function () {
+                    this._initZoomLevel(this.currentScale);
+                },
+                
+                zoomIn: function () {
+                    var canvas = this.getEl(),
+                        zoomLevel = canvas.getScale(),
+                        canvasBox = canvas.node.getBBox(),
+                        canvasTransform = canvas.node.getCTM(),
+                        canvasRect = canvasBox,
+                        scale = 0.05;
+
+                    canvasBox.l = canvasBox.x + canvasTransform.e;
+                    canvasBox.t = canvasBox.y + canvasTransform.f;
+                    canvasBox.r = canvasBox.l + (canvasRect.width * canvasTransform.a);
+
+                    if (zoomLevel.x < 1.2 && zoomLevel.y < 1.2) {
+
+                        this.currentScale += scale;
+
+                        canvas.scaleAtPoint(
+                            this.currentScale,
+                            {
+                                x: canvasBox.r - canvasRect.width / 2,
+                                y: canvasBox.t - canvasRect.height / 2
+                            }
+                        );
+
+                        this._zoomingFinish();
+                    }
+
+                    return this.currentScale;
+                },
+                
+                zoomOut: function () {
+                    var canvas = this.getEl(),
+                        zoomLevel = canvas.getScale(),
+                        canvasBox = canvas.node.getBBox(),
+                        canvasTransform = canvas.node.getCTM(),
+                        canvasRect = canvasBox,
+                        scale = 0.05;
+
+                    canvasBox.l = canvasBox.x + canvasTransform.e;
+                    canvasBox.t = canvasBox.y + canvasTransform.f;
+                    canvasBox.r = canvasBox.l + (canvasRect.width * canvasTransform.a);
+
+                    if (zoomLevel.x > 0.6 && zoomLevel.y > 0.6) {
+                        this.currentScale -= scale;
+
+                        canvas.scaleAtPoint(
+                            this.currentScale,
+                            {
+                                x: canvasBox.r - canvasRect.width / 2,
+                                y: canvasBox.t - canvasRect.height / 2
+                            }
+                        );
+
+                        this._zoomingFinish();
+                    }
+
+                    return this.currentScale;
+
                 }
 
 

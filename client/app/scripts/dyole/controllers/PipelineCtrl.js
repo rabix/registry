@@ -252,6 +252,24 @@ angular.module('registryApp.dyole')
             onNodeLabelEditOff();
 
         });
+        
+        $scope.pipelineActions = {
+            zoomIn: function () {
+                var zoom;
+
+                if (Pipeline) {
+                    Pipeline.zoomIn();
+                }
+            },
+            zoomOut: function () {
+                var zoom;
+
+                if (Pipeline) {
+                    Pipeline.zoomOut();
+                }
+
+            }
+        };
 
 
 

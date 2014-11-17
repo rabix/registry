@@ -5,5 +5,9 @@
     <div class="pipeline-drop-area" ng-class="{loading: view.loading}" drop="dropNode(e, id)">
         <div ng-show="view.explanation && view.canFlush" class="pipeline-user-guide">Drag apps from sidebar on the left on the drawing area</div>
         <div class="pipeline"></div>
+        <div class="pipeline-actions">
+            <button class="btn btn-default" ng-click="pipelineActions.zoomIn()" ><i class="fa fa-plus"></i></button>
+            <button class="btn btn-default" ng-click="pipelineActions.zoomOut()"><i class="fa fa-minus"></i></button>
+        </div>
     </div>
 </div>

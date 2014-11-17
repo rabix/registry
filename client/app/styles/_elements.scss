@@ -560,6 +560,13 @@ legend {
       @include flex(1);
     }
 
+    .pipeline-actions {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+    }
+
+
     .pipeline-user-guide {
       width: 400px;
       height: 100px;
