@@ -33,6 +33,9 @@ angular.module('registryApp.dyole')
                 editMode: $scope.editMode
             });
 
+            //TODO: Will be used to check if any of the buttons needs disabling
+            Pipeline.initZoom();
+
         };
 
         if ($routeParams.mode === 'new') {
@@ -254,6 +257,7 @@ angular.module('registryApp.dyole')
         });
         
         $scope.pipelineActions = {
+            //TODO: Add disabling buttons logic
             zoomIn: function () {
                 var zoom;
 

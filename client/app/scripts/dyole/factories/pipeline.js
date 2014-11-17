@@ -9,6 +9,12 @@ angular.module('registryApp.dyole')
         'systemNodeModel',
         function (Event, Node, Connection, $rootScope, systemNodeModel) {
 
+            /**
+             * Pipeline constructor
+             *
+             * @param options
+             * @constructor
+             */
             var Pipeline = function (options) {
                 this.model = options.model;
                 this.$parent = options.$parent;
@@ -20,6 +26,9 @@ angular.module('registryApp.dyole')
                 this.nodes = {};
                 this.connections = {};
 
+                /**
+                 * Clone event object for every pipeline
+                 */
                 this.Event = _.clone(Event);
 
                 /**
@@ -42,10 +51,13 @@ angular.module('registryApp.dyole')
                 // flag for temporary connection
                 this.tempConnectionActive = false;
 
+                /**
+                 * Save ref to the current canvas scale
+                 * @type {*|number}
+                 */
                 this.currentScale = this.model.display.canvas.zoom || 1.0;
 
                 console.log('Pipeline model: ', this.model);
-
 
                 this._initCanvas();
                 this._attachEvents();
@@ -61,6 +73,11 @@ angular.module('registryApp.dyole')
                     }
                 },
 
+                /**
+                 * Attach necessary listeners
+                 *
+                 * @private
+                 */
                 _attachEvents: function () {
                     var _self = this,
                         $canvasArea = this.$parent;
@@ -68,10 +85,6 @@ angular.module('registryApp.dyole')
                     this.Event.subscribe('temp:connection:state', function (state) {
                         _self.tempConnectionActive = state;
                     });
-                    //
-                    //            this.Event.subscribe('temp:connection:state', function (state) {
-                    //                _self.tempConnectionActive = state;
-                    //            });
 
                     this.Event.subscribe('scrollbars:draw', function () {
                         _self._drawScrollbars();
@@ -203,6 +216,11 @@ angular.module('registryApp.dyole')
                     });
                 },
 
+                /**
+                 * Initialize canvas element
+                 *
+                 * @private
+                 */
                 _initCanvas: function () {
                     var width = 600,
                         height = 600,
@@ -225,11 +243,23 @@ angular.module('registryApp.dyole')
                     this._initCanvasMove();
                 },
 
-
+                /**
+                 * Move canvas in last saved position
+                 *
+                 * @private
+                 */
                 _initCanvasPosition: function () {
                     this._move(this.model.display.canvas);
                 },
 
+                /**
+                 * Init Rect to watch for dragging canvas
+                 *
+                 * @param canvas
+                 * @param width
+                 * @param height
+                 * @private
+                 */
                 _initRect: function (canvas, width, height) {
 
                     this.rect = canvas.rect(0, 0, width, height);
@@ -243,6 +273,12 @@ angular.module('registryApp.dyole')
 
                 },
 
+                /**
+                 * Initialize zooming
+                 *
+                 * @param step
+                 * @private
+                 */
                 _initZoomLevel: function (step) {
 
                     this.getEl().scale(step, step);
@@ -251,10 +287,21 @@ angular.module('registryApp.dyole')
 
                 },
 
+                /**
+                 * Move canvas
+                 *
+                 * @param position
+                 * @private
+                 */
                 _move: function (position) {
                     this.getEl().translate(position.x, position.y);
                 },
 
+                /**
+                 * Initialize canvas moving
+                 *
+                 * @private
+                 */
                 _initCanvasMove: function () {
 
                     var _self = this,
@@ -328,6 +375,11 @@ angular.module('registryApp.dyole')
 
                 },
 
+                /**
+                 * Generate canvas nodes from pipeline model
+                 *
+                 * @private
+                 */
                 _generateNodes: function () {
 
                     var _self = this;
@@ -354,6 +406,11 @@ angular.module('registryApp.dyole')
                     this.rect.toBack();
                 },
 
+                /**
+                 * Generate connections based on relations from model
+                 *
+                 * @private
+                 */
                 _generateConnections: function () {
                     var _self = this;
 
@@ -364,6 +421,13 @@ angular.module('registryApp.dyole')
                     });
                 },
 
+                /**
+                 * Create single connection
+                 * Creating from pipeline model
+                 *
+                 * @param connection
+                 * @private
+                 */
                 _createConnection: function (connection) {
                     var _self = this,
                         input = _self.nodes[connection.start_node].getTerminalById(
@@ -388,6 +452,16 @@ angular.module('registryApp.dyole')
                         connection.id]);
                 },
 
+                /**
+                 * Creates inputs and outputs
+                 * Generates models for system nodes
+                 *
+                 * @param isInput
+                 * @param x
+                 * @param y
+                 * @param terminal
+                 * @private
+                 */
                 _createSystemNode: function (isInput, x, y, terminal) {
                     var model = angular.copy(systemNodeModel),
                         terminalId, count, terId, terName;
@@ -441,6 +515,14 @@ angular.module('registryApp.dyole')
                     this._connectSystemNode(terminal, _id, isInput, terminalId);
                 },
 
+                /**
+                 * Generate node id
+                 * Node id is represented as unique string for easier manual json formating later
+                 *
+                 * @param model
+                 * @returns {string}
+                 * @private
+                 */
                 _generateNodeId: function (model) {
                     var name = model.softwareDescription.name,
                         n = 1;
@@ -455,10 +537,23 @@ angular.module('registryApp.dyole')
                     return name + '_' + n;
                 },
 
+                /**
+                 * Check if id is available
+                 *
+                 * @param id
+                 * @returns {boolean}
+                 * @private
+                 */
                 _checkIdAvailable: function (id) {
                     return !!this.nodes[id];
                 },
 
+                /**
+                 * Mark drop areas for input/output creation
+                 *
+                 * @param isInput
+                 * @private
+                 */
                 _markCreateArea: function (isInput) {
 
                     var rect,
@@ -502,6 +597,11 @@ angular.module('registryApp.dyole')
 
                 },
 
+                /**
+                 * Draw canvas position indicators - scrollbars
+                 *
+                 * @private
+                 */
                 _drawScrollbars: function () {
 
                     var canvas = this.getEl(),
@@ -614,16 +714,20 @@ angular.module('registryApp.dyole')
                     }
                 },
 
-
+                /**
+                 *  Transform node model for easier use
+                 *
+                 * @param nodeModel
+                 * @returns {*}
+                 * @private
+                 */
                 _transformModel: function (nodeModel) {
 
                     var model = nodeModel.json || nodeModel;
 
                     _.forEach(model.inputs.properties, function (input, name) {
-
                         input.name = name;
                         input.id = input.id || name;
-
                     });
 
                     _.forEach(model.outputs.properties, function (output, name) {
@@ -636,6 +740,13 @@ angular.module('registryApp.dyole')
 
                 },
 
+                /**
+                 * Get element offset
+                 *
+                 * @param element
+                 * @returns {{top: number, left: number}}
+                 * @private
+                 */
                 _getOffset: function (element) {
 
                     var bodyRect = document.body.getBoundingClientRect();
@@ -649,14 +760,37 @@ angular.module('registryApp.dyole')
                     };
                 },
 
+                /**
+                 * Get connections from pipeline model
+                 * Used when generating pipeline json
+                 *
+                 * @returns {*}
+                 * @private
+                 */
                 _getConnections: function () {
                     return _.pluck(this.connections, 'model');
                 },
 
+                /**
+                 * Get nodes from pipeline model
+                 * Used when generating pipeline json
+                 *
+                 * @returns {*}
+                 * @private
+                 */
                 _getNodes: function () {
                     return _.pluck(this.nodes, 'model');
                 },
 
+                /**
+                 * Connect input/output thats created with start node
+                 *
+                 * @param terminal
+                 * @param nodeId
+                 * @param isInput
+                 * @param terminalId
+                 * @private
+                 */
                 _connectSystemNode: function (terminal, nodeId, isInput, terminalId) {
                     var node = this.nodes[nodeId],
                         type = !isInput ? 'input' : 'output',
@@ -665,6 +799,12 @@ angular.module('registryApp.dyole')
                     this.Event.trigger('connection:create', terminal, nodeTer);
                 },
 
+                /**
+                 * Check if are intersects with current position of mouse while dragging connection
+                 *
+                 * @param coords
+                 * @param terminal
+                 */
                 checkAreaIntersect: function (coords, terminal) {
 
                     var areaWidth = this.constraints.dropArea.width;
@@ -689,10 +829,21 @@ angular.module('registryApp.dyole')
 
                 },
 
+                /**
+                 * Mark drop area public method
+                 *
+                 * @param isInput
+                 */
                 markDropArea: function (isInput) {
                     this._markCreateArea(isInput);
                 },
 
+                /**
+                 * Generate connection based on temp connection
+                 * User interaction connection creating
+                 *
+                 * @param connection
+                 */
                 createConnection: function (connection) {
                     var _self = this,
                         input, output;
@@ -723,10 +874,20 @@ angular.module('registryApp.dyole')
 
                 },
 
+                /**
+                 * Get raphael canvas element
+                 *
+                 * @returns {*|Pipeline.pipelineWrap}
+                 */
                 getEl: function () {
                     return this.pipelineWrap;
                 },
 
+                /**
+                 * Remove connection
+                 *
+                 * @param connection
+                 */
                 removeConnection: function (connection) {
 
                     if (this.connections[connection.id]) {
@@ -736,6 +897,9 @@ angular.module('registryApp.dyole')
 
                 },
 
+                /**
+                 * Destroys pipeline and its references
+                 */
                 destroy: function () {
                     var _self = this,
                         events = ['connection:create', 'scrollbars:draw', 'node:add', 'node:deselect'];
@@ -765,6 +929,14 @@ angular.module('registryApp.dyole')
                     $('body').off('mouseup');
                 },
 
+                /**
+                 * Add node to the canvas
+                 *
+                 * @param nodeModel
+                 * @param clientX
+                 * @param clientY
+                 * @param rawCoords
+                 */
                 addNode: function (nodeModel, clientX, clientY, rawCoords) {
 
                     var rawModel = angular.copy(nodeModel);
@@ -796,6 +968,9 @@ angular.module('registryApp.dyole')
                     this.Event.trigger('node:add', model);
                 },
 
+                /**
+                 * Adjust canvas dimensions to fit the parent
+                 */
                 adjustSize: function () {
 
                     var width = this.$parent[0].offsetWidth - 10;
@@ -812,6 +987,11 @@ angular.module('registryApp.dyole')
 
                 },
 
+                /**
+                 * Get pipeline model
+                 *
+                 * @returns {*}
+                 */
                 getJSON: function () {
                     var json = angular.copy(this.model);
 
@@ -838,15 +1018,34 @@ angular.module('registryApp.dyole')
                     return json;
                 },
 
+                /**
+                 * Zooming finished callback
+                 * 
+                 * @private
+                 */
                 _zoomingFinish: function () {
                     this._drawScrollbars();
                     this.model.display.canvas.zoom = this.currentScale;
                 },
-                
+
+                /**
+                 * Init zoom level
+                 * Returns current canvas scale
+                 *
+                 * @returns {*|number}
+                 */
                 initZoom: function () {
                     this._initZoomLevel(this.currentScale);
+
+                    return this.currentScale;
                 },
-                
+
+                /**
+                 * Canvas zoom in
+                 * Returns current canvas scale
+                 *
+                 * @returns {*|number}
+                 */
                 zoomIn: function () {
                     var canvas = this.getEl(),
                         zoomLevel = canvas.getScale(),
@@ -876,7 +1075,13 @@ angular.module('registryApp.dyole')
 
                     return this.currentScale;
                 },
-                
+
+                /**
+                 * Canvas zoom out
+                 * Returns current canvas scale
+
+                 * @returns {*|number}
+                 */
                 zoomOut: function () {
                     var canvas = this.getEl(),
                         zoomLevel = canvas.getScale(),
