@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('registryApp')
-    .controller('AppCtrl', ['$scope', '$routeParams', '$q', '$injector', 'App', 'Sidebar', 'Loading', function ($scope, $routeParams, $q, $injector, App, Sidebar, Loading) {
+    .controller('AppCtrl', ['$scope', '$routeParams', '$q', '$injector', '$location', 'App', 'User', 'Sidebar', 'Loading', function ($scope, $routeParams, $q, $injector, $location, App, User, Sidebar, Loading) {
 
         Sidebar.setActive('tools');
 
@@ -10,6 +10,7 @@ angular.module('registryApp')
         $scope.view.app = null;
         $scope.view.revisions = [];
         $scope.view.tab = $routeParams.tab || 'info';
+        $scope.view.canDelete = false;
 
         $scope.view.classes = ['page', 'app'];
         Loading.setClasses($scope.view.classes);
@@ -29,12 +30,15 @@ angular.module('registryApp')
         $scope.view.total = 0;
 
         $q.all([
+            User.getUser(),
             App.getApp($routeParams.id, 'public'),
             App.getRevisions(0, '', $routeParams.id)
         ]).then(function(result) {
 
-                $scope.view.app = result[0].data;
-                revisionsLoaded(result[1]);
+                $scope.view.user = result[0].user;
+                $scope.view.app = result[1].data;
+                $scope.view.canDelete = result[1].publicCount === 0 && ($scope.view.user && $scope.view.user.id === $scope.view.app.user._id);
+                revisionsLoaded(result[2]);
 
             });
 
@@ -75,11 +79,9 @@ angular.module('registryApp')
         };
 
         /**
-         * Delete revision
-         *
-         * @param revision
+         * Delete app
          */
-        $scope.deleteRevision = function (id) {
+        $scope.deleteApp = function() {
 
             var $modal = $injector.get('$modal');
             var $templateCache = $injector.get('$templateCache');
@@ -92,11 +94,10 @@ angular.module('registryApp')
             });
 
             modalInstance.result.then(function () {
-                App.deleteRevision(id).then(function () {
-                    _.remove($scope.view.revisions, function (r) {
-                        return r._id === id;
+                App.deleteApp($scope.view.app._id)
+                    .then(function () {
+                        $location.path('apps');
                     });
-                });
             });
 
         };

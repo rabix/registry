@@ -8,7 +8,10 @@
                 <li ng-class="{active: view.tab === 'info'}"><a ng-href="#/app/{{ view.app._id }}">Info</a></li>
                 <li ng-class="{active: view.tab === 'revisions'}"><a ng-href="#/app/{{ view.app._id }}/revisions">Revisions</a></li>
             </div>
-            <a ng-href="#/cliche/{{ view.app._id }}/latest" class="btn btn-primary pull-right"><i class="fa fa-pencil"></i> Edit</a>
+            <div class="actions pull-right">
+                <a ng-if="view.canDelete" href ng-click="deleteApp()" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a>
+                <a ng-href="#/cliche/{{ view.app._id }}/latest" class="btn btn-primary"><i class="fa fa-pencil"></i> Edit</a>
+            </div>
         </h1>
     </div>
     <!-- # .heading -->
@@ -86,7 +89,6 @@
                         <td class="right">
                             <a class="btn btn-sm btn-default" tooltip="View Revision" ng-href="#/revision/{{ revision._id }}"><i class="fa fa-eye"></i></a>
                             <a class="btn btn-sm btn-default" tooltip="Edit Revision" ng-href="#/cliche/{{ view.app._id }}/{{ revision._id }}"><i class="fa fa-pencil"></i></a>
-                            <a ng-if="!revision.is_public" href class="btn btn-sm btn-default" tooltip="Delete Revision" ng-click="deleteRevision(revision._id)"><i class="fa fa-trash"></i></a>
                         </td>
                     </tr>
                     <tr class="empty" ng-if="view.revisions.length === 0">

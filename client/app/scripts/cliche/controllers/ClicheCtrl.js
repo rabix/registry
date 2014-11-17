@@ -579,7 +579,7 @@ angular.module('registryApp.cliche')
 
             modalInstance.result.then(function () {
                 $scope.view.saving = true;
-                App.deleteApp($scope.view.app._id).then(function () {
+                App.deleteRevision($scope.view.currentRevision.id).then(function () {
                     $scope.view.saving = false;
                     $scope.view.reload = true;
                     $location.path('/apps');

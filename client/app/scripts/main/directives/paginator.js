@@ -18,12 +18,12 @@ angular.module('registryApp')
             },
             link: function(scope) {
 
-                scope.paginator = {
-                    prev: false,
-                    next: false,
-                    perPage: 25,
-                    total: 0
-                };
+                scope.paginator = {};
+                scope.paginator.prev = false;
+                scope.paginator.next = false;
+                scope.paginator.perPage = 25;
+                scope.paginator.total = 0;
+
 
                 /**
                  * Go to the next/prev page

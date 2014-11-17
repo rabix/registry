@@ -67,7 +67,7 @@ router.get('/apps', function (req, res, next) {
                     res.json({list: apps, total: total});
                 });
 
-    });
+        });
 
 });
 
@@ -132,24 +132,29 @@ router.get('/apps/:id/:revision', function (req, res, next) {
     App.findById(req.params.id).populate('user').populate('repo').exec(function(err, app) {
         if (err) { return next(err); }
 
-        if (req.params.revision === 'public') {
+        Revision.count({is_public: true, app_id: req.params.id}, function(err, count) {
+            if (err) { return next(err); }
 
-            res.json({data: app});
+            if (req.params.revision === 'public') {
 
-        } else {
+                res.json({data: app, publicCount: count});
 
-            var params = (req.params.revision === 'latest') ? {app_id: req.params.id} : {_id: req.params.revision};
+            } else {
 
-            Revision.findOne(params).sort({_id: 'desc'}).exec(function(err, revision) {
-                if (err) { return next(err); }
+                var params = (req.params.revision === 'latest') ? {app_id: req.params.id} : {_id: req.params.revision};
 
-                app.description = revision.description;
-                app.author = revision.author;
-                app.json = revision.json;
+                Revision.findOne(params).sort({_id: 'desc'}).exec(function(err, revision) {
+                    if (err) { return next(err); }
 
-                res.json({data: app, revision: {id: revision._id, version: revision.version, order: revision.order}});
-            });
-        }
+                    app.description = revision.description;
+                    app.author = revision.author;
+                    app.json = revision.json;
+
+                    res.json({data: app, revision: {id: revision._id, version: revision.version, order: revision.order}, publicCount: count});
+                });
+            }
+        });
+
 
     });
 
@@ -351,14 +356,24 @@ router.delete('/apps/:id', filters.authenticated, function (req, res, next) {
 
         if (user_id === app_user_id) {
 
-            Revision.remove({app_id: req.params.id});
-
-            App.remove({_id: req.params.id}, function (err) {
+            Revision.count({is_public: true, app_id: req.params.id}, function(err, count) {
                 if (err) { return next(err); }
 
-                res.json({message: 'App successfully deleted'});
+                if (count === 0) {
+                    Revision.remove({app_id: req.params.id});
 
+                    App.remove({_id: req.params.id}, function (err) {
+                        if (err) { return next(err); }
+
+                        res.json({message: 'App successfully deleted'});
+
+                    });
+                } else {
+                    res.status(400).json({message: 'This app has public revisions and it can\'t be deleted.'});
+                }
             });
+
+
         } else {
             res.status(500).json({message: 'Unauthorized'});
         }

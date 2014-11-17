@@ -44,7 +44,6 @@
                     <td><p tooltip="{{ app.description }}" tooltip-popup-delay="1000">{{ app.description }}</p></td>
                     <td class="right">
                         <a class="btn btn-default" tooltip="Edit Tool" ng-href="#/cliche/{{ app._id }}/latest"><i class="fa fa-pencil"></i></a>
-                        <a class="btn btn-default" ng-if="app.user._id === view.user.id" tooltip="Delete Tool" ng-click="deleteApp(app)"><i class="fa fa-trash"></i></a>
                     </td>
                 </tr>
                 <tr class="inner-table" ng-repeat-end>
