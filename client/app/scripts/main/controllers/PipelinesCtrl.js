@@ -12,6 +12,7 @@ angular.module('registryApp')
         $scope.view.pipelines = [];
         $scope.view.searchTerm = '';
         $scope.view.mine = false;
+        $scope.view.active = false;
 
         $scope.view.classes = ['page', 'pipelines'];
         Loading.setClasses($scope.view.classes);
@@ -113,6 +114,24 @@ angular.module('registryApp')
             $scope.view.loading = true;
 
             Pipeline.getPipelines(0, '', $scope.view.mine).then(pipelinesLoaded);
+        };
+
+        /**
+         * Toggle revisions visibility
+         *
+         * @param pipeline
+         */
+        $scope.toggleRevisions = function(pipeline) {
+
+            if (pipeline) {
+                pipeline.active = !pipeline.active;
+            } else {
+                $scope.view.active = !$scope.view.active;
+                _.map($scope.view.pipelines, function(p) {
+                    return p.active = $scope.view.active;
+                });
+            }
+
         };
 
     }]);

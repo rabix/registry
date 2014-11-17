@@ -470,6 +470,20 @@ body {
     }
 
     .inner-table {
+
+      .inner-table-body {
+        display: none;
+      }
+
+      &.active {
+        .inner-table-body {
+          display: block;
+        }
+        & > td {
+          border-top: 1px solid #ddd;
+        }
+      }
+
       &:hover {
         background-image: none;
       }
@@ -479,6 +493,7 @@ body {
       & > td {
         padding: 0 0 0 30px;
         background-image: url(../images/bg.png);
+        border-top: none;
         .table {
           border-left: 2px solid #ddd;
           th {

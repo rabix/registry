@@ -285,7 +285,8 @@ form, .form {
     tbody {
       tr {
         &:hover {
-          background-image: url(../images/bg.png);
+          //background-image: url(../images/bg.png);
+          background-color: #fcfcfc;
           td {
             background-color: transparent;
           }

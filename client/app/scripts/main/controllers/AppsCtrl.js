@@ -11,6 +11,7 @@ angular.module('registryApp')
         $scope.view.loading = true;
         $scope.view.apps = [];
         $scope.view.searchTerm = '';
+        $scope.view.active = false;
 
         $scope.view.classes = ['page', 'apps'];
         Loading.setClasses($scope.view.classes);
@@ -89,5 +90,24 @@ angular.module('registryApp')
 
             App.getApps(0, '', $scope.view.mine).then(appsLoaded);
         };
+
+        /**
+         * Toggle revisions visibility
+         *
+         * @param app
+         */
+        $scope.toggleRevisions = function(app) {
+
+            if (app) {
+                app.active = !app.active;
+            } else {
+                $scope.view.active = !$scope.view.active;
+                _.map($scope.view.apps, function(a) {
+                    return a.active = $scope.view.active;
+                });
+            }
+
+        };
+
 
     }]);
