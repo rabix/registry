@@ -37,7 +37,7 @@
                     <th class="right">
                         <a href
                            class="btn btn-default btn-toggle"
-                           tooltip="Toggle Revisions"
+                           tooltip="Toggle Versions"
                            tooltip-placement="left"
                            tooltip-append-to-body="true"
                            ng-click="toggleRevisions()">
@@ -55,7 +55,7 @@
                         <a class="btn btn-default" tooltip="Edit Tool" ng-href="#/cliche/{{ app._id }}/latest"><i class="fa fa-pencil"></i></a>
                         <a href
                            class="btn btn-default btn-toggle"
-                           tooltip="Toggle Revisions ({{ app.revisions.length }})"
+                           tooltip="Toggle Versions ({{ app.revisions.length }})"
                            tooltip-placement="left"
                            tooltip-append-to-body="true"
                            ng-click="toggleRevisions(app)">
@@ -69,7 +69,7 @@
                             <table class="table table-hover app-revisions">
                                 <thead>
                                     <tr>
-                                        <th>Revisions</th>
+                                        <th>Versions</th>
                                         <th>&nbsp;</th>
                                         <th class="right">&nbsp;</th>
                                     </tr>
@@ -83,7 +83,7 @@
                                         </td>
                                     </tr>
                                     <tr class="empty" ng-if="app.revisions.length === 0">
-                                        <td colspan="4"><p class="alert alert-info">There are no public revisions for this tool</p></td>
+                                        <td colspan="4"><p class="alert alert-info">There are no public versions for this tool</p></td>
                                     </tr>
                                 </tbody>
                             </table>

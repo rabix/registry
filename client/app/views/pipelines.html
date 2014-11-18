@@ -38,7 +38,7 @@
                     <th class="right">
                         <a href
                            class="btn btn-default btn-toggle"
-                           tooltip="Toggle Revisions"
+                           tooltip="Toggle Versions"
                            tooltip-placement="left"
                            tooltip-append-to-body="true"
                            ng-click="toggleRevisions()">
@@ -57,7 +57,7 @@
                         <a class="btn btn-default" ng-if="view.user && pipeline.pipeline.user._id === view.user.id" tooltip="Delete Workflow" ng-click="deletePipeline(pipeline)"><i class="fa fa-trash"></i></a>
                         <a href
                            class="btn btn-default btn-toggle"
-                           tooltip="Toggle Revisions ({{ pipeline.revisions.length }})"
+                           tooltip="Toggle Versions ({{ pipeline.revisions.length }})"
                            tooltip-placement="left"
                            tooltip-append-to-body="true"
                            ng-click="toggleRevisions(pipeline)">
@@ -71,7 +71,7 @@
                             <table class="table table-hover pipeline-revisions">
                                 <thead>
                                     <tr>
-                                        <th>Revisions</th>
+                                        <th>Versions</th>
                                         <th>&nbsp;</th>
                                         <th class="right">&nbsp;</th>
                                     </tr>
@@ -85,7 +85,7 @@
                                         </td>
                                     </tr>
                                     <tr class="empty" ng-if="pipeline.revisions.length === 0">
-                                        <td colspan="4"><p class="alert alert-info">There are no public revisions for this workflow</p></td>
+                                        <td colspan="4"><p class="alert alert-info">There are no public versions for this workflow</p></td>
                                     </tr>
                                 </tbody>
                             </table>

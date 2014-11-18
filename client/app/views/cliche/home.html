@@ -9,7 +9,7 @@
             </a>
 
             {{ (view.mode === 'new') ? 'New App' : view.app.name }}
-            <span ng-if="view.currentRevision.version" class="version"><i class="fa fa-tag"></i>{{ 'v' + view.currentRevision.version }}</span>
+            <span ng-if="view.currentRevision.version" class="version"><i class="fa fa-tag"></i> {{ 'v' + view.currentRevision.version }}</span>
 
             <div ng-if="view.user" class="actions pull-right">
                 <button ng-if="view.user.id === view.app.user._id" ng-disabled="view.saving" class="app-save-btn btn btn-default" ng-click="save('save')">

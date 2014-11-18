@@ -7,6 +7,7 @@ var RevisionSchema = new Schema({
     //storing name as a copy of tool name for easier search
     name: String,
     description: String,
+    c_version: String,
     author: String,
     json: Schema.Types.Mixed,
     version: Number,

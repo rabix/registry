@@ -9,6 +9,7 @@ angular.module('registryApp')
         $scope.view.loading = true;
         $scope.view.revision = null;
         $scope.view.repo = null;
+        $scope.view.author = null;
 
         $scope.view.classes = ['page', 'revision'];
         Loading.setClasses($scope.view.classes);
@@ -23,6 +24,7 @@ angular.module('registryApp')
                 function(result) {
                     $scope.view.revision = result.data;
                     $scope.view.repo = result.repo;
+                    $scope.view.author = result.user;
                     $scope.view.loading = false;
                 });
 

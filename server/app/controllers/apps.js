@@ -143,6 +143,7 @@ router.get('/apps/:id/:revision', function (req, res, next) {
                 Revision.findOne(params).sort({_id: 'desc'}).exec(function(err, revision) {
                     if (err) { return next(err); }
 
+                    app.c_version = revision.c_version;
                     app.description = revision.description;
                     app.author = revision.author;
                     app.json = revision.json;
@@ -159,13 +160,23 @@ router.get('/apps/:id/:revision', function (req, res, next) {
 
 router.get('/run/:id', function (req, res, next) {
 
-    App.findById(req.params.id).populate('user').exec(function(err, app) {
+    App.findById(req.params.id, function(err, app) {
         if (err) { return next(err); }
 
         if (app) {
+
             res.json(app.json);
+
         } else {
-            res.status(400).json({message: 'This app doesn\'t exist'});
+            Revision.findById(req.params.id, function(err, revision) {
+                if (err) { return next(err); }
+
+                if (revision) {
+                    res.json(revision.json);
+                } else {
+                    res.status(400).json({message: 'This app doesn\'t exist'});
+                }
+            });
         }
     });
 
@@ -190,6 +201,7 @@ router.put('/apps/:id/:revision', filters.authenticated, function (req, res, nex
         var desc = data.tool.softwareDescription;
 
         //app.name = desc.name;
+        app.c_version = desc.appVersion;
         app.description = desc.description;
         app.author = data.tool.documentAuthor;
         app.json = data.tool;
@@ -215,6 +227,7 @@ router.put('/apps/:id/:revision', filters.authenticated, function (req, res, nex
 
                                     if (revision) {
 
+                                        revision.c_version = app.c_version;
                                         revision.description = app.description;
                                         revision.author = app.author;
                                         revision.json = app.json;
@@ -270,6 +283,7 @@ router.post('/apps/:action', filters.authenticated, function (req, res, next) {
 
             var app = new App();
 
+            app.c_version = desc.appVersion;
             app.name = name;
             app.description = desc.description;
             // TODO: on fork should we change author's email as well??
@@ -299,6 +313,7 @@ router.post('/apps/:action', filters.authenticated, function (req, res, next) {
 
                                     var revision = new Revision();
 
+                                    revision.c_version = app.c_version;
                                     revision.name = app.name;
                                     revision.description = app.description;
                                     revision.author = app.author;
@@ -329,7 +344,7 @@ router.post('/apps/:action', filters.authenticated, function (req, res, next) {
 
 });
 
-router.post('/validate', filters.authenticated, function (req, res, next) {
+router.post('/validate', filters.authenticated, function (req, res) {
 
     var data = req.body;
 
