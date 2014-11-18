@@ -35,7 +35,9 @@ module.exports = function (app) {
                 var gitHubObj = parseUser(profile);
                 gitHubObj.accessToken = accessToken;
 
-                if (typeof email === 'undefined') {
+                console.log('User',email, profile);
+
+                if (!email) {
                     var opts = {
                         hostname: 'api.github.com',
                         path: '/user/emails',
@@ -57,6 +59,7 @@ module.exports = function (app) {
 
                         response.on('end', function () {
                             var e = JSON.parse(responseString);
+                            console.log('GOT EMAIL: ', e);
                             profile.emails = [{value: e[0].email}];
 
                             addUser(e[0].email, gitHubObj, profile).then(function(user) {
@@ -131,7 +134,7 @@ var parseUser = function(user) {
 
 };
 
-function addUser(email, gitHubObj, profile) {
+var addUser = function(email, gitHubObj, profile) {
 
     var mongoose = require('mongoose');
     var promise = new mongoose.Promise();
@@ -151,7 +154,7 @@ function addUser(email, gitHubObj, profile) {
             promise.fulfill({id: user._id});
         } else {
 
-            User.findOneAndUpdate({email: email}, {github: gitHubObj}, {}, function(err, user) {
+            User.findOneAndUpdate({email: email}, {github: gitHubObj}, {}, function(err, user, done) {
                 if (err) { return done(null, null); }
                 promise.fulfill({id: user._id});
             });
@@ -160,7 +163,7 @@ function addUser(email, gitHubObj, profile) {
 
     return promise;
 
-}
+};
 
 
 
