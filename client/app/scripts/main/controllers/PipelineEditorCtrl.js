@@ -321,7 +321,7 @@ angular.module('registryApp')
          * @param nextLocation
          */
         var onRouteChange = function(e, nextLocation) {
-            console.log('$scope.view.reload', $scope.view.reload);
+
             if($scope.view.reload) { return; }
 
             var modalInstance = $modal.open({

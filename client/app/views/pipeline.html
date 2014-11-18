@@ -8,9 +8,10 @@
                 <li ng-class="{active: view.tab === 'info'}"><a href="" ng-click="switchTab('info')">Info</a></li>
                 <li ng-class="{active: view.tab === 'revisions'}"><a href="" ng-click="switchTab('revisions')">Revisions</a></li>
             </div>
-            <a ng-href="#/pipeline/{{ view.pipeline._id }}/edit" class="btn btn-primary pull-right"><i class="fa fa-pencil"></i> Edit</a>
-            <span ng-if="view.showDelete" class="pull-right"> | </span>
-            <a href="" ng-if="view.showDelete" ng-click="deletePipeline()" class="btn btn-danger pull-right" tooltip="Delete workflow" tooltip-placement="bottom"><i class="fa fa-pencil"></i> Delete</a>
+            <div class="actions pull-right">
+                <a href="" ng-if="view.showDelete" ng-click="deletePipeline()" class="btn btn-danger" tooltip="Delete workflow" tooltip-placement="bottom"><i class="fa fa-trash"></i> Delete</a>
+                <a ng-href="#/pipeline/{{ view.pipeline._id }}/edit" class="btn btn-primary"><i class="fa fa-pencil"></i> Edit</a>
+            </div>
         </h1>
     </div>
     <!-- # .heading -->

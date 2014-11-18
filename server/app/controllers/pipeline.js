@@ -146,7 +146,7 @@ router.get('/pipeline', function (req, res, next) {
     }
 
 
-    Pipeline.count(where).exec(function(err, total) {
+    Pipeline.count(where, function(err, total) {
         if (err) { return next(err); }
 
         var match = {is_public: true};

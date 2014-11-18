@@ -59,9 +59,7 @@ angular.module('registryApp')
 
         };
 
-        self.manageRepo = function(id, action, repoName) {
-
-            var repo = {name: repoName};
+        self.manageRepo = function(id, action, repo) {
 
             return Api.repos[action]({id: id}, {repo: repo}).$promise;
 

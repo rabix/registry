@@ -23,7 +23,12 @@ angular.module('registryApp')
                 return false;
             }
 
-            Repo.manageRepo($scope.view.id, $scope.view.action, $scope.view.repo.name)
+            var data = {
+                name: $scope.view.repo.name,
+                description: $scope.view.repo.description
+            };
+
+            Repo.manageRepo($scope.view.id, $scope.view.action, data)
                 .then(function() {
                     $modalInstance.close();
                 });

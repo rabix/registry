@@ -36,12 +36,12 @@
                     <th>Description</th>
                     <th class="right">
                         <a href
-                           class="btn btn-default"
+                           class="btn btn-default btn-toggle"
                            tooltip="Toggle Revisions"
                            tooltip-placement="left"
                            tooltip-append-to-body="true"
                            ng-click="toggleRevisions()">
-                           <i class="fa" ng-class="{'fa-chevron-down': !view.active, 'fa-chevron-up': view.active}"></i>
+                           <i class="fa" ng-class="{'fa-chevron-right': !view.active, 'fa-chevron-down': view.active}"></i>
                         </a>
                     </th>
                 </tr>
@@ -54,12 +54,12 @@
                     <td class="right">
                         <a class="btn btn-default" tooltip="Edit Tool" ng-href="#/cliche/{{ app._id }}/latest"><i class="fa fa-pencil"></i></a>
                         <a href
-                           class="btn btn-default"
+                           class="btn btn-default btn-toggle"
                            tooltip="Toggle Revisions ({{ app.revisions.length }})"
                            tooltip-placement="left"
                            tooltip-append-to-body="true"
                            ng-click="toggleRevisions(app)">
-                            {{ app.revisions.length }} <i class="fa" ng-class="{'fa-chevron-down': !app.active, 'fa-chevron-up': app.active}"></i>
+                            {{ app.revisions.length }} <i class="fa" ng-class="{'fa-chevron-right': !app.active, 'fa-chevron-down': app.active}"></i>
                         </a>
                     </td>
                 </tr>
