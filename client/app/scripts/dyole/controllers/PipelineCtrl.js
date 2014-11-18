@@ -121,6 +121,36 @@ angular.module('registryApp.dyole')
             });
         });
 
+        $scope.$on('pipeline:get:url', function () {
+            $scope.$parent.view.saving = true;
+
+            $scope.pipeline.json = Pipeline.getJSON();
+
+            PipelineMdl.getPipelineURL($scope.pipeline).then(function (url) {
+
+                $modal.open({
+                    template: $templateCache.get('views/cliche/partials/job-url-response.html'),
+                    controller: ['$scope', '$modalInstance', 'data', function($scope, $modalInstance, data) {
+
+                        $scope.view = {};
+                        $scope.view.trace = data.trace;
+
+                        /**
+                         * Close the modal window
+                         */
+                        $scope.ok = function () {
+                            $modalInstance.close();
+                        };
+
+                    }],
+                    resolve: { data: function () { return {message: 'Pipeline link:', trace: url}; }}
+                });
+
+                $scope.$parent.view.saving = false;
+
+            });
+        });
+
         /**
          * Drop node on the canvas
          *

@@ -28,12 +28,6 @@ angular.module('registryApp')
             other: false
         };
 
-        /**
-         * Place holder for formated pipeline json
-         * @type {{Object}}
-         */
-        $scope.view.pipelineJSON = {};
-
         /* visibility flags for repo groups that hold apps */
         $scope.view.repoGroups = {};
 
@@ -141,8 +135,6 @@ angular.module('registryApp')
 
             if (tab === 'params') {
                 watchParams();
-            } else if (tab === 'json') {
-                formatPipeline();
             } else {
                 unWatchParams();
             }
@@ -366,38 +358,10 @@ angular.module('registryApp')
 
         });
 
-        var formatPipeline = function () {
+        $scope.pipelineToJSON = function () {
             $scope.$broadcast('pipeline:format');
         };
-        
-        $scope.getUrl = function () {
-            $scope.view.saving = true;
 
-            Pipeline.getPipelineURL($scope.view.pipeline).then(function (url) {
-
-                $modal.open({
-                    template: $templateCache.get('views/cliche/partials/job-url-response.html'),
-                    controller: ['$scope', '$modalInstance', 'data', function($scope, $modalInstance, data) {
-
-                        $scope.view = {};
-                        $scope.view.trace = data.trace;
-
-                        /**
-                         * Close the modal window
-                         */
-                        $scope.ok = function () {
-                            $modalInstance.close();
-                        };
-
-                    }],
-                    resolve: { data: function () { return {message: 'Pipeline link:', trace: url}; }}
-                });
-
-                $scope.view.saving = false;
-
-            });
-        };
-        
         $scope.fork = function () {
 
             var modalInstance = $modal.open({
@@ -428,7 +392,7 @@ angular.module('registryApp')
             Pipeline.publishRevision($scope.view.pipeline._id, {publish: true}).then(function (data) {
                 var trace = data;
 
-                var modalInstance = $modal.open({
+                $modal.open({
                     template: $templateCache.get('views/cliche/partials/app-save-response.html'),
                     controller: 'ModalCtrl',
                     backdrop: 'static',
@@ -439,7 +403,18 @@ angular.module('registryApp')
         };
 
         $scope.formatPipeline = function(pipeline) {
-            console.log(pipeline);
-            $scope.view.pipelineJSON = pipeline;
+
+            var modal = $modal.open({
+                template: $templateCache.get('views/dyole/json-modal.html'),
+                controller: 'ModalJSONCtrl',
+                resolve: {data: function () {
+                    return {json: pipeline};
+                }}
+            });
+
+            modal.result.then(function () {
+                $scope.$broadcast('pipeline:get:url');
+            });
+
         };
     }]);

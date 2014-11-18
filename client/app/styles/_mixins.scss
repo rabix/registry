@@ -189,7 +189,7 @@
 
 /* SCROLLBAR STYLE
 ================================================ */
-@mixin scrollBar($color) {
+@mixin scrollBar($color: $orange) {
   &::-webkit-scrollbar {
     width: 10px;
     height: 10px;
