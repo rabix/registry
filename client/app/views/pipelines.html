@@ -37,12 +37,12 @@
                     <th>Author</th>
                     <th class="right">
                         <a href
-                           class="btn btn-default"
+                           class="btn btn-default btn-toggle"
                            tooltip="Toggle Revisions"
                            tooltip-placement="left"
                            tooltip-append-to-body="true"
                            ng-click="toggleRevisions()">
-                            <i class="fa" ng-class="{'fa-chevron-down': !view.active, 'fa-chevron-up': view.active}"></i>
+                            <i class="fa" ng-class="{'fa-chevron-right': !view.active, 'fa-chevron-down': view.active}"></i>
                         </a>
                     </th>
                 </tr>
@@ -56,12 +56,12 @@
                         <a class="btn btn-default" tooltip="Edit Workflow" ng-href="#/pipeline/{{ pipeline._id }}/edit"><i class="fa fa-pencil"></i></a>
                         <a class="btn btn-default" ng-if="view.user && pipeline.pipeline.user._id === view.user.id" tooltip="Delete Workflow" ng-click="deletePipeline(pipeline)"><i class="fa fa-trash"></i></a>
                         <a href
-                           class="btn btn-default"
+                           class="btn btn-default btn-toggle"
                            tooltip="Toggle Revisions ({{ pipeline.revisions.length }})"
                            tooltip-placement="left"
                            tooltip-append-to-body="true"
                            ng-click="toggleRevisions(pipeline)">
-                            {{ pipeline.revisions.length }} <i class="fa" ng-class="{'fa-chevron-down': !pipeline.active, 'fa-chevron-up': pipeline.active}"></i>
+                            {{ pipeline.revisions.length }} <i class="fa" ng-class="{'fa-chevron-right': !pipeline.active, 'fa-chevron-down': pipeline.active}"></i>
                         </a>
                     </td>
                 </tr>

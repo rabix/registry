@@ -43,7 +43,7 @@ router.get('/revisions', function (req, res, next) {
         Revision.count(where).exec(function(err, total) {
             if (err) { return next(err); }
 
-            Revision.find(where).populate('app_id', 'name').skip(skip).limit(limit).sort({_id: 'desc'}).exec(function(err, revisions) {
+            Revision.find(where).skip(skip).limit(limit).sort({_id: 'desc'}).exec(function(err, revisions) {
                 if (err) { return next(err); }
 
                 res.json({list: revisions, total: total});
@@ -57,7 +57,7 @@ router.get('/revisions', function (req, res, next) {
 
 router.get('/revisions/:id', function (req, res, next) {
 
-    Revision.findById(req.params.id).populate('app_id', 'name').exec(function(err, revision) {
+    Revision.findById(req.params.id).exec(function(err, revision) {
         if (err) { return next(err); }
 
         App.findById(revision.app_id).populate('repo').exec(function(err, app) {
@@ -104,6 +104,7 @@ router.post('/revisions', filters.authenticated, function (req, res, next) {
             Revision.findOne({app_id: data.app_id}).sort({_id: 'desc'}).exec(function(err, r) {
                 var revision = new Revision();
 
+                revision.name = app.name;
                 revision.description = desc.description;
                 revision.author = data.tool.documentAuthor;
                 revision.json = data.tool;

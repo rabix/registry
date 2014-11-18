@@ -226,6 +226,12 @@ form, .form {
       @include box-shadow(none);
     }
   }
+
+  &.btn-toggle {
+    i {
+      width: 20px;
+    }
+  }
 }
 
 .input-group {
