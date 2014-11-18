@@ -15,7 +15,7 @@
 
     <div ng-if="!view.loading" class="content">
 
-        <div class="description">{{ !view.revision.description ? 'This app revision doesn\'t have any description' : view.revision.description }}</div>
+        <div class="description"><i>Description:</i> {{ !view.revision.description ? 'This app revision doesn\'t have any description' : view.revision.description }}</div>
 
         <div class="description">
             <div class="panel panel-warning panel-app horizontal">
@@ -31,7 +31,7 @@
                         <section class="col-md-4">
                             <h5>Docker Image Details</h5>
                             <p><strong>Image Id:</strong> {{ view.revision.json.requirements.environment.container.imageId }}</p>
-                            <p><strong>Image Uri:</strong> {{ view.revision.json.requirements.environment.container.uri }}</p>
+                            <p><strong>Image Uri:</strong> <span copy="view.revision.json.requirements.environment.container.uri"></span></p>
                         </section>
 
                         <section class="col-md-4">
