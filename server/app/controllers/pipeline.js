@@ -93,7 +93,7 @@ router.post('/pipeline/format/upload', function (req, res, next) {
         folder = 'others/pipelines';
     }
 
-    var timeStamp = Date.now();
+    var timeStamp = Date.now().toString();
 
     Amazon.createFolder(folder).then(
         function () {

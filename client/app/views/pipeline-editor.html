@@ -13,7 +13,6 @@
             <strong class="changes-mark" ng-if="view.isChanged" tooltip="There are changes in your workflow" tooltip-placement="right">
                 (<i class="fa fa-asterisk"></i>)
             </strong>
-
             <div ng-if="view.user" class="actions pull-right">
                 <button ng-if="view.mode === 'edit'" ng-click="fork()" class="btn btn-default" ng-disabled="view.saving" >
                     <i class="fa fa-code-fork"></i> Fork
@@ -28,6 +27,10 @@
                 <button ng-if="view.mode === 'edit'" ng-click="delete()" class="btn btn-danger" ng-disabled="view.saving || view.deleting">
                     <i class="fa fa-trash"></i> Delete
                 </button>
+            </div>
+
+            <div class="actions pull-right">
+                <button class="btn btn-default" ng-click="pipelineToJSON()" ng-disabled="view.saving" ><i class="fa fa-code"></i> JSON</button>
             </div>
 
         </h1>
@@ -53,7 +56,7 @@
 
                     <li ng-class="{active: view.tab === 'apps'}"><a href ng-click="switchTab('apps')">Apps</a></li>
                     <li ng-class="{active: view.tab === 'params'}"><a href ng-click="switchTab('params')">Params</a></li>
-                    <li ng-class="{active: view.tab === 'json'}"><a href ng-click="switchTab('json')">JSON</a></li>
+                    <li ng-class="{active: view.tab === 'json'}"><a href ng-click="switchTab('properties')">Properties</a></li>
                 </ul>
             </div>
 
@@ -159,11 +162,8 @@
 
                     </div>
 
-                    <div class="tab" ng-switch-when="json">
-                        <pre class="json-trace" pretty-json="view.pipelineJSON"></pre>
-                        <div class="pipeline-get-url">
-                            <button ng-disabled="view.saving" class="job-save-btn btn btn-primary" ng-click="getUrl()"><i class="fa fa-external-link-square"></i> Get URL</button>
-                        </div>
+                    <div class="tab" ng-switch-when="properties">
+                        <h3>Properties</h3>
                     </div>
 
                 </div>
