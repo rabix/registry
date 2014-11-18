@@ -1,48 +1,57 @@
 <div ng-class="view.classes" loading="view.loading">
 
     <div class="heading">
-        <a ng-href="#/app/{{ view.revision.app_id._id }}/revisions" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
+        <a ng-href="#/app/{{ view.revision.app_id }}/revisions" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
         <h1>
-            {{ view.revision.name }}
-            <a ng-href="#/cliche/{{ view.revision.app_id._id }}/{{ view.revision._id }}" class="btn btn-primary pull-right"><i class="fa fa-pencil"></i> Edit</a>
+            <span>
+                {{ view.revision.name }}
+                <span class="tool-repo">({{view.repo.owner}}/{{view.repo.name}})</span>
+                <span ng-if="view.revision.version" class="version"><i class="fa fa-tag"></i> {{ 'v' + view.revision.version }}</span>
+            </span>
+            <a ng-href="#/cliche/{{ view.revision.app_id }}/{{ view.revision._id }}" class="btn btn-primary pull-right"><i class="fa fa-pencil"></i> Edit</a>
         </h1>
     </div>
     <!-- # .heading -->
 
     <div ng-if="!view.loading" class="content">
 
+        <div class="description"><i>Description:</i> {{ !view.revision.description ? 'This app revision doesn\'t have any description' : view.revision.description }}</div>
+
         <div class="description">
-            <div class="panel panel-warning panel-app">
+            <div class="panel panel-warning panel-app horizontal">
                 <div class="panel-body">
+                    <div class="row no-margin">
 
-                    <section>
-                        <h5>Docker Image Details</h5>
-                        <p><strong>Image Id:</strong> {{ view.revision.json.requirements.environment.container.imageId }}</p>
-                        <p><strong>Image Uri:</strong> {{ view.revision.json.requirements.environment.container.uri }}</p>
-                    </section>
+                        <section class="col-md-4">
+                            <h5>Author</h5>
+                            <p><strong>Username:</strong> <a href="http://github.com/{{ view.author.github.login }}" target="_blank">{{ view.author.github.login }}</a> </p>
+                            <p><strong>Name:</strong> {{ view.author.github.name }} </p>
+                        </section>
 
-                    <section>
-                        <h5>App Details</h5>
-                        <p>
-                            <strong>Repo:</strong>
-                            <a ng-href="#/repo/{{ view.repo._id }}">{{ view.repo.owner }}/{{ view.repo.name }}</a>
-                        </p>
-                    </section>
+                        <section class="col-md-4">
+                            <h5>Docker Image Details</h5>
+                            <p><strong>Image Id:</strong> {{ view.revision.json.requirements.environment.container.imageId }}</p>
+                            <p><strong>Image Uri:</strong> <span copy="view.revision.json.requirements.environment.container.uri"></span></p>
+                        </section>
 
+                        <section class="col-md-4">
+                            <h5>App Details</h5>
+                            <p><strong>Repo:</strong> <a ng-href="#/repo/{{ view.repo._id }}">{{ view.repo.owner }}/{{ view.repo.name }}</a></p>
+                            <p><strong>Version:</strong> {{ view.revision.c_version }}</p>
+                        </section>
+                    </div>
                 </div>
             </div>
-            {{ !view.revision.description ? 'This app revision doesn\'t have any description' : view.revision.description }}
-        </div>
-
-
-        <div class="snippet">
-            <p>Use this code snippet for your pipeline</p>
-            <pre pretty-json="view.revision.json"></pre>
         </div>
 
         <div class="snippet">
             <p>Use this command to run the app</p>
-            <pre>$ rabix run "{{ view.revision.links.app_ref }}"</pre>
+            <pre>$ rabix "<a href="/api/run/{{ view.revision._id }}" target="_blank">http://rabix.org/api/run/{{ view.revision._id }}</a>"</pre>
+        </div>
+
+        <div class="snippet">
+            <p>Use this code snippet for your pipeline</p>
+            <pre pretty-json="view.revision.json"></pre>
         </div>
 
     </div>

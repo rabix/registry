@@ -19,7 +19,8 @@ var mapDefinition = {
         repo_owner: {type: 'string', required: true},
         repo_name: {type: 'string', required: true},
         name: {type: 'string', required: true},
-        description: {type: 'string'}
+        description: {type: 'string'},
+        appVersion: {type: 'string'}
     },
     requirements: {
         environment: {type: 'object', required: true},

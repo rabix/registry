@@ -6,6 +6,7 @@ var Schema = mongoose.Schema;
 var AppSchema = new Schema({
     name: String,
     description: String,
+    c_version: String,
     author: String,
     json: Schema.Types.Mixed,
     links: Schema.Types.Mixed,

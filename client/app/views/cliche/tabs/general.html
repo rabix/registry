@@ -8,15 +8,21 @@
 </div>
 
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-4">
         <div class="form-group required" ng-class="{'has-error': (forms.toolForm.appName.$invalid && forms.toolForm.$dirty)}">
-            <label for="appName" class="control-label">App Name</label>
+            <label for="appName" class="control-label">Tool Name</label>
             <input type="text" class="form-control" id="appName" name="appName" ng-model="view.toolForm.softwareDescription.name" ng-readonly="view.mode === 'edit'" required>
         </div>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-4">
         <div class="form-group">
-            <label for="appDescription" class="control-label">App Description</label>
+            <label for="appVersion" class="control-label">Tool Version</label>
+            <input type="text" class="form-control" id="appVersion" name="appVersion" ng-model="view.toolForm.softwareDescription.appVersion">
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="form-group">
+            <label for="appDescription" class="control-label">Tool Description</label>
             <textarea class="form-control" id="appDescription" name="appDescription" ng-model="view.toolForm.softwareDescription.description"></textarea>
         </div>
     </div>

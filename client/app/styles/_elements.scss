@@ -14,7 +14,8 @@
 
     h1 {
 
-      span.pipeline-repo {
+      .pipeline-repo,
+      .tool-repo {
         font-size: 14px;
         line-height: 22px;
       }
@@ -99,18 +100,18 @@
     overflow: auto;
 
     .panel {
-      float: right;
-      margin: 0 0 5px 5px;
-      &.panel-app {
-        width: 400px;
-      }
       p {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        strong {
-          width: 110px;
+        & > span,
+        & > strong {
           display: inline-block;
+          vertical-align: middle;
+        }
+        & > strong {
+          width: 110px;
+          margin: 6px 0;
         }
         &:last-of-type {
           margin-bottom: 0;
@@ -133,6 +134,26 @@
           }
           &:last-child {
             margin: 0;
+          }
+        }
+      }
+      &.horizontal {
+        .panel-body {
+          padding: 0;
+          margin: 0;
+          h5 {
+            margin: 0;
+          }
+          section {
+            padding: 0 0 5px 0;
+            margin: 0;
+            &:not(:last-child) {
+              border-right: 1px solid #faebcc;
+            }
+            p {
+              padding: 5px 15px;
+              margin: 0;
+            }
           }
         }
       }
@@ -189,6 +210,12 @@
 
     p {
       padding: 0 0 0 5px;
+      margin: 0 0 5px;
+    }
+
+    .box {
+      background-color: #fcfcfc;
+      padding: 5px;
       margin: 0 0 5px;
     }
 
@@ -615,3 +642,22 @@ legend {
   @include scrollBar();
 }
 
+.copy-wrap {
+  display: inline-block;
+  vertical-align: middle;
+  max-width: 60%;
+  & > span {
+    max-width: 70%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+  & > span,
+  .btn {
+    display: inline-block;
+    vertical-align: middle;
+  }
+  .btn {
+    padding: 2px 10px;
+  }
+}
