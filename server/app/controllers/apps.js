@@ -24,10 +24,6 @@ router.get('/apps', function (req, res, next) {
     var skip = req.query.skip ? req.query.skip : 0;
     var where = {};
 
-//    if (req.query.q) {
-//        where.name = new RegExp(req.query.q, 'i');
-//    }
-
     _.each(req.query, function(paramVal, paramKey) {
         if (_.contains(paramKey, 'field_')) {
             where[paramKey.replace('field_', '')] = paramVal;
@@ -38,9 +34,7 @@ router.get('/apps', function (req, res, next) {
         where.user = req.user.id;
     }
 
-    App.count(where)
-        .exec(function(err, total) {
-
+    App.count(where, function(err, total) {
             if (err) { return next(err); }
 
             var match = {is_public: true};

@@ -5,6 +5,7 @@ var mongoose = require('mongoose'),
 
 var RepoSchema = new Schema({
     name: String,
+    description: String,
     owner: String,
     created_by: String,
     user: String,

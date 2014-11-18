@@ -14,6 +14,8 @@
 
     <div class="content">
 
+        <p class="description">{{ view.repo.description }}<i ng-if="!view.repo.description">There is no description for this repo</i></p>
+
         <div class="nav nav-tabs">
             <li ng-class="{active: view.tab === 'apps'}" class=""><a href ng-click="switchTab('apps')">Tools</a></li>
             <li ng-class="{active: view.tab === 'builds'}" class=""><a href ng-click="switchTab('builds')">Builds</a></li>

@@ -70,6 +70,7 @@ router.post('/repos', filters.authenticated, function (req, res, next) {
             r = new Repo();
 
             r.name = repo.name;
+            r.description = repo.description;
             r.owner = req.user.login;
             r.created_by = req.user.login;
             r.user = req.user.id;
@@ -95,12 +96,12 @@ router.put('/repos/:id', filters.authenticated, function (req, res, next) {
 
         if (r.owner === req.user.login) {
 
-            Repo.findOne({name: repo.name, owner: req.user.login}, function (err, check) {
+            Repo.findOne({name: repo.name, owner: req.user.login, _id: {$ne: r._id}}, function (err, check) {
                 if (err) { return next(err); }
 
                 if (!check) {
 
-                    Repo.findOneAndUpdate({_id: req.params.id}, {name: repo.name}, function(err) {
+                    Repo.findOneAndUpdate({_id: req.params.id}, {name: repo.name, description: repo.description}, function(err) {
                         if (err) { return next(err); }
 
                         res.json({message: 'Successfully updated repo'});
@@ -122,9 +123,7 @@ router.put('/repos/:id', filters.authenticated, function (req, res, next) {
 router.get('/repos/:id', function (req, res, next) {
 
     Repo.findById(req.params.id, function (err, repo) {
-        if (err) {
-            return next(err);
-        }
+        if (err) { return next(err); }
 
         res.json({data: repo});
     });
@@ -169,9 +168,7 @@ router.post('/github-repos', function (req, res, next) {
 router.get('/github-repos', filters.authenticated, function (req, res, next) {
 
     User.findOne({email: req.user.email}, function (err, user) {
-        if (err) {
-            return next(err);
-        }
+        if (err) { return next(err); }
         var opts = {
             host: 'api.github.com',
             path: '/users/' + user.username + '/repos',
@@ -241,7 +238,7 @@ router.post('/github-webhook', function (req, res, next) {
 
 var getRepoRow = function (repo) {
 
-    var promise = new mongoose.Promise;
+    var promise = new mongoose.Promise();
     var fullNameArr = repo.full_name.split('/');
     var name = fullNameArr[1];
     var owner = fullNameArr[0];

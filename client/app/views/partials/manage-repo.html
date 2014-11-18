@@ -7,8 +7,13 @@
     <form ng-submit="save()" name="view.form" novalidate>
 
         <div class="form-group" ng-class="{'has-error': (view.form.name.$invalid && view.form.$dirty)}">
-            <label for="name" class="control-label">Value</label>
+            <label for="name" class="control-label">Name</label>
             <input type="text" class="form-control" id="name" name="name" ng-model="view.repo.name" required>
+        </div>
+
+        <div class="form-group" ng-class="{'has-error': (view.form.name.$invalid && view.form.$dirty)}">
+            <label for="description" class="control-label">Description</label>
+            <textarea class="form-control" id="description" name="description" ng-model="view.repo.description"></textarea>
         </div>
 
         <div class="form-group">
