@@ -10,6 +10,7 @@ angular.module('registryApp')
         $scope.view.revision = null;
         $scope.view.repo = null;
         $scope.view.author = null;
+        $scope.view.isJsonVisible = false;
 
         $scope.view.classes = ['page', 'revision'];
         Loading.setClasses($scope.view.classes);
@@ -27,6 +28,10 @@ angular.module('registryApp')
                     $scope.view.author = result.user;
                     $scope.view.loading = false;
                 });
+
+        $scope.toggleJson = function() {
+            $scope.view.isJsonVisible = !$scope.view.isJsonVisible;
+        };
 
 
     }]);
