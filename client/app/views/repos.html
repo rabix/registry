@@ -42,7 +42,7 @@
                     <td class="field-desc"><p>{{ repo.description }}</p></td>
                     <td class="center">
                         <a ng-if="!repo.git && view.user.login === repo.owner" href ng-click="manageRepoModal(repo)" class="btn btn-default" tooltip="Edit Repo"><i class="fa fa-pencil"></i></a>
-                        <i ng-if="repo.git" class="fa fa-github github-flag" tooltip="This repo is imported from GitHub"></i>
+                        <i ng-if="repo.git" class="fa fa-github github-flag" tooltip="This repo is imported from GitHub" tooltip-placement="left"></i>
                     </td>
                 </tr>
                 <tr class="empty" ng-if="view.repos.length === 0">

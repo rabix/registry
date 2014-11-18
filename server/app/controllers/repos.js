@@ -31,6 +31,14 @@ router.get('/repos', function (req, res, next) {
         where.user = req.user.id;
     }
 
+    if (req.query.q) {
+        where.$or = [
+            {name: new RegExp(req.query.q, 'i')},
+            {description: new RegExp(req.query.q, 'i')},
+            {owner: new RegExp(req.query.q, 'i')}
+        ];
+    }
+
     Repo.count(where, function (err, total) {
         if (err) { return next(err); }
 
