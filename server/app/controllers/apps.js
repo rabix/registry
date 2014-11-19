@@ -100,7 +100,7 @@ router.get('/repositories/:type', function (req, res, next) {
         if (type === 'other') { whereRev.is_public = true; }
         whereRev.app_id = {$in: _.pluck(apps, '_id')};
 
-        Revision.find(whereRev, function(err, revisions) {
+        Revision.find(whereRev).sort({_id: 'desc'}).exec(function(err, revisions) {
             if (err) { return next(err); }
 
             var groupedRevisions = _.groupBy(revisions, 'app_id');
