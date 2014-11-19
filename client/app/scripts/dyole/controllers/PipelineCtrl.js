@@ -148,6 +148,8 @@ angular.module('registryApp.dyole')
 
                 $scope.$parent.view.saving = false;
 
+            }, function () {
+                $scope.$parent.view.saving = false;
             });
         });
 

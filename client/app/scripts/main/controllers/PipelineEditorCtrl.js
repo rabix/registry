@@ -84,16 +84,44 @@ angular.module('registryApp')
          * @param {Object} result
          */
         var appsLoaded = function (result) {
-
+            console.log(result);
             $scope.view.loading = false;
             $scope.view.filtering = false;
             $scope.view.message = result[0].message;
-
+            
             $scope.view.myRepositories = result[0].list || {};
             $scope.view.otherRepositories = result[1].list || {};
 
+            $scope.view.myRepositories = formatApps(result[0].list);
+            $scope.view.otherRepositories = formatApps(result[1].list);
+
         };
 
+        $scope.view.appRevisions = {};
+        var formatApps = function (apps) {
+
+            if (!apps) {
+                return {};
+            }
+
+            _.each(apps, function (apps) {
+                _.each(apps, function (value) {
+                    value.latest = angular.copy(value.revisions[0]);
+                    value.revisions.splice(0,1);
+
+                    $scope.view.appRevisions[value._id] = {
+                        toggled: false
+                    };
+
+                });
+            });
+
+            return apps;
+        };
+
+        $scope.toggleAppRevisions = function (rev) {
+            $scope.view.appRevisions[rev].toggled = !$scope.view.appRevisions[rev].toggled;
+        };
         /* params watcher reference */
         var paramsWatcher;
 

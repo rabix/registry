@@ -56,7 +56,7 @@
 
                     <li ng-class="{active: view.tab === 'apps'}"><a href ng-click="switchTab('apps')">Apps</a></li>
                     <li ng-class="{active: view.tab === 'params'}"><a href ng-click="switchTab('params')">Params</a></li>
-                    <li ng-class="{active: view.tab === 'json'}"><a href ng-click="switchTab('properties')">Properties</a></li>
+                    <li ng-class="{active: view.tab === 'properties'}"><a href ng-click="switchTab('properties')">Properties</a></li>
                 </ul>
             </div>
 
@@ -88,13 +88,25 @@
                                     <li ng-if="view.message"><p class="alert alert-warning">{{ view.message }}</p></li>
                                     <li ng-if="!view.message && (view.myRepositories | isEmpty)"><p class="alert alert-info">You don't have any repository yet</p></li>
                                     <li ng-repeat="(repoName, apps) in view.myRepositories" ng-class="{open: view.repoGroups[repoName]}">
+
                                         <span ng-click="toggleRepo(repoName)">
                                             <i class="fa" ng-class="{'fa-plus-square': !view.repoGroups[repoName], 'fa-minus-square': view.repoGroups[repoName]}"></i>
                                             {{ repoName }}
                                         </span>
+
                                         <ul class="apps-inner-list">
-                                            <li ng-repeat="app in apps" class="app-container">
-                                                <div ng-repeat="revision in app.revisions" class="revision-item">
+                                            <li ng-repeat="app in apps">
+
+                                                <a href drag="app.latest">
+                                                    <span class="pointer pull-left" ng-click="toggleAppRevisions(app._id)"><i class="fa" ng-class="{'fa-minus-square':view.appRevisions[app._id].toggled, 'fa-plus-square': !view.appRevisions[app._id].toggled}"></i></span>
+                                                    <i class="fa fa-puzzle-piece"></i>
+                                                    {{ app.name }} <small>(revision {{ app.latest.order }} )</small>
+                                                    <div class="pull-right">
+                                                        <span ng-if="app.latest.version && app.latest.is_public" class="label label-primary"><i class="fa fa-tag"></i> {{ 'v' + app.latest.version }} </span>
+                                                    </div>
+                                                </a>
+
+                                                <div ng-repeat="revision in app.revisions" class="revisions-list nested" ng-show="view.appRevisions[app._id].toggled">
                                                     <a href drag="revision">
                                                         <i class="fa fa-puzzle-piece"></i>
                                                         {{ app.name }} <small>(revision {{ revision.order }} )</small>
@@ -105,6 +117,7 @@
                                                 </div>
                                             </li>
                                         </ul>
+
                                     </li>
                                 </ul>
                             </li>
@@ -117,13 +130,25 @@
                                 <ul>
                                     <li ng-if="(view.otherRepositories | isEmpty)"><p class="alert alert-info">There are no other repositories</p></li>
                                     <li ng-repeat="(repoName, apps) in view.otherRepositories" ng-class="{open: view.repoGroups[repoName]}">
+
                                         <span ng-click="toggleRepo(repoName)">
                                             <i class="fa" ng-class="{'fa-plus-square': !view.repoGroups[repoName], 'fa-minus-square': view.repoGroups[repoName]}"></i>
                                             {{ repoName }}
                                         </span>
+
                                         <ul class="apps-inner-list">
-                                            <li ng-repeat="app in apps" class="app-container">
-                                                <div ng-repeat="revision in app.revisions" class="revision-item">
+                                            <li ng-repeat="app in apps">
+
+                                                <a href drag="app.latest">
+                                                    <span class="pointer pull-left" ng-click="toggleAppRevisions(app._id)"><i class="fa" ng-class="{'fa-minus-square':view.appRevisions[app._id].toggled, 'fa-plus-square': !view.appRevisions[app._id].toggled}"></i></span>
+                                                    <i class="fa fa-puzzle-piece"></i>
+                                                    {{ app.name }} <small>(revision {{ app.latest.order }} )</small>
+                                                    <div class="pull-right">
+                                                        <span ng-if="app.latest.version && app.latest.is_public" class="label label-primary"><i class="fa fa-tag"></i> {{ 'v' + app.latest.version }}</span>
+                                                    </div>
+                                                </a>
+
+                                                <div ng-repeat="revision in app.revisions" class="revisions-list nested" ng-show="view.appRevisions[app._id].toggled">
                                                     <a href drag="revision">
                                                         <i class="fa fa-puzzle-piece"></i>
                                                         {{ app.name }} <small>(revision {{ revision.order }} )</small>

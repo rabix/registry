@@ -102,7 +102,7 @@ router.put('/repos/:id', filters.authenticated, function (req, res, next) {
 
     Repo.findOne({_id: req.params.id}, function (err, r) {
 
-        if (r.owner === req.user.login) {
+        if (r.owner === req.user.login && r.user === req.user.id) {
 
             Repo.findOne({name: repo.name, owner: req.user.login, _id: {$ne: r._id}}, function (err, check) {
                 if (err) { return next(err); }

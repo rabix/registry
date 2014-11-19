@@ -523,6 +523,15 @@ legend {
         & > span {
           padding-left: 40px;
         }
+
+        span.pointer {
+          cursor: pointer;
+          margin-right: 10px;
+        }
+
+        .nested {
+          margin-left: 22px;
+        }
       }
     }
     &.open {
