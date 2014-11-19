@@ -21,29 +21,34 @@
                     <i class="fa fa-code"></i> Job JSON
                 </button>
 
+                <button ng-if="view.user && (view.app | isEmpty)" ng-disabled="view.saving" class="app-create-btn btn btn-primary" ng-click="save('create')">
+                    <i class="fa fa-plus"></i> Create
+                </button>
+
                 <button ng-if="view.user && view.user.id === view.app.user._id" ng-disabled="view.saving" class="app-save-btn btn btn-default" ng-click="save('save')">
-                    <i class="fa fa-check"></i> Save
+                    <i class="fa fa-check"></i> Update
                 </button>
 
                 <button ng-if="view.user && view.user.id === view.app.user._id" ng-disabled="view.saving" class="app-publish-btn btn btn-primary" ng-click="save('publish')">
                     <i class="fa fa-plus"></i> Publish
                 </button>
 
-                <button ng-if="view.user && (view.app | isEmpty)" ng-disabled="view.saving" class="app-create-btn btn btn-primary" ng-click="save('create')">
-                    <i class="fa fa-plus"></i> Create
-                </button>
+                <div class="btn-group right" ng-class="{open: view.isMenuOpen}">
+                    <button type="button" class="btn btn-default"><i class="fa fa-cog"></i></button>
+                    <button type="button" ng-click="toggleMenu()" class="btn btn-default dropdown-toggle"><span class="caret"></span></button>
+                    <ul class="dropdown-menu" role="menu" ng-click="toggleMenu()">
 
-                <button ng-if="view.mode === 'edit' && view.user" ng-disabled="view.saving" ng-click="fork()" class="btn btn-default">
-                    <i class="fa fa-code-fork"></i> Fork
-                </button>
-
-                <button class="app-publish-btn btn btn-default" ng-click="loadJsonEditor()">
-                    <i class="fa fa-cloud-download"></i> Import
-                </button>
-
-                <button ng-if="view.user && view.user.id === view.app.user._id && !view.currentRevision.version" ng-disabled="view.saving" class="app-delete-btn btn btn-danger" ng-click="delete()">
-                    <i class="fa fa-trash"></i> Delete
-                </button>
+                        <li ng-if="view.mode === 'edit' && view.user">
+                            <a href ng-disabled="view.saving" ng-click="fork()"><i class="fa fa-code-fork"></i> <span>Fork</span></a>
+                        </li>
+                        <li>
+                            <a href ng-click="loadJsonEditor()"><i class="fa fa-cloud-download"></i> <span>Import</span></a>
+                        </li>
+                        <li ng-if="view.user && view.user.id === view.app.user._id && !view.currentRevision.version">
+                            <a href ng-disabled="view.saving" ng-click="delete()"><i class="fa fa-trash"></i> <span>Delete</span></a>
+                        </li>
+                    </ul>
+                </div>
             </div>
 
         </h1>

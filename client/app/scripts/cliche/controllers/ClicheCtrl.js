@@ -611,6 +611,15 @@ angular.module('registryApp.cliche')
         };
 
         /**
+         * Toggle dropdown menu
+         */
+        $scope.toggleMenu = function() {
+
+            $scope.view.isMenuOpen = !$scope.view.isMenuOpen;
+
+        };
+
+        /**
          * Track route change in order to prevent loss of changes
          *
          * @param e

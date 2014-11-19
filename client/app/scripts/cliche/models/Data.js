@@ -626,7 +626,10 @@ angular.module('registryApp.cliche')
                 /* generate final command */
                 .then(function (result) {
 
-                    self.command = result.baseCmd + ' ' + result.command.join(' ') + ' > ' + result.stdout;
+                    self.command = result.baseCmd + ' ' + result.command.join(' ');
+                    if (result.stdout) {
+                        self.command += ' > ' + result.stdout;
+                    }
 
                     return self.command;
 

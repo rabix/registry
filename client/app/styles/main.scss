@@ -89,7 +89,8 @@ body {
     }
 
     .actions {
-      .btn {
+      & > .btn,
+      & > .btn-group {
         margin-left: 10px;
       }
     }

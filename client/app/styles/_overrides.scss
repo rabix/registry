@@ -430,3 +430,26 @@ ul {
     display: none;
   }
 }
+
+.btn-group {
+  &.right {
+    .dropdown-menu {
+      left: auto;
+      right: 0;
+    }
+  }
+}
+
+.dropdown-menu {
+  li {
+    a {
+      i, span {
+        display: inline-block;
+        vertical-align: middle;
+      }
+      i {
+        width: 20px;
+      }
+    }
+  }
+}
