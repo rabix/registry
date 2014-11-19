@@ -511,7 +511,7 @@ legend {
     & > span {
       cursor: pointer;
       color: #555;
-      padding: 7px 15px;
+      padding: 7px 7px;
       display: block;
       i {
         color: $sidebar-blue;
@@ -521,7 +521,7 @@ legend {
       display: none;
       & > li {
         & > span {
-          padding-left: 40px;
+          padding-left: 20px;
         }
 
         span.pointer {
@@ -546,7 +546,7 @@ legend {
         cursor: move;
         background-color: #fdfdfd;
         color: #555;
-        padding: 7px 15px 7px 60px;
+        padding: 7px 15px 7px 35px;
         display: block;
         text-decoration: none;
         @include user-select(none);
