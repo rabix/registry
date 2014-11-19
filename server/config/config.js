@@ -68,13 +68,13 @@ var config = {
             name: 'server',
             githubName: 'Rabix-staging'
         },
-        port: 3000,
+        port: 3333,
         db: 'mongodb://localhost/server-staging',
         clientPath: '../../client/dist',
         github: {
             clientId: 'b62763ecddeb47ab5f42',
             clientSecret: '796a4c862a99f747ed319ee5472f58929fc21ae9',
-            callbackURL: 'http://www.rabix.org:3000/auth/github/callback',
+            callbackURL: 'http://www.rabix.org:3333/auth/github/callback',
             scope: 'repo:status,read:org,read:repo_hook,write:repo_hook,admin:repo_hook,user'
         },
         logging: {
