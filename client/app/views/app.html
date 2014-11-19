@@ -36,7 +36,10 @@
                             <section class="col-md-4">
                                 <h5>Docker Image Details</h5>
                                 <p><strong>Image Id:</strong> {{ view.app.json.requirements.environment.container.imageId }}</p>
-                                <p><strong>Image Uri:</strong> <span copy="view.app.json.requirements.environment.container.uri"></span></p>
+                                <p>
+                                    <strong>Image Uri:</strong>
+                                    <copy string="{{ view.app.json.requirements.environment.container.uri }}" show-string="true" is-small="true"></copy>
+                                </p>
                             </section>
 
                             <section class="col-md-4">
@@ -54,9 +57,14 @@
                 <pre>$ rabix "<a href="/api/run/{{ view.app._id }}" target="_blank">http://rabix.org/api/run/{{ view.app._id }}</a>"</pre>
             </div>
 
-            <div class="snippet" style="display: none;">
-                <p>Use this code snippet for your pipeline</p>
-                <pre pretty-json="view.app.json"></pre>
+            <div class="snippet">
+                <p>
+                    Use this code snippet for your pipeline
+                    <a href class="toggle-btn" ng-click="toggleJson()">
+                        <i class="fa" ng-class="{'fa-chevron-right': !view.isJsonVisible, 'fa-chevron-down': view.isJsonVisible}"></i>
+                    </a>
+                </p>
+                <pre ng-class="{hide: !view.isJsonVisible}" pretty-json="view.app.json"></pre>
             </div>
 
         </section>

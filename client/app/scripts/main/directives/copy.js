@@ -8,15 +8,18 @@
 angular.module('registryApp')
     .directive('copy', ['$templateCache', '$timeout', function ($templateCache, $timeout) {
         return {
+            restrict: 'E',
             replace: true,
             scope: {
-                string: '=copy'
+                string: '@',
+                isSmall: '@',
+                showString: '@'
             },
             template: $templateCache.get('views/partials/copy.html'),
             link: function(scope, element) {
 
                 scope.view = {};
-                scope.view.text = 'copy';
+                scope.view.text = 'Copy';
 
                 var timeoutId;
                 var clipboard;
@@ -42,7 +45,7 @@ angular.module('registryApp')
                         scope.cancelTimeout();
 
                         timeoutId = $timeout(function() {
-                            scope.view.text = 'copy';
+                            scope.view.text = 'Copy';
                             scope.view.copying = false;
                         }, 2000);
 

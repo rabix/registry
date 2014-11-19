@@ -1,4 +1,12 @@
-<span class="copy-wrap">
-    <span title="{{ string }}">{{ string }}</span>
-    <a href class="btn btn-orange btn-copy btn-sm" ng-disabled="view.copying">{{ view.text }}</a>
+<span class="copy-btn">
+
+    <span ng-if="showString" title="{{ string }}">{{ string }}</span>
+
+    <a href
+       ng-class="{'btn-sm': isSmall}"
+       class="btn btn-orange btn-copy"
+       ng-disabled="view.copying">
+       {{ view.text }}
+    </a>
+
 </span>

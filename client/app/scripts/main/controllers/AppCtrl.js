@@ -11,6 +11,7 @@ angular.module('registryApp')
         $scope.view.revisions = [];
         $scope.view.tab = $routeParams.tab || 'info';
         $scope.view.canDelete = false;
+        $scope.view.isJsonVisible = false;
 
         $scope.view.classes = ['page', 'app'];
         Loading.setClasses($scope.view.classes);
@@ -100,6 +101,13 @@ angular.module('registryApp')
                     });
             });
 
+        };
+
+        /**
+         * Toggle json visibility
+         */
+        $scope.toggleJson = function() {
+            $scope.view.isJsonVisible = !$scope.view.isJsonVisible;
         };
 
     }]);

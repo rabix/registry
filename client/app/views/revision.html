@@ -31,7 +31,10 @@
                         <section class="col-md-4">
                             <h5>Docker Image Details</h5>
                             <p><strong>Image Id:</strong> {{ view.revision.json.requirements.environment.container.imageId }}</p>
-                            <p><strong>Image Uri:</strong> <span copy="view.revision.json.requirements.environment.container.uri"></span></p>
+                            <p>
+                                <strong>Image Uri:</strong>
+                                <copy string="{{ view.revision.json.requirements.environment.container.uri }}" show-string="true" is-small="true"></copy>
+                            </p>
                         </section>
 
                         <section class="col-md-4">
@@ -50,8 +53,13 @@
         </div>
 
         <div class="snippet">
-            <p>Use this code snippet for your pipeline</p>
-            <pre pretty-json="view.revision.json"></pre>
+            <p>
+                Use this code snippet for your pipeline
+                <a href class="toggle-btn" ng-click="toggleJson()">
+                    <i class="fa" ng-class="{'fa-chevron-right': !view.isJsonVisible, 'fa-chevron-down': view.isJsonVisible}"></i>
+                </a>
+            </p>
+            <pre ng-class="{hide: !view.isJsonVisible}" pretty-json="view.revision.json"></pre>
         </div>
 
     </div>

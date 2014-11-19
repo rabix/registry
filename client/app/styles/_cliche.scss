@@ -3,6 +3,51 @@
     & > .content {
       padding: 0;
       @include flex-box();
+
+      & > .form {
+        width: 100%;
+      }
+    }
+
+    .sub-heading {
+      position: relative;
+    }
+
+    & > .console {
+      position: relative;
+      overflow: hidden;
+      @include flex(0 0 auto);
+
+      .heading {
+        font-weight: bold;
+        border-top: 2px solid $orange;
+        border-bottom: 0;
+        display: block;
+        padding: 2px 10px;
+        cursor: pointer;
+        i {
+          padding: 4px;
+          font-size: 10px;
+        }
+      }
+
+      .console-trace {
+        height: 150px;
+        border: none;
+        @include scrollBar();
+        @include transition(height 0.2s ease);
+      }
+
+      &.console-hide {
+        .console-trace {
+          height: 0px;
+          padding: 0;
+          overflow: hidden;
+        }
+        .zclip {
+          display: none;
+        }
+      }
     }
 
     @for $num from 1 through 12 {
@@ -24,18 +69,19 @@
   &.right {
     .tab {
       position: relative;
-      /* ZeroClipboard box */
-      .zclip {
-        .btn {
-          position: absolute;
-          bottom: 5px;
-          left: 5px;
-        }
-        p {
-          @extend %trace-box;
-        }
-      }
     }
+  }
+}
+
+/* ZeroClipboard box */
+.zclip {
+  .btn {
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+  }
+  p {
+    @extend %trace-box;
   }
 }
 
