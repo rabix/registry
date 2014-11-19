@@ -11,7 +11,7 @@
             {{ (view.mode === 'new') ? 'New App' : view.app.name }}
             <span ng-if="view.currentRevision.version" class="version"><i class="fa fa-tag"></i> {{ 'v' + view.currentRevision.version }}</span>
 
-            <div ng-if="view.user" class="actions pull-right">
+            <div class="actions pull-right">
 
                 <button class="btn btn-default" ng-click="showJson('tool')">
                     <i class="fa fa-code"></i> Tool JSON
@@ -21,15 +21,15 @@
                     <i class="fa fa-code"></i> Job JSON
                 </button>
 
-                <button ng-if="view.user.id === view.app.user._id" ng-disabled="view.saving" class="app-save-btn btn btn-default" ng-click="save('save')">
+                <button ng-if="view.user && view.user.id === view.app.user._id" ng-disabled="view.saving" class="app-save-btn btn btn-default" ng-click="save('save')">
                     <i class="fa fa-check"></i> Save
                 </button>
 
-                <button ng-if="view.user.id === view.app.user._id" ng-disabled="view.saving" class="app-publish-btn btn btn-primary" ng-click="save('publish')">
+                <button ng-if="view.user && view.user.id === view.app.user._id" ng-disabled="view.saving" class="app-publish-btn btn btn-primary" ng-click="save('publish')">
                     <i class="fa fa-plus"></i> Publish
                 </button>
 
-                <button ng-if="view.app | isEmpty" ng-disabled="view.saving" class="app-create-btn btn btn-primary" ng-click="save('create')">
+                <button ng-if="view.user && (view.app | isEmpty)" ng-disabled="view.saving" class="app-create-btn btn btn-primary" ng-click="save('create')">
                     <i class="fa fa-plus"></i> Create
                 </button>
 
@@ -41,7 +41,7 @@
                     <i class="fa fa-cloud-download"></i> Import
                 </button>
 
-                <button ng-if="view.user.id === view.app.user._id && !view.currentRevision.version" ng-disabled="view.saving" class="app-delete-btn btn btn-danger" ng-click="delete()">
+                <button ng-if="view.user && view.user.id === view.app.user._id && !view.currentRevision.version" ng-disabled="view.saving" class="app-delete-btn btn btn-danger" ng-click="delete()">
                     <i class="fa fa-trash"></i> Delete
                 </button>
             </div>
