@@ -93,8 +93,8 @@
                                             {{ repoName }}
                                         </span>
                                         <ul class="apps-inner-list">
-                                            <li ng-repeat="app in apps">
-                                                <div ng-repeat="revision in app.revisions" class="revisions-list">
+                                            <li ng-repeat="app in apps" class="app-container">
+                                                <div ng-repeat="revision in app.revisions" class="revision-item">
                                                     <a href drag="revision">
                                                         <i class="fa fa-puzzle-piece"></i>
                                                         {{ app.name }} <small>(revision {{ revision.order }} )</small>
@@ -122,8 +122,8 @@
                                             {{ repoName }}
                                         </span>
                                         <ul class="apps-inner-list">
-                                            <li ng-repeat="app in apps">
-                                                <div ng-repeat="revision in app.revisions" class="revisions-list">
+                                            <li ng-repeat="app in apps" class="app-container">
+                                                <div ng-repeat="revision in app.revisions" class="revision-item">
                                                     <a href drag="revision">
                                                         <i class="fa fa-puzzle-piece"></i>
                                                         {{ app.name }} <small>(revision {{ revision.order }} )</small>

@@ -23,11 +23,10 @@ angular.module('registryApp.cliche')
         /* cliche mode: new or edit */
         $scope.view.mode = $routeParams.id ? 'edit' : 'new';
 
-        /* flag for sidebar visibility */
-        $scope.view.showSidebar = true;
-
         /* list of user repos*/
-        $scope.view.userRepos= [];
+        $scope.view.userRepos = [];
+
+        $scope.view.showConsole = true;
 
         $scope.view.tabViewPath = 'views/cliche/tabs/general.html';
 
@@ -83,6 +82,8 @@ angular.module('registryApp.cliche')
                     Data.setJob();
                     $scope.view.jobForm = Data.job;
 
+                    if ($scope.view.showConsole) { turnOnDeepWatch(); }
+
                 });
 
         } else {
@@ -105,6 +106,8 @@ angular.module('registryApp.cliche')
                         }
 
                         $scope.view.jobForm = Data.job;
+
+                        if ($scope.view.showConsole) { turnOnDeepWatch(); }
 
                     });
             });
@@ -157,7 +160,6 @@ angular.module('registryApp.cliche')
                     $scope.view.generatingCommand = false;
                 });
 
-            //var watch = ['view.jobForm.inputs', 'view.toolForm.inputs.properties', 'view.toolForm.adapter'];
             var watch = ['view.toolForm.inputs.properties', 'view.toolForm.adapter'];
 
             _.each(watch, function(arg) {
@@ -193,7 +195,8 @@ angular.module('registryApp.cliche')
         var jobWatcher;
 
         /**
-         * Check if there are expressions applied on resources and evaluate them in order to refresh result for the allocated resources
+         * Check if there are expressions applied on resources and evaluate
+         * them in order to refresh result for the allocated resources
          */
         var checkResources = function () {
 
@@ -211,13 +214,14 @@ angular.module('registryApp.cliche')
         };
 
         /**
-         * Watch the job's inputs in order to evaluate expression which include $job as context
+         * Watch the job's inputs in order to evaluate
+         * expression which include $job as context
          */
         var watchTheJob = function () {
 
             checkResources();
 
-            if ($scope.view.trace === 'console') {
+            if ($scope.view.showConsole) {
                 $scope.view.generatingCommand = true;
                 Data.generateCommand()
                     .then(function (command) {
@@ -229,7 +233,7 @@ angular.module('registryApp.cliche')
             jobWatcher = $scope.$watch('view.jobForm.inputs', function(n, o) {
                 if (n !== o) {
                     checkResources();
-                    if ($scope.view.trace === 'console') {
+                    if ($scope.view.showConsole) {
                         $scope.view.generatingCommand = true;
                         Data.generateCommand()
                             .then(function (command) {
@@ -254,14 +258,13 @@ angular.module('registryApp.cliche')
         };
 
         /**
-         * Switch the trace tab
-         * @param tab
+         * Toggle console visibility
          */
-        $scope.switchTrace = function(tab) {
+        $scope.toggleConsole = function() {
 
-            $scope.view.trace = tab;
+            $scope.view.showConsole = !$scope.view.showConsole;
 
-            if (tab === 'console') {
+            if ($scope.view.showConsole) {
                 turnOnDeepWatch();
             } else {
                 turnOffDeepWatch();
@@ -557,15 +560,6 @@ angular.module('registryApp.cliche')
         };
 
         /**
-         * Toggle right sidebar visibility
-         */
-        $scope.toggleSidebar = function() {
-
-            $scope.view.showSidebar = !$scope.view.showSidebar;
-
-        };
-
-        /**
          * Delete app
          */
         $scope.delete = function () {
@@ -586,6 +580,33 @@ angular.module('registryApp.cliche')
                 });
             });
 
+        };
+
+        /**
+         * Show json modal
+         *
+         * @param which
+         */
+        $scope.showJson = function(which) {
+
+            var modalInstance = $modal.open({
+                template: $templateCache.get('views/cliche/partials/json-preview.html'),
+                controller: 'JsonPreviewCtrl',
+                resolve: {data: function () {
+                    return {json: $scope.view[which + 'Form'], which: which};
+                }}
+            });
+
+            modalInstance.result.then(function (getUrlTrace) {
+                if (getUrlTrace) {
+
+                    $modal.open({
+                        template: $templateCache.get('views/cliche/partials/job-url-response.html'),
+                        controller: 'ModalCtrl',
+                        resolve: { data: function () { return { trace: getUrlTrace }; }}
+                    });
+                }
+            });
 
         };
 

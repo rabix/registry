@@ -12,6 +12,15 @@
             <span ng-if="view.currentRevision.version" class="version"><i class="fa fa-tag"></i> {{ 'v' + view.currentRevision.version }}</span>
 
             <div ng-if="view.user" class="actions pull-right">
+
+                <button class="btn btn-default" ng-click="showJson('tool')">
+                    <i class="fa fa-code"></i> Tool JSON
+                </button>
+
+                <button class="btn btn-default" ng-click="showJson('job')">
+                    <i class="fa fa-code"></i> Job JSON
+                </button>
+
                 <button ng-if="view.user.id === view.app.user._id" ng-disabled="view.saving" class="app-save-btn btn btn-default" ng-click="save('save')">
                     <i class="fa fa-check"></i> Save
                 </button>
@@ -41,77 +50,38 @@
     </div>
     <!-- # .heading -->
 
-    <div ng-if="!view.loading" class="content">
-        <div class="col content-col">
+    <div class="heading sub-heading">
+        <ul class="nav nav-tabs nav-tabs-steps regular">
+            <li ng-class="{active: view.tab === 'general'}"><a href ng-click="switchTab('general')">General</a></li>
+            <li ng-class="{active: view.tab === 'inputs'}"><a href ng-click="switchTab('inputs')">Inputs</a></li>
+            <li ng-class="{active: view.tab === 'outputs'}"><a href ng-click="switchTab('outputs')">Outputs</a></li>
+            <li ng-class="{active: view.tab === 'adapter'}"><a href ng-click="switchTab('adapter')">Adapter</a></li>
+            <li ng-class="{active: view.tab === 'values'}"><a href ng-click="switchTab('values')">Values</a></li>
+        </ul>
 
-            <div class="heading">
-                <ul class="nav nav-tabs nav-tabs-steps regular">
-
-                    <li ng-class="{active: view.tab === 'general'}"><a href ng-click="switchTab('general')">General</a></li>
-                    <li ng-class="{active: view.tab === 'inputs'}"><a href ng-click="switchTab('inputs')">Inputs</a></li>
-                    <li ng-class="{active: view.tab === 'outputs'}"><a href ng-click="switchTab('outputs')">Outputs</a></li>
-                    <li ng-class="{active: view.tab === 'adapter'}"><a href ng-click="switchTab('adapter')">Adapter</a></li>
-                    <li ng-class="{active: view.tab === 'values'}"><a href ng-click="switchTab('values')">Values</a></li>
-
-                </ul>
-
-                <a class="btn btn-flush btn-flush-cliche" href ng-click="flush()" tooltip="Start with clean template" tooltip-placement="left" tooltip-append-to-body="true">
-                    <i class="fa fa-trash"></i>
-                </a>
-            </div>
-            <!-- # .heading -->
-
-            <div class="content">
-                <ng-form class="form" name="forms.toolForm" role="form" novalidate>
-                    <div class="tabs left">
-                        <ng-include src="view.tabViewPath"></ng-include>
-                    </div>
-                </ng-form>
-            </div>
-
-        </div>
-
-        <div class="col sidebar-col" ng-class="{closed: !view.showSidebar}">
-
-            <div class="heading">
-                <ul class="nav nav-tabs nav-tabs-trace">
-
-                    <li class="toggle-action">
-                        <a href ng-click="toggleSidebar()">
-                            <i ng-class="{'fa-chevron-right': view.showSidebar, 'fa-chevron-left': !view.showSidebar}" class="fa"></i>
-                        </a>
-                    </li>
-
-                    <li ng-class="{active: view.trace === 'tool'}"><a href ng-click="switchTrace('tool')">Tool JSON</a></li>
-                    <li ng-class="{active: view.trace === 'job'}"><a href ng-click="switchTrace('job')">Job JSON</a></li>
-                    <li ng-class="{active: view.trace === 'console'}"><a href ng-click="switchTrace('console')">Console</a></li>
-                </ul>
-            </div>
-
-            <div class="content">
-                <div class="tabs right" ng-switch="view.trace">
-
-                    <div class="tab" ng-switch-when="tool">
-                        <zclip data="tool"></zclip>
-                        <pre class="json-trace" pretty-json="view.toolForm"></pre>
-                    </div>
-
-                    <div class="tab" ng-switch-when="job">
-                        <zclip data="job"></zclip>
-                        <job-actions user="view.user"></job-actions>
-                        <pre class="json-trace" pretty-json="view.jobForm"></pre>
-                    </div>
-
-                    <div class="tab" ng-switch-when="console">
-                        <zclip data="command"></zclip>
-                        <pre class="console-trace" ng-class="{wait: view.generatingCommand}">{{ view.command }}</pre>
-                    </div>
-
-                </div>
-            </div>
-
-        </div>
+        <a class="btn btn-flush btn-flush-cliche" href ng-click="flush()" tooltip="Start with clean template" tooltip-placement="left" tooltip-append-to-body="true">
+            <i class="fa fa-trash"></i>
+        </a>
     </div>
+    <!-- # .heading -->
+
+    <div ng-if="!view.loading" class="content">
+
+        <ng-form class="form" name="forms.toolForm" role="form" novalidate>
+            <div class="tabs left">
+                <ng-include src="view.tabViewPath"></ng-include>
+            </div>
+        </ng-form>
+
+    </div>
+    <!-- # .content -->
+
+    <div ng-if="!view.loading" class="console" ng-class="{'console-hide': !view.showConsole}">
+        <div ng-click="toggleConsole()" class="heading">console <i ng-class="{'fa-chevron-down': view.showConsole, 'fa-chevron-right': !view.showConsole}" class="fa pull-right"></i></div>
+        <zclip data="command"></zclip>
+        <pre class="console-trace" ng-class="{wait: view.generatingCommand}">{{ view.command }}</pre>
+    </div>
+    <!-- # .console -->
 
 </div>
 

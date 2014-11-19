@@ -29,6 +29,9 @@ angular.module('registryApp')
                     $scope.view.loading = false;
                 });
 
+        /**
+         * Toggle json visibility
+         */
         $scope.toggleJson = function() {
             $scope.view.isJsonVisible = !$scope.view.isJsonVisible;
         };

@@ -31,7 +31,10 @@
                         <section class="col-md-4">
                             <h5>Docker Image Details</h5>
                             <p><strong>Image Id:</strong> {{ view.revision.json.requirements.environment.container.imageId }}</p>
-                            <p><strong>Image Uri:</strong> <span copy="view.revision.json.requirements.environment.container.uri"></span></p>
+                            <p>
+                                <strong>Image Uri:</strong>
+                                <copy string="{{ view.revision.json.requirements.environment.container.uri }}" show-string="true" is-small="true"></copy>
+                            </p>
                         </section>
 
                         <section class="col-md-4">
@@ -49,7 +52,7 @@
             <pre>$ rabix "<a href="/api/run/{{ view.revision._id }}" target="_blank">http://rabix.org/api/run/{{ view.revision._id }}</a>"</pre>
         </div>
 
-        <div class="snippet collaps">
+        <div class="snippet">
             <p>
                 Use this code snippet for your pipeline
                 <a href class="toggle-btn" ng-click="toggleJson()">

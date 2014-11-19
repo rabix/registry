@@ -390,6 +390,13 @@ ul {
   }
 }
 
+.modal-footer {
+  & > .btn,
+  & > .copy-btn {
+    margin-left: 5px;
+  }
+}
+
 .codemirror {
   .CodeMirror {
     margin-bottom: 10px;

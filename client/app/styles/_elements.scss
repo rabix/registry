@@ -111,7 +111,6 @@
         }
         & > strong {
           width: 110px;
-          margin: 6px 0;
         }
         &:last-of-type {
           margin-bottom: 0;
@@ -501,7 +500,7 @@ legend {
 
 .app-sidebar-list {
   border-bottom: 1px solid #ddd;
-  & li {
+  li {
     border-bottom: 1px solid #ddd;
     &:first-child {
       border-top: 1px solid #ddd;
@@ -551,8 +550,11 @@ legend {
           opacity: 0.7;
         }
       }
-      .revisions-list {
-        border-bottom: 1px solid #ddd;
+      .revision-item {
+        border-bottom: 1px solid #eee;
+        &:last-child {
+          border-bottom: none;
+        }
       }
     }
   }
@@ -642,22 +644,25 @@ legend {
   @include scrollBar();
 }
 
-.copy-wrap {
+.copy-btn {
   display: inline-block;
   vertical-align: middle;
   max-width: 60%;
+
   & > span {
     max-width: 70%;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
   }
+
   & > span,
   .btn {
     display: inline-block;
     vertical-align: middle;
   }
-  .btn {
+
+  .btn.btn-sm {
     padding: 2px 10px;
   }
 }
