@@ -9,7 +9,8 @@ var config = {
     development: {
         root: rootPath,
         app: {
-            name: 'server'
+            name: 'server',
+            githubName: 'Rabix-develop'
         },
         port: 3000,
         db: 'mongodb://localhost/server-development',
@@ -61,10 +62,39 @@ var config = {
 
     },
 
+    staging: {
+        root: rootPath,
+        app: {
+            name: 'server',
+            githubName: 'Rabix-staging'
+        },
+        port: 3000,
+        db: 'mongodb://localhost/server-staging',
+        clientPath: '../../client/dist',
+        github: {
+            clientId: 'b62763ecddeb47ab5f42',
+            clientSecret: '796a4c862a99f747ed319ee5472f58929fc21ae9',
+            callbackURL: 'http://www.rabix.org:3000/auth/github/callback',
+            scope: 'repo:status,read:org,read:repo_hook,write:repo_hook,admin:repo_hook,user'
+        },
+        logging: {
+            path: '/data/log/staging/rabix-registry',
+            builds: '/data/log/staging/rabix-registry/builds'
+        },
+        amazon: {
+            path: '/data/config/rabix/amazon.json'
+        },
+        tmpDir: {
+            path: rootPath + '/tmp'
+        },
+        mail: conf.mail
+    },
+
     production: {
         root: rootPath,
         app: {
-            name: 'server'
+            name: 'server',
+            githubName: 'Rabix-registry'
         },
         port: 3000,
         db: 'mongodb://localhost/server-production',
