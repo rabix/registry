@@ -110,4 +110,27 @@ angular.module('registryApp')
             $scope.view.isJsonVisible = !$scope.view.isJsonVisible;
         };
 
+        /**
+         * Publish the revision
+         *
+         * @param revision
+         */
+        $scope.publish = function(revision) {
+
+            revision.saving = true;
+
+            App.publish(revision._id)
+                .then(function(result) {
+
+                    revision.saving = false;
+                    revision.is_public = true;
+                    revision.version = result.revision.version;
+
+
+                }, function () {
+                    revision.saving = false;
+                });
+
+        };
+
     }]);

@@ -332,6 +332,15 @@ angular.module('registryApp.cliche')
         };
 
         /**
+         * Update stdin if expression or literal defined
+         *
+         * @param {*} value
+         */
+        $scope.updateStdIn = function (value) {
+            $scope.view.toolForm.adapter.stdin = value;
+        };
+
+        /**
          * Update tool resources and apply transformation on allocated resources if needed
          *
          * @param {*} value
@@ -363,11 +372,14 @@ angular.module('registryApp.cliche')
 
             $scope.view.loading = true;
 
+            var name = $scope.view.toolForm.softwareDescription.name;
+
             Data.flush().then(function(result) {
 
                 $scope.view.toolForm = result.tool;
                 $scope.view.jobForm = result.job;
                 $scope.view.command = '';
+                $scope.view.toolForm.softwareDescription.name = name;
 
                 if ($scope.view.user) {
 
@@ -456,15 +468,14 @@ angular.module('registryApp.cliche')
 
             });
 
-
         };
 
         /**
-         * Save revision or create/publish current app
+         * Create new tool
+         *
+         * @returns {boolean}
          */
-        $scope.save = function(action) {
-
-            var modalInstance;
+        $scope.create = function() {
 
             if ($scope.forms.toolForm.$invalid) {
                 $scope.forms.toolForm.$setDirty();
@@ -478,62 +489,80 @@ angular.module('registryApp.cliche')
                 });
 
                 return false;
-            } else if (action === 'create') {
-
-                modalInstance = $modal.open({
-                    controller: 'PickRepoModalCtrl',
-                    template: $templateCache.get('views/dyole/pick-repo-name.html'),
-                    windowClass: 'modal-confirm',
-                    resolve: {data: function () { return {repos: $scope.view.userRepos, type: 'save'};}}
-
-                });
             }
 
-            if (!_.isUndefined(modalInstance)) {
-                modalInstance.result.then(function(data) {
-                    saveApp(action, data.repoId);
+            var modalInstance = $modal.open({
+                controller: 'PickRepoModalCtrl',
+                template: $templateCache.get('views/dyole/pick-repo-name.html'),
+                windowClass: 'modal-confirm',
+                resolve: {data: function () { return {repos: $scope.view.userRepos, type: 'save'};}}
 
-                });
-            } else {
-                saveApp(action);
-            }
+            });
 
+            modalInstance.result.then(function(data) {
+
+                $scope.view.saving = true;
+
+                App.create(data.repoId)
+                    .then(function(result) {
+
+                        $scope.view.saving = false;
+
+                        var modalInstance = $modal.open({
+                            template: $templateCache.get('views/cliche/partials/app-save-response.html'),
+                            controller: 'ModalCtrl',
+                            backdrop: 'static',
+                            resolve: { data: function () { return { trace: result }; }}
+                        });
+
+                        modalInstance.result.then(function() {
+                            $scope.redirect('/cliche/' + result.app._id + '/latest');
+                        });
+
+                    }, function () {
+                        $scope.view.saving = false;
+                    });
+
+            });
         };
 
         /**
-         * The actual saving
+         * Update current revision
          *
-         * @param action
-         * @param repoId
+         * @returns {boolean}
          */
-        var saveApp = function(action, repoId) {
+        $scope.update = function() {
+
+            if ($scope.forms.toolForm.$invalid) {
+                $scope.forms.toolForm.$setDirty();
+
+                $modal.open({
+                    template: $templateCache.get('views/partials/validation.html'),
+                    size: 'sm',
+                    controller: 'ModalCtrl',
+                    windowClass: 'modal-validation',
+                    resolve: {data: function () { return {messages: ['Please fill in all required fields!']}; }}
+                });
+
+                return false;
+            }
 
             $scope.view.saving = true;
 
-            App.save(action, $scope.view.app._id, $scope.view.currentRevision, repoId)
+            App.update($scope.view.app._id)
                 .then(function(result) {
 
                     $scope.view.saving = false;
-
-                    var trace = {
-                        message: result.message
-                    };
 
                     var modalInstance = $modal.open({
                         template: $templateCache.get('views/cliche/partials/app-save-response.html'),
                         controller: 'ModalCtrl',
                         backdrop: 'static',
-                        resolve: { data: function () { return { trace: trace }; }}
+                        resolve: { data: function () { return { trace: result }; }}
                     });
 
                     modalInstance.result.then(function() {
-                        if (_.contains(['create', 'save'], action)) {
-
-                            var revisionId = (action === 'save') ? result.revision._id : 'latest';
-                            var appId = result.app ? result.app._id : $scope.view.app._id;
-
-                            $scope.redirect('/cliche/' + appId + '/' + revisionId);
-                        }
+                        $scope.redirect('/cliche/' + $scope.view.app._id + '/' + result.revision._id);
                     });
 
                 }, function () {

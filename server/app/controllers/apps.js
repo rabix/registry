@@ -15,7 +15,6 @@ var Amazon = require('../../aws/aws').Amazon;
 
 module.exports = function (app) {
     app.use('/api', router);
-
 };
 
 router.get('/apps', function (req, res, next) {
@@ -181,84 +180,6 @@ router.get('/run/:id', function (req, res, next) {
     });
 
 });
-
-
-router.put('/apps/:id/:revision', filters.authenticated, function (req, res, next) {
-
-    var data = req.body;
-    var app_id = req.params.id;
-
-    var check = validator.validate(data.tool);
-
-    if (!_.isEmpty(check.invalid) || !_.isEmpty(check.obsolete) || !_.isEmpty(check.required)) {
-        res.status(400).json({message: 'There are some errors in your json scheme', json: check});
-        return false;
-    }
-
-    App.findById(app_id).populate('repo').exec(function(err, app) {
-        if (err) { return next(err); }
-
-        var desc = data.tool.softwareDescription;
-
-        //app.name = desc.name;
-        app.c_version = desc.appVersion;
-        app.description = desc.description;
-        app.author = data.tool.documentAuthor;
-        app.json = data.tool;
-        app.links = {json: ''};
-
-        var folder = 'users/' + req.user.login + '/apps/' + app.repo.owner + '-' + app.repo.name;
-
-        Amazon.createFolder(folder)
-            .then(function () {
-
-                Amazon.uploadJSON(desc.name + '.json', app.json, folder)
-                    .then(function () {
-
-                        Amazon.getFileUrl(desc.name + '.json', folder, function (url) {
-
-                            app.links.json = url;
-
-                            Revision.count({app_id: app_id, is_public: true}, function(err, total) {
-                                if (err) { return next(err); }
-
-                                Revision.findOne({_id: req.params.revision, app_id: app_id}, function(err, revision) {
-                                    if (err) { return next(err); }
-
-                                    if (revision) {
-
-                                        revision.c_version = app.c_version;
-                                        revision.description = app.description;
-                                        revision.author = app.author;
-                                        revision.json = app.json;
-                                        revision.is_public = true;
-                                        revision.version = total + 1;
-
-                                        revision.save();
-
-                                    }
-
-                                    app.save();
-
-                                    res.json({app: app, message: 'App has been successfully updated'});
-
-                                });
-                            });
-
-
-                        });
-
-                    }, function (error) {
-                        res.status(500).json(error);
-                    });
-            }, function (error) {
-                res.status(500).json(error);
-            });
-
-    });
-
-});
-
 
 router.post('/apps/:action', filters.authenticated, function (req, res, next) {
 

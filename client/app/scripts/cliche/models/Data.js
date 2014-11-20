@@ -16,7 +16,7 @@ angular.module('registryApp.cliche')
          *
          * @type {number}
          */
-        self.version = 15;
+        self.version = 17;
 
         /**
          * Tool json object
@@ -140,7 +140,7 @@ angular.module('registryApp.cliche')
                             type: 'string',
                             required: false
                         },
-                        adapter: {prefix: '', separator: '_', order: 0, transform: undefined, streamable: false}
+                        adapter: {prefix: '', separator: ' ', order: 0, transform: undefined, streamable: false}
                     },
                     string: {
                         root: {
@@ -148,21 +148,21 @@ angular.module('registryApp.cliche')
                             required: false,
                             enum: null
                         },
-                        adapter: {prefix: '', separator: '_', order: 0, transform: undefined}
+                        adapter: {prefix: '', separator: ' ', order: 0, transform: undefined}
                     },
                     integer: {
                         root: {
                             type: 'string',
                             required: false
                         },
-                        adapter: {prefix: '', separator: '_', order: 0, transform: undefined}
+                        adapter: {prefix: '', separator: ' ', order: 0, transform: undefined}
                     },
                     number: {
                         root: {
                             type: 'string',
                             required: false
                         },
-                        adapter: {prefix: '', separator: '_', order: 0, transform: undefined}
+                        adapter: {prefix: '', separator: ' ', order: 0, transform: undefined}
                     },
                     array: {
                         root: {
@@ -172,14 +172,14 @@ angular.module('registryApp.cliche')
                             maxItems: undefined,
                             items: {type: 'string'}
                         },
-                        adapter: {prefix: '', separator: '_', order: 0, listTransform: undefined, listSeparator: ','}
+                        adapter: {prefix: '', separator: ' ', order: 0, listTransform: undefined, listSeparator: ','}
                     },
                     boolean: {
                         root: {
                             type: 'string',
                             required: false
                         },
-                        adapter: {prefix: '', separator: '_', order: 0, transform: undefined}
+                        adapter: {prefix: '', separator: ' ', order: 0, transform: undefined}
                     },
                     object: {
                         root: {
@@ -187,7 +187,7 @@ angular.module('registryApp.cliche')
                             required: false,
                             properties: {}
                         },
-                        adapter: {prefix: '', separator: '_', order: 0}
+                        adapter: {prefix: '', separator: ' ', order: 0}
                     }
                 },
                 output: {
@@ -338,7 +338,7 @@ angular.module('registryApp.cliche')
 
             var output = '';
 
-            if (_.isUndefined(separator) || separator === '_') {
+            if (_.isUndefined(separator) || separator === ' ') {
                 output = (prefix === '') ? '' : ' ';
             } else {
                 output = (prefix === '') ? '' : separator;
@@ -378,7 +378,7 @@ angular.module('registryApp.cliche')
 
             var output = '';
 
-            if (_.isUndefined(listSeparator) || listSeparator === '_') {
+            if (_.isUndefined(listSeparator) || listSeparator === ' ') {
                 output = ' ';
             } else {
                 output = listSeparator;
@@ -616,17 +616,24 @@ angular.module('registryApp.cliche')
                         });
 
                 })
-                /* apply transforms on stdout */
+                /* apply transforms on stdin/stdout */
                 .then(function (res) {
-                    return self.applyTransform(self.tool.adapter.stdout, self.tool.adapter.stdout)
-                            .then(function (result) {
-                                return {command: res.command, baseCmd: res.baseCmd, stdout: result};
-                            });
+                    return $q.all([
+                            self.applyTransform(self.tool.adapter.stdin, self.tool.adapter.stdin),
+                            self.applyTransform(self.tool.adapter.stdout, self.tool.adapter.stdout)
+                        ]).then(function(result) {
+                            return {command: res.command, baseCmd: res.baseCmd, stdin: result[0], stdout: result[1]};
+                        });
                 })
                 /* generate final command */
                 .then(function (result) {
 
                     self.command = result.baseCmd + ' ' + result.command.join(' ');
+
+                    if (result.stdin) {
+                        self.command += ' < ' + result.stdin;
+                    }
+
                     if (result.stdout) {
                         self.command += ' > ' + result.stdout;
                     }

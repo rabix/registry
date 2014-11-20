@@ -21,16 +21,12 @@
                     <i class="fa fa-code"></i> Job JSON
                 </button>
 
-                <button ng-if="view.user && (view.app | isEmpty)" ng-disabled="view.saving" class="app-create-btn btn btn-primary" ng-click="save('create')">
+                <button ng-if="view.user && (view.app | isEmpty)" ng-disabled="view.saving" class="app-create-btn btn btn-primary" ng-click="create()">
                     <i class="fa fa-plus"></i> Create
                 </button>
 
-                <button ng-if="view.user && view.user.id === view.app.user._id" ng-disabled="view.saving" class="app-save-btn btn btn-default" ng-click="save('save')">
+                <button ng-if="view.user && view.user.id === view.app.user._id" ng-disabled="view.saving" class="app-save-btn btn btn-default" ng-click="update()">
                     <i class="fa fa-check"></i> Update
-                </button>
-
-                <button ng-if="view.user && view.user.id === view.app.user._id" ng-disabled="view.saving" class="app-publish-btn btn btn-primary" ng-click="save('publish')">
-                    <i class="fa fa-plus"></i> Publish
                 </button>
 
                 <div class="btn-group right" ng-class="{open: view.isMenuOpen}">

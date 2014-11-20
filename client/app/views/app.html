@@ -54,7 +54,7 @@
 
             <div class="snippet">
                 <p>Use this command to run the app</p>
-                <pre>$ rabix "<a href="/api/run/{{ view.app._id }}" target="_blank">http://rabix.org/api/run/{{ view.app._id }}</a>"</pre>
+                <pre>$ rabix "<a href="/tool/{{ view.app._id }}" target="_blank">http://rabix.org/tool/{{ view.app._id }}</a>"</pre>
             </div>
 
             <div class="snippet">
@@ -77,7 +77,7 @@
                         <th>Revision</th>
                         <th>Version</th>
                         <th>Description</th>
-                        <th class="right">&nbsp;</th>
+                        <th class="right">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -94,6 +94,7 @@
                         <td class="right">
                             <a class="btn btn-sm btn-default" tooltip="View Revision" ng-href="#/revision/{{ revision._id }}"><i class="fa fa-eye"></i></a>
                             <a class="btn btn-sm btn-default" tooltip="Edit Revision" ng-href="#/cliche/{{ view.app._id }}/{{ revision._id }}"><i class="fa fa-pencil"></i></a>
+                            <a href ng-if="!revision.is_public" ng-click="publish(revision)" ng-disabled="revision.saving" class="btn btn-sm btn-primary" tooltip="Publish Revision"><i class="fa fa-plus"></i></a>
                         </td>
                     </tr>
                     <tr class="empty" ng-if="view.revisions.length === 0">

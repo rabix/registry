@@ -32,15 +32,13 @@ var mapDefinition = {
     },
     container: {
         type: {type: 'string', required: true},
-        uri: {type: 'string', required: true},
-        imageId: {type: 'string', required: true}
+        uri: {type: 'string'},
+        imageId: {type: 'string'}
     },
     resources: {
-        cpu: {type: ['number', 'object'], required: true},
-        mem: {type: ['number', 'object'], required: true},
-        ports: {type: 'array'},
-        diskSpace: {type: ['number', 'object'], required: true},
-        network: {type: 'boolean', required: true}
+        cpu: {type: ['number', 'object']},
+        mem: {type: ['number', 'object']},
+        ports: {type: 'array'}
     },
     inputs: {
         type: {type: 'string', required: true},
@@ -52,6 +50,7 @@ var mapDefinition = {
     },
     adapter: {
         baseCmd: {type: 'array', required: true},
+        stdin: {type: ['string', 'object'], required: true},
         stdout: {type: ['string', 'object'], required: true},
         args: {type: 'object_custom', name: 'adapter', required: true},
         environment: {type: 'object'}
@@ -119,7 +118,7 @@ var mapDefinition = {
             },
             adapter: {
                 stdout: {type: 'boolean'},
-                glob: {type: 'string'},
+                glob: {type: 'object'},
                 secondaryFiles: {type: 'array'},
                 meta: {type: 'object'}
             },

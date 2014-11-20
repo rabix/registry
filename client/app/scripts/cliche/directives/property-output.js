@@ -204,6 +204,15 @@ angular.module('registryApp.cliche')
                     scope.prop.adapter.meta[index] = value;
                 };
 
+                /**
+                 * Update existing glob value with expression or literal
+                 *
+                 * @param value
+                 */
+                scope.updateGlobValue = function (value) {
+                    scope.prop.adapter.glob = value;
+                };
+
                 scope.$watch('prop.adapter.meta.__inherit__', function(n, o) {
                     if (n !== o) {
                         if (_.isEmpty(n)) {

@@ -21,12 +21,8 @@
             </div>
             <div class="col-md-3">
                 <div class="form-group" ng-class="{'has-error': (view.form.separator.$invalid && view.form.$dirty)}">
-                    <label class="control-label" for="separator">Separator</label>
-                    <select class="form-control" id="separator" name="separator" ng-model="view.property.separator" required>
-                        <option value="">empty string</option>
-                        <option value="_">space</option>
-                        <option value="=">=</option>
-                    </select>
+                    <label class="control-label">Separator</label>
+                    <separator type="item" model="view.property.separator" is-disabled="view.disabled"></separator>
                 </div>
             </div>
             <div class="col-md-3">

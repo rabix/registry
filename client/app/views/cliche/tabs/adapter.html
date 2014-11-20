@@ -17,9 +17,19 @@
 
 </div>
 
-<div class="form-group">
-    <label class="control-label">Stdout</label>
-    <expr ng-model="view.toolForm.adapter.stdout" handle-item-update="updateStdOut(value)"></expr>
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label class="control-label">Stdin</label>
+            <expr ng-model="view.toolForm.adapter.stdin" handle-item-update="updateStdIn(value)"></expr>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+            <label class="control-label">Stdout</label>
+            <expr ng-model="view.toolForm.adapter.stdout" handle-item-update="updateStdOut(value)"></expr>
+        </div>
+    </div>
 </div>
 
 <legend class="legend-small toggle" ng-class="{active: view.propsExpanded.args}" ng-click="toggleProperties('args')">

@@ -40,6 +40,7 @@ angular.module('registryApp.cliche')
                     scope.view.disabled = (scope.prop.items && scope.prop.items.type) === 'object';
                     scope.view.edit = false;
 
+
                     /**
                      * Toggle edit name form
                      *
@@ -221,7 +222,7 @@ angular.module('registryApp.cliche')
                                     scope.prop.items.properties = {};
                                     scope.prop.adapter.prefix = '';
                                     scope.prop.adapter.listSeparator = undefined;
-                                    scope.prop.adapter.separator = '_';
+                                    scope.prop.adapter.separator = ' ';
                                     scope.prop.adapter.transform = undefined;
                                 }
                             } else {

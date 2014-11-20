@@ -4,26 +4,19 @@
         <div class="form-group">
             <label class="control-label">Allocated Resources</label>
             <div class="input-property-body">
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <label class="control-label">CPU</label>
                     <input type="{{ view.toolForm.requirements.resources.cpu.expr ? 'text' : 'number' }}"
                            class="form-control" ng-model="view.jobForm.allocatedResources.cpu"
                            ng-readonly="view.toolForm.requirements.resources.cpu.expr"
                            min="{{ view.toolForm.requirements.resources.cpu.expr ? 0 : view.toolForm.requirements.resources.cpu }}">
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <label class="control-label">Memory</label>
                     <input type="{{ view.toolForm.requirements.resources.mem.expr ? 'text' : 'number' }}"
                            class="form-control" ng-model="view.jobForm.allocatedResources.mem"
                            ng-readonly="view.toolForm.requirements.resources.mem.expr"
                            min="{{ view.toolForm.requirements.resources.mem.expr ? 0 : view.toolForm.requirements.resources.mem }}">
-                </div>
-                <div class="col-md-4">
-                    <label class="control-label">Disk Space</label>
-                    <input type="{{ view.toolForm.requirements.resources.diskSpace.expr ? 'text' : 'number' }}"
-                           class="form-control" ng-model="view.jobForm.allocatedResources.diskSpace"
-                           ng-readonly="view.toolForm.requirements.resources.diskSpace.expr"
-                           min="{{ view.toolForm.requirements.resources.diskSpace.expr ? 0 : view.toolForm.requirements.resources.diskSpace }}">
                 </div>
             </div>
         </div>
