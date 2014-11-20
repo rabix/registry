@@ -42,12 +42,8 @@
 
             <div class="col-md-2">
                 <div class="form-group" ng-class="{'has-error': (view.form.separator.$invalid && view.form.$dirty)}">
-                    <label class="control-label" for="separator">Separator</label>
-                    <select class="form-control" id="separator" name="separator" ng-model="view.property.adapter.separator" required>
-                        <option value="">empty string</option>
-                        <option value="_">space</option>
-                        <option value="=">=</option>
-                    </select>
+                    <label class="control-label">Separator</label>
+                    <separator type="item" model="view.property.adapter.separator" is-disabled="view.disabled"></separator>
                 </div>
             </div>
             <!-- END Separator -->
@@ -116,15 +112,8 @@
 
             <div class="col-md-2">
                 <div class="form-group">
-                    <label class="control-label" for="item-separator" class="control-label">Item Separator</label>
-
-                    <select class="form-control" id="item-separator" name="itemSeparator" ng-model="view.property.adapter.listSeparator">
-                        <option value="">-- choose --</option>
-                        <option value=",">,</option>
-                        <option value=";">;</option>
-                        <option value="_">space</option>
-                        <option value="repeat">repeat</option>
-                    </select>
+                    <label class="control-label">Item Separator</label>
+                    <separator type="list" model="view.property.adapter.listSeparator" is-disabled="view.disabled"></separator>
                 </div>
             </div>
             <!-- END Item Separator -->

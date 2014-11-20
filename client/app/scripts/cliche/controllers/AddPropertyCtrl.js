@@ -12,6 +12,7 @@ angular.module('registryApp.cliche')
         $scope.options = options;
 
         $scope.view = {};
+        $scope.view.disabled = false;
 
         var map = Data.getMap()[options.type];
 
@@ -19,7 +20,7 @@ angular.module('registryApp.cliche')
         case 'input':
             $scope.view.property = {
                 type: 'string',
-                adapter: {separator: '_'}
+                adapter: {separator: ' '}
             };
             break;
         case 'output':
@@ -29,7 +30,7 @@ angular.module('registryApp.cliche')
             };
             break;
         case 'arg':
-            $scope.view.property = {separator: '_'};
+            $scope.view.property = {separator: ' '};
             break;
         }
 

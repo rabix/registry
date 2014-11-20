@@ -52,12 +52,8 @@
 
             <div class="col-md-2">
                 <div class="form-group" title="Separator">
-                    <label for="property-separator-{{ view.uniqueId }}" class="control-label">Separator</label>
-                    <select class="form-control" id="property-separator-{{ view.uniqueId }}" name="{{ name }}-separator" ng-model="prop.adapter.separator" ng-disabled="view.disabled">
-                        <option value="">empty string</option>
-                        <option value="_">space</option>
-                        <option value="=">=</option>
-                    </select>
+                    <label class="control-label">Separator</label>
+                    <separator type="item" model="prop.adapter.separator" is-disabled="view.disabled"></separator>
                 </div>
             </div>
             <!-- END Separator -->
@@ -144,15 +140,8 @@
 
             <div class="col-md-2">
                 <div class="form-group" title="Item Separator">
-                    <label for="property-item-separator-{{ view.uniqueId }}" class="control-label">Item Separator</label>
-
-                    <select class="form-control" id="property-item-separator-{{ view.uniqueId }}" name="{{ name }}-item-separator" ng-model="prop.adapter.listSeparator" ng-disabled="view.disabled">
-                        <option value="">-- choose --</option>
-                        <option value=",">,</option>
-                        <option value=";">;</option>
-                        <option value="_">space</option>
-                        <option value="repeat">repeat</option>
-                    </select>
+                    <label class="control-label">Item Separator</label>
+                    <separator type="list" model="prop.adapter.listSeparator" is-disabled="view.disabled"></separator>
                 </div>
             </div>
             <!-- END Item Separator -->

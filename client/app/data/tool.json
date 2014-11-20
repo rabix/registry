@@ -46,7 +46,7 @@
                     "adapter": {
                         "order": 1,
                         "prefix": "-m",
-                        "separator": "_"
+                        "separator": " "
                     }
                 },
                 "min_std_max_min": {

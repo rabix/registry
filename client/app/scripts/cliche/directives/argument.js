@@ -25,6 +25,7 @@ angular.module('registryApp.cliche')
             link: function(scope) {
 
                 scope.view = {};
+                scope.view.disabled = false;
 
                 uniqueId++;
                 scope.view.uniqueId = uniqueId;
