@@ -18,6 +18,11 @@
 </div>
 
 <div class="form-group">
+    <label class="control-label">Stdin</label>
+    <expr ng-model="view.toolForm.adapter.stdin" handle-item-update="updateStdIn(value)"></expr>
+</div>
+
+<div class="form-group">
     <label class="control-label">Stdout</label>
     <expr ng-model="view.toolForm.adapter.stdout" handle-item-update="updateStdOut(value)"></expr>
 </div>

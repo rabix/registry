@@ -332,6 +332,15 @@ angular.module('registryApp.cliche')
         };
 
         /**
+         * Update stdin if expression or literal defined
+         *
+         * @param {*} value
+         */
+        $scope.updateStdIn = function (value) {
+            $scope.view.toolForm.adapter.stdin = value;
+        };
+
+        /**
          * Update tool resources and apply transformation on allocated resources if needed
          *
          * @param {*} value

@@ -42,8 +42,9 @@
 
             <div class="col-md-3">
                 <div class="form-group">
-                    <label for="property-glob-{{ view.uniqueId }}" class="control-label">Glob</label>
-                    <input type="text" class="form-control" id="property-glob-{{ view.uniqueId }}" name="{{ name }}-glob" ng-model="prop.adapter.glob">
+                    <label class="control-label">Glob</label>
+                    <!--<input type="text" class="form-control" id="property-glob-{{ view.uniqueId }}" name="{{ name }}-glob" ng-model="prop.adapter.glob">-->
+                    <expr ng-model="prop.adapter.glob" handle-item-update="updateGlobValue(value)" placeholder="value"></expr>
                 </div>
             </div>
             <!-- END Prefix -->

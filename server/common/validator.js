@@ -52,6 +52,7 @@ var mapDefinition = {
     },
     adapter: {
         baseCmd: {type: 'array', required: true},
+        stdin: {type: ['string', 'object'], required: true},
         stdout: {type: ['string', 'object'], required: true},
         args: {type: 'object_custom', name: 'adapter', required: true},
         environment: {type: 'object'}
@@ -119,7 +120,7 @@ var mapDefinition = {
             },
             adapter: {
                 stdout: {type: 'boolean'},
-                glob: {type: 'string'},
+                glob: {type: 'object'},
                 secondaryFiles: {type: 'array'},
                 meta: {type: 'object'}
             },

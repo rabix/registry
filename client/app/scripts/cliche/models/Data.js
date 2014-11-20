@@ -616,17 +616,24 @@ angular.module('registryApp.cliche')
                         });
 
                 })
-                /* apply transforms on stdout */
+                /* apply transforms on stdin/stdout */
                 .then(function (res) {
-                    return self.applyTransform(self.tool.adapter.stdout, self.tool.adapter.stdout)
-                            .then(function (result) {
-                                return {command: res.command, baseCmd: res.baseCmd, stdout: result};
-                            });
+                    return $q.all([
+                            self.applyTransform(self.tool.adapter.stdin, self.tool.adapter.stdin),
+                            self.applyTransform(self.tool.adapter.stdout, self.tool.adapter.stdout)
+                        ]).then(function(result) {
+                            return {command: res.command, baseCmd: res.baseCmd, stdin: result[0], stdout: result[1]};
+                        });
                 })
                 /* generate final command */
                 .then(function (result) {
 
                     self.command = result.baseCmd + ' ' + result.command.join(' ');
+
+                    if (result.stdin) {
+                        self.command += ' < ' + result.stdin;
+                    }
+
                     if (result.stdout) {
                         self.command += ' > ' + result.stdout;
                     }
