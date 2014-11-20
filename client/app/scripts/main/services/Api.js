@@ -8,7 +8,6 @@ angular.module('registryApp')
 
         self.apps = $resource(apiUrl + '/apps/:id/:revision', {id: '@id', revision: '@revision'}, {
             add: {method: 'POST'},
-            update: {method: 'PUT'},
             'delete': {method: 'DELETE'}
         });
 
@@ -46,7 +45,7 @@ angular.module('registryApp')
 
         self.revisions = $resource(apiUrl + '/revisions/:id', {id: '@id'}, {
             add: {method: 'POST'},
-            update: {method: 'PUT'},
+            publish: {method: 'PUT'},
             'delete': {method: 'DELETE'}
         });
 

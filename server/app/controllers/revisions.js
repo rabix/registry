@@ -10,6 +10,7 @@ var Revision = mongoose.model('Revision');
 
 var filters = require('../../common/route-filters');
 var validator = require('../../common/validator');
+var Amazon = require('../../aws/aws').Amazon;
 
 module.exports = function (app) {
     app.use('/api', router);
@@ -102,6 +103,7 @@ router.post('/revisions', filters.authenticated, function (req, res, next) {
         if (user_id === app_user_id) {
 
             Revision.findOne({app_id: data.app_id}).sort({_id: 'desc'}).exec(function(err, r) {
+
                 var revision = new Revision();
 
                 revision.name = app.name;
@@ -127,6 +129,65 @@ router.post('/revisions', filters.authenticated, function (req, res, next) {
             res.status(401).json({message: 'Unauthorized'});
         }
 
+    });
+
+});
+
+router.put('/revisions/:id', filters.authenticated, function (req, res, next) {
+
+    Revision.findById(req.params.id, function(err, revision) {
+        if (err) { return next(err); }
+
+        App.findById(revision.app_id).populate('repo').exec(function(err, app) {
+            if (err) { return next(err); }
+
+            var user_id = req.user.id.toString();
+            var app_user_id = app.user.toString();
+
+            if (user_id === app_user_id) {
+
+                var folder = 'users/' + req.user.login + '/apps/' + app.repo.owner + '-' + app.repo.name;
+
+                Amazon.createFolder(folder)
+                    .then(function () {
+
+                        Amazon.uploadJSON(app.name + '.json', revision.json, folder)
+                            .then(function () {
+
+                                Amazon.getFileUrl(app.name + '.json', folder, function (url) {
+
+                                    app.links = {json: url};
+                                    app.json = revision.json;
+                                    app.c_version = revision.c_version;
+                                    app.description = revision.description;
+                                    app.author = revision.author;
+
+                                    app.save(function(err) {
+                                        if (err) { return next(err); }
+
+                                        Revision.count({app_id: revision.app_id, is_public: true}, function(err, total) {
+                                            if (err) { return next(err); }
+
+                                            revision.is_public = true;
+                                            revision.version = total + 1;
+
+                                            revision.save();
+
+                                            res.json({revision: revision, message: 'App has been successfully updated'});
+
+                                        });
+                                    });
+                                });
+                            }, function (error) {
+                                res.status(500).json(error);
+                            });
+                    }, function (error) {
+                        res.status(500).json(error);
+                    });
+            } else {
+                res.status(401).json({message: 'Unauthorized'});
+            }
+        });
     });
 
 });

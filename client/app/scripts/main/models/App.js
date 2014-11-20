@@ -58,37 +58,14 @@ angular.module('registryApp')
         };
 
         /**
-         * Save changes for the app
+         * Create new app
          *
-         * @param {string} action - save|publish|create
-         * @param id
-         * @param revision
          * @param repoId
          * @returns {*}
          */
-        self.save = function(action, id, revision, repoId) {
+        self.create = function(repoId) {
 
-            var mode = 'add';
-
-            if (action === 'save') {
-                return Api.revisions[mode]({}, {tool: Data.tool, app_id: id}).$promise;
-            } else {
-
-                var revisionId = revision ? revision.id : null;
-                var getParams = {id: id, revision: revisionId};
-                var postParams = {tool: Data.tool};
-
-                if (action === 'publish') {
-                    mode = 'update';
-                }
-
-                if (action === 'create') {
-                    getParams.id = 'create';
-                    postParams.repo_id = repoId;
-                }
-
-                return Api.apps[mode](getParams, postParams).$promise;
-            }
+            return Api.apps.add({id: 'create'}, {tool: Data.tool, repo_id: repoId}).$promise;
 
         };
 
@@ -101,6 +78,30 @@ angular.module('registryApp')
         self.fork = function(data) {
 
             return Api.apps.add({id: 'fork'}, {tool: Data.tool, repo_id: data.repoId, name: data.name}).$promise;
+
+        };
+
+        /**
+         * Update the app - create new revision
+         *
+         * @param appId
+         * @returns {*}
+         */
+        self.update = function(appId) {
+
+            return Api.revisions.add({}, {tool: Data.tool, app_id: appId}).$promise;
+
+        };
+
+        /**
+         * Publish revision
+         *
+         * @param id
+         * @returns {*}
+         */
+        self.publish = function(id) {
+
+            return Api.revisions.publish({id: id}).$promise;
 
         };
 
@@ -132,9 +133,9 @@ angular.module('registryApp')
         /**
          * Get list of app's revisions
          *
-         * @params {integer} skip
-         * @params {string} searchTerm
-         * @params {integer} appId
+         * @param {integer} skip
+         * @param {string} searchTerm
+         * @param {integer} appId
          * @returns {object} $promise
          */
         self.getRevisions = function(skip, searchTerm, appId) {
