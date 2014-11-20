@@ -32,15 +32,13 @@ var mapDefinition = {
     },
     container: {
         type: {type: 'string', required: true},
-        uri: {type: 'string', required: true},
-        imageId: {type: 'string', required: true}
+        uri: {type: 'string'},
+        imageId: {type: 'string'}
     },
     resources: {
-        cpu: {type: ['number', 'object'], required: true},
-        mem: {type: ['number', 'object'], required: true},
-        ports: {type: 'array'},
-        diskSpace: {type: ['number', 'object'], required: true},
-        network: {type: 'boolean', required: true}
+        cpu: {type: ['number', 'object']},
+        mem: {type: ['number', 'object']},
+        ports: {type: 'array'}
     },
     inputs: {
         type: {type: 'string', required: true},

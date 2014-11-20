@@ -40,15 +40,15 @@
         </div>
     </div>
     <div class="col-md-4">
-        <div class="form-group required" ng-class="{'has-error': (forms.toolForm.RECuri.$invalid && forms.toolForm.$dirty)}">
+        <div class="form-group">
             <label for="uri" class="control-label">Docker Repo[#tag]</label>
-            <input type="text" class="form-control" id="uri" name="RECuri" ng-model="view.toolForm.requirements.environment.container.uri" required>
+            <input type="text" class="form-control" id="uri" name="RECuri" ng-model="view.toolForm.requirements.environment.container.uri">
         </div>
     </div>
     <div class="col-md-4">
-        <div class="form-group required" ng-class="{'has-error': (forms.toolForm.RECimageId.$invalid && forms.toolForm.$dirty)}">
+        <div class="form-group">
             <label for="uri" class="control-label">Image Id</label>
-            <input type="text" class="form-control" id="imageId" name="RECimageId" ng-model="view.toolForm.requirements.environment.container.imageId" required>
+            <input type="text" class="form-control" id="imageId" name="RECimageId" ng-model="view.toolForm.requirements.environment.container.imageId">
         </div>
     </div>
 </div>
@@ -59,29 +59,15 @@
 
 <div class="row">
     <div class="col-md-3">
-        <div class="form-group required" ng-class="{'has-error': (forms.toolForm.RRcpu.$invalid && forms.toolForm.$dirty)}">
+        <div class="form-group">
             <label class="control-label">CPU</label>
             <expr ng-model="view.toolForm.requirements.resources.cpu" type="number" handle-item-update="updateResource(value, 'cpu')"></expr>
         </div>
     </div>
     <div class="col-md-3">
-        <div class="form-group required" ng-class="{'has-error': (forms.toolForm.RRmem.$invalid && forms.toolForm.$dirty)}">
+        <div class="form-group">
             <label class="control-label">Memory</label>
             <expr ng-model="view.toolForm.requirements.resources.mem" type="number" handle-item-update="updateResource(value, 'mem')"></expr>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="form-group required" ng-class="{'has-error': (forms.toolForm.RRdiskSpace.$invalid && forms.toolForm.$dirty)}">
-            <label class="control-label">Disk Space</label>
-            <expr ng-model="view.toolForm.requirements.resources.diskSpace" type="number" handle-item-update="updateResource(value, 'diskSpace')"></expr>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="form-group">
-            <label class="control-label empty-label">&nbsp;</label>
-            <div class="checkbox">
-                <label><input type="checkbox" ng-model="view.toolForm.requirements.resources.network"> Network</label>
-            </div>
         </div>
     </div>
 </div>

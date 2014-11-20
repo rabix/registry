@@ -40,9 +40,9 @@ angular.module('registryApp')
 
             $scope.view.subscribing = true;
 
-            User.subscribe($scope.subscribe.email).then(function (result) {
+            User.subscribe($scope.subscribe.email).then(function () {
 
-                $scope.view.message.trace = 'You\'ve subscribed successfully';
+                $scope.view.message.trace = 'You\'ve submitted your e-mail successfully';
                 $scope.view.message.status = true;
 
                 $scope.cancelSubscribeTimeout();
