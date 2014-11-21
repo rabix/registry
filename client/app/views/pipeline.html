@@ -24,10 +24,10 @@
 
         <section class="tab revisions" ng-if="view.tab === 'revisions'">
 
-            <table class="table table-hover revisions">
+            <table class="table table-hover revisions" ng-class="{'revisions-short': !view.user}">
                 <thead>
                 <tr>
-                    <th>Revision</th>
+                    <th ng-if="view.user">Revision</th>
                     <th>Version</th>
                     <th>Description</th>
                     <th class="right">&nbsp;</th>
@@ -36,7 +36,7 @@
                 <tbody>
                 <tr ng-repeat="revision in view.revisions">
 
-                    <td class="revision">
+                    <td ng-if="view.user" class="revision">
                         <strong>{{ revision.rev }}</strong>
                     </td>
 

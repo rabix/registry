@@ -4,6 +4,7 @@ var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
 var _ = require('lodash');
+var Q = require('q');
 
 var App = mongoose.model('App');
 var Repo = mongoose.model('Repo');
@@ -29,8 +30,17 @@ router.get('/apps', function (req, res, next) {
         }
     });
 
-    if (req.user && req.param('mine')) {
-        where.user = req.user.id;
+    if (req.user) {
+        if (req.param('mine')) {
+            where.user = req.user.id;
+        } else {
+            where.$or = [
+                {user: req.user.id},
+                {public_count: {$gt: 0}}
+            ];
+        }
+    } else {
+        where.public_count = {$gt: 0};
     }
 
     App.count(where, function(err, total) {
@@ -52,7 +62,7 @@ router.get('/apps', function (req, res, next) {
                     path: 'revisions',
                     select: 'name description version',
                     match: match,
-                    options: { limit: 25 }
+                    options: {limit: 25, sort: {version: 'desc'}}
                 })
                 .skip(skip)
                 .limit(limit)
@@ -128,30 +138,43 @@ router.get('/apps/:id/:revision', function (req, res, next) {
     App.findById(req.params.id).populate('user').populate('repo').exec(function(err, app) {
         if (err) { return next(err); }
 
-        Revision.count({is_public: true, app_id: req.params.id}, function(err, count) {
+        if (err) { return next(err); }
+
+        var params = {};
+        var sort = {_id: 'desc'};
+        var user_id = (req.user ? req.user.id : '').toString();
+        var app_user_id = app.user._id.toString();
+
+        if (req.params.revision === 'latest') {
+
+            params.app_id = req.params.id;
+
+            if (app.public_count > 0 || user_id !== app_user_id) {
+                params.is_public = true;
+                sort = {version: 'desc'};
+            }
+
+        } else {
+            params._id = req.params.revision;
+        }
+
+        Revision.findOne(params).sort(sort).exec(function(err, revision) {
             if (err) { return next(err); }
 
-            if (req.params.revision === 'public') {
+            if (!revision) {
+                res.status(400).json({message: 'There are no public revisions for this tool.'});
+                return;
+            }
 
-                res.json({data: app, publicCount: count});
+            if (revision.is_public || user_id === app_user_id) {
+
+                res.json({data: app, revision: revision});
 
             } else {
-
-                var params = (req.params.revision === 'latest') ? {app_id: req.params.id} : {_id: req.params.revision};
-
-                Revision.findOne(params).sort({_id: 'desc'}).exec(function(err, revision) {
-                    if (err) { return next(err); }
-
-                    app.c_version = revision.c_version;
-                    app.description = revision.description;
-                    app.author = revision.author;
-                    app.json = revision.json;
-
-                    res.json({data: app, revision: {id: revision._id, version: revision.version, order: revision.order}, publicCount: count});
-                });
+                res.status(401).json({message: 'Unauthorized'});
             }
-        });
 
+        });
 
     });
 
@@ -311,6 +334,50 @@ router.delete('/apps/:id', filters.authenticated, function (req, res, next) {
         } else {
             res.status(500).json({message: 'Unauthorized'});
         }
+    });
+
+});
+
+var fixPublicCount = function(app, next) {
+
+    var promise = new mongoose.Promise;
+
+    Revision.count({app_id: app._id, is_public: true}, function(err, count) {
+        if (err) { return next(err); }
+
+        if (count !== app.public_count) {
+            app.public_count = count;
+
+            app.save(function(err) {
+                if (err) { return next(err); }
+
+                promise.fulfill({app_id: app._id, fixed: 'yes'});
+            });
+        } else {
+            promise.fulfill({app_id: app._id, fixed: 'no need'});
+        }
+
+    });
+
+    return promise;
+
+};
+
+router.get('/fix-public-count', function (req, res, next) {
+
+    App.find({}, function(err, apps) {
+        if (err) { return next(err); }
+
+        var promises = [];
+
+        _.each(apps, function(app) {
+            promises.push(fixPublicCount(app), next);
+        });
+
+        Q.all(promises).then(function(result) {
+            res.json({result: result});
+        });
+
     });
 
 });

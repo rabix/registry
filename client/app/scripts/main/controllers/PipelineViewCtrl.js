@@ -4,7 +4,7 @@
 'use strict';
 
 angular.module('registryApp')
-    .controller('PipelineViewCtrl', ['$scope', '$q', '$location', '$routeParams', 'Sidebar', 'Loading', 'Pipeline', '$modal', '$templateCache', function ($scope, $q, $location, $routeParams, Sidebar, Loading, Pipeline, $modal, $templateCache) {
+    .controller('PipelineViewCtrl', ['$scope', '$q', '$location', '$routeParams', 'Sidebar', 'Loading', 'Pipeline', 'User', '$modal', '$templateCache', function ($scope, $q, $location, $routeParams, Sidebar, Loading, Pipeline, User, $modal, $templateCache) {
 
         Sidebar.setActive('workflows');
 
@@ -38,9 +38,13 @@ angular.module('registryApp')
         Pipeline.getRevision($routeParams.id).then(function (result) {
             $scope.view.pipeline = result.data;
 
-            Pipeline.getRevisions(0, '', $scope.view.pipeline.pipeline._id).then(function (res) {
-                revisionsLoaded(res);
-            });
+            $q.all([
+                    Pipeline.getRevisions(0, '', $scope.view.pipeline.pipeline._id),
+                    User.getUser()
+                ]).then(function(result) {
+                    revisionsLoaded(result[0]);
+                    $scope.view.user = result[1].user;
+                });
 
         });
 

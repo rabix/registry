@@ -100,7 +100,18 @@ body {
       background-color: #555;
       color: #fff;
       padding: 3px 5px;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 17px;
       @include border-radius(2px);
+
+      &:hover {
+        text-decoration: none;
+      }
+      
+      &.revision {
+        background-color: $orange;
+      }
     }
   }
 
@@ -413,6 +424,14 @@ body {
         p {
           &:not(.alert) {
             max-width: 500px;
+          }
+        }
+      }
+      &.revisions-short {
+        th {
+          &:nth-child(2) {
+            width: 40%;
+            text-align: left;
           }
         }
       }

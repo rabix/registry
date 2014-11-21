@@ -20,7 +20,7 @@
 
         <section ng-if="view.tab === 'info'">
 
-            <div class="description"><i>Description:</i> {{ !view.app.description ? 'This app doesn\'t have any description' : view.app.description }}</div>
+            <div class="description"><i>Description:</i> {{ !view.revision.description ? 'This app doesn\'t have any description' : view.revision.description }}</div>
 
             <div class="description">
                 <div class="panel panel-warning panel-app horizontal">
@@ -35,17 +35,17 @@
 
                             <section class="col-md-4">
                                 <h5>Docker Image Details</h5>
-                                <p><strong>Image Id:</strong> {{ view.app.json.requirements.environment.container.imageId }}</p>
+                                <p><strong>Image Id:</strong> {{ view.revision.json.requirements.environment.container.imageId }}</p>
                                 <p>
                                     <strong>Image Uri:</strong>
-                                    <copy string="{{ view.app.json.requirements.environment.container.uri }}" show-string="true" is-small="true"></copy>
+                                    <copy string="{{ view.revision.json.requirements.environment.container.uri }}" show-string="true" is-small="true"></copy>
                                 </p>
                             </section>
 
                             <section class="col-md-4">
                                 <h5>App Details</h5>
                                 <p><strong>Repo:</strong> <a ng-href="#/repo/{{ view.app.repo.id }}">{{ view.app.repo.owner }}/{{ view.app.repo.name }}</a></p>
-                                <p><strong>Version:</strong> {{ view.app.c_version }}</p>
+                                <p><strong>Version:</strong> {{ view.revision.c_version }}</p>
                             </section>
                         </div>
                     </div>
@@ -54,7 +54,7 @@
 
             <div class="snippet">
                 <p>Use this command to run the app</p>
-                <pre>$ rabix "<a href="/tool/{{ view.app._id }}" target="_blank">http://rabix.org/tool/{{ view.app._id }}</a>"</pre>
+                <pre>$ rabix "<a href="/tool-revision/{{ view.revision._id }}" target="_blank">http://rabix.org/tool-revision/{{ view.revision._id }}</a>"</pre>
             </div>
 
             <div class="snippet">
@@ -64,17 +64,17 @@
                         <i class="fa" ng-class="{'fa-chevron-right': !view.isJsonVisible, 'fa-chevron-down': view.isJsonVisible}"></i>
                     </a>
                 </p>
-                <pre ng-class="{hide: !view.isJsonVisible}" pretty-json="view.app.json"></pre>
+                <pre ng-class="{hide: !view.isJsonVisible}" pretty-json="view.revision.json"></pre>
             </div>
 
         </section>
 
         <section ng-if="view.tab === 'revisions'">
 
-            <table class="table table-hover revisions">
+            <table class="table table-hover revisions" ng-class="{'revisions-short': !view.user}">
                 <thead>
                     <tr>
-                        <th>Revision</th>
+                        <th ng-if="view.user">Revision</th>
                         <th>Version</th>
                         <th>Description</th>
                         <th class="right">Actions</th>
@@ -82,7 +82,7 @@
                 </thead>
                 <tbody>
                     <tr ng-repeat="revision in view.revisions">
-                        <td class="revision">
+                        <td ng-if="view.user" class="revision">
                             <strong>{{ revision.order }}</strong>
                         </td>
                         <td class="revision">

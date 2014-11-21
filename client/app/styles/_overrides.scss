@@ -196,6 +196,7 @@ form, .form {
 .btn {
   @include border-radius(0);
   &.btn-orange {
+    border: 1px solid darken($orange, 10%);
     background-color: $orange;
     color: #fff;
     cursor: pointer;

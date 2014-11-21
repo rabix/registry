@@ -73,7 +73,7 @@ angular.module('registryApp.cliche')
                     $scope.view.loading = false;
 
                     $scope.view.app = result[0].data;
-                    $scope.view.currentRevision = result[0].revision;
+                    $scope.view.revision = result[0].revision;
                     $scope.view.user = result[1].user;
 
                     Data.setTool($scope.view.app.json);
@@ -429,7 +429,7 @@ angular.module('registryApp.cliche')
 
                         }],
                         windowClass: 'modal-revisions',
-                        resolve: {data: function () {return {revisions: result.list, app: $scope.view.app, current: $scope.view.currentRevision};}}
+                        resolve: {data: function () {return {revisions: result.list, app: $scope.view.app, current: $scope.view.revision};}}
                     });
 
                     modalInstance.result.then(function (revisionId) {
@@ -602,7 +602,7 @@ angular.module('registryApp.cliche')
 
             modalInstance.result.then(function () {
                 $scope.view.saving = true;
-                App.deleteRevision($scope.view.currentRevision.id).then(function () {
+                App.deleteRevision($scope.view.revision._id).then(function () {
                     $scope.view.saving = false;
                     $scope.view.reload = true;
                     $location.path('/apps');
