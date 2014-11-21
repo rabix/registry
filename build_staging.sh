@@ -14,7 +14,7 @@ pwd
 
 npm install
 
-bower install
+su sbg -c "bower install"
 
 grunt
 
