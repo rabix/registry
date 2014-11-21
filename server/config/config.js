@@ -68,7 +68,7 @@ var config = {
             name: 'server',
             githubName: 'Rabix-staging'
         },
-        port: 3333,
+        port: 5000,
         db: 'mongodb://localhost/server-staging',
         clientPath: '../../client/dist',
         github: {
