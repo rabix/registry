@@ -572,3 +572,1550 @@ router.delete('/pipeline-revisions/:revision', filters.authenticated, function (
 
 });
 
+router.get('/test/test', function (req, res, next) {
+
+    var test_pipeline = {
+        "schemas" : {
+            "Input_1_1" : {
+                "id" : "Input_1_1",
+                "outputs" : {
+                    "properties" : {
+                        "input_1" : {
+                            "type" : "file",
+                            "required" : false,
+                            "id" : "input_1",
+                            "name" : "Input_1"
+                        }
+                    },
+                    "type" : "object"
+                },
+                "inputs" : {
+                    "type" : "object"
+                },
+                "documentAuthor" : null,
+                "softwareDescription" : {
+                    "name" : "Input_1",
+                    "repo_name" : "system",
+                    "repo_owner" : "rabix"
+                }
+            },
+            "shism_1" : {
+                "order" : 2,
+                "is_public" : true,
+                "version" : 2,
+                "json" : {
+                    "adapter" : {
+                        "args" : [
+                            {
+                                "value" : "mem",
+                                "order" : 0
+                            },
+                            {
+                                "value" : 10,
+                                "prefix" : "-t",
+                                "order" : 1
+                            }
+                        ],
+                        "stdout" : "output.sam",
+                        "baseCmd" : [
+                            "bwa"
+                        ]
+                    },
+                    "outputs" : {
+                        "properties" : {
+                            "sam" : {
+                                "adapter" : {
+                                    "secondaryFiles" : [ ],
+                                    "meta" : {
+                                        "key2" : "test",
+                                        "key1" : {
+                                            "expr" : "$job"
+                                        },
+                                        "__inherit__" : ""
+                                    },
+                                    "glob" : "output.sam",
+                                    "streamable" : true
+                                },
+                                "type" : "file"
+                            }
+                        },
+                        "type" : "object"
+                    },
+                    "inputs" : {
+                        "properties" : {
+                            "min_std_max_min" : {
+                                "adapter" : {
+                                    "listSeparator" : ",",
+                                    "prefix" : "-I",
+                                    "order" : 1
+                                },
+                                "items" : {
+                                    "type" : "number"
+                                },
+                                "maxItems" : 4,
+                                "minItems" : 1,
+                                "type" : "array"
+                            },
+                            "minimum_seed_length" : {
+                                "adapter" : {
+                                    "separator" : "_",
+                                    "prefix" : "-m",
+                                    "order" : 1
+                                },
+                                "type" : "integer"
+                            },
+                            "reads" : {
+                                "adapter" : {
+                                    "listStreamable" : true,
+                                    "order" : 3
+                                },
+                                "items" : {
+                                    "type" : "file"
+                                },
+                                "required" : true,
+                                "maxItems" : 2,
+                                "minItems" : 1,
+                                "type" : "array"
+                            },
+                            "reference" : {
+                                "adapter" : {
+                                    "order" : 2
+                                },
+                                "required" : true,
+                                "type" : "file"
+                            }
+                        },
+                        "type" : "object"
+                    },
+                    "requirements" : {
+                        "resources" : {
+                            "network" : false,
+                            "diskSpace" : 0,
+                            "ports" : [ ],
+                            "mem" : 5000,
+                            "cpu" : 0
+                        },
+                        "environment" : {
+                            "container" : {
+                                "imageId" : "test",
+                                "uri" : "test",
+                                "type" : "docker"
+                            }
+                        }
+                    },
+                    "documentAuthor" : "milica.kadic.87@gmail.com",
+                    "softwareDescription" : {
+                        "repo_name" : "test",
+                        "description" : "lorem",
+                        "name" : "shism",
+                        "repo_owner" : "milica"
+                    }
+                },
+                "description" : "lorem",
+                "author" : "milica.kadic.87@gmail.com",
+                "app_id" : "546a1e223c384469484f0a15",
+                "_id" : "546a1e933c384469484f0a17",
+                "__v" : 0
+            },
+            "Output_1_1" : {
+                "id" : "Output_1_1",
+                "outputs" : {
+                    "type" : "object"
+                },
+                "inputs" : {
+                    "properties" : {
+                        "output_1" : {
+                            "type" : "file",
+                            "required" : false,
+                            "id" : "output_1",
+                            "name" : "Output_1"
+                        }
+                    },
+                    "type" : "object"
+                },
+                "documentAuthor" : null,
+                "softwareDescription" : {
+                    "name" : "Output_1",
+                    "repo_name" : "system",
+                    "repo_owner" : "rabix"
+                }
+            },
+            "BWA MEM_1" : {
+                "order" : 1,
+                "is_public" : true,
+                "version" : 1,
+                "json" : {
+                    "adapter" : {
+                        "args" : [
+                            {
+                                "value" : "mem",
+                                "order" : 0
+                            },
+                            {
+                                "value" : {
+                                    "expr" : {
+                                        "lang" : "javascript",
+                                        "value" : "$job['allocatedResources']['cpu']"
+                                    }
+                                },
+                                "prefix" : "-t",
+                                "order" : 1
+                            }
+                        ],
+                        "stdout" : "output.sam",
+                        "baseCmd" : [
+                            "bwa"
+                        ]
+                    },
+                    "outputs" : {
+                        "properties" : {
+                            "sam" : {
+                                "adapter" : {
+                                    "secondaryFiles" : [ ],
+                                    "meta" : {
+                                        "__inherit__" : "reads",
+                                        "file_type" : "sam"
+                                    },
+                                    "glob" : "output.sam",
+                                    "streamable" : true
+                                },
+                                "type" : "file"
+                            }
+                        },
+                        "type" : "object"
+                    },
+                    "inputs" : {
+                        "properties" : {
+                            "mark_shorter_split_hits_as_secondary" : {
+                                "required" : false,
+                                "adapter" : {
+                                    "order" : 1,
+                                    "prefix" : "-M",
+                                    "separator" : "_"
+                                },
+                                "type" : "boolean"
+                            },
+                            "use_soft_clipping_for_supplementary_alignments" : {
+                                "required" : false,
+                                "adapter" : {
+                                    "order" : 1,
+                                    "prefix" : "-Y",
+                                    "separator" : "_"
+                                },
+                                "type" : "boolean"
+                            },
+                            "append_FASTA/FASTQ_comment_to_SAM_output" : {
+                                "required" : false,
+                                "adapter" : {
+                                    "order" : 1,
+                                    "prefix" : "-C",
+                                    "separator" : "_"
+                                },
+                                "type" : "boolean"
+                            },
+                            "output_all_alignments_for_SE_or_unpaired_PE" : {
+                                "required" : false,
+                                "adapter" : {
+                                    "order" : 1,
+                                    "prefix" : "-a",
+                                    "separator" : "_"
+                                },
+                                "type" : "boolean"
+                            },
+                            "if_there_are_<INT_hits_with_score>80%_of_the_max_score,output_all_in_XA" : {
+                                "required" : false,
+                                "adapter" : {
+                                    "order" : 0,
+                                    "prefix" : "-h",
+                                    "separator" : "_"
+                                },
+                                "type" : "integer"
+                            },
+                            "minimum_score_to_output" : {
+                                "required" : false,
+                                "adapter" : {
+                                    "order" : 1,
+                                    "prefix" : "-T",
+                                    "separator" : "_"
+                                },
+                                "type" : "integer"
+                            },
+                            "read_group_header_line" : {
+                                "adapter" : {
+                                    "order" : 1,
+                                    "prefix" : "-R",
+                                    "separator" : "_"
+                                },
+                                "type" : "string"
+                            },
+                            "first_query_file_consists_of_interleaved_paired-end_sequences" : {
+                                "required" : false,
+                                "adapter" : {
+                                    "order" : 1,
+                                    "prefix" : "-p",
+                                    "separator" : "_"
+                                },
+                                "type" : "boolean"
+                            },
+                            "read_type_Setting_-x_changes_multiple_parameters_unless_overriden" : {
+                                "adapter" : {
+                                    "order" : 1,
+                                    "prefix" : "-x",
+                                    "separator" : "_"
+                                },
+                                "type" : "string"
+                            },
+                            "penalty_for_an_unpaired_read_pair" : {
+                                "required" : false,
+                                "adapter" : {
+                                    "order" : 1,
+                                    "prefix" : "-U",
+                                    "separator" : "_"
+                                },
+                                "type" : "integer"
+                            },
+                            "penalty_for_5'-and_3'-end_clipping" : {
+                                "items" : {
+                                    "type" : "number"
+                                },
+                                "maxItems" : 2,
+                                "minItems" : 1,
+                                "required" : false,
+                                "adapter" : {
+                                    "listSeparator" : ",",
+                                    "order" : 1,
+                                    "prefix" : "-L",
+                                    "separator" : "_"
+                                },
+                                "type" : "array"
+                            },
+                            "gap_extension_penalty;a_gap_of_size_k_cost_{-O}+{-E}*k'" : {
+                                "items" : {
+                                    "type" : "number"
+                                },
+                                "maxItems" : 2,
+                                "minItems" : 1,
+                                "required" : false,
+                                "adapter" : {
+                                    "listSeparator" : ",",
+                                    "order" : 1,
+                                    "prefix" : "-E",
+                                    "separator" : "_"
+                                },
+                                "type" : "array"
+                            },
+                            "gap_open_penalties_for_deletions_and_insertions" : {
+                                "items" : {
+                                    "type" : "number"
+                                },
+                                "maxItems" : 2,
+                                "minItems" : 1,
+                                "required" : false,
+                                "adapter" : {
+                                    "listSeparator" : ",",
+                                    "order" : 1,
+                                    "prefix" : "-O",
+                                    "separator" : "_"
+                                },
+                                "type" : "array"
+                            },
+                            "penalty_for_a_mismatch" : {
+                                "required" : false,
+                                "adapter" : {
+                                    "order" : 1,
+                                    "prefix" : "-B",
+                                    "separator" : "_"
+                                },
+                                "type" : "integer"
+                            },
+                            "score_for_a_sequence_match,which_scales_options_-TdBOELU_unless_overridden" : {
+                                "required" : false,
+                                "adapter" : {
+                                    "order" : 1,
+                                    "prefix" : "-A",
+                                    "separator" : "_"
+                                },
+                                "type" : "integer"
+                            },
+                            "discard_full-length_exact_matches" : {
+                                "required" : false,
+                                "adapter" : {
+                                    "order" : 1,
+                                    "prefix" : "-e",
+                                    "separator" : "_"
+                                },
+                                "type" : "boolean"
+                            },
+                            "skip_pairing;mate_rescue_performed_unless_-S_also_in_use" : {
+                                "required" : false,
+                                "adapter" : {
+                                    "order" : 1,
+                                    "prefix" : "-P",
+                                    "separator" : "_"
+                                },
+                                "type" : "boolean"
+                            },
+                            "skip_mate_rescue" : {
+                                "required" : false,
+                                "adapter" : {
+                                    "order" : 1,
+                                    "prefix" : "-S",
+                                    "separator" : "_"
+                                },
+                                "type" : "boolean"
+                            },
+                            "discard_a_chain_if_seeded_bases_shorter_than_ INT" : {
+                                "required" : false,
+                                "adapter" : {
+                                    "order" : 1,
+                                    "prefix" : "-W",
+                                    "separator" : "_"
+                                },
+                                "type" : "integer"
+                            },
+                            "look_for_internal_seeds_inside_a_seed_longer_than_k*1_5" : {
+                                "enum" : null,
+                                "required" : false,
+                                "adapter" : {
+                                    "order" : 1,
+                                    "prefix" : "-r",
+                                    "separator" : "_"
+                                },
+                                "type" : "string"
+                            },
+                            "perform_at_most_INT_rounds_of_mate_rescues_for_each_read" : {
+                                "required" : false,
+                                "adapter" : {
+                                    "order" : 1,
+                                    "prefix" : "-m",
+                                    "separator" : "_"
+                                },
+                                "type" : "integer"
+                            },
+                            "drop_chains_shorter_than_FLOAT_fraction_of_the_longest_overlapping_chain" : {
+                                "adapter" : {
+                                    "order" : 1,
+                                    "prefix" : "-D",
+                                    "separator" : "_"
+                                },
+                                "type" : "string"
+                            },
+                            "skip_seeds_with_more_than_INT_occurrences" : {
+                                "required" : false,
+                                "adapter" : {
+                                    "order" : 1,
+                                    "prefix" : "-c",
+                                    "separator" : "_"
+                                },
+                                "type" : "integer"
+                            },
+                            "off-diagonal_X-dropoff" : {
+                                "required" : false,
+                                "adapter" : {
+                                    "order" : 1,
+                                    "prefix" : "-d",
+                                    "separator" : "_"
+                                },
+                                "type" : "integer"
+                            },
+                            "band_width_for_banded_alignment" : {
+                                "required" : false,
+                                "adapter" : {
+                                    "order" : 1,
+                                    "prefix" : "-w",
+                                    "separator" : ""
+                                },
+                                "type" : "integer"
+                            },
+                            "min_std_max_min" : {
+                                "adapter" : {
+                                    "separator" : "_",
+                                    "prefix" : "",
+                                    "order" : 1
+                                },
+                                "items" : {
+                                    "type" : "number"
+                                },
+                                "maxItems" : 4,
+                                "minItems" : 1,
+                                "type" : "array"
+                            },
+                            "minimum_seed_length" : {
+                                "adapter" : {
+                                    "separator" : "_",
+                                    "prefix" : "-k",
+                                    "order" : 1
+                                },
+                                "type" : "integer"
+                            },
+                            "reads" : {
+                                "adapter" : {
+                                    "listStreamable" : true,
+                                    "order" : 3
+                                },
+                                "items" : {
+                                    "type" : "file"
+                                },
+                                "required" : true,
+                                "maxItems" : 2,
+                                "minItems" : 1,
+                                "type" : "array"
+                            },
+                            "reference" : {
+                                "adapter" : {
+                                    "secondaryFiles" : [
+                                        "*.amb",
+                                        "*.ann",
+                                        "*.bwt",
+                                        "*.pac",
+                                        "*.sa"
+                                    ],
+                                    "order" : 2
+                                },
+                                "required" : true,
+                                "type" : "file"
+                            }
+                        },
+                        "type" : "object"
+                    },
+                    "requirements" : {
+                        "resources" : {
+                            "network" : false,
+                            "diskSpace" : 0,
+                            "ports" : [ ],
+                            "mem" : 5000,
+                            "cpu" : 0
+                        },
+                        "environment" : {
+                            "container" : {
+                                "imageId" : "9d3b9b0359cf",
+                                "uri" : "docker://images.sbgenomics.com/rabix/bwa#9d3b9b0359cf",
+                                "type" : "docker"
+                            }
+                        }
+                    },
+                    "documentAuthor" : "sinisa.ivkovic@sbgenomics.com",
+                    "softwareDescription" : {
+                        "name" : "BWA MEM",
+                        "repo_name" : "bwa-mem",
+                        "repo_owner" : "sinisa88"
+                    }
+                },
+                "author" : "sinisa.ivkovic@sbgenomics.com",
+                "app_id" : {
+                    "_id" : "546a0c6a3c384469484f0a09",
+                    "name" : "BWA MEM"
+                },
+                "_id" : "546a0c6a3c384469484f0a0a",
+                "__v" : 0
+            }
+        },
+        "relations" : [
+            {
+                "output_name" : "sam",
+                "input_name" : "output_1",
+                "end_node" : "Output_1_1",
+                "start_node" : "BWA MEM_1",
+                "id" : "117526"
+            },
+            {
+                "output_name" : "input_1",
+                "input_name" : "reference",
+                "end_node" : "shism_1",
+                "start_node" : "Input_1_1",
+                "id" : "152660"
+            },
+            {
+                "output_name" : "sam",
+                "input_name" : "reference",
+                "end_node" : "BWA MEM_1",
+                "start_node" : "shism_1",
+                "id" : "877907"
+            }
+        ],
+        "nodes" : [
+            {
+                "order" : 1,
+                "is_public" : true,
+                "version" : 1,
+                "json" : {
+                    "adapter" : {
+                        "args" : [
+                            {
+                                "value" : "mem",
+                                "order" : 0
+                            },
+                            {
+                                "value" : {
+                                    "expr" : {
+                                        "lang" : "javascript",
+                                        "value" : "$job['allocatedResources']['cpu']"
+                                    }
+                                },
+                                "prefix" : "-t",
+                                "order" : 1
+                            }
+                        ],
+                        "stdout" : "output.sam",
+                        "baseCmd" : [
+                            "bwa"
+                        ]
+                    },
+                    "outputs" : {
+                        "properties" : {
+                            "sam" : {
+                                "adapter" : {
+                                    "secondaryFiles" : [ ],
+                                    "meta" : {
+                                        "__inherit__" : "reads",
+                                        "file_type" : "sam"
+                                    },
+                                    "glob" : "output.sam",
+                                    "streamable" : true
+                                },
+                                "type" : "file"
+                            }
+                        },
+                        "type" : "object"
+                    },
+                    "inputs" : {
+                        "properties" : {
+                            "mark_shorter_split_hits_as_secondary" : {
+                                "required" : false,
+                                "adapter" : {
+                                    "order" : 1,
+                                    "prefix" : "-M",
+                                    "separator" : "_"
+                                },
+                                "type" : "boolean"
+                            },
+                            "use_soft_clipping_for_supplementary_alignments" : {
+                                "required" : false,
+                                "adapter" : {
+                                    "order" : 1,
+                                    "prefix" : "-Y",
+                                    "separator" : "_"
+                                },
+                                "type" : "boolean"
+                            },
+                            "append_FASTA/FASTQ_comment_to_SAM_output" : {
+                                "required" : false,
+                                "adapter" : {
+                                    "order" : 1,
+                                    "prefix" : "-C",
+                                    "separator" : "_"
+                                },
+                                "type" : "boolean"
+                            },
+                            "output_all_alignments_for_SE_or_unpaired_PE" : {
+                                "required" : false,
+                                "adapter" : {
+                                    "order" : 1,
+                                    "prefix" : "-a",
+                                    "separator" : "_"
+                                },
+                                "type" : "boolean"
+                            },
+                            "if_there_are_<INT_hits_with_score>80%_of_the_max_score,output_all_in_XA" : {
+                                "required" : false,
+                                "adapter" : {
+                                    "order" : 0,
+                                    "prefix" : "-h",
+                                    "separator" : "_"
+                                },
+                                "type" : "integer"
+                            },
+                            "minimum_score_to_output" : {
+                                "required" : false,
+                                "adapter" : {
+                                    "order" : 1,
+                                    "prefix" : "-T",
+                                    "separator" : "_"
+                                },
+                                "type" : "integer"
+                            },
+                            "read_group_header_line" : {
+                                "adapter" : {
+                                    "order" : 1,
+                                    "prefix" : "-R",
+                                    "separator" : "_"
+                                },
+                                "type" : "string"
+                            },
+                            "first_query_file_consists_of_interleaved_paired-end_sequences" : {
+                                "required" : false,
+                                "adapter" : {
+                                    "order" : 1,
+                                    "prefix" : "-p",
+                                    "separator" : "_"
+                                },
+                                "type" : "boolean"
+                            },
+                            "read_type_Setting_-x_changes_multiple_parameters_unless_overriden" : {
+                                "adapter" : {
+                                    "order" : 1,
+                                    "prefix" : "-x",
+                                    "separator" : "_"
+                                },
+                                "type" : "string"
+                            },
+                            "penalty_for_an_unpaired_read_pair" : {
+                                "required" : false,
+                                "adapter" : {
+                                    "order" : 1,
+                                    "prefix" : "-U",
+                                    "separator" : "_"
+                                },
+                                "type" : "integer"
+                            },
+                            "penalty_for_5'-and_3'-end_clipping" : {
+                                "items" : {
+                                    "type" : "number"
+                                },
+                                "maxItems" : 2,
+                                "minItems" : 1,
+                                "required" : false,
+                                "adapter" : {
+                                    "listSeparator" : ",",
+                                    "order" : 1,
+                                    "prefix" : "-L",
+                                    "separator" : "_"
+                                },
+                                "type" : "array"
+                            },
+                            "gap_extension_penalty;a_gap_of_size_k_cost_{-O}+{-E}*k'" : {
+                                "items" : {
+                                    "type" : "number"
+                                },
+                                "maxItems" : 2,
+                                "minItems" : 1,
+                                "required" : false,
+                                "adapter" : {
+                                    "listSeparator" : ",",
+                                    "order" : 1,
+                                    "prefix" : "-E",
+                                    "separator" : "_"
+                                },
+                                "type" : "array"
+                            },
+                            "gap_open_penalties_for_deletions_and_insertions" : {
+                                "items" : {
+                                    "type" : "number"
+                                },
+                                "maxItems" : 2,
+                                "minItems" : 1,
+                                "required" : false,
+                                "adapter" : {
+                                    "listSeparator" : ",",
+                                    "order" : 1,
+                                    "prefix" : "-O",
+                                    "separator" : "_"
+                                },
+                                "type" : "array"
+                            },
+                            "penalty_for_a_mismatch" : {
+                                "required" : false,
+                                "adapter" : {
+                                    "order" : 1,
+                                    "prefix" : "-B",
+                                    "separator" : "_"
+                                },
+                                "type" : "integer"
+                            },
+                            "score_for_a_sequence_match,which_scales_options_-TdBOELU_unless_overridden" : {
+                                "required" : false,
+                                "adapter" : {
+                                    "order" : 1,
+                                    "prefix" : "-A",
+                                    "separator" : "_"
+                                },
+                                "type" : "integer"
+                            },
+                            "discard_full-length_exact_matches" : {
+                                "required" : false,
+                                "adapter" : {
+                                    "order" : 1,
+                                    "prefix" : "-e",
+                                    "separator" : "_"
+                                },
+                                "type" : "boolean"
+                            },
+                            "skip_pairing;mate_rescue_performed_unless_-S_also_in_use" : {
+                                "required" : false,
+                                "adapter" : {
+                                    "order" : 1,
+                                    "prefix" : "-P",
+                                    "separator" : "_"
+                                },
+                                "type" : "boolean"
+                            },
+                            "skip_mate_rescue" : {
+                                "required" : false,
+                                "adapter" : {
+                                    "order" : 1,
+                                    "prefix" : "-S",
+                                    "separator" : "_"
+                                },
+                                "type" : "boolean"
+                            },
+                            "discard_a_chain_if_seeded_bases_shorter_than_ INT" : {
+                                "required" : false,
+                                "adapter" : {
+                                    "order" : 1,
+                                    "prefix" : "-W",
+                                    "separator" : "_"
+                                },
+                                "type" : "integer"
+                            },
+                            "look_for_internal_seeds_inside_a_seed_longer_than_k*1_5" : {
+                                "enum" : null,
+                                "required" : false,
+                                "adapter" : {
+                                    "order" : 1,
+                                    "prefix" : "-r",
+                                    "separator" : "_"
+                                },
+                                "type" : "string"
+                            },
+                            "perform_at_most_INT_rounds_of_mate_rescues_for_each_read" : {
+                                "required" : false,
+                                "adapter" : {
+                                    "order" : 1,
+                                    "prefix" : "-m",
+                                    "separator" : "_"
+                                },
+                                "type" : "integer"
+                            },
+                            "drop_chains_shorter_than_FLOAT_fraction_of_the_longest_overlapping_chain" : {
+                                "adapter" : {
+                                    "order" : 1,
+                                    "prefix" : "-D",
+                                    "separator" : "_"
+                                },
+                                "type" : "string"
+                            },
+                            "skip_seeds_with_more_than_INT_occurrences" : {
+                                "required" : false,
+                                "adapter" : {
+                                    "order" : 1,
+                                    "prefix" : "-c",
+                                    "separator" : "_"
+                                },
+                                "type" : "integer"
+                            },
+                            "off-diagonal_X-dropoff" : {
+                                "required" : false,
+                                "adapter" : {
+                                    "order" : 1,
+                                    "prefix" : "-d",
+                                    "separator" : "_"
+                                },
+                                "type" : "integer"
+                            },
+                            "band_width_for_banded_alignment" : {
+                                "required" : false,
+                                "adapter" : {
+                                    "order" : 1,
+                                    "prefix" : "-w",
+                                    "separator" : ""
+                                },
+                                "type" : "integer"
+                            },
+                            "min_std_max_min" : {
+                                "adapter" : {
+                                    "separator" : "_",
+                                    "prefix" : "",
+                                    "order" : 1
+                                },
+                                "items" : {
+                                    "type" : "number"
+                                },
+                                "maxItems" : 4,
+                                "minItems" : 1,
+                                "type" : "array"
+                            },
+                            "minimum_seed_length" : {
+                                "adapter" : {
+                                    "separator" : "_",
+                                    "prefix" : "-k",
+                                    "order" : 1
+                                },
+                                "type" : "integer"
+                            },
+                            "reads" : {
+                                "adapter" : {
+                                    "listStreamable" : true,
+                                    "order" : 3
+                                },
+                                "items" : {
+                                    "type" : "file"
+                                },
+                                "required" : true,
+                                "maxItems" : 2,
+                                "minItems" : 1,
+                                "type" : "array"
+                            },
+                            "reference" : {
+                                "adapter" : {
+                                    "secondaryFiles" : [
+                                        "*.amb",
+                                        "*.ann",
+                                        "*.bwt",
+                                        "*.pac",
+                                        "*.sa"
+                                    ],
+                                    "order" : 2
+                                },
+                                "required" : true,
+                                "type" : "file"
+                            }
+                        },
+                        "type" : "object"
+                    },
+                    "requirements" : {
+                        "resources" : {
+                            "network" : false,
+                            "diskSpace" : 0,
+                            "ports" : [ ],
+                            "mem" : 5000,
+                            "cpu" : 0
+                        },
+                        "environment" : {
+                            "container" : {
+                                "imageId" : "9d3b9b0359cf",
+                                "uri" : "docker://images.sbgenomics.com/rabix/bwa#9d3b9b0359cf",
+                                "type" : "docker"
+                            }
+                        }
+                    },
+                    "documentAuthor" : "sinisa.ivkovic@sbgenomics.com",
+                    "softwareDescription" : {
+                        "name" : "BWA MEM",
+                        "repo_name" : "bwa-mem",
+                        "repo_owner" : "sinisa88"
+                    }
+                },
+                "author" : "sinisa.ivkovic@sbgenomics.com",
+                "app_id" : {
+                    "_id" : "546a0c6a3c384469484f0a09",
+                    "name" : "BWA MEM"
+                },
+                "_id" : "546a0c6a3c384469484f0a0a",
+                "__v" : 0,
+                "id" : "BWA MEM_1",
+                "adapter" : {
+                    "args" : [
+                        {
+                            "value" : "mem",
+                            "order" : 0
+                        },
+                        {
+                            "value" : {
+                                "expr" : {
+                                    "lang" : "javascript",
+                                    "value" : "$job['allocatedResources']['cpu']"
+                                }
+                            },
+                            "prefix" : "-t",
+                            "order" : 1
+                        }
+                    ],
+                    "stdout" : "output.sam",
+                    "baseCmd" : [
+                        "bwa"
+                    ]
+                },
+                "outputs" : {
+                    "properties" : {
+                        "sam" : {
+                            "id" : "sam",
+                            "name" : "sam",
+                            "adapter" : {
+                                "secondaryFiles" : [ ],
+                                "meta" : {
+                                    "__inherit__" : "reads",
+                                    "file_type" : "sam"
+                                },
+                                "glob" : "output.sam",
+                                "streamable" : true
+                            },
+                            "type" : "file"
+                        }
+                    },
+                    "type" : "object"
+                },
+                "inputs" : {
+                    "properties" : {
+                        "mark_shorter_split_hits_as_secondary" : {
+                            "id" : "mark_shorter_split_hits_as_secondary",
+                            "name" : "mark_shorter_split_hits_as_secondary",
+                            "required" : false,
+                            "adapter" : {
+                                "order" : 1,
+                                "prefix" : "-M",
+                                "separator" : "_"
+                            },
+                            "type" : "boolean"
+                        },
+                        "use_soft_clipping_for_supplementary_alignments" : {
+                            "id" : "use_soft_clipping_for_supplementary_alignments",
+                            "name" : "use_soft_clipping_for_supplementary_alignments",
+                            "required" : false,
+                            "adapter" : {
+                                "order" : 1,
+                                "prefix" : "-Y",
+                                "separator" : "_"
+                            },
+                            "type" : "boolean"
+                        },
+                        "append_FASTA/FASTQ_comment_to_SAM_output" : {
+                            "id" : "append_FASTA/FASTQ_comment_to_SAM_output",
+                            "name" : "append_FASTA/FASTQ_comment_to_SAM_output",
+                            "required" : false,
+                            "adapter" : {
+                                "order" : 1,
+                                "prefix" : "-C",
+                                "separator" : "_"
+                            },
+                            "type" : "boolean"
+                        },
+                        "output_all_alignments_for_SE_or_unpaired_PE" : {
+                            "id" : "output_all_alignments_for_SE_or_unpaired_PE",
+                            "name" : "output_all_alignments_for_SE_or_unpaired_PE",
+                            "required" : false,
+                            "adapter" : {
+                                "order" : 1,
+                                "prefix" : "-a",
+                                "separator" : "_"
+                            },
+                            "type" : "boolean"
+                        },
+                        "if_there_are_<INT_hits_with_score>80%_of_the_max_score,output_all_in_XA" : {
+                            "id" : "if_there_are_<INT_hits_with_score>80%_of_the_max_score,output_all_in_XA",
+                            "name" : "if_there_are_<INT_hits_with_score>80%_of_the_max_score,output_all_in_XA",
+                            "required" : false,
+                            "adapter" : {
+                                "order" : 0,
+                                "prefix" : "-h",
+                                "separator" : "_"
+                            },
+                            "type" : "integer"
+                        },
+                        "minimum_score_to_output" : {
+                            "id" : "minimum_score_to_output",
+                            "name" : "minimum_score_to_output",
+                            "required" : false,
+                            "adapter" : {
+                                "order" : 1,
+                                "prefix" : "-T",
+                                "separator" : "_"
+                            },
+                            "type" : "integer"
+                        },
+                        "read_group_header_line" : {
+                            "id" : "read_group_header_line",
+                            "name" : "read_group_header_line",
+                            "adapter" : {
+                                "order" : 1,
+                                "prefix" : "-R",
+                                "separator" : "_"
+                            },
+                            "type" : "string"
+                        },
+                        "first_query_file_consists_of_interleaved_paired-end_sequences" : {
+                            "id" : "first_query_file_consists_of_interleaved_paired-end_sequences",
+                            "name" : "first_query_file_consists_of_interleaved_paired-end_sequences",
+                            "required" : false,
+                            "adapter" : {
+                                "order" : 1,
+                                "prefix" : "-p",
+                                "separator" : "_"
+                            },
+                            "type" : "boolean"
+                        },
+                        "read_type_Setting_-x_changes_multiple_parameters_unless_overriden" : {
+                            "id" : "read_type_Setting_-x_changes_multiple_parameters_unless_overriden",
+                            "name" : "read_type_Setting_-x_changes_multiple_parameters_unless_overriden",
+                            "adapter" : {
+                                "order" : 1,
+                                "prefix" : "-x",
+                                "separator" : "_"
+                            },
+                            "type" : "string"
+                        },
+                        "penalty_for_an_unpaired_read_pair" : {
+                            "id" : "penalty_for_an_unpaired_read_pair",
+                            "name" : "penalty_for_an_unpaired_read_pair",
+                            "required" : false,
+                            "adapter" : {
+                                "order" : 1,
+                                "prefix" : "-U",
+                                "separator" : "_"
+                            },
+                            "type" : "integer"
+                        },
+                        "penalty_for_5'-and_3'-end_clipping" : {
+                            "id" : "penalty_for_5'-and_3'-end_clipping",
+                            "name" : "penalty_for_5'-and_3'-end_clipping",
+                            "items" : {
+                                "type" : "number"
+                            },
+                            "maxItems" : 2,
+                            "minItems" : 1,
+                            "required" : false,
+                            "adapter" : {
+                                "listSeparator" : ",",
+                                "order" : 1,
+                                "prefix" : "-L",
+                                "separator" : "_"
+                            },
+                            "type" : "array"
+                        },
+                        "gap_extension_penalty;a_gap_of_size_k_cost_{-O}+{-E}*k'" : {
+                            "id" : "gap_extension_penalty;a_gap_of_size_k_cost_{-O}+{-E}*k'",
+                            "name" : "gap_extension_penalty;a_gap_of_size_k_cost_{-O}+{-E}*k'",
+                            "items" : {
+                                "type" : "number"
+                            },
+                            "maxItems" : 2,
+                            "minItems" : 1,
+                            "required" : false,
+                            "adapter" : {
+                                "listSeparator" : ",",
+                                "order" : 1,
+                                "prefix" : "-E",
+                                "separator" : "_"
+                            },
+                            "type" : "array"
+                        },
+                        "gap_open_penalties_for_deletions_and_insertions" : {
+                            "id" : "gap_open_penalties_for_deletions_and_insertions",
+                            "name" : "gap_open_penalties_for_deletions_and_insertions",
+                            "items" : {
+                                "type" : "number"
+                            },
+                            "maxItems" : 2,
+                            "minItems" : 1,
+                            "required" : false,
+                            "adapter" : {
+                                "listSeparator" : ",",
+                                "order" : 1,
+                                "prefix" : "-O",
+                                "separator" : "_"
+                            },
+                            "type" : "array"
+                        },
+                        "penalty_for_a_mismatch" : {
+                            "id" : "penalty_for_a_mismatch",
+                            "name" : "penalty_for_a_mismatch",
+                            "required" : false,
+                            "adapter" : {
+                                "order" : 1,
+                                "prefix" : "-B",
+                                "separator" : "_"
+                            },
+                            "type" : "integer"
+                        },
+                        "score_for_a_sequence_match,which_scales_options_-TdBOELU_unless_overridden" : {
+                            "id" : "score_for_a_sequence_match,which_scales_options_-TdBOELU_unless_overridden",
+                            "name" : "score_for_a_sequence_match,which_scales_options_-TdBOELU_unless_overridden",
+                            "required" : false,
+                            "adapter" : {
+                                "order" : 1,
+                                "prefix" : "-A",
+                                "separator" : "_"
+                            },
+                            "type" : "integer"
+                        },
+                        "discard_full-length_exact_matches" : {
+                            "id" : "discard_full-length_exact_matches",
+                            "name" : "discard_full-length_exact_matches",
+                            "required" : false,
+                            "adapter" : {
+                                "order" : 1,
+                                "prefix" : "-e",
+                                "separator" : "_"
+                            },
+                            "type" : "boolean"
+                        },
+                        "skip_pairing;mate_rescue_performed_unless_-S_also_in_use" : {
+                            "id" : "skip_pairing;mate_rescue_performed_unless_-S_also_in_use",
+                            "name" : "skip_pairing;mate_rescue_performed_unless_-S_also_in_use",
+                            "required" : false,
+                            "adapter" : {
+                                "order" : 1,
+                                "prefix" : "-P",
+                                "separator" : "_"
+                            },
+                            "type" : "boolean"
+                        },
+                        "skip_mate_rescue" : {
+                            "id" : "skip_mate_rescue",
+                            "name" : "skip_mate_rescue",
+                            "required" : false,
+                            "adapter" : {
+                                "order" : 1,
+                                "prefix" : "-S",
+                                "separator" : "_"
+                            },
+                            "type" : "boolean"
+                        },
+                        "discard_a_chain_if_seeded_bases_shorter_than_ INT" : {
+                            "id" : "discard_a_chain_if_seeded_bases_shorter_than_ INT",
+                            "name" : "discard_a_chain_if_seeded_bases_shorter_than_ INT",
+                            "required" : false,
+                            "adapter" : {
+                                "order" : 1,
+                                "prefix" : "-W",
+                                "separator" : "_"
+                            },
+                            "type" : "integer"
+                        },
+                        "look_for_internal_seeds_inside_a_seed_longer_than_k*1_5" : {
+                            "id" : "look_for_internal_seeds_inside_a_seed_longer_than_k*1_5",
+                            "name" : "look_for_internal_seeds_inside_a_seed_longer_than_k*1_5",
+                            "enum" : null,
+                            "required" : false,
+                            "adapter" : {
+                                "order" : 1,
+                                "prefix" : "-r",
+                                "separator" : "_"
+                            },
+                            "type" : "string"
+                        },
+                        "perform_at_most_INT_rounds_of_mate_rescues_for_each_read" : {
+                            "id" : "perform_at_most_INT_rounds_of_mate_rescues_for_each_read",
+                            "name" : "perform_at_most_INT_rounds_of_mate_rescues_for_each_read",
+                            "required" : false,
+                            "adapter" : {
+                                "order" : 1,
+                                "prefix" : "-m",
+                                "separator" : "_"
+                            },
+                            "type" : "integer"
+                        },
+                        "drop_chains_shorter_than_FLOAT_fraction_of_the_longest_overlapping_chain" : {
+                            "id" : "drop_chains_shorter_than_FLOAT_fraction_of_the_longest_overlapping_chain",
+                            "name" : "drop_chains_shorter_than_FLOAT_fraction_of_the_longest_overlapping_chain",
+                            "adapter" : {
+                                "order" : 1,
+                                "prefix" : "-D",
+                                "separator" : "_"
+                            },
+                            "type" : "string"
+                        },
+                        "skip_seeds_with_more_than_INT_occurrences" : {
+                            "id" : "skip_seeds_with_more_than_INT_occurrences",
+                            "name" : "skip_seeds_with_more_than_INT_occurrences",
+                            "required" : false,
+                            "adapter" : {
+                                "order" : 1,
+                                "prefix" : "-c",
+                                "separator" : "_"
+                            },
+                            "type" : "integer"
+                        },
+                        "off-diagonal_X-dropoff" : {
+                            "id" : "off-diagonal_X-dropoff",
+                            "name" : "off-diagonal_X-dropoff",
+                            "required" : false,
+                            "adapter" : {
+                                "order" : 1,
+                                "prefix" : "-d",
+                                "separator" : "_"
+                            },
+                            "type" : "integer"
+                        },
+                        "band_width_for_banded_alignment" : {
+                            "id" : "band_width_for_banded_alignment",
+                            "name" : "band_width_for_banded_alignment",
+                            "required" : false,
+                            "adapter" : {
+                                "order" : 1,
+                                "prefix" : "-w",
+                                "separator" : ""
+                            },
+                            "type" : "integer"
+                        },
+                        "min_std_max_min" : {
+                            "id" : "min_std_max_min",
+                            "name" : "min_std_max_min",
+                            "adapter" : {
+                                "separator" : "_",
+                                "prefix" : "",
+                                "order" : 1
+                            },
+                            "items" : {
+                                "type" : "number"
+                            },
+                            "maxItems" : 4,
+                            "minItems" : 1,
+                            "type" : "array"
+                        },
+                        "minimum_seed_length" : {
+                            "id" : "minimum_seed_length",
+                            "name" : "minimum_seed_length",
+                            "adapter" : {
+                                "separator" : "_",
+                                "prefix" : "-k",
+                                "order" : 1
+                            },
+                            "type" : "integer"
+                        },
+                        "reads" : {
+                            "id" : "reads",
+                            "name" : "reads",
+                            "adapter" : {
+                                "listStreamable" : true,
+                                "order" : 3
+                            },
+                            "items" : {
+                                "type" : "file"
+                            },
+                            "required" : true,
+                            "maxItems" : 2,
+                            "minItems" : 1,
+                            "type" : "array"
+                        },
+                        "reference" : {
+                            "id" : "reference",
+                            "name" : "reference",
+                            "adapter" : {
+                                "secondaryFiles" : [
+                                    "*.amb",
+                                    "*.ann",
+                                    "*.bwt",
+                                    "*.pac",
+                                    "*.sa"
+                                ],
+                                "order" : 2
+                            },
+                            "required" : true,
+                            "type" : "file"
+                        }
+                    },
+                    "type" : "object"
+                },
+                "requirements" : {
+                    "resources" : {
+                        "network" : false,
+                        "diskSpace" : 0,
+                        "ports" : [ ],
+                        "mem" : 5000,
+                        "cpu" : 0
+                    },
+                    "environment" : {
+                        "container" : {
+                            "imageId" : "9d3b9b0359cf",
+                            "uri" : "docker://images.sbgenomics.com/rabix/bwa#9d3b9b0359cf",
+                            "type" : "docker"
+                        }
+                    }
+                },
+                "documentAuthor" : "sinisa.ivkovic@sbgenomics.com",
+                "softwareDescription" : {
+                    "name" : "BWA MEM",
+                    "repo_name" : "bwa-mem",
+                    "repo_owner" : "sinisa88"
+                }
+            },
+            {
+                "id" : "Output_1_1",
+                "outputs" : {
+                    "type" : "object"
+                },
+                "inputs" : {
+                    "properties" : {
+                        "output_1" : {
+                            "type" : "file",
+                            "required" : false,
+                            "id" : "output_1",
+                            "name" : "Output_1"
+                        }
+                    },
+                    "type" : "object"
+                },
+                "documentAuthor" : null,
+                "softwareDescription" : {
+                    "name" : "Output_1",
+                    "repo_name" : "system",
+                    "repo_owner" : "rabix"
+                }
+            },
+            {
+                "id" : "shism_1",
+                "adapter" : {
+                    "args" : [
+                        {
+                            "value" : "mem",
+                            "order" : 0
+                        },
+                        {
+                            "value" : 10,
+                            "prefix" : "-t",
+                            "order" : 1
+                        }
+                    ],
+                    "stdout" : "output.sam",
+                    "baseCmd" : [
+                        "bwa"
+                    ]
+                },
+                "outputs" : {
+                    "properties" : {
+                        "sam" : {
+                            "id" : "sam",
+                            "name" : "sam",
+                            "adapter" : {
+                                "secondaryFiles" : [ ],
+                                "meta" : {
+                                    "key2" : "test",
+                                    "key1" : {
+                                        "expr" : "$job"
+                                    },
+                                    "__inherit__" : ""
+                                },
+                                "glob" : "output.sam",
+                                "streamable" : true
+                            },
+                            "type" : "file"
+                        }
+                    },
+                    "type" : "object"
+                },
+                "inputs" : {
+                    "properties" : {
+                        "min_std_max_min" : {
+                            "id" : "min_std_max_min",
+                            "name" : "min_std_max_min",
+                            "adapter" : {
+                                "listSeparator" : ",",
+                                "prefix" : "-I",
+                                "order" : 1
+                            },
+                            "items" : {
+                                "type" : "number"
+                            },
+                            "maxItems" : 4,
+                            "minItems" : 1,
+                            "type" : "array"
+                        },
+                        "minimum_seed_length" : {
+                            "id" : "minimum_seed_length",
+                            "name" : "minimum_seed_length",
+                            "adapter" : {
+                                "separator" : "_",
+                                "prefix" : "-m",
+                                "order" : 1
+                            },
+                            "type" : "integer"
+                        },
+                        "reads" : {
+                            "id" : "reads",
+                            "name" : "reads",
+                            "adapter" : {
+                                "listStreamable" : true,
+                                "order" : 3
+                            },
+                            "items" : {
+                                "type" : "file"
+                            },
+                            "required" : true,
+                            "maxItems" : 2,
+                            "minItems" : 1,
+                            "type" : "array"
+                        },
+                        "reference" : {
+                            "id" : "reference",
+                            "name" : "reference",
+                            "adapter" : {
+                                "order" : 2
+                            },
+                            "required" : true,
+                            "type" : "file"
+                        }
+                    },
+                    "type" : "object"
+                },
+                "requirements" : {
+                    "resources" : {
+                        "network" : false,
+                        "diskSpace" : 0,
+                        "ports" : [ ],
+                        "mem" : 5000,
+                        "cpu" : 0
+                    },
+                    "environment" : {
+                        "container" : {
+                            "imageId" : "test",
+                            "uri" : "test",
+                            "type" : "docker"
+                        }
+                    }
+                },
+                "documentAuthor" : "milica.kadic.87@gmail.com",
+                "softwareDescription" : {
+                    "repo_name" : "test",
+                    "description" : "lorem",
+                    "name" : "shism",
+                    "repo_owner" : "milica"
+                }
+            },
+            {
+                "id" : "Input_1_1",
+                "outputs" : {
+                    "properties" : {
+                        "input_1" : {
+                            "type" : "file",
+                            "required" : false,
+                            "id" : "input_1",
+                            "name" : "input_1"
+                        }
+                    },
+                    "type" : "object"
+                },
+                "inputs" : {
+                    "type" : "object"
+                },
+                "documentAuthor" : null,
+                "softwareDescription" : {
+                    "name" : "Input_1",
+                    "repo_name" : "system",
+                    "repo_owner" : "rabix"
+                }
+            }
+        ],
+        "display" : {
+            "nodes" : {
+                "Input_1_1" : {
+                    "y" : 178,
+                    "x" : 292
+                },
+                "shism_1" : {
+                    "y" : 266,
+                    "x" : 662
+                },
+                "Output_1_1" : {
+                    "y" : 448,
+                    "x" : 1282
+                },
+                "BWA MEM_1" : {
+                    "y" : 330,
+                    "x" : 944
+                }
+            },
+            "name" : "",
+            "description" : "",
+            "canvas" : {
+                "zoom" : 1,
+                "y" : -34,
+                "x" : -196
+            }
+        }
+    };
+
+    var formated = formater.toRabixSchema(test_pipeline);
+
+    res.json(formated);
+
+});
