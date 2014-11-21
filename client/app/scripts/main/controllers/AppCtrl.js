@@ -32,13 +32,14 @@ angular.module('registryApp')
 
         $q.all([
             User.getUser(),
-            App.getApp($routeParams.id, 'public'),
+            App.getApp($routeParams.id, 'latest'),
             App.getRevisions(0, '', $routeParams.id)
         ]).then(function(result) {
 
                 $scope.view.user = result[0].user;
                 $scope.view.app = result[1].data;
-                $scope.view.canDelete = result[1].publicCount === 0 && ($scope.view.user && $scope.view.user.id === $scope.view.app.user._id);
+                $scope.view.revision = result[1].revision;
+                $scope.view.canDelete = $scope.view.app.public_count === 0 && ($scope.view.user && $scope.view.user.id === $scope.view.app.user._id);
                 revisionsLoaded(result[2]);
 
             });

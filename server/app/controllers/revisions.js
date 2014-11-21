@@ -44,7 +44,9 @@ router.get('/revisions', function (req, res, next) {
         Revision.count(where).exec(function(err, total) {
             if (err) { return next(err); }
 
-            Revision.find(where).skip(skip).limit(limit).sort({_id: 'desc'}).exec(function(err, revisions) {
+            var sort = req.user ? {_id: 'desc'} : {version: 'desc'};
+
+            Revision.find(where).skip(skip).limit(limit).sort(sort).exec(function(err, revisions) {
                 if (err) { return next(err); }
 
                 res.json({list: revisions, total: total});
@@ -118,10 +120,19 @@ router.post('/revisions', filters.authenticated, function (req, res, next) {
                     if (err) { return next(err); }
 
                     app.revisions.push(revision._id);
-                    app.save();
 
-                    res.json({revision: revision, message: 'Revision has been successfully created'});
+                    if (app.public_count === 0) {
+                        app.json = revision.json;
+                        app.c_version = revision.c_version;
+                        app.description = revision.description;
+                        app.author = revision.author;
+                    }
 
+                    app.save(function(err) {
+                        if (err) { return next(err); }
+
+                        res.json({revision: revision, message: 'Revision has been successfully created'});
+                    });
                 });
             });
 
@@ -162,21 +173,23 @@ router.put('/revisions/:id', filters.authenticated, function (req, res, next) {
                                     app.description = revision.description;
                                     app.author = revision.author;
 
-                                    app.save(function(err) {
+                                    if (err) { return next(err); }
+
+                                    revision.is_public = true;
+                                    revision.version = app.public_count + 1;
+
+                                    revision.save(function(err) {
                                         if (err) { return next(err); }
 
-                                        Revision.count({app_id: revision.app_id, is_public: true}, function(err, total) {
+                                        app.public_count += 1;
+
+                                        app.save(function(err) {
                                             if (err) { return next(err); }
 
-                                            revision.is_public = true;
-                                            revision.version = total + 1;
-
-                                            revision.save();
-
                                             res.json({revision: revision, message: 'App has been successfully updated'});
-
                                         });
                                     });
+
                                 });
                             }, function (error) {
                                 res.status(500).json(error);

@@ -4,22 +4,20 @@
         <a ng-if="view.mode === 'new'" ng-href="#/apps" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
         <a ng-if="view.mode === 'edit'" ng-href="#/app/{{ view.app._id }}" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
         <h1>
-            <a ng-if="view.currentRevision" href class="btn btn-orange" ng-click="changeRevision()">
-                revision {{ view.currentRevision.order }}
-            </a>
-
             {{ (view.mode === 'new') ? 'New App' : view.app.name }}
-            <span ng-if="view.currentRevision.version" class="version"><i class="fa fa-tag"></i> {{ 'v' + view.currentRevision.version }}</span>
+            <span ng-if="view.revision.version" class="version"><i class="fa fa-tag"></i> {{ 'v' + view.revision.version }}</span>
+            <a ng-if="view.user || view.app.public_count > 0" href class="version revision" ng-click="changeRevision()"><i class="fa fa-tag"></i> {{ 'revision ' + view.revision.order }}</a>
 
             <div class="actions pull-right">
 
-                <button class="btn btn-default" ng-click="showJson('tool')">
-                    <i class="fa fa-code"></i> Tool JSON
-                </button>
-
-                <button class="btn btn-default" ng-click="showJson('job')">
-                    <i class="fa fa-code"></i> Job JSON
-                </button>
+                <div class="btn-group" role="group">
+                    <button class="btn btn-default" ng-click="showJson('tool')">
+                        <i class="fa fa-code"></i> Tool JSON
+                    </button>
+                    <button class="btn btn-default" ng-click="showJson('job')">
+                        <i class="fa fa-code"></i> Job JSON
+                    </button>
+                </div>
 
                 <button ng-if="view.user && (view.app | isEmpty)" ng-disabled="view.saving" class="app-create-btn btn btn-primary" ng-click="create()">
                     <i class="fa fa-plus"></i> Create
@@ -40,7 +38,7 @@
                         <li>
                             <a href ng-click="loadJsonEditor()"><i class="fa fa-cloud-download"></i> <span>Import</span></a>
                         </li>
-                        <li ng-if="view.user && view.user.id === view.app.user._id && !view.currentRevision.version">
+                        <li ng-if="view.user && view.user.id === view.app.user._id && !view.revision.version">
                             <a href ng-disabled="view.saving" ng-click="delete()"><i class="fa fa-trash"></i> <span>Delete</span></a>
                         </li>
                     </ul>

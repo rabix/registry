@@ -105,7 +105,7 @@ angular.module('registryApp.cliche')
          */
         self.setTool = function(tool) {
 
-            self.tool = tool;
+            self.tool = angular.copy(tool);
 
             $localForage.setItem('tool', tool);
 
@@ -120,7 +120,7 @@ angular.module('registryApp.cliche')
 
             job = job || $injector.get('rawJob');
 
-            self.job = job;
+            self.job = angular.copy(job);
 
             $localForage.setItem('job', job);
 

@@ -447,7 +447,9 @@ router.get('/pipeline-revisions', function (req, res, next) {
         PipelineRevision.count(where).exec(function(err, total) {
             if (err) { return next(err); }
 
-            PipelineRevision.find(where).skip(skip).limit(limit).sort({_id: 'desc'}).exec(function(err, revisions) {
+            var sort = req.user ? {_id: 'desc'} : {version: 'desc'};
+
+            PipelineRevision.find(where).skip(skip).limit(limit).sort(sort).exec(function(err, revisions) {
                 if (err) { return next(err); }
 
                 res.json({list: revisions, total: total});
