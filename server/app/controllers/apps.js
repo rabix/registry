@@ -99,6 +99,7 @@ router.get('/repositories/:type', function (req, res, next) {
         if (req.user) {
             where.user = {$ne: req.user.id};
         }
+        where.public_count = {$gt: 0};
     }
 
     App.find(where, '_id repo_name repo user name').populate('repo').sort({_id: 'desc'}).exec(function(err, apps) {

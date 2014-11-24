@@ -648,6 +648,11 @@ angular.module('registryApp.cliche')
 
         };
 
+        $scope.loadMarkdown = function() {
+
+            // todo
+        };
+
         /**
          * Track route change in order to prevent loss of changes
          *
@@ -682,8 +687,5 @@ angular.module('registryApp.cliche')
         };
 
         var onRouteChangeOff = $rootScope.$on('$locationChangeStart', onRouteChange);
-
-
-
 
     }]);
