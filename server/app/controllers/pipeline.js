@@ -598,7 +598,8 @@ router.get('/test/test', function (req, res, next) {
                 "softwareDescription" : {
                     "name" : "Input_1",
                     "repo_name" : "system",
-                    "repo_owner" : "rabix"
+                    "repo_owner" : "rabix",
+                    "type": 'input'
                 }
             },
             "shism_1" : {
@@ -739,7 +740,8 @@ router.get('/test/test', function (req, res, next) {
                 "softwareDescription" : {
                     "name" : "Output_1",
                     "repo_name" : "system",
-                    "repo_owner" : "rabix"
+                    "repo_owner" : "rabix",
+                    "type": 'output'
                 }
             },
             "BWA MEM_1" : {
@@ -1941,7 +1943,8 @@ router.get('/test/test', function (req, res, next) {
                 "softwareDescription" : {
                     "name" : "Output_1",
                     "repo_name" : "system",
-                    "repo_owner" : "rabix"
+                    "repo_owner" : "rabix",
+                    "type": 'output'
                 }
             },
             {
@@ -2083,7 +2086,8 @@ router.get('/test/test', function (req, res, next) {
                 "softwareDescription" : {
                     "name" : "Input_1",
                     "repo_name" : "system",
-                    "repo_owner" : "rabix"
+                    "repo_owner" : "rabix",
+                    "type": 'input'
                 }
             }
         ],
