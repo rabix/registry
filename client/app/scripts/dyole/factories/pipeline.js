@@ -476,6 +476,7 @@ angular.module('registryApp.dyole')
                         terName = 'Input' + '_' + (count + 1);
 
                         model.softwareDescription.name = terName;
+                        model.softwareDescription.type = 'input';
                         model.outputs.properties = {};
                         model.outputs.properties[terId] = {
                             'name': terName,
@@ -495,6 +496,7 @@ angular.module('registryApp.dyole')
                         terName = 'Output' + '_' + (count + 1);
 
                         model.softwareDescription.name = terName;
+                        model.softwareDescription.type = 'output';
                         model.inputs.properties = {};
                         model.inputs.properties[terId] = {
                             'name': terName,

@@ -26,7 +26,8 @@ angular.module('registryApp.dyole', [])
         'softwareDescription': {
             'repo_owner': 'rabix',
             'repo_name': 'system',
-            'name': 'System app'
+            'name': 'System app',
+            'type': ''
         },
         'documentAuthor': null,
         'inputs': {

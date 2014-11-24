@@ -11,6 +11,8 @@ var formater = {
         var json = _.clone(j);
         // reset schema
         this.packedSchema = {};
+        this.packedSchema.inputs = {};
+        this.packedSchema.outputs = {};
 
         if ( (!json.relations || json.relations.length === 0 ) && json.nodes.length === 1) {
             var _id = json.nodes[0]._id;
@@ -32,7 +34,7 @@ var formater = {
         delete json.schemas;
         delete json.nodes;
 
-        json.steps = this.packedSchema.steps;
+        json = _.extend(json, this.packedSchema);
 
         return json;
     },
@@ -57,19 +59,16 @@ var formater = {
 
         this.packedSchema.steps = [];
 
-        _.each(relations, function (rel) {
+        _.forEach(relations, function (rel) {
             var step, node_schema;
 
             node_schema = schemas[rel.end_node];
 
-
-            if (node_schema.softwareDescription && node_schema.softwareDescription.repo_name === 'system') {
-                _self._attachOutput(rel);
-                _self._createInOut();
+            if (_self._checkSystem(node_schema)) {
+                _self._createInOut('outputs', node_schema);
             } else {
                 step = _self._createOneAppStep(rel, nodes, schemas);
             }
-
 
             if (step) {
                 step.app = _.clone(node_schema);
@@ -77,18 +76,57 @@ var formater = {
             }
         });
 
+        this._generateSystemNodes(relations, nodes, schemas);
+
+    },
+
+    _generateSystemNodes: function (relations, nodes, schemas) {
+        var _self = this;
+
+        _.forEach(relations, function (rel) {
+
+            var node_schema = schemas[rel.end_node];
+
+            if (_self._checkSystem(node_schema)) {
+
+                _self._attachOutput(rel);
+                _self._createInOut(node_schema.softwareDescription.type + 's', node_schema);
+
+            } else {
+                node_schema = schemas[rel.start_node];
+            }
+
+            if (_self._checkSystem(node_schema)) {
+                _self._createInOut(node_schema.softwareDescription.type + 's', node_schema);
+            }
+
+        });
+    },
+    
+    _checkSystem: function (node_schema) {
+
+        return node_schema.softwareDescription && node_schema.softwareDescription.repo_name === 'system';
     },
 
     _attachOutput: function (rel) {
-        if (this.packedSchema[rel.start_node]) {
-            this.packedSchema[rel.start_node].outputs[rel.output_name] = {
+        var filter = _.filter(this.packedSchema.steps, function (step) {
+            return step._id === rel.start_node;
+        });
+
+        if (filter.length !== 0) {
+            filter[0].outputs[rel.output_name] = {
                 $to: rel.input_name
             };
         }
     },
 
-    _createInOut: function () {
-        
+    _createInOut: function (type, node) {
+        var obj = this.packedSchema[type];
+
+        if (typeof obj[node.id] === 'undefined') {
+            obj[node.id] = node;
+        }
+
     },
 
     _createOneAppStep: function (rel, nodes, schemas) {
@@ -98,7 +136,6 @@ var formater = {
         var node_schema = schemas[rel.end_node];
 
         step._id = rel.end_node;
-
 
         exists = _.filter(this.packedSchema.steps, function (s) {
             return s._id === rel.end_node;
@@ -117,7 +154,7 @@ var formater = {
 
         from = rel.start_node + '.' + rel.output_name;
 
-        if (schemas[rel.start_node].softwareDescription && schemas[rel.start_node].softwareDescription.repo_name === 'system') {
+        if (this._checkSystem(schemas[rel.start_node])) {
             from = rel.output_name;
         }
 
@@ -127,7 +164,6 @@ var formater = {
 
         return step;
     },
-
 
     _transformStepsToRelations: function (steps) {
 
