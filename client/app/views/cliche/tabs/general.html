@@ -1,13 +1,4 @@
 <div class="row">
-    <div class="col-md-12">
-        <div class="form-group form-group-email required" ng-class="{'has-error': (forms.toolForm.documentAuthor.$invalid && forms.toolForm.$dirty)}">
-            <label for="documentAuthor" class="control-label">Document Author</label>
-            <input type="email" class="form-control" id="documentAuthor" name="documentAuthor" ng-model="view.toolForm.documentAuthor" required>
-        </div>
-    </div>
-</div>
-
-<div class="row">
     <div class="col-md-4">
         <div class="form-group required" ng-class="{'has-error': (forms.toolForm.appName.$invalid && forms.toolForm.$dirty)}">
             <label for="appName" class="control-label">Tool Name</label>
@@ -21,9 +12,9 @@
         </div>
     </div>
     <div class="col-md-4">
-        <div class="form-group">
-            <label for="appDescription" class="control-label">Tool Description</label>
-            <textarea class="form-control" id="appDescription" name="appDescription" ng-model="view.toolForm.softwareDescription.description"></textarea>
+        <div class="form-group form-group-email required" ng-class="{'has-error': (forms.toolForm.documentAuthor.$invalid && forms.toolForm.$dirty)}">
+            <label for="documentAuthor" class="control-label">Document Author</label>
+            <input type="email" class="form-control" id="documentAuthor" name="documentAuthor" ng-model="view.toolForm.documentAuthor" required>
         </div>
     </div>
 </div>

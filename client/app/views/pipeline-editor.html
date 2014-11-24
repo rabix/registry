@@ -13,24 +13,35 @@
             <strong class="changes-mark" ng-if="view.isChanged" tooltip="There are changes in your workflow" tooltip-placement="right">
                 (<i class="fa fa-asterisk"></i>)
             </strong>
-            <div ng-if="view.user" class="actions pull-right">
-                <button ng-if="view.mode === 'edit'" ng-click="fork()" class="btn btn-default" ng-disabled="view.saving" >
-                    <i class="fa fa-code-fork"></i> Fork
-                </button>
-                <button ng-click="save()" class="btn btn-default" ng-disabled="view.saving">
+
+            <div class="actions pull-right">
+
+                <button class="btn btn-default" ng-click="pipelineToJSON()" ng-disabled="view.saving" ><i class="fa fa-code"></i> JSON</button>
+
+                <button ng-if="view.user" ng-click="save()" class="btn btn-default" ng-disabled="view.saving">
                     <i ng-class="{'fa-plus': view.mode === 'new', 'fa-check': view.mode === 'edit'}" class="fa"></i>
                     {{ view.mode === 'new' ? 'Create' : 'Update' }}
                 </button>
-                <button ng-if="view.mode === 'edit' && view.user.id === view.pipeline.pipeline.user._id" ng-click="publish()" class="btn btn-primary" ng-disabled="view.saving || view.deleting">
+                <button ng-if="view.user && view.mode === 'edit' && view.user.id === view.pipeline.pipeline.user._id" ng-click="publish()" class="btn btn-primary" ng-disabled="view.saving || view.deleting">
                     <i class="fa fa-plus"></i> Publish
                 </button>
-                <button ng-if="view.mode === 'edit'" ng-click="delete()" class="btn btn-danger" ng-disabled="view.saving || view.deleting">
-                    <i class="fa fa-trash"></i> Delete
-                </button>
-            </div>
 
-            <div class="actions pull-right">
-                <button class="btn btn-default" ng-click="pipelineToJSON()" ng-disabled="view.saving" ><i class="fa fa-code"></i> JSON</button>
+                <div class="btn-group right" ng-class="{open: view.isMenuOpen}">
+                    <button type="button" class="btn btn-default"><i class="fa fa-cog"></i></button>
+                    <button type="button" ng-click="toggleMenu()" class="btn btn-default dropdown-toggle"><span class="caret"></span></button>
+                    <ul class="dropdown-menu" role="menu" ng-click="toggleMenu()">
+
+                        <li><a href ng-click="loadMarkdown()"><i class="fa fa-ellipsis-h"></i> <span>Description</span></a></li>
+
+                        <li ng-if="view.mode === 'edit' && view.user">
+                            <a href ng-disabled="view.saving" ng-click="fork()"><i class="fa fa-code-fork"></i> <span>Fork</span></a>
+                        </li>
+
+                        <li ng-if="view.user && view.mode === 'edit'">
+                            <a href ng-click="delete()" ng-disabled="view.saving || view.deleting"><i class="fa fa-trash"></i> Delete</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
 
         </h1>

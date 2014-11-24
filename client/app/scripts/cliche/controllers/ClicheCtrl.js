@@ -648,9 +648,23 @@ angular.module('registryApp.cliche')
 
         };
 
+        /**
+         * Load markdown modal for description edit
+         */
         $scope.loadMarkdown = function() {
 
-            // todo
+            var modalInstance = $modal.open({
+                template: $templateCache.get('views/partials/markdown.html'),
+                controller: 'MarkdownCtrl',
+                windowClass: 'modal-markdown',
+                size: 'lg',
+                backdrop: 'static',
+                resolve: {data: function () {return {markdown: $scope.view.toolForm.softwareDescription.description};}}
+            });
+
+            modalInstance.result.then(function(result) {
+                $scope.view.toolForm.softwareDescription.description = result;
+            });
         };
 
         /**
