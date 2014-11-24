@@ -445,4 +445,33 @@ angular.module('registryApp')
             });
 
         };
+
+        /**
+         * Toggle dropdown menu
+         */
+        $scope.toggleMenu = function() {
+
+            $scope.view.isMenuOpen = !$scope.view.isMenuOpen;
+
+        };
+
+        /**
+         * Load markdown modal for description edit
+         */
+        $scope.loadMarkdown = function() {
+
+            var modalInstance = $modal.open({
+                template: $templateCache.get('views/partials/markdown.html'),
+                controller: 'MarkdownCtrl',
+                windowClass: 'modal-markdown',
+                size: 'lg',
+                backdrop: 'static',
+                resolve: {data: function () {return {markdown: $scope.view.pipeline.description};}}
+            });
+
+            modalInstance.result.then(function(result) {
+                $scope.view.pipeline.description = result;
+            });
+        };
+
     }]);

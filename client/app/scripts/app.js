@@ -18,7 +18,7 @@ angular
         'ui.bootstrap',
         'ngPrettyJson',
         'LocalForageModule',
-        'btford.markdown',
+        'hc.marked',
         'registryApp.cliche',
         'registryApp.dyole'
     ])

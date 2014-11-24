@@ -281,6 +281,7 @@ body {
           @include flex-box();
           @include flex-flow(column nowrap);
         }
+        &.description,
         &.revisions {
           padding: 0 10px;
         }
@@ -406,6 +407,15 @@ body {
             max-width: 500px;
           }
         }
+      }
+    }
+
+    &.app-revisions,
+    &.pipeline-revisions {
+      th {
+        &:nth-child(1),
+        &:nth-child(2) { width: 15%; }
+        &:nth-child(3) { width: 50%; }
       }
     }
 

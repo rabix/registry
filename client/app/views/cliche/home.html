@@ -10,10 +10,6 @@
 
             <div class="actions pull-right">
 
-                <div class="btn btn-default" tooltip="Edit Description" tooltip-placement="bottom" ng-click="loadMarkdown()">
-                    <i class="fa fa-ellipsis-h"></i>
-                </div>
-
                 <div class="btn-group" role="group">
                     <button class="btn btn-default" ng-click="showJson('tool')">
                         <i class="fa fa-code"></i> Tool JSON
@@ -35,6 +31,8 @@
                     <button type="button" class="btn btn-default"><i class="fa fa-cog"></i></button>
                     <button type="button" ng-click="toggleMenu()" class="btn btn-default dropdown-toggle"><span class="caret"></span></button>
                     <ul class="dropdown-menu" role="menu" ng-click="toggleMenu()">
+
+                        <li><a href ng-click="loadMarkdown()"><i class="fa fa-ellipsis-h"></i> <span>Description</span></a></li>
 
                         <li ng-if="view.mode === 'edit' && view.user">
                             <a href ng-disabled="view.saving" ng-click="fork()"><i class="fa fa-code-fork"></i> <span>Fork</span></a>

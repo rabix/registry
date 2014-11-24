@@ -6,6 +6,7 @@
             <span>{{ view.pipeline.pipeline.name }} <span class="pipeline-repo">({{view.pipeline.pipeline.repo.owner}}/{{view.pipeline.pipeline.repo.name}})</span></span>
             <div ng-if="view.revisions.length > 0" class="nav nav-pills nav-page">
                 <li ng-class="{active: view.tab === 'info'}"><a href="" ng-click="switchTab('info')">Info</a></li>
+                <li ng-class="{active: view.tab === 'description'}"><a href="" ng-click="switchTab('description')">Description</a></li>
                 <li ng-class="{active: view.tab === 'revisions'}"><a href="" ng-click="switchTab('revisions')">Revisions</a></li>
             </div>
             <div class="actions pull-right">
@@ -20,6 +21,10 @@
 
         <section class="tab info" ng-show="view.tab === 'info'">
             <div ng-if="view.pipeline.json" pipeline="view.pipeline"></div>
+        </section>
+
+        <section class="tab description" ng-show="view.tab === 'description'">
+            <div class="markdown-body" marked="view.pipeline.description"></div>
         </section>
 
         <section class="tab revisions" ng-if="view.tab === 'revisions'">
