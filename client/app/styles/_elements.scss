@@ -20,25 +20,31 @@
         line-height: 22px;
       }
 
-      .form-group.workflow-name {
-
-        width: auto;
-
-        span {
-          font-size: 20px;
-          margin-top: -7px;
-
-          &.pipeline-repo {
-            font-size: 14px;
-            line-height: 21px;
-          }
-        }
-
-        input {
-          display: inline-block;
-          margin-left: 5px;
+      .form-group {
+        &.workflow-name,
+        &.tool-name {
           width: auto;
 
+          span {
+            font-size: 20px;
+            margin-top: -7px;
+
+            &.pipeline-repo {
+              font-size: 14px;
+              line-height: 21px;
+            }
+          }
+
+          input {
+            display: inline-block;
+            margin-left: 5px;
+            width: auto;
+          }
+        }
+        &.tool-name {
+          span {
+            margin-right: 10px;
+          }
         }
       }
 

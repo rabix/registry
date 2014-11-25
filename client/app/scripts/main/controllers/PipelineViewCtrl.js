@@ -9,21 +9,14 @@ angular.module('registryApp')
         Sidebar.setActive('workflows');
 
         $scope.view = {};
+        $scope.view.page = 1;
+        $scope.view.total = 0;
         $scope.view.loading = true;
         $scope.view.pipeline = {};
         $scope.view.explanation = false;
         $scope.view.tab = 'info';
 
         $scope.view.revisions = [];
-
-        $scope.view.paginator = {
-            prev: false,
-            next: false
-        };
-
-        $scope.view.page = 1;
-        $scope.view.perPage = 25;
-        $scope.view.total = 0;
 
         $scope.view.showDelete = false;
 
@@ -55,13 +48,10 @@ angular.module('registryApp')
          */
         var revisionsLoaded = function(result) {
 
-            $scope.view.paginator.prev = $scope.view.page > 1;
-            $scope.view.paginator.next = ($scope.view.page * $scope.view.perPage) < result.total;
-            $scope.view.total = Math.ceil(result.total / $scope.view.perPage);
-
             $scope.view.revisions = result.list;
-
             $scope.view.loading = false;
+
+            $scope.view.total = result.total;
 
             var publicRevs = _.filter($scope.view.revisions, function (rev) {
                 return rev.is_public;
@@ -77,22 +67,16 @@ angular.module('registryApp')
         };
 
         /**
-         * Go to the next/prev page
+         * Get more revisions by offset
          *
-         * @param dir
+         * @param offset
          */
-        $scope.goToPage = function(dir) {
+        $scope.getMoreRevision = function(offset) {
 
-            if (!$scope.view.loading) {
+            $scope.view.loading = true;
 
-                if (dir === 'prev') { $scope.view.page -= 1; }
-                if (dir === 'next') { $scope.view.page += 1; }
+            Pipeline.getRevisions(offset, '', $scope.view.pipeline.pipeline._id).then(revisionsLoaded);
 
-                $scope.view.loading = true;
-                var offset = ($scope.view.page - 1) * $scope.view.perPage;
-
-                Pipeline.getRevisions(offset, '', $routeParams.id).then(revisionsLoaded);
-            }
         };
         
         $scope.deleteRevision = function (id) {

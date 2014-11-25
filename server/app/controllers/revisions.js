@@ -95,8 +95,6 @@ router.post('/revisions', filters.authenticated, function (req, res, next) {
         return false;
     }
 
-    var desc = data.tool.softwareDescription;
-
     App.findById(data.app_id, function(err, app) {
 
         var user_id = req.user.id.toString();
@@ -109,8 +107,7 @@ router.post('/revisions', filters.authenticated, function (req, res, next) {
                 var revision = new Revision();
 
                 revision.name = app.name;
-                revision.description = desc.description;
-                revision.c_version = desc.appVersion;
+                revision.description = data.tool.description;
                 revision.author = data.tool.documentAuthor;
                 revision.json = data.tool;
                 revision.app_id = data.app_id;
@@ -123,7 +120,6 @@ router.post('/revisions', filters.authenticated, function (req, res, next) {
 
                     if (app.public_count === 0) {
                         app.json = revision.json;
-                        app.c_version = revision.c_version;
                         app.description = revision.description;
                         app.author = revision.author;
                     }
@@ -169,7 +165,6 @@ router.put('/revisions/:id', filters.authenticated, function (req, res, next) {
 
                                     app.links = {json: url};
                                     app.json = revision.json;
-                                    app.c_version = revision.c_version;
                                     app.description = revision.description;
                                     app.author = revision.author;
 

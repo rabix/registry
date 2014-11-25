@@ -76,7 +76,15 @@ angular.module('registryApp.cliche')
                     $scope.view.revision = result[0].revision;
                     $scope.view.user = result[1].user;
 
-                    Data.setTool($scope.view.app.json);
+                    var json = _.extend({
+                        name: $scope.view.app.name,
+                        description: $scope.view.app.description
+                    }, $scope.view.app.json);
+
+                    // legacy structure
+                    delete json.softwareDescription;
+
+                    Data.setTool(json);
                     $scope.view.toolForm = Data.tool;
 
                     Data.setJob();
@@ -101,8 +109,7 @@ angular.module('registryApp.cliche')
 
                         $scope.view.toolForm = Data.tool;
                         if ($scope.view.user) {
-                            $scope.view.toolForm.documentAuthor = $scope.view.user.email;
-                            $scope.view.toolForm.softwareDescription.repo_owner = $scope.view.user.login;
+                            $scope.view.toolForm.documentAuthor = $scope.view.user.login;
                         }
 
                         $scope.view.jobForm = Data.job;
@@ -372,19 +379,18 @@ angular.module('registryApp.cliche')
 
             $scope.view.loading = true;
 
-            var name = $scope.view.toolForm.softwareDescription.name;
+            var name = $scope.view.toolForm.name;
 
             Data.flush().then(function(result) {
 
                 $scope.view.toolForm = result.tool;
                 $scope.view.jobForm = result.job;
                 $scope.view.command = '';
-                $scope.view.toolForm.softwareDescription.name = name;
+                $scope.view.toolForm.name = name;
 
                 if ($scope.view.user) {
 
                     $scope.view.toolForm.documentAuthor = $scope.view.user.email;
-                    $scope.view.toolForm.softwareDescription.repo_owner = $scope.view.user.login;
                 }
 
                 $scope.view.loading = false;
@@ -659,11 +665,11 @@ angular.module('registryApp.cliche')
                 windowClass: 'modal-markdown',
                 size: 'lg',
                 backdrop: 'static',
-                resolve: {data: function () {return {markdown: $scope.view.toolForm.softwareDescription.description};}}
+                resolve: {data: function () {return {markdown: $scope.view.toolForm.description};}}
             });
 
             modalInstance.result.then(function(result) {
-                $scope.view.toolForm.softwareDescription.description = result;
+                $scope.view.toolForm.description = result;
             });
         };
 

@@ -126,7 +126,7 @@ angular.module('registryApp.dyole')
 
                     this.Event.subscribe('node:select', function (model) {
 
-                        if (model.softwareDescription.repo_name !== 'system') {
+                        if (model.softwareDescription && model.softwareDescription.repo_name !== 'system') {
                             $rootScope.$broadcast('node:select', model);
                         }
 
@@ -469,13 +469,15 @@ angular.module('registryApp.dyole')
                     if (isInput) {
 
                         count = _.filter(this.nodes, function (n) {
-                            return n.model.softwareDescription.name.indexOf('Input') !== -1 && n.model.softwareDescription.repo_name === 'system';
+                            var desc = n.model.softwareDescription;
+                            var name = (desc && desc.name) ? desc.name : n.model.name;
+                            return name.indexOf('Input') !== -1 && desc && desc.repo_name === 'system';
                         }).length;
 
                         terId = 'input' + '_' + (count + 1);
                         terName = 'Input' + '_' + (count + 1);
 
-                        model.softwareDescription.name = terName;
+                        model.name = terName;
                         model.softwareDescription.type = 'input';
                         model.outputs.properties = {};
                         model.outputs.properties[terId] = {
@@ -489,13 +491,15 @@ angular.module('registryApp.dyole')
                     } else {
 
                         count = _.filter(this.nodes, function (n) {
-                            return n.model.softwareDescription.name.indexOf('Output') !== -1 && n.model.softwareDescription.repo_name === 'system';
+                            var desc = n.model.softwareDescription;
+                            var name = (desc && desc.name) ? desc.name : n.model.name;
+                            return name.indexOf('Output') !== -1 && desc && desc.repo_name === 'system';
                         }).length;
 
                         terId = 'output' + '_' + (count + 1);
                         terName = 'Output' + '_' + (count + 1);
 
-                        model.softwareDescription.name = terName;
+                        model.name = terName;
                         model.softwareDescription.type = 'output';
                         model.inputs.properties = {};
                         model.inputs.properties[terId] = {
@@ -526,7 +530,7 @@ angular.module('registryApp.dyole')
                  * @private
                  */
                 _generateNodeId: function (model) {
-                    var name = model.softwareDescription.name,
+                    var name = (model.softwareDescription && model.softwareDescription.name) ? model.softwareDescription.name : model.name,
                         n = 1;
 
                     var check = this._checkIdAvailable(name + '_' + n);

@@ -1,6 +1,7 @@
 {
     "tool": {
-        "softwareDescription": {},
+        "name": "",
+        "description": "",
         "documentAuthor": "",
         "requirements": {
             "environment": {

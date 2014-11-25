@@ -24,46 +24,51 @@
         </section>
 
         <section class="tab description" ng-show="view.tab === 'description'">
+            <p ng-if="!view.pipeline.description"><i>There is no description for this pipeline</i></p>
             <div class="markdown-body" marked="view.pipeline.description"></div>
         </section>
 
-        <section class="tab revisions" ng-if="view.tab === 'revisions'">
+        <section class="tab revisions" ng-show="view.tab === 'revisions'">
 
-            <table class="table table-hover revisions" ng-class="{'revisions-short': !view.user}">
-                <thead>
-                <tr>
-                    <th ng-if="view.user">Revision</th>
-                    <th>Version</th>
-                    <th>Description</th>
-                    <th class="right">&nbsp;</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-repeat="revision in view.revisions">
+            <div class="content">
+                <table class="table table-hover revisions" ng-class="{'revisions-short': !view.user}">
+                    <thead>
+                    <tr>
+                        <th ng-if="view.user">Revision</th>
+                        <th>Version</th>
+                        <th>Description</th>
+                        <th class="right">&nbsp;</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="revision in view.revisions">
 
-                    <td ng-if="view.user" class="revision">
-                        <strong>{{ revision.rev }}</strong>
-                    </td>
+                        <td ng-if="view.user" class="revision">
+                            <strong>{{ revision.rev }}</strong>
+                        </td>
 
-                    <td class="revision">
-                        <strong class="label label-primary" ng-if="revision.version"><i class="fa fa-tag"></i> {{ 'v' + revision.version }}</strong>
-                        <i ng-if="!revision.version">Not published</i>
-                    </td>
+                        <td class="revision">
+                            <strong class="label label-primary" ng-if="revision.version"><i class="fa fa-tag"></i> {{ 'v' + revision.version }}</strong>
+                            <i ng-if="!revision.version">Not published</i>
+                        </td>
 
-                    <td><p tooltip="{{ revision.description }}" tooltip-popup-delay="1000">{{ revision.description }}</p></td>
+                        <td><p tooltip="{{ revision.description }}" tooltip-popup-delay="1000">{{ revision.description }}</p></td>
 
-                    <td class="right">
-                        <a class="btn btn-sm btn-default" tooltip="View Revision" ng-href="#/pipeline/{{ revision._id }}"><i class="fa fa-eye"></i></a>
-                        <a class="btn btn-sm btn-default" tooltip="Edit Revision" ng-href="#/pipeline/{{ revision._id }}/edit"><i class="fa fa-pencil"></i></a>
-                        <a ng-if="view.user.id === view.pipeline.user._id && view.revisions.length > 1" class="btn btn-sm btn-default" href="" tooltip="Delete Revision" ng-click="deleteRevision(revision._id)"><i class="fa fa-trash"></i></a>
-                    </td>
+                        <td class="right">
+                            <a class="btn btn-sm btn-default" tooltip="View Revision" ng-href="#/pipeline/{{ revision._id }}"><i class="fa fa-eye"></i></a>
+                            <a class="btn btn-sm btn-default" tooltip="Edit Revision" ng-href="#/pipeline/{{ revision._id }}/edit"><i class="fa fa-pencil"></i></a>
+                            <a ng-if="view.user.id === view.pipeline.user._id && view.revisions.length > 1" class="btn btn-sm btn-default" href="" tooltip="Delete Revision" ng-click="deleteRevision(revision._id)"><i class="fa fa-trash"></i></a>
+                        </td>
 
-                </tr>
-                <tr class="empty" ng-if="view.revisions.length === 0">
-                    <td colspan="4"><p class="alert alert-info">There are no revisions for this workflow</p></td>
-                </tr>
-                </tbody>
-            </table>
+                    </tr>
+                    <tr class="empty" ng-if="view.revisions.length === 0">
+                        <td colspan="4"><p class="alert alert-info">There are no revisions for this workflow</p></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <paginator page="view.page" total="view.total" handler="getMoreRevision(offset)"></paginator>
 
         </section>
 

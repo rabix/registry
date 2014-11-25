@@ -102,7 +102,7 @@ router.get('/repositories/:type', function (req, res, next) {
         where.public_count = {$gt: 0};
     }
 
-    App.find(where, '_id repo_name repo user name').populate('repo').sort({_id: 'desc'}).exec(function(err, apps) {
+    App.find(where, '_id repo user name').populate('repo').sort({_id: 'desc'}).exec(function(err, apps) {
         if (err) { return next(err); }
 
         var whereRev = {};
@@ -216,8 +216,7 @@ router.post('/apps/:action', filters.authenticated, function (req, res, next) {
         return false;
     }
 
-    var desc = data.tool.softwareDescription;
-    var name = (req.params.action === 'fork') ? data.name : desc.name;
+    var name = (req.params.action === 'fork') ? data.name : data.tool.name;
 
     App.count({name: name}).exec(function(err, count) {
         if (err) { return next(err); }
@@ -228,11 +227,9 @@ router.post('/apps/:action', filters.authenticated, function (req, res, next) {
 
             var app = new App();
 
-            app.c_version = desc.appVersion;
             app.name = name;
-            app.description = desc.description;
-            // TODO: on fork should we change author's email as well??
-            app.author = data.tool.documentAuthor;
+            app.description = data.tool.description;
+            app.author = req.user.login;
             app.json = data.tool;
             app.links = {json: ''};
 
@@ -240,9 +237,7 @@ router.post('/apps/:action', filters.authenticated, function (req, res, next) {
 
                 app.repo = repo._id;
 
-                app.json.softwareDescription.name = name;
-                app.json.softwareDescription.repo_name = repo.name;
-                app.json.softwareDescription.repo_owner = repo.owner;
+                app.json.documentAuthor = app.author;
 
                 var folder = 'users/' + req.user.login + '/apps/' + repo.owner + '-' + repo.name;
 
@@ -258,7 +253,6 @@ router.post('/apps/:action', filters.authenticated, function (req, res, next) {
 
                                     var revision = new Revision();
 
-                                    revision.c_version = app.c_version;
                                     revision.name = app.name;
                                     revision.description = app.description;
                                     revision.author = app.author;

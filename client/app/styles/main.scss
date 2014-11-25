@@ -29,7 +29,6 @@ body {
 @import "loader";
 @import "error";
 @import "elements";
-@import "overrides";
 @import "cliche";
 
 /* PAGE
@@ -233,10 +232,22 @@ body {
     .heading {
       margin: 0;
     }
-    .content {
+    & > .content {
       padding: 0px 10px;
+      @include flex-box();
+      @include flex-flow(column nowrap);
     }
     section {
+      &.revisions {
+        margin: 0;
+        @include flex(1);
+        @include flex-box();
+        @include flex-flow(column nowrap);
+        & > .content {
+          padding: 0;
+          @include flex(1);
+        }
+      }
       table {
         thead {
           tr {
@@ -275,7 +286,7 @@ body {
       @include flex-box();
       @include flex-flow(column nowrap);
       & > .tab {
-        &.info {
+        &.info, &.revisions {
           margin: 0;
           @include flex(1);
           @include flex-box();
@@ -284,6 +295,10 @@ body {
         &.description,
         &.revisions {
           padding: 0 10px;
+          & > .content {
+            padding: 0;
+            @include flex(1);
+          }
         }
       }
     }
@@ -570,3 +585,4 @@ div.pipeline-editor {
   @include user-select(none);
 }
 
+@import "overrides";
