@@ -3,7 +3,12 @@
 
     <div class="input-property-body">
 
-        <input type="text" class="form-control" name="inputFile" ng-model="model.path" ng-required="prop.required">
+        <div class="input-group">
+            <input type="text" class="form-control" name="inputFile" ng-model="model.path" ng-required="prop.required">
+            <span class="input-group-btn">
+                <a href class="btn btn-default" ng-click="more()"><i class="fa fa-ellipsis-h"></i></a>
+            </span>
+        </div>
 
         <span ng-if="inputForm.inputFile.$invalid" class="help-block">Please provide correct value</span>
 

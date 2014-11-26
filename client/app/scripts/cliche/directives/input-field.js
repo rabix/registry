@@ -7,7 +7,7 @@
 'use strict';
 
 angular.module('registryApp.cliche')
-    .directive('inputField', ['$templateCache', '$compile', '$timeout', '$q', 'RecursionHelper', function ($templateCache, $compile, $timeout, $q, RecursionHelper) {
+    .directive('inputField', ['$templateCache', '$compile', '$timeout', '$q', '$modal', 'RecursionHelper', function ($templateCache, $compile, $timeout, $q, $modal, RecursionHelper) {
 
         var uniqueId = 0;
 
@@ -31,10 +31,12 @@ angular.module('registryApp.cliche')
                     scope.view.uniqueId = uniqueId;
 
                     var inputScheme = scope.model;
+                    var validFileKeys = ['path', 'size', 'secondaryFiles', 'meta'];
 
                     if (scope.prop.type === 'file') {
 
-                        inputScheme = {path: (_.contains(_.keys(scope.model, 'path'), 'path') ? scope.model.path : scope.model)};
+                        inputScheme = _.intersection(validFileKeys, _.keys(scope.model)).length > 0 ? scope.model : {path: scope.model};
+
 
                     } else if(scope.prop.type === 'object') {
 
@@ -56,7 +58,8 @@ angular.module('registryApp.cliche')
                             break;
                         case 'file':
                             _.each(scope.model, function(value) {
-                                var innerScheme = {path: (_.contains(_.keys(value, 'path'), 'path') ? value.path : value)};
+                                //var innerScheme = {path: (_.contains(_.keys(value, 'path'), 'path') ? value.path : value)};
+                                var innerScheme = _.intersection(validFileKeys, _.keys(value)).length > 0 ? value : {path: value};
                                 inputScheme.push(innerScheme);
                             });
                             break;
@@ -78,6 +81,24 @@ angular.module('registryApp.cliche')
                     iElement.append(template);
 
                     $compile(iElement.contents())(scope);
+
+                    /**
+                     * Open modal to enter more parameters for the input file
+                     */
+                    scope.more = function() {
+
+                        var modalInstance = $modal.open({
+                            template: $templateCache.get('views/cliche/partials/input-file-more.html'),
+                            controller: 'InputFileMoreCtrl',
+                            windowClass: 'modal-prop',
+                            resolve: {data: function () {return {scheme: scope.model, key: scope.key};}}
+                        });
+
+                        modalInstance.result.then(function (scheme) {
+                            scope.model = angular.copy(scheme);
+                        });
+
+                    };
 
                 });
             }

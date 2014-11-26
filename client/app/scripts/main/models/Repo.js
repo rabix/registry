@@ -59,6 +59,14 @@ angular.module('registryApp')
 
         };
 
+        /**
+         * Mange the repo information
+         *
+         * @param id
+         * @param action
+         * @param repo
+         * @returns {*}
+         */
         self.manageRepo = function(id, action, repo) {
 
             return Api.repos[action]({id: id}, {repo: repo}).$promise;
@@ -94,6 +102,19 @@ angular.module('registryApp')
             });
 
             return repo;
+        };
+
+        /**
+         * Get list of repo tools
+         *
+         * @param {integer} skip
+         * @param {string} id
+         * @returns {object} $promise
+         */
+        self.repoTools = function(skip, id) {
+
+            return Api.repoTools.get({id: id, skip: skip}).$promise;
+
         };
 
         return self;

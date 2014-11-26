@@ -70,6 +70,8 @@ angular.module('registryApp')
             update: {method: 'PUT'}
         });
 
+        self.repoTools = $resource(apiUrl + '/repo-tools/:id', {id: '@id'});
+
         self.gitHubRepos = $resource(apiUrl + '/github-repos', {}, {
             add: {method: 'POST'},
             update: {method: 'PUT'}
