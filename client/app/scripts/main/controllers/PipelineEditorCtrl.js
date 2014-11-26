@@ -24,12 +24,17 @@ angular.module('registryApp')
 
         /* group visibility flags for repos */
         $scope.view.groups = {
-            my: false,
-            other: false
+            myRepositories: false,
+            otherRepositories: false
         };
 
         /* visibility flags for repo groups that hold apps */
         $scope.view.repoGroups = {};
+
+        $scope.view.repoTypes = {
+            myRepositories: {},
+            otherRepositories: {}
+        };
 
         /* list of my repos */
         $scope.view.myRepositories = {};
@@ -89,8 +94,8 @@ angular.module('registryApp')
             $scope.view.filtering = false;
             $scope.view.message = result[0].message;
 
-            $scope.view.myRepositories = {};
-            $scope.view.otherRepositories = {};
+            $scope.view.repoTypes.myRepositories = {};
+            $scope.view.repoTypes.otherRepositories = {};
 
             tools = formatApps(result[0].list || {});
             workflows = formatApps(result[2].list || {});
@@ -134,7 +139,7 @@ angular.module('registryApp')
         };
         
         var mergeToolsWorkflows = function (type, tools, workflows) {
-            var repositories = $scope.view[type];
+            var repositories = $scope.view.repoTypes[type];
 
             _.forEach(tools, function (tool, repoName) {
                 if (!repositories[repoName]) {
@@ -496,6 +501,10 @@ angular.module('registryApp')
 
             $scope.view.isMenuOpen = !$scope.view.isMenuOpen;
 
+        };
+        
+        $scope.view.capitalize = function (string) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
         };
 
         /**
