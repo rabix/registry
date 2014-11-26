@@ -7,7 +7,8 @@
 
 angular.module('registryApp.cliche')
     .constant('rawTool', {
-        softwareDescription: {},
+        name: '',
+        description: '',
         documentAuthor: '',
         requirements: {
             environment: {

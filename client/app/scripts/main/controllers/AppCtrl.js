@@ -6,6 +6,8 @@ angular.module('registryApp')
         Sidebar.setActive('tools');
 
         $scope.view = {};
+        $scope.view.page = 1;
+        $scope.view.total = 0;
         $scope.view.loading = true;
         $scope.view.app = null;
         $scope.view.revisions = [];
@@ -21,20 +23,11 @@ angular.module('registryApp')
             if (n !== o) { $scope.view.classes = n; }
         });
 
-        $scope.view.paginator = {
-            prev: false,
-            next: false
-        };
-
-        $scope.view.page = 1;
-        $scope.view.perPage = 25;
-        $scope.view.total = 0;
-
         $q.all([
-            User.getUser(),
-            App.getApp($routeParams.id, 'latest'),
-            App.getRevisions(0, '', $routeParams.id)
-        ]).then(function(result) {
+                User.getUser(),
+                App.getApp($routeParams.id, 'latest'),
+                App.getRevisions(0, '', $routeParams.id)
+            ]).then(function(result) {
 
                 $scope.view.user = result[0].user;
                 $scope.view.app = result[1].data;
@@ -51,33 +44,23 @@ angular.module('registryApp')
          */
         var revisionsLoaded = function(result) {
 
-            $scope.view.paginator.prev = $scope.view.page > 1;
-            $scope.view.paginator.next = ($scope.view.page * $scope.view.perPage) < result.total;
-            $scope.view.total = Math.ceil(result.total / $scope.view.perPage);
-
             $scope.view.revisions = result.list;
-
             $scope.view.loading = false;
+
+            $scope.view.total = result.total;
+
         };
 
         /**
-         * Go to the next/prev page
+         * Get more revisions by offset
          *
-         * @param dir
+         * @param offset
          */
-        $scope.goToPage = function(dir) {
+        $scope.getMoreRevision = function(offset) {
 
-            if (!$scope.view.loading) {
+            $scope.view.loading = true;
 
-                if (dir === 'prev') { $scope.view.page -= 1; }
-                if (dir === 'next') { $scope.view.page += 1; }
-
-                $scope.view.loading = true;
-                var offset = ($scope.view.page - 1) * $scope.view.perPage;
-
-                App.getRevisions(offset, '', $routeParams.id).then(revisionsLoaded);
-
-            }
+            App.getRevisions(offset, '', $routeParams.id).then(revisionsLoaded);
         };
 
         /**

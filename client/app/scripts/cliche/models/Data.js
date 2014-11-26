@@ -16,7 +16,7 @@ angular.module('registryApp.cliche')
          *
          * @type {number}
          */
-        self.version = 17;
+        self.version = 18;
 
         /**
          * Tool json object

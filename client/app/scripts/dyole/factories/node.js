@@ -149,7 +149,8 @@ angular.module('registryApp.dyole')
                 borders = canvas.group();
                 borders.push(outerBorder).push(innerBorder);
 
-                label = canvas.text(0, radius + labelOffset, model.label || model.name || model.softwareDescription.name);
+                label = canvas.text(0, radius + labelOffset, model.label ||
+                    ((model.softwareDescription && model.softwareDescription.name) ? model.softwareDescription.name : model.name));
 
                 label.attr({
                     'font-size': 14
@@ -609,7 +610,7 @@ angular.module('registryApp.dyole')
                     });
 
 
-                    if (this.model.softwareDescription && this.model.softwareDescription.repo_name === 'system') {
+                    if (this.model.softwareDescription.repo_name === 'system') {
 
                         bbox = this.label.getBBox();
                         this.editLabelButton = this.canvas.button({
@@ -631,7 +632,7 @@ angular.module('registryApp.dyole')
                             scope: this
                         });
 
-                        this.el.push(this.editLabelButton.getEl());
+                        this.el.push(this.editLabelButton.getEl())
                     }
 
                     _self.el.push(_self.infoButton.getEl())
@@ -681,8 +682,9 @@ angular.module('registryApp.dyole')
              */
             _initNameChanging: function () {
                 var _self = this;
+                var nodeName = (this.model.softwareDescription && this.model.softwareDescription.name) ? this.model.softwareDescription.name : this.model.name;
 
-                $rootScope.$broadcast('node:label:edit', this.model.name || this.model.softwareDescription.name, function check(name) {
+                $rootScope.$broadcast('node:label:edit', nodeName, function check(name) {
 
                     var test = _.filter(_self.Pipeline.nodes, function (n) {
                         return n.model.softwareDescription && n.model.softwareDescription.repo_name === 'system' && n.model.id === name;
@@ -697,10 +699,10 @@ angular.module('registryApp.dyole')
                 var ter, old,
                     isInput = this.inputs.length === 0;
 
-                if (this.model.softwareDescription.repo_name === 'system') {
+                if (this.model.softwareDescription && this.model.softwareDescription.repo_name === 'system') {
 
-                    this.model.softwareDescription.name = name;
-                    this.Pipeline.model.schemas[this.model.id].softwareDescription.name = name;
+                    this.model.name = name;
+                    this.Pipeline.model.schemas[this.model.id].name = name;
 
                     if (isInput) {
                         ter = this.outputs[0];
