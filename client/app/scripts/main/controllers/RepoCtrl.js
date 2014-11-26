@@ -39,7 +39,7 @@ angular.module('registryApp')
             $scope.view.repo = result.data;
 
             $q.all([
-                App.getApps(0, '', false, $routeParams.id),
+                Repo.repoTools(0, $routeParams.id),
                 Build.getBuilds(0, $routeParams.id)
             ]).then(function (result) {
 
@@ -78,7 +78,7 @@ angular.module('registryApp')
 
             $scope.view.loading = true;
 
-            App.getApps(offset, '', false, $routeParams.id).then(function (result) {
+            Repo.repoTools(offset, $routeParams.id).then(function (result) {
                 $scope.view.apps = itemsLoaded(result, 'apps');
             });
 

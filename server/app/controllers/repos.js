@@ -10,6 +10,7 @@ var Q = require('q');
 var mongoose = require('mongoose');
 var Repo = mongoose.model('Repo');
 var User = mongoose.model('User');
+var App = mongoose.model('App');
 
 var BuildClass = require('../../builds/Build');
 
@@ -241,6 +242,42 @@ router.post('/github-webhook', function (req, res, next) {
 
     }
 
+});
+
+router.get('/repo-tools/:id', function(req, res, next) {
+
+    var limit = req.query.limit ? req.query.limit : 25;
+    var skip = req.query.skip ? req.query.skip : 0;
+    var where = {repo: req.params.id};
+
+    if (req.user) {
+        where.$or = [
+            {user: req.user.id},
+            {public_count: {$gt: 0}}
+        ];
+    } else {
+        where.public_count = {$gt: 0};
+    }
+
+    App.count(where, function(err, total) {
+        if (err) { return next(err); }
+
+        var match = {is_public: true};
+
+        if (req.query.q) {
+            match.$or = [
+                {name: new RegExp(req.query.q, 'i')},
+                {description: new RegExp(req.query.q, 'i')}
+            ];
+        }
+
+        App.find(where).populate('user').skip(skip).limit(limit).sort({_id: 'desc'}).exec(function(err, apps) {
+                if (err) { return next(err); }
+
+                res.json({list: apps, total: total});
+            });
+
+    });
 
 });
 
