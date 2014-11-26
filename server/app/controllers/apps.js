@@ -227,7 +227,6 @@ router.post('/apps/:action', filters.authenticated, function (req, res, next) {
 
             var app = new App();
 
-            app.c_version = desc.appVersion;
             app.name = name;
             app.description = data.tool.description;
             app.author = req.user.login;

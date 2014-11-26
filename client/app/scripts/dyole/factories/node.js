@@ -175,7 +175,7 @@ angular.module('registryApp.dyole')
                 }
 
                 if (model.type === 'workflow') {
-//                    imgUrl = '';
+                    imgUrl = this.icons.workflow;
                 }
 
                 img = new Image();
