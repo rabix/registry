@@ -126,7 +126,7 @@ angular.module('registryApp.dyole')
 
                     this.Event.subscribe('node:select', function (model) {
 
-                        if (model.softwareDescription.repo_name !== 'system') {
+                        if (!model.softwareDescription || model.softwareDescription.repo_name !== 'system') {
                             $rootScope.$broadcast('node:select', model);
                         }
 
@@ -469,7 +469,7 @@ angular.module('registryApp.dyole')
                     if (isInput) {
 
                         count = _.filter(this.nodes, function (n) {
-                            return n.model.softwareDescription.name.indexOf('Input') !== -1 && n.model.softwareDescription.repo_name === 'system';
+                            return n.model.softwareDescription && n.model.softwareDescription.name.indexOf('Input') !== -1 && n.model.softwareDescription.repo_name === 'system';
                         }).length;
 
                         terId = 'input' + '_' + (count + 1);
@@ -489,7 +489,7 @@ angular.module('registryApp.dyole')
                     } else {
 
                         count = _.filter(this.nodes, function (n) {
-                            return n.model.softwareDescription.name.indexOf('Output') !== -1 && n.model.softwareDescription.repo_name === 'system';
+                            return n.model.softwareDescription && n.model.softwareDescription.name.indexOf('Output') !== -1 && n.model.softwareDescription.repo_name === 'system';
                         }).length;
 
                         terId = 'output' + '_' + (count + 1);
@@ -526,7 +526,7 @@ angular.module('registryApp.dyole')
                  * @private
                  */
                 _generateNodeId: function (model) {
-                    var name = model.softwareDescription.name,
+                    var name = model.name || model.softwareDescription.name,
                         n = 1;
 
                     var check = this._checkIdAvailable(name + '_' + n);
@@ -742,6 +742,12 @@ angular.module('registryApp.dyole')
 
                 },
 
+                _transformWorkflowModel: function (nodeModel) {
+                    var model = nodeModel.json;
+
+                    return model;
+                },
+
                 /**
                  * Get element offset
                  *
@@ -941,8 +947,15 @@ angular.module('registryApp.dyole')
                  */
                 addNode: function (nodeModel, clientX, clientY, rawCoords) {
 
-                    var rawModel = angular.copy(nodeModel);
-                    var model = this._transformModel(nodeModel);
+                    var rawModel = angular.copy(nodeModel),
+                        model;
+
+                    if (nodeModel.type && nodeModel.type === 'workflow') {
+                        model = this._transformWorkflowModel(nodeModel);
+                    } else {
+                        model = this._transformModel(nodeModel);
+                    }
+
                     var zoom = this.getEl().getScale().x;
 
                     var canvas = this._getOffset(this.$parent[0]);

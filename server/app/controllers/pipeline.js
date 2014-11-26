@@ -70,18 +70,30 @@ module.exports = function (app) {
     app.use('/api', router);
 };
 
-router.post('/pipeline/format', function (req, res, next) {
+/**
+ * Format pipeline
+ *
+ * @post_param pipeline - Pipeline to format
+ * @response json - Formated pipeline json
+ */
+router.post('/pipeline/format', function (req, res) {
 
     var p = formater.toRabixSchema(req.body.pipeline.json || req.body.pipeline);
 
     if (p.steps.length === 0) {
-        res.status(400).json({message: "Invalid pipeline"});
+        res.status(400).json({message: 'Invalid pipeline'});
     } else {
         res.json({json: p});
     }
 
 });
 
+/**
+ * Format pipeline json and upload it
+ *
+ * @post_param pipeline - Pipeline to upload
+ * @response url - link to uploaded pipeline
+ */
 router.post('/pipeline/format/upload', function (req, res, next) {
     var p = req.body.pipeline;
 
@@ -129,6 +141,9 @@ router.post('/pipeline/format/upload', function (req, res, next) {
 
 });
 
+/**
+ * Get all pipelines
+ */
 router.get('/pipeline', function (req, res, next) {
 
     var limit = req.query.limit ? req.query.limit : 25;
@@ -180,6 +195,11 @@ router.get('/pipeline', function (req, res, next) {
     });
 });
 
+/**
+ * Get specific pipeline
+ *
+ * @param :id Pipeline id
+ */
 router.get('/pipeline/:id', function (req, res, next) {
 
     Pipeline.findById(req.params.id).populate('repo').populate('user', '_id email username').populate('latest').exec(function(err, pipeline) {
@@ -190,6 +210,11 @@ router.get('/pipeline/:id', function (req, res, next) {
 
 });
 
+/**
+ * Create new pipeline
+ *
+ * @post_param data - Pipeline json
+ */
 router.post('/pipeline', filters.authenticated, function (req, res, next) {
 
     var data = req.body.data;
@@ -244,7 +269,7 @@ router.post('/pipeline', filters.authenticated, function (req, res, next) {
                 } else {
                     res.status(400).json({message: 'There is already a workflow with name: ' + data.name + ' in repo: ' + repo.name});
                 }
-            })
+            });
 
         } else {
             res.status(400).json({message: 'There is no repo with id: ' + data.repo });
@@ -253,6 +278,11 @@ router.post('/pipeline', filters.authenticated, function (req, res, next) {
 
 });
 
+/**
+ * Update pipeline - create new revision
+ *
+ * @param :id Pipeline id
+ */
 router.put('/pipeline/:id', filters.authenticated, function (req, res, next) {
 
     var data = req.body.data;
@@ -302,6 +332,8 @@ router.put('/pipeline/:id', filters.authenticated, function (req, res, next) {
 
 /**
  * Delete workflow if it has only unpublished revisions
+ *
+ * @param :id Pipeline id
  */
 router.delete('/pipeline/:id', filters.authenticated, function (req, res, next) {
 
@@ -348,6 +380,11 @@ router.delete('/pipeline/:id', filters.authenticated, function (req, res, next) 
 
 });
 
+/**
+ * Fork existing pipeline
+ *
+ * @post_param pipeline - Pipeline json to fork
+ */
 router.post('/pipeline/fork', filters.authenticated, function (req, res, next) {
 
     var pipeline_to_fork = req.body.pipeline;
@@ -415,6 +452,9 @@ router.post('/pipeline/fork', filters.authenticated, function (req, res, next) {
 
 });
 
+/**
+ * Get all pipeline revisions
+ */
 router.get('/pipeline-revisions', function (req, res, next) {
 
     var limit = req.query.limit ? req.query.limit : 25;
@@ -462,6 +502,11 @@ router.get('/pipeline-revisions', function (req, res, next) {
 
 });
 
+/**
+ * Get Pipeline revision by id
+ *
+ * @param :id Revision id
+ */
 router.get('/pipeline-revisions/:id', function (req, res, next) {
     console.log('Rev id: ',req.params.id);
     PipelineRevision.findById(req.params.id).populate('pipeline').exec(function(err, pipeline) {
@@ -483,6 +528,11 @@ router.get('/pipeline-revisions/:id', function (req, res, next) {
 
 });
 
+/**
+ * Updates pipeline revisions
+ *
+ * @param :revision Revision id
+ */
 router.put('/pipeline-revisions/:revision', filters.authenticated, function (req, res, next) {
     var revision_id = req.params.revision,
         isPublic = true;
@@ -554,7 +604,7 @@ router.delete('/pipeline-revisions/:revision', filters.authenticated, function (
                             pipeline.latest = pipeline.revisions[pipeline.revisions.length - 1];
 
                             pipeline.save(function () {
-                                res.json({message: 'Successfully deleted workflow revision', latest: pipeline.latest})
+                                res.json({message: 'Successfully deleted workflow revision', latest: pipeline.latest});
                             });
 
                         });
@@ -571,5 +621,50 @@ router.delete('/pipeline-revisions/:revision', filters.authenticated, function (
 
         });
     });
+
+});
+
+
+router.get('/workflow/repositories/:type', function (req, res, next) {
+
+    var type = req.params.type;
+    var where = {};
+    var match = {};
+
+    if (type === 'my') {
+        if (!req.user) {
+            res.json({message: 'Log in to see your repositories'});
+            return false;
+        }
+
+        where.user = req.user.id;
+    } else {
+        if (req.user) {
+            where.user = {$ne: req.user.id};
+        }
+        match.$or = [];
+        match.$or.push({
+            is_public: true
+        });
+    }
+
+    Pipeline.find(where)
+        .populate('repo')
+        .populate('user', '_id email username')
+        .populate('latest')
+        .populate({
+            path: 'revisions',
+            match: match
+        })
+        .sort({_id: 'desc'})
+        .exec(function (err, pipelines) {
+            if (err) { return next(err);}
+
+            var grouped = _.groupBy(pipelines, function (p) {
+                return p.repo.owner + '/' + p.repo.name;
+            });
+
+            res.json({list: grouped});
+        });
 
 });

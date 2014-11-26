@@ -70,6 +70,7 @@ angular.module('registryApp.dyole')
             icons: {
                 input: '/images/icon-input-1.png',
                 output: '/images/icon-output-2.png',
+                workflow: '/images/icon-workflow.png',
                 default: '/images/logo.png'
             },
 
@@ -148,8 +149,7 @@ angular.module('registryApp.dyole')
                 borders = canvas.group();
                 borders.push(outerBorder).push(innerBorder);
 
-                label = canvas.text(0, radius + labelOffset, model.label ||
-                    model.softwareDescription.name);
+                label = canvas.text(0, radius + labelOffset, model.label || model.name || model.softwareDescription.name);
 
                 label.attr({
                     'font-size': 14
@@ -161,7 +161,7 @@ angular.module('registryApp.dyole')
                     top: 0
                 };
 
-                if (model.softwareDescription.repo_name === 'system') {
+                if (model.softwareDescription && model.softwareDescription.repo_name === 'system') {
                     if (this.inputs.length === 0) {
                         imgUrl = this.icons.input;
                         modification.left = -2;
@@ -171,6 +171,10 @@ angular.module('registryApp.dyole')
                     }
                 } else {
                     modification.left = 2;
+                }
+
+                if (model.type === 'workflow') {
+//                    imgUrl = '';
                 }
 
                 img = new Image();
@@ -605,7 +609,7 @@ angular.module('registryApp.dyole')
                     });
 
 
-                    if (this.model.softwareDescription.repo_name === 'system') {
+                    if (this.model.softwareDescription && this.model.softwareDescription.repo_name === 'system') {
 
                         bbox = this.label.getBBox();
                         this.editLabelButton = this.canvas.button({
@@ -627,7 +631,7 @@ angular.module('registryApp.dyole')
                             scope: this
                         });
 
-                        this.el.push(this.editLabelButton.getEl())
+                        this.el.push(this.editLabelButton.getEl());
                     }
 
                     _self.el.push(_self.infoButton.getEl())
@@ -678,10 +682,10 @@ angular.module('registryApp.dyole')
             _initNameChanging: function () {
                 var _self = this;
 
-                $rootScope.$broadcast('node:label:edit', this.model.softwareDescription.name, function check(name) {
+                $rootScope.$broadcast('node:label:edit', this.model.name || this.model.softwareDescription.name, function check(name) {
 
                     var test = _.filter(_self.Pipeline.nodes, function (n) {
-                        return n.model.softwareDescription.repo_name === 'system' && n.model.id === name;
+                        return n.model.softwareDescription && n.model.softwareDescription.repo_name === 'system' && n.model.id === name;
                     });
 
                     return test.length === 0;

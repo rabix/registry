@@ -84,16 +84,23 @@ angular.module('registryApp')
          * @param {Object} result
          */
         var appsLoaded = function (result) {
-            console.log(result);
+            var tools, workflows;
             $scope.view.loading = false;
             $scope.view.filtering = false;
             $scope.view.message = result[0].message;
-            
-            $scope.view.myRepositories = result[0].list || {};
-            $scope.view.otherRepositories = result[1].list || {};
 
-            $scope.view.myRepositories = formatApps(result[0].list);
-            $scope.view.otherRepositories = formatApps(result[1].list);
+            $scope.view.myRepositories = {};
+            $scope.view.otherRepositories = {};
+
+            tools = formatApps(result[0].list || {});
+            workflows = formatApps(result[2].list || {});
+
+            mergeToolsWorkflows('myRepositories', tools, workflows);
+
+            tools = formatApps(result[1].list || {});
+            workflows = formatApps(result[3].list || {});
+            
+            mergeToolsWorkflows('otherRepositories', tools, workflows);
 
         };
 
@@ -106,8 +113,15 @@ angular.module('registryApp')
 
             _.each(apps, function (apps) {
                 _.each(apps, function (value) {
-                    value.latest = angular.copy(value.revisions[0]);
-                    value.revisions.splice(0,1);
+
+                    if (!value.latest) {
+                        value.latest = angular.copy(value.revisions[0]);
+                        value.revisions.splice(0,1);
+                    } else {
+                        _.remove(value.revisions, function (rev) {
+                            return rev.rev === value.latest.rev;
+                        });
+                    }
 
                     $scope.view.appRevisions[value._id] = {
                         toggled: false
@@ -117,6 +131,33 @@ angular.module('registryApp')
             });
 
             return apps;
+        };
+        
+        var mergeToolsWorkflows = function (type, tools, workflows) {
+            var repositories = $scope.view[type];
+
+            _.forEach(tools, function (tool, repoName) {
+                if (!repositories[repoName]) {
+                    repositories[repoName] = {
+                        tools: tool,
+                        workflows: []
+                    };
+                } else {
+                    repositories[repoName].tools = tool;
+                }
+            });
+
+
+            _.forEach(workflows, function (workflow, repoName) {
+                if (!repositories[repoName]) {
+                    repositories[repoName] = {
+                        tools: [],
+                        workflows: workflow
+                    };
+                } else {
+                    repositories[repoName].workflows = workflow;
+                }
+            });
         };
 
         $scope.toggleAppRevisions = function (rev) {
@@ -147,10 +188,12 @@ angular.module('registryApp')
             }
         };
 
-        /* load apps grouped by repositories */
+        /* load tools/workflows grouped by repositories */
         $q.all([
-            App.getGroupedApps('my'),
-            App.getGroupedApps('other')
+            App.getGroupedTools('my'),
+            App.getGroupedTools('other'),
+            Pipeline.groupedWorkflows('my'),
+            Pipeline.groupedWorkflows('other')
         ]).then(appsLoaded);
 
         /**

@@ -25,9 +25,9 @@ angular.module('registryApp')
                  * @returns {boolean}
                  */
                 var handleDragStart = function(e) {
-
+                    var data = JSON.stringify(scope.drag);
                     e.dataTransfer.effectAllowed = 'move';
-                    e.dataTransfer.setData('Text', scope.drag._id);
+                    e.dataTransfer.setData('Text', data);
                     e.dataTransfer.setDragImage(angular.element('<img src="images/app-icon.png" width="70">')[0], 35, 35);
 
                     this.classList.add('drag');

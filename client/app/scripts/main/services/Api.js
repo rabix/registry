@@ -41,7 +41,9 @@ angular.module('registryApp')
             fork: {method: 'POST'}
         });
 
-        self.groupedApps = $resource(apiUrl + '/repositories/:type', {type: '@type'});
+        self.groupedTools = $resource(apiUrl + '/tool/repositories/:type', {type: '@type'});
+
+        self.groupedWorkflows = $resource(apiUrl + '/workflow/repositories/:type', {type: '@type'});
 
         self.revisions = $resource(apiUrl + '/revisions/:id', {id: '@id'}, {
             add: {method: 'POST'},

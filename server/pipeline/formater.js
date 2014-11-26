@@ -19,8 +19,12 @@ var formater = {
         // reset schema
         this.packedSchema = {};
         this.packedSchema.steps = [];
-        this.packedSchema.inputs = {};
-        this.packedSchema.outputs = {};
+        this.packedSchema.inputs = {
+            properties: {}
+        };
+        this.packedSchema.outputs = {
+            properties: {}
+        };
 
         if ( (!json.relations || json.relations.length === 0 ) && json.nodes.length === 1) {
             var _id = json.nodes[0]._id;
@@ -126,10 +130,12 @@ var formater = {
     },
 
     _createInOut: function (type, node) {
-        var obj = this.packedSchema[type];
+        var obj = this.packedSchema[type].properties;
+
+        type = type === 'inputs' ? 'outputs' : 'inputs';
 
         if (typeof obj[node.id] === 'undefined') {
-            obj[node.id] = node;
+            obj[node.id] = node[type].properties[Object.keys(node[type].properties)[0]];
         }
 
     },

@@ -77,7 +77,7 @@ router.get('/apps', function (req, res, next) {
 
 });
 
-router.get('/repositories/:type', function (req, res, next) {
+router.get('/tool/repositories/:type', function (req, res, next) {
 
     var type = req.params.type;
     var where = {};
@@ -231,7 +231,7 @@ router.post('/apps/:action', filters.authenticated, function (req, res, next) {
             app.c_version = desc.appVersion;
             app.name = name;
             app.description = desc.description;
-            // TODO: on fork should we change author's email as well??
+            // TODO: on fork should we change author's email as well?? ask boysa
             app.author = data.tool.documentAuthor;
             app.json = data.tool;
             app.links = {json: ''};

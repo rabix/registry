@@ -157,21 +157,39 @@ angular.module('registryApp.dyole')
          * Drop node on the canvas
          *
          * @param {MouseEvent} e
-         * @param {String} id
+         * @param {String} app object
          */
-        $scope.dropNode = function(e, id) {
+        $scope.dropNode = function(e, app) {
+
+            app = JSON.parse(app);
 
             $scope.view.loading = true;
             $scope.view.explanation = false;
 
-            App.getRevision(id).then(function(result) {
+            if (app.rev) {
 
-                $scope.view.loading = false;
-                console.log(result.data);
+                PipelineMdl.formatPipeline(app).then(function (formated) {
 
-                Pipeline.addNode(result.data, e.clientX, e.clientY);
+                    $scope.view.loading = false;
 
-            });
+                    formated.json.type = 'workflow';
+                    formated.json.name = app.name;
+
+                    Pipeline.addNode(formated, e.clientX, e.clientY);
+
+                });
+
+            } else {
+                App.getRevision(app._id).then(function(result) {
+
+                    $scope.view.loading = false;
+                    console.log(result.data);
+
+                    Pipeline.addNode(result.data, e.clientX, e.clientY);
+
+                });
+            }
+
 
         };
 

@@ -176,9 +176,9 @@ angular.module('registryApp')
          *
          * @returns {*}
          */
-        self.getGroupedApps = function (type, searchTerm) {
+        self.getGroupedTools = function (type, searchTerm) {
 
-            return Api.groupedApps.get({type: type, q: searchTerm}).$promise;
+            return Api.groupedTools.get({type: type, q: searchTerm}).$promise;
 
         };
 

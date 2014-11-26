@@ -186,6 +186,16 @@ angular.module('registryApp')
             return Api.pipelineRevs.delete({id: id}).$promise;
         };
 
+        /**
+         * Get workflows grouped by repo
+         *
+         * @param type
+         * @returns {$promise|*|A.$promise}
+         */
+        self.groupedWorkflows = function (type) {
+            return Api.groupedWorkflows.get({type: type}).$promise;
+        };
+
         return self;
 
     }]);

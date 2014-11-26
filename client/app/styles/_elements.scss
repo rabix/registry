@@ -513,6 +513,16 @@ legend {
       color: #555;
       padding: 7px 7px;
       display: block;
+
+
+      &.section-name {
+        font-size: 1em;
+        color: #FFFFFF;
+        text-align: left;
+        text-indent: 13px;
+        font-weight: 100;
+      }
+
       i {
         color: $sidebar-blue;
       }
