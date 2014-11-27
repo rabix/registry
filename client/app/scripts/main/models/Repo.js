@@ -63,7 +63,7 @@ angular.module('registryApp')
          * Mange the repo information
          *
          * @param id
-         * @param method
+         * @param action
          * @param repo
          * @returns {*}
          */
@@ -88,26 +88,6 @@ angular.module('registryApp')
 
             return Api.gitHubRepos.get().$promise;
 
-        };
-
-        /**
-         * Parse the repo data
-         *
-         * @param result
-         * @returns {object}
-         */
-        self.parseUser = function (result) {
-
-            var params = ['created_by', 'id', 'secret'];
-            var repo = {};
-
-            _.each(params, function (param) {
-                if (angular.isDefined(result[param])) {
-                    repo[param] = result[param];
-                }
-            });
-
-            return repo;
         };
 
         /**

@@ -16,7 +16,7 @@ angular.module('registryApp')
         $scope.cancel = function () {
             $modalInstance.dismiss('cancel');
         };
-        
+
         $scope.getUrl = function () {
             $modalInstance.close($scope.view.json);
         };
