@@ -36,44 +36,32 @@ router.get('/apps', function (req, res, next) {
         } else {
             where.$or = [
                 {user: req.user.id},
-                {public_count: {$gt: 0}}
+                {is_public: true}
             ];
         }
     } else {
-        where.public_count = {$gt: 0};
+        where.is_public = true;
     }
 
-    App.count(where, function(err, total) {
+    Repo.find(where, function(err, repos) {
+        if (err) { return next(err); }
+
+        var whereApps = {repo: {$in: _.pluck(repos, '_id')}};
+
+        if (req.query.q) { whereApps.name = new RegExp(req.query.q, 'i'); }
+
+        App.count(whereApps, function(err, total) {
             if (err) { return next(err); }
 
-            var match = {is_public: true};
-
-            if (req.query.q) {
-                match.$or = [
-                    {name: new RegExp(req.query.q, 'i')},
-                    {description: new RegExp(req.query.q, 'i')}
-                ];
-            }
-
-            App.find(where)
-                .populate('repo')
-                .populate('user')
-                .populate({
-                    path: 'revisions',
-                    select: 'name description version',
-                    match: match,
-                    options: {limit: 25, sort: {version: 'desc'}}
-                })
-                .skip(skip)
-                .limit(limit)
-                .sort({_id: 'desc'})
+            App.find(whereApps).populate('repo').populate('user').populate('revisions').skip(skip).limit(limit).sort({_id: 'desc'})
                 .exec(function(err, apps) {
                     if (err) { return next(err); }
 
                     res.json({list: apps, total: total});
                 });
-
         });
+
+    });
 
 });
 
@@ -139,49 +127,42 @@ router.get('/apps/:id/:revision', function (req, res, next) {
     App.findById(req.params.id).populate('user').populate('repo').exec(function(err, app) {
         if (err) { return next(err); }
 
-        if (err) { return next(err); }
-
-        var params = {};
-        var sort = {_id: 'desc'};
+        var where = {};
         var user_id = (req.user ? req.user.id : '').toString();
         var app_user_id = app.user._id.toString();
 
-        if (req.params.revision === 'latest') {
+        if (app.repo.is_public || user_id === app_user_id) {
 
-            params.app_id = req.params.id;
+            if (req.params.revision === 'latest') {
 
-            if (app.public_count > 0 || user_id !== app_user_id) {
-                params.is_public = true;
-                sort = {version: 'desc'};
-            }
-
-        } else {
-            params._id = req.params.revision;
-        }
-
-        Revision.findOne(params).sort(sort).exec(function(err, revision) {
-            if (err) { return next(err); }
-
-            if (!revision) {
-                res.status(400).json({message: 'There are no public revisions for this tool.'});
-                return;
-            }
-
-            if (revision.is_public || user_id === app_user_id) {
-
-                res.json({data: app, revision: revision});
+                where.app_id = req.params.id;
 
             } else {
-                res.status(401).json({message: 'Unauthorized'});
+                where._id = req.params.revision;
             }
 
-        });
+            Revision.findOne(where).sort({version: 'desc'}).exec(function(err, revision) {
+                if (err) { return next(err); }
+
+                if (revision) {
+                    res.json({data: app, revision: revision});
+                } else {
+                    res.status(400).json({message: 'This tool doesn\'t exist'});
+                }
+
+            });
+
+        } else {
+            res.status(401).json({message: 'Unauthorized'});
+        }
 
     });
 
 });
 
 router.get('/run/:id', function (req, res, next) {
+
+    // TODO: check if public?
 
     App.findById(req.params.id, function(err, app) {
         if (err) { return next(err); }
@@ -233,50 +214,59 @@ router.post('/apps/:action', filters.authenticated, function (req, res, next) {
             app.json = data.tool;
             app.links = {json: ''};
 
-            Repo.findById(data.repo_id, function (err, repo) {
+            Repo.findById(data.repo_id).populate('user').exec(function (err, repo) {
 
-                app.repo = repo._id;
+                var user_id = req.user.id.toString();
+                var repo_user_id = repo.user._id.toString();
 
-                app.json.documentAuthor = app.author;
+                if (repo.is_public || user_id === repo_user_id) {
 
-                var folder = 'users/' + req.user.login + '/apps/' + repo.owner + '-' + repo.name;
+                    app.repo = repo._id;
 
-                Amazon.createFolder(folder)
-                    .then(function () {
-                        Amazon.uploadJSON(app.name + '.json', app.json, folder)
-                            .then(function () {
+                    app.json.documentAuthor = app.author;
 
-                                Amazon.getFileUrl(app.name + '.json', folder, function (url) {
+                    var folder = 'users/' + req.user.login + '/apps/' + repo.owner + '-' + repo.name;
 
-                                    app.links.json = url;
-                                    app.user = req.user.id;
+                    Amazon.createFolder(folder)
+                        .then(function () {
+                            Amazon.uploadJSON(app.name + '.json', app.json, folder)
+                                .then(function () {
 
-                                    var revision = new Revision();
+                                    Amazon.getFileUrl(app.name + '.json', folder, function (url) {
 
-                                    revision.name = app.name;
-                                    revision.description = app.description;
-                                    revision.author = app.author;
-                                    revision.json = app.json;
-                                    revision.app_id = app._id;
+                                        app.links.json = url;
+                                        app.user = req.user.id;
 
-                                    revision.save(function(err) {
-                                        if (err) { return next(err); }
+                                        var revision = new Revision();
 
-                                        app.revisions.push(revision._id);
+                                        revision.name = app.name;
+                                        revision.description = app.description;
+                                        revision.author = app.author;
+                                        revision.json = app.json;
+                                        revision.app_id = app._id;
 
-                                        app.save();
+                                        revision.save(function(err) {
+                                            if (err) { return next(err); }
 
-                                        res.json({app: app, message: 'App has been successfully created'});
+                                            app.revisions.push(revision._id);
+
+                                            app.save();
+
+                                            res.json({app: app, message: 'App has been successfully created'});
+                                        });
+
                                     });
 
+                                }, function (error) {
+                                    res.status(500).json(error);
                                 });
+                        }, function (error) {
+                            res.status(500).json(error);
+                        });
 
-                            }, function (error) {
-                                res.status(500).json(error);
-                            });
-                    }, function (error) {
-                        res.status(500).json(error);
-                    });
+                } else {
+                    res.status(401).json({message: 'Unauthorized'});
+                }
             });
         }
     });
@@ -300,7 +290,7 @@ router.post('/validate', filters.authenticated, function (req, res) {
 
 router.delete('/apps/:id', filters.authenticated, function (req, res, next) {
 
-    App.findOne({_id: req.params.id}, function (err, app) {
+    App.findOne({_id: req.params.id}).populate('repo').exec(function (err, app) {
         if (err) { return next(err); }
 
         var user_id = req.user.id.toString();
@@ -308,23 +298,23 @@ router.delete('/apps/:id', filters.authenticated, function (req, res, next) {
 
         if (user_id === app_user_id) {
 
-            Revision.count({is_public: true, app_id: req.params.id}, function(err, count) {
-                if (err) { return next(err); }
+            if (app.repo.is_public) {
 
-                if (count === 0) {
-                    Revision.remove({app_id: req.params.id});
+                Revision.remove({app_id: req.params.id}, function(err) {
+                    if (err) { return next(err); }
 
                     App.remove({_id: req.params.id}, function (err) {
                         if (err) { return next(err); }
 
-                        res.json({message: 'App successfully deleted'});
-
+                        res.json({message: 'Tool successfully deleted'});
                     });
-                } else {
-                    res.status(400).json({message: 'This app has public revisions and it can\'t be deleted.'});
-                }
-            });
+                });
 
+            } else {
+                // TODO: allow app delete from public repo?
+
+                res.status(400).json({message: 'This app belongs to public repo and it can\'t be deleted.'});
+            }
 
         } else {
             res.status(500).json({message: 'Unauthorized'});
@@ -332,48 +322,3 @@ router.delete('/apps/:id', filters.authenticated, function (req, res, next) {
     });
 
 });
-
-var fixPublicCount = function(app, next) {
-
-    var promise = new mongoose.Promise;
-
-    Revision.count({app_id: app._id, is_public: true}, function(err, count) {
-        if (err) { return next(err); }
-
-        if (count !== app.public_count) {
-            app.public_count = count;
-
-            app.save(function(err) {
-                if (err) { return next(err); }
-
-                promise.fulfill({app_id: app._id, fixed: 'yes'});
-            });
-        } else {
-            promise.fulfill({app_id: app._id, fixed: 'no need'});
-        }
-
-    });
-
-    return promise;
-
-};
-
-router.get('/fix-public-count', function (req, res, next) {
-
-    App.find({}, function(err, apps) {
-        if (err) { return next(err); }
-
-        var promises = [];
-
-        _.each(apps, function(app) {
-            promises.push(fixPublicCount(app), next);
-        });
-
-        Q.all(promises).then(function(result) {
-            res.json({result: result});
-        });
-
-    });
-
-});
-

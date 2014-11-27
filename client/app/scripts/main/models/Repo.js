@@ -63,13 +63,19 @@ angular.module('registryApp')
          * Mange the repo information
          *
          * @param id
-         * @param action
+         * @param method
          * @param repo
          * @returns {*}
          */
         self.manageRepo = function(id, action, repo) {
 
-            return Api.repos[action]({id: id}, {repo: repo}).$promise;
+            return Api.repos[action]({id: id, action: ((action === 'add') ? null : action)}, {repo: repo}).$promise;
+
+        };
+
+        self.publishRepo = function(id) {
+
+            return Api.repos.update({id: id, action: 'publish'}).$promise;
 
         };
 

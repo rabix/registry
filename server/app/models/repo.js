@@ -8,9 +8,10 @@ var RepoSchema = new Schema({
     description: String,
     owner: String,
     created_by: String,
-    user: String,
+    user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     secret: String,
-    git: Boolean
+    git: Boolean,
+    is_public: {type: Boolean, default: 0}
 });
 
 RepoSchema.virtual('date')

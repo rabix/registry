@@ -27,32 +27,35 @@ router.get('/revisions', function (req, res, next) {
             where[paramKey.replace('field_', '')] = paramVal;
         }
         if (paramKey === 'q') {
-            where.description = new RegExp(paramVal, 'i');
+            where.$or = [
+                {name:  new RegExp(paramVal, 'i')},
+                {description:  new RegExp(paramVal, 'i')}
+            ];
         }
     });
 
-    App.findById(req.query.field_app_id, function(err, app) {
+    App.findById(req.query.field_app_id).populate('repo').exec(function(err, app) {
         if (err) { return next(err); }
 
         var user_id = (req.user ? req.user.id : '').toString();
         var app_user_id = app.user.toString();
 
-        if (user_id !== app_user_id) {
-            where.is_public = true;
-        }
+        if (app.repo.is_public || user_id === app_user_id) {
 
-        Revision.count(where).exec(function(err, total) {
-            if (err) { return next(err); }
-
-            var sort = req.user ? {_id: 'desc'} : {version: 'desc'};
-
-            Revision.find(where).skip(skip).limit(limit).sort(sort).exec(function(err, revisions) {
+            Revision.count(where).exec(function(err, total) {
                 if (err) { return next(err); }
 
-                res.json({list: revisions, total: total});
+                Revision.find(where).skip(skip).limit(limit).sort({version: 'desc'}).exec(function(err, revisions) {
+                    if (err) { return next(err); }
+
+                    res.json({list: revisions, total: total});
+                });
+
             });
 
-        });
+        } else {
+            res.status(401).json({message: 'Unauthorized'});
+        }
 
     });
 
@@ -69,7 +72,7 @@ router.get('/revisions/:id', function (req, res, next) {
             var user_id = (req.user ? req.user.id : '').toString();
             var app_user_id = app.user._id.toString();
 
-            if (revision.is_public || user_id === app_user_id) {
+            if (app.repo.is_public || user_id === app_user_id) {
 
                 res.json({data: revision, repo: app.repo, user: app.user});
 

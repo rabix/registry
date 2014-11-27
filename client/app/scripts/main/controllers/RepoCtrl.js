@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('registryApp')
-    .controller('RepoCtrl', ['$scope', '$routeParams', '$q', '$injector', 'Repo', 'App', 'Build', 'User', 'Sidebar', 'Loading', function ($scope, $routeParams, $q, $injector, Repo, App, Build, User, Sidebar, Loading) {
+    .controller('RepoCtrl', ['$scope', '$routeParams', '$q', '$modal', '$templateCache', 'Repo', 'App', 'Build', 'User', 'Sidebar', 'Loading', function ($scope, $routeParams, $q, $modal, $templateCache, Repo, App, Build, User, Sidebar, Loading) {
 
         Sidebar.setActive('repos');
 
@@ -101,15 +101,38 @@ angular.module('registryApp')
          */
         $scope.manageRepoModal = function() {
 
-            var $modal = $injector.get('$modal');
-            var $templateCache = $injector.get('$templateCache');
-
             $modal.open({
                 template: $templateCache.get('views/partials/manage-repo.html'),
                 controller: 'ManageRepoCtrl',
                 windowClass: 'modal-add-repo',
                 resolve: {data: function () { return {repo: $scope.view.repo}; }}
             });
+
+        };
+
+        /**
+         * Publish the repo
+         */
+        $scope.publish = function() {
+
+            var modalInstance = $modal.open({
+                template: $templateCache.get('views/partials/confirm-action.html'),
+                controller: 'ModalCtrl',
+                windowClass: 'modal-confirm',
+                resolve: {data: function () { return {message: 'Are you sure you want to publish this repo?'}; }}
+            });
+
+            modalInstance.result
+                .then(function() {
+
+                    $scope.view.saving = true;
+
+                    Repo.publishRepo($scope.view.repo._id)
+                        .then(function() {
+                            $scope.view.repo.is_public = true;
+                            $scope.view.saving = false;
+                        });
+                });
 
         };
 

@@ -50,11 +50,15 @@ body {
       padding-left: 0;
     }
 
-    .label {
+    .label-status {
       font-size: 18px;
       padding: 6px 20px 8px 7px;
       font-weight: normal;
       @include border-radius(16px 4px 4px 16px);
+    }
+
+    .label {
+      font-size: 14px;
     }
 
     span {
@@ -89,8 +93,10 @@ body {
 
     .actions {
       & > .btn,
-      & > .btn-group {
+      & > .btn-group,
+      & > .fa {
         margin-left: 10px;
+        vertical-align: middle;
       }
     }
 
@@ -494,9 +500,10 @@ body {
     /* Repos table */
     &.repos {
       th {
-        &:nth-child(1) { width: 30%; }
+        &:nth-child(1) { width: 20%; }
         &:nth-child(2) { width: 20%; }
         &:nth-child(3) { width: 40%; }
+        &:nth-child(4) { width: 10%; }
         &:nth-child(4) { width: 10%; }
       }
       td {

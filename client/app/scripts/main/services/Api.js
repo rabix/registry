@@ -65,7 +65,7 @@ angular.module('registryApp')
             });
         };
 
-        self.repos = $resource(apiUrl + '/repos/:id', {id: '@id'}, {
+        self.repos = $resource(apiUrl + '/repos/:id/:action', {id: '@id', action: '@action'}, {
             add: {method: 'POST'},
             update: {method: 'PUT'}
         });

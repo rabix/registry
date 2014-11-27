@@ -3,10 +3,15 @@
     <div class="heading">
         <a ng-href="#/repos" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
         <h1>
-            {{ view.repo.owner }}/{{ view.repo.name }} <span class="created-by">({{ view.repo.created_by }})</span>
+            {{ view.repo.owner }}/{{ view.repo.name }}
+            <span class="created-by">({{ view.repo.created_by }})</span>
+
+            <span ng-if="view.repo.is_public" class="label label-primary">public</span>
+
             <div class="actions pull-right" ng-if="!(view.user | isEmpty)">
-                <a ng-if="!view.repo.git && view.user.login === view.repo.owner" href ng-click="manageRepoModal()" class="btn btn-primary"><i class="fa fa-pencil"></i> Edit</a>
                 <i ng-if="view.repo.git" class="fa fa-github github-flag" tooltip="This repo is imported from GitHub" tooltip-placement="left"></i>
+                <a href ng-if="!view.repo.is_public && view.user.id === view.repo.user._id" ng-disabled="view.saving" ng-click="publish()" class="btn btn-primary"><i class="fa fa-check"></i> Publish</a>
+                <a ng-if="!view.repo.git && view.user.login === view.repo.owner" href ng-click="manageRepoModal()" class="btn btn-default"><i class="fa fa-pencil"></i> Edit</a>
             </div>
         </h1>
     </div>

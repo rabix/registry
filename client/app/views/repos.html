@@ -30,6 +30,7 @@
                     <th class="field-id">User/Repo</th>
                     <th class="field-created-by">Created By</th>
                     <th class="field-desc">Description</th>
+                    <th class="center field-status">Status</th>
                     <th class="center">Actions</th>
                 </tr>
             </thead>
@@ -40,13 +41,17 @@
                     </td>
                     <td class="field-created-by">{{ repo.created_by }}</td>
                     <td class="field-desc"><p>{{ repo.description }}</p></td>
+                    <td class="center field-status">
+                        <i ng-if="!repo.is_public">Not published</i>
+                        <span ng-if="repo.is_public" class="label label-primary">public</span>
+                    </td>
                     <td class="center">
                         <a ng-if="!repo.git && view.user.login === repo.owner" href ng-click="manageRepoModal(repo)" class="btn btn-default" tooltip="Edit Repo"><i class="fa fa-pencil"></i></a>
                         <i ng-if="repo.git" class="fa fa-github github-flag" tooltip="This repo is imported from GitHub" tooltip-placement="left"></i>
                     </td>
                 </tr>
                 <tr class="empty" ng-if="view.repos.length === 0">
-                    <td colspan="3"><p class="alert alert-info">There are no repos</p></td>
+                    <td colspan="4"><p class="alert alert-info">There are no repos</p></td>
                 </tr>
             </tbody>
         </table>
