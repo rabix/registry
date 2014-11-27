@@ -9,8 +9,7 @@
                 <span ng-hide="view.mode === 'new'">{{ view.app.name }}</span>
             </div>
 
-            <span ng-if="view.revision.version" class="version"><i class="fa fa-tag"></i> {{ 'v' + view.revision.version }}</span>
-            <a ng-if="view.mode === 'edit' && (view.user || view.app.public_count > 0)" href class="version revision" ng-click="changeRevision()"><i class="fa fa-tag"></i> {{ 'revision ' + view.revision.order }}</a>
+            <a ng-if="view.mode === 'edit'" href class="version revision" ng-click="changeRevision()"><i class="fa fa-tag"></i> {{ 'v' + view.revision.version }}</a>
 
             <div class="actions pull-right">
 
@@ -44,7 +43,7 @@
                         <li>
                             <a href ng-click="loadJsonEditor()"><i class="fa fa-cloud-download"></i> <span>Import</span></a>
                         </li>
-                        <li ng-if="view.user && view.user.id === view.app.user._id && !view.revision.version">
+                        <li ng-if="view.user && view.user.id === view.app.user._id && !view.app.repo.is_public">
                             <a href ng-disabled="view.saving" ng-click="delete()"><i class="fa fa-trash"></i> <span>Delete</span></a>
                         </li>
                     </ul>

@@ -94,18 +94,6 @@ angular.module('registryApp')
         };
 
         /**
-         * Publish revision
-         *
-         * @param id
-         * @returns {*}
-         */
-        self.publish = function(id) {
-
-            return Api.revisions.publish({id: id}).$promise;
-
-        };
-
-        /**
          * Add app revision
          *
          * @returns {object} $promise
