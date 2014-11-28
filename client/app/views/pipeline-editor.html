@@ -95,8 +95,14 @@
                                 </span>
 
                                 <ul>
-                                    <li ng-if="view.message"><p class="alert alert-warning">{{ view.message }}</p></li>
-                                    <li ng-if="!view.message && (repoTypeObj | isEmpty) && (repoTypeObj | isEmpty)"><p class="alert alert-info"><span ng-if="repoType === 'myRepositories'">You don't have any repository yet</span><span ng-if="repoType === 'otherRepositories'">There are no other repositories</span></p></li>
+                                    <!--<li ng-if="view.message"><p class="alert alert-warning">{{ view.message }}</p></li>-->
+                                    <li ng-if="(repoTypeObj | isEmpty) && (repoTypeObj | isEmpty)">
+                                        <p class="alert alert-info">
+                                            <span ng-if="repoType === 'myRepositories' && !view.user"> {{ view.message }}</span>
+                                            <span ng-if="repoType === 'myRepositories' && view.user">You don't have any repository yet</span>
+                                            <span ng-if="repoType === 'otherRepositories'">There are no other repositories</span>
+                                        </p>
+                                    </li>
                                     <li ng-repeat="(repoName, apps) in repoTypeObj" ng-class="{open: view.repoGroups[repoName]}">
 
                                         <span ng-click="toggleRepo(repoName)">
