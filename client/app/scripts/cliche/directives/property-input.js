@@ -22,6 +22,7 @@ angular.module('registryApp.cliche')
                 properties: '=',
                 inputs: '=',
                 form: '=',
+                req: '=',
                 parent: '@'
             },
             compile: function(element) {
@@ -40,6 +41,20 @@ angular.module('registryApp.cliche')
                     scope.view.disabled = (scope.prop.items && scope.prop.items.type) === 'object';
                     scope.view.edit = false;
 
+                    scope.req = scope.req || [];
+                    scope.view.required = _.contains(scope.req, scope.name);
+
+                    /**
+                     * Toggle required array
+                     */
+                    scope.toggleRequired = function() {
+
+                        if (scope.view.required) {
+                            scope.req.push(scope.name);
+                        } else {
+                            _.remove(scope.req, function(key) { return key === scope.name; });
+                        }
+                    };
 
                     /**
                      * Toggle edit name form

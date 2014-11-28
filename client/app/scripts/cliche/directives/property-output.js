@@ -19,7 +19,7 @@ angular.module('registryApp.cliche')
                 name: '@',
                 prop: '=ngModel',
                 active: '=',
-                requiredInputs: '=',
+                req: '=',
                 properties: '=',
                 form: '='
             },
@@ -40,6 +40,23 @@ angular.module('registryApp.cliche')
                 });
 
                 scope.view.newMeta = {key: '', value: ''};
+
+                scope.req = scope.req || [];
+                scope.view.required = _.contains(scope.req, scope.name);
+
+                /**
+                 * Toggle required array
+                 */
+                scope.toggleRequired = function() {
+
+                    if (scope.view.required) {
+                        scope.req.push(scope.name);
+                    } else {
+                        _.remove(scope.req, function(key) { return key === scope.name; });
+                    }
+
+                    console.log(scope.req);
+                };
 
                 /**
                  * Toggle edit name form
