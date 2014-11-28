@@ -4,7 +4,6 @@ var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
 var _ = require('lodash');
-var Q = require('q');
 
 var App = mongoose.model('App');
 var Repo = mongoose.model('Repo');
@@ -85,13 +84,6 @@ router.get('/tool/repositories/:type', function (req, res, next) {
     var type = req.params.type;
     var where = {};
 
-    if (req.query.q) {
-        where.$or = [
-            {name: new RegExp(req.query.q, 'i')},
-            {description: new RegExp(req.query.q, 'i')}
-        ];
-    }
-
     if (type === 'my') {
         if (!req.user) {
             res.json({message: 'Log in to see your repositories'});
@@ -102,38 +94,52 @@ router.get('/tool/repositories/:type', function (req, res, next) {
         if (req.user) {
             where.user = {$ne: req.user.id};
         }
-        where.public_count = {$gt: 0};
+        where.is_public = true;
     }
 
-    App.find(where, '_id repo user name').populate('repo').sort({_id: 'desc'}).exec(function(err, apps) {
+    Repo.find(where, function(err, repos) {
         if (err) { return next(err); }
 
-        var whereRev = {};
+        var whereApps = {
+            repo: {$in: _.pluck(repos, '_id')},
+            $or: [
+                {name: new RegExp(req.query.q, 'i')},
+                {description: new RegExp(req.query.q, 'i')}
+            ]
+        };
 
-        if (type === 'other') { whereRev.is_public = true; }
-        whereRev.app_id = {$in: _.pluck(apps, '_id')};
-
-        Revision.find(whereRev).sort({_id: 'desc'}).exec(function(err, revisions) {
+        App.find(whereApps, '_id repo user name').populate('repo').sort({_id: 'desc'}).exec(function(err, apps) {
             if (err) { return next(err); }
 
-            var groupedRevisions = _.groupBy(revisions, 'app_id');
+            var whereRev = {
+                app_id: {$in: _.pluck(apps, '_id')}
+            };
 
-            var appsWithRevisions = apps.map(function(app) {
-                var tmp = app.toObject();
-                tmp.name = app.name;
-                tmp.revisions = groupedRevisions[tmp._id];
-                return tmp;
+            Revision.find(whereRev).sort({_id: 'desc'}).exec(function(err, revisions) {
+                if (err) { return next(err); }
+
+                var groupedRevisions = _.groupBy(revisions, 'app_id');
+
+                var appsWithRevisions = apps.map(function(app) {
+                    var tmp = app.toObject();
+                    tmp.name = app.name;
+                    tmp.revisions = groupedRevisions[tmp._id];
+                    return tmp;
+                });
+
+                var grouped = _.groupBy(appsWithRevisions, function (app) {
+                    return app.repo.owner + '/' + app.repo.name;
+                });
+
+                res.json({list: grouped});
+
             });
-
-            var grouped = _.groupBy(appsWithRevisions, function (app) {
-                return app.repo.owner + '/' + app.repo.name;
-            });
-
-            res.json({list: grouped});
 
         });
 
     });
+
+
 
 });
 
@@ -142,28 +148,17 @@ router.get('/apps/:id/:revision', function (req, res, next) {
     App.findById(req.params.id).populate('user').populate('repo').exec(function(err, app) {
         if (err) { return next(err); }
 
-        var where = {};
         var user_id = (req.user ? req.user.id : '').toString();
         var app_user_id = app.user._id.toString();
 
         if (app.repo.is_public || user_id === app_user_id) {
 
-            if (req.params.revision === 'latest') {
-
-                where.app_id = req.params.id;
-
-            } else {
-                where._id = req.params.revision;
-            }
+            var where = (req.params.revision === 'latest') ? {app_id: req.params.id} : {_id: req.params.revision};
 
             Revision.findOne(where).sort({version: 'desc'}).exec(function(err, revision) {
                 if (err) { return next(err); }
 
-                if (revision) {
-                    res.json({data: app, revision: revision});
-                } else {
-                    res.status(400).json({message: 'This tool doesn\'t exist'});
-                }
+                res.json({data: app, revision: revision});
 
             });
 
@@ -315,6 +310,12 @@ router.delete('/apps/:id', filters.authenticated, function (req, res, next) {
 
             if (app.repo.is_public) {
 
+                // TODO: allow app delete from public repo?
+
+                res.status(400).json({message: 'This app belongs to public repo and it can\'t be deleted.'});
+
+            } else {
+
                 Revision.remove({app_id: req.params.id}, function(err) {
                     if (err) { return next(err); }
 
@@ -325,10 +326,6 @@ router.delete('/apps/:id', filters.authenticated, function (req, res, next) {
                     });
                 });
 
-            } else {
-                // TODO: allow app delete from public repo?
-
-                res.status(400).json({message: 'This app belongs to public repo and it can\'t be deleted.'});
             }
 
         } else {

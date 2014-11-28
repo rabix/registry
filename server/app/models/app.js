@@ -11,8 +11,7 @@ var AppSchema = new Schema({
     links: Schema.Types.Mixed,
     repo: { type: Schema.Types.ObjectId, ref: 'Repo', required: true },
     user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-    revisions: [{type : Schema.Types.ObjectId, ref : 'Revision'}],
-    public_count: {type: Number, default: 0}
+    revisions: [{type : Schema.Types.ObjectId, ref : 'Revision'}]
 });
 
 AppSchema.virtual('date')

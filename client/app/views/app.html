@@ -9,7 +9,7 @@
                 <li ng-class="{active: view.tab === 'revisions'}"><a ng-href="#/app/{{ view.app._id }}/revisions">Revisions</a></li>
             </div>
             <div class="actions pull-right">
-                <a ng-if="view.canDelete" href ng-click="deleteApp()" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a>
+                <a href ng-if="!view.app.repo.is_public" ng-click="deleteApp()" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a>
                 <a ng-href="#/cliche/{{ view.app._id }}/latest" class="btn btn-primary"><i class="fa fa-pencil"></i> Edit</a>
             </div>
         </h1>
@@ -77,7 +77,6 @@
                 <table class="table table-hover revisions" ng-class="{'revisions-short': !view.user}">
                     <thead>
                         <tr>
-                            <th ng-if="view.user">Revision</th>
                             <th>Version</th>
                             <th>Description</th>
                             <th class="right">Actions</th>
@@ -85,19 +84,13 @@
                     </thead>
                     <tbody>
                         <tr ng-repeat="revision in view.revisions">
-                            <td ng-if="view.user" class="revision">
-                                <strong>{{ revision.order }}</strong>
-                            </td>
                             <td class="revision">
-                                <strong class="label label-primary" ng-if="revision.version"><i class="fa fa-tag"></i> {{ 'v' + revision.version }}</strong>
-                                <i ng-if="!revision.version">Not published</i>
-
+                                <strong class="label label-primary"><i class="fa fa-tag"></i> {{ 'v' + revision.version }}</strong>
                             </td>
                             <td><p tooltip="{{ revision.description }}" tooltip-popup-delay="1000">{{ revision.description }}</p></td>
                             <td class="right">
                                 <a class="btn btn-sm btn-default" tooltip="View Revision" ng-href="#/revision/{{ revision._id }}"><i class="fa fa-eye"></i></a>
                                 <a class="btn btn-sm btn-default" tooltip="Edit Revision" ng-href="#/cliche/{{ view.app._id }}/{{ revision._id }}"><i class="fa fa-pencil"></i></a>
-                                <a href ng-if="!revision.is_public" ng-click="publish(revision)" ng-disabled="revision.saving" class="btn btn-sm btn-primary" tooltip="Publish Revision"><i class="fa fa-plus"></i></a>
                             </td>
                         </tr>
                         <tr class="empty" ng-if="view.revisions.length === 0">

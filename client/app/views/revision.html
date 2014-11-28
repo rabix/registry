@@ -6,7 +6,7 @@
             <span>
                 {{ view.revision.name }}
                 <span class="tool-repo">({{view.repo.owner}}/{{view.repo.name}})</span>
-                <span ng-if="view.revision.version" class="version"><i class="fa fa-tag"></i> {{ 'v' + view.revision.version }}</span>
+                <span class="version"><i class="fa fa-tag"></i> {{ 'v' + view.revision.version }}</span>
             </span>
             <a ng-href="#/cliche/{{ view.revision.app_id }}/{{ view.revision._id }}" class="btn btn-primary pull-right"><i class="fa fa-pencil"></i> Edit</a>
         </h1>

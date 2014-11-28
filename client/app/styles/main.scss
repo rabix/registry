@@ -443,13 +443,12 @@ body {
     /* Revisions table */
     &.revisions {
       th {
-        &:nth-child(1),
-        &:nth-child(2) {
+        &:nth-child(1) {
           text-align: center;
           width: 10%;
         }
-        &:nth-child(3) { width: 30%; }
-        &:nth-child(4) { width: 50%; }
+        &:nth-child(2) { width: 50%; }
+        &:nth-child(3) { width: 40%; }
       }
       td {
         p {

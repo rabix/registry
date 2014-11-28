@@ -74,6 +74,11 @@ angular.module('registryApp')
             $scope.view.resize = true;
         };
 
+        /**
+         * Load more apps by offset
+         *
+         * @param offset
+         */
         $scope.getMoreApps = function(offset) {
 
             $scope.view.loading = true;
@@ -84,6 +89,11 @@ angular.module('registryApp')
 
         };
 
+        /**
+         * Load more builds by offset
+         *
+         * @param offset
+         */
         $scope.getMoreBuilds = function(offset) {
 
             $scope.view.loading = true;

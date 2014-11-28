@@ -8,10 +8,16 @@ angular.module('registryApp')
 
         $scope.view.message = data.message ? data.message : "Are you sure you want to delete this item?";
 
+        /**
+         * Close the modal
+         */
         $scope.ok = function () {
             $modalInstance.close();
         };
 
+        /**
+         * Dismiss the modal
+         */
         $scope.cancel = function () {
             $modalInstance.dismiss('cancel');
         };

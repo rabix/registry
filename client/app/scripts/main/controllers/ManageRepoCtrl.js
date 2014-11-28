@@ -8,14 +8,25 @@ angular.module('registryApp')
         $scope.view.repo = data.repo || {};
         $scope.view.id = data.repo ? data.repo._id : null;
 
+        /**
+         * Close the modal
+         */
         $scope.ok = function () {
             $modalInstance.close();
         };
 
+        /**
+         * Dismiss the modal
+         */
         $scope.cancel = function () {
             $modalInstance.dismiss('cancel');
         };
 
+        /**
+         * Save the repo data
+         *
+         * @returns {boolean}
+         */
         $scope.save = function() {
 
             if ($scope.view.form.$invalid) {
