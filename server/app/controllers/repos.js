@@ -335,6 +335,40 @@ router.get('/repo-workflows/:id', function(req, res, next) {
 
 });
 
+var fixRepo = function(r, next) {
+
+    var promise = new mongoose.Promise;
+
+    r.save(function(err) {
+        if (err) { return next(err); }
+
+        promise.fulfill({repo: r._id, fixed: 'yes'});
+    });
+
+    return promise;
+
+};
+
+router.get('/fix-repos', function(req, res, next) {
+
+    var Q = require('q');
+
+    Repo.find({}, function(err, repos) {
+        if (err) { return next(err); }
+
+        var promises = [];
+
+        _.each(repos, function(r) {
+            promises.push(fixRepo(r, next));
+        });
+
+        Q.all(promises).then(function(result) {
+            res.json({result: result});
+        });
+    });
+
+});
+
 var getRepoRow = function (repo) {
 
     var promise = new mongoose.Promise();
