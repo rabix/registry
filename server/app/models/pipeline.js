@@ -10,7 +10,6 @@ var PipelineSchema = new Schema({
     user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     repo: { type: Schema.Types.ObjectId, ref: 'Repo', required: true },
     latest: {type : Schema.Types.ObjectId, ref : 'PipelineRevision'},
-    latest_public: {type : Schema.Types.ObjectId, ref : 'PipelineRevision'},
     revisions: [{type : Schema.Types.ObjectId, ref : 'PipelineRevision'}]
 });
 

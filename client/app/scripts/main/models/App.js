@@ -6,7 +6,7 @@ angular.module('registryApp')
         var self = {};
 
         /**
-         * Get list of apps
+         * Get list of tools
          *
          * @param {integer} skip
          * @param {string} searchTerm
@@ -34,7 +34,7 @@ angular.module('registryApp')
         };
 
         /**
-         * Get list of apps
+         * Get list of tools
          */
         self.getAllApps = function(params) {
 
@@ -43,7 +43,7 @@ angular.module('registryApp')
         };
 
         /**
-         * Get app by id
+         * Get tool by id
          *
          * @param id
          * @param revision
@@ -58,7 +58,7 @@ angular.module('registryApp')
         };
 
         /**
-         * Create new app
+         * Create new tool
          *
          * @param repoId
          * @returns {*}
@@ -70,7 +70,7 @@ angular.module('registryApp')
         };
 
         /**
-         * Fork the current app
+         * Fork the current tool
          *
          * @param data
          * @returns {*}
@@ -82,7 +82,7 @@ angular.module('registryApp')
         };
 
         /**
-         * Update the app - create new revision
+         * Update the tool - create new revision
          *
          * @param appId
          * @returns {*}
@@ -90,31 +90,6 @@ angular.module('registryApp')
         self.update = function(appId) {
 
             return Api.revisions.add({}, {tool: Data.tool, app_id: appId}).$promise;
-
-        };
-
-        /**
-         * Publish revision
-         *
-         * @param id
-         * @returns {*}
-         */
-        self.publish = function(id) {
-
-            return Api.revisions.publish({id: id}).$promise;
-
-        };
-
-        /**
-         * Add app revision
-         *
-         * @returns {object} $promise
-         */
-        self.addRevision = function() {
-
-            var promise = Api.revisions.add({}, {tool: Data.tool, app_id: Data.appId}).$promise;
-
-            return promise;
 
         };
 
@@ -131,7 +106,7 @@ angular.module('registryApp')
         };
 
         /**
-         * Get list of app's revisions
+         * Get list of tool's revisions
          *
          * @param {integer} skip
          * @param {string} searchTerm
@@ -172,7 +147,7 @@ angular.module('registryApp')
         };
 
         /**
-         * Get apps grouped by repositories
+         * Get tools grouped by repositories
          *
          * @returns {*}
          */
@@ -183,7 +158,7 @@ angular.module('registryApp')
         };
 
         /**
-         * Delete app by id
+         * Delete tool by id
          *
          * @param id
          * @returns {*}

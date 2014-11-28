@@ -49,7 +49,7 @@ angular.module('registryApp')
                 scope.view.open = Sidebar.open;
 
                 scope.view.navigation = [
-                    {name: 'tools', link: 'apps', desc: 'Applications', icon: 'puzzle-piece'},
+                    {name: 'tools', link: 'apps', desc: 'Tools', icon: 'puzzle-piece'},
                     {name: 'workflows', link: 'pipelines', desc: 'Workflows', icon: 'cogs'},
                     {name: 'builds', link: 'builds', desc: 'Builds', icon: 'cube'},
                     {name: 'repos', link: 'repos', desc: 'Repositories', icon: 'code-fork'},

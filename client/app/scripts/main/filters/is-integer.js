@@ -2,9 +2,11 @@
 
 angular.module('registryApp')
     .filter('isInteger', [function() {
-        return function(num) {
+        return function(integer) {
 
-            return num === parseInt(num, 10);
+            integer = integer || 0;
+
+            return integer === parseInt(integer, 10);
 
         };
     }]);

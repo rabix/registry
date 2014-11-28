@@ -4,13 +4,14 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
 var RepoSchema = new Schema({
-    name: String,
+    name: {type: String, required: true},
     description: String,
-    owner: String,
+    owner: {type: String, required: true},
     created_by: String,
-    user: String,
+    user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     secret: String,
-    git: Boolean
+    git: Boolean,
+    is_public: {type: Boolean, default: false}
 });
 
 RepoSchema.virtual('date')

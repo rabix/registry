@@ -11,6 +11,7 @@ var mongoose = require('mongoose');
 var Repo = mongoose.model('Repo');
 var User = mongoose.model('User');
 var App = mongoose.model('App');
+var Pipeline = mongoose.model('Pipeline');
 
 var BuildClass = require('../../builds/Build');
 
@@ -28,8 +29,17 @@ router.get('/repos', function (req, res, next) {
     var skip = req.query.skip ? req.query.skip : 0;
     var where = {};
 
-    if (req.user && req.param('mine')) {
-        where.user = req.user.id;
+    if (req.user) {
+        if (req.param('mine')) {
+            where.user = req.user.id;
+        } else {
+            where.$or = [
+                {user: req.user.id},
+                {is_public: true}
+            ];
+        }
+    } else {
+        where.is_public = true;
     }
 
     if (req.query.q) {
@@ -45,7 +55,7 @@ router.get('/repos', function (req, res, next) {
 
         Repo.find(where).skip(skip).limit(limit).sort({_id: 'desc'}).exec(function (err, repos) {
             if (err) { return next(err); }
-            console.log(repos, where);
+            console.log(where, repos);
             res.json({list: repos, total: total});
         });
     });
@@ -97,30 +107,41 @@ router.post('/repos', filters.authenticated, function (req, res, next) {
 
 });
 
-router.put('/repos/:id', filters.authenticated, function (req, res, next) {
+router.put('/repos/:id/:action', filters.authenticated, function (req, res, next) {
 
     var repo = req.body.repo;
 
     Repo.findOne({_id: req.params.id}, function (err, r) {
 
-        if (r.owner === req.user.login && r.user === req.user.id) {
+        if (r.user.toString() === req.user.id.toString()) {
 
-            Repo.findOne({name: repo.name, owner: req.user.login, _id: {$ne: r._id}}, function (err, check) {
-                if (err) { return next(err); }
+            if (req.params.action === 'publish') {
 
-                if (!check) {
+                Repo.findOneAndUpdate({_id: req.params.id}, {is_public: true}, function(err) {
+                    if (err) { return next(err); }
 
-                    Repo.findOneAndUpdate({_id: req.params.id}, {name: repo.name, description: repo.description}, function(err) {
-                        if (err) { return next(err); }
+                    res.json({message: 'Successfully published repo'});
 
-                        res.json({message: 'Successfully updated repo'});
+                });
 
-                    });
+            } else {
+                Repo.findOne({name: repo.name, owner: req.user.login, _id: {$ne: r._id}}, function (err, check) {
+                    if (err) { return next(err); }
 
-                } else {
-                    res.status(400).json({message: 'Repo name already in use'});
-                }
-            });
+                    if (!check) {
+
+                        Repo.findOneAndUpdate({_id: req.params.id}, {name: repo.name, description: repo.description}, function(err) {
+                            if (err) { return next(err); }
+
+                            res.json({message: 'Successfully updated repo'});
+
+                        });
+
+                    } else {
+                        res.status(400).json({message: 'Repo name already in use'});
+                    }
+                });
+            }
 
         } else {
             res.status(401).json({message: 'Unauthorized'});
@@ -131,10 +152,20 @@ router.put('/repos/:id', filters.authenticated, function (req, res, next) {
 
 router.get('/repos/:id', function (req, res, next) {
 
-    Repo.findById(req.params.id, function (err, repo) {
+    Repo.findById(req.params.id).populate('user').exec(function (err, repo) {
         if (err) { return next(err); }
 
-        res.json({data: repo});
+        var user_id = (req.user ? req.user.id : '').toString();
+        var repo_user_id = repo.user._id.toString();
+
+        if (repo.is_public || user_id === repo_user_id) {
+
+            res.json({data: repo});
+
+        } else {
+            res.status(401).json({message: 'Unauthorized'});
+        }
+
     });
 
 });
@@ -250,36 +281,73 @@ router.get('/repo-tools/:id', function(req, res, next) {
     var skip = req.query.skip ? req.query.skip : 0;
     var where = {repo: req.params.id};
 
-    if (req.user) {
-        where.$or = [
-            {user: req.user.id},
-            {public_count: {$gt: 0}}
-        ];
-    } else {
-        where.public_count = {$gt: 0};
-    }
-
-    App.count(where, function(err, total) {
+    Repo.findById(req.params.id).populate('user').exec(function(err, repo) {
         if (err) { return next(err); }
 
-        var match = {is_public: true};
+        var user_id = (req.user ? req.user.id : '').toString();
+        var repo_user_id = repo.user._id.toString();
 
-        if (req.query.q) {
-            match.$or = [
-                {name: new RegExp(req.query.q, 'i')},
-                {description: new RegExp(req.query.q, 'i')}
-            ];
-        }
-
-        App.find(where).populate('user').skip(skip).limit(limit).sort({_id: 'desc'}).exec(function(err, apps) {
+        if (repo.is_public || user_id === repo_user_id) {
+            App.count(where, function(err, total) {
                 if (err) { return next(err); }
 
-                res.json({list: apps, total: total});
-            });
+                App.find(where).populate('user').skip(skip).limit(limit).sort({_id: 'desc'}).exec(function(err, apps) {
+                    if (err) { return next(err); }
 
+                    res.json({list: apps, total: total});
+                });
+
+            });
+        } else {
+            res.status(401).json({message: 'Unauthorized'});
+        }
     });
 
 });
+
+router.get('/repo-workflows/:id', function(req, res, next) {
+
+    var limit = req.query.limit ? req.query.limit : 25;
+    var skip = req.query.skip ? req.query.skip : 0;
+    var where = {repo: req.params.id};
+
+    Repo.findById(req.params.id).populate('user').exec(function(err, repo) {
+        if (err) { return next(err); }
+
+        var user_id = (req.user ? req.user.id : '').toString();
+        var repo_user_id = repo.user._id.toString();
+
+        if (repo.is_public || user_id === repo_user_id) {
+            Pipeline.count(where, function(err, total) {
+                if (err) { return next(err); }
+
+                Pipeline.find(where).populate('user').skip(skip).limit(limit).sort({_id: 'desc'}).exec(function(err, pipelines) {
+                    if (err) { return next(err); }
+
+                    res.json({list: pipelines, total: total});
+                });
+
+            });
+        } else {
+            res.status(401).json({message: 'Unauthorized'});
+        }
+    });
+
+});
+
+var fixRepo = function(r, next) {
+
+    var promise = new mongoose.Promise;
+
+    r.save(function(err) {
+        if (err) { return next(err); }
+
+        promise.fulfill({repo: r._id, fixed: 'yes'});
+    });
+
+    return promise;
+
+};
 
 var getRepoRow = function (repo) {
 
@@ -307,7 +375,7 @@ var addWebhook = function (owner, r, currentUser) {
 
         if (err) {
             logger.info('User not found for user with email: ' + currentUser);
-            return next(err);
+            return false;
         }
 
         var token = user.github.accessToken;
@@ -331,15 +399,15 @@ var addWebhook = function (owner, r, currentUser) {
         };
 
         var repo = {
-            "name": "web",
-            "active": true,
-            "events": [
-                "push",
-                "pull_request"
+            'name': 'web',
+            'active': true,
+            'events': [
+                'push',
+                'pull_request'
             ],
-            "config": {
-                "url": "http://www.rabix.org/api/github-webhook",
-                "content_type": "json"
+            'config': {
+                'url': 'http://www.rabix.org/api/github-webhook',
+                'content_type': 'json'
             }
         };
 

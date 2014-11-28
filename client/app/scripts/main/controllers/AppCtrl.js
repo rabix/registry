@@ -12,7 +12,6 @@ angular.module('registryApp')
         $scope.view.app = null;
         $scope.view.revisions = [];
         $scope.view.tab = $routeParams.tab || 'info';
-        $scope.view.canDelete = false;
         $scope.view.isJsonVisible = false;
 
         $scope.view.classes = ['page', 'app'];
@@ -32,7 +31,6 @@ angular.module('registryApp')
                 $scope.view.user = result[0].user;
                 $scope.view.app = result[1].data;
                 $scope.view.revision = result[1].revision;
-                $scope.view.canDelete = $scope.view.app.public_count === 0 && ($scope.view.user && $scope.view.user.id === $scope.view.app.user._id);
                 revisionsLoaded(result[2]);
 
             });
@@ -92,29 +90,6 @@ angular.module('registryApp')
          */
         $scope.toggleJson = function() {
             $scope.view.isJsonVisible = !$scope.view.isJsonVisible;
-        };
-
-        /**
-         * Publish the revision
-         *
-         * @param revision
-         */
-        $scope.publish = function(revision) {
-
-            revision.saving = true;
-
-            App.publish(revision._id)
-                .then(function(result) {
-
-                    revision.saving = false;
-                    revision.is_public = true;
-                    revision.version = result.revision.version;
-
-
-                }, function () {
-                    revision.saving = false;
-                });
-
         };
 
     }]);

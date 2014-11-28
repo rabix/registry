@@ -47,7 +47,6 @@ angular.module('registryApp')
 
         self.revisions = $resource(apiUrl + '/revisions/:id', {id: '@id'}, {
             add: {method: 'POST'},
-            publish: {method: 'PUT'},
             'delete': {method: 'DELETE'}
         });
 
@@ -65,12 +64,14 @@ angular.module('registryApp')
             });
         };
 
-        self.repos = $resource(apiUrl + '/repos/:id', {id: '@id'}, {
+        self.repos = $resource(apiUrl + '/repos/:id/:action', {id: '@id', action: '@action'}, {
             add: {method: 'POST'},
             update: {method: 'PUT'}
         });
 
         self.repoTools = $resource(apiUrl + '/repo-tools/:id', {id: '@id'});
+
+        self.repoWorkflows = $resource(apiUrl + '/repo-workflows/:id', {id: '@id'});
 
         self.gitHubRepos = $resource(apiUrl + '/github-repos', {}, {
             add: {method: 'POST'},

@@ -89,6 +89,10 @@ var mapDefinition = {
                     root: {},
                     adapter: {}
                 },
+                number: {
+                    root: {},
+                    adapter: {}
+                },
                 boolean: {
                     root: {},
                     adapter: {}

@@ -22,9 +22,6 @@
                     <i ng-class="{'fa-plus': view.mode === 'new', 'fa-check': view.mode === 'edit'}" class="fa"></i>
                     {{ view.mode === 'new' ? 'Create' : 'Update' }}
                 </button>
-                <button ng-if="view.user && view.mode === 'edit' && view.user.id === view.pipeline.pipeline.user._id" ng-click="publish()" class="btn btn-primary" ng-disabled="view.saving || view.deleting">
-                    <i class="fa fa-plus"></i> Publish
-                </button>
 
                 <div class="btn-group right" ng-class="{open: view.isMenuOpen}">
                     <button type="button" class="btn btn-default"><i class="fa fa-cog"></i></button>
@@ -98,8 +95,14 @@
                                 </span>
 
                                 <ul>
-                                    <li ng-if="view.message"><p class="alert alert-warning">{{ view.message }}</p></li>
-                                    <li ng-if="!view.message && (repoTypeObj | isEmpty) && (repoTypeObj | isEmpty)"><p class="alert alert-info"><span ng-if="repoType === 'myRepositories'">You don't have any repository yet</span><span ng-if="repoType === 'otherRepositories'">There are no other repositories</span></p></li>
+                                    <!--<li ng-if="view.message"><p class="alert alert-warning">{{ view.message }}</p></li>-->
+                                    <li ng-if="(repoTypeObj | isEmpty) && (repoTypeObj | isEmpty)">
+                                        <p class="alert alert-info">
+                                            <span ng-if="repoType === 'myRepositories' && !view.user"> {{ view.message }}</span>
+                                            <span ng-if="repoType === 'myRepositories' && view.user">You don't have any repository yet</span>
+                                            <span ng-if="repoType === 'otherRepositories'">There are no other repositories</span>
+                                        </p>
+                                    </li>
                                     <li ng-repeat="(repoName, apps) in repoTypeObj" ng-class="{open: view.repoGroups[repoName]}">
 
                                         <span ng-click="toggleRepo(repoName)">
@@ -136,7 +139,7 @@
 
                                             <li ng-repeat="workflow in apps.workflows">
 
-                                                <a href drag="workflow.latest">
+                                                <a href drag="workflow.latest" >
                                                     <span class="pointer pull-left" ng-click="toggleAppRevisions(workflow._id)" ng-if="workflow.revisions.length !== 0"  ><i class="fa" ng-class="{'fa-minus-square':view.appRevisions[workflow._id].toggled, 'fa-plus-square': !view.appRevisions[workflow._id].toggled}"></i></span>
                                                     <i class="fa fa-puzzle-piece"></i>
                                                     {{ workflow.name }} <small>(revision {{ workflow.latest.rev }} )</small>

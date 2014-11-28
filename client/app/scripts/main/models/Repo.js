@@ -69,7 +69,13 @@ angular.module('registryApp')
          */
         self.manageRepo = function(id, action, repo) {
 
-            return Api.repos[action]({id: id}, {repo: repo}).$promise;
+            return Api.repos[action]({id: id, action: ((action === 'add') ? null : action)}, {repo: repo}).$promise;
+
+        };
+
+        self.publishRepo = function(id) {
+
+            return Api.repos.update({id: id, action: 'publish'}).$promise;
 
         };
 
@@ -85,26 +91,6 @@ angular.module('registryApp')
         };
 
         /**
-         * Parse the repo data
-         *
-         * @param result
-         * @returns {object}
-         */
-        self.parseUser = function (result) {
-
-            var params = ['created_by', 'id', 'secret'];
-            var repo = {};
-
-            _.each(params, function (param) {
-                if (angular.isDefined(result[param])) {
-                    repo[param] = result[param];
-                }
-            });
-
-            return repo;
-        };
-
-        /**
          * Get list of repo tools
          *
          * @param {integer} skip
@@ -114,6 +100,20 @@ angular.module('registryApp')
         self.repoTools = function(skip, id) {
 
             return Api.repoTools.get({id: id, skip: skip}).$promise;
+
+        };
+
+
+        /**
+         * Get list of repo workflows
+         *
+         * @param {integer} skip
+         * @param {string} id
+         * @returns {object} $promise
+         */
+        self.repoWorkflows = function(skip, id) {
+
+            return Api.repoWorkflows.get({id: id, skip: skip}).$promise;
 
         };
 
