@@ -395,7 +395,7 @@ var addWebhook = function (owner, r, currentUser) {
 
         if (err) {
             logger.info('User not found for user with email: ' + currentUser);
-            return next(err);
+            return false;
         }
 
         var token = user.github.accessToken;
@@ -419,15 +419,15 @@ var addWebhook = function (owner, r, currentUser) {
         };
 
         var repo = {
-            "name": "web",
-            "active": true,
-            "events": [
-                "push",
-                "pull_request"
+            'name': 'web',
+            'active': true,
+            'events': [
+                'push',
+                'pull_request'
             ],
-            "config": {
-                "url": "http://www.rabix.org/api/github-webhook",
-                "content_type": "json"
+            'config': {
+                'url': 'http://www.rabix.org/api/github-webhook',
+                'content_type': 'json'
             }
         };
 
