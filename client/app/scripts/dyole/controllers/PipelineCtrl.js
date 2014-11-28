@@ -166,7 +166,7 @@ angular.module('registryApp.dyole')
             $scope.view.loading = true;
             $scope.view.explanation = false;
 
-            if (app.rev) {
+            if (app.pipeline) {
 
                 PipelineMdl.formatPipeline(app).then(function (formated) {
 
@@ -207,7 +207,9 @@ angular.module('registryApp.dyole')
          * Adjust size of the canvas when window size changes
          */
         var changeWidth = function () {
-            Pipeline.adjustSize();
+            if (Pipeline) {
+                Pipeline.adjustSize();
+            }
         };
 
         var lazyChangeWidth = _.debounce(changeWidth, 150);

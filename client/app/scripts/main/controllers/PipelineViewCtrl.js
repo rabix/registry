@@ -85,7 +85,7 @@ angular.module('registryApp')
                 template: $templateCache.get('views/cliche/partials/confirm-delete.html'),
                 controller: 'ModalCtrl',
                 windowClass: 'modal-confirm',
-                resolve: {data: function () { return {message: "Are you sure you want to delete this revision?"}; }}
+                resolve: {data: function () { return {message: 'Are you sure you want to delete this revision?'}; }}
             });
 
             modalInstance.result.then(function () {
@@ -111,7 +111,7 @@ angular.module('registryApp')
                 template: $templateCache.get('views/cliche/partials/confirm-delete.html'),
                 controller: 'ModalCtrl',
                 windowClass: 'modal-confirm',
-                resolve: {data: function () { return {message: "Are you sure you want to delete this workflow?"}; }}
+                resolve: {data: function () { return {message: 'Are you sure you want to delete this workflow?'}; }}
             });
 
             modalInstance.result.then(function () {
@@ -120,5 +120,5 @@ angular.module('registryApp')
                 });
             });
 
-        }
+        };
     }]);
