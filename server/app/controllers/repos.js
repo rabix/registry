@@ -349,26 +349,6 @@ var fixRepo = function(r, next) {
 
 };
 
-router.get('/fix-repos', function(req, res, next) {
-
-    var Q = require('q');
-
-    Repo.find({}, function(err, repos) {
-        if (err) { return next(err); }
-
-        var promises = [];
-
-        _.each(repos, function(r) {
-            promises.push(fixRepo(r, next));
-        });
-
-        Q.all(promises).then(function(result) {
-            res.json({result: result});
-        });
-    });
-
-});
-
 var getRepoRow = function (repo) {
 
     var promise = new mongoose.Promise();
