@@ -48,12 +48,27 @@ router.get('/apps', function (req, res, next) {
 
         var whereApps = {repo: {$in: _.pluck(repos, '_id')}};
 
-        if (req.query.q) { whereApps.name = new RegExp(req.query.q, 'i'); }
+        if (req.query.q) {
+            whereApps.$or = [
+                {name: new RegExp(req.query.q, 'i')},
+                {description: new RegExp(req.query.q, 'i')}
+            ];
+        }
 
         App.count(whereApps, function(err, total) {
             if (err) { return next(err); }
 
-            App.find(whereApps).populate('repo').populate('user').populate('revisions').skip(skip).limit(limit).sort({_id: 'desc'})
+            App.find(whereApps)
+                .populate('repo')
+                .populate('user')
+                .populate({
+                    path: 'revisions',
+                    options: { limit: 25 },
+                    sort: {
+                        _id: 'desc'
+                    }
+                })
+                .skip(skip).limit(limit).sort({_id: 'desc'})
                 .exec(function(err, apps) {
                     if (err) { return next(err); }
 

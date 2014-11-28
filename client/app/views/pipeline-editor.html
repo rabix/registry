@@ -22,9 +22,6 @@
                     <i ng-class="{'fa-plus': view.mode === 'new', 'fa-check': view.mode === 'edit'}" class="fa"></i>
                     {{ view.mode === 'new' ? 'Create' : 'Update' }}
                 </button>
-                <button ng-if="view.user && view.mode === 'edit' && view.user.id === view.pipeline.pipeline.user._id" ng-click="publish()" class="btn btn-primary" ng-disabled="view.saving || view.deleting">
-                    <i class="fa fa-plus"></i> Publish
-                </button>
 
                 <div class="btn-group right" ng-class="{open: view.isMenuOpen}">
                     <button type="button" class="btn btn-default"><i class="fa fa-cog"></i></button>

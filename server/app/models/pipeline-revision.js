@@ -12,10 +12,8 @@ var PipelineRevisionSchema = new Schema({
     name: String,
     description: String,
     json: Schema.Types.Mixed,
-    version: Number,
-    is_public: {type: Boolean, default: false},
-    rev: {type: Number, default: 1},
-    pipeline: { type: Schema.Types.ObjectId, ref: 'Pipeline' }
+    version: {type: Number, default: 1, required: true},
+    pipeline: { type: Schema.Types.ObjectId, ref: 'Pipeline', required: true }
 });
 
 PipelineRevisionSchema.virtual('date')

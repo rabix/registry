@@ -54,6 +54,7 @@ router.get('/repos', function (req, res, next) {
 
         Repo.find(where).skip(skip).limit(limit).sort({_id: 'desc'}).exec(function (err, repos) {
             if (err) { return next(err); }
+            console.log(where, repos);
             res.json({list: repos, total: total});
         });
     });
