@@ -139,7 +139,7 @@
 
                                             <li ng-repeat="workflow in apps.workflows">
 
-                                                <a href drag="workflow.latest">
+                                                <a href drag="workflow.latest" >
                                                     <span class="pointer pull-left" ng-click="toggleAppRevisions(workflow._id)" ng-if="workflow.revisions.length !== 0"  ><i class="fa" ng-class="{'fa-minus-square':view.appRevisions[workflow._id].toggled, 'fa-plus-square': !view.appRevisions[workflow._id].toggled}"></i></span>
                                                     <i class="fa fa-puzzle-piece"></i>
                                                     {{ workflow.name }} <small>(revision {{ workflow.latest.rev }} )</small>
