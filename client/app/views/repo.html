@@ -17,79 +17,116 @@
     </div>
     <!-- # .heading -->
 
-    <div class="content">
+    <div ng-show="!view.loading" class="content">
 
-        <p class="description">{{ view.repo.description }}<i ng-if="!view.repo.description">There is no description for this repo</i></p>
-
-        <div class="nav nav-tabs">
-            <li ng-class="{active: view.tab === 'apps'}" class=""><a href ng-click="switchTab('apps')">Tools</a></li>
-            <li ng-class="{active: view.tab === 'builds'}" class=""><a href ng-click="switchTab('builds')">Builds</a></li>
+        <div class="content-top">
+            <p class="description">{{ view.repo.description }}<i ng-if="!view.repo.description">There is no description for this repo</i></p>
         </div>
 
-        <section ng-show="view.tab === 'apps'">
-            <table class="table table-hover apps">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="app in view.apps">
-                        <td><a ng-href="#/app/{{ app._id }}">{{ app.name }}</a></td>
-                        <td><p tooltip="{{ app.description }}" tooltip-popup-delay="1000">{{ app.description }}</p></td>
-                    </tr>
-                    <tr class="empty" ng-if="view.apps.length === 0">
-                        <td colspan="3"><p class="alert alert-info">There are no apps found in this repo</p></td>
-                    </tr>
-                </tbody>
-            </table>
+        <div class="tabs">
+            <div class="nav nav-tabs">
+                <li ng-class="{active: view.tab === 'apps'}" class=""><a href ng-click="switchTab('apps')">Tools</a></li>
+                <li ng-class="{active: view.tab === 'workflows'}" class=""><a href ng-click="switchTab('workflows')">Workflows</a></li>
+                <li ng-class="{active: view.tab === 'builds'}" class=""><a href ng-click="switchTab('builds')">Builds</a></li>
+            </div>
+            <section ng-show="view.tab === 'apps'" class="apps">
 
-            <paginator page="view.page.apps" total="view.total.apps" handler="getMoreApps(offset)"></paginator>
+                <div class="content">
+                    <table class="table table-hover apps">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="app in view.apps">
+                                <td><a ng-href="#/app/{{ app._id }}">{{ app.name }}</a></td>
+                                <td><p tooltip="{{ app.description }}" tooltip-popup-delay="1000">{{ app.description }}</p></td>
+                            </tr>
+                            <tr class="empty" ng-if="view.apps.length === 0">
+                                <td colspan="3"><p class="alert alert-info">There are no apps found in this repo</p></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
-        </section>
+                <paginator page="view.page.apps" total="view.total.apps" handler="getMoreApps(offset)"></paginator>
 
-        <section ng-show="view.tab === 'builds'">
-            <table class="table table-hover builds">
-                <thead>
-                    <tr>
-                        <th class="field-status"></th>
-                        <th class="field-id">Build</th>
-                        <th class="field-message">Message</th>
-                        <th class="field-commit">Commit</th>
-                        <th class="field-committer">Committer</th>
-                        <th class="field-date">Duration</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="build in view.builds">
-                        <td class="field-status">
-                            <span class="status fa {{ build.status }}"
-                                  tooltip="{{ build.status }}"
-                                  ng-class="{'fa-check-circle': build.status === 'success', 'fa-time': build.status === 'pending', 'fa-remove-circle': build.status === 'failure', 'fa-repeat': build.status === 'running'}">
-                            </span>
-                        </td>
-                        <td class="field-id">
-                            <a ng-href="#/build/{{ build._id }}" tooltip="{{ build._id }}" tooltip-popup-delay="1000">#{{ build._id }}</a>
-                        </td>
-                        <td class="field-message">
-                            <p tooltip="{{ build.head_commit.message }}" tooltip-popup-delay="1000">{{ build.head_commit.message }}</p>
-                        </td>
-                        <td class="field-commit">
-                            <a href="{{ build.head_commit.url }}" target="_blank" tooltip="{{ build.head_commit.id }}" tooltip-popup-delay="1000">{{ build.head_commit.id }}</a>
-                        </td>
-                        <td class="field-committer">{{ build.head_commit.committer.name }}</td>
-                        <td class="field-date">{{ build.head_commit.timestamp | date:'short' }}</td>
-                    </tr>
-                    <tr class="empty" ng-if="view.builds.length === 0">
-                        <td colspan="7"><p class="alert alert-info">There are no builds found in this repo</p></td>
-                    </tr>
-                </tbody>
-            </table>
+            </section>
 
-            <paginator page="view.page.builds" total="view.total.builds" handler="getMoreBuilds(offset)"></paginator>
+            <section ng-show="view.tab === 'workflows'" class="workflows">
 
-        </section>
+                <div class="content">
+                    <table class="table table-hover workflows">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="workflow in view.workflows">
+                                <td><a ng-href="#/pipeline/{{ workflow._id }}">{{ workflow.name }}</a></td>
+                                <td><p tooltip="{{ workflow.description }}" tooltip-popup-delay="1000">{{ workflow.description }}</p></td>
+                            </tr>
+                            <tr class="empty" ng-if="view.workflows.length === 0">
+                                <td colspan="2"><p class="alert alert-info">There are no workflows found in this repo</p></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <paginator page="view.page.workflows" total="view.total.workflows" handler="getMoreWorkflows(offset)"></paginator>
+
+            </section>
+
+            <section ng-show="view.tab === 'builds'" class="builds">
+
+                <div class="content">
+                    <table class="table table-hover builds">
+                        <thead>
+                            <tr>
+                                <th class="field-status"></th>
+                                <th class="field-id">Build</th>
+                                <th class="field-message">Message</th>
+                                <th class="field-commit">Commit</th>
+                                <th class="field-committer">Committer</th>
+                                <th class="field-date">Duration</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="build in view.builds">
+                                <td class="field-status">
+                                    <span class="status fa {{ build.status }}"
+                                          tooltip="{{ build.status }}"
+                                          ng-class="{'fa-check-circle': build.status === 'success', 'fa-time': build.status === 'pending', 'fa-remove-circle': build.status === 'failure', 'fa-repeat': build.status === 'running'}">
+                                    </span>
+                                </td>
+                                <td class="field-id">
+                                    <a ng-href="#/build/{{ build._id }}" tooltip="{{ build._id }}" tooltip-popup-delay="1000">#{{ build._id }}</a>
+                                </td>
+                                <td class="field-message">
+                                    <p tooltip="{{ build.head_commit.message }}" tooltip-popup-delay="1000">{{ build.head_commit.message }}</p>
+                                </td>
+                                <td class="field-commit">
+                                    <a href="{{ build.head_commit.url }}" target="_blank" tooltip="{{ build.head_commit.id }}" tooltip-popup-delay="1000">{{ build.head_commit.id }}</a>
+                                </td>
+                                <td class="field-committer">{{ build.head_commit.committer.name }}</td>
+                                <td class="field-date">{{ build.head_commit.timestamp | date:'short' }}</td>
+                            </tr>
+                            <tr class="empty" ng-if="view.builds.length === 0">
+                                <td colspan="7"><p class="alert alert-info">There are no builds found in this repo</p></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <paginator page="view.page.builds" total="view.total.builds" handler="getMoreBuilds(offset)"></paginator>
+
+            </section>
+        </div>
+        <!-- # .tabs -->
 
     </div>
     <!-- # .content -->

@@ -127,7 +127,8 @@ body {
   }
 
   .content {
-    overflow: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
     padding-top: 20px;
     @include scrollBar($orange);
     @include flex(1);
@@ -160,16 +161,6 @@ body {
     }
     .content {
       padding-top: 0;
-    }
-  }
-
-  /* Repo page */
-  &.repo {
-    .created-by {
-      font-size: 15px;
-    }
-    .content {
-      padding: 20px 10px 0;
     }
   }
 
@@ -244,21 +235,64 @@ body {
       @include flex-flow(column nowrap);
     }
     section {
-      &.revisions {
-        margin: 0;
+      table {
+        thead {
+          tr {
+            border-top: 1px solid #ddd;
+          }
+        }
+      }
+    }
+  }
+
+  /* Repo page */
+  &.repo {
+    .created-by {
+      font-size: 15px;
+    }
+    & > .content {
+      @include flex-box();
+      @include flex-flow(column nowrap);
+      padding: 20px 10px 0;
+
+      .content-top {
+        @include flex(0 0 auto);
+      }
+      .tabs {
+        @include flex(1);
+        @include flex-box();
+        @include flex-flow(column nowrap);
+
+        & > .nav-tabs {
+          position: relative;
+          z-index: 1;
+          border-bottom: none;
+          @include flex(0 0 auto);
+        }
+
+        & > section {
+          margin-top: -1px;
+          border-top: 1px solid #ddd;
+        }
+      }
+    }
+  }
+
+  /* App and Repo page */
+  &.app,
+  &.repo {
+    section {
+      &.revisions,
+      &.apps,
+      &.workflows,
+      &.builds {
+        margin: 0 -10px;
         @include flex(1);
         @include flex-box();
         @include flex-flow(column nowrap);
         & > .content {
           padding: 0;
           @include flex(1);
-        }
-      }
-      table {
-        thead {
-          tr {
-            border-top: 1px solid #ddd;
-          }
         }
       }
     }

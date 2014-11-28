@@ -71,6 +71,8 @@ angular.module('registryApp')
 
         self.repoTools = $resource(apiUrl + '/repo-tools/:id', {id: '@id'});
 
+        self.repoWorkflows = $resource(apiUrl + '/repo-workflows/:id', {id: '@id'});
+
         self.gitHubRepos = $resource(apiUrl + '/github-repos', {}, {
             add: {method: 'POST'},
             update: {method: 'PUT'}

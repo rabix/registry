@@ -7,7 +7,7 @@
 'use strict';
 
 angular.module('registryApp.cliche')
-    .directive('addProperty', ['$templateCache', '$modal', function ($templateCache, $modal) {
+    .directive('addProperty', ['$templateCache', '$modal', '$document', function ($templateCache, $modal, $document) {
 
         return {
             restrict: 'E',
@@ -19,6 +19,8 @@ angular.module('registryApp.cliche')
             },
             link: function(scope) {
 
+                var isOpen = false;
+
                 /**
                  * Show the modal for adding property items
                  *
@@ -28,7 +30,11 @@ angular.module('registryApp.cliche')
 
                     e.stopPropagation();
 
-                    $modal.open({
+                    if (isOpen) { return false; }
+
+                    isOpen = true;
+
+                    var modalInstance = $modal.open({
                         template: $templateCache.get('views/cliche/partials/add-property-' + scope.type + '.html'),
                         controller: 'AddPropertyCtrl',
                         windowClass: 'modal-prop',
@@ -42,7 +48,28 @@ angular.module('registryApp.cliche')
                             }
                         }
                     });
+
+                    modalInstance.result.then(function() {
+                        isOpen = false;
+                    }, function() {
+                        isOpen = false;
+                    });
                 };
+
+                /**
+                 * Catch the space key down in order to open modal
+                 *
+                 * @param e
+                 */
+                var keyHandler = function(e) {
+                    if (e.keyCode === 32) { scope.addItem(e); }
+                };
+
+                $document.bind('keydown', keyHandler);
+
+                scope.$on('$destroy', function() {
+                    $document.unbind('keydown', keyHandler);
+                });
 
             }
         };

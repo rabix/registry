@@ -11,6 +11,7 @@ var mongoose = require('mongoose');
 var Repo = mongoose.model('Repo');
 var User = mongoose.model('User');
 var App = mongoose.model('App');
+var Pipeline = mongoose.model('Pipeline');
 
 var BuildClass = require('../../builds/Build');
 
@@ -280,33 +281,56 @@ router.get('/repo-tools/:id', function(req, res, next) {
     var skip = req.query.skip ? req.query.skip : 0;
     var where = {repo: req.params.id};
 
-    if (req.user) {
-        where.$or = [
-            {user: req.user.id},
-            {public_count: {$gt: 0}}
-        ];
-    } else {
-        where.public_count = {$gt: 0};
-    }
-
-    App.count(where, function(err, total) {
+    Repo.findById(req.params.id).populate('user').exec(function(err, repo) {
         if (err) { return next(err); }
 
-        var match = {is_public: true};
+        var user_id = (req.user ? req.user.id : '').toString();
+        var repo_user_id = repo.user._id.toString();
 
-        if (req.query.q) {
-            match.$or = [
-                {name: new RegExp(req.query.q, 'i')},
-                {description: new RegExp(req.query.q, 'i')}
-            ];
-        }
-
-        App.find(where).populate('user').skip(skip).limit(limit).sort({_id: 'desc'}).exec(function(err, apps) {
+        if (repo.is_public || user_id === repo_user_id) {
+            App.count(where, function(err, total) {
                 if (err) { return next(err); }
 
-                res.json({list: apps, total: total});
-            });
+                App.find(where).populate('user').skip(skip).limit(limit).sort({_id: 'desc'}).exec(function(err, apps) {
+                    if (err) { return next(err); }
 
+                    res.json({list: apps, total: total});
+                });
+
+            });
+        } else {
+            res.status(401).json({message: 'Unauthorized'});
+        }
+    });
+
+});
+
+router.get('/repo-workflows/:id', function(req, res, next) {
+
+    var limit = req.query.limit ? req.query.limit : 25;
+    var skip = req.query.skip ? req.query.skip : 0;
+    var where = {repo: req.params.id};
+
+    Repo.findById(req.params.id).populate('user').exec(function(err, repo) {
+        if (err) { return next(err); }
+
+        var user_id = (req.user ? req.user.id : '').toString();
+        var repo_user_id = repo.user._id.toString();
+
+        if (repo.is_public || user_id === repo_user_id) {
+            Pipeline.count(where, function(err, total) {
+                if (err) { return next(err); }
+
+                Pipeline.find(where).populate('user').skip(skip).limit(limit).sort({_id: 'desc'}).exec(function(err, pipelines) {
+                    if (err) { return next(err); }
+
+                    res.json({list: pipelines, total: total});
+                });
+
+            });
+        } else {
+            res.status(401).json({message: 'Unauthorized'});
+        }
     });
 
 });

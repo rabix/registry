@@ -8,16 +8,19 @@ angular.module('registryApp')
         $scope.view = {};
         $scope.view.page = {
             apps: 1,
+            workflows: 1,
             builds: 1
         };
         $scope.view.total = {
             apps: 1,
+            workflows: 1,
             builds: 1
         };
         $scope.view.loading = true;
         $scope.view.tab = 'apps';
         $scope.view.repo = null;
         $scope.view.apps = [];
+        $scope.view.workflows = [];
         $scope.view.builds = [];
         $scope.view.resize = false;
         $scope.view.user = {};
@@ -40,13 +43,15 @@ angular.module('registryApp')
 
             $q.all([
                 Repo.repoTools(0, $routeParams.id),
+                Repo.repoWorkflows(0, $routeParams.id),
                 Build.getBuilds(0, $routeParams.id)
             ]).then(function (result) {
 
                 $scope.view.loading = false;
 
                 $scope.view.apps = itemsLoaded(result[0], 'apps');
-                $scope.view.builds = itemsLoaded(result[1], 'builds');
+                $scope.view.workflows = itemsLoaded(result[1], 'workflows');
+                $scope.view.builds = itemsLoaded(result[2], 'builds');
             });
 
         });
@@ -85,6 +90,21 @@ angular.module('registryApp')
 
             Repo.repoTools(offset, $routeParams.id).then(function (result) {
                 $scope.view.apps = itemsLoaded(result, 'apps');
+            });
+
+        };
+
+        /**
+         * Load more workflows by offset
+         *
+         * @param offset
+         */
+        $scope.getMoreWorkflows = function(offset) {
+
+            $scope.view.loading = true;
+
+            Repo.repoWorkflows(offset, $routeParams.id).then(function (result) {
+                $scope.view.workflows = itemsLoaded(result, 'workflows');
             });
 
         };

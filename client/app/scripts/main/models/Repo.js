@@ -103,6 +103,20 @@ angular.module('registryApp')
 
         };
 
+
+        /**
+         * Get list of repo workflows
+         *
+         * @param {integer} skip
+         * @param {string} id
+         * @returns {object} $promise
+         */
+        self.repoWorkflows = function(skip, id) {
+
+            return Api.repoWorkflows.get({id: id, skip: skip}).$promise;
+
+        };
+
         return self;
 
     }]);

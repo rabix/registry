@@ -287,15 +287,20 @@ angular.module('registryApp.cliche')
         $scope.import = function(json) {
 
             json = JSON.parse(json);
+            var name = $scope.view.toolForm.name;
 
             Data.setTool(json);
-            $scope.view.toolForm = json;
+            $scope.view.toolForm = Data.tool;
+
+            if ($scope.view.mode === 'edit') {
+                $scope.view.toolForm.name = name;
+            }
 
             var job = angular.copy($scope.view.jobForm);
             job.inputs = {};
 
             Data.setJob(job);
-            $scope.view.jobForm = job;
+            $scope.view.jobForm = Data.job;
 
         };
 
@@ -483,15 +488,14 @@ angular.module('registryApp.cliche')
          */
         $scope.create = function() {
 
-            if ($scope.forms.toolForm.$invalid) {
-                $scope.forms.toolForm.$setDirty();
+            if (_.isEmpty($scope.view.toolForm.name)) {
 
                 $modal.open({
                     template: $templateCache.get('views/partials/validation.html'),
                     size: 'sm',
                     controller: 'ModalCtrl',
                     windowClass: 'modal-validation',
-                    resolve: {data: function () { return {messages: ['Please fill in all required fields!']}; }}
+                    resolve: {data: function () { return {messages: ['You must enter name of the tool']}; }}
                 });
 
                 return false;
@@ -538,20 +542,6 @@ angular.module('registryApp.cliche')
          * @returns {boolean}
          */
         $scope.update = function() {
-
-            if ($scope.forms.toolForm.$invalid) {
-                $scope.forms.toolForm.$setDirty();
-
-                $modal.open({
-                    template: $templateCache.get('views/partials/validation.html'),
-                    size: 'sm',
-                    controller: 'ModalCtrl',
-                    windowClass: 'modal-validation',
-                    resolve: {data: function () { return {messages: ['Please fill in all required fields!']}; }}
-                });
-
-                return false;
-            }
 
             $scope.view.saving = true;
 
