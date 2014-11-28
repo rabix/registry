@@ -40,10 +40,9 @@
             </div>
             <!-- END Type -->
 
-            <div class="col-md-3" ng-if="prop.type !== 'array'">
+            <div class="col-md-3">
                 <div class="form-group">
                     <label class="control-label">Glob</label>
-                    <!--<input type="text" class="form-control" id="property-glob-{{ view.uniqueId }}" name="{{ name }}-glob" ng-model="prop.adapter.glob">-->
                     <expr ng-model="prop.adapter.glob" handle-item-update="updateGlobValue(value)" placeholder="value"></expr>
                 </div>
             </div>
@@ -59,7 +58,11 @@
             </div>
             <!-- END Streamable -->
 
-            <div class="col-md-2" ng-if="prop.type === 'array'">
+        </div>
+
+        <div class="row" ng-if="prop.type === 'array'">
+
+            <div class="col-md-2">
                 <div class="form-group">
                     <label for="property-item-min-{{ view.uniqueId }}" class="control-label">Min</label>
                     <input type="number" class="form-control" id="property-item-min-{{ view.uniqueId }}" name="{{ name }}-item-min" ng-model="prop.minItems" min="0">
@@ -67,7 +70,7 @@
             </div>
             <!-- END Min -->
 
-            <div class="col-md-2" ng-if="prop.type === 'array'">
+            <div class="col-md-2">
                 <div class="form-group">
                     <label for="property-item-max-{{ view.uniqueId }}" class="control-label">Max</label>
                     <input type="number" class="form-control" id="property-item-max-{{ view.uniqueId }}" name="{{ name }}-item-max" ng-model="prop.maxItems" min="0">
@@ -75,7 +78,7 @@
             </div>
             <!-- END Max -->
 
-            <div class="col-md-3" ng-if="prop.type === 'array'">
+            <div class="col-md-3">
                 <div class="form-group">
                     <label for="property-item-type-{{ view.uniqueId }}" class="control-label">Item Type</label>
 
@@ -88,7 +91,7 @@
             </div>
             <!-- END Item Type -->
 
-            <div class="col-md-2" ng-if="prop.type === 'array' && prop.items.type === 'file'">
+            <div class="col-md-2" ng-if="prop.items.type === 'file'">
                 <div class="form-group">
                     <label class="control-label empty-label">&nbsp;</label>
                     <div class="checkbox no-margin">
@@ -97,7 +100,6 @@
                 </div>
             </div>
             <!-- END Item Streamable -->
-
         </div>
 
         <div class="meta-list">
