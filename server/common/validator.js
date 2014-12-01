@@ -59,7 +59,7 @@ var mapDefinition = {
     properties: {
         inputs: {
             root: {
-                required: {type: 'boolean'},
+                //required: {type: 'boolean'},
                 type: {type: 'string', required: true},
                 adapter: {type: 'object'}
             },
@@ -117,7 +117,7 @@ var mapDefinition = {
         },
         outputs: {
             root: {
-                required: {type: 'boolean'},
+                //required: {type: 'boolean'},
                 type: {type: 'string', required: true},
                 adapter: {type: 'object', required: true}
             },

@@ -1,13 +1,13 @@
 <div class="property-wrap" ng-class="{active: active}">
 
-    <legend class="legend-tiny toggle" ng-class="{active: active}" ng-click="toggleProperty()">
+    <legend class="legend-tiny toggle" ng-class="{active: active}">
 
         <div class="pull-right">
-            <div class="checkbox"><label><input type="checkbox" ng-model="prop.required"> required</label></div>
+            <div class="checkbox"><label><input type="checkbox" ng-model="view.required" ng-change="toggleRequired()"> required</label></div>
             <span class="remove" ng-click="removeItem($event)">&times;</span>
         </div>
 
-        <div class="property-name" ng-hide="view.edit">
+        <div class="property-name" ng-click="toggleProperty()" ng-hide="view.edit">
             <span>{{ name }}</span>
             <a href ng-click="toggleEdit($event)"><i class="fa fa-pencil"></i></a>
         </div>

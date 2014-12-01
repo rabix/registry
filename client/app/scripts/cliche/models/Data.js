@@ -16,7 +16,7 @@ angular.module('registryApp.cliche')
          *
          * @type {number}
          */
-        self.version = 18;
+        self.version = 19;
 
         /**
          * Tool json object
@@ -137,37 +137,32 @@ angular.module('registryApp.cliche')
                 input: {
                     file: {
                         root: {
-                            type: 'string',
-                            required: false
+                            type: 'string'
                         },
                         adapter: {prefix: '', separator: ' ', order: 0, transform: undefined, streamable: false}
                     },
                     string: {
                         root: {
                             type: 'string',
-                            required: false,
                             enum: null
                         },
                         adapter: {prefix: '', separator: ' ', order: 0, transform: undefined}
                     },
                     integer: {
                         root: {
-                            type: 'string',
-                            required: false
+                            type: 'string'
                         },
                         adapter: {prefix: '', separator: ' ', order: 0, transform: undefined}
                     },
                     number: {
                         root: {
                             type: 'string',
-                            required: false
                         },
                         adapter: {prefix: '', separator: ' ', order: 0, transform: undefined}
                     },
                     array: {
                         root: {
                             type: 'string',
-                            required: false,
                             minItems: undefined,
                             maxItems: undefined,
                             items: {type: 'string'}
@@ -176,15 +171,13 @@ angular.module('registryApp.cliche')
                     },
                     boolean: {
                         root: {
-                            type: 'string',
-                            required: false
+                            type: 'string'
                         },
                         adapter: {prefix: '', separator: ' ', order: 0, transform: undefined}
                     },
                     object: {
                         root: {
                             type: 'string',
-                            required: false,
                             properties: {}
                         },
                         adapter: {prefix: '', separator: ' ', order: 0}
@@ -193,22 +186,19 @@ angular.module('registryApp.cliche')
                 output: {
                     file: {
                         root: {
-                            type: 'string',
-                            required: false
+                            type: 'string'
                         },
                         adapter: {streamable: false, glob: '', meta: {}, secondaryFiles: []}
                     },
                     directory: {
                         root: {
-                            type: 'string',
-                            required: false
+                            type: 'string'
                         },
                         adapter: {glob: '', meta: {}, secondaryFiles: []}
                     },
                     array: {
                         root: {
                             type: 'string',
-                            required: false,
                             minItems: undefined,
                             maxItems: undefined,
                             items: {type: 'file'}
