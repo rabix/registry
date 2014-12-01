@@ -3,50 +3,25 @@
 var _ = require('lodash');
 var Sort = require('./top-sort');
 
-var schema = {
-    display: {
-        canvas: {
-            x: { type: 'number' },
-            y: { type: 'number' },
-            zoom: { type: 'number' }
-        },
-        nodes: {
-            type: 'array',
-            $schema: {
-                _id: 'string',
-                x: { type: 'number', required: true },
-                y: { type: 'number', required: true }
-            }
-        }
-    },
-    steps: {
-        type: 'array',
-        required: true,
-        $schema: {
-            _id: { type: 'string', required: true },
-            app: { type: 'string', required: true },
-            inputs: {
-                type: 'object',
-                required: true
-            }
-        }
-    }
-};
-
 var validator = {
 
     errors: [],
+    paramErrors: [],
 
     validate: function (json) {
 
         this.errors = [];
+        this.paramErrors = [];
 
         this._completeGraph(json);
         this._duplicateRelations(json);
         this._cyclicGraph(json);
         this._requiredInputs(json);
 
-        return _.uniq(this.errors);
+        return {
+            errors: _.uniq(this.errors),
+            paramErrors: this.paramErrors
+        };
     },
 
     _completeGraph: function (graph) {
@@ -115,29 +90,27 @@ var validator = {
 
     _requiredInputs: function (json) {
         var _self = this,
-            nodes = json.nodes,
-            relations = json.relations;
+            nodes = json.nodes;
         
-        var checkExsits = function (input, node) {
-
-            var exists = _.filter(relations, function (rel) {
-                if (rel.end_node === node.id && rel.input_name === input.name) {
-                    console.log(rel);
-                }
-                return rel.end_node === node.id && rel.input_name === input.name;
+        var checkConnected = function (nodeId, inputName) {
+            var filter = _.filter(json.relations, function (rel) {
+                return rel.end_node === nodeId && rel.input_name === inputName;
             });
 
-            return exists.length !== 0;
+            return filter.length === 0;
         };
 
         _.forEach(nodes, function (node) {
+            // only inputs should be validated since outputs
             var inputs = node.inputs.properties;
 
             _.forEach(inputs, function (input) {
-                if (input.type === 'file' && input.required && input.required === true) {
-                    if (!checkExsits(input, node)) {
-                        _self.errors.push('There is required input "' + input.name + '" that is not set on node: ' + node.id);
+                if ((input.type === 'file' || input.items && input.items.type === 'file') && input.required === true) {
+                    if (checkConnected(node.id, input.name)) {
+                        _self.errors.push('There is required input file: "' + input.name + '" that is not set on node: ' + node.id);
                     }
+                } else if (input.required === true) {
+                    _self.paramErrors.push('There is required input: "' + input.name + '" that is not set on node: ' + node.id);
                 }
             });
         });
