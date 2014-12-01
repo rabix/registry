@@ -1,6 +1,7 @@
 'use strict';
 
 var _ = require('lodash');
+var Sort = require('./top-sort');
 
 var schema = {
     display: {
@@ -38,9 +39,14 @@ var validator = {
 
     validate: function (json) {
 
-        this._completeGraph(json);
+        this.errors = [];
 
-        return this.errors;
+        this._completeGraph(json);
+        this._duplicateRelations(json);
+        this._cyclicGraph(json);
+        this._requiredInputs(json);
+
+        return _.uniq(this.errors);
     },
 
     _completeGraph: function (graph) {
@@ -59,7 +65,7 @@ var validator = {
 
         if (nodes.length !== 0) {
             _.forEach(nodes, function (node) {
-                _self.errors.push('Node not connected: %s', node.id);
+                _self.errors.push('Node not connected: ' + node.id);
             });
         }
     },
@@ -69,26 +75,73 @@ var validator = {
         
         _.forEach(relations, function (relation) {
 
-            var duplicate = _.find(relations, function (rel) {
+            var duplicate = _.filter(relations, function (rel) {
+
+                if (rel.id === relation.id) {
+                    return false;
+                }
 
                 var check = rel.start_node === relation.start_node && rel.end_node === relation.end_node,
-                    reverseCheck, portCheck, reversePortCheck;
+                    portCheck = rel.input_name === relation.input_name && rel.output_name === relation.output_name,
+                    reverseCheck, reversePortCheck;
 
                     reverseCheck = rel.start_node === relation.end_node && rel.end_node === relation.start_node;
-
-
-                    portCheck = rel.input_name === relation.input_name && rel.output_name === relation.output_name;
                     reversePortCheck = rel.input_name === relation.output_name && rel.output_name === relation.input_name;
 
                     return (check && portCheck) || ( reverseCheck && reversePortCheck);
             });
 
             if (duplicate.length !== 0) {
-                _self.errors.push('Duplicated connection at: start_node: %s , end_node: %s', relation.start_node, relation.end_node);
+                _self.errors.push('Duplicated connection at: start_node: '+ relation.start_node +' , end_node: ' + relation.end_node);
             }
         });
+    },
+
+    _cyclicGraph: function (json) {
+
+        var _self = this,
+            result,
+            relations = json.relations;
+
+        result = Sort.tsort(relations);
+
+        if (result.errors.length !== 0) {
+            _.forEach(result.errors, function (err) {
+                _self.errors.push(err);
+            });
+        }
+
+    },
+
+    _requiredInputs: function (json) {
+        var _self = this,
+            nodes = json.nodes,
+            relations = json.relations;
+        
+        var checkExsits = function (input, node) {
+
+            var exists = _.filter(relations, function (rel) {
+                if (rel.end_node === node.id && rel.input_name === input.name) {
+                    console.log(rel);
+                }
+                return rel.end_node === node.id && rel.input_name === input.name;
+            });
+
+            return exists.length !== 0;
+        };
+
+        _.forEach(nodes, function (node) {
+            var inputs = node.inputs.properties;
+
+            _.forEach(inputs, function (input) {
+                if (input.type === 'file' && input.required && input.required === true) {
+                    if (!checkExsits(input, node)) {
+                        _self.errors.push('There is required input "' + input.name + '" that is not set on node: ' + node.id);
+                    }
+                }
+            });
+        });
     }
-    
     
 };
 
