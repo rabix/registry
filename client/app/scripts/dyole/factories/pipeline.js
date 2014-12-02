@@ -1005,6 +1005,9 @@ angular.module('registryApp.dyole')
 
                     if (height > 0) { height -= 10; }
 
+                    // handling bug with svg in hidden element
+                    if (width < 0 || height < 0) { return false; }
+
                     this.canvas.setSize(width, height);
 
                     this.rect.attr({
