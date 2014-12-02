@@ -1012,6 +1012,8 @@ angular.module('registryApp.dyole')
                         height: height
                     });
 
+                    this._drawScrollbars();
+
                 },
 
                 /**
