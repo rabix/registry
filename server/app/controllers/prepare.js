@@ -20,7 +20,7 @@ module.exports = function (app) {
  */
 var insertRepos = function() {
 
-    var promise = new mongoose.Promise;
+    var promise = new mongoose.Promise();
     var repoIds = [];
 
     Repo.find(function (err, repos) {

@@ -13,16 +13,21 @@
 
             <div class="actions pull-right">
 
+                <label class="checkbox inline">
+                    <input type="checkbox" ng-model="view.app.is_script" ng-change="adjust()" ng-disabled="view.mode === 'edit'">
+                    <span>script</span>
+                </label>
+
                 <div class="btn-group" role="group">
                     <button class="btn btn-default" ng-click="showJson('tool')">
                         <i class="fa fa-code"></i> Tool JSON
                     </button>
-                    <button class="btn btn-default" ng-click="showJson('job')">
+                    <button ng-hide="view.app.is_script" class="btn btn-default" ng-click="showJson('job')">
                         <i class="fa fa-code"></i> Job JSON
                     </button>
                 </div>
 
-                <button ng-if="view.user && (view.app | isEmpty)" ng-disabled="view.saving" class="app-create-btn btn btn-primary" ng-click="create()">
+                <button ng-if="view.user && view.mode === 'new'" ng-disabled="view.saving" class="app-create-btn btn btn-primary" ng-click="create()">
                     <i class="fa fa-plus"></i> Create
                 </button>
 
@@ -49,7 +54,7 @@
                     </ul>
                 </div>
             </div>
-
+            <!-- # .actions -->
         </h1>
     </div>
     <!-- # .heading -->
@@ -59,8 +64,8 @@
             <li ng-class="{active: view.tab === 'general'}"><a href ng-click="switchTab('general')">General</a></li>
             <li ng-class="{active: view.tab === 'inputs'}"><a href ng-click="switchTab('inputs')">Inputs</a></li>
             <li ng-class="{active: view.tab === 'outputs'}"><a href ng-click="switchTab('outputs')">Outputs</a></li>
-            <li ng-class="{active: view.tab === 'adapter'}"><a href ng-click="switchTab('adapter')">Adapter</a></li>
-            <li ng-class="{active: view.tab === 'values'}"><a href ng-click="switchTab('values')">Values</a></li>
+            <li ng-hide="view.app.is_script" ng-class="{active: view.tab === 'adapter'}"><a href ng-click="switchTab('adapter')">Adapter</a></li>
+            <li ng-hide="view.app.is_script" ng-class="{active: view.tab === 'values'}"><a href ng-click="switchTab('values')">Values</a></li>
         </ul>
 
         <a class="btn btn-flush btn-flush-cliche" href ng-click="flush()" tooltip="Start with clean template" tooltip-placement="left" tooltip-append-to-body="true">
@@ -80,7 +85,7 @@
     </div>
     <!-- # .content -->
 
-    <div ng-if="!view.loading" class="console" ng-class="{'console-hide': !view.showConsole}">
+    <div ng-if="!view.loading && !view.app.is_script" class="console" ng-class="{'console-hide': !view.showConsole}">
         <div ng-click="toggleConsole()" class="heading">console <i ng-class="{'fa-chevron-down': view.showConsole, 'fa-chevron-right': !view.showConsole}" class="fa pull-right"></i></div>
         <zclip data="command"></zclip>
         <pre class="console-trace" ng-class="{wait: view.generatingCommand}">{{ view.command }}</pre>

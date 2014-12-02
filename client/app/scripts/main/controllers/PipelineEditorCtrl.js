@@ -89,7 +89,7 @@ angular.module('registryApp')
          * @param {Object} result
          */
         var appsLoaded = function (result) {
-            var tools, workflows;
+            var tools, workflows, scripts;
             $scope.view.loading = false;
             $scope.view.filtering = false;
             $scope.view.message = result[0].message;
@@ -97,15 +97,17 @@ angular.module('registryApp')
             $scope.view.repoTypes.myRepositories = {};
             $scope.view.repoTypes.otherRepositories = {};
 
-            tools = formatApps(result[0].list || {});
+            tools = formatApps((result[0].list ? result[0].list.tools : {}));
+            scripts = formatApps((result[0].list ? result[0].list.scripts : {}));
             workflows = formatApps(result[2].list || {});
 
-            mergeToolsWorkflows('myRepositories', tools, workflows);
+            mergeToolsWorkflows('myRepositories', tools, scripts, workflows);
 
-            tools = formatApps(result[1].list || {});
+            tools = formatApps((result[1].list ? result[1].list.tools : {}));
+            scripts = formatApps((result[1].list ? result[1].list.scripts : {}));
             workflows = formatApps(result[3].list || {});
             
-            mergeToolsWorkflows('otherRepositories', tools, workflows);
+            mergeToolsWorkflows('otherRepositories', tools, scripts, workflows);
 
         };
 
@@ -138,17 +140,30 @@ angular.module('registryApp')
             return apps;
         };
         
-        var mergeToolsWorkflows = function (type, tools, workflows) {
+        var mergeToolsWorkflows = function (type, tools, scripts, workflows) {
             var repositories = $scope.view.repoTypes[type];
 
             _.forEach(tools, function (tool, repoName) {
                 if (!repositories[repoName]) {
                     repositories[repoName] = {
                         tools: tool,
+                        scripts: [],
                         workflows: []
                     };
                 } else {
                     repositories[repoName].tools = tool;
+                }
+            });
+
+            _.forEach(scripts, function (script, repoName) {
+                if (!repositories[repoName]) {
+                    repositories[repoName] = {
+                        tools: [],
+                        scripts: script,
+                        workflows: []
+                    };
+                } else {
+                    repositories[repoName].scripts = script;
                 }
             });
 
@@ -157,6 +172,7 @@ angular.module('registryApp')
                 if (!repositories[repoName]) {
                     repositories[repoName] = {
                         tools: [],
+                        scripts: [],
                         workflows: workflow
                     };
                 } else {

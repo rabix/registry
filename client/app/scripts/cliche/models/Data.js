@@ -51,8 +51,10 @@ angular.module('registryApp.cliche')
                 if (_.isNull(tool) || _.isEmpty(tool)) {
                     $http({method: 'GET', url: 'data/tool.json'})
                         .success(function(data) {
+
                             self.tool = data.tool;
                             deferred.resolve(data.tool);
+
                             $localForage.setItem('tool', data.tool);
                         })
                         .error(function() {
@@ -81,8 +83,10 @@ angular.module('registryApp.cliche')
                 if (_.isNull(job) || _.isEmpty(job)) {
                     $http({method: 'GET', url: 'data/job.json'})
                         .success(function(data) {
+
                             self.job = data.job;
                             deferred.resolve(data.job);
+
                             $localForage.setItem('job', data.job);
                         })
                         .error(function() {
@@ -673,10 +677,15 @@ angular.module('registryApp.cliche')
 
             var tool = $injector.get('rawTool');
             var job = $injector.get('rawJob');
+            var isScript = !self.tool.adapter;
 
             self.tool = tool;
             self.job = job;
             self.command = '';
+
+            if (isScript) {
+                delete self.tool.adapter;
+            }
 
             return $q.all([
                     $localForage.setItem('tool', tool),
@@ -687,6 +696,21 @@ angular.module('registryApp.cliche')
                         job: job
                     };
                 });
+
+        };
+
+        self.transformToolJson = function(isScript) {
+
+            var transformed = angular.copy(self.tool);
+            var rawTool = $injector.get('rawTool');
+
+            if (isScript) {
+                delete transformed.adapter;
+            } else {
+                transformed.adapter = angular.copy(rawTool.adapter);
+            }
+
+            self.setTool(transformed);
 
         };
 

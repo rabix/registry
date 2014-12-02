@@ -4,6 +4,7 @@ var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
 var _ = require('lodash');
+var Q = require('q');
 
 var App = mongoose.model('App');
 var Repo = mongoose.model('Repo');
@@ -17,10 +18,14 @@ module.exports = function (app) {
     app.use('/api', router);
 };
 
+/**
+ * Get all tools
+ */
 router.get('/apps', function (req, res, next) {
 
-    var limit = req.query.limit ? req.query.limit : 25;
-    var skip = req.query.skip ? req.query.skip : 0;
+    var limit = req.query.limit || 25;
+    var skip = req.query.skip || 0;
+    var is_script = req.query.is_script || false;
     var where = {};
 
     _.each(req.query, function(paramVal, paramKey) {
@@ -46,6 +51,14 @@ router.get('/apps', function (req, res, next) {
         if (err) { return next(err); }
 
         var whereApps = {repo: {$in: _.pluck(repos, '_id')}};
+
+        if (is_script) {
+            whereApps.is_script = true;
+        } else {
+            // NOTE: legacy structure, some tools don't have is_script field
+            whereApps.is_script = {$in: [null, false]};
+        }
+        console.log(whereApps);
 
         if (req.query.q) {
             whereApps.$or = [
@@ -79,6 +92,12 @@ router.get('/apps', function (req, res, next) {
 
 });
 
+/**
+ * Get all tools grouped by repository
+ *
+ * @param {String} type - values my|other
+ * @response list - list of tools grouped by repo
+ */
 router.get('/tool/repositories/:type', function (req, res, next) {
 
     var type = req.params.type;
@@ -97,6 +116,33 @@ router.get('/tool/repositories/:type', function (req, res, next) {
         where.is_public = true;
     }
 
+    var getRevisions = function(where, apps) {
+
+        var promise = new mongoose.Promise();
+
+        Revision.find(where).sort({_id: 'desc'}).exec(function(err, revisions) {
+            if (err) { return next(err); }
+
+            var groupedRevisions = _.groupBy(revisions, 'app_id');
+
+            var appsWithRevisions = apps.map(function(app) {
+                var tmp = app.toObject();
+                tmp.name = app.name;
+                tmp.revisions = groupedRevisions[tmp._id];
+                return tmp;
+            });
+
+            var grouped = _.groupBy(appsWithRevisions, function (app) {
+                return app.repo.owner + '/' + app.repo.name;
+            });
+
+            promise.fulfill(grouped);
+
+        });
+
+        return promise;
+    };
+
     Repo.find(where, function(err, repos) {
         if (err) { return next(err); }
 
@@ -108,32 +154,46 @@ router.get('/tool/repositories/:type', function (req, res, next) {
             ]
         };
 
-        App.find(whereApps, '_id repo user name').populate('repo').sort({_id: 'desc'}).exec(function(err, apps) {
+        App.find(whereApps, '_id repo user name is_script').populate('repo').sort({_id: 'desc'}).exec(function(err, apps) {
             if (err) { return next(err); }
 
-            var whereRev = {
-                app_id: {$in: _.pluck(apps, '_id')}
-            };
+            var tools = _.filter(apps, function(a) {return !a.is_script;});
+            var scripts = _.filter(apps, function(a) {return a.is_script;});
 
-            Revision.find(whereRev).sort({_id: 'desc'}).exec(function(err, revisions) {
-                if (err) { return next(err); }
+            //var whereRev = {app_id: {$in: _.pluck(tools, '_id')}};
+            //var whereRev2 = {app_id: {$in: _.pluck(scripts, '_id')}};
 
-                var groupedRevisions = _.groupBy(revisions, 'app_id');
+            Q.all([
+                    getRevisions({app_id: {$in: _.pluck(tools, '_id')}}, tools),
+                    getRevisions({app_id: {$in: _.pluck(scripts, '_id')}}, scripts)
+                ]).then(function(result) {
 
-                var appsWithRevisions = apps.map(function(app) {
-                    var tmp = app.toObject();
-                    tmp.name = app.name;
-                    tmp.revisions = groupedRevisions[tmp._id];
-                    return tmp;
+                    res.json({list: {tools: result[0], scripts: result[1]}});
+
+                })
+                .fail(function(error) {
+                    res.json(error);
                 });
 
-                var grouped = _.groupBy(appsWithRevisions, function (app) {
-                    return app.repo.owner + '/' + app.repo.name;
-                });
-
-                res.json({list: grouped});
-
-            });
+//            Revision.find(whereRev).sort({_id: 'desc'}).exec(function(err, revisions) {
+//                if (err) { return next(err); }
+//
+//                var groupedRevisions = _.groupBy(revisions, 'app_id');
+//
+//                var appsWithRevisions = apps.map(function(app) {
+//                    var tmp = app.toObject();
+//                    tmp.name = app.name;
+//                    tmp.revisions = groupedRevisions[tmp._id];
+//                    return tmp;
+//                });
+//
+//                var grouped = _.groupBy(appsWithRevisions, function (app) {
+//                    return app.repo.owner + '/' + app.repo.name;
+//                });
+//
+//                res.json({list: grouped});
+//
+//            });
 
         });
 
@@ -143,6 +203,13 @@ router.get('/tool/repositories/:type', function (req, res, next) {
 
 });
 
+/**
+ * Get tool by revision
+ *
+ * @param {String} id - id of the tool
+ * @param {String} revision - id of the tool revision
+ * @return result - tool and revision object
+ */
 router.get('/apps/:id/:revision', function (req, res, next) {
 
     App.findById(req.params.id).populate('user').populate('repo').exec(function(err, app) {
@@ -170,6 +237,11 @@ router.get('/apps/:id/:revision', function (req, res, next) {
 
 });
 
+/**
+ * Get the tool's json by tool's id or tool revision's id
+ *
+ * @param {String} id - id of the tool or id of the tool revision's id
+ */
 router.get('/run/:id', function (req, res, next) {
 
     // TODO: check if public?
@@ -196,6 +268,12 @@ router.get('/run/:id', function (req, res, next) {
 
 });
 
+/**
+ * Create new tool
+ *
+ * @post_param {String} action - values create|fork
+ * @return result - created tool and message
+ */
 router.post('/apps/:action', filters.authenticated, function (req, res, next) {
 
     var data = req.body;
@@ -223,6 +301,7 @@ router.post('/apps/:action', filters.authenticated, function (req, res, next) {
             app.author = req.user.login;
             app.json = data.tool;
             app.links = {json: ''};
+            app.is_script = data.is_script;
 
             Repo.findById(data.repo_id).populate('user').exec(function (err, repo) {
 
@@ -283,6 +362,11 @@ router.post('/apps/:action', filters.authenticated, function (req, res, next) {
 
 });
 
+/**
+ * Validate tool's json
+ * @post_param {Object} json - json to be validated
+ * @return message
+ */
 router.post('/validate', filters.authenticated, function (req, res) {
 
     var data = req.body;
@@ -298,6 +382,12 @@ router.post('/validate', filters.authenticated, function (req, res) {
 
 });
 
+/**
+ * Delete tool and it's revisions
+ *
+ * @param {String} id - id of the tool
+ * @return message
+ */
 router.delete('/apps/:id', filters.authenticated, function (req, res, next) {
 
     App.findOne({_id: req.params.id}).populate('repo').exec(function (err, app) {

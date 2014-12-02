@@ -16,6 +16,9 @@ module.exports = function (app) {
     app.use('/api', router);
 };
 
+/**
+ * Get all revisions
+ */
 router.get('/revisions', function (req, res, next) {
 
     var limit = req.query.limit ? req.query.limit : 25;
@@ -61,6 +64,12 @@ router.get('/revisions', function (req, res, next) {
 
 });
 
+/**
+ * Get revision by id
+ *
+ * @param {String} id - id of the revision
+ * @result revision
+ */
 router.get('/revisions/:id', function (req, res, next) {
 
     Revision.findById(req.params.id, function(err, revision) {
@@ -86,7 +95,11 @@ router.get('/revisions/:id', function (req, res, next) {
 
 });
 
-
+/**
+ * Create new revision
+ *
+ * @post_param {Object} json
+ */
 router.post('/revisions', filters.authenticated, function (req, res, next) {
 
     var data = req.body;
@@ -141,6 +154,11 @@ router.post('/revisions', filters.authenticated, function (req, res, next) {
 
 });
 
+/**
+ * Delete revision by id
+ *
+ * @param {String} id - id of the revision
+ */
 router.delete('/revisions/:id', filters.authenticated, function (req, res, next) {
 
     Revision.findOne({_id: req.params.id}).populate('app_id').exec(function (err, revision) {

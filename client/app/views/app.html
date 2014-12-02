@@ -16,7 +16,7 @@
     </div>
     <!-- # .heading -->
 
-    <div ng-show="!view.loading" class="content">
+    <div ng-if="!view.loading" class="content">
 
         <section ng-show="view.tab === 'info'" class="info">
 
@@ -38,10 +38,15 @@
 
                             <section class="col-md-4">
                                 <h5>Docker Image Details</h5>
-                                <p><strong>Image Id:</strong> {{ view.revision.json.requirements.environment.container.imageId }}</p>
+                                <p>
+                                    <strong>Image Id:</strong>
+                                    {{ view.app.json.requirements.environment.container.imageId }}
+                                    <i ng-if="!view.app.json.requirements.environment.container.imageId">Not defined</i>
+                                </p>
                                 <p>
                                     <strong>Image Uri:</strong>
-                                    <copy string="{{ view.revision.json.requirements.environment.container.uri }}" show-string="true" is-small="true"></copy>
+                                    <i ng-if="!view.app.json.requirements.environment.container.uri">Not defined</i>
+                                    <copy ng-if="view.app.json.requirements.environment.container.uri" string="{{ view.app.json.requirements.environment.container.uri }}" show-string="true" is-small="true"></copy>
                                 </p>
                             </section>
 
@@ -56,7 +61,7 @@
 
             <div class="snippet">
                 <p>Use this command to run the app</p>
-                <pre>$ rabix "<a href="/tool-revision/{{ view.revision._id }}" target="_blank">http://rabix.org/tool-revision/{{ view.revision._id }}</a>"</pre>
+                <pre>$ rabix "<a href="/tool/{{ view.app._id }}" target="_blank">http://rabix.org/tool/{{ view.app._id }}</a>"</pre>
             </div>
 
             <div class="snippet">
@@ -66,7 +71,7 @@
                         <i class="fa" ng-class="{'fa-chevron-right': !view.isJsonVisible, 'fa-chevron-down': view.isJsonVisible}"></i>
                     </a>
                 </p>
-                <pre ng-class="{hide: !view.isJsonVisible}" pretty-json="view.revision.json"></pre>
+                <pre ng-class="{hide: !view.isJsonVisible}" pretty-json="view.app.json"></pre>
             </div>
 
         </section>

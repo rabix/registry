@@ -112,6 +112,8 @@ angular.module('registryApp.cliche')
                             $scope.view.toolForm.documentAuthor = $scope.view.user.login;
                         }
 
+                        $scope.view.app.is_script = !Data.tool.adapter;
+
                         $scope.view.jobForm = Data.job;
 
                         if ($scope.view.showConsole) { turnOnDeepWatch(); }
@@ -160,28 +162,31 @@ angular.module('registryApp.cliche')
          */
         var turnOnDeepWatch = function() {
 
-            $scope.view.generatingCommand = true;
-            Data.generateCommand()
-                .then(function (command) {
-                    $scope.view.command = command;
-                    $scope.view.generatingCommand = false;
+            if (!$scope.view.app.is_script) {
+
+                $scope.view.generatingCommand = true;
+                Data.generateCommand()
+                    .then(function (command) {
+                        $scope.view.command = command;
+                        $scope.view.generatingCommand = false;
+                    });
+
+                var watch = ['view.toolForm.inputs.properties', 'view.toolForm.adapter'];
+
+                _.each(watch, function(arg) {
+                    var watcher = $scope.$watch(arg, function(n, o) {
+                        if (n !== o) {
+                            $scope.view.generatingCommand = true;
+                            Data.generateCommand()
+                                .then(function (command) {
+                                    $scope.view.command = command;
+                                    $scope.view.generatingCommand = false;
+                                });
+                        }
+                    }, true);
+                    watchers.push(watcher);
                 });
-
-            var watch = ['view.toolForm.inputs.properties', 'view.toolForm.adapter'];
-
-            _.each(watch, function(arg) {
-                var watcher = $scope.$watch(arg, function(n, o) {
-                    if (n !== o) {
-                        $scope.view.generatingCommand = true;
-                        Data.generateCommand()
-                            .then(function (command) {
-                                $scope.view.command = command;
-                                $scope.view.generatingCommand = false;
-                            });
-                    }
-                }, true);
-                watchers.push(watcher);
-            });
+            }
 
         };
 
@@ -226,30 +231,34 @@ angular.module('registryApp.cliche')
          */
         var watchTheJob = function () {
 
-            checkResources();
+            if (!$scope.view.app.is_script) {
 
-            if ($scope.view.showConsole) {
-                $scope.view.generatingCommand = true;
-                Data.generateCommand()
-                    .then(function (command) {
-                        $scope.view.command = command;
-                        $scope.view.generatingCommand = false;
-                    });
-            }
+                checkResources();
 
-            jobWatcher = $scope.$watch('view.jobForm.inputs', function(n, o) {
-                if (n !== o) {
-                    checkResources();
-                    if ($scope.view.showConsole) {
-                        $scope.view.generatingCommand = true;
-                        Data.generateCommand()
-                            .then(function (command) {
-                                $scope.view.command = command;
-                                $scope.view.generatingCommand = false;
-                            });
-                    }
+                if ($scope.view.showConsole) {
+                    $scope.view.generatingCommand = true;
+                    Data.generateCommand()
+                        .then(function (command) {
+                            $scope.view.command = command;
+                            $scope.view.generatingCommand = false;
+                        });
                 }
-            }, true);
+
+                jobWatcher = $scope.$watch('view.jobForm.inputs', function(n, o) {
+                    if (n !== o) {
+                        checkResources();
+                        if ($scope.view.showConsole) {
+                            $scope.view.generatingCommand = true;
+                            Data.generateCommand()
+                                .then(function (command) {
+                                    $scope.view.command = command;
+                                    $scope.view.generatingCommand = false;
+                                });
+                        }
+                    }
+                }, true);
+
+            }
 
         };
 
@@ -288,6 +297,10 @@ angular.module('registryApp.cliche')
 
             json = JSON.parse(json);
             var name = $scope.view.toolForm.name;
+
+            if ($scope.view.app.is_script) {
+                delete json.adapter;
+            }
 
             Data.setTool(json);
             $scope.view.toolForm = Data.tool;
@@ -470,6 +483,8 @@ angular.module('registryApp.cliche')
                 $scope.view.saving = true;
                 $scope.view.reload = true;
 
+                data.is_script = $scope.view.app.is_script;
+
                 App.fork(data).then(function (result) {
                     $location.path('/cliche/' + result.app._id + '/latest');
                 }, function() {
@@ -513,7 +528,9 @@ angular.module('registryApp.cliche')
 
                 $scope.view.saving = true;
 
-                App.create(data.repoId)
+                data.is_script = $scope.view.app.is_script;
+
+                App.create(data)
                     .then(function(result) {
 
                         $scope.view.saving = false;
@@ -661,6 +678,20 @@ angular.module('registryApp.cliche')
             modalInstance.result.then(function(result) {
                 $scope.view.toolForm.description = result;
             });
+        };
+
+        $scope.adjust = function() {
+
+            Data.transformToolJson($scope.view.app.is_script);
+            $scope.view.toolForm = Data.tool;
+
+            $scope.switchTab('general');
+
+            if ($scope.view.app.is_script) {
+                turnOffDeepWatch();
+                unWatchTheJob();
+            }
+
         };
 
         /**
