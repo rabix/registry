@@ -14,13 +14,17 @@
                 </form>
             </div>
 
-            <div class="col-md-3">
-                <label class="checkbox" ng-show="view.user">
+            <div class="col-md-5">
+                <label class="checkbox inline" ng-show="view.user">
                     <input type="checkbox" ng-model="view.mine" ng-change="toggleMyApps()" /> Show only mine
                 </label>
+                <div class="nav nav-pills nav-page">
+                    <li ng-class="{active: view.tab === 'tools'}"><a ng-href="#/apps/tools">Tools</a></li>
+                    <li ng-class="{active: view.tab === 'scripts'}"><a ng-href="#/apps/scripts">Scripts</a></li>
+                </div>
             </div>
 
-            <div class="col-md-5">
+            <div class="col-md-3">
                 <a ng-href="#/cliche" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> Add New Tool</a>
             </div>
         </div>

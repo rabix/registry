@@ -23,12 +23,12 @@
   &.nav-tabs-steps,
   &.nav-tabs-trace {
     border-bottom: none;
-    text-align: center;
     li {
       margin-bottom: 0;
       float: none;
       display: inline-block;
       vertical-align: middle;
+      text-align: center;
       
       a {
         font-size: 14px;

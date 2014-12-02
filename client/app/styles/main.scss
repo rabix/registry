@@ -61,7 +61,7 @@ body {
       font-size: 14px;
     }
 
-    span {
+    & > span {
       &:first-child {
         max-width: 75%;
         text-overflow: ellipsis;
@@ -70,8 +70,8 @@ body {
       }
     }
 
-    span,
-    span > i {
+    & > span,
+    & > span > i {
       display: inline-block;
       vertical-align: middle;
       i {
@@ -82,6 +82,11 @@ body {
       span {
         margin-left: 5px;
       }
+    }
+
+    .checkbox {
+      font-weight: normal;
+      font-size: 14px;
     }
 
     .form-group {

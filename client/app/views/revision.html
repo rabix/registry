@@ -32,10 +32,15 @@
 
                         <section class="col-md-4">
                             <h5>Docker Image Details</h5>
-                            <p><strong>Image Id:</strong> {{ view.revision.json.requirements.environment.container.imageId }}</p>
+                            <p>
+                                <strong>Image Id:</strong>
+                                {{ view.revision.json.requirements.environment.container.imageId }}
+                                <i ng-if="!view.revision.json.requirements.environment.container.imageId">Not defined</i>
+                            </p>
                             <p>
                                 <strong>Image Uri:</strong>
-                                <copy string="{{ view.revision.json.requirements.environment.container.uri }}" show-string="true" is-small="true"></copy>
+                                <i ng-if="!view.revision.json.requirements.environment.container.uri">Not defined</i>
+                                <copy ng-if="view.revision.json.requirements.environment.container.uri" string="{{ view.revision.json.requirements.environment.container.uri }}" show-string="true" is-small="true"></copy>
                             </p>
                         </section>
 

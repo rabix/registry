@@ -118,7 +118,7 @@
                                                 <a href drag="app.latest">
                                                     <span class="pointer pull-left" ng-if="app.revisions.length !== 0" ng-click="toggleAppRevisions(app._id)"><i class="fa" ng-class="{'fa-minus-square':view.appRevisions[app._id].toggled, 'fa-plus-square': !view.appRevisions[app._id].toggled}"></i></span>
                                                     <i class="fa fa-puzzle-piece"></i>
-                                                    {{ app.name }} <small>(revision {{ app.latest.order }} )</small>
+                                                    {{ app.name }} <small>(revision {{ app.latest.version }} )</small>
                                                     <div class="pull-right">
                                                         <span ng-if="app.latest.version && app.latest.is_public" class="label label-primary"><i class="fa fa-tag"></i> {{ 'v' + app.latest.version }} </span>
                                                     </div>
@@ -127,7 +127,31 @@
                                                 <div ng-repeat="revision in app.revisions" class="revisions-list nested" ng-show="view.appRevisions[app._id].toggled">
                                                     <a href drag="revision">
                                                         <i class="fa fa-puzzle-piece"></i>
-                                                        {{ app.name }} <small>(revision {{ revision.order }} )</small>
+                                                        {{ app.name }} <small>(revision {{ revision.version }} )</small>
+                                                        <div class="pull-right">
+                                                            <span ng-if="revision.version && revision.is_public" class="label label-primary"><i class="fa fa-tag"></i> {{ 'v' + revision.version }}</span>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            </li>
+
+                                            <li ng-if="apps.scripts.length !== 0"><span class="label label-info section-name">Scripts</span></li>
+
+                                            <li ng-repeat="app in apps.scripts">
+
+                                                <a href drag="app.latest">
+                                                    <span class="pointer pull-left" ng-if="app.revisions.length !== 0" ng-click="toggleAppRevisions(app._id)"><i class="fa" ng-class="{'fa-minus-square':view.appRevisions[app._id].toggled, 'fa-plus-square': !view.appRevisions[app._id].toggled}"></i></span>
+                                                    <i class="fa fa-puzzle-piece"></i>
+                                                    {{ app.name }} <small>(revision {{ app.latest.version }} )</small>
+                                                    <div class="pull-right">
+                                                        <span ng-if="app.latest.version && app.latest.is_public" class="label label-primary"><i class="fa fa-tag"></i> {{ 'v' + app.latest.version }} </span>
+                                                    </div>
+                                                </a>
+
+                                                <div ng-repeat="revision in app.revisions" class="revisions-list nested" ng-show="view.appRevisions[app._id].toggled">
+                                                    <a href drag="revision">
+                                                        <i class="fa fa-puzzle-piece"></i>
+                                                        {{ app.name }} <small>(revision {{ revision.version }} )</small>
                                                         <div class="pull-right">
                                                             <span ng-if="revision.version && revision.is_public" class="label label-primary"><i class="fa fa-tag"></i> {{ 'v' + revision.version }}</span>
                                                         </div>

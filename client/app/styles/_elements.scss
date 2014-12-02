@@ -25,7 +25,7 @@
         &.tool-name {
           width: auto;
 
-          span {
+          & > span {
             font-size: 20px;
             margin-top: -7px;
 
@@ -35,14 +35,14 @@
             }
           }
 
-          input {
+          & > input {
             display: inline-block;
             margin-left: 5px;
             width: auto;
           }
         }
         &.tool-name {
-          span {
+          & > span {
             margin-right: 10px;
           }
         }

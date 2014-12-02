@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('registryApp')
-    .controller('AppsCtrl', ['$scope', '$q', 'App', 'Sidebar', 'Api', 'Loading', 'User',function ($scope, $q, App, Sidebar, Api, Loading, User) {
+    .controller('AppsCtrl', ['$scope', '$q', '$routeParams', 'App', 'Sidebar', 'Api', 'Loading', 'User',function ($scope, $q, $routeParams, App, Sidebar, Api, Loading, User) {
 
         Sidebar.setActive('tools');
 
@@ -12,6 +12,7 @@ angular.module('registryApp')
         $scope.view.apps = [];
         $scope.view.searchTerm = '';
         $scope.view.active = false;
+        $scope.view.tab = $routeParams.type;
 
         $scope.view.classes = ['page', 'apps'];
         Loading.setClasses($scope.view.classes);
@@ -35,7 +36,7 @@ angular.module('registryApp')
         };
 
         $q.all([
-                App.getApps(0),
+                App.getApps(0, $routeParams.type),
                 User.getUser()
             ]).then(function(result) {
                 appsLoaded(result[0]);
@@ -51,7 +52,7 @@ angular.module('registryApp')
 
             $scope.view.loading = true;
 
-            App.getApps(offset, $scope.view.searchTerm, $scope.view.mine).then(appsLoaded);
+            App.getApps(offset, $routeParams.type, $scope.view.searchTerm, $scope.view.mine).then(appsLoaded);
         };
 
         /**
@@ -62,7 +63,7 @@ angular.module('registryApp')
             $scope.view.page = 1;
             $scope.view.loading = true;
 
-            App.getApps(0, $scope.view.searchTerm, $scope.view.mine).then(appsLoaded);
+            App.getApps(0, $routeParams.type, $scope.view.searchTerm, $scope.view.mine).then(appsLoaded);
 
         };
 
@@ -75,7 +76,7 @@ angular.module('registryApp')
             $scope.view.searchTerm = '';
             $scope.view.loading = true;
 
-            App.getApps(0, '', $scope.view.mine).then(appsLoaded);
+            App.getApps(0, $routeParams.type, '', $scope.view.mine).then(appsLoaded);
 
         };
 
@@ -88,7 +89,7 @@ angular.module('registryApp')
             $scope.view.searchTerm = '';
             $scope.view.loading = true;
 
-            App.getApps(0, '', $scope.view.mine).then(appsLoaded);
+            App.getApps(0, $routeParams.type, '', $scope.view.mine).then(appsLoaded);
         };
 
         /**

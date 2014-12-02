@@ -9,12 +9,13 @@ angular.module('registryApp')
          * Get list of tools
          *
          * @param {integer} skip
+         * @param {boolean} isScript
          * @param {string} searchTerm
          * @param {boolean} mine
          * @param {string} repoId
          * @returns {object} $promise
          */
-        self.getApps = function(skip, searchTerm, mine, repoId) {
+        self.getApps = function(skip, type, searchTerm, mine, repoId) {
 
             var isSearch = !(_.isUndefined(searchTerm) || _.isEmpty(searchTerm));
             var params = {skip: skip};
@@ -22,6 +23,8 @@ angular.module('registryApp')
             if (isSearch) {
                 params.q = searchTerm;
             }
+
+            params.is_script = type === 'scripts' || null;
 
             if (angular.isDefined(repoId)) {
                 params.field_repo = repoId;
@@ -60,12 +63,12 @@ angular.module('registryApp')
         /**
          * Create new tool
          *
-         * @param repoId
+         * @param data
          * @returns {*}
          */
-        self.create = function(repoId) {
+        self.create = function(data) {
 
-            return Api.apps.add({id: 'create'}, {tool: Data.tool, repo_id: repoId}).$promise;
+            return Api.apps.add({id: 'create'}, {tool: Data.tool, repo_id: data.repoId, is_script: data.is_script}).$promise;
 
         };
 
@@ -77,7 +80,7 @@ angular.module('registryApp')
          */
         self.fork = function(data) {
 
-            return Api.apps.add({id: 'fork'}, {tool: Data.tool, repo_id: data.repoId, name: data.name}).$promise;
+            return Api.apps.add({id: 'fork'}, {tool: Data.tool, repo_id: data.repoId, name: data.name, is_script: data.is_script}).$promise;
 
         };
 
