@@ -610,7 +610,7 @@ angular.module('registryApp.dyole')
                     });
 
 
-                    if (this.model.softwareDescription.repo_name === 'system') {
+                    if (this.model.softwareDescription && this.model.softwareDescription.repo_name === 'system') {
 
                         bbox = this.label.getBBox();
                         this.editLabelButton = this.canvas.button({

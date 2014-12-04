@@ -640,7 +640,8 @@ router.get('/workflow/repositories/:type', function (req, res, next) {
 });
 
 router.get('/validator', function (req, res, next) {
-    var id = '5478cf8e6bce92183cd146a6';
+//    var id = '5478cf8e6bce92183cd146a6';
+    var id = '547f32a952b413e09c6a59f1';
 //    var id = '547c3946a83161fd3d0084f7';
 
     PipelineRevision.findOne({_id: id}, function (err, rev) {
@@ -648,6 +649,6 @@ router.get('/validator', function (req, res, next) {
 
         var errors = validator.validate(rev.json);
 
-        res.json({errors: errors, json: rev.json.nodes});
+        res.json({errors: errors, err: err});
     });
 });

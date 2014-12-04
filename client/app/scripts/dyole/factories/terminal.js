@@ -89,7 +89,6 @@ angular.module('registryApp.dyole')
                 var terMouseOver = function (terminal) {
 
                     if (_self.mousedown && _self.tempConnection) {
-                        console.log('4 times', terminal);
                         _self.mouseoverTerminal = terminal;
                         _self.Pipeline.mouseoverTerminal = terminal;
                     }
@@ -165,41 +164,41 @@ angular.module('registryApp.dyole')
             },
 
             checkAvailibility: function (terminal, nodeId) {
-//            var crossIn, crossOut, bothSystem,
-//                startNode = this.parent.model,
-//                endNode = this.pipeline.nodes[nodeId].model;
-//
-//            crossIn = _.intersection(terminal.types, this.model.types);
-//            crossOut = _.intersection(this.model.types, terminal.types);
-//
-//            if ( ( (crossIn.length !== 0 || crossOut.length !== 0 ) || (terminal.types.length === 0 || this.model.types.length === 0) ) && nodeId !== this.parent.model.id && terminal.input !== this.model.input) {
-//
-//                if (!this.terminals[terminal.id] ||  ( this.terminals[terminal.id] && this.terminals[terminal.id] !== this.parent.model.id ) ) {
-//                    this.showAvailableState();
-//                    return {
-//                        status: true,
-//                        error: false
-//                    };
-//                } else {
-//                    return {
-//                        status: false,
-//                        error: 'Terminal already connected with same terminal'
-//                    };
-//                }
-//
-//            }
-//
-//            return {
-//                status: false,
-//                error: 'Terminal types are not compatible'
-//            };
-
                 var available = false;
 
-                if (terminal.input !== this.model.input && nodeId !== this.parent.model.id) {
-                    this.showAvailableState();
+                var start_node = this.parent.model,
+                    end_node = this.Pipeline.nodes[nodeId].model,
+                    output_name = this.model.id,
+                    input_name = terminal.id;
 
-                    available = true;
+                if (terminal.input !== this.model.input && nodeId !== this.parent.model.id) {
+
+                    console.log('Input name: %s, Output name: %s, start_node: %s, end_node: %s', input_name, output_name, start_node.name, end_node.name);
+                    var check = _.filter(this.Pipeline.connections, function (connection) {
+                        var rel = connection.model;
+
+                        console.log(rel);
+
+                        var check = rel.start_node === start_node.id && rel.end_node === end_node.id,
+                            portCheck = rel.input_name === input_name && rel.output_name === output_name,
+                            reverseCheck, reversePortCheck;
+
+                        reverseCheck = rel.start_node === end_node.id && rel.end_node === start_node.id;
+                        reversePortCheck = rel.input_name === output_name && rel.output_name === input_name;
+
+                        console.log(check, portCheck, reverseCheck, reversePortCheck);
+                        return (check && portCheck) || ( reverseCheck && reversePortCheck);
+                    });
+
+
+                    if (check.length === 0) {
+
+                        this.showAvailableState();
+
+                        available = true;
+
+                    }
+
                 }
 
                 return {
