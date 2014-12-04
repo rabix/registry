@@ -542,4 +542,22 @@ angular.module('registryApp')
             });
         };
 
+        /**
+         * Load json importer
+         */
+        $scope.loadJsonImport = function() {
+
+            var modalInstance = $modal.open({
+                template: $templateCache.get('views/cliche/partials/json-editor.html'),
+                controller: 'DyoleJsonEditorCtrl',
+                resolve: { options: function () { return {user: $scope.view.user}; }}
+            });
+
+            modalInstance.result.then(function (json) {
+                $scope.import(json);
+            });
+
+        };
+
+
     }]);

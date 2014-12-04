@@ -37,6 +37,10 @@ angular.module('registryApp')
             format: {method: 'POST'}
         });
 
+        self.validatePipeline = $resource(apiUrl + '/pipeline/validate/', {}, {
+            validate: {method: 'POST'}
+        });
+
         self.forkPipeline = $resource(apiUrl + '/pipeline/fork', {}, {
             fork: {method: 'POST'}
         });

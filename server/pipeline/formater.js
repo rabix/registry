@@ -178,7 +178,8 @@ var formater = {
 
     _transformStepsToRelations: function (json) {
 
-        var steps = json.steps,
+        var _self = this,
+            steps = json.steps,
             relations = this.packedSchema.relations,
             nodes = this.packedSchema.nodes,
             schemas = this.packedSchema.schemas;
@@ -186,8 +187,20 @@ var formater = {
         _.forEach(steps, function (step) {
             var end_node = step._id, input_name, output_name, start_node;
 
-            schemas[step._id] = step.app;
-            nodes.push(step.app);
+
+            if (!schemas[step._id]) {
+                schemas[step._id] = step.app;
+            }
+
+            step.app.id = step._id;
+
+            var ex = _.filter(nodes, function (n) {
+                return n.id === step.app.id;
+            });
+
+            if (ex.length === 0) {
+                nodes.push(step.app);
+            }
 
             _.forEach(step.inputs, function (from, input) {
                 var relation, s, filter;
@@ -198,17 +211,23 @@ var formater = {
                     start_node = s[0];
                     output_name = s[1];
                 } else {
-                    filter = _.filter(json.inputs, function (input) {
+                    var input_id;
 
-                        return input.outputs.properties[s[0]];
+                    filter = _.filter(json.inputs.properties, function (input, id) {
+                        if (input.id === s[0]) {
+                            input_id = id;
+                        }
+                        return input.id === s[0];
                     });
 
                     if (filter.length !== 0) {
+                        var m = _self._generateIOSchema('outputs', filter[0], input_id);
 
-                        schemas[filter[0].id] = filter[0];
-                        nodes.push(filter[0]);
+                        schemas[input_id] = m;
 
-                        start_node = filter[0].id;
+                        nodes.push(m);
+
+                        start_node = input_id;
                     } else {
                         start_node = '';
                         throw new Error('Invalid output name');
@@ -233,22 +252,36 @@ var formater = {
             });
 
             _.forEach(step.outputs, function (to, output) {
-                var relation, filter;
+                var relation, filter, output_id;
 
                 start_node = end_node;
                 output_name = output;
 
                 input_name = to.$to;
-                filter = _.filter(json.outputs, function (out) {
-
-                    return out.inputs.properties[input_name];
+                filter = _.filter(json.outputs.properties, function (out, id) {
+                    if (out.id === input_name) {
+                        output_id = id;
+                    }
+                    return out.id === input_name;
                 });
 
                 if (filter.length !== 0) {
-                    schemas[filter[0].id] = filter[0];
-                    nodes.push(filter[0]);
 
-                    end_node = filter[0].id;
+                    var m = _self._generateIOSchema('inputs', filter[0], output_id);
+
+                    if (!schemas[output_id]) {
+                        schemas[output_id] = m;
+                    }
+
+                    var ex = _.filter(nodes, function (n) {
+                        return n.id === output_id;
+                    });
+
+                    if (ex.length === 0) {
+                        nodes.push(m);
+                    }
+
+                    end_node = output_id;
                 } else {
                     end_node = '';
                     throw new Error('Invalid Output name');
@@ -270,7 +303,36 @@ var formater = {
 
         });
 
+    },
+
+    _generateIOSchema: function (type, schema, id) {
+        var model = {
+            'name': 'System app',
+            'softwareDescription': {
+                'repo_owner': 'rabix',
+                'repo_name': 'system',
+                'type': ''
+            },
+            'documentAuthor': null,
+            'inputs': {
+                type: 'object'
+            },
+            'outputs': {
+                type: 'object'
+            }
+        };
+
+        model[type].propreties = {};
+        model[type].propreties[schema.id] = schema;
+        model.id = id;
+
+        return model;
+    },
+    
+    _generateNode: function (node) {
+        
     }
+
 
 };
 

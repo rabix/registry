@@ -639,10 +639,25 @@ router.get('/workflow/repositories/:type', function (req, res, next) {
 
 });
 
+router.post('/pipeline/validate', function (req, res, next) {
+    var json = req.body.json;
+    
+    if (typeof json === 'undefined') { res.status(400).json({error: 'Undefined json to validate'}); return false;}
+
+    json = formater.toPipelineSchema(json);
+    var errors = validator.validate(json);
+
+    if (errors.length === 0) {
+        res.json({json: json});
+    } else {
+        res.status(400).json({errors: errors});
+    }
+});
+
 router.get('/validator', function (req, res, next) {
 //    var id = '5478cf8e6bce92183cd146a6';
-    var id = '547f32a952b413e09c6a59f1';
-//    var id = '547c3946a83161fd3d0084f7';
+//    var id = '547f32a952b413e09c6a59f1';
+    var id = '547f30c752b413e09c6a59ef';
 
     PipelineRevision.findOne({_id: id}, function (err, rev) {
         if (err) {return next(err);}

@@ -196,6 +196,10 @@ angular.module('registryApp')
             return Api.groupedWorkflows.get({type: type}).$promise;
         };
 
+        self.validateJson = function (json) {
+            return Api.validatePipeline.validate({}, {json: json});
+        };
+
         return self;
 
     }]);
