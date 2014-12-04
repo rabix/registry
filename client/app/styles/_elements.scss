@@ -14,6 +14,12 @@
 
     h1 {
 
+      .label {
+        font-size: 14px;
+        font-weight: normal;
+        padding: 2px 5px;
+      }
+
       .pipeline-repo,
       .tool-repo {
         font-size: 14px;
@@ -25,6 +31,14 @@
         &.tool-name {
           width: auto;
 
+          & > input[type=text] {
+            display: inline-block;
+            margin-left: 5px;
+            width: auto;
+            vertical-align: middle;
+          }
+        }
+        &.workflow-name {
           & > span {
             font-size: 20px;
             margin-top: -7px;
@@ -34,16 +48,17 @@
               line-height: 21px;
             }
           }
-
-          & > input {
-            display: inline-block;
-            margin-left: 5px;
-            width: auto;
-          }
         }
         &.tool-name {
           & > span {
             margin-right: 10px;
+          }
+          .checkbox {
+            margin: 0 0 0 20px;
+            min-height: initial;
+            input[type=checkbox] {
+              margin-top: 3px;
+            }
           }
         }
       }
@@ -418,6 +433,7 @@
 .enum-list-wrap {
   .alert {
     padding: 6px 10px;
+    margin: 0;
   }
   .add-enum-item {
     float: left;
@@ -702,3 +718,16 @@ legend {
     color: #555;
   }
 }
+
+.form-control {
+  &.script-area {
+    resize: none;
+    min-height: 400px;
+    background-color: #222;
+    color: $orange;
+    border-color: $orange;
+    padding: 10px;
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+  }
+}
+

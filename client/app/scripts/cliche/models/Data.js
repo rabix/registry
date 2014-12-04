@@ -34,6 +34,7 @@ angular.module('registryApp.cliche')
 
         /**
          * Command generated from input and adapter values
+         *
          * @type {string}
          */
         self.command = '';
@@ -46,6 +47,30 @@ angular.module('registryApp.cliche')
         self.fetchTool = function() {
 
             var deferred = $q.defer();
+
+            /*
+            var istring = {"type": "string", "adapter": {"separator": "=", "prefix": "--string", "order": 2}, "enum": [ "test", "test2" ]};
+            var ifile = {"type": "file", "adapter": { "separator": "", "prefix": "--file", "order": 3, "streamable": true}};
+            var iinteger = {"type": "integer", "adapter": {"separator": " ", "prefix": "--integer", "order": 3 }};
+            var inumber = {"type": "number","adapter": {"separator": "","prefix": "--number","order": 0}};
+            var iarray = {"type": "array","adapter": {"separator": " ","prefix": "","order": 1,"listSeparator": ";"},"minItems": 1,"maxItems": 2,"items": {"type": "string"}};
+            var ibool = {"type": "boolean","adapter": {"separator": " ","prefix": "--bool","order": 4}};
+            var iarrayfile = {"type": "array","adapter": {"separator": " ","prefix": "--arr2","order": 0,"listSeparator": ",","streamable": true},"minItems": 1,"maxItems": 2,"items": {"type": "file"}};
+            var iarrayobject = {"type": "array","adapter": {"separator": " ","prefix": "","order": 0},"minItems": 1,"maxItems": 2,"items": {"type": "object","properties": {"string": {"type": "string","adapter": {"separator": " ","prefix": "--string","order": 3}}},"required": []}};
+
+            var inputs = {};
+
+            _.times(20, function() {
+                inputs['string-' + _.random(1000, 9999)] = istring;
+                inputs['file-' + _.random(1000, 9999)] = ifile;
+                inputs['integer-' + _.random(1000, 9999)] = iinteger;
+                inputs['number-' + _.random(1000, 9999)] = inumber;
+                inputs['array-' + _.random(1000, 9999)] = iarray;
+                inputs['bool-' + _.random(1000, 9999)] = ibool;
+                inputs['array-f-' + _.random(1000, 9999)] = iarrayfile;
+                inputs['array-o-' + _.random(1000, 9999)] = iarrayobject;
+            });
+            */
 
             $localForage.getItem('tool').then(function(tool) {
                 if (_.isNull(tool) || _.isEmpty(tool)) {
@@ -62,6 +87,10 @@ angular.module('registryApp.cliche')
                         });
                 } else {
                     self.tool = tool;
+
+                    //self.tool.inputs.properties = inputs;
+                    //$localForage.setItem('tool', self.tool);
+
                     deferred.resolve(tool);
                 }
             });
@@ -544,6 +573,12 @@ angular.module('registryApp.cliche')
          */
         self.generateCommand = function() {
 
+            var isScript = !self.tool.adapter;
+
+            if (isScript) {
+                return false;
+            }
+
             return self.prepareProperties(self.tool.inputs.properties, self.job.inputs)
                 /* go through arguments and concat then with inputs */
                 .then(function (props) {
@@ -705,9 +740,13 @@ angular.module('registryApp.cliche')
             var rawTool = $injector.get('rawTool');
 
             if (isScript) {
+                delete transformed.script;
                 delete transformed.adapter;
+                delete transformed.requirements;
             } else {
+                transformed.script = '';
                 transformed.adapter = angular.copy(rawTool.adapter);
+                transformed.requirements = angular.copy(rawTool.requirements);
             }
 
             self.setTool(transformed);

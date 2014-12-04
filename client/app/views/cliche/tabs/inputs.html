@@ -1,20 +1,26 @@
-<legend class="legend-small toggle" ng-class="{active: view.propsExpanded.inputs}" ng-click="toggleProperties('inputs')">
-    Properties
-    <add-property
-            type="input"
-            properties="view.toolForm.inputs.properties">
-    </add-property>
-</legend>
+<div class="content">
+    <legend class="legend-small toggle" ng-class="{active: view.propsExpanded.inputs}" ng-click="toggleProperties('inputs')">
+        Properties
+        <add-property
+                type="input"
+                open-on-keypress="true"
+                properties="view.toolForm.inputs.properties"
+                req="view.toolForm.inputs.required">
+        </add-property>
+    </legend>
 
-<property-input
-        ng-repeat="(key, property) in view.toolForm.inputs.properties"
-        ng-model="property"
-        active="view.active.inputs[key]"
-        name="{{ key }}"
-        form="forms.toolForm"
-        inputs="view.jobForm.inputs"
-        properties="view.toolForm.inputs.properties"
-        req="view.toolForm.inputs.required">
-</property-input>
+    <property-input
+            ng-repeat="property in view.list.inputs.part track by $index"
+            ng-model="property.obj"
+            active="view.active.inputs[property.key]"
+            name="{{ property.key }}"
+            inputs="view.jobForm.inputs"
+            properties="view.toolForm.inputs.properties"
+            req="view.toolForm.inputs.required">
+    </property-input>
 
-<p class="alert alert-info" ng-if="view.toolForm.inputs.properties | isEmpty">There are no inputs at this moment.</p>
+    <p class="alert alert-info" ng-if="view.toolForm.inputs.properties | isEmpty">There are no inputs at this moment.</p>
+</div>
+
+<paginator page="view.page.inputs" total="view.total.inputs" per-page="10" handler="getMore('inputs', offset)"></paginator>
+

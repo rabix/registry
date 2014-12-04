@@ -23,6 +23,115 @@ module.exports = function (app) {
     app.use('/api', router);
 };
 
+/**
+ * Get repo appropriate information
+ *
+ * @param repo
+ * @returns {mongoose.Promise}
+ */
+var getRepoRow = function (repo) {
+
+    var promise = new mongoose.Promise();
+    var fullNameArr = repo.full_name.split('/');
+    var name = fullNameArr[1];
+    var owner = fullNameArr[0];
+
+    Repo.count({name: name, owner: owner}, function (err, count) {
+
+        if (err) {
+            promise.reject('Couldn\'t get the repo ' + repo.full_name);
+        }
+
+        promise.fulfill({full_name: repo.full_name, html_url: repo.html_url, added: count > 0});
+
+    });
+
+    return promise;
+};
+
+/**
+ * Add GitHub webhook
+ *
+ * @param owner
+ * @param r
+ * @param currentUser
+ */
+var addWebhook = function (owner, r, currentUser) {
+
+    User.findOne({ email: currentUser }, function (err, user) {
+
+        if (err) {
+            logger.info('User not found for user with email: ' + currentUser);
+            return false;
+        }
+
+        var token = user.github.accessToken;
+
+        if (!token) {
+            logger.error('Token not found for user: "' + owner + '"');
+            return false;
+        }
+
+        var url = '/repos/' + owner + '/' + r + '/hooks';
+        var opts = {
+            host: 'api.github.com',
+            path: url,
+            method: 'POST',
+            headers: {
+                'Authorization': 'token ' + token,
+                'User-Agent': 'Rabix',
+                'Content-type': 'application/json'
+            }
+        };
+
+        var repo = {
+            'name': 'web',
+            'active': true,
+            'events': [
+                'push',
+                'pull_request'
+            ],
+            'config': {
+                'url': 'http://www.rabix.org/api/github-webhook',
+                'content_type': 'json'
+            }
+        };
+
+
+        logger.info('Added repo "' + r + '", hooking up GITHUB webhook on to url: ' + url);
+
+        var repoString = JSON.stringify(repo);
+
+        var request = https.request(opts, function (response) {
+            var responseString = '';
+
+            response.setEncoding('utf8');
+
+            response.on('data', function (data) {
+                responseString += data;
+            });
+
+            response.on('end', function () {
+                logger.info('GITHUB webhook created with response ' + responseString);
+            });
+        });
+
+        request.on('error', function (e) {
+            logger.info('Error occured while trying to set up webhook');
+        });
+
+        logger.info('Authorization token: "' + token + '" . Repo string: "' + repoString + '"');
+        request.write(repoString);
+
+        request.end();
+
+    });
+
+};
+
+/**
+ * Get all repos
+ */
 router.get('/repos', function (req, res, next) {
 
     var limit = req.query.limit ? req.query.limit : 25;
@@ -79,6 +188,9 @@ router.get('/repos/user', function (req, res, next) {
 
 });
 
+/**
+ * Create new repo
+ */
 router.post('/repos', filters.authenticated, function (req, res, next) {
     var repo = req.body.repo,
         r;
@@ -106,6 +218,9 @@ router.post('/repos', filters.authenticated, function (req, res, next) {
 
 });
 
+/**
+ * Publish repo or update its data
+ */
 router.put('/repos/:id/:action', filters.authenticated, function (req, res, next) {
 
     var repo = req.body.repo;
@@ -149,6 +264,9 @@ router.put('/repos/:id/:action', filters.authenticated, function (req, res, next
     });
 });
 
+/**
+ * Get repo by id
+ */
 router.get('/repos/:id', function (req, res, next) {
 
     Repo.findById(req.params.id).populate('user').exec(function (err, repo) {
@@ -169,6 +287,9 @@ router.get('/repos/:id', function (req, res, next) {
 
 });
 
+/**
+ * Create GitHub repo
+ */
 router.post('/github-repos', function (req, res, next) {
 
     var name = req.param('name');
@@ -204,6 +325,9 @@ router.post('/github-repos', function (req, res, next) {
 
 });
 
+/**
+ * Get github repo
+ */
 router.get('/github-repos', filters.authenticated, function (req, res, next) {
 
     User.findOne({email: req.user.email}, function (err, user) {
@@ -274,6 +398,9 @@ router.post('/github-webhook', function (req, res, next) {
 
 });
 
+/**
+ * Get repo's tools
+ */
 router.get('/repo-tools/:id', function(req, res, next) {
 
     var limit = req.query.limit ? req.query.limit : 25;
@@ -304,6 +431,9 @@ router.get('/repo-tools/:id', function(req, res, next) {
 
 });
 
+/**
+ * Get repo's workflows
+ */
 router.get('/repo-workflows/:id', function(req, res, next) {
 
     var limit = req.query.limit ? req.query.limit : 25;
@@ -320,7 +450,7 @@ router.get('/repo-workflows/:id', function(req, res, next) {
             Pipeline.count(where, function(err, total) {
                 if (err) { return next(err); }
 
-                Pipeline.find(where).populate('user').skip(skip).limit(limit).sort({_id: 'desc'}).exec(function(err, pipelines) {
+                Pipeline.find(where).populate('user').populate('latest').skip(skip).limit(limit).sort({_id: 'desc'}).exec(function(err, pipelines) {
                     if (err) { return next(err); }
 
                     res.json({list: pipelines, total: total});
@@ -334,110 +464,3 @@ router.get('/repo-workflows/:id', function(req, res, next) {
 
 });
 
-var fixRepo = function(r, next) {
-
-    var promise = new mongoose.Promise;
-
-    r.save(function(err) {
-        if (err) { return next(err); }
-
-        promise.fulfill({repo: r._id, fixed: 'yes'});
-    });
-
-    return promise;
-
-};
-
-var getRepoRow = function (repo) {
-
-    var promise = new mongoose.Promise();
-    var fullNameArr = repo.full_name.split('/');
-    var name = fullNameArr[1];
-    var owner = fullNameArr[0];
-
-    Repo.count({name: name, owner: owner}, function (err, count) {
-
-        if (err) {
-            promise.reject('Couldn\'t get the repo ' + repo.full_name);
-        }
-
-        promise.fulfill({full_name: repo.full_name, html_url: repo.html_url, added: count > 0});
-
-    });
-
-    return promise;
-};
-
-var addWebhook = function (owner, r, currentUser) {
-
-    User.findOne({ email: currentUser }, function (err, user) {
-
-        if (err) {
-            logger.info('User not found for user with email: ' + currentUser);
-            return false;
-        }
-
-        var token = user.github.accessToken;
-
-        if (!token) {
-            logger.error('Token not found for user: "' + owner + '"');
-//            throw Error('Token not found');
-            return false;
-        }
-
-        var url = '/repos/' + owner + '/' + r + '/hooks';
-        var opts = {
-            host: 'api.github.com',
-            path: url,
-            method: 'POST',
-            headers: {
-                'Authorization': 'token ' + token,
-                'User-Agent': 'Rabix',
-                'Content-type': 'application/json'
-            }
-        };
-
-        var repo = {
-            'name': 'web',
-            'active': true,
-            'events': [
-                'push',
-                'pull_request'
-            ],
-            'config': {
-                'url': 'http://www.rabix.org/api/github-webhook',
-                'content_type': 'json'
-            }
-        };
-
-
-        logger.info('Added repo "' + r + '", hooking up GITHUB webhook on to url: ' + url);
-
-        var repoString = JSON.stringify(repo);
-
-        var request = https.request(opts, function (response) {
-            var responseString = '';
-
-            response.setEncoding('utf8');
-
-            response.on('data', function (data) {
-                responseString += data;
-            });
-
-            response.on('end', function () {
-                logger.info('GITHUB webhook created with response ' + responseString);
-            });
-        });
-
-        request.on('error', function (e) {
-            logger.info('Error occured while trying to set up webhook');
-        });
-
-        logger.info('Authorization token: "' + token + '" . Repo string: "' + repoString + '"');
-        request.write(repoString);
-
-        request.end();
-
-    });
-
-};

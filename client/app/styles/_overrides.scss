@@ -407,6 +407,13 @@ ul {
   .close {
     margin-top: 0;
   }
+  .modal-title {
+    .checkbox {
+      font-size: 14px;
+      margin-left: 30px;
+      font-weight: normal;
+    }
+  }
 }
 
 .modal-body {

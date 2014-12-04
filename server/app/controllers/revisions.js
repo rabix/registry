@@ -83,7 +83,7 @@ router.get('/revisions/:id', function (req, res, next) {
 
             if (app.repo.is_public || user_id === app_user_id) {
 
-                res.json({data: revision, repo: app.repo, user: app.user});
+                res.json({data: revision, app: app});
 
             } else {
                 res.status(401).json({message: 'Unauthorized'});
@@ -124,6 +124,7 @@ router.post('/revisions', filters.authenticated, function (req, res, next) {
 
                 revision.name = app.name;
                 revision.description = data.tool.description;
+                revision.script = data.tool.script;
                 revision.author = data.tool.documentAuthor;
                 revision.json = data.tool;
                 revision.app_id = data.app_id;
@@ -136,6 +137,7 @@ router.post('/revisions', filters.authenticated, function (req, res, next) {
 
                     app.json = revision.json;
                     app.description = revision.description;
+                    app.script = revision.script;
                     app.author = revision.author;
 
                     app.save(function(err) {

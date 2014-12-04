@@ -1,0 +1,44 @@
+<div property-header
+     name="{{ name }}"
+     order="{{ prop.adapter.order }}"
+     type="{{ prop.type }}"
+     is-required="{{ view.required }}"
+     handle="handleAction(action)">
+</div>
+
+<div class="property-box-body">
+
+    <div class="row">
+
+        <div class="col-md-2 box-col">
+            <strong class="key">Glob:</strong>
+            <div class="value">{{ prop.adapter.glob.expr ? prop.adapter.glob.expr.value : prop.adapter.glob }}</div>
+        </div>
+
+        <div class="col-md-2 box-col">
+            <strong class="key">Inherit:</strong>
+            <div ng-if="prop.adapter.meta.__inherit__" class="value">{{ prop.adapter.meta.__inherit__ }}</div>
+            <i ng-if="!prop.adapter.meta.__inherit__">Not defined</i>
+        </div>
+
+        <div class="col-md-3 box-col">
+            <strong class="key">Meta:</strong>
+            <div class="value">{{ view.meta }}</div>
+            <i ng-if="!view.meta">Not defined</i>
+        </div>
+
+        <div class="col-md-3 box-col">
+            <strong class="key">Index Files:</strong>
+            <div class="value">
+                <span ng-if="prop.adapter.secondaryFiles.length > 0">{{ prop.adapter.secondaryFiles.join(', ') }}</span>
+                <i ng-if="prop.adapter.secondaryFiles.length === 0">Not defined</i>
+            </div>
+        </div>
+
+        <div class="col-md-2 box-col">
+            <strong class="key">Streamable:</strong>
+            <div class="value">{{ prop.adapter.streamable ? 'Yes' : 'No' }}</div>
+        </div>
+    </div>
+
+</div>

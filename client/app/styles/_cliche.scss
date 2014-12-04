@@ -1,11 +1,58 @@
+%flex {
+  @include flex-box();
+  @include flex-flow(column nowrap);
+}
+
 .page {
   &.cliche {
     & > .content {
       padding: 0;
-      @include flex-box();
+      @extend %flex;
 
       & > .form {
         width: 100%;
+      }
+
+      .include {
+        @include flex(1);
+        @extend %flex;
+
+        & > .content {
+          padding: 10px;
+
+          &.flex {
+            @extend %flex;
+            padding: 0;
+
+            & > .form {
+              @extend %flex;
+              @include flex(1);
+
+              .section {
+                &.top {
+                  @include flex(0 0 auto);
+                  padding: 10px 10px 0 10px;
+                  border-bottom: 1px solid #ddd;
+                }
+                &.bottom {
+                  @extend %flex;
+                  @include flex(1);
+                  & > .content {
+                    padding: 10px;
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        & > .paginate {
+          @include flex(0 0 auto);
+        }
+
+        .row {
+          margin: 0 !important;
+        }
       }
     }
 
@@ -59,19 +106,19 @@
   }
 }
 
-.tabs {
-  .row {
-    margin: 0 !important;
-  }
-  &.left {
-    padding: 10px;
-  }
-  &.right {
-    .tab {
-      position: relative;
-    }
-  }
-}
+//.tabs {
+//  .row {
+//    margin: 0 !important;
+//  }
+//  &.left {
+//    padding: 10px;
+//  }
+//  &.right {
+//    .tab {
+//      position: relative;
+//    }
+//  }
+//}
 
 /* ZeroClipboard box */
 .zclip {
@@ -280,6 +327,119 @@
     text-decoration: none;
     color: #666;
   }
+}
+
+.expr-text {
+  color: #555;
+  &:hover {
+    color: #555;
+  }
+  &.not-defined {
+    font-style: italic;
+  }
+}
+
+.property-box {
+  margin: 0 0 10px 0;
+  border: 1px solid #ddd;
+  &:hover {
+    @include transition(border 0.3s ease);
+    border: 1px solid #bbb;
+  }
+
+  & > .property-box-header {
+    margin: 0;
+    background-color: #eee;
+    cursor: pointer;
+    position: relative;
+    @include user-select(none);
+
+    &:before {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 50%;
+      left: 10px;
+      border-left: 5px solid #555;
+      border-top: 5px solid transparent;
+      border-bottom: 5px solid transparent;
+      margin-top: -5px;
+    }
+
+    & > .property-box-short-info {
+      padding: 10px 10px 10px 25px;
+      margin-right: 60px;
+      .order {
+        background-color: $orange;
+        color: #fff;
+        padding: 0 5px;
+      }
+      .required {
+        color: #cc0000;
+      }
+    }
+
+    & > .property-box-actions {
+      float: right;
+      font-weight: bold;
+      a {
+        color: #555;
+        font-size: 17px;
+        display: inline-block;
+        vertical-align: middle;
+        padding: 7.5px 10px;
+        &:last-child {
+          margin-left: -5px;
+        }
+        &:hover {
+          background-color: #ddd;
+        }
+      }
+    }
+  }
+
+  & > .property-box-body {
+    display: none;
+    padding: 10px;
+    background-color: #f9f9f9;
+
+    .box-col {
+      .key {
+        float: left;
+        margin-right: 10px;
+      }
+      .value {
+        display: block;
+        margin: 0;
+        text-overflow: ellipsis;
+        max-width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+      }
+    }
+
+    .legend-small {
+      font-size: 14px;
+      margin-top: 10px;
+    }
+  }
+
+  &.active {
+    & > .property-box-header {
+      border-bottom: 1px solid #ddd;
+      &:before {
+        border-top: 5px solid #555;
+        border-left: 5px solid transparent;
+        border-right: 5px solid transparent;
+        border-bottom: none;
+        margin-top: -2.5px;
+      }
+    }
+    & > .property-box-body {
+      display: block;
+    }
+  }
+
 }
 
 /* Property/Argument box */

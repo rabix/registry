@@ -19,6 +19,7 @@ angular.module('registryApp.cliche')
                 index: '@',
                 placeholder: '@',
                 self: '@',
+                onlyExpr: '@',
                 handleItemUpdate: '&'
             },
             link: function(scope) {
@@ -80,6 +81,7 @@ angular.module('registryApp.cliche')
                             scope.view.model.expr = {value: expr, lang: 'javascript'};
                         }
                     });
+
 
                 };
 
