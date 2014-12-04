@@ -14,8 +14,9 @@ angular.module('registryApp.cliche')
         $scope.view = {};
         $scope.forms = {};
 
+        $scope.view.DataMdl = Data;
+
         $scope.view.tab = 'general';
-        $scope.view.trace = 'tool';
         $scope.view.saving = false;
         $scope.view.reload = false;
         $scope.view.app = {};
@@ -63,6 +64,59 @@ angular.module('registryApp.cliche')
             $scope.view.userRepos = repos.list;
         });
 
+        $scope.view.list = {
+            inputs: {tmp: [], part: []},
+            outputs: {tmp: [], part: []},
+            values: {tmp: [], part: []}
+        };
+
+        $scope.view.page = {inputs: 1, outputs: 1, values: 1};
+
+        $scope.view.total = {inputs: 0, outputs: 0, values: 0};
+
+        /**
+         * Prepare temp list for paginating
+         *
+         * @param origin
+         * @param what
+         */
+        $scope.prepareForPagination = function(origin, what) {
+
+            $scope.view.total[what] = _.size(origin);
+
+            _.each(origin, function(obj, name) {
+                $scope.view.list[what].tmp.push({key: name, obj: obj});
+            });
+
+            $scope.getMore(what, 0);
+
+        };
+
+        /**
+         * Get next/prev page
+         *
+         * @param what
+         * @param offset
+         */
+        $scope.getMore = function(what, offset) {
+
+            $scope.view.list[what].part = [];
+
+            var times = $scope.view.list[what].tmp.length > 10 ? 10 : $scope.view.list[what].tmp.length;
+
+            _.times(times, function(i) {
+                $scope.view.list[what].part.push($scope.view.list[what].tmp[offset + i]);
+            });
+
+        };
+
+        /**
+         * Initiate command generating
+         */
+        $scope.generateCommand = function() {
+            Data.generateCommand();
+        };
+
         if ($routeParams.id) {
 
             $q.all([
@@ -92,6 +146,10 @@ angular.module('registryApp.cliche')
 
                     if ($scope.view.showConsole) { turnOnDeepWatch(); }
 
+                    $scope.prepareForPagination(Data.tool.inputs.properties, 'inputs');
+                    $scope.prepareForPagination(Data.tool.outputs.properties, 'outputs');
+                    $scope.prepareForPagination(Data.tool.inputs.properties, 'values');
+
                 });
 
         } else {
@@ -118,6 +176,10 @@ angular.module('registryApp.cliche')
 
                         if ($scope.view.showConsole) { turnOnDeepWatch(); }
 
+                        $scope.prepareForPagination(Data.tool.inputs.properties, 'inputs');
+                        $scope.prepareForPagination(Data.tool.outputs.properties, 'outputs');
+                        $scope.prepareForPagination(Data.tool.inputs.properties, 'values');
+
                     });
             });
 
@@ -131,11 +193,14 @@ angular.module('registryApp.cliche')
 
             $scope.view.propsExpanded[tab] = !$scope.view.propsExpanded[tab];
 
-            var props = (tab !== 'args') ? $scope.view.toolForm[tab].properties : $scope.view.toolForm.adapter.args;
+            var props = (tab !== 'args') ? $scope.view.list[tab].part : $scope.view.toolForm.adapter.args;
+            var k;
 
             _.each(props, function(value, key) {
-                $scope.view.active[tab][key] = $scope.view.propsExpanded[tab];
+                k = (tab === 'args') ? key : value.key;
+                $scope.view.active[tab][k] = $scope.view.propsExpanded[tab];
             });
+
         };
 
         /**
@@ -171,7 +236,11 @@ angular.module('registryApp.cliche')
                         $scope.view.generatingCommand = false;
                     });
 
-                var watch = ['view.toolForm.inputs.properties', 'view.toolForm.adapter'];
+                var watch = [
+                    'view.toolForm.adapter.baseCmd',
+                    'view.toolForm.adapter.stdout',
+                    'view.toolForm.adapter.stdin'
+                ];
 
                 _.each(watch, function(arg) {
                     var watcher = $scope.$watch(arg, function(n, o) {
@@ -189,6 +258,10 @@ angular.module('registryApp.cliche')
             }
 
         };
+
+        $scope.$watch('view.DataMdl.command', function(n, o) {
+            if (n !== o) { $scope.view.command = n; }
+        });
 
         /**
          * Turn off deep watch when console tab is hidden
@@ -299,7 +372,9 @@ angular.module('registryApp.cliche')
             var name = $scope.view.toolForm.name;
 
             if ($scope.view.app.is_script) {
+                delete json.script;
                 delete json.adapter;
+                delete json.requirements;
             }
 
             Data.setTool(json);
@@ -680,6 +755,9 @@ angular.module('registryApp.cliche')
             });
         };
 
+        /**
+         * Adjust tool structure
+         */
         $scope.adjust = function() {
 
             Data.transformToolJson($scope.view.app.is_script);
@@ -690,6 +768,11 @@ angular.module('registryApp.cliche')
             if ($scope.view.app.is_script) {
                 turnOffDeepWatch();
                 unWatchTheJob();
+            } else {
+                turnOnDeepWatch();
+                if ($scope.view.tab === 'values') {
+                    watchTheJob();
+                }
             }
 
         };
@@ -728,5 +811,7 @@ angular.module('registryApp.cliche')
         };
 
         var onRouteChangeOff = $rootScope.$on('$locationChangeStart', onRouteChange);
+
+
 
     }]);

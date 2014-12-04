@@ -1,10 +1,13 @@
 <div class="modal-header">
     <button type="button" class="close" ng-click="cancel()"><span>&times;</span><span class="sr-only">Close</span></button>
-    <h4 class="modal-title">Add Output Property</h4>
+    <h4 class="modal-title">
+        <span>{{ (view.mode === 'edit') ? 'Edit' : 'Add' }} Output Property</span>
+        <label class="checkbox inline"><input type="checkbox" ng-model="view.required"> required</label>
+    </h4>
 </div>
 <div class="modal-body">
 
-    <form ng-submit="addProperty()" name="view.form" novalidate>
+    <form ng-submit="save()" name="view.form" novalidate>
 
         <p ng-if="view.error" class="alert alert-danger">{{ view.error }}</p>
 
@@ -12,7 +15,7 @@
             <div class="col-md-3">
                 <div class="form-group" ng-class="{'has-error': (view.form.name.$invalid && view.form.$dirty)}">
                     <label class="control-label" for="name">Name</label>
-                    <input type="text" class="form-control" id="name" name="name" ng-model="view.name" required>
+                    <input type="text" class="form-control" id="name" name="name" ng-model="view.name" ng-readonly="view.mode === 'edit'" required>
                 </div>
             </div>
             <!-- END Name -->
@@ -29,8 +32,8 @@
             </div>
             <div class="col-md-3">
                 <div class="form-group">
-                    <label class="control-label" for="glob">Glob</label>
-                    <input type="text" class="form-control" id="glob" name="glob" ng-model="view.property.adapter.glob">
+                    <label class="control-label">Glob</label>
+                    <expr ng-model="view.property.adapter.glob" handle-item-update="updateGlobValue(value)" placeholder="value"></expr>
                 </div>
             </div>
             <div class="col-md-3" ng-if="view.property.type === 'file'">
@@ -85,6 +88,67 @@
             <!-- END Item Streamable -->
 
         </div>
+
+        <div class="meta-list">
+
+            <div class="row">
+                <div class="col-md-12">
+
+                    <label class="control-label">Meta</label>
+
+                    <div class="form-group meta-group" ng-class="{'has-error': view.newMeta.error}">
+                        <div class="input-group">
+                            <div class="col-md-6 no-padding">
+                                <input type="text" class="form-control" ng-model="view.newMeta.key" placeholder="key" />
+                            </div>
+                            <div class="col-md-6 no-padding">
+                                <expr ng-model="view.newMeta.value" handle-item-update="updateNewMeta(value)" placeholder="value" self="true"></expr>
+                            </div>
+                            <span class="input-group-btn">
+                                <a href ng-click="addMeta()" class="btn btn-primary"><i class="fa fa-plus"></i></a>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div ng-repeat="(metaKey, metaValue) in view.property.adapter.meta" class="form-group meta-group">
+                        <div ng-if="metaKey !== '__inherit__'" class="input-group">
+                            <div class="col-md-6 no-padding">
+                                <key-changer key="metaKey" items="view.property.adapter.meta"></key-changer>
+                            </div>
+                            <div class="col-md-6 no-padding">
+                                <expr ng-model="metaValue" index="{{ metaKey }}" handle-item-update="updateMetaValue(index, value)" placeholder="value" self="true"></expr>
+                            </div>
+                            <span class="input-group-btn">
+                                <a href ng-click="removeMeta(metaKey)" class="btn btn-default"><i class="fa fa-remove"></i></a>
+                            </span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- END Meta-->
+
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="form-group">
+                    <label for="property-meta-inherit-{{ view.uniqueId }}" class="control-label inline">Inherit From Input</label>
+                    <select class="form-control inline" id="property-meta-inherit-{{ view.uniqueId }}" name="{{ name }}-meta-inherit" ng-model="view.property.adapter.meta.__inherit__" ng-options="value for value in view.inputs">
+                        <option value>-- none --</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <!-- END meta data-->
+
+        <div class="row">
+            <div class="col-md-12">
+                <label class="control-label">Index Files</label>
+                <enum ng-model="view.property.adapter.secondaryFiles" type="'string'"></enum>
+            </div>
+        </div>
+        <!-- END index files -->
 
         <div class="form-group main-actions">
             <a href class="btn btn-warning" ng-click="cancel()">Cancel</a>

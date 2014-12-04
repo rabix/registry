@@ -7,43 +7,54 @@
 'use strict';
 
 angular.module('registryApp.cliche')
-    .directive('argument', ['$templateCache', '$modal', 'Data', function ($templateCache, $modal, Data) {
-
-        var uniqueId = 0;
+    .directive('argument', ['$templateCache', '$modal', '$compile', 'Data', function ($templateCache, $modal, $compile, Data) {
 
         return {
             restrict: 'E',
             replace: true,
-            template: $templateCache.get('views/cliche/partials/argument.html'),
+            template: '<div class="property-box" ng-class="{active: active}"></div>',
             scope: {
                 name: '@',
-                arg: '=ngModel',
+                prop: '=ngModel',
                 active: '=',
-                form: '=',
                 properties: '='
             },
-            link: function(scope) {
+            link: function(scope, element) {
 
                 scope.view = {};
-                scope.view.disabled = false;
 
-                uniqueId++;
-                scope.view.uniqueId = uniqueId;
+                /**
+                 * Compile appropriate template
+                 */
+                var compileTpl = function() {
+
+                    var template = $templateCache.get('views/cliche/property/property-argument.html');
+
+                    var $header = element[0].querySelector('.property-box-header');
+                    var $body = element[0].querySelector('.property-box-body');
+
+                    if ($header) { angular.element($header).remove(); }
+                    if ($body) { angular.element($body).remove(); }
+
+                    element.append(template);
+
+                    $compile(element.contents())(scope);
+                };
+
+                /* init compile */
+                compileTpl();
 
                 /**
                  * Toggle argument box visibility
                  */
-                scope.toggleArgument = function() {
+                scope.toggle = function() {
                     scope.active = !scope.active;
                 };
 
                 /**
                  * Remove particular property
-                 * @param e
                  */
-                scope.removeItem = function(e) {
-
-                    e.stopPropagation();
+                scope.remove = function() {
 
                     var modalInstance = $modal.open({
                         template: $templateCache.get('views/cliche/partials/confirm-delete.html'),
@@ -54,16 +65,53 @@ angular.module('registryApp.cliche')
 
                     modalInstance.result.then(function () {
                         Data.deleteProperty('arg', scope.name, scope.properties);
+                        Data.generateCommand();
                     });
                 };
 
                 /**
-                 * Update argument if expression defined
-                 *
-                 * @param {*} value
+                 * Edit property
                  */
-                scope.updateArgument = function (value) {
-                    scope.arg.value = value;
+                scope.edit = function() {
+
+                    var modalInstance = $modal.open({
+                        template: $templateCache.get('views/cliche/partials/manage-property-arg.html'),
+                        controller: 'ManagePropertyCtrl',
+                        windowClass: 'modal-prop',
+                        size: 'lg',
+                        resolve: {
+                            options: function () {
+                                return {
+                                    type: 'arg',
+                                    name: scope.name,
+                                    property: scope.prop,
+                                    properties: scope.properties
+                                };
+                            }
+                        }
+                    });
+
+                    modalInstance.result.then(function(result) {
+
+                        _.each(result.prop, function(value, key) {
+                            scope.prop[key] = value;
+                        });
+
+                        Data.generateCommand();
+                    });
+
+                };
+
+                /**
+                 * Handle actions initiated from the property header
+                 *
+                 * @param action
+                 */
+                scope.handleAction = function(action) {
+
+                    if (typeof scope[action] === 'function') {
+                        scope[action]();
+                    }
                 };
 
             }

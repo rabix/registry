@@ -59,6 +59,11 @@
                 </div>
             </div>
 
+            <div ng-if="view.app.is_script" class="snippet">
+                <p>Script</p>
+                <pre pretty-json="view.app.script"></pre>
+            </div>
+
             <div class="snippet">
                 <p>Use this command to run the app</p>
                 <pre>$ rabix "<a href="/tool/{{ view.app._id }}" target="_blank">http://rabix.org/tool/{{ view.app._id }}</a>"</pre>

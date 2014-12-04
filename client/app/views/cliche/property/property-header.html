@@ -1,0 +1,15 @@
+<div class="property-box-header" ng-click="toggle()">
+
+    <div class="property-box-actions">
+        <a href ng-click="edit($event)"><i class="fa fa-pencil"></i></a>
+        <a href ng-click="remove($event)"><i class="fa fa-times"></i></a>
+    </div>
+
+    <div class="property-box-short-info">
+        <span class="order" tooltip="order">{{ view.order }}</span>
+        <strong class="name" tooltip="name">{{ name }}</strong>
+        <i ng-if="type !== 'arg'" class="type" tooltip="type">{{ type }} {{ itemType ? ' (' + itemType + ')' : '' }}</i>
+        <span ng-if="isRequired" class="required" tooltip="required">*</span>
+    </div>
+
+</div>

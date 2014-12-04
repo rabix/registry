@@ -113,7 +113,7 @@ body {
       display: inline-block;
       vertical-align: middle;
       line-height: 17px;
-      @include border-radius(2px);
+      @include border-radius(4px);
 
       &:hover {
         text-decoration: none;
@@ -121,6 +121,7 @@ body {
       
       &.revision {
         background-color: $orange;
+        margin-right: 10px;
       }
     }
   }

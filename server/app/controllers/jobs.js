@@ -14,6 +14,9 @@ module.exports = function (app) {
     app.use('/api', router);
 };
 
+/**
+ * Get all saved jobs
+ */
 router.get('/jobs', filters.authenticated, function (req, res, next) {
 
     var limit = req.query.limit ? req.query.limit : 25;
@@ -33,6 +36,10 @@ router.get('/jobs', filters.authenticated, function (req, res, next) {
 
 });
 
+/**
+ * Upload job to s3
+ * TODO: will probably host it on our server
+ */
 router.post('/job/upload', function (req, res, next) {
 
     var json = req.body;

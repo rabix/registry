@@ -15,7 +15,10 @@ angular.module('registryApp.cliche')
             template: '<a href ng-click="addItem($event)" class="btn btn-default"><i class="fa fa-plus"></i></a>',
             scope: {
                 type: '@',
-                properties: '='
+                openOnKeypress: '@',
+                properties: '=',
+                req: '=',
+                handler: '&'
             },
             link: function(scope) {
 
@@ -35,8 +38,8 @@ angular.module('registryApp.cliche')
                     isOpen = true;
 
                     var modalInstance = $modal.open({
-                        template: $templateCache.get('views/cliche/partials/add-property-' + scope.type + '.html'),
-                        controller: 'AddPropertyCtrl',
+                        template: $templateCache.get('views/cliche/partials/manage-property-' + scope.type + '.html'),
+                        controller: 'ManagePropertyCtrl',
                         windowClass: 'modal-prop',
                         size: 'lg',
                         resolve: {
@@ -49,8 +52,13 @@ angular.module('registryApp.cliche')
                         }
                     });
 
-                    modalInstance.result.then(function() {
+                    modalInstance.result.then(function(result) {
                         isOpen = false;
+
+                        if (result.required) { scope.req.push(result.name); }
+
+                        if (typeof scope.handler === 'function') { scope.handler(); }
+
                     }, function() {
                         isOpen = false;
                     });
@@ -65,7 +73,9 @@ angular.module('registryApp.cliche')
                     if (e.keyCode === 65 && e.shiftKey) { scope.addItem(e); }
                 };
 
-                $document.bind('keydown', keyHandler);
+                if (scope.openOnKeypress) {
+                    $document.bind('keydown', keyHandler);
+                }
 
                 scope.$on('$destroy', function() {
                     $document.unbind('keydown', keyHandler);

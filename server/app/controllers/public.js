@@ -16,6 +16,9 @@ module.exports = function (app) {
     app.use('/', router);
 };
 
+/**
+ * Get tool by id
+ */
 router.get('/tool/:id', function (req, res, next) {
 
     App.findById(req.params.id, function(err, app) {
@@ -30,6 +33,9 @@ router.get('/tool/:id', function (req, res, next) {
 
 });
 
+/**
+ * Get tool revision by id
+ */
 router.get('/tool-revision/:id', function (req, res, next) {
 
     Revision.findById(req.params.id, function(err, revision) {

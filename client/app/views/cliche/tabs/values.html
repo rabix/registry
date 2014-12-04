@@ -1,40 +1,55 @@
-<ng-form class="form" name="forms.jobForm" role="form" novalidate>
+<div class="content flex">
+    <ng-form class="form" name="forms.jobForm" role="form" novalidate>
 
-    <div class="input-property">
-        <div class="form-group">
-            <label class="control-label">Allocated Resources</label>
-            <div class="input-property-body">
-                <div class="col-md-6">
-                    <label class="control-label">CPU</label>
-                    <input type="{{ view.toolForm.requirements.resources.cpu.expr ? 'text' : 'number' }}"
-                           class="form-control" ng-model="view.jobForm.allocatedResources.cpu"
-                           ng-readonly="view.toolForm.requirements.resources.cpu.expr"
-                           min="{{ view.toolForm.requirements.resources.cpu.expr ? 0 : view.toolForm.requirements.resources.cpu }}">
-                </div>
-                <div class="col-md-6">
-                    <label class="control-label">Memory</label>
-                    <input type="{{ view.toolForm.requirements.resources.mem.expr ? 'text' : 'number' }}"
-                           class="form-control" ng-model="view.jobForm.allocatedResources.mem"
-                           ng-readonly="view.toolForm.requirements.resources.mem.expr"
-                           min="{{ view.toolForm.requirements.resources.mem.expr ? 0 : view.toolForm.requirements.resources.mem }}">
+        <div class="section top">
+            <div class="input-property">
+                <div class="form-group">
+                    <label class="control-label">Allocated Resources</label>
+                    <div class="input-property-body">
+                        <div class="col-md-6">
+                            <label class="control-label">CPU</label>
+                            <input type="{{ view.toolForm.requirements.resources.cpu.expr ? 'text' : 'number' }}"
+                                   class="form-control" ng-model="view.jobForm.allocatedResources.cpu"
+                                   ng-readonly="view.toolForm.requirements.resources.cpu.expr"
+                                   min="{{ view.toolForm.requirements.resources.cpu.expr ? 0 : view.toolForm.requirements.resources.cpu }}">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="control-label">Memory</label>
+                            <input type="{{ view.toolForm.requirements.resources.mem.expr ? 'text' : 'number' }}"
+                                   class="form-control" ng-model="view.jobForm.allocatedResources.mem"
+                                   ng-readonly="view.toolForm.requirements.resources.mem.expr"
+                                   min="{{ view.toolForm.requirements.resources.mem.expr ? 0 : view.toolForm.requirements.resources.mem }}">
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+        <!-- # .section -->
 
-    <legend class="legend-small">Inputs</legend>
+        <div class="section bottom">
 
-    <div class="input-container">
-        <input-field
-                ng-repeat="(key, property) in view.toolForm.inputs.properties"
-                ng-model="view.jobForm.inputs[key]"
-                key="{{ key }}"
-                prop="property"
-                index="{{ $index }}"
-                form="forms.jobForm">
-        </input-field>
-    </div>
+            <div class="content">
+                <legend class="legend-small">Inputs</legend>
 
-    <p class="alert alert-info" ng-if="view.toolForm.inputs.properties | isEmpty">There are no values to be set at this moment.</p>
+                <div class="input-container">
+                    <input-field
+                            ng-repeat="property in view.list.values.part track by $index"
+                            ng-model="view.jobForm.inputs[property.key]"
+                            key="{{ property.key }}"
+                            prop="property.obj"
+                            index="{{ $index }}"
+                            form="forms.jobForm">
+                    </input-field>
+                </div>
 
-</ng-form>
+                <p class="alert alert-info" ng-if="view.toolForm.inputs.properties | isEmpty">There are no values to be set at this moment.</p>
+            </div>
+
+            <paginator page="view.page.values" total="view.total.values" per-page="10" handler="getMore('values', offset)"></paginator>
+
+        </div>
+        <!-- # .section -->
+
+    </ng-form>
+</div>
+

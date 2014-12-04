@@ -1,23 +1,26 @@
 <div class="modal-header">
     <button type="button" class="close" ng-click="cancel()"><span>&times;</span><span class="sr-only">Close</span></button>
-    <h4 class="modal-title">Add Input Property</h4>
+    <h4 class="modal-title">
+        <span>{{ (view.mode === 'edit') ? 'Edit' : 'Add' }} Input Property</span>
+        <label class="checkbox inline"><input type="checkbox" ng-model="view.required"> required</label>
+    </h4>
 </div>
 <div class="modal-body">
 
-    <form ng-submit="addProperty()" name="view.form" novalidate>
+    <form ng-submit="save()" name="view.form" novalidate>
 
         <p ng-if="view.error" class="alert alert-danger">{{ view.error }}</p>
 
         <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-4">
                 <div class="form-group" ng-class="{'has-error': (view.form.name.$invalid && view.form.$dirty)}">
                     <label class="control-label" for="name">Name</label>
-                    <input type="text" class="form-control" id="name" name="name" ng-model="view.name" required>
+                    <input type="text" class="form-control" id="name" name="name" ng-model="view.name" ng-readonly="view.mode === 'edit'" required>
                 </div>
             </div>
             <!-- END Name -->
 
-            <div class="col-md-2">
+            <div class="col-md-4">
                 <div class="form-group" ng-class="{'has-error': (view.form.type.$invalid && view.form.$dirty)}">
                     <label class="control-label" for="type">Type</label>
                     <select class="form-control" id="type" name="type" ng-model="view.property.type" required>
@@ -35,18 +38,10 @@
             <div class="col-md-2">
                 <div class="form-group">
                     <label class="control-label" for="prefix">Prefix</label>
-                    <input type="text" class="form-control" id="prefix" name="prefix" ng-model="view.property.adapter.prefix">
+                    <input type="text" class="form-control" id="prefix" name="prefix" ng-model="view.property.adapter.prefix" ng-disabled="view.disabled">
                 </div>
             </div>
             <!-- END Prefix -->
-
-            <div class="col-md-2">
-                <div class="form-group" ng-class="{'has-error': (view.form.separator.$invalid && view.form.$dirty)}">
-                    <label class="control-label">Separator</label>
-                    <separator type="item" model="view.property.adapter.separator" is-disabled="view.disabled"></separator>
-                </div>
-            </div>
-            <!-- END Separator -->
 
             <div class="col-md-2">
                 <div class="form-group" ng-class="{'has-error': (view.form.order.$invalid && view.form.$dirty)}">
@@ -56,17 +51,27 @@
             </div>
             <!-- END Order -->
 
-            <div class="col-md-2" ng-if="view.property.type === 'string'">
-                <div class="form-group">
-                    <label class="empty-label">&nbsp;</label>
-                    <div class="checkbox">
-                        <label><input type="checkbox" ng-model="view.isEnum" ng-change="toggleEnum()"> Enum</label>
-                    </div>
+        </div>
+
+        <div class="row">
+
+            <div class="col-md-4">
+                <div class="form-group" ng-class="{'has-error': (view.form.separator.$invalid && view.form.$dirty)}">
+                    <label class="control-label">Separator</label>
+                    <separator type="item" model="view.property.adapter.separator" is-disabled="view.disabled"></separator>
                 </div>
             </div>
-            <!-- END Eum -->
+            <!-- END Separator -->
 
-            <div class="col-md-2" ng-if="view.property.type === 'file'">
+            <div class="col-md-4" ng-if="!view.disabled && view.property.type !== 'array'">
+                <div class="form-group" title="Transform">
+                    <label class="control-label">Transform</label>
+                    <expr ng-model="view.property.adapter.transform" handle-item-update="updateTransform(value)" only-expr="true" placeholder="value"></expr>
+                </div>
+            </div>
+            <!-- END Transform -->
+
+            <div class="col-md-4" ng-if="view.property.type === 'file'">
                 <div class="form-group">
                     <label class="empty-label">&nbsp;</label>
                     <div class="checkbox">
@@ -75,6 +80,16 @@
                 </div>
             </div>
             <!-- END Streamable -->
+
+            <div class="col-md-4" ng-if="view.property.type === 'string'">
+                <div class="form-group">
+                    <label class="empty-label">&nbsp;</label>
+                    <div class="checkbox">
+                        <label><input type="checkbox" ng-model="view.isEnum" ng-change="toggleEnum()"> Enum</label>
+                    </div>
+                </div>
+            </div>
+            <!-- END Eum -->
 
         </div>
 
@@ -105,6 +120,7 @@
                         <option value="integer">integer</option>
                         <option value="number">number</option>
                         <option value="file">file</option>
+                        <option value="object">object</option>
                     </select>
                 </div>
             </div>

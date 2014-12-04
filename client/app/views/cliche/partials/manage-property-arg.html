@@ -1,16 +1,18 @@
 <div class="modal-header">
     <button type="button" class="close" ng-click="cancel()"><span>&times;</span><span class="sr-only">Close</span></button>
-    <h4 class="modal-title">Add Argument</h4>
+    <h4 class="modal-title">
+        <span>{{ (view.mode === 'edit') ? 'Edit' : 'Add' }} Argument</span>
+    </h4>
 </div>
 <div class="modal-body">
 
-    <form ng-submit="addProperty()" name="view.form" novalidate>
+    <form ng-submit="save()" name="view.form" novalidate>
 
         <div class="row">
             <div class="col-md-3">
                 <div class="form-group" ng-class="{'has-error': (view.form.value.$invalid && view.form.$dirty)}">
-                    <label for="value" class="control-label">Value</label>
-                    <input type="text" class="form-control" id="value" name="value" ng-model="view.property.value" required>
+                    <label class="control-label">Value</label>
+                    <expr ng-model="view.property.value" handle-item-update="updateArgument(value)"></expr>
                 </div>
             </div>
             <div class="col-md-3">

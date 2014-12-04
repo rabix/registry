@@ -1,45 +1,58 @@
-<legend class="legend-small">Environment</legend>
+<div class="content">
 
-<div class="row">
-    <div class="col-md-4">
-        <div class="form-group" ng-class="{'has-error': (forms.toolForm.RECtype.$invalid && forms.toolForm.$dirty)}">
-            <label for="type" class="control-label">Type</label>
-            <select class="form-control" id="type" name="RECtype" ng-model="view.toolForm.requirements.environment.container.type">
-                <option value="docker">docker</option>
-            </select>
+    <div ng-if="view.app.is_script" class="section">
+        <legend class="legend-small">Script</legend>
+
+        <div class="form-group">
+            <textarea class="form-control script-area" name="Script" ng-model="view.toolForm.script"></textarea>
         </div>
     </div>
-    <div class="col-md-4">
-        <div class="form-group">
-            <label for="uri" class="control-label">Docker Repo[#tag]</label>
-            <input type="text" class="form-control" id="uri" name="RECuri" ng-model="view.toolForm.requirements.environment.container.uri">
+
+    <div ng-if="!view.app.is_script" class="section">
+        <legend class="legend-small">Environment</legend>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group" ng-class="{'has-error': (forms.toolForm.RECtype.$invalid && forms.toolForm.$dirty)}">
+                    <label for="type" class="control-label">Type</label>
+                    <select class="form-control" id="type" name="RECtype" ng-model="view.toolForm.requirements.environment.container.type">
+                        <option value="docker">docker</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="uri" class="control-label">Docker Repo[#tag]</label>
+                    <input type="text" class="form-control" id="uri" name="RECuri" ng-model="view.toolForm.requirements.environment.container.uri">
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="uri" class="control-label">Image Id</label>
+                    <input type="text" class="form-control" id="imageId" name="RECimageId" ng-model="view.toolForm.requirements.environment.container.imageId">
+                </div>
+            </div>
         </div>
+        <!-- END Requirements -> Environment -->
     </div>
-    <div class="col-md-4">
-        <div class="form-group">
-            <label for="uri" class="control-label">Image Id</label>
-            <input type="text" class="form-control" id="imageId" name="RECimageId" ng-model="view.toolForm.requirements.environment.container.imageId">
+
+    <div ng-if="!view.app.is_script" class="section">
+        <legend class="legend-small">Resources</legend>
+
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="control-label">CPU</label>
+                    <expr ng-model="view.toolForm.requirements.resources.cpu" type="number" handle-item-update="updateResource(value, 'cpu')"></expr>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="control-label">Memory</label>
+                    <expr ng-model="view.toolForm.requirements.resources.mem" type="number" handle-item-update="updateResource(value, 'mem')"></expr>
+                </div>
+            </div>
         </div>
+        <!-- END Requirements -> Resources -->
     </div>
 </div>
-
-<!-- END Requirements -> Environment -->
-
-<legend class="legend-small">Resources</legend>
-
-<div class="row">
-    <div class="col-md-3">
-        <div class="form-group">
-            <label class="control-label">CPU</label>
-            <expr ng-model="view.toolForm.requirements.resources.cpu" type="number" handle-item-update="updateResource(value, 'cpu')"></expr>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="form-group">
-            <label class="control-label">Memory</label>
-            <expr ng-model="view.toolForm.requirements.resources.mem" type="number" handle-item-update="updateResource(value, 'mem')"></expr>
-        </div>
-    </div>
-</div>
-
-<!-- END Requirements -> Resources -->

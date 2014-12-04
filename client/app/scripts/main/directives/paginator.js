@@ -13,6 +13,7 @@ angular.module('registryApp')
             template: $templateCache.get('views/partials/paginator.html'),
             scope: {
                 page: '=',
+                perPage: '@',
                 total: '=',
                 handler: '&'
             },
@@ -21,7 +22,7 @@ angular.module('registryApp')
                 scope.paginator = {};
                 scope.paginator.prev = false;
                 scope.paginator.next = false;
-                scope.paginator.perPage = 25;
+                scope.paginator.perPage = scope.perPage ? parseInt(scope.perPage, 10) : 25;
                 scope.paginator.total = 0;
 
 

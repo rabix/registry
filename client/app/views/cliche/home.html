@@ -7,16 +7,18 @@
             <div class="form-group tool-name">
                 <input ng-show="view.mode === 'new'" type="text" placeholder="Tool Name" ng-model="view.toolForm.name" class="form-control" />
                 <span ng-hide="view.mode === 'new'">{{ view.app.name }}</span>
-            </div>
 
-            <a ng-if="view.mode === 'edit'" href class="version revision" ng-click="changeRevision()"><i class="fa fa-tag"></i> {{ 'v' + view.revision.version }}</a>
+                <a ng-if="view.mode === 'edit'" href class="version revision" ng-click="changeRevision()"><i class="fa fa-tag"></i> {{ 'v' + view.revision.version }}</a>
 
-            <div class="actions pull-right">
-
-                <label class="checkbox inline">
+                <label ng-if="view.mode === 'new'" class="checkbox inline">
                     <input type="checkbox" ng-model="view.app.is_script" ng-change="adjust()" ng-disabled="view.mode === 'edit'">
                     <span>script</span>
                 </label>
+
+                <span ng-if="view.mode === 'edit' && view.app.is_script" class="label label-info">script</span>
+            </div>
+
+            <div class="actions pull-right">
 
                 <div class="btn-group" role="group">
                     <button class="btn btn-default" ng-click="showJson('tool')">
@@ -65,7 +67,7 @@
             <li ng-class="{active: view.tab === 'inputs'}"><a href ng-click="switchTab('inputs')">Inputs</a></li>
             <li ng-class="{active: view.tab === 'outputs'}"><a href ng-click="switchTab('outputs')">Outputs</a></li>
             <li ng-hide="view.app.is_script" ng-class="{active: view.tab === 'adapter'}"><a href ng-click="switchTab('adapter')">Adapter</a></li>
-            <li ng-hide="view.app.is_script" ng-class="{active: view.tab === 'values'}"><a href ng-click="switchTab('values')">Values</a></li>
+            <li ng-hide="view.app.is_script" ng-class="{active: view.tab === 'values'}"><a href ng-click="switchTab('values')">Test</a></li>
         </ul>
 
         <a class="btn btn-flush btn-flush-cliche" href ng-click="flush()" tooltip="Start with clean template" tooltip-placement="left" tooltip-append-to-body="true">
@@ -76,11 +78,7 @@
 
     <div ng-if="!view.loading" class="content">
 
-        <ng-form class="form" name="forms.toolForm" role="form" novalidate>
-            <div class="tabs left">
-                <ng-include src="view.tabViewPath"></ng-include>
-            </div>
-        </ng-form>
+        <ng-include class="include" src="view.tabViewPath"></ng-include>
 
     </div>
     <!-- # .content -->

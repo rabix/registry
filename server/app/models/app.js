@@ -7,6 +7,7 @@ var AppSchema = new Schema({
     name: String,
     description: String,
     author: String,
+    script: String,
     json: Schema.Types.Mixed,
     links: Schema.Types.Mixed,
     repo: { type: Schema.Types.ObjectId, ref: 'Repo', required: true },

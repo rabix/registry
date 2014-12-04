@@ -24,8 +24,9 @@ angular.module('registryApp')
             .then(
                 function(result) {
                     $scope.view.revision = result.data;
-                    $scope.view.repo = result.repo;
-                    $scope.view.author = result.user;
+                    $scope.view.repo = result.app.repo;
+                    $scope.view.author = result.app.user;
+                    $scope.view.app = result.app;
                     $scope.view.loading = false;
                 });
 

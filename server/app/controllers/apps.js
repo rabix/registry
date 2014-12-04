@@ -160,9 +160,6 @@ router.get('/tool/repositories/:type', function (req, res, next) {
             var tools = _.filter(apps, function(a) {return !a.is_script;});
             var scripts = _.filter(apps, function(a) {return a.is_script;});
 
-            //var whereRev = {app_id: {$in: _.pluck(tools, '_id')}};
-            //var whereRev2 = {app_id: {$in: _.pluck(scripts, '_id')}};
-
             Q.all([
                     getRevisions({app_id: {$in: _.pluck(tools, '_id')}}, tools),
                     getRevisions({app_id: {$in: _.pluck(scripts, '_id')}}, scripts)
@@ -174,26 +171,6 @@ router.get('/tool/repositories/:type', function (req, res, next) {
                 .fail(function(error) {
                     res.json(error);
                 });
-
-//            Revision.find(whereRev).sort({_id: 'desc'}).exec(function(err, revisions) {
-//                if (err) { return next(err); }
-//
-//                var groupedRevisions = _.groupBy(revisions, 'app_id');
-//
-//                var appsWithRevisions = apps.map(function(app) {
-//                    var tmp = app.toObject();
-//                    tmp.name = app.name;
-//                    tmp.revisions = groupedRevisions[tmp._id];
-//                    return tmp;
-//                });
-//
-//                var grouped = _.groupBy(appsWithRevisions, function (app) {
-//                    return app.repo.owner + '/' + app.repo.name;
-//                });
-//
-//                res.json({list: grouped});
-//
-//            });
 
         });
 
@@ -298,6 +275,7 @@ router.post('/apps/:action', filters.authenticated, function (req, res, next) {
 
             app.name = name;
             app.description = data.tool.description;
+            app.script = data.tool.script;
             app.author = req.user.login;
             app.json = data.tool;
             app.links = {json: ''};
@@ -330,6 +308,7 @@ router.post('/apps/:action', filters.authenticated, function (req, res, next) {
 
                                         revision.name = app.name;
                                         revision.description = app.description;
+                                        revision.script = app.script;
                                         revision.author = app.author;
                                         revision.json = app.json;
                                         revision.app_id = app._id;
@@ -364,6 +343,7 @@ router.post('/apps/:action', filters.authenticated, function (req, res, next) {
 
 /**
  * Validate tool's json
+ *
  * @post_param {Object} json - json to be validated
  * @return message
  */
