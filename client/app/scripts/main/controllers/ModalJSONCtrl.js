@@ -9,9 +9,7 @@ angular.module('registryApp')
         $scope.view.saving = false;
         $scope.view.json = data.json;
 
-        $scope.copy = function () {
-            console.log('copy');
-        };
+        $scope.view.stringJson = JSON.stringify(data.json);
 
         $scope.cancel = function () {
             $modalInstance.dismiss('cancel');

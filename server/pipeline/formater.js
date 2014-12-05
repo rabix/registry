@@ -176,8 +176,15 @@ var formater = {
         return step;
     },
 
+    /**
+     * Transform steps to relation type schema
+     *
+     * @param json
+     * @private
+     */
     _transformStepsToRelations: function (json) {
-
+        //TODO: Please refactor this :)
+        
         var _self = this,
             steps = json.steps,
             relations = this.packedSchema.relations,
@@ -230,7 +237,7 @@ var formater = {
                         start_node = input_id;
                     } else {
                         start_node = '';
-                        throw new Error('Invalid output name');
+                        throw new Error('Invalid Input name');
                     }
 
                     output_name = s[0];
@@ -303,6 +310,28 @@ var formater = {
 
         });
 
+        _.forEach(nodes, function (model) {
+
+            // skip system nodes (inputs, outputs)
+            if( model.softwareDescription && model.softwareDescription.repo_name === 'system'){
+                return;
+            }
+
+            console.log('model from nodes: ', model);
+
+            _.forEach(model.inputs.properties, function (input, name) {
+                input.name = name;
+                input.id = input.id || name;
+            });
+
+            _.forEach(model.outputs.properties, function (output, name) {
+                output.name = name;
+                output.id = output.id || name;
+
+            });
+
+        });
+
     },
 
     _generateIOSchema: function (type, schema, id) {
@@ -322,17 +351,16 @@ var formater = {
             }
         };
 
-        model[type].propreties = {};
-        model[type].propreties[schema.id] = schema;
+        model[type].properties = {};
+        model[type].properties[schema.id] = schema;
+
+        model[type].properties[schema.id].name = schema.id;
+        model[type].properties[schema.id].id = schema.id;
+
         model.id = id;
 
         return model;
-    },
-    
-    _generateNode: function (node) {
-        
     }
-
 
 };
 

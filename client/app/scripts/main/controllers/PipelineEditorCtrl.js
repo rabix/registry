@@ -554,7 +554,10 @@ angular.module('registryApp')
             });
 
             modalInstance.result.then(function (json) {
-                $scope.import(json);
+
+                if (json) {
+                    $scope.view.pipeline = json;
+                }
             });
 
         };

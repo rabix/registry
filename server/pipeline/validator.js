@@ -27,7 +27,7 @@ var validator = {
     _completeGraph: function (graph) {
         var _self = this,
             relations = graph.relations,
-            nodes = _.cloneDeep(graph.nodes);
+            nodes = _.clone(graph.nodes, true);
         
         _.forEach(relations, function (relation) {
             var start = relation.start_node,
@@ -38,7 +38,7 @@ var validator = {
             });
         });
 
-        if (nodes.length !== 0) {
+        if (nodes && nodes.length !== 0) {
             _.forEach(nodes, function (node) {
                 _self.errors.push('Node not connected: ' + node.id);
             });

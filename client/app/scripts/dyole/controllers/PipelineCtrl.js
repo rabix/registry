@@ -185,7 +185,7 @@ angular.module('registryApp.dyole')
                     $scope.view.loading = false;
                     console.log(result.data);
 
-                    Pipeline.addNode(result.data, e.clientX, e.clientY);
+                    Pipeline.addNode(result.data.json, e.clientX, e.clientY);
 
                 });
             }

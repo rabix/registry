@@ -197,7 +197,7 @@ angular.module('registryApp')
         };
 
         self.validateJson = function (json) {
-            return Api.validatePipeline.validate({}, {json: json});
+            return Api.validatePipeline.validate({}, {json: json}).$promise;
         };
 
         return self;

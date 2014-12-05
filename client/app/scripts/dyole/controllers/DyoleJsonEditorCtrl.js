@@ -59,12 +59,11 @@ angular.module('registryApp.dyole')
 
             $scope.view.validating = true;
 
-            Pipeline.validateJson(json)
-                .then(function () {
+            Pipeline.validateJson(json).then(function (data) {
 
                     $scope.view.validating = false;
 
-                    $modalInstance.close(json);
+                    $modalInstance.close(data);
 
                 }, function () {
                     $scope.view.validating = false;

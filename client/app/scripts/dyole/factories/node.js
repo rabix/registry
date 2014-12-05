@@ -220,8 +220,7 @@ angular.module('registryApp.dyole')
 
                 _.each(this.inputRefs, function (input) {
                     if (typeof input.type !== 'undefined') {
-                        if (filter.indexOf(input.type) !== -1 || (input.type ===
-                            'array' && filter.indexOf(input.items.type) !== -1)) {
+                        if (filter.indexOf(input.type) !== -1 || (input.type === 'array' && filter.indexOf(input.items.type) !== -1)) {
                             inputs.push(input);
                         }
                     }
@@ -632,7 +631,7 @@ angular.module('registryApp.dyole')
                             scope: this
                         });
 
-                        this.el.push(this.editLabelButton.getEl())
+                        this.el.push(this.editLabelButton.getEl());
                     }
 
                     _self.el.push(_self.infoButton.getEl())
