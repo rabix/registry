@@ -4,8 +4,11 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var JobSchema = new Schema({
-    user_id: String,
-    url: String
+    user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    author: String,
+    url: String,
+    repo: { type: Schema.Types.ObjectId, ref: 'Repo', required: true },
+    json: Schema.Types.ObjectId
 });
 
 JobSchema.virtual('date')
