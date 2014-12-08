@@ -652,20 +652,26 @@ router.post('/pipeline/validate', function (req, res, next) {
     if (errors.errors.length === 0 && errors.paramErrors.length === 0) {
         res.json({json: formated});
     } else {
-        res.status(400).json({errors: errors});
+        res.status(400).json(errors);
     }
 });
 
 router.get('/validator', function (req, res, next) {
 //    var id = '5478cf8e6bce92183cd146a6';
 //    var id = '547f32a952b413e09c6a59f1';
-    var id = '547f30c752b413e09c6a59ef';
+    var id = '54856cdeeb762f74de4d8e73';
 
     PipelineRevision.findOne({_id: id}, function (err, rev) {
         if (err) {return next(err);}
 
         var errors = validator.validate(rev.json);
 
-        res.json({errors: errors, err: err});
+        var formated = formater.toRabixSchema(rev.json);
+//
+//        var pipelineSchema = formater.toPipelineSchema(formated);
+//
+//        errors = validator.validate(pipelineSchema);
+
+        res.json({errors: formated});
     });
 });

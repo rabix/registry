@@ -81,6 +81,12 @@ var formater = {
 
             if (step) {
                 step.app = _.clone(node_schema);
+
+                _.remove(_self.packedSchema.steps, function (s) {
+
+                    return s._id === step._id;
+                });
+
                 _self.packedSchema.steps.push(step);
             }
         });
@@ -149,7 +155,8 @@ var formater = {
         step._id = rel.end_node;
 
         exists = _.filter(this.packedSchema.steps, function (s) {
-            return s._id === rel.end_node;
+
+            return s._id === step._id;
         });
 
         if (exists.length !== 0) {
