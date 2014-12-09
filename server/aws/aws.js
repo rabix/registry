@@ -1,3 +1,5 @@
+"use strict";
+
 var AWS = require('aws-sdk');
 var mongoose = require('mongoose');
 var logger = require('../common/logger');
