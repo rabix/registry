@@ -98,23 +98,6 @@
     }
   }
 
-  /* Paginator */
-  .paginate {
-    padding: 10px;
-    overflow: auto;
-    background-color: $gray;
-    background-image: url(../images/bg.png);
-    border-top: 1px solid #ddd;
-    text-align: center;
-    @include flex(0 0 auto);
-
-    .page-number {
-      display: inline-block;
-      font-weight: bold;
-      padding: 7px;
-    }
-  }
-
   /* Page description */
   .description {
     margin: 20px 0;
@@ -207,12 +190,12 @@
       }
     }
     &.loading {
-      @extend .loading-abs;
+      @extend %loading-abs;
     }
   }
 
   &.loading {
-    @extend .loading-abs;
+    @extend %loading-abs;
     &:after {
       opacity: 0;
       @include transition(opacity 0.3s ease);
@@ -252,7 +235,7 @@
         padding: 0 10px;
         counter-reset: counter;
         @include box-shadow(none);
-        @include scrollBar($orange);
+        @extend %scrollbar;
 
         .line {
           color: $orange;
@@ -342,12 +325,12 @@
             pre {
               overflow-y: auto;
               @include flex(1);
-              @include scrollBar($orange);
+              @extend %scrollbar;
             }
           }
 
           &.loading {
-            @extend .loading-abs;
+            @extend %loading-abs;
           }
 
         }
@@ -383,6 +366,23 @@
         }
       }
     }
+  }
+}
+
+/* Paginator */
+.paginate {
+  padding: 10px;
+  overflow: auto;
+  background-color: $gray;
+  background-image: url(../images/bg.png);
+  border-top: 1px solid #ddd;
+  text-align: center;
+  @include flex(0 0 auto);
+
+  .page-number {
+    display: inline-block;
+    font-weight: bold;
+    padding: 7px;
   }
 }
 
@@ -624,7 +624,7 @@ legend {
     }
 
     &.loading {
-      @extend .loading-abs;
+      @extend %loading-abs;
     }
 
     .pipeline {
@@ -641,22 +641,21 @@ legend {
     .pipeline-user-guide {
       width: 400px;
       height: 100px;
-      font-size: 18px;
-      padding: 20px;
-      background: #f3f3f3;
       position: absolute;
       top: 50%;
       left: 50%;
       margin: -150px 0 0 -200px;
-      color: #999;
-      text-align: center;
-      border: 1px solid #ddd;
-      @include box-sizing();
-      @include border-radius(5px);
+      @extend %guide-box;
     }
 
   }
 
+}
+
+.job-user-guide {
+  width: 600px;
+  margin: 150px auto;
+  @extend %guide-box;
 }
 
 .changes-mark {
@@ -683,7 +682,7 @@ legend {
   max-height: 500px;
   overflow: auto;
 
-  @include scrollBar();
+  @extend %scrollbar;
 }
 
 .copy-btn {

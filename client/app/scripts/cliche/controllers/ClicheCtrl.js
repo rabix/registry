@@ -700,34 +700,6 @@ angular.module('registryApp.cliche')
         };
 
         /**
-         * Show json modal
-         *
-         * @param which
-         */
-        $scope.showJson = function(which) {
-
-            var modalInstance = $modal.open({
-                template: $templateCache.get('views/cliche/partials/json-preview.html'),
-                controller: 'JsonPreviewCtrl',
-                resolve: {data: function () {
-                    return {json: $scope.view[which + 'Form'], which: which};
-                }}
-            });
-
-            modalInstance.result.then(function (getUrlTrace) {
-                if (getUrlTrace) {
-
-                    $modal.open({
-                        template: $templateCache.get('views/cliche/partials/job-url-response.html'),
-                        controller: 'ModalCtrl',
-                        resolve: { data: function () { return { trace: getUrlTrace }; }}
-                    });
-                }
-            });
-
-        };
-
-        /**
          * Toggle dropdown menu
          */
         $scope.toggleMenu = function() {

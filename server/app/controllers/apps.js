@@ -58,7 +58,6 @@ router.get('/apps', function (req, res, next) {
             // NOTE: legacy structure, some tools don't have is_script field
             whereApps.is_script = {$in: [null, false]};
         }
-        console.log(whereApps);
 
         if (req.query.q) {
             whereApps.$or = [
@@ -318,9 +317,10 @@ router.post('/apps/:action', filters.authenticated, function (req, res, next) {
 
                                             app.revisions.push(revision._id);
 
-                                            app.save();
+                                            app.save(function() {
+                                                res.json({app: app, message: 'App has been successfully created'});
+                                            });
 
-                                            res.json({app: app, message: 'App has been successfully created'});
                                         });
 
                                     });

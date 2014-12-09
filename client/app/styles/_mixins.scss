@@ -121,19 +121,22 @@
   background-size: $arguments;
 }
 
-@mixin scrollbar($size: 9px, $background: #ddd) {
+@mixin scrollbar($background: $orange, $size: 10px) {
   &::-webkit-scrollbar {
-    height: $size;
     width: $size;
+    height: $size;
     -webkit-appearance: none;
   }
-  &::-webkit-scrollbar-thumb {
-    background: #aaa;
-    @include border-radius(4px);
-  }
+
   &::-webkit-scrollbar-track {
+    background: #eee;
+  }
+
+  &::-webkit-scrollbar-thumb {
     background: $background;
-    @include border-radius(4px);
+    &:hover {
+      background: darken($background, 10%);
+    }
   }
 }
 
@@ -184,26 +187,6 @@
   }
   @keyframes #{$name} {
     @content;
-  }
-}
-
-/* SCROLLBAR STYLE
-================================================ */
-@mixin scrollBar($color: $orange) {
-  &::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: #eee;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: $color;
-    &:hover {
-      background: darken($color, 10%);
-    }
   }
 }
 
