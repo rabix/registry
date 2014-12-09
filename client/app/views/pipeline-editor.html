@@ -169,7 +169,7 @@
                                                 <a href drag="workflow.latest" >
                                                     <span class="pointer pull-left" ng-click="toggleAppRevisions(workflow._id)" ng-if="workflow.revisions.length !== 0"  ><i class="fa" ng-class="{'fa-minus-square':view.appRevisions[workflow._id].toggled, 'fa-plus-square': !view.appRevisions[workflow._id].toggled}"></i></span>
                                                     <i class="fa fa-puzzle-piece"></i>
-                                                    {{ workflow.name }} <small>(revision {{ workflow.latest.rev }} )</small>
+                                                    {{ workflow.name }} <small>(revision {{ workflow.latest.version }} )</small>
                                                     <div class="pull-right">
                                                         <span ng-if="workflow.latest.version && workflow.latest.is_public" class="label label-primary"><i class="fa fa-tag"></i> {{ 'v' + workflow.latest.version }} </span>
                                                     </div>
@@ -178,7 +178,7 @@
                                                 <div ng-show="view.appRevisions[workflow._id].toggled" ng-repeat="revision in workflow.revisions" class="revisions-list nested" ng-show="view.appRevisions[workflow._id].toggled">
                                                     <a href drag="revision">
                                                         <i class="fa fa-puzzle-piece"></i>
-                                                        {{ workflow.name }} <small>(revision {{ revision.rev }} )</small>
+                                                        {{ workflow.name }} <small>(revision {{ revision.version }} )</small>
                                                         <div class="pull-right">
                                                             <span ng-if="revision.version && revision.is_public" class="label label-primary"><i class="fa fa-tag"></i> {{ 'v' + revision.version }}</span>
                                                         </div>

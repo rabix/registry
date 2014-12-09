@@ -62,6 +62,8 @@ angular.module('registryApp')
 
         $scope.Loading = Loading;
 
+        $scope.view.appRevisions = {};
+
         $scope.$watch('Loading.classes', function (n, o) {
             if (n !== o) {
                 $scope.view.classes = n;
@@ -109,9 +111,9 @@ angular.module('registryApp')
             
             mergeToolsWorkflows('otherRepositories', tools, scripts, workflows);
 
+            console.log($scope.view.appRevisions);
         };
 
-        $scope.view.appRevisions = {};
         var formatApps = function (apps) {
 
             if (!apps) {
@@ -126,7 +128,7 @@ angular.module('registryApp')
                         value.revisions.splice(0,1);
                     } else {
                         _.remove(value.revisions, function (rev) {
-                            return rev.rev === value.latest.rev;
+                            return rev.version === value.latest.version;
                         });
                     }
 
