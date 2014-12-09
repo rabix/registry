@@ -3,7 +3,6 @@
 var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
-var uuid = require('node-uuid');
 var _ = require('lodash');
 
 var Job = mongoose.model('Job');
