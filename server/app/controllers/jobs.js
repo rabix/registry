@@ -79,3 +79,21 @@ router.post('/job/upload', function (req, res, next) {
     }
 
 });
+
+router.post('/jobs', filters.authenticated, function (req, res, next) {
+    var json = req.body.json;
+
+    var job = new Job();
+
+    job.user = req.user.id;
+    job.auther = req.user.email;
+
+    job.json = json.json;
+    job.repo = json.repo;
+
+    job.save(function (err) {
+        if (err) { return next(err); }
+
+        res.json({job: job});
+    });
+});
