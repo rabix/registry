@@ -28,6 +28,7 @@ module.exports = function (app, config) {
     app.use(compress());
 
     app.use('/', express.static(config.root + config.clientPath));
+    app.use('/docs', express.static(config.root + '/docs'));
 
     app.use(methodOverride());
 

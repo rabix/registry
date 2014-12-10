@@ -130,7 +130,18 @@ var addWebhook = function (owner, r, currentUser) {
 };
 
 /**
- * Get all repos
+ * @apiName GetRepos
+ * @api {GET} /api/repos Get all Repositories
+ * @apiGroup Repos
+ * @apiDescription Fetch all repositories
+ *
+ * @apiSuccess {Object}  repos All repositories
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "total": "1",
+ *       "list": [{repo}]
+ *     }
  */
 router.get('/repos', function (req, res, next) {
 
@@ -170,26 +181,79 @@ router.get('/repos', function (req, res, next) {
 
 });
 
+/**
+ * Get repos by user
+ *
+ * @apiName GetRepo
+ * @api {GET} /api/repos/user Get all Current Logged in User Repositories
+ * @apiGroup Repos
+ * @apiDescription Fetch all user repositories
+ *
+ * @apiSuccess {Object}  repos All repositories
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "total": "1",
+ *       "list": [{repo}]
+ *     }
+ */
 router.get('/repos/user', function (req, res, next) {
 
     var limit = req.query.limit ? req.query.limit : 25;
     var skip = req.query.skip ? req.query.skip : 0;
 
-    Repo.count(function (err, total) {
-        if (err) { return next(err); }
-
-        Repo.find({owner: req.user.login}).skip(skip).limit(limit).sort({_id: 'desc'}).exec(function (err, repos) {
+    if (req.user && req.user.login) {
+        Repo.count(function (err, total) {
             if (err) { return next(err); }
 
-            res.json({list: repos, total: total});
-        });
+            Repo.find({owner: req.user.login}).skip(skip).limit(limit).sort({_id: 'desc'}).exec(function (err, repos) {
+                if (err) { return next(err); }
 
-    });
+                res.json({list: repos, total: total});
+            });
+
+        });
+    } else {
+
+
+
+    }
 
 });
 
 /**
- * Create new repo
+ * @apiDefine NameCollisionError Name already in use
+ * @apiError NameCollisionError The <code>name</code> already in use.
+ * @apiErrorExample {json} Error-Response:
+ *     HTTP/1.1 400 Not Found
+ *     {
+ *       "message": "Repo name already in use"
+ *     }
+ */
+
+/**
+ * @apiName PostRepo
+ * @api {POST} /api/repos Create user repository
+ * @apiGroup Repos
+ * @apiDescription Create user repository
+ * @apiPermission Logged in user
+ * @apiUse NameCollisionError
+ *
+ * @apiSuccess {Object} repo
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "repo": {
+ *           "_id" : "547854cbf76a100000ac84dd",
+ *           "is_public" : true,
+ *           "created_by" : "flipio",
+ *           "name" : "test",
+ *           "owner" : "flipio",
+ *           "git" : false,
+ *           "description" : "",
+ *           "user" : "547854bcf76a100000ac84dc"
+ *       },
+ *     }
  */
 router.post('/repos', filters.authenticated, function (req, res, next) {
     var repo = req.body.repo,
@@ -219,7 +283,42 @@ router.post('/repos', filters.authenticated, function (req, res, next) {
 });
 
 /**
- * Publish repo or update its data
+ * @apiDefine UnauthorizedError
+ * @apiError Error: Unauthorized update
+ * @apiErrorExample Error:
+ *     HTTP/1.1 401
+ *     {
+ *       "message": "Unauthorized"
+ *     }
+ */
+/**
+ * @apiName PutRepo
+ * @api {POST} /api/repos/:id/:action Update repository
+ *
+ * @apiGroup Repos
+ * @apiDescription Update repository info or publish it
+ *
+ * @apiParam {Number} id Repo unique id
+ * @apiParam {String} action Action to perform on repo (update, publish)
+ *
+ * @apiUse UnauthorizedError
+ *
+ * @apiSuccess {Object} repo Repository object
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "repo": {
+ *           "_id" : "547854cbf76a100000ac84dd",
+ *           "is_public" : true,
+ *           "created_by" : "flipio",
+ *           "name" : "test",
+ *           "owner" : "flipio",
+ *           "git" : false,
+ *           "description" : "",
+ *           "user" : "547854bcf76a100000ac84dc"
+ *       },
+ *       "message": "Successfully updated repo"
+ *     }
  */
 router.put('/repos/:id/:action', filters.authenticated, function (req, res, next) {
 
@@ -244,10 +343,10 @@ router.put('/repos/:id/:action', filters.authenticated, function (req, res, next
 
                     if (!check) {
 
-                        Repo.findOneAndUpdate({_id: req.params.id}, {name: repo.name, description: repo.description}, function(err) {
+                        Repo.findOneAndUpdate({_id: req.params.id}, {name: repo.name, description: repo.description}, function(err, r) {
                             if (err) { return next(err); }
 
-                            res.json({message: 'Successfully updated repo'});
+                            res.json({message: 'Successfully updated repo', repo: r});
 
                         });
 
