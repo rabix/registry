@@ -6,9 +6,9 @@
 'use strict';
 
 angular.module('registryApp')
-    .controller('JobsCtrl', ['$scope', '$q', '$injector', 'Sidebar', 'Loading', 'Job', 'User', function ($scope, $q, $injector, Sidebar, Loading, Job, User) {
+    .controller('TasksCtrl', ['$scope', '$q', '$injector', 'Sidebar', 'Loading', 'Job', 'User', function ($scope, $q, $injector, Sidebar, Loading, Job, User) {
 
-        Sidebar.setActive('jobs');
+        Sidebar.setActive('tasks');
 
         $scope.view = {};
         $scope.view.page = 1;
@@ -83,6 +83,11 @@ angular.module('registryApp')
 
         };
 
+        /**
+         * Delete job
+         *
+         * @param job
+         */
         $scope.deleteJob = function(job) {
 
             var $modal = $injector.get('$modal');

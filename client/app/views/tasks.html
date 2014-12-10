@@ -5,7 +5,7 @@
             <div class="col-md-4">
                 <form class="search-form" ng-submit="searchJobs()" novalidate>
                     <div class="input-group">
-                        <input type="text" class="form-control" ng-model="view.searchTerm" placeholder="Search jobs" required>
+                        <input type="text" class="form-control" ng-model="view.searchTerm" placeholder="Search task templates" required>
                         <span class="input-group-btn">
                             <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
                             <a ng-if="!(view.searchTerm | isEmpty)" class="btn btn-default" href ng-click="resetSearch()"><i class="fa fa-ban"></i></a>
@@ -15,7 +15,7 @@
             </div>
             <div class="col-md-8">
                 <div class="actions pull-right" ng-if="view.user">
-                    <a ng-href="#/job" class="btn btn-primary"><i class="fa fa-plus"></i> Add New Job</a>
+                    <a ng-href="#/task" class="btn btn-primary"><i class="fa fa-plus"></i> Add New Task Template</a>
                 </div>
             </div>
         </div>
@@ -42,11 +42,11 @@
                     <td>{{ job.author }}</td>
                     <td><a ng-href="{{ job.url }}" class="job-link" target="_blank">{{ job.url }}</a></td>
                     <td class="right">
-                        <a href ng-if="view.user.id === job.user" ng-click="deleteJob(job)" class="btn btn-default" tooltip="Delete Job"><i class="fa fa-trash"></i></a>
+                        <a href ng-if="view.user.id === job.user" ng-click="deleteJob(job)" class="btn btn-default" tooltip="Delete Task Template"><i class="fa fa-trash"></i></a>
                     </td>
                 </tr>
                 <tr class="empty" ng-if="view.jobs.length === 0">
-                    <td colspan="6"><p class="alert alert-info">There are no jobs</p></td>
+                    <td colspan="6"><p class="alert alert-info">There are no task templates</p></td>
                 </tr>
             </tbody>
         </table>

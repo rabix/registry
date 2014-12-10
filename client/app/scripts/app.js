@@ -84,13 +84,13 @@ angular
                 templateUrl: 'views/pipeline-editor.html',
                 controller: 'PipelineEditorCtrl'
             })
-            .when('/jobs', {
-                templateUrl: 'views/jobs.html',
-                controller: 'JobsCtrl'
+            .when('/tasks', {
+                templateUrl: 'views/tasks.html',
+                controller: 'TasksCtrl'
             })
-            .when('/job', {
-                templateUrl: 'views/job.html',
-                controller: 'JobCtrl'
+            .when('/task', {
+                templateUrl: 'views/task.html',
+                controller: 'TaskCtrl'
             })
             .otherwise({
                 redirectTo: '/'

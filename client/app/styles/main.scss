@@ -312,8 +312,9 @@ body {
     }
   }
 
-  /* Jobs page */
-  &.jobs {
+  /* Tasks and task page */
+  &.jobs,
+  &.job {
     .content {
       padding-top: 0;
     }

@@ -6,12 +6,13 @@
 'use strict';
 
 angular.module('registryApp')
-    .controller('JobCtrl', ['$scope', '$q', '$modal', '$templateCache', '$location', 'Sidebar', 'Job', 'User', 'Repo', 'Pipeline', 'rawJob', function ($scope, $q, $modal, $templateCache, $location, Sidebar, Job, User, Repo, Pipeline, rawJob) {
+    .controller('TaskCtrl', ['$scope', '$q', '$modal', '$templateCache', '$location', 'Sidebar', 'Job', 'User', 'Repo', 'Pipeline', 'rawJob', function ($scope, $q, $modal, $templateCache, $location, Sidebar, Job, User, Repo, Pipeline, rawJob) {
 
-        Sidebar.setActive('jobs');
+        Sidebar.setActive('tasks');
 
         $scope.view = {};
         $scope.view.job = rawJob;
+        delete $scope.view.job.allocatedResources;
         $scope.view.app = null;
         $scope.view.userRepos = [];
 
