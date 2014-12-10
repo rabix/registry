@@ -482,6 +482,12 @@ angular.module('registryApp.cliche')
 
             $scope.view.loading = true;
 
+            $scope.view.list = {
+                inputs: {tmp: [], part: []},
+                outputs: {tmp: [], part: []},
+                values: {tmp: [], part: []}
+            };
+
             var name = $scope.view.toolForm.name;
 
             Data.flush().then(function(result) {

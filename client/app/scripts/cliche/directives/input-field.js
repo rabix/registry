@@ -30,6 +30,7 @@ angular.module('registryApp.cliche')
                     uniqueId++;
                     scope.view.uniqueId = uniqueId;
 
+
                     var inputScheme = scope.model;
                     var validFileKeys = ['path', 'size', 'secondaryFiles', 'meta'];
 
