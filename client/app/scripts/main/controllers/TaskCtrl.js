@@ -6,13 +6,12 @@
 'use strict';
 
 angular.module('registryApp')
-    .controller('TaskCtrl', ['$scope', '$q', '$modal', '$templateCache', '$location', 'Sidebar', 'Job', 'User', 'Repo', 'Pipeline', 'rawJob', function ($scope, $q, $modal, $templateCache, $location, Sidebar, Job, User, Repo, Pipeline, rawJob) {
+    .controller('TaskCtrl', ['$scope', '$q', '$modal', '$templateCache', '$location', 'Sidebar', 'Job', 'User', 'Repo', 'Pipeline', function ($scope, $q, $modal, $templateCache, $location, Sidebar, Job, User, Repo, Pipeline) {
 
         Sidebar.setActive('tasks');
 
         $scope.view = {};
-        $scope.view.job = rawJob;
-        delete $scope.view.job.allocatedResources;
+        $scope.view.job = {inputs: {}};
         $scope.view.app = null;
         $scope.view.userRepos = [];
 
@@ -181,7 +180,7 @@ angular.module('registryApp')
          * Go back to the job listing
          */
         var goBack = function() {
-            $location.path('/jobs');
+            $location.path('/tasks');
         };
 
     }]);
