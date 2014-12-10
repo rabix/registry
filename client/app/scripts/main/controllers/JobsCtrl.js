@@ -35,7 +35,7 @@ angular.module('registryApp')
             $scope.view.jobs = result.list;
             $scope.view.total = result.total;
             $scope.view.loading = false;
-            console.log(result);
+
         };
 
         $q.all([

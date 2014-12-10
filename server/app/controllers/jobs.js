@@ -23,6 +23,7 @@ router.get('/jobs', function (req, res, next) {
     var limit = req.query.limit ? req.query.limit : 25;
     var skip = req.query.skip ? req.query.skip : 0;
     var where = {};
+    var regexp = new RegExp(req.query.q, 'i');
 
     if (req.user) {
         if (req.param('mine')) {
@@ -44,7 +45,11 @@ router.get('/jobs', function (req, res, next) {
         var whereJobs = {repo: {$in: _.pluck(repos, '_id')}};
 
         if (req.query.q) {
-            whereJobs.name = new RegExp(req.query.q, 'i');
+            whereJobs.$or = [
+                {name: regexp},
+                {author: regexp},
+                {'json.app.@type': regexp}
+            ];
         }
 
         Job.count(whereJobs).exec(function(err, total) {

@@ -6,7 +6,7 @@
 'use strict';
 
 angular.module('registryApp')
-    .controller('JobCtrl', ['$scope', '$q', '$modal', '$templateCache', '$location', 'Sidebar', 'Job', 'User', 'Repo', 'rawJob', function ($scope, $q, $modal, $templateCache, $location, Sidebar, Job, User, Repo, rawJob) {
+    .controller('JobCtrl', ['$scope', '$q', '$modal', '$templateCache', '$location', 'Sidebar', 'Job', 'User', 'Repo', 'Pipeline', 'rawJob', function ($scope, $q, $modal, $templateCache, $location, Sidebar, Job, User, Repo, Pipeline, rawJob) {
 
         Sidebar.setActive('jobs');
 
@@ -39,6 +39,23 @@ angular.module('registryApp')
         /* init default values */
         setDefaults();
 
+        var getProperties = function(type, json) {
+
+            var deferred = $q.defer();
+
+            if (type === 'Workflow') {
+
+                Pipeline.formatPipeline(json).then(function (pipeline) {
+                    deferred.resolve(pipeline.json.inputs.properties);
+                });
+
+            } else {
+                deferred.resolve(json.inputs.properties);
+            }
+
+            return deferred.promise;
+
+        };
 
         $scope.pickApp = function() {
 
@@ -52,15 +69,21 @@ angular.module('registryApp')
             });
 
             modalInstance.result.then(function (result) {
+
                 $scope.view.app = result.app;
                 $scope.view.type = result.type;
 
-                if ($scope.view.type === 'workflow') {
-                    return false;
-                }
+                getProperties(result.type, result.app.json)
+                    .then(function(properties) {
 
-                setDefaults();
-                $scope.prepareForPagination($scope.view.app.json.inputs.properties);
+                        $scope.view.job.app = angular.copy($scope.view.app.json);
+                        $scope.view.job.app['@type'] = result.type;
+
+                        setDefaults();
+                        $scope.prepareForPagination(properties);
+
+                    });
+
             });
 
         };
@@ -101,7 +124,7 @@ angular.module('registryApp')
 
         $scope.create = function() {
 
-            var isEmptyName = _.isEmpty($scope.view.job.name);
+            var isEmptyName = _.isEmpty($scope.view.name);
             var isEmptyApp = _.isEmpty($scope.view.app);
 
             if (isEmptyName || isEmptyApp) {
@@ -134,12 +157,7 @@ angular.module('registryApp')
 
                 $scope.view.saving = true;
 
-                var json = $scope.view.job;
-                json.app = $scope.view.app.json;
-
-                Job.createJob(json, $scope.view.job.name, data.repoId).then(function (result) {
-
-                    console.log(result);
+                Job.createJob($scope.view.job, $scope.view.name, data.repoId).then(function (result) {
 
                     var modalInstance = $modal.open({
                         template: $templateCache.get('views/cliche/partials/job-url-response.html'),

@@ -37,6 +37,26 @@ angular.module('registryApp')
         };
 
         /**
+         * Get script tools
+         *
+         * @param {integer} skip
+         * @param {string} searchTerm
+         * @returns {*}
+         */
+        self.getScripts = function(skip, searchTerm) {
+
+            var isSearch = !(_.isUndefined(searchTerm) || _.isEmpty(searchTerm));
+            var params = {skip: skip, is_script: true};
+
+            if (isSearch) {
+                params.q = searchTerm;
+            }
+
+            return Api.apps.get(params).$promise;
+
+        };
+
+        /**
          * Get list of tools
          */
         self.getAllApps = function(params) {

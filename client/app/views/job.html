@@ -3,7 +3,7 @@
         <a ng-href="#/jobs" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
         <h1>
             <div class="form-group job-name">
-                <input type="text" placeholder="Job Name" ng-model="view.job.name" class="form-control" />
+                <input type="text" placeholder="Job Name" ng-model="view.name" class="form-control" />
             </div>
 
             <div class="actions pull-right">
@@ -31,7 +31,7 @@
         </button>
 
         <section ng-if="!view.app">
-            <p class="job-user-guide">Pick <a href ng-click="pickApp()">tool or workflow</a> for which you want to generate job json</p>
+            <p class="job-user-guide">Pick <a href ng-click="pickApp()">tool, script or workflow</a> for which you want to generate job json</p>
         </section>
 
         <form ng-show="view.app" class="form" name="forms.job" role="form" novalidate>
@@ -76,7 +76,7 @@
                         </input-field>
                     </div>
 
-                    <p class="alert alert-info" ng-if="view.app.json.inputs.properties | isEmpty">There are no values to be set at this moment.</p>
+                    <p class="alert alert-info" ng-if="view.list.part | isEmpty">There are no values to be set at this moment.</p>
                 </div>
 
                 <paginator page="view.page" total="view.total" per-page="10" handler="getMore(offset)"></paginator>

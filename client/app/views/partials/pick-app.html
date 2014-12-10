@@ -7,6 +7,7 @@
     <div class="tabs" ng-class="{loading: view.loading}">
         <div class="nav nav-tabs">
             <li ng-class="{active: view.tab === 'tools'}" class=""><a href ng-click="switchTab('tools')">Tools</a></li>
+            <li ng-class="{active: view.tab === 'scripts'}" class=""><a href ng-click="switchTab('scripts')">Scripts</a></li>
             <li ng-class="{active: view.tab === 'workflows'}" class=""><a href ng-click="switchTab('workflows')">Workflows</a></li>
             <li class="form-li">
                 <form class="search-form" ng-submit="searchApps()" novalidate>
@@ -73,7 +74,7 @@
                                             <td><span class="version"><strong><i class="fa fa-tag"></i> {{ 'v' + revision.version }}</strong></span></td>
                                             <td><p tooltip="{{ revision.description }}" tooltip-popup-delay="1000">{{ revision.description }}</p></td>
                                             <td class="right">
-                                                <a href ng-click="pick(revision, 'tool')" class="btn btn-sm btn-default" tooltip="Pick"><i class="fa fa-check"></i></a>
+                                                <a href ng-click="pick(revision, 'CommandLineTool')" class="btn btn-sm btn-default" tooltip="Pick"><i class="fa fa-check"></i></a>
                                             </td>
                                         </tr>
                                         <tr class="empty" ng-if="tool.revisions.length === 0">
@@ -92,6 +93,80 @@
             </div>
             <paginator page="view.page.tools" total="view.total.tools" handler="getMoreTools(offset)"></paginator>
         </section>
+        <!-- # .tools -->
+
+        <section ng-show="view.tab === 'scripts'" class="scripts">
+            <div class="content">
+                <table class="table table-hover apps">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Repo</th>
+                            <th>Description</th>
+                            <th class="right">
+                                <a href
+                                   class="btn btn-default btn-toggle"
+                                   tooltip="Toggle Versions"
+                                   tooltip-placement="left"
+                                   tooltip-append-to-body="true"
+                                   ng-click="toggleRevisions('scripts')">
+                                    <i class="fa" ng-class="{'fa-chevron-right': !view.active.scripts, 'fa-chevron-down': view.active.scripts}"></i>
+                                </a>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat-start="script in view.scripts">
+                            <td>{{ script.name }}</td>
+                            <td>{{ script.repo.owner }}/{{ script.repo.name }}</td>
+                            <td><p tooltip="{{ script.description }}" tooltip-popup-delay="1000">{{ script.description }}</p></td>
+                            <td class="right">
+                                <a href
+                                   class="btn btn-default btn-toggle"
+                                   tooltip="Toggle Versions ({{ script.revisions.length }})"
+                                   tooltip-placement="left"
+                                   tooltip-append-to-body="true"
+                                   ng-click="toggleRevisions('scripts', script)">
+                                    {{ script.revisions.length }} <i class="fa" ng-class="{'fa-chevron-right': !script.active, 'fa-chevron-down': script.active}"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        <tr class="inner-table" ng-class="{active: script.active}" ng-repeat-end>
+                            <td colspan="4">
+                                <div class="inner-table-body">
+                                    <table class="table table-hover app-revisions">
+                                        <thead>
+                                        <tr>
+                                            <th>Versions</th>
+                                            <th>&nbsp;</th>
+                                            <th class="right">&nbsp;</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr ng-repeat="revision in script.revisions">
+                                            <td><span class="version"><strong><i class="fa fa-tag"></i> {{ 'v' + revision.version }}</strong></span></td>
+                                            <td><p tooltip="{{ revision.description }}" tooltip-popup-delay="1000">{{ revision.description }}</p></td>
+                                            <td class="right">
+                                                <a href ng-click="pick(revision, 'Script')" class="btn btn-sm btn-default" tooltip="Pick"><i class="fa fa-check"></i></a>
+                                            </td>
+                                        </tr>
+                                        <tr class="empty" ng-if="tool.revisions.length === 0">
+                                            <td colspan="4"><p class="alert alert-info">There are no public versions for this script</p></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="empty" ng-if="view.scripts.length === 0">
+                            <td colspan="4"><p class="alert alert-info">There are no scripts found</p></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <paginator page="view.page.scripts" total="view.total.scripts" handler="getMoreScripts(offset)"></paginator>
+        </section>
+        <!-- # .scripts -->
 
         <section ng-show="view.tab === 'workflows'" class="workflows">
             <div class="content">
@@ -145,7 +220,7 @@
                                             <td><span class="version"><strong><i class="fa fa-tag"></i> {{ 'v' + revision.version }}</strong></span></td>
                                             <td><p tooltip="{{ revision.description }}" tooltip-popup-delay="1000">{{ revision.description }}</p></td>
                                             <td class="right">
-                                                <a href ng-click="pick(revision, 'workflow')" class="btn btn-sm btn-default" tooltip="Pick"><i class="fa fa-check"></i></a>
+                                                <a href ng-click="pick(revision, 'Workflow')" class="btn btn-sm btn-default" tooltip="Pick"><i class="fa fa-check"></i></a>
                                             </td>
                                         </tr>
                                         <tr class="empty" ng-if="workflow.revisions.length === 0">
@@ -164,6 +239,7 @@
             </div>
             <paginator page="view.page.workflows" total="view.total.workflows" handler="getMoreWorkflows(offset)"></paginator>
         </section>
+        <!-- # .workflows -->
     </div>
 
 </div>

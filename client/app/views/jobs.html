@@ -27,6 +27,7 @@
             <thead>
                 <tr>
                     <th>Name</th>
+                    <th>Type</th>
                     <th>Repo</th>
                     <th>Author</th>
                     <th>Url</th>
@@ -36,6 +37,7 @@
             <tbody>
                 <tr ng-repeat="job in view.jobs">
                     <td>{{ job.name }}</td>
+                    <td><span class="label label-primary">{{ job.json.app['@type'] || 'Tool' }}</span></td>
                     <td><a ng-href="#/repo/{{ job.repo._id }}">{{ job.repo.owner }}/{{ job.repo.name }}</a></td>
                     <td>{{ job.author }}</td>
                     <td><a ng-href="{{ job.url }}" class="job-link" target="_blank">{{ job.url }}</a></td>
@@ -44,7 +46,7 @@
                     </td>
                 </tr>
                 <tr class="empty" ng-if="view.jobs.length === 0">
-                    <td colspan="5"><p class="alert alert-info">There are no jobs</p></td>
+                    <td colspan="6"><p class="alert alert-info">There are no jobs</p></td>
                 </tr>
             </tbody>
         </table>
