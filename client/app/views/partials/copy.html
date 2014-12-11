@@ -1,6 +1,6 @@
 <span class="copy-btn">
 
-    <span ng-if="showString" title="{{ string }}">{{ string }}</span>
+    <span ng-if="showString" title="{{ ::string }}">{{ ::string }}</span>
 
     <a href
        ng-class="{'btn-sm': isSmall}"

@@ -255,50 +255,6 @@ angular.module('registryApp')
         };
 
         /**
-         * Search apps by the term
-         */
-        $scope.filterApps = function () {
-
-            $scope.view.filtering = true;
-
-            $q.all([
-                App.getGroupedApps('my', $scope.view.searchTerm),
-                App.getGroupedApps('other', $scope.view.searchTerm)
-            ]).then(function (result) {
-
-                appsLoaded(result);
-
-                $scope.view.repoGroups = {};
-                $scope.view.groups = {
-                    my: true,
-                    other: true
-                };
-
-                _.times(2, function (i) {
-                    _.each(_.keys(result[i].list), function (repoName) {
-                        $scope.view.repoGroups[repoName] = true;
-                    });
-                });
-            });
-
-        };
-
-        /**
-         * Reset the search
-         */
-        $scope.resetFilter = function () {
-
-            $scope.view.searchTerm = '';
-            $scope.view.filtering = false;
-
-            $q.all([
-                App.getGroupedApps('my'),
-                App.getGroupedApps('other')
-            ]).then(appsLoaded);
-
-        };
-
-        /**
          * Callback when pipeline is changed
          */
         $scope.onPipelineChange = function (value) {

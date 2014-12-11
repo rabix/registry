@@ -37,10 +37,10 @@
             <tbody>
                 <tr ng-repeat="repo in view.repos">
                     <td class="field-id">
-                        <a ng-href="#/repo/{{ repo._id }}">{{ repo.owner }}/{{ repo.name }}</a>
+                        <a ng-href="#/repo/{{ ::repo._id }}">{{ ::repo.owner }}/{{ ::repo.name }}</a>
                     </td>
-                    <td class="field-created-by">{{ repo.created_by }}</td>
-                    <td class="field-desc"><p>{{ repo.description }}</p></td>
+                    <td class="field-created-by">{{ ::repo.created_by }}</td>
+                    <td class="field-desc"><p>{{ ::repo.description }}</p></td>
                     <td class="center field-status">
                         <i ng-if="!repo.is_public">Not published</i>
                         <span ng-if="repo.is_public" class="label label-primary">public</span>

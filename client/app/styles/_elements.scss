@@ -610,8 +610,14 @@ legend {
 .pipeline-wrap {
   position: relative;
   @include flex(1);
-  @include flex-box();
-  @include flex-flow(column nowrap);
+  //@include flex-box();
+  //@include flex-flow(column nowrap);
+  @extend %flex;
+
+  .pipeline-inner {
+    @extend %flex;
+    @include flex(1);
+  }
 
   .pipeline-drop-area {
     @include flex(1);

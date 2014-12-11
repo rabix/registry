@@ -141,6 +141,9 @@ angular.module('registryApp.cliche')
 
                     Data.setTool(json);
                     $scope.view.toolForm = Data.tool;
+                    if (_.isUndefined($scope.view.toolForm.outputs.properties)) {
+                        $scope.view.toolForm.outputs.properties = {};
+                    }
 
                     Data.setJob();
                     $scope.view.jobForm = Data.job;
@@ -193,6 +196,9 @@ angular.module('registryApp.cliche')
          */
         $scope.updateProps = function(type) {
             $scope.prepareForPagination(Data.tool[type].properties, type);
+            if (type === 'inputs') {
+                $scope.prepareForPagination(Data.tool.inputs.properties, 'values');
+            }
         };
 
         /**
@@ -709,7 +715,9 @@ angular.module('registryApp.cliche')
                 App.deleteRevision($scope.view.revision._id).then(function () {
                     $scope.view.saving = false;
                     $scope.view.reload = true;
-                    $location.path('/apps');
+                    $location.path('/apps/tools');
+                }, function() {
+                    $scope.view.saving = false;
                 });
             });
 

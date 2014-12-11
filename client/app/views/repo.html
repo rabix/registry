@@ -3,8 +3,8 @@
     <div class="heading">
         <a ng-href="#/repos" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
         <h1>
-            {{ view.repo.owner }}/{{ view.repo.name }}
-            <span class="created-by">({{ view.repo.created_by }})</span>
+            {{ view.repo.owner }}/{{ ::view.repo.name }}
+            <span class="created-by">({{ ::view.repo.created_by }})</span>
 
             <span ng-if="view.repo.is_public" class="label label-primary">public</span>
 
@@ -20,7 +20,7 @@
     <div ng-show="!view.loading" class="content">
 
         <div class="content-top">
-            <p class="description">{{ view.repo.description }}<i ng-if="!view.repo.description">There is no description for this repo</i></p>
+            <p class="description">{{ ::view.repo.description }}<i ng-if="!view.repo.description">There is no description for this repo</i></p>
         </div>
 
         <div class="tabs">
@@ -42,13 +42,13 @@
                         <tbody>
                             <tr ng-repeat="app in view.apps">
                                 <td>
-                                    <a ng-href="#/app/{{ app._id }}" class="inline">{{ app.name }}</a>
+                                    <a ng-href="#/app/{{ ::app._id }}" class="inline">{{ ::app.name }}</a>
                                     <div ng-if="app.is_script" class="label label-info">script</div>
                                 </td>
-                                <td><p tooltip="{{ app.description }}" tooltip-popup-delay="1000">{{ app.description }}</p></td>
+                                <td><p tooltip="{{ ::app.description }}" tooltip-popup-delay="1000">{{ ::app.description }}</p></td>
                             </tr>
                             <tr class="empty" ng-if="view.apps.length === 0">
-                                <td colspan="3"><p class="alert alert-info">There are no apps found in this repo</p></td>
+                                <td colspan="2"><p class="alert alert-info">There are no apps found in this repo</p></td>
                             </tr>
                         </tbody>
                     </table>
@@ -70,8 +70,8 @@
                         </thead>
                         <tbody>
                             <tr ng-repeat="workflow in view.workflows">
-                                <td><a ng-href="#/pipeline/{{ workflow.latest._id }}">{{ workflow.name }}</a></td>
-                                <td><p tooltip="{{ workflow.description }}" tooltip-popup-delay="1000">{{ workflow.description }}</p></td>
+                                <td><a ng-href="#/pipeline/{{ ::workflow.latest._id }}">{{ ::workflow.name }}</a></td>
+                                <td><p tooltip="{{ ::workflow.description }}" tooltip-popup-delay="1000">{{ ::workflow.description }}</p></td>
                             </tr>
                             <tr class="empty" ng-if="view.workflows.length === 0">
                                 <td colspan="2"><p class="alert alert-info">There are no workflows found in this repo</p></td>
@@ -101,22 +101,22 @@
                         <tbody>
                             <tr ng-repeat="build in view.builds">
                                 <td class="field-status">
-                                    <span class="status fa {{ build.status }}"
-                                          tooltip="{{ build.status }}"
+                                    <span class="status fa {{ ::build.status }}"
+                                          tooltip="{{ ::build.status }}"
                                           ng-class="{'fa-check-circle': build.status === 'success', 'fa-time': build.status === 'pending', 'fa-remove-circle': build.status === 'failure', 'fa-repeat': build.status === 'running'}">
                                     </span>
                                 </td>
                                 <td class="field-id">
-                                    <a ng-href="#/build/{{ build._id }}" tooltip="{{ build._id }}" tooltip-popup-delay="1000">#{{ build._id }}</a>
+                                    <a ng-href="#/build/{{ ::build._id }}" tooltip="{{ ::build._id }}" tooltip-popup-delay="1000">#{{ ::build._id }}</a>
                                 </td>
                                 <td class="field-message">
-                                    <p tooltip="{{ build.head_commit.message }}" tooltip-popup-delay="1000">{{ build.head_commit.message }}</p>
+                                    <p tooltip="{{ ::build.head_commit.message }}" tooltip-popup-delay="1000">{{ ::build.head_commit.message }}</p>
                                 </td>
                                 <td class="field-commit">
-                                    <a href="{{ build.head_commit.url }}" target="_blank" tooltip="{{ build.head_commit.id }}" tooltip-popup-delay="1000">{{ build.head_commit.id }}</a>
+                                    <a href="{{ ::build.head_commit.url }}" target="_blank" tooltip="{{ ::build.head_commit.id }}" tooltip-popup-delay="1000">{{ ::build.head_commit.id }}</a>
                                 </td>
-                                <td class="field-committer">{{ build.head_commit.committer.name }}</td>
-                                <td class="field-date">{{ build.head_commit.timestamp | date:'short' }}</td>
+                                <td class="field-committer">{{ ::build.head_commit.committer.name }}</td>
+                                <td class="field-date">{{ ::build.head_commit.timestamp | date:'short' }}</td>
                             </tr>
                             <tr class="empty" ng-if="view.builds.length === 0">
                                 <td colspan="7"><p class="alert alert-info">There are no builds found in this repo</p></td>

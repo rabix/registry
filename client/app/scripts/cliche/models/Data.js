@@ -285,7 +285,7 @@ angular.module('registryApp.cliche')
                 deferred.resolve();
 
             } else {
-                if (!_.isUndefined(properties[name])) {
+                if (properties && !_.isUndefined(properties[name])) {
 
                     deferred.reject('Choose another key, the one already exists');
 

@@ -57,6 +57,9 @@ angular.module('registryApp')
 
         };
 
+        /**
+         * Pick app from the list
+         */
         $scope.pickApp = function() {
 
             var modalInstance = $modal.open({
@@ -122,6 +125,11 @@ angular.module('registryApp')
 
         };
 
+        /**
+         * Create task json
+         *
+         * @returns {boolean}
+         */
         $scope.create = function() {
 
             var isEmptyName = _.isEmpty($scope.view.name);

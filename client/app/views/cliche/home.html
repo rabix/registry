@@ -1,14 +1,14 @@
 <div ng-class="view.classes" loading="view.loading">
 
     <div class="heading">
-        <a ng-if="view.mode === 'new'" ng-href="#/apps" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
-        <a ng-if="view.mode === 'edit'" ng-href="#/app/{{ view.app._id }}" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
+        <a ng-if="view.mode === 'new'" ng-href="#/apps/tools" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
+        <a ng-if="view.mode === 'edit'" ng-href="#/app/{{ ::view.app._id }}" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
         <h1>
             <div class="form-group tool-name">
                 <input ng-show="view.mode === 'new'" type="text" placeholder="Tool Name" ng-model="view.toolForm.name" class="form-control" />
-                <span ng-hide="view.mode === 'new'">{{ view.app.name }}</span>
+                <span ng-hide="view.mode === 'new'">{{ ::view.app.name }}</span>
 
-                <a ng-if="view.mode === 'edit'" href class="version revision" ng-click="changeRevision()"><i class="fa fa-tag"></i> {{ 'v' + view.revision.version }}</a>
+                <a ng-if="view.mode === 'edit'" href class="version revision" ng-click="changeRevision()"><i class="fa fa-tag"></i> v{{ ::view.revision.version }}</a>
 
                 <label ng-if="view.mode === 'new'" class="checkbox inline">
                     <input type="checkbox" ng-model="view.app.is_script" ng-change="adjust()" ng-disabled="view.mode === 'edit'">

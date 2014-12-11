@@ -11,7 +11,6 @@ angular.module('registryApp.cliche')
 
         return {
             restrict: 'E',
-            replace: true,
             template: $templateCache.get('views/cliche/partials/expr.html'),
             scope: {
                 ngModel: '=',

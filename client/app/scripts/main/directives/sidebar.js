@@ -38,7 +38,6 @@ angular.module('registryApp')
     .directive('sidebar', ['$templateCache', 'User', 'Sidebar', function ($templateCache, User, Sidebar) {
         return {
             restrict: 'E',
-            replace: true,
             template: $templateCache.get('views/partials/sidebar.html'),
             scope: {},
             link: function (scope) {

@@ -33,6 +33,7 @@ angular.module('registryApp')
             $scope.view.loading = false;
 
             $scope.view.total = result.total;
+            console.log(result.total);
         };
 
         $q.all([
@@ -109,6 +110,5 @@ angular.module('registryApp')
             }
 
         };
-
 
     }]);

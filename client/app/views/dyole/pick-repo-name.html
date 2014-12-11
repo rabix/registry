@@ -18,14 +18,6 @@
             <span ng-if="view.form.repo.$invalid" class="help-block" >Please pick repo from the list.</span>
         </div>
 
-        <!--<div class="pick-repo-wrap" ng-show="view.repos.length !== 0">-->
-            <!--<p>Pick repository for workflow: </p>-->
-
-            <!--<select  ng-model="view.repoSelected" class="form-control" ng-options="repo._id as repo.name for repo in view.repos">-->
-                <!--<option value="">-- choose repo --</option>-->
-            <!--</select>-->
-        <!--</div>-->
-
         <button class="btn btn-primary" type="submit">{{view.type}}</button>
         <a class="btn btn-default" href="" ng-click="cancel()">cancel</a>
     </form>

@@ -6,10 +6,10 @@
 <div class="modal-body no-padding">
 
     <ul class="revisions-list">
-        <li ng-repeat="revision in view.revisions">
+        <li ng-repeat="revision in ::view.revisions">
             <a href ng-click="choose(revision._id)">
                 <span class="label label-primary">
-                    <i class="fa fa-tag"></i> {{ 'v' + revision.version }}
+                    <i class="fa fa-tag"></i> v{{ ::revision.version }}
                 </span>
                 <span ng-if="view.current._id === revision._id" class="label label-warning pull-right">current</span>
             </a>

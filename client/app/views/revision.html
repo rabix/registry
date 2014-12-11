@@ -1,14 +1,14 @@
 <div ng-class="view.classes" loading="view.loading">
 
     <div class="heading">
-        <a ng-href="#/app/{{ view.revision.app_id }}/revisions" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
+        <a ng-href="#/app/{{ ::view.revision.app_id }}/revisions" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
         <h1>
             <span>
-                {{ view.revision.name }}
-                <span class="tool-repo">({{view.repo.owner}}/{{view.repo.name}})</span>
-                <span class="version"><i class="fa fa-tag"></i> {{ 'v' + view.revision.version }}</span>
+                {{ ::view.revision.name }}
+                <span class="tool-repo">({{ ::view.repo.owner }}/{{ ::view.repo.name }})</span>
+                <span class="version"><i class="fa fa-tag"></i> v{{ ::view.revision.version }}</span>
             </span>
-            <a ng-href="#/cliche/{{ view.revision.app_id }}/{{ view.revision._id }}" class="btn btn-primary pull-right"><i class="fa fa-pencil"></i> Edit</a>
+            <a ng-href="#/cliche/{{ ::view.revision.app_id }}/{{ ::view.revision._id }}" class="btn btn-primary pull-right"><i class="fa fa-pencil"></i> Edit</a>
         </h1>
     </div>
     <!-- # .heading -->
@@ -16,7 +16,7 @@
     <div ng-if="!view.loading" class="content">
 
         <div class="description">
-            <div class="markdown-body" marked="view.revision.description"></div>
+            <div class="markdown-body" marked="::view.revision.description"></div>
         </div>
 
         <div class="description">
@@ -26,27 +26,27 @@
 
                         <section class="col-md-4">
                             <h5>Author</h5>
-                            <p><strong>Username:</strong> <a href="http://github.com/{{ view.author.github.login }}" target="_blank">{{ view.author.github.login }}</a> </p>
-                            <p><strong>Name:</strong> {{ view.author.github.name }} </p>
+                            <p><strong>Username:</strong> <a href="http://github.com/{{ ::view.author.github.login }}" target="_blank">{{ ::view.author.github.login }}</a> </p>
+                            <p><strong>Name:</strong> {{ ::view.author.github.name }} </p>
                         </section>
 
                         <section class="col-md-4">
                             <h5>Docker Image Details</h5>
                             <p>
                                 <strong>Image Id:</strong>
-                                {{ view.revision.json.requirements.environment.container.imageId }}
+                                {{ ::view.revision.json.requirements.environment.container.imageId }}
                                 <i ng-if="!view.revision.json.requirements.environment.container.imageId">Not defined</i>
                             </p>
                             <p>
                                 <strong>Image Uri:</strong>
                                 <i ng-if="!view.revision.json.requirements.environment.container.uri">Not defined</i>
-                                <copy ng-if="view.revision.json.requirements.environment.container.uri" string="{{ view.revision.json.requirements.environment.container.uri }}" show-string="true" is-small="true"></copy>
+                                <copy ng-if="view.revision.json.requirements.environment.container.uri" string="{{ ::view.revision.json.requirements.environment.container.uri }}" show-string="true" is-small="true"></copy>
                             </p>
                         </section>
 
                         <section class="col-md-4">
                             <h5>App Details</h5>
-                            <p><strong>Repo:</strong> <a ng-href="#/repo/{{ view.repo._id }}">{{ view.repo.owner }}/{{ view.repo.name }}</a></p>
+                            <p><strong>Repo:</strong> <a ng-href="#/repo/{{ ::view.repo._id }}">{{ ::view.repo.owner }}/{{ ::view.repo.name }}</a></p>
                         </section>
                     </div>
                 </div>
@@ -55,12 +55,12 @@
 
         <div ng-if="view.app.is_script" class="snippet">
             <p>Script</p>
-            <pre pretty-json="view.revision.script"></pre>
+            <pre pretty-json="::view.revision.script"></pre>
         </div>
 
         <div class="snippet">
             <p>Use this command to run the app</p>
-            <pre>$ rabix "<a href="/tool-revision/{{ view.revision._id }}" target="_blank">http://rabix.org/tool-revision/{{ view.revision._id }}</a>"</pre>
+            <pre>$ rabix "<a href="/tool-revision/{{ ::view.revision._id }}" target="_blank">http://rabix.org/tool-revision/{{ ::view.revision._id }}</a>"</pre>
         </div>
 
         <div class="snippet">
@@ -70,7 +70,7 @@
                     <i class="fa" ng-class="{'fa-chevron-right': !view.isJsonVisible, 'fa-chevron-down': view.isJsonVisible}"></i>
                 </a>
             </p>
-            <pre ng-class="{hide: !view.isJsonVisible}" pretty-json="view.revision.json"></pre>
+            <pre ng-class="{hide: !view.isJsonVisible}" pretty-json="::view.revision.json"></pre>
         </div>
 
     </div>

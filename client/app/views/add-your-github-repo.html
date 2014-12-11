@@ -8,19 +8,19 @@
 
     <div ng-if="!view.loading" class="content">
 
-        <table class="table table-hover repos">
+        <table class="table table-hover github-repos">
             <thead>
                 <tr>
-                    <th class="field-repo-id">Owner/Name</th>
-                    <th class="field-action">Add</th>
+                    <th>Owner/Name</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="repo in view.repos">
-                    <td class="field-repo-id">
-                        <a ng-href="{{ repo.html_url }}" target="_blank">{{ repo.full_name }}</a>
+                <tr ng-repeat="repo in ::view.repos">
+                    <td>
+                        <a ng-href="{{ ::repo.html_url }}" target="_blank">{{ ::repo.full_name }}</a>
                     </td>
-                    <td class="field-action">
+                    <td class="right">
                         <button ng-if="!repo.added" ng-click="addRepo(repo)" ng-disabled="repo.adding" class="btn btn-default fa fa-plus"></button>
                         <span ng-if="repo.added" class="icon-added fa fa-check"></span>
                     </td>

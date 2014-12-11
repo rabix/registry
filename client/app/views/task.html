@@ -12,7 +12,7 @@
                     <i class="fa fa-puzzle-piece"></i> Pick
                 </button>
 
-                <json-preview json="{{ view.job }}"></json-preview>
+                <json-preview class="btn-group" json="{{ view.job }}"></json-preview>
 
                 <button ng-if="view.user" ng-disabled="view.saving" class="job-create-btn btn btn-primary" ng-click="create()">
                     <i class="fa fa-plus"></i> Create
@@ -40,6 +40,7 @@
                         <input-field
                                 ng-repeat="property in view.list.part track by $index"
                                 ng-model="view.job.inputs[property.key]"
+                                class="input-field"
                                 key="{{ property.key }}"
                                 prop="property.obj"
                                 index="{{ $index }}"

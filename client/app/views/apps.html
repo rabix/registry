@@ -52,18 +52,18 @@
             </thead>
             <tbody>
                 <tr ng-repeat-start="app in view.apps">
-                    <td><a ng-href="#/app/{{ app._id }}">{{ app.name }}</a></td>
-                    <td><a ng-href="#/repo/{{ app.repo._id }}">{{ app.repo.owner }}/{{ app.repo.name }}</a></td>
-                    <td><p tooltip="{{ app.description }}" tooltip-popup-delay="1000">{{ app.description }}</p></td>
+                    <td><a ng-href="#/app/{{ ::app._id }}" ng-click="change($event, app)">{{ ::app.name }}</a></td>
+                    <td><a ng-href="#/repo/{{ ::app.repo._id }}">{{ ::app.repo.owner }}/{{ ::app.repo.name }}</a></td>
+                    <td><p tooltip="{{ ::app.description }}" tooltip-popup-delay="1000">{{ ::app.description }}</p></td>
                     <td class="right">
-                        <a class="btn btn-default" tooltip="Edit Tool" ng-href="#/cliche/{{ app._id }}/latest"><i class="fa fa-pencil"></i></a>
+                        <a class="btn btn-default" tooltip="Edit Tool" ng-href="#/cliche/{{ ::app._id }}/latest"><i class="fa fa-pencil"></i></a>
                         <a href
                            class="btn btn-default btn-toggle"
-                           tooltip="Toggle Versions ({{ app.revisions.length }})"
+                           tooltip="Toggle Versions ({{ ::app.revisions.length }})"
                            tooltip-placement="left"
                            tooltip-append-to-body="true"
                            ng-click="toggleRevisions(app)">
-                            {{ app.revisions.length }} <i class="fa" ng-class="{'fa-chevron-right': !app.active, 'fa-chevron-down': app.active}"></i>
+                            {{ ::app.revisions.length }} <i class="fa" ng-class="{'fa-chevron-right': !app.active, 'fa-chevron-down': app.active}"></i>
                         </a>
                     </td>
                 </tr>
@@ -79,11 +79,11 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="revision in app.revisions">
-                                        <td><a ng-href="#/revision/{{ revision._id }}" class="version"><strong><i class="fa fa-tag"></i> {{ 'v' + revision.version }}</strong></a></td>
-                                        <td><p tooltip="{{ revision.description }}" tooltip-popup-delay="1000">{{ revision.description }}</p></td>
+                                    <tr ng-repeat="revision in ::app.revisions">
+                                        <td><a ng-href="#/revision/{{ ::revision._id }}" class="version"><strong><i class="fa fa-tag"></i> v{{ ::revision.version }}</strong></a></td>
+                                        <td><p tooltip="{{ ::revision.description }}" tooltip-popup-delay="1000">{{ ::revision.description }}</p></td>
                                         <td class="right">
-                                            <a class="btn btn-sm btn-default" tooltip="Edit Revision" ng-href="#/cliche/{{ app._id }}/{{ revision._id }}"><i class="fa fa-pencil"></i></a>
+                                            <a class="btn btn-sm btn-default" tooltip="Edit Revision" ng-href="#/cliche/{{ ::app._id }}/{{ ::revision._id }}"><i class="fa fa-pencil"></i></a>
                                         </td>
                                     </tr>
                                     <tr class="empty" ng-if="app.revisions.length === 0">

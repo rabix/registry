@@ -49,19 +49,19 @@
             </thead>
             <tbody>
                 <tr ng-repeat-start="pipeline in view.pipelines">
-                    <td><a ng-href="#/pipeline/{{ pipeline.latest._id }}">{{ pipeline.name }}</a></td>
-                    <td><p tooltip="{{ pipeline.repo.name }}" tooltip-popup-delay="1000"><a ng-href="#/repo/{{pipeline.repo._id}}">{{pipeline.repo.owner}}/{{ pipeline.repo.name }}</a></p></td>
-                    <td><p tooltip="{{ pipeline.author }}" tooltip-popup-delay="1000">{{ pipeline.author }}</p></td>
+                    <td><a ng-href="#/pipeline/{{ ::pipeline.latest._id }}">{{ ::pipeline.name }}</a></td>
+                    <td><p tooltip="{{ ::pipeline.repo.name }}" tooltip-popup-delay="1000"><a ng-href="#/repo/{{ ::pipeline.repo._id }}">{{ ::pipeline.repo.owner}}/{{ pipeline.repo.name }}</a></p></td>
+                    <td><p tooltip="{{ ::pipeline.author }}" tooltip-popup-delay="1000">{{ ::pipeline.author }}</p></td>
                     <td class="right">
-                        <a class="btn btn-default" tooltip="Edit Workflow" ng-href="#/pipeline/{{ pipeline.latest._id }}/edit"><i class="fa fa-pencil"></i></a>
+                        <a class="btn btn-default" tooltip="Edit Workflow" ng-href="#/pipeline/{{ ::pipeline.latest._id }}/edit"><i class="fa fa-pencil"></i></a>
                         <a class="btn btn-default" ng-if="view.user && pipeline.pipeline.user._id === view.user.id" tooltip="Delete Workflow" ng-click="deletePipeline(pipeline)"><i class="fa fa-trash"></i></a>
                         <a href
                            class="btn btn-default btn-toggle"
-                           tooltip="Toggle Versions ({{ pipeline.revisions.length }})"
+                           tooltip="Toggle Versions ({{ ::pipeline.revisions.length }})"
                            tooltip-placement="left"
                            tooltip-append-to-body="true"
                            ng-click="toggleRevisions(pipeline)">
-                            {{ pipeline.revisions.length }} <i class="fa" ng-class="{'fa-chevron-right': !pipeline.active, 'fa-chevron-down': pipeline.active}"></i>
+                            {{ ::pipeline.revisions.length }} <i class="fa" ng-class="{'fa-chevron-right': !pipeline.active, 'fa-chevron-down': pipeline.active}"></i>
                         </a>
                     </td>
                 </tr>
@@ -77,11 +77,11 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="revision in pipeline.revisions">
-                                        <td><a ng-href="#/pipeline/{{ revision._id }}" class="version"><strong><i class="fa fa-tag"></i> {{ 'v' + revision.version }}</strong></a></td>
-                                        <td><p tooltip="{{ revision.description }}" tooltip-popup-delay="1000">{{ revision.description }}</p></td>
+                                    <tr ng-repeat="revision in ::pipeline.revisions">
+                                        <td><a ng-href="#/pipeline/{{ ::revision._id }}" class="version"><strong><i class="fa fa-tag"></i> v{{ ::revision.version }}</strong></a></td>
+                                        <td><p tooltip="{{ ::revision.description }}" tooltip-popup-delay="1000">{{ ::revision.description }}</p></td>
                                         <td class="right">
-                                            <a class="btn btn-sm btn-default" tooltip="Edit Revision" ng-href="#/pipeline/{{ revision._id }}/edit"><i class="fa fa-pencil"></i></a>
+                                            <a class="btn btn-sm btn-default" tooltip="Edit Revision" ng-href="#/pipeline/{{ ::revision._id }}/edit"><i class="fa fa-pencil"></i></a>
                                         </td>
                                     </tr>
                                     <tr class="empty" ng-if="pipeline.revisions.length === 0">

@@ -571,6 +571,14 @@ body {
     }
   }
 
+  /* GitHub Repos table */
+  &.github-repos {
+    th {
+      &:nth-child(1) { width: 80%; }
+      &:nth-child(2) { width: 20%; }
+    }
+  }
+
   /* Jobs table */
   &.jobs {
     th {
