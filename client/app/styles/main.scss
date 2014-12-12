@@ -226,8 +226,25 @@ body {
 
   /* Apps page */
   &.apps {
-    .content {
+    & > .content {
       padding-top: 0;
+      @extend %flex;
+      .tabs {
+        @extend %flex;
+        @include flex(1);
+        .section,
+        .include {
+          @extend %flex;
+          @include flex(1);
+        }
+        .include {
+          padding: 0;
+          margin: 0;
+          .content {
+            padding-top: 0;
+          }
+        }
+      }
     }
   }
 
@@ -462,22 +479,6 @@ body {
       &:nth-child(1),
       &:nth-child(2) { width: 15%; }
       &:nth-child(3) { width: 50%; }
-      &:nth-child(4) { width: 20%; }
-    }
-    td {
-      p {
-        &:not(.alert) {
-          max-width: 500px;
-        }
-      }
-    }
-  }
-
-  /* Pipelines table */
-  &.pipelines {
-    th {
-      &:nth-child(1),
-      &:nth-child(2) { width: 40%; }
       &:nth-child(4) { width: 20%; }
     }
     td {

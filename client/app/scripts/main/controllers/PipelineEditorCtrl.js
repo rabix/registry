@@ -4,7 +4,7 @@
 'use strict';
 
 angular.module('registryApp')
-    .controller('PipelineEditorCtrl', ['$scope', '$rootScope', '$q', '$routeParams', '$modal', '$templateCache', '$location', 'Sidebar', 'Loading', 'App', 'Pipeline', 'User', 'Repo', function ($scope, $rootScope, $q, $routeParams, $modal, $templateCache, $location, Sidebar, Loading, App, Pipeline, User, Repo) {
+    .controller('PipelineEditorCtrl', ['$scope', '$rootScope', '$q', '$routeParams', '$modal', '$templateCache', '$location', 'Sidebar', 'Loading', 'Tool', 'Workflow', 'User', 'Repo', function ($scope, $rootScope, $q, $routeParams, $modal, $templateCache, $location, Sidebar, Loading, Tool, Workflow, User, Repo) {
 
         Sidebar.setActive('dyole');
 
@@ -79,7 +79,7 @@ angular.module('registryApp')
         });
 
         if ($routeParams.mode === 'edit') {
-            Pipeline.getRevision($routeParams.id)
+            Workflow.getRevision($routeParams.id)
                 .then(function (result) {
                     $scope.view.pipeline = result.data;
                 });
@@ -213,10 +213,10 @@ angular.module('registryApp')
 
         /* load tools/workflows grouped by repositories */
         $q.all([
-            App.getGroupedTools('my'),
-            App.getGroupedTools('other'),
-            Pipeline.groupedWorkflows('my'),
-            Pipeline.groupedWorkflows('other')
+            Tool.getGroupedTools('my'),
+            Tool.getGroupedTools('other'),
+            Workflow.groupedWorkflows('my'),
+            Workflow.groupedWorkflows('other')
         ]).then(appsLoaded);
 
         /**
@@ -439,7 +439,7 @@ angular.module('registryApp')
         };
         
         $scope.publish = function () {
-            Pipeline.publishRevision($scope.view.pipeline._id, {publish: true}).then(function (data) {
+            Workflow.publishRevision($scope.view.pipeline._id, {publish: true}).then(function (data) {
                 var trace = data;
 
                 $modal.open({
@@ -452,7 +452,7 @@ angular.module('registryApp')
             });
         };
 
-        $scope.formatPipeline = function(pipeline) {
+        $scope.format = function(pipeline) {
 
             var modal = $modal.open({
                 template: $templateCache.get('views/dyole/json-modal.html'),

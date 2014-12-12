@@ -97,8 +97,6 @@
 
     <script src="scripts/main/controllers/MasterCtrl.js"></script>
     <script src="scripts/main/controllers/HomeCtrl.js"></script>
-    <script src="scripts/main/controllers/AppsCtrl.js"></script>
-    <script src="scripts/main/controllers/AppCtrl.js"></script>
     <script src="scripts/main/controllers/ModalCtrl.js"></script>
     <script src="scripts/main/controllers/ModalJSONCtrl.js"></script>
     <script src="scripts/main/controllers/BuildsCtrl.js"></script>
@@ -108,10 +106,7 @@
     <script src="scripts/main/controllers/SettingsCtrl.js"></script>
     <script src="scripts/main/controllers/AddYourGitHubRepoCtrl.js"></script>
     <script src="scripts/main/controllers/RepoInstructionsCtrl.js"></script>
-    <script src="scripts/main/controllers/RevisionCtrl.js"></script>
     <script src="scripts/main/controllers/PipelineEditorCtrl.js"></script>
-    <script src="scripts/main/controllers/PipelinesCtrl.js"></script>
-    <script src="scripts/main/controllers/PipelineViewCtrl.js"></script>
     <script src="scripts/main/controllers/ManageRepoCtrl.js"></script>
     <script src="scripts/main/controllers/PickRepoModalCtrl.js"></script>
     <script src="scripts/main/controllers/MarkdownCtrl.js"></script>
@@ -139,11 +134,20 @@
     <script src="scripts/main/services/HTTPInterceptor.js"></script>
 
     <script src="scripts/main/models/User.js"></script>
-    <script src="scripts/main/models/App.js"></script>
     <script src="scripts/main/models/Job.js"></script>
     <script src="scripts/main/models/Build.js"></script>
     <script src="scripts/main/models/Repo.js"></script>
-    <script src="scripts/main/models/Pipeline.js"></script>
+
+    <script src="scripts/app/app.js"></script>
+
+    <script src="scripts/app/controllers/AppsCtrl.js"></script>
+    <script src="scripts/app/controllers/ToolCtrl.js"></script>
+    <script src="scripts/app/controllers/ToolRevisionCtrl.js"></script>
+    <script src="scripts/app/controllers/WorkflowCtrl.js"></script>
+
+    <script src="scripts/app/models/Tool.js"></script>
+    <script src="scripts/app/models/Workflow.js"></script>
+
     <!-- endbuild -->
 
     <!-- build:js({.tmp,app}) scripts/dyole.js -->

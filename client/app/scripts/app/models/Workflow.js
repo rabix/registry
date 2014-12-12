@@ -1,19 +1,19 @@
 'use strict';
 
-angular.module('registryApp')
-    .service('Pipeline', ['Api', '$localForage', function (Api, $localForage) {
+angular.module('registryApp.app')
+    .service('Workflow', ['Api', '$localForage', function (Api, $localForage) {
 
         var self = {};
 
         /**
-         * Get list of pipelines
+         * Get list of workflows
          *
          * @param {integer} skip
          * @param {string} searchTerm
          * @param {boolean} mine
          * @returns {object} $promise
          */
-        self.getPipelines = function(skip, searchTerm, mine) {
+        self.getWorkflows = function(skip, searchTerm, mine) {
 
             var isSearch = !(_.isUndefined(searchTerm) || _.isEmpty(searchTerm));
             var params = {skip: skip};
@@ -29,25 +29,25 @@ angular.module('registryApp')
         };
 
         /**
-         * Get pipeline by id
+         * Get workflow by id
          *
          * @param id
          * @returns {object} $promise
          */
-        self.getPipeline = function(id) {
+        self.getWorkflow = function(id) {
 
             return Api.pipelines.get({id: id}).$promise;
 
         };
 
         /**
-         * Create new or update existing pipeline
+         * Create new or update existing workflow
          *
          * @param id
          * @param data
          * @returns {$promise}
          */
-        self.savePipeline = function(id, data) {
+        self.saveWorkflow = function(id, data) {
 
             var mode = id ? 'update' : 'add';
 
@@ -56,79 +56,81 @@ angular.module('registryApp')
         };
 
         /**
-         * Delete pipeline by id
+         * Delete workflow by id
          *
          * @param id
          * @returns {*}
          */
-        self.deletePipeline = function (id) {
+        self.deleteWorkflow = function (id) {
 
             return Api.pipelines.delete({id: id}).$promise;
 
         };
 
         /**
-         * Get pipeline from the local db
+         * Get workflow from the local db
          *
          * @returns {*}
          */
-        self.getLocalPipeline = function () {
+        self.getLocal = function () {
 
-            return $localForage.getItem('pipeline')
-                .then(function (pipeline) {
-                    return _.isNull(pipeline) ? {} : {json: pipeline};
+            return $localForage.getItem('workflow')
+                .then(function (workflow) {
+                    return _.isNull(workflow) ? {} : {json: workflow};
                 });
 
         };
 
         /**
-         * Save pipeline into local db
+         * Save workflow into local db
          * @param json
          */
-        self.saveLocalPipeline = function (json) {
+        self.saveLocal = function (json) {
 
-            $localForage.setItem('pipeline', json);
+            $localForage.setItem('workflow', json);
 
         };
 
         /**
-         * Remove pipeline from local db
+         * Remove workflow from local db
          * @returns {*}
          */
         self.flush = function() {
 
-            return $localForage.removeItem('pipeline');
+            return $localForage.removeItem('workflow');
 
         };
 
         /**
-         * Format pipeline revision json
+         * Format workflow revision json
          *
-         * @param pipeline
+         * @param workflow
          * @returns {$promise|*}
          */
-        self.formatPipeline = function (pipeline) {
-            return Api.formatPipeline.format({action: ''}, {pipeline: pipeline}).$promise;
+        self.format = function (workflow) {
+
+            return Api.formatPipeline.format({action: ''}, {pipeline: workflow}).$promise;
+
         };
 
         /**
-         * Upload pipeline revision json and return url to file from s3
+         * Upload workflow revision json and return url to file from s3
          *
-         * @param pipeline
+         * @param workflow
          * @returns {$promise|*}
          */
-        self.getPipelineURL = function (pipeline) {
-            return Api.formatPipeline.format({action: 'upload'}, {pipeline: pipeline}).$promise;
+        self.getURL = function (workflow) {
+            return Api.formatPipeline.format({action: 'upload'}, {pipeline: workflow}).$promise;
         };
 
         /**
-         * Fork pipeline with current revision
+         * Fork workflow with current revision
          *
-         * @param pipeline
+         * @param workflow
          * @returns {$promise|*}
          */
-        self.fork = function (pipeline) {
-            return Api.forkPipeline.fork({}, { pipeline: pipeline }).$promise;
+        self.fork = function (workflow) {
+            return Api.forkPipeline.fork({}, { pipeline: workflow }).$promise;
         };
 
         /**
@@ -146,10 +148,10 @@ angular.module('registryApp')
          *
          * @param skip
          * @param searchTerm
-         * @param pipelineId
+         * @param workflowId
          * @returns {$promise|*}
          */
-        self.getRevisions = function(skip, searchTerm, pipelineId) {
+        self.getRevisions = function(skip, searchTerm, workflowId) {
 
             var isSearch = !(_.isUndefined(searchTerm) || _.isEmpty(searchTerm));
             var params = {skip: skip};
@@ -158,15 +160,15 @@ angular.module('registryApp')
                 params.q = searchTerm;
             }
 
-            if (angular.isDefined(pipelineId)) {
-                params.field_pipeline = pipelineId;
+            if (angular.isDefined(workflowId)) {
+                params.field_pipeline = workflowId;
             }
 
             return Api.pipelineRevs.get(params).$promise;
         };
 
         /**
-         * Publish pipeline revision
+         * Publish workflow revision
          *
          * @param id
          * @param data
@@ -177,7 +179,7 @@ angular.module('registryApp')
         };
 
         /**
-         * Delete pipeline revision
+         * Delete workflow revision
          *
          * @param id
          * @returns {$promise|*}
@@ -196,6 +198,12 @@ angular.module('registryApp')
             return Api.groupedWorkflows.get({type: type}).$promise;
         };
 
+        /**
+         * Check if workflow json is valid
+         *
+         * @param json
+         * @returns {*}
+         */
         self.validateJson = function (json) {
             return Api.validatePipeline.validate({}, {json: json}).$promise;
         };

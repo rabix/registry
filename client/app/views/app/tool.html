@@ -1,16 +1,16 @@
 <div ng-class="view.classes" loading="view.loading">
 
     <div class="heading">
-        <a ng-href="#/apps/toools" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
+        <a ng-href="#/apps" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
         <h1>
-            <span>{{ ::view.app.name }} <span class="tool-repo">({{ ::view.app.repo.owner }}/{{ ::view.app.repo.name }})</span></span>
+            <span>{{ ::view.tool.name }} <span class="tool-repo">({{ ::view.tool.repo.owner }}/{{ ::view.tool.repo.name }})</span></span>
             <div ng-if="view.revisions.length > 0" class="nav nav-pills nav-page">
-                <li ng-class="{active: view.tab === 'info'}"><a ng-href="#/app/{{ ::view.app._id }}">Info</a></li>
-                <li ng-class="{active: view.tab === 'revisions'}"><a ng-href="#/app/{{ ::view.app._id }}/revisions">Revisions</a></li>
+                <li ng-class="{active: view.tab === 'info'}"><a ng-href="#/tool/{{ ::view.tool._id }}/info">Info</a></li>
+                <li ng-class="{active: view.tab === 'revisions'}"><a ng-href="#/tool/{{ ::view.tool._id }}/revisions">Revisions</a></li>
             </div>
             <div class="actions pull-right">
-                <a href ng-if="!view.app.repo.is_public" ng-click="deleteApp()" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a>
-                <a ng-href="#/cliche/{{ ::view.app._id }}/latest" class="btn btn-primary"><i class="fa fa-pencil"></i> Edit</a>
+                <a href ng-if="!view.tool.repo.is_public" ng-click="deleteTool()" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a>
+                <a ng-href="#/cliche/{{ ::view.tool._id }}/latest" class="btn btn-primary"><i class="fa fa-pencil"></i> Edit</a>
             </div>
         </h1>
     </div>
@@ -21,8 +21,8 @@
         <section ng-show="view.tab === 'info'" class="info">
 
             <div class="description">
-                <p ng-if="!view.app.description"><i>There is no description for this tool</i></p>
-                <div class="markdown-body" marked="::view.app.description"></div>
+                <p ng-if="!view.tool.description"><i>There is no description for this tool</i></p>
+                <div class="markdown-body" marked="::view.tool.description"></div>
             </div>
 
             <div class="description">
@@ -32,41 +32,41 @@
 
                             <section class="col-md-4">
                                 <h5>Author</h5>
-                                <p><strong>Username:</strong> <a href="http://github.com/{{ ::view.app.user.github.login }}" target="_blank">{{ ::view.app.user.github.login }}</a> </p>
-                                <p><strong>Name:</strong> {{ ::view.app.user.github.name }} </p>
+                                <p><strong>Username:</strong> <a href="http://github.com/{{ ::view.tool.user.github.login }}" target="_blank">{{ ::view.tool.user.github.login }}</a> </p>
+                                <p><strong>Name:</strong> {{ ::view.tool.user.github.name }} </p>
                             </section>
 
                             <section class="col-md-4">
                                 <h5>Docker Image Details</h5>
                                 <p>
                                     <strong>Image Id:</strong>
-                                    {{ ::view.app.json.requirements.environment.container.imageId }}
-                                    <i ng-if="!view.app.json.requirements.environment.container.imageId">Not defined</i>
+                                    {{ ::view.tool.json.requirements.environment.container.imageId }}
+                                    <i ng-if="!view.tool.json.requirements.environment.container.imageId">Not defined</i>
                                 </p>
                                 <p>
                                     <strong>Image Uri:</strong>
-                                    <i ng-if="!view.app.json.requirements.environment.container.uri">Not defined</i>
-                                    <copy ng-if="view.app.json.requirements.environment.container.uri" string="{{ ::view.app.json.requirements.environment.container.uri }}" show-string="true" is-small="true"></copy>
+                                    <i ng-if="!view.tool.json.requirements.environment.container.uri">Not defined</i>
+                                    <copy ng-if="view.tool.json.requirements.environment.container.uri" string="{{ ::view.tool.json.requirements.environment.container.uri }}" show-string="true" is-small="true"></copy>
                                 </p>
                             </section>
 
                             <section class="col-md-4">
-                                <h5>App Details</h5>
-                                <p><strong>Repo:</strong> <a ng-href="#/repo/{{ ::view.app.repo.id }}">{{ ::view.app.repo.owner }}/{{ ::view.app.repo.name }}</a></p>
+                                <h5>Tool Details</h5>
+                                <p><strong>Repo:</strong> <a ng-href="#/repo/{{ ::view.tool.repo.id }}">{{ ::view.tool.repo.owner }}/{{ ::view.tool.repo.name }}</a></p>
                             </section>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div ng-if="view.app.is_script" class="snippet">
+            <div ng-if="view.tool.is_script" class="snippet">
                 <p>Script</p>
-                <pre pretty-json="::view.app.script"></pre>
+                <pre pretty-json="::view.tool.script"></pre>
             </div>
 
             <div class="snippet">
-                <p>Use this command to run the app</p>
-                <pre>$ rabix "<a href="/tool/{{ ::view.app._id }}" target="_blank">http://rabix.org/tool/{{ ::view.app._id }}</a>"</pre>
+                <p>Use this command to run the tool</p>
+                <pre>$ rabix "<a href="/tool/{{ ::view.tool._id }}" target="_blank">http://rabix.org/tool/{{ ::view.tool._id }}</a>"</pre>
             </div>
 
             <div class="snippet">
@@ -74,7 +74,7 @@
                     Use this code snippet for your pipeline
                     <i class="fa" ng-class="{'fa-chevron-right': !view.isJsonVisible, 'fa-chevron-down': view.isJsonVisible}"></i>
                 </a>
-                <pre ng-class="{hide: !view.isJsonVisible}" pretty-json="::view.app.json"></pre>
+                <pre ng-class="{hide: !view.isJsonVisible}" pretty-json="::view.tool.json"></pre>
             </div>
 
         </section>
@@ -97,12 +97,12 @@
                             </td>
                             <td><p tooltip="{{ ::revision.description }}" tooltip-popup-delay="1000">{{ ::revision.description }}</p></td>
                             <td class="right">
-                                <a class="btn btn-sm btn-default" tooltip="View Revision" ng-href="#/revision/{{ ::revision._id }}"><i class="fa fa-eye"></i></a>
-                                <a class="btn btn-sm btn-default" tooltip="Edit Revision" ng-href="#/cliche/{{ ::view.app._id }}/{{ ::revision._id }}"><i class="fa fa-pencil"></i></a>
+                                <a class="btn btn-sm btn-default" tooltip="View Revision" ng-href="#/tool-revision/{{ ::revision._id }}"><i class="fa fa-eye"></i></a>
+                                <a class="btn btn-sm btn-default" tooltip="Edit Revision" ng-href="#/cliche/{{ ::view.tool._id }}/{{ ::revision._id }}"><i class="fa fa-pencil"></i></a>
                             </td>
                         </tr>
                         <tr class="empty" ng-if="view.revisions.length === 0">
-                            <td colspan="4"><p class="alert alert-info">There are no revisions for this app found</p></td>
+                            <td colspan="4"><p class="alert alert-info">There are no revisions for this tool found</p></td>
                         </tr>
                     </tbody>
                 </table>

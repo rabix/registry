@@ -6,7 +6,7 @@
 'use strict';
 
 angular.module('registryApp')
-    .controller('TaskCtrl', ['$scope', '$q', '$modal', '$templateCache', '$location', 'Sidebar', 'Job', 'User', 'Repo', 'Pipeline', function ($scope, $q, $modal, $templateCache, $location, Sidebar, Job, User, Repo, Pipeline) {
+    .controller('TaskCtrl', ['$scope', '$q', '$modal', '$templateCache', '$location', 'Sidebar', 'Job', 'User', 'Repo', 'Workflow', function ($scope, $q, $modal, $templateCache, $location, Sidebar, Job, User, Repo, Workflow) {
 
         Sidebar.setActive('tasks');
 
@@ -45,7 +45,7 @@ angular.module('registryApp')
 
             if (type === 'Workflow') {
 
-                Pipeline.formatPipeline(json).then(function (pipeline) {
+                Workflow.format(json).then(function (pipeline) {
                     deferred.resolve(pipeline.json.inputs.properties);
                 });
 

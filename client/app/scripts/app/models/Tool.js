@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('registryApp')
-    .service('App', ['Api', 'Data', function (Api, Data) {
+angular.module('registryApp.app')
+    .service('Tool', ['Api', 'Data', function (Api, Data) {
 
         var self = {};
 
@@ -9,25 +9,17 @@ angular.module('registryApp')
          * Get list of tools
          *
          * @param {integer} skip
-         * @param {boolean} isScript
          * @param {string} searchTerm
          * @param {boolean} mine
-         * @param {string} repoId
-         * @returns {object} $promise
+         * @returns {*}
          */
-        self.getApps = function(skip, type, searchTerm, mine, repoId) {
+        self.getTools = function(skip, searchTerm, mine) {
 
             var isSearch = !(_.isUndefined(searchTerm) || _.isEmpty(searchTerm));
             var params = {skip: skip};
 
             if (isSearch) {
                 params.q = searchTerm;
-            }
-
-            params.is_script = type === 'scripts' || null;
-
-            if (angular.isDefined(repoId)) {
-                params.field_repo = repoId;
             }
 
             params.mine = mine || null;
@@ -43,7 +35,7 @@ angular.module('registryApp')
          * @param {string} searchTerm
          * @returns {*}
          */
-        self.getScripts = function(skip, searchTerm) {
+        self.getScripts = function(skip, searchTerm, mine) {
 
             var isSearch = !(_.isUndefined(searchTerm) || _.isEmpty(searchTerm));
             var params = {skip: skip, is_script: true};
@@ -52,14 +44,7 @@ angular.module('registryApp')
                 params.q = searchTerm;
             }
 
-            return Api.apps.get(params).$promise;
-
-        };
-
-        /**
-         * Get list of tools
-         */
-        self.getAllApps = function(params) {
+            params.mine = mine || null;
 
             return Api.apps.get(params).$promise;
 
@@ -72,11 +57,9 @@ angular.module('registryApp')
          * @param revision
          * @returns {object} $promise
          */
-        self.getApp = function(id, revision) {
+        self.getTool = function(id, revision) {
 
-            var promise = Api.apps.get({id: id, revision: revision}).$promise;
-
-            return promise;
+            return Api.apps.get({id: id, revision: revision}).$promise;;
 
         };
 
@@ -186,7 +169,7 @@ angular.module('registryApp')
          * @param id
          * @returns {*}
          */
-        self.deleteApp = function (id) {
+        self.deleteTool = function (id) {
 
             return Api.apps.delete({id: id}).$promise;
 

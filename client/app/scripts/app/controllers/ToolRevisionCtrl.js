@@ -1,15 +1,17 @@
 'use strict';
 
-angular.module('registryApp')
-    .controller('RevisionCtrl', ['$scope', '$routeParams', '$q', 'App', 'Sidebar', 'Loading', function ($scope, $routeParams, $q, App, Sidebar, Loading) {
+angular.module('registryApp.app')
+    .controller('ToolRevisionCtrl', ['$scope', '$routeParams', '$q', 'Tool', 'Sidebar', 'Loading', function ($scope, $routeParams, $q, Tool, Sidebar, Loading) {
 
-        Sidebar.setActive('tools');
+        Sidebar.setActive('apps');
 
         $scope.view = {};
         $scope.view.loading = true;
+
         $scope.view.revision = null;
         $scope.view.repo = null;
         $scope.view.author = null;
+
         $scope.view.isJsonVisible = false;
 
         $scope.view.classes = ['page', 'revision'];
@@ -20,13 +22,14 @@ angular.module('registryApp')
             if (n !== o) { $scope.view.classes = n; }
         });
 
-        App.getRevision($routeParams.id)
+        Tool.getRevision($routeParams.id)
             .then(
                 function(result) {
                     $scope.view.revision = result.data;
                     $scope.view.repo = result.app.repo;
                     $scope.view.author = result.app.user;
                     $scope.view.app = result.app;
+
                     $scope.view.loading = false;
                 });
 

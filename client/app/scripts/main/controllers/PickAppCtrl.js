@@ -6,7 +6,7 @@
 'use strict';
 
 angular.module('registryApp')
-    .controller('PickAppCtrl', ['$scope', '$q', '$modalInstance', 'App', 'Pipeline', function ($scope, $q, $modalInstance, App, Pipeline) {
+    .controller('PickAppCtrl', ['$scope', '$q', '$modalInstance', 'Tool', 'Workflow', function ($scope, $q, $modalInstance, Tool, Workflow) {
 
         $scope.view = {};
         $scope.view.loading = true;
@@ -85,9 +85,9 @@ angular.module('registryApp')
         };
 
         $q.all([
-                App.getApps(0),
-                App.getScripts(0),
-                Pipeline.getPipelines(0)
+                Tool.getTools(0),
+                Tool.getScripts(0),
+                Workflow.getWorkflows(0)
             ]).then(function(result) {
                 toolsLoaded(result[0]);
                 scriptsLoaded(result[1]);
@@ -105,7 +105,7 @@ angular.module('registryApp')
 
             $scope.view.loading = true;
 
-            App.getApps(offset, null, $scope.view.searchTerm).then(toolsLoaded);
+            Tool.getTools(offset, null, $scope.view.searchTerm).then(toolsLoaded);
         };
 
         /**
@@ -117,7 +117,7 @@ angular.module('registryApp')
 
             $scope.view.loading = true;
 
-            App.getScripts(offset, $scope.view.searchTerm).then(toolsLoaded);
+            Tool.getScripts(offset, $scope.view.searchTerm).then(toolsLoaded);
         };
 
         /**
@@ -129,7 +129,7 @@ angular.module('registryApp')
 
             $scope.view.loading = true;
 
-            Pipeline.getPipelines(offset, $scope.view.searchTerm).then(workflowsLoaded);
+            Workflow.getWorkflows(offset, $scope.view.searchTerm).then(workflowsLoaded);
         };
 
         /**
@@ -170,9 +170,9 @@ angular.module('registryApp')
             $scope.view.loading = true;
 
             $q.all([
-                    App.getApps(0, null, $scope.view.searchTerm),
-                    App.getScripts(0, $scope.view.searchTerm),
-                    Pipeline.getPipelines(0, $scope.view.searchTerm)
+                    Tool.getTools(0, null, $scope.view.searchTerm),
+                    Tool.getScripts(0, $scope.view.searchTerm),
+                    Workflow.getWorkflows(0, $scope.view.searchTerm)
                 ]).then(function(result) {
 
                     toolsLoaded(result[0]);
@@ -197,9 +197,9 @@ angular.module('registryApp')
             $scope.view.loading = true;
 
             $q.all([
-                    App.getApps(0),
-                    App.getScripts(0),
-                    Pipeline.getPipelines(0)
+                    Tool.getTools(0),
+                    Tool.getScripts(0),
+                    Workflow.getWorkflows(0)
                 ]).then(function(result) {
 
                     toolsLoaded(result[0]);

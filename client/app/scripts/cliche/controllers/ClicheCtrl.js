@@ -7,7 +7,7 @@
 'use strict';
 
 angular.module('registryApp.cliche')
-    .controller('ClicheCtrl', ['$scope', '$rootScope', '$q', '$modal', '$templateCache', '$routeParams', '$location', 'Data', 'User', 'App', 'Repo', 'Loading', 'SandBox', 'Sidebar', function ($scope, $rootScope, $q, $modal, $templateCache, $routeParams, $location, Data, User, App, Repo, Loading, SandBox, Sidebar) {
+    .controller('ClicheCtrl', ['$scope', '$rootScope', '$q', '$modal', '$templateCache', '$routeParams', '$location', 'Data', 'User', 'Tool', 'Repo', 'Loading', 'SandBox', 'Sidebar', function ($scope, $rootScope, $q, $modal, $templateCache, $routeParams, $location, Data, User, Tool, Repo, Loading, SandBox, Sidebar) {
 
         Sidebar.setActive('cliche');
 
@@ -121,7 +121,7 @@ angular.module('registryApp.cliche')
         if ($routeParams.id) {
 
             $q.all([
-                    App.getApp($routeParams.id, $routeParams.revision),
+                    Tool.getTools($routeParams.id, $routeParams.revision),
                     User.getUser()
                 ]).then(function(result) {
 
@@ -531,7 +531,7 @@ angular.module('registryApp.cliche')
          */
         $scope.changeRevision = function() {
 
-            App.getRevisions(0, '', $routeParams.id)
+            Tool.getRevisions(0, '', $routeParams.id)
                 .then(function(result) {
 
                     var modalInstance = $modal.open({
@@ -582,7 +582,7 @@ angular.module('registryApp.cliche')
 
                 data.is_script = $scope.view.app.is_script;
 
-                App.fork(data).then(function (result) {
+                Tool.fork(data).then(function (result) {
                     $location.path('/cliche/' + result.app._id + '/latest');
                 }, function() {
                     $scope.view.saving = false;
@@ -627,7 +627,7 @@ angular.module('registryApp.cliche')
 
                 data.is_script = $scope.view.app.is_script;
 
-                App.create(data)
+                Tool.create(data)
                     .then(function(result) {
 
                         $scope.view.saving = false;
@@ -659,7 +659,7 @@ angular.module('registryApp.cliche')
 
             $scope.view.saving = true;
 
-            App.update($scope.view.app._id)
+            Tool.update($scope.view.app._id)
                 .then(function(result) {
 
                     $scope.view.saving = false;
@@ -704,7 +704,7 @@ angular.module('registryApp.cliche')
         $scope.delete = function () {
 
             var modalInstance = $modal.open({
-                template: $templateCache.get('views/cliche/partials/confirm-delete.html'),
+                template: $templateCache.get('views/partials/confirm-delete.html'),
                 controller: 'ModalCtrl',
                 windowClass: 'modal-confirm',
                 resolve: {data: function () { return {}; }}
@@ -712,10 +712,10 @@ angular.module('registryApp.cliche')
 
             modalInstance.result.then(function () {
                 $scope.view.saving = true;
-                App.deleteRevision($scope.view.revision._id).then(function () {
+                Tool.deleteRevision($scope.view.revision._id).then(function () {
                     $scope.view.saving = false;
                     $scope.view.reload = true;
-                    $location.path('/apps/tools');
+                    $location.path('/apps');
                 }, function() {
                     $scope.view.saving = false;
                 });
