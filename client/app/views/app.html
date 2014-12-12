@@ -70,12 +70,10 @@
             </div>
 
             <div class="snippet">
-                <p>
+                <a href class="toggle-btn" ng-click="toggleJson()">
                     Use this code snippet for your pipeline
-                    <a href class="toggle-btn" ng-click="toggleJson()">
-                        <i class="fa" ng-class="{'fa-chevron-right': !view.isJsonVisible, 'fa-chevron-down': view.isJsonVisible}"></i>
-                    </a>
-                </p>
+                    <i class="fa" ng-class="{'fa-chevron-right': !view.isJsonVisible, 'fa-chevron-down': view.isJsonVisible}"></i>
+                </a>
                 <pre ng-class="{hide: !view.isJsonVisible}" pretty-json="::view.app.json"></pre>
             </div>
 

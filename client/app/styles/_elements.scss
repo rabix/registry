@@ -716,11 +716,12 @@ legend {
 
 .toggle-btn {
   color: #555;
-  width: 30px;
-  text-align: center;
-  display: inline-block;
+  display: block;
+  padding: 5px;
+  text-decoration: none;
   &:hover {
     color: #555;
+    text-decoration: none;
   }
 }
 
