@@ -11,7 +11,7 @@ angular.module('registryApp.cliche')
         return {
             template: $templateCache.get('views/cliche/property/property-header.html'),
             scope: {
-                order: '@',
+                order: '=',
                 name: '@',
                 type: '@',
                 itemType: '@',
@@ -21,12 +21,12 @@ angular.module('registryApp.cliche')
             link: function(scope) {
 
                 scope.view = {};
-                scope.view.order = scope.order || '0';
+                scope.view.order = scope.order || 0;
 
                 /* watch for order to change */
                 scope.$watch('order', function(n, o) {
                     if (n !== o) {
-                        scope.view.order = n || '0';
+                        scope.view.order = n || 0;
                     }
                 });
 
