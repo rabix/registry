@@ -18,7 +18,8 @@ angular.module('registryApp.cliche')
                 active: '=',
                 properties: '=',
                 inputs: '=',
-                req: '='
+                req: '=',
+                handler: '&'
             },
             compile: function(element) {
                 return RecursionHelper.compile(element, function(scope, iElement) {
@@ -147,6 +148,8 @@ angular.module('registryApp.cliche')
                                     }
                                 });
                             }
+
+                            scope.handler();
 
                             Data.generateCommand();
 

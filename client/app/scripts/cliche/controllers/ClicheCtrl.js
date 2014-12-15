@@ -121,7 +121,7 @@ angular.module('registryApp.cliche')
         if ($routeParams.id) {
 
             $q.all([
-                    Tool.getTools($routeParams.id, $routeParams.revision),
+                    Tool.getTool($routeParams.id, $routeParams.revision),
                     User.getUser()
                 ]).then(function(result) {
 
