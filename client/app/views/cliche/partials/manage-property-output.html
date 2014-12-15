@@ -94,7 +94,7 @@
             <div class="row">
                 <div class="col-md-12">
 
-                    <label class="control-label">Meta</label>
+                    <label class="control-label">Metadata</label>
 
                     <div class="form-group meta-group" ng-class="{'has-error': view.newMeta.error}">
                         <div class="input-group">
@@ -110,10 +110,10 @@
                         </div>
                     </div>
 
-                    <div ng-repeat="(metaKey, metaValue) in view.property.adapter.meta" class="form-group meta-group">
+                    <div ng-repeat="(metaKey, metaValue) in view.property.adapter.metadata" class="form-group meta-group">
                         <div ng-if="metaKey !== '__inherit__'" class="input-group">
                             <div class="col-md-6 no-padding">
-                                <key-changer key="metaKey" items="view.property.adapter.meta"></key-changer>
+                                <key-changer key="metaKey" items="view.property.adapter.metadata"></key-changer>
                             </div>
                             <div class="col-md-6 no-padding">
                                 <expr ng-model="metaValue" index="{{ metaKey }}" handle-item-update="updateMetaValue(index, value)" placeholder="value" self="true"></expr>
@@ -134,7 +134,7 @@
 
                 <div class="form-group">
                     <label for="property-meta-inherit-{{ view.uniqueId }}" class="control-label inline">Inherit From Input</label>
-                    <select class="form-control inline" id="property-meta-inherit-{{ view.uniqueId }}" name="{{ name }}-meta-inherit" ng-model="view.property.adapter.meta.__inherit__" ng-options="value for value in view.inputs">
+                    <select class="form-control inline" id="property-meta-inherit-{{ view.uniqueId }}" name="{{ name }}-meta-inherit" ng-model="view.property.adapter.metadata.__inherit__" ng-options="value for value in view.inputs">
                         <option value>-- none --</option>
                     </select>
                 </div>

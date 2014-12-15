@@ -41,14 +41,17 @@
                             <thead>
                             <tr>
                                 <th>Versions</th>
-                                <th>&nbsp;</th>
+                                <th>Description</th>
                                 <th class="right">&nbsp;</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr ng-repeat="revision in ::workflow.revisions">
                                 <td><a ng-href="#/workflow/{{ ::revision._id }}" class="version"><strong><i class="fa fa-tag"></i> v{{ ::revision.version }}</strong></a></td>
-                                <td><p tooltip="{{ ::revision.description }}" tooltip-popup-delay="1000">{{ ::revision.description }}</p></td>
+                                <td>
+                                    <p ng-if="revision.description" tooltip="{{ ::revision.description }}" tooltip-popup-delay="1000">{{ ::revision.description }}</p>
+                                    <i ng-if="!revision.description">No description</i>
+                                </td>
                                 <td class="right">
                                     <a class="btn btn-sm btn-default" tooltip="Edit Revision" ng-href="#/workflow/{{ ::revision._id }}/edit"><i class="fa fa-pencil"></i></a>
                                 </td>

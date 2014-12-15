@@ -1,9 +1,7 @@
 'use strict';
 
 angular.module('registryApp.app')
-    .service('Tool', ['Api', 'Data', function (Api, Data) {
-
-        var self = {};
+    .factory('Tool', ['Api', 'Data', function (Api, Data) {
 
         /**
          * Get list of tools
@@ -13,7 +11,7 @@ angular.module('registryApp.app')
          * @param {boolean} mine
          * @returns {*}
          */
-        self.getTools = function(skip, searchTerm, mine) {
+        var getTools = function(skip, searchTerm, mine) {
 
             var isSearch = !(_.isUndefined(searchTerm) || _.isEmpty(searchTerm));
             var params = {skip: skip};
@@ -35,7 +33,7 @@ angular.module('registryApp.app')
          * @param {string} searchTerm
          * @returns {*}
          */
-        self.getScripts = function(skip, searchTerm, mine) {
+        var getScripts = function(skip, searchTerm, mine) {
 
             var isSearch = !(_.isUndefined(searchTerm) || _.isEmpty(searchTerm));
             var params = {skip: skip, is_script: true};
@@ -57,7 +55,7 @@ angular.module('registryApp.app')
          * @param revision
          * @returns {object} $promise
          */
-        self.getTool = function(id, revision) {
+        var getTool = function(id, revision) {
 
             return Api.apps.get({id: id, revision: revision}).$promise;;
 
@@ -69,7 +67,7 @@ angular.module('registryApp.app')
          * @param data
          * @returns {*}
          */
-        self.create = function(data) {
+        var create = function(data) {
 
             return Api.apps.add({id: 'create'}, {tool: Data.tool, repo_id: data.repoId, is_script: data.is_script}).$promise;
 
@@ -81,7 +79,7 @@ angular.module('registryApp.app')
          * @param data
          * @returns {*}
          */
-        self.fork = function(data) {
+        var fork = function(data) {
 
             return Api.apps.add({id: 'fork'}, {tool: Data.tool, repo_id: data.repoId, name: data.name, is_script: data.is_script}).$promise;
 
@@ -93,7 +91,7 @@ angular.module('registryApp.app')
          * @param appId
          * @returns {*}
          */
-        self.update = function(appId) {
+        var update = function(appId) {
 
             return Api.revisions.add({}, {tool: Data.tool, app_id: appId}).$promise;
 
@@ -105,7 +103,7 @@ angular.module('registryApp.app')
          * @param json
          * @returns {Object} $promise
          */
-        self.validateJson = function (json) {
+        var validateJson = function (json) {
 
             return Api.validate.post({}, json).$promise;
 
@@ -119,7 +117,7 @@ angular.module('registryApp.app')
          * @param {integer} appId
          * @returns {object} $promise
          */
-        self.getRevisions = function(skip, searchTerm, appId) {
+        var getRevisions = function(skip, searchTerm, appId) {
 
             var isSearch = !(_.isUndefined(searchTerm) || _.isEmpty(searchTerm));
             var params = {skip: skip};
@@ -132,9 +130,7 @@ angular.module('registryApp.app')
                 params.field_app_id = appId;
             }
 
-            var promise = Api.revisions.get(params).$promise;
-
-            return promise;
+            return Api.revisions.get(params).$promise;
 
         };
 
@@ -144,11 +140,9 @@ angular.module('registryApp.app')
          * @param id
          * @returns {object} $promise
          */
-        self.getRevision = function(id) {
+        var getRevision = function(id) {
 
-            var promise = Api.revisions.get({id: id}).$promise;
-
-            return promise;
+            return Api.revisions.get({id: id}).$promise;
 
         };
 
@@ -157,7 +151,7 @@ angular.module('registryApp.app')
          *
          * @returns {*}
          */
-        self.getGroupedTools = function (type, searchTerm) {
+        var getGroupedTools = function (type, searchTerm) {
 
             return Api.groupedTools.get({type: type, q: searchTerm}).$promise;
 
@@ -169,7 +163,7 @@ angular.module('registryApp.app')
          * @param id
          * @returns {*}
          */
-        self.deleteTool = function (id) {
+        var deleteTool = function (id) {
 
             return Api.apps.delete({id: id}).$promise;
 
@@ -181,12 +175,25 @@ angular.module('registryApp.app')
          * @param id
          * @returns {*}
          */
-        self.deleteRevision = function (id) {
+        var deleteRevision = function (id) {
 
             return Api.revisions.delete({id: id}).$promise;
 
         };
 
-        return self;
+        return {
+            getTools: getTools,
+            getScripts: getScripts,
+            getTool: getTool,
+            create: create,
+            fork: fork,
+            update: update,
+            validateJson: validateJson,
+            getRevisions: getRevisions,
+            getRevision: getRevision,
+            getGroupedTools: getGroupedTools,
+            deleteTool: deleteTool,
+            deleteRevision: deleteRevision
+        };
 
     }]);

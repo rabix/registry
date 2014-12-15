@@ -8,7 +8,7 @@
 angular.module('registryApp')
     .controller('TasksCtrl', ['$scope', '$q', '$injector', 'Sidebar', 'Loading', 'Job', 'User', function ($scope, $q, $injector, Sidebar, Loading, Job, User) {
 
-        Sidebar.setActive('tasks');
+        Sidebar.setActive('task tpls');
 
         $scope.view = {};
         $scope.view.page = 1;

@@ -1,6 +1,7 @@
 {
     "tool": {
         "name": "",
+        "schema": "https://github.com/common-workflow-language/common-workflow-language",
         "description": "",
         "documentAuthor": "",
         "requirements": {
@@ -73,7 +74,7 @@
                     "adapter": {
                         "streamable": true,
                         "glob": "output.sam",
-                        "meta": {
+                        "metadata": {
                             "__inherit__": "",
                             "key1": {
                                 "expr": "$job"

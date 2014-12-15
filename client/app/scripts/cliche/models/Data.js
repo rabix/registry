@@ -16,7 +16,7 @@ angular.module('registryApp.cliche')
          *
          * @type {number}
          */
-        self.version = 19;
+        self.version = 20;
 
         /**
          * Tool json object
@@ -172,26 +172,26 @@ angular.module('registryApp.cliche')
                         root: {
                             type: 'string'
                         },
-                        adapter: {prefix: '', separator: ' ', order: 0, transform: undefined, streamable: false}
+                        adapter: {prefix: '', separator: ' ', order: 0, value: undefined, streamable: false}
                     },
                     string: {
                         root: {
                             type: 'string',
                             enum: null
                         },
-                        adapter: {prefix: '', separator: ' ', order: 0, transform: undefined}
+                        adapter: {prefix: '', separator: ' ', order: 0, value: undefined}
                     },
                     integer: {
                         root: {
                             type: 'string'
                         },
-                        adapter: {prefix: '', separator: ' ', order: 0, transform: undefined}
+                        adapter: {prefix: '', separator: ' ', order: 0, value: undefined}
                     },
                     number: {
                         root: {
                             type: 'string',
                         },
-                        adapter: {prefix: '', separator: ' ', order: 0, transform: undefined}
+                        adapter: {prefix: '', separator: ' ', order: 0, value: undefined}
                     },
                     array: {
                         root: {
@@ -200,13 +200,13 @@ angular.module('registryApp.cliche')
                             maxItems: undefined,
                             items: {type: 'string'}
                         },
-                        adapter: {prefix: '', separator: ' ', order: 0, listTransform: undefined, listSeparator: ','}
+                        adapter: {prefix: '', separator: ' ', order: 0, listValue: undefined, listSeparator: ','}
                     },
                     boolean: {
                         root: {
                             type: 'string'
                         },
-                        adapter: {prefix: '', separator: ' ', order: 0, transform: undefined}
+                        adapter: {prefix: '', separator: ' ', order: 0, value: undefined}
                     },
                     object: {
                         root: {
@@ -221,13 +221,13 @@ angular.module('registryApp.cliche')
                         root: {
                             type: 'string'
                         },
-                        adapter: {streamable: false, glob: '', meta: {}, secondaryFiles: []}
+                        adapter: {streamable: false, glob: '', metadata: {}, secondaryFiles: []}
                     },
                     directory: {
                         root: {
                             type: 'string'
                         },
-                        adapter: {glob: '', meta: {}, secondaryFiles: []}
+                        adapter: {glob: '', metadata: {}, secondaryFiles: []}
                     },
                     array: {
                         root: {
@@ -236,7 +236,7 @@ angular.module('registryApp.cliche')
                             maxItems: undefined,
                             items: {type: 'file'}
                         },
-                        adapter: {glob: '', listStreamable: false, meta: {}, secondaryFiles: []}
+                        adapter: {glob: '', listStreamable: false, metadata: {}, secondaryFiles: []}
                     }
                 }
             };
@@ -440,7 +440,7 @@ angular.module('registryApp.cliche')
                             deferred.resolve(result);
                         });
                 } else {
-                    self.applyTransform(property.adapter.listTransform, (_.isObject(val) ? val.path : val), true)
+                    self.applyTransform(property.adapter.listValue, (_.isObject(val) ? val.path : val), true)
                         .then(function (result) {
                             deferred.resolve(result);
                         }, function (error) {
@@ -493,7 +493,7 @@ angular.module('registryApp.cliche')
                         break;
                     case 'file':
                         /* if input is FILE */
-                        self.applyTransform(property.adapter.transform, inputs[key].path, true)
+                        self.applyTransform(property.adapter.value, inputs[key].path, true)
                             .then(function (result) {
                                 prop.value = result;
                                 deferred.resolve(prop);
@@ -517,7 +517,7 @@ angular.module('registryApp.cliche')
                         break;
                     default:
                         /* if input is anything else (STRING, INTEGER) */
-                        self.applyTransform(property.adapter.transform, inputs[key], true)
+                        self.applyTransform(property.adapter.value, inputs[key], true)
                             .then(function (result) {
                                 prop.value = result;
                                 deferred.resolve(prop);
@@ -734,6 +734,11 @@ angular.module('registryApp.cliche')
 
         };
 
+        /**
+         * Transform tool json into appropriate structure
+         *
+         * @param isScript
+         */
         self.transformToolJson = function(isScript) {
 
             var transformed = angular.copy(self.tool);

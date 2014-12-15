@@ -31,7 +31,7 @@ angular.module('registryApp.cliche')
 
 
                     var inputScheme = scope.model;
-                    var validFileKeys = ['path', 'size', 'secondaryFiles', 'meta'];
+                    var validFileKeys = ['path', 'size', 'secondaryFiles', 'metadata'];
 
                     if (scope.prop.type === 'file') {
 

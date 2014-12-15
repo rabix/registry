@@ -7,6 +7,7 @@ var _ = require('lodash');
 
 var mapDefinition = {
     root: {
+        schema: {type: 'string', required: true},
         name: {type: 'string', required: true},
         description: {type: 'string'},
         documentAuthor: {type: 'string', required: true},
@@ -66,7 +67,7 @@ var mapDefinition = {
             adapter: {
                 stdin: {type: 'boolean'},
                 order: {type: 'number'},
-                transform: {type: 'object'},
+                value: {type: 'object'},
                 separator: {type: 'string'},
                 prefix: {type: 'string'}
             },
@@ -105,7 +106,7 @@ var mapDefinition = {
                     },
                     adapter: {
                         listSeparator: {type: 'string'},
-                        listTransform: {type: 'object'},
+                        listValue: {type: 'object'},
                         listStreamable: {type: 'boolean'}
                     },
                     items: {
@@ -125,7 +126,7 @@ var mapDefinition = {
                 stdout: {type: 'boolean'},
                 glob: {type: 'object'},
                 secondaryFiles: {type: 'array'},
-                meta: {type: 'object'}
+                metadata: {type: 'object'}
             },
             types: {
                 file: {

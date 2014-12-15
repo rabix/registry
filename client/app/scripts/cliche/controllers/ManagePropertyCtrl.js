@@ -28,7 +28,7 @@ angular.module('registryApp.cliche')
             case 'output':
                 $scope.view.property = {
                     type: 'file',
-                    adapter: {meta: {}}
+                    adapter: {metadata: {}}
                 };
                 break;
             case 'arg':
@@ -130,7 +130,7 @@ angular.module('registryApp.cliche')
                         $scope.view.property.adapter.prefix = '';
                         $scope.view.property.adapter.listSeparator = undefined;
                         $scope.view.property.adapter.separator = ' ';
-                        $scope.view.property.adapter.transform = undefined;
+                        $scope.view.property.adapter.value = undefined;
                     }
                 } else {
                     $scope.view.disabled = false;
@@ -142,10 +142,10 @@ angular.module('registryApp.cliche')
         });
 
         /* watch for inherit property change */
-        $scope.$watch('view.property.adapter.meta.__inherit__', function(n, o) {
+        $scope.$watch('view.property.adapter.metadata.__inherit__', function(n, o) {
             if (n !== o) {
                 if (_.isEmpty(n)) {
-                    delete $scope.view.property.adapter.meta.__inherit__;
+                    delete $scope.view.property.adapter.metadata.__inherit__;
                 }
             }
         });
@@ -166,8 +166,8 @@ angular.module('registryApp.cliche')
          *
          * @param value
          */
-        $scope.updateTransform = function (value) {
-            $scope.view.property.adapter.transform = value;
+        $scope.updateTransform = function (value, key) {
+            $scope.view.property.adapter[key] = value;
         };
 
         /**
@@ -177,16 +177,16 @@ angular.module('registryApp.cliche')
 
             $scope.view.newMeta.error = false;
 
-            if (!$scope.view.property.adapter.meta) {
-                $scope.view.property.adapter.meta = {};
+            if (!$scope.view.property.adapter.metadata) {
+                $scope.view.property.adapter.metadata = {};
             }
 
-            if (!_.isUndefined($scope.view.property.adapter.meta[$scope.view.newMeta.key]) || $scope.view.newMeta.key === '') {
+            if (!_.isUndefined($scope.view.property.adapter.metadata[$scope.view.newMeta.key]) || $scope.view.newMeta.key === '') {
                 $scope.view.newMeta.error = true;
                 return false;
             }
 
-            $scope.view.property.adapter.meta[$scope.view.newMeta.key] = $scope.view.newMeta.value;
+            $scope.view.property.adapter.metadata[$scope.view.newMeta.key] = $scope.view.newMeta.value;
             $scope.view.newMeta = {key: '', value: ''};
 
         };
@@ -198,7 +198,7 @@ angular.module('registryApp.cliche')
          * @returns {boolean}
          */
         $scope.removeMeta = function (index) {
-            delete $scope.view.property.adapter.meta[index];
+            delete $scope.view.property.adapter.metadata[index];
         };
 
         /**
@@ -216,7 +216,7 @@ angular.module('registryApp.cliche')
          * @param value
          */
         $scope.updateMetaValue = function (index, value) {
-            $scope.view.property.adapter.meta[index] = value;
+            $scope.view.property.adapter.metadata[index] = value;
         };
 
         /**
