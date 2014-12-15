@@ -7,7 +7,7 @@
 'use strict';
 
 angular.module('registryApp.cliche')
-    .controller('JsonEditorCtrl', ['$scope', '$modalInstance', '$timeout', 'options', 'App', function($scope, $modalInstance, $timeout, options, App) {
+    .controller('JsonEditorCtrl', ['$scope', '$modalInstance', '$timeout', 'options', 'Tool', function($scope, $modalInstance, $timeout, options, Tool) {
 
         $scope.view = {};
         $scope.view.user = options.user;
@@ -56,7 +56,7 @@ angular.module('registryApp.cliche')
 
             $scope.view.validating = true;
 
-            App.validateJson(json)
+            Tool.validateJson(json)
                 .then(function () {
 
                     $scope.view.validating = false;

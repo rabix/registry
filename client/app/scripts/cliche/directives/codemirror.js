@@ -10,7 +10,6 @@ angular.module('registryApp.cliche')
     .directive('codemirror', ['$timeout', '$templateCache', 'SandBox', function ($timeout, $templateCache, SandBox) {
         return {
             restrict: 'E',
-            replace: true,
             template: $templateCache.get('views/cliche/partials/codemirror.html'),
             scope: {
                 code: '=',

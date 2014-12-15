@@ -2,12 +2,12 @@
 
     <div class="heading">
         <a ng-if="view.mode === 'new'" ng-href="#/pipelines" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
-        <a ng-if="view.mode === 'edit'" ng-href="#/pipeline/{{ view.pipeline._id }}" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
+        <a ng-if="view.mode === 'edit'" ng-href="#/pipeline/{{ ::view.workflow._id }}" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
         <h1>
             <div class="form-group workflow-name">
-                <span class="pipeline-repo" ng-show="view.pipeline.pipeline.repo">({{view.pipeline.pipeline.repo.owner}}/{{view.pipeline.pipeline.repo.name}}) </span>
-                <input ng-show="view.mode === 'new'" type="text" placeholder="Workflow Name" ng-model="view.pipeline.name" class="form-control" />
-                <span ng-hide="view.mode === 'new'">{{ view.pipeline.pipeline.name }}</span>
+                <span class="pipeline-repo" ng-show="view.workflow.pipeline.repo">({{ ::view.workflow.pipeline.repo.owner }}/{{ ::view.workflow.pipeline.repo.name }}) </span>
+                <input ng-show="view.mode === 'new'" type="text" placeholder="Workflow Name" ng-model="view.workflow.name" class="form-control" />
+                <span ng-hide="view.mode === 'new'">{{ ::view.workflow.pipeline.name }}</span>
             </div>
 
             <strong class="changes-mark" ng-if="view.isChanged" tooltip="There are changes in your workflow" tooltip-placement="right">
@@ -16,7 +16,7 @@
 
             <div class="actions pull-right">
 
-                <button class="btn btn-default" ng-click="pipelineToJSON()" ng-disabled="view.saving" ><i class="fa fa-code"></i> JSON</button>
+                <button class="btn btn-default" ng-click="workflowToJSON()" ng-disabled="view.saving" ><i class="fa fa-code"></i> JSON</button>
 
                 <button ng-if="view.user" ng-click="save()" class="btn btn-default" ng-disabled="view.saving">
                     <i ng-class="{'fa-plus': view.mode === 'new', 'fa-check': view.mode === 'edit'}" class="fa"></i>
@@ -51,7 +51,7 @@
     <div ng-if="!view.loading" class="content">
 
         <div class="col content-col">
-            <div pipeline="view.pipeline" edit-mode="true" pipeline-change-fn="onPipelineChange(value)" handle-pipeline-json="formatPipeline(pipeline)"></div>
+            <div class="pipeline-wrap" pipeline="view.workflow" edit-mode="true" pipeline-change-fn="onWorkflowChange(value)" handle-pipeline-json="formatPipeline(pipeline)"></div>
         </div>
 
         <div class="col sidebar-col" ng-class="{closed: !view.showSidebar}">
@@ -71,18 +71,6 @@
                 </ul>
             </div>
 
-            <div ng-if="view.tab === 'apps'" class="filter">
-                <form class="search-form" ng-submit="filterApps()" novalidate>
-                    <div class="input-group">
-                        <input type="text" class="form-control" ng-model="view.searchTerm" placeholder="Filter Apps" required>
-                        <span class="input-group-btn">
-                            <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
-                            <a ng-if="!(view.searchTerm | isEmpty)" class="btn btn-default" href ng-click="resetFilter()"><i class="fa fa-ban"></i></a>
-                        </span>
-                    </div>
-                </form>
-            </div>
-
             <div class="content">
 
                 <div class="tabs right" ng-switch="view.tab">
@@ -91,10 +79,10 @@
 
                         <ul class="app-sidebar-list">
 
-                            <li ng-repeat="(repoType, repoTypeObj) in view.repoTypes" ng-class="{open: view.groups[repoType]}">
+                            <li ng-repeat="(repoType, repoTypeObj) in ::view.repoTypes" ng-class="{open: view.groups[repoType]}">
                                 <span ng-click="toggleGroup(repoType)">
                                     <i class="fa" ng-class="{'fa-plus-square': !view.groups[repoType], 'fa-minus-square': view.groups[repoType]}"></i>
-                                    {{ view.capitalize(repoType.split('Repositories')[0]) }} Repositories
+                                    {{ ::view.capitalize(repoType.split('Repositories')[0]) }} Repositories
                                 </span>
 
                                 <ul>
@@ -106,33 +94,33 @@
                                             <span ng-if="repoType === 'otherRepositories'">There are no other repositories</span>
                                         </p>
                                     </li>
-                                    <li ng-repeat="(repoName, apps) in repoTypeObj" ng-class="{open: view.repoGroups[repoName]}">
+                                    <li ng-repeat="(repoName, apps) in ::repoTypeObj" ng-class="{open: view.repoGroups[repoName]}">
 
                                         <span ng-click="toggleRepo(repoName)">
                                             <i class="fa" ng-class="{'fa-plus-square': !view.repoGroups[repoName], 'fa-minus-square': view.repoGroups[repoName]}"></i>
-                                            {{ repoName }}
+                                            {{ ::repoName }}
                                         </span>
 
                                         <ul class="apps-inner-list">
                                             <li ng-if="apps.tools.length !== 0"><span class="label label-info section-name">Tools</span></li>
 
-                                            <li ng-repeat="app in apps.tools">
+                                            <li ng-repeat="app in ::apps.tools">
 
                                                 <a href drag="app.latest">
                                                     <span class="pointer pull-left" ng-if="app.revisions.length !== 0" ng-click="toggleAppRevisions(app._id)"><i class="fa" ng-class="{'fa-minus-square':view.appRevisions[app._id].toggled, 'fa-plus-square': !view.appRevisions[app._id].toggled}"></i></span>
                                                     <i class="fa fa-puzzle-piece"></i>
-                                                    {{ app.name }} <small>(revision {{ app.latest.version }} )</small>
+                                                    {{ ::app.name }} <small>(revision {{ ::app.latest.version }} )</small>
                                                     <div class="pull-right">
-                                                        <span ng-if="app.latest.version && app.latest.is_public" class="label label-primary"><i class="fa fa-tag"></i> {{ 'v' + app.latest.version }} </span>
+                                                        <span ng-if="app.latest.version && app.latest.is_public" class="label label-primary"><i class="fa fa-tag"></i> v{{ ::app.latest.version }} </span>
                                                     </div>
                                                 </a>
 
-                                                <div ng-repeat="revision in app.revisions" class="revisions-list nested" ng-show="view.appRevisions[app._id].toggled">
+                                                <div ng-repeat="revision in ::app.revisions" class="revisions-list nested" ng-show="view.appRevisions[app._id].toggled">
                                                     <a href drag="revision">
                                                         <i class="fa fa-puzzle-piece"></i>
-                                                        {{ app.name }} <small>(revision {{ revision.version }} )</small>
+                                                        {{ ::app.name }} <small>(revision {{ ::revision.version }} )</small>
                                                         <div class="pull-right">
-                                                            <span ng-if="revision.version && revision.is_public" class="label label-primary"><i class="fa fa-tag"></i> {{ 'v' + revision.version }}</span>
+                                                            <span ng-if="revision.version && revision.is_public" class="label label-primary"><i class="fa fa-tag"></i> v{{ ::revision.version }}</span>
                                                         </div>
                                                     </a>
                                                 </div>
@@ -145,18 +133,18 @@
                                                 <a href drag="app.latest">
                                                     <span class="pointer pull-left" ng-if="app.revisions.length !== 0" ng-click="toggleAppRevisions(app._id)"><i class="fa" ng-class="{'fa-minus-square':view.appRevisions[app._id].toggled, 'fa-plus-square': !view.appRevisions[app._id].toggled}"></i></span>
                                                     <i class="fa fa-puzzle-piece"></i>
-                                                    {{ app.name }} <small>(revision {{ app.latest.version }} )</small>
+                                                    {{ ::app.name }} <small>(revision {{ ::app.latest.version }} )</small>
                                                     <div class="pull-right">
-                                                        <span ng-if="app.latest.version && app.latest.is_public" class="label label-primary"><i class="fa fa-tag"></i> {{ 'v' + app.latest.version }} </span>
+                                                        <span ng-if="app.latest.version && app.latest.is_public" class="label label-primary"><i class="fa fa-tag"></i> v{{ ::app.latest.version }} </span>
                                                     </div>
                                                 </a>
 
                                                 <div ng-repeat="revision in app.revisions" class="revisions-list nested" ng-show="view.appRevisions[app._id].toggled">
                                                     <a href drag="revision">
                                                         <i class="fa fa-puzzle-piece"></i>
-                                                        {{ app.name }} <small>(revision {{ revision.version }} )</small>
+                                                        {{ ::app.name }} <small>(revision {{ ::revision.version }} )</small>
                                                         <div class="pull-right">
-                                                            <span ng-if="revision.version && revision.is_public" class="label label-primary"><i class="fa fa-tag"></i> {{ 'v' + revision.version }}</span>
+                                                            <span ng-if="revision.version && revision.is_public" class="label label-primary"><i class="fa fa-tag"></i> v{{ ::revision.version }}</span>
                                                         </div>
                                                     </a>
                                                 </div>
@@ -169,18 +157,18 @@
                                                 <a href drag="workflow.latest" >
                                                     <span class="pointer pull-left" ng-click="toggleAppRevisions(workflow._id)" ng-if="workflow.revisions.length !== 0"  ><i class="fa" ng-class="{'fa-minus-square':view.appRevisions[workflow._id].toggled, 'fa-plus-square': !view.appRevisions[workflow._id].toggled}"></i></span>
                                                     <i class="fa fa-puzzle-piece"></i>
-                                                    {{ workflow.name }} <small>(revision {{ workflow.latest.version }} )</small>
+                                                    {{ ::workflow.name }} <small>(revision {{ ::workflow.latest.version }} )</small>
                                                     <div class="pull-right">
-                                                        <span ng-if="workflow.latest.version && workflow.latest.is_public" class="label label-primary"><i class="fa fa-tag"></i> {{ 'v' + workflow.latest.version }} </span>
+                                                        <span ng-if="workflow.latest.version && workflow.latest.is_public" class="label label-primary"><i class="fa fa-tag"></i> v{{ ::workflow.latest.version }} </span>
                                                     </div>
                                                 </a>
 
                                                 <div ng-show="view.appRevisions[workflow._id].toggled" ng-repeat="revision in workflow.revisions" class="revisions-list nested" ng-show="view.appRevisions[workflow._id].toggled">
                                                     <a href drag="revision">
                                                         <i class="fa fa-puzzle-piece"></i>
-                                                        {{ workflow.name }} <small>(revision {{ revision.version }} )</small>
+                                                        {{ ::workflow.name }} <small>(revision {{ ::revision.version }} )</small>
                                                         <div class="pull-right">
-                                                            <span ng-if="revision.version && revision.is_public" class="label label-primary"><i class="fa fa-tag"></i> {{ 'v' + revision.version }}</span>
+                                                            <span ng-if="revision.version && revision.is_public" class="label label-primary"><i class="fa fa-tag"></i> v{{ ::revision.version }}</span>
                                                         </div>
                                                     </a>
                                                 </div>
@@ -206,6 +194,7 @@
                                 <input-field
                                         ng-repeat="(key, property) in view.json.inputs.properties"
                                         ng-model="view.json.params[key]"
+                                        class="input-field"
                                         key="{{ key }}"
                                         prop="property"
                                         ignore-files="true"

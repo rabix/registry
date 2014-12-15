@@ -11,7 +11,6 @@ angular.module('registryApp.cliche')
 
         return {
             restrict: 'E',
-            replace: true,
             template: '<div class="property-box" ng-class="{active: active}"></div>',
             scope: {
                 name: '@',
@@ -19,7 +18,8 @@ angular.module('registryApp.cliche')
                 active: '=',
                 properties: '=',
                 inputs: '=',
-                req: '='
+                req: '=',
+                handler: '&'
             },
             compile: function(element) {
                 return RecursionHelper.compile(element, function(scope, iElement) {
@@ -40,15 +40,16 @@ angular.module('registryApp.cliche')
 
                         var template = $templateCache.get('views/cliche/property/property-input-' + scope.prop.type  + '.html');
 
-                        var $header = iElement[0].querySelector('.property-box-header');
-                        var $body = iElement[0].querySelector('.property-box-body');
+                        var $box = angular.element(iElement[0].querySelector('.property-box'));
+                        var $header = $box[0].querySelector('.property-box-header');
+                        var $body = $box[0].querySelector('.property-box-body');
 
                         if ($header) { angular.element($header).remove(); }
                         if ($body) { angular.element($body).remove(); }
 
-                        iElement.append(template);
+                        $box.append(template);
 
-                        $compile(iElement.contents())(scope);
+                        $compile($box.contents())(scope);
                     };
 
                     /* init compile */
@@ -127,7 +128,7 @@ angular.module('registryApp.cliche')
                     scope.remove = function() {
 
                         var modalInstance = $modal.open({
-                            template: $templateCache.get('views/cliche/partials/confirm-delete.html'),
+                            template: $templateCache.get('views/partials/confirm-delete.html'),
                             controller: 'ModalCtrl',
                             windowClass: 'modal-confirm',
                             resolve: {data: function () { return {}; }}
@@ -147,6 +148,8 @@ angular.module('registryApp.cliche')
                                     }
                                 });
                             }
+
+                            scope.handler();
 
                             Data.generateCommand();
 

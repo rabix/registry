@@ -9,7 +9,6 @@ angular.module('registryApp')
     .directive('preload', ['$templateCache', function ($templateCache) {
         return {
             restrict: 'E',
-            replace: true,
             scope: {},
             template: $templateCache.get('views/partials/preload.html'),
             link: function() {}

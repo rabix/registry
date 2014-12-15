@@ -1,8 +1,8 @@
 <div class="expression-wrap">
 
     <div class="input-group">
-        <input ng-show="view.model.expr" type="text" class="form-control" ng-model="view.model.expr.value" readonly>
-        <input ng-show="!view.model.expr" type="{{ view.type }}" class="form-control" ng-model="view.model" placeholder="{{ view.placeholder }}" ng-readonly="onlyExpr">
+        <input ng-if="view.model.expr" type="text" class="form-control" ng-model="view.model.expr.value" readonly>
+        <input ng-if="!view.model.expr" type="{{ view.type }}" class="form-control" ng-model="view.model" placeholder="{{ view.placeholder }}" ng-readonly="onlyExpr">
         <span class="input-group-btn">
             <a href
                class="btn btn-expression"

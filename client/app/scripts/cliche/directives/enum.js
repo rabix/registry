@@ -10,7 +10,6 @@ angular.module('registryApp.cliche')
     .directive('enum', ['$templateCache', '$modal', function ($templateCache, $modal) {
         return {
             restrict: 'E',
-            replace: true,
             template: $templateCache.get('views/cliche/partials/enum.html'),
             scope: {
                 model: '=ngModel',

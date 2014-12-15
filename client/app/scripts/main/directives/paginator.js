@@ -9,7 +9,6 @@ angular.module('registryApp')
     .directive('paginator', ['$templateCache', function ($templateCache) {
         return {
             restrict: 'E',
-            replace: true,
             template: $templateCache.get('views/partials/paginator.html'),
             scope: {
                 page: '=',

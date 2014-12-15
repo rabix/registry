@@ -6,7 +6,7 @@
 'use strict';
 
 angular.module('registryApp.dyole')
-    .controller('PipelineCtrl', ['$scope', '$rootScope', '$routeParams', '$element', '$location', '$window', '$timeout', '$injector', 'pipeline', 'App', 'rawPipeline', 'Pipeline', '$modal', '$templateCache', function ($scope, $rootScope, $routeParams, $element, $location, $window, $timeout, $injector, pipeline, App, rawPipeline, PipelineMdl, $modal, $templateCache) {
+    .controller('PipelineCtrl', ['$scope', '$rootScope', '$routeParams', '$element', '$location', '$window', '$timeout', '$injector', 'pipeline', 'Tool', 'rawPipeline', 'Workflow', '$modal', '$templateCache', function ($scope, $rootScope, $routeParams, $element, $location, $window, $timeout, $injector, pipeline, Tool, rawPipeline, Workflow, $modal, $templateCache) {
 
         var Pipeline;
         var selector = '.pipeline';
@@ -39,7 +39,7 @@ angular.module('registryApp.dyole')
         };
 
         if ($routeParams.mode === 'new') {
-            PipelineMdl.getLocalPipeline()
+            Workflow.getLocal()
                 .then(function (json) {
                     initPipeline(json);
                 });
@@ -72,16 +72,14 @@ angular.module('registryApp.dyole')
 
             $scope.pipeline.json = Pipeline.getJSON();
 
-            var p = angular.copy($scope.pipeline);
-
-            PipelineMdl.savePipeline(p.pipeline ? $scope.pipeline.pipeline._id : '', p)
+            Workflow.saveWorkflow($scope.pipeline.pipeline ? $scope.pipeline.pipeline._id : '', $scope.pipeline)
                 .then(function (data) {
 
                     if (data.id) {
                         if (repoId) {
-                            $location.path('/pipeline/' + data.id);
+                            $location.path('/workflow/' + data.id);
                         } else {
-                            $location.path('/pipeline/' + data.id + '/edit');
+                            $location.path('/workflow/' + data.id + '/edit');
                         }
                     } else {
                         $scope.pipelineChangeFn({value: false});
@@ -102,8 +100,8 @@ angular.module('registryApp.dyole')
                 $scope.pipeline.name = name;
             }
 
-            PipelineMdl.fork($scope.pipeline).then(function (pipeline) {
-                $location.path('/pipeline/' + pipeline.id + '/edit');
+            Workflow.fork($scope.pipeline).then(function (pipeline) {
+                $location.path('/workflow/' + pipeline.id + '/edit');
             });
         });
 
@@ -112,15 +110,14 @@ angular.module('registryApp.dyole')
          */
         $scope.$on('save-local', function (e, value) {
             if (value) {
-                PipelineMdl.saveLocalPipeline(Pipeline.getJSON());
+                Workflow.saveLocal(Pipeline.getJSON());
             }
         });
 
         $scope.$on('pipeline:format', function () {
-
             $scope.handlePipelineJson({pipeline: Pipeline.getJSON()});
 
-//            PipelineMdl.formatPipeline(Pipeline.getJSON()).then(function (pipeline) {
+//            Workflow.format(Pipeline.getJSON()).then(function (pipeline) {
 //                console.log(pipeline);
 //                $scope.handlePipelineJson({pipeline: pipeline.json});
 //            });
@@ -131,7 +128,7 @@ angular.module('registryApp.dyole')
 
             $scope.pipeline.json = Pipeline.getJSON();
 
-            PipelineMdl.getPipelineURL($scope.pipeline).then(function (url) {
+            Workflow.getURL($scope.pipeline).then(function (url) {
 
                 $modal.open({
                     template: $templateCache.get('views/cliche/partials/job-url-response.html'),
@@ -173,7 +170,7 @@ angular.module('registryApp.dyole')
 
             if (app.pipeline) {
 
-                PipelineMdl.formatPipeline(app).then(function (formated) {
+                Workflow.format(app).then(function (formated) {
 
                     $scope.view.loading = false;
 
@@ -185,7 +182,7 @@ angular.module('registryApp.dyole')
                 });
 
             } else {
-                App.getRevision(app._id).then(function(result) {
+                Tool.getRevision(app._id).then(function(result) {
 
                     $scope.view.loading = false;
                     console.log(result.data);
@@ -248,7 +245,7 @@ angular.module('registryApp.dyole')
 
             if (!$scope.view.canFlush) { return false; }
 
-            PipelineMdl.flush();
+            Workflow.flush();
 
             if (angular.isDefined(Pipeline)) {
                 Pipeline.destroy();

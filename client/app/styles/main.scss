@@ -226,8 +226,25 @@ body {
 
   /* Apps page */
   &.apps {
-    .content {
+    & > .content {
       padding-top: 0;
+      @extend %flex;
+      .tabs {
+        @extend %flex;
+        @include flex(1);
+        .section,
+        .include {
+          @extend %flex;
+          @include flex(1);
+        }
+        .include {
+          padding: 0;
+          margin: 0;
+          .content {
+            padding-top: 0;
+          }
+        }
+      }
     }
   }
 
@@ -352,8 +369,8 @@ body {
     }
   }
 
-  /* Pipeline Editor page */
-  &.pipeline-edit {
+  /* Workflow Editor page */
+  &.workflow-edit {
     & > .content {
       padding: 0;
       overflow-x: hidden;
@@ -473,22 +490,6 @@ body {
     }
   }
 
-  /* Pipelines table */
-  &.pipelines {
-    th {
-      &:nth-child(1),
-      &:nth-child(2) { width: 40%; }
-      &:nth-child(4) { width: 20%; }
-    }
-    td {
-      p {
-        &:not(.alert) {
-          max-width: 500px;
-        }
-      }
-    }
-  }
-
   &.app-revisions,
   &.pipeline-revisions {
     th {
@@ -568,6 +569,14 @@ body {
           max-width: 500px;
         }
       }
+    }
+  }
+
+  /* GitHub Repos table */
+  &.github-repos {
+    th {
+      &:nth-child(1) { width: 80%; }
+      &:nth-child(2) { width: 20%; }
     }
   }
 

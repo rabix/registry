@@ -4,7 +4,6 @@ angular.module('registryApp')
     .directive('error', ['$templateCache', function ($templateCache) {
         return {
             restrict: 'E',
-            replace: true,
             template: $templateCache.get('views/partials/error.html'),
             link: function(scope) {
 

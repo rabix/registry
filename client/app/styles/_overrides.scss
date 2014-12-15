@@ -204,6 +204,11 @@ form, .form {
       color: #fff;
     }
   }
+
+  &.btn-expression {
+    padding-top: 7px;
+  }
+
   &:active, &:focus {
     outline: none;
   }

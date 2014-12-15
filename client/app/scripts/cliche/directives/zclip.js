@@ -10,7 +10,6 @@ angular.module('registryApp.cliche')
     .directive('zclip', ['$templateCache', '$timeout', 'Data', function ($templateCache, $timeout, Data) {
         return {
             restrict: 'E',
-            replace: true,
             template: $templateCache.get('views/cliche/partials/zclip.html'),
             scope: {
                 data: '@'

@@ -38,7 +38,6 @@ angular.module('registryApp')
     .directive('sidebar', ['$templateCache', 'User', 'Sidebar', function ($templateCache, User, Sidebar) {
         return {
             restrict: 'E',
-            replace: true,
             template: $templateCache.get('views/partials/sidebar.html'),
             scope: {},
             link: function (scope) {
@@ -49,8 +48,7 @@ angular.module('registryApp')
                 scope.view.open = Sidebar.open;
 
                 scope.view.navigation = [
-                    {name: 'tools', link: 'apps/tools', desc: 'Tools', icon: 'puzzle-piece'},
-                    {name: 'workflows', link: 'pipelines', desc: 'Workflows', icon: 'cogs'},
+                    {name: 'apps', link: 'apps', desc: 'Apps', icon: 'puzzle-piece'},
                     {name: 'task tpls', link: 'tasks', desc: 'Task Templates', icon: 'rocket'},
                     {name: 'builds', link: 'builds', desc: 'Builds', icon: 'cube'},
                     {name: 'repos', link: 'repos', desc: 'Repositories', icon: 'code-fork'},

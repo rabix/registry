@@ -3,16 +3,18 @@
  */
 'use strict';
 
-angular.module('registryApp')
-    .controller('PipelineViewCtrl', ['$scope', '$q', '$location', '$routeParams', 'Sidebar', 'Loading', 'Pipeline', 'User', '$modal', '$templateCache', function ($scope, $q, $location, $routeParams, Sidebar, Loading, Pipeline, User, $modal, $templateCache) {
+angular.module('registryApp.app')
+    .controller('WorkflowViewCtrl', ['$scope', '$q', '$location', '$routeParams', 'Sidebar', 'Loading', 'Workflow', 'User', '$modal', '$templateCache', function ($scope, $q, $location, $routeParams, Sidebar, Loading, Workflow, User, $modal, $templateCache) {
 
-        Sidebar.setActive('workflows');
+        Sidebar.setActive('apps');
 
         $scope.view = {};
+        $scope.view.loading = true;
+
         $scope.view.page = 1;
         $scope.view.total = 0;
-        $scope.view.loading = true;
-        $scope.view.pipeline = {};
+
+        $scope.view.workflow = {};
         $scope.view.explanation = false;
         $scope.view.tab = 'info';
 
@@ -28,11 +30,11 @@ angular.module('registryApp')
             if (n !== o) { $scope.view.classes = n; }
         });
 
-        Pipeline.getRevision($routeParams.id).then(function (result) {
-            $scope.view.pipeline = result.data;
+        Workflow.getRevision($routeParams.id).then(function (result) {
+            $scope.view.workflow = result.data;
 
             $q.all([
-                    Pipeline.getRevisions(0, '', $scope.view.pipeline.pipeline._id),
+                    Workflow.getRevisions(0, '', $scope.view.workflow.pipeline._id),
                     User.getUser()
                 ]).then(function(result) {
                     revisionsLoaded(result[0]);
@@ -61,7 +63,12 @@ angular.module('registryApp')
                 $scope.view.showDelete = true;
             }
         };
-        
+
+        /**
+         * Switch tab
+         *
+         * @param tab
+         */
         $scope.switchTab = function (tab) {
             $scope.view.tab = tab;
         };
@@ -75,48 +82,56 @@ angular.module('registryApp')
 
             $scope.view.loading = true;
 
-            Pipeline.getRevisions(offset, '', $scope.view.pipeline.pipeline._id).then(revisionsLoaded);
+            Workflow.getRevisions(offset, '', $scope.view.workflow.pipeline._id).then(revisionsLoaded);
 
         };
-        
+
+        /**
+         * Delete revision by id
+         *
+         * @param id
+         */
         $scope.deleteRevision = function (id) {
 
             var modalInstance = $modal.open({
-                template: $templateCache.get('views/cliche/partials/confirm-delete.html'),
+                template: $templateCache.get('views/partials/confirm-delete.html'),
                 controller: 'ModalCtrl',
                 windowClass: 'modal-confirm',
                 resolve: {data: function () { return {message: 'Are you sure you want to delete this revision?'}; }}
             });
 
             modalInstance.result.then(function () {
-                Pipeline.deleteRevision(id).then(function (data) {
+                Workflow.deleteRevision(id).then(function (data) {
 
                     _.remove($scope.view.revisions, function (rev) {
                         return rev._id === id;
                     });
 
-                    console.log(data.latest, data);
-                    $location.path('/pipeline/' + data.latest);
+                    $location.path('/workflow/' + data.latest);
 
                 });
             });
 
 
         };
-        
-        $scope.deletePipeline = function () {
-            var id = $scope.view.pipeline.pipeline._id;
+
+        /**
+         * Delete current workflow
+         */
+        $scope.deleteWorkflow = function () {
+
+            var id = $scope.view.workflow.pipeline._id;
 
             var modalInstance = $modal.open({
-                template: $templateCache.get('views/cliche/partials/confirm-delete.html'),
+                template: $templateCache.get('views/partials/confirm-delete.html'),
                 controller: 'ModalCtrl',
                 windowClass: 'modal-confirm',
                 resolve: {data: function () { return {message: 'Are you sure you want to delete this workflow?'}; }}
             });
 
             modalInstance.result.then(function () {
-                Pipeline.deletePipeline(id).then(function () {
-                    $location.path('/pipelines');
+                Workflow.deleteWorkflow(id).then(function () {
+                    $location.path('/apps');
                 });
             });
 

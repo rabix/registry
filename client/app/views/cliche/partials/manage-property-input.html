@@ -66,7 +66,7 @@
             <div class="col-md-4" ng-if="!view.disabled && view.property.type !== 'array'">
                 <div class="form-group" title="Transform">
                     <label class="control-label">Transform</label>
-                    <expr ng-model="view.property.adapter.transform" handle-item-update="updateTransform(value)" only-expr="true" placeholder="value"></expr>
+                    <expr ng-model="view.property.adapter.transform" handle-item-update="updateTransform(value)" only-expr="true" self="true" placeholder="value"></expr>
                 </div>
             </div>
             <!-- END Transform -->

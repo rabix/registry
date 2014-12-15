@@ -13,8 +13,7 @@ angular.module('registryApp.cliche')
 
         return {
             restrict: 'E',
-            replace: true,
-            template: $templateCache.get('views/cliche/partials/input-field.html'),
+            template: '<ng-form name="inputForm" class="input-property"></ng-form>',
             scope: {
                 model: '=ngModel',
                 prop: '=',
@@ -79,9 +78,11 @@ angular.module('registryApp.cliche')
 
                     var template = $templateCache.get('views/cliche/inputs/input-' + scope.prop.type  + '.html');
 
-                    iElement.append(template);
+                    var $frm = angular.element(iElement[0].querySelector('.input-property'));
 
-                    $compile(iElement.contents())(scope);
+                    $frm.append(template);
+
+                    $compile($frm.contents())(scope);
 
                     /**
                      * Open modal to enter more parameters for the input file

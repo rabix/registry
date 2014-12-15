@@ -9,7 +9,6 @@ angular.module('registryApp')
     .directive('copy', ['$templateCache', '$timeout', function ($templateCache, $timeout) {
         return {
             restrict: 'E',
-            replace: true,
             scope: {
                 string: '@',
                 isSmall: '@',

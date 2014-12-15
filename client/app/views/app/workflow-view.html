@@ -1,17 +1,22 @@
 <div ng-class="view.classes" loading="view.loading" class="pipeline-preview">
 
     <div class="heading">
-        <a ng-href="#/pipelines" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
+        <a ng-href="#/apps" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
         <h1>
-            <span>{{ view.pipeline.pipeline.name }} <span class="pipeline-repo">(<a href="#/repo/{{view.pipeline.pipeline.repo._id}}">{{view.pipeline.pipeline.repo.owner}}/{{view.pipeline.pipeline.repo.name}}</a>)</span></span>
+            <span>
+                {{ ::view.workflow.pipeline.name }}
+                <span class="pipeline-repo">
+                    (<a href="#/repo/{{ ::view.workflow.pipeline.repo._id }}">{{ ::view.workflow.pipeline.repo.owner }}/{{ ::view.workflow.pipeline.repo.name }}</a>)
+                </span>
+            </span>
             <div ng-if="view.revisions.length > 0" class="nav nav-pills nav-page">
                 <li ng-class="{active: view.tab === 'info'}"><a href="" ng-click="switchTab('info')">Info</a></li>
                 <li ng-class="{active: view.tab === 'description'}"><a href="" ng-click="switchTab('description')">Description</a></li>
                 <li ng-class="{active: view.tab === 'revisions'}"><a href="" ng-click="switchTab('revisions')">Revisions</a></li>
             </div>
             <div class="actions pull-right">
-                <a href="" ng-if="view.showDelete" ng-click="deletePipeline()" class="btn btn-danger" tooltip="Delete workflow" tooltip-placement="bottom"><i class="fa fa-trash"></i> Delete</a>
-                <a ng-href="#/pipeline/{{ view.pipeline._id }}/edit" class="btn btn-primary"><i class="fa fa-pencil"></i> Edit</a>
+                <a href="" ng-if="view.showDelete" ng-click="deleteWorkflow()" class="btn btn-danger" tooltip="Delete workflow" tooltip-placement="bottom"><i class="fa fa-trash"></i> Delete</a>
+                <a ng-href="#/workflow/{{ ::view.workflow._id }}/edit" class="btn btn-primary"><i class="fa fa-pencil"></i> Edit</a>
             </div>
         </h1>
     </div>
@@ -20,12 +25,12 @@
     <div class="content">
 
         <section class="tab info" ng-show="view.tab === 'info'">
-            <div ng-if="view.pipeline.json" pipeline="view.pipeline"></div>
+            <div ng-if="view.workflow.json" class="pipeline-wrap" pipeline="::view.workflow"></div>
         </section>
 
         <section class="tab description" ng-show="view.tab === 'description'">
-            <p ng-if="!view.pipeline.description"><i>There is no description for this pipeline</i></p>
-            <div class="markdown-body" marked="view.pipeline.description"></div>
+            <p ng-if="!view.workflow.description"><i>There is no description for this pipeline</i></p>
+            <div class="markdown-body" marked="::view.workflow.description"></div>
         </section>
 
         <section class="tab revisions" ng-show="view.tab === 'revisions'">
@@ -43,15 +48,15 @@
                     <tr ng-repeat="revision in view.revisions">
 
                         <td class="revision">
-                            <strong class="label label-primary" ng-if="revision.version"><i class="fa fa-tag"></i> {{ 'v' + revision.version }}</strong>
+                            <strong class="label label-primary" ng-if="revision.version"><i class="fa fa-tag"></i> v{{ ::revision.version }}</strong>
                         </td>
 
-                        <td><p tooltip="{{ revision.description }}" tooltip-popup-delay="1000">{{ revision.description || 'This workflow doesn\'t have description' }}</p></td>
+                        <td><p tooltip="{{ ::revision.description }}" tooltip-popup-delay="1000">{{ ::revision.description || 'This workflow doesn\'t have description' }}</p></td>
 
                         <td class="right">
-                            <a class="btn btn-sm btn-default" tooltip="View Revision" ng-href="#/pipeline/{{ revision._id }}"><i class="fa fa-eye"></i></a>
-                            <a class="btn btn-sm btn-default" tooltip="Edit Revision" ng-href="#/pipeline/{{ revision._id }}/edit"><i class="fa fa-pencil"></i></a>
-                            <a ng-if="view.user.id === view.pipeline.user._id && view.revisions.length > 1" class="btn btn-sm btn-default" href="" tooltip="Delete Revision" ng-click="deleteRevision(revision._id)"><i class="fa fa-trash"></i></a>
+                            <a class="btn btn-sm btn-default" tooltip="View Revision" ng-href="#/workflow/{{ ::revision._id }}"><i class="fa fa-eye"></i></a>
+                            <a class="btn btn-sm btn-default" tooltip="Edit Revision" ng-href="#/workflow/{{ ::revision._id }}/edit"><i class="fa fa-pencil"></i></a>
+                            <a ng-if="view.user.id === view.workflow.user._id && view.revisions.length > 1" class="btn btn-sm btn-default" href="" tooltip="Delete Revision" ng-click="deleteRevision(revision._id)"><i class="fa fa-trash"></i></a>
                         </td>
 
                     </tr>

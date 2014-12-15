@@ -95,7 +95,7 @@ angular.module('registryApp')
             var $route = $injector.get('$route');
 
             var modalInstance = $modal.open({
-                template: $templateCache.get('views/cliche/partials/confirm-delete.html'),
+                template: $templateCache.get('views/partials/confirm-delete.html'),
                 controller: 'ModalCtrl',
                 windowClass: 'modal-confirm',
                 resolve: {data: function () { return {}; }}

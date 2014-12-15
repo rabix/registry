@@ -9,7 +9,6 @@
 angular.module('registryApp.dyole')
     .directive('pipeline', ['$templateCache', function ($templateCache) {
         return {
-            replace: true,
             template: $templateCache.get('views/dyole/pipeline.html'),
             controller: 'PipelineCtrl',
             scope: {

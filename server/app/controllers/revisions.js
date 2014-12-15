@@ -171,24 +171,35 @@ router.delete('/revisions/:id', filters.authenticated, function (req, res, next)
 
         if (user_id === app_user_id) {
 
-            Repo.findById(revision.app_id.repo, function(err, repo) {
+            Revision.count({app_id: revision.app_id._id}, function(err, count) {
                 if (err) { return next(err); }
 
-                if (repo.is_public) {
+                if (count === 1) {
 
-                    // TODO: allow revision delete from public repo?
-
-                    res.status(403).json({message: 'This revision belongs to public repo and it can\'t be delete it'});
+                    res.status(403).json({message: 'This is the only revision of the tool so it can\'t be deleted'});
 
                 } else {
-                    Revision.remove({_id: req.params.id}, function (err) {
+                    Repo.findById(revision.app_id.repo, function(err, repo) {
                         if (err) { return next(err); }
 
-                        res.json({message: 'Revision successfully deleted'});
+                        if (repo.is_public) {
 
+                            // TODO: allow revision delete from public repo?
+
+                            res.status(403).json({message: 'This revision belongs to public repo and it can\'t be delete it'});
+
+                        } else {
+                            Revision.remove({_id: req.params.id}, function (err) {
+                                if (err) { return next(err); }
+
+                                res.json({message: 'Revision successfully deleted'});
+
+                            });
+                        }
                     });
                 }
             });
+
 
         } else {
             res.status(401).json({message: 'Unauthorized'});

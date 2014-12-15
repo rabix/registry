@@ -64,7 +64,8 @@ module.exports = function (grunt) {
             template: {
                 files: [
                     '<%= yeoman.app %>/views/{,*/}*.html',
-                    '<%= yeoman.app %>/views/cliche/{,*/}*.html'
+                    '<%= yeoman.app %>/views/cliche/{,*/}*.html',
+                    '<%= yeoman.app %>/views/app/{,*/}*.html'
                 ],
                 tasks: ['ngtemplates:app']
             }
@@ -428,7 +429,7 @@ module.exports = function (grunt) {
         ngtemplates: {
             app: {
                 cwd: '<%= yeoman.app %>',
-                src: ['views/{,*/}*.html', 'views/cliche/{,*/}*.html'],
+                src: ['views/{,*/}*.html', 'views/cliche/{,*/}*.html', 'views/app/{,*/}*.html'],
                 dest: '<%= yeoman.app %>/scripts/template.js',
                 options: {
                     module: 'registryApp',

@@ -5,9 +5,7 @@
 'use strict';
 
 angular.module('registryApp.dyole')
-    .factory('pipeline', ['event', 'node', 'connection', '$rootScope',
-        'systemNodeModel', 'Formater',
-        function (Event, Node, Connection, $rootScope, systemNodeModel, Formater) {
+    .factory('pipeline', ['event', 'node', 'connection', '$rootScope', 'systemNodeModel', function (Event, Node, Connection, $rootScope, systemNodeModel) {
 
             /**
              * Pipeline constructor

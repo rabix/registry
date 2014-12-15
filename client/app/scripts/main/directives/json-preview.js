@@ -9,7 +9,6 @@ angular.module('registryApp')
     .directive('jsonPreview', ['$templateCache', '$modal', function ($templateCache, $modal) {
         return {
             restrict: 'E',
-            replace: true,
             scope: {
                 title: '@',
                 json: '@'

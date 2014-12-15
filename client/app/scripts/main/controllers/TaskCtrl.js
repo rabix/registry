@@ -6,7 +6,7 @@
 'use strict';
 
 angular.module('registryApp')
-    .controller('TaskCtrl', ['$scope', '$q', '$modal', '$templateCache', '$location', 'Sidebar', 'Job', 'User', 'Repo', 'Pipeline', function ($scope, $q, $modal, $templateCache, $location, Sidebar, Job, User, Repo, Pipeline) {
+    .controller('TaskCtrl', ['$scope', '$q', '$modal', '$templateCache', '$location', 'Sidebar', 'Job', 'User', 'Repo', 'Workflow', function ($scope, $q, $modal, $templateCache, $location, Sidebar, Job, User, Repo, Workflow) {
 
         Sidebar.setActive('tasks');
 
@@ -45,7 +45,7 @@ angular.module('registryApp')
 
             if (type === 'Workflow') {
 
-                Pipeline.formatPipeline(json).then(function (pipeline) {
+                Workflow.format(json).then(function (pipeline) {
                     deferred.resolve(pipeline.json.inputs.properties);
                 });
 
@@ -57,10 +57,13 @@ angular.module('registryApp')
 
         };
 
+        /**
+         * Pick app from the list
+         */
         $scope.pickApp = function() {
 
             var modalInstance = $modal.open({
-                template: $templateCache.get('views/partials/pick-app.html'),
+                template: $templateCache.get('views/app/partials/pick-app.html'),
                 controller: 'PickAppCtrl',
                 windowClass: 'modal-pick',
                 backdrop: 'static',
@@ -122,6 +125,11 @@ angular.module('registryApp')
 
         };
 
+        /**
+         * Create task json
+         *
+         * @returns {boolean}
+         */
         $scope.create = function() {
 
             var isEmptyName = _.isEmpty($scope.view.name);

@@ -36,11 +36,11 @@
             </thead>
             <tbody>
                 <tr ng-repeat="job in view.jobs">
-                    <td>{{ job.name }}</td>
-                    <td><span class="label label-primary">{{ job.json.app['@type'] || 'Tool' }}</span></td>
-                    <td><a ng-href="#/repo/{{ job.repo._id }}">{{ job.repo.owner }}/{{ job.repo.name }}</a></td>
-                    <td>{{ job.author }}</td>
-                    <td><a ng-href="{{ job.url }}" class="job-link" target="_blank">{{ job.url }}</a></td>
+                    <td>{{ ::job.name }}</td>
+                    <td><span class="label label-primary">{{ ::job.json.app['@type'] || 'Tool' }}</span></td>
+                    <td><a ng-href="#/repo/{{ ::job.repo._id }}">{{ ::job.repo.owner }}/{{ ::job.repo.name }}</a></td>
+                    <td>{{ ::job.author }}</td>
+                    <td><a ng-href="{{ ::job.url }}" class="job-link" target="_blank">{{ ::job.url }}</a></td>
                     <td class="right">
                         <a href ng-if="view.user.id === job.user" ng-click="deleteJob(job)" class="btn btn-default" tooltip="Delete Task Template"><i class="fa fa-trash"></i></a>
                     </td>

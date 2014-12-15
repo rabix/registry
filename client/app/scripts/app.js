@@ -19,6 +19,7 @@ angular
         'ngPrettyJson',
         'LocalForageModule',
         'hc.marked',
+        'registryApp.app',
         'registryApp.cliche',
         'registryApp.dyole'
     ])
@@ -27,22 +28,6 @@ angular
             .when('/', {
                 templateUrl: 'views/home.html',
                 controller: 'HomeCtrl'
-            })
-            .when('/apps/:type', {
-                templateUrl: 'views/apps.html',
-                controller: 'AppsCtrl'
-            })
-            .when('/app/:id', {
-                templateUrl: 'views/app.html',
-                controller: 'AppCtrl'
-            })
-            .when('/app/:id/:tab', {
-                templateUrl: 'views/app.html',
-                controller: 'AppCtrl'
-            })
-            .when('/revision/:id', {
-                templateUrl: 'views/revision.html',
-                controller: 'RevisionCtrl'
             })
             .when('/builds', {
                 templateUrl: 'views/builds.html',
@@ -71,18 +56,6 @@ angular
             .when('/repo-instructions/:id', {
                 templateUrl: 'views/repo-instructions.html',
                 controller: 'RepoInstructionsCtrl'
-            })
-            .when('/pipelines', {
-                templateUrl: 'views/pipelines.html',
-                controller: 'PipelinesCtrl'
-            })
-            .when('/pipeline/:id', {
-                templateUrl: 'views/pipeline.html',
-                controller: 'PipelineViewCtrl'
-            })
-            .when('/pipeline/:id/:mode', {
-                templateUrl: 'views/pipeline-editor.html',
-                controller: 'PipelineEditorCtrl'
             })
             .when('/tasks', {
                 templateUrl: 'views/tasks.html',

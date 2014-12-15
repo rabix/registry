@@ -10,7 +10,7 @@
 'use strict';
 
 angular.module('registryApp.dyole')
-    .controller('DyoleJsonEditorCtrl', ['$scope', '$modalInstance', '$timeout', 'options', 'Pipeline', function($scope, $modalInstance, $timeout, options, Pipeline) {
+    .controller('DyoleJsonEditorCtrl', ['$scope', '$modalInstance', '$timeout', 'options', 'Workflow', function($scope, $modalInstance, $timeout, options, Workflow) {
 
         $scope.view = {};
         $scope.view.user = options.user;
@@ -59,7 +59,7 @@ angular.module('registryApp.dyole')
 
             $scope.view.validating = true;
 
-            Pipeline.validateJson(json).then(function (data) {
+            Workflow.validateJson(json).then(function (data) {
 
                     $scope.view.validating = false;
 

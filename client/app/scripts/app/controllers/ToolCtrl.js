@@ -1,16 +1,20 @@
 'use strict';
 
-angular.module('registryApp')
-    .controller('AppCtrl', ['$scope', '$routeParams', '$q', '$injector', '$location', 'App', 'User', 'Sidebar', 'Loading', function ($scope, $routeParams, $q, $injector, $location, App, User, Sidebar, Loading) {
+angular.module('registryApp.app')
+    .controller('ToolCtrl', ['$scope', '$routeParams', '$q', '$injector', '$location', 'Tool', 'User', 'Sidebar', 'Loading', function ($scope, $routeParams, $q, $injector, $location, Tool, User, Sidebar, Loading) {
 
-        Sidebar.setActive('tools');
+        Sidebar.setActive('apps');
 
         $scope.view = {};
+
         $scope.view.page = 1;
         $scope.view.total = 0;
+
         $scope.view.loading = true;
-        $scope.view.app = null;
+
+        $scope.view.tool = null;
         $scope.view.revisions = [];
+
         $scope.view.tab = $routeParams.tab || 'info';
         $scope.view.isJsonVisible = false;
 
@@ -24,13 +28,14 @@ angular.module('registryApp')
 
         $q.all([
                 User.getUser(),
-                App.getApp($routeParams.id, 'latest'),
-                App.getRevisions(0, '', $routeParams.id)
+                Tool.getTool($routeParams.id, 'latest'),
+                Tool.getRevisions(0, '', $routeParams.id)
             ]).then(function(result) {
 
                 $scope.view.user = result[0].user;
-                $scope.view.app = result[1].data;
+                $scope.view.tool = result[1].data;
                 $scope.view.revision = result[1].revision;
+
                 revisionsLoaded(result[2]);
 
             });
@@ -58,28 +63,28 @@ angular.module('registryApp')
 
             $scope.view.loading = true;
 
-            App.getRevisions(offset, '', $routeParams.id).then(revisionsLoaded);
+            Tool.getRevisions(offset, '', $routeParams.id).then(revisionsLoaded);
         };
 
         /**
-         * Delete app
+         * Delete tool
          */
-        $scope.deleteApp = function() {
+        $scope.deleteTool = function() {
 
             var $modal = $injector.get('$modal');
             var $templateCache = $injector.get('$templateCache');
 
             var modalInstance = $modal.open({
-                template: $templateCache.get('views/cliche/partials/confirm-delete.html'),
+                template: $templateCache.get('views/partials/confirm-delete.html'),
                 controller: 'ModalCtrl',
                 windowClass: 'modal-confirm',
                 resolve: {data: function () { return {}; }}
             });
 
             modalInstance.result.then(function () {
-                App.deleteApp($scope.view.app._id)
+                Tool.deleteTool($scope.view.tool._id)
                     .then(function () {
-                        $location.path('apps');
+                        $location.path('/apps');
                     });
             });
 

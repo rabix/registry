@@ -10,7 +10,6 @@ angular.module('registryApp.cliche')
     .directive('separatorInfo', [function () {
         return {
             restrict: 'E',
-            replace: true,
             template: '<span>{{ view.separator }}</span>',
             scope: {
                 type: '@',

@@ -10,7 +10,6 @@ angular.module('registryApp.cliche')
     .directive('separator', ['$templateCache', function ($templateCache) {
         return {
             restrict: 'E',
-            replace: true,
             template: $templateCache.get('views/cliche/partials/separator.html'),
             scope: {
                 type: '@',
