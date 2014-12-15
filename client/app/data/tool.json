@@ -39,7 +39,7 @@
                     },
                     "adapter": {
                         "order": 3,
-                        "listStreamable": true
+                        "streamable": true
                     }
                 },
                 "minimum_seed_length": {

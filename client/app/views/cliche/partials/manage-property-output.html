@@ -36,7 +36,7 @@
                     <expr ng-model="view.property.adapter.glob" handle-item-update="updateGlobValue(value)" placeholder="value"></expr>
                 </div>
             </div>
-            <div class="col-md-3" ng-if="view.property.type === 'file'">
+            <div class="col-md-3" ng-if="view.property.type === 'file' || view.property.items.type === 'file'">
                 <div class="form-group">
                     <label class="control-label empty-label">&nbsp;</label>
                     <div class="checkbox">
@@ -76,16 +76,6 @@
                 </div>
             </div>
             <!-- END Item Type -->
-
-            <div class="col-md-2" ng-if="view.property.items.type === 'file'">
-                <div class="form-group">
-                    <label class="control-label empty-label">&nbsp;</label>
-                    <div class="checkbox no-margin">
-                        <label><input type="checkbox" ng-model="view.property.adapter.listStreamable"> Streamable</label>
-                    </div>
-                </div>
-            </div>
-            <!-- END Item Streamable -->
 
         </div>
 

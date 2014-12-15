@@ -107,7 +107,7 @@ var mapDefinition = {
                     adapter: {
                         listSeparator: {type: 'string'},
                         listValue: {type: 'object'},
-                        listStreamable: {type: 'boolean'}
+                        streamable: {type: 'boolean'}
                     },
                     items: {
                         type: {type: 'string', required: true},
@@ -146,7 +146,7 @@ var mapDefinition = {
                         items: {type: 'object', required: true}
                     },
                     adapter: {
-                        listStreamable: {type: 'boolean'}
+                        streamable: {type: 'boolean'}
                     },
                     items: {
                         type: {type: 'string', required: true}

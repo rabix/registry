@@ -236,7 +236,7 @@ angular.module('registryApp.cliche')
                             maxItems: undefined,
                             items: {type: 'file'}
                         },
-                        adapter: {glob: '', listStreamable: false, metadata: {}, secondaryFiles: []}
+                        adapter: {glob: '', streamable: false, metadata: {}, secondaryFiles: []}
                     }
                 }
             };
