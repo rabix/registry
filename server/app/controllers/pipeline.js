@@ -22,10 +22,27 @@ module.exports = function (app) {
 };
 
 /**
- * Format pipeline
+ * @apiDefine InvalidWorkflowError
+ * @apiError Message Ivalid workflow
+ * @apiErrorExample InvalidWorkflowError:
+ *     HTTP/1.1 400
+ *     {
+ *       "message": "Invalid workflow"
+ *     }
+ */
+
+/**
+ * @apiName FormatWorkflow
+ * @api {GET} /api/pipeline/format Format workflow
+ * @apiGroup Workflows
+ * @apiDescription Format workflow
  *
- * @post_param pipeline - Pipeline to format
- * @response json - Formated pipeline json
+ * @apiSuccess {Object} json Formated workflow
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "json": {Workflow}
+ *     }
  */
 router.post('/pipeline/format', function (req, res) {
 
@@ -40,10 +57,17 @@ router.post('/pipeline/format', function (req, res) {
 });
 
 /**
- * Format pipeline json and upload it
+ * @apiName FormatUploadWorkflow
+ * @api {GET} /api/pipeline/format/upload Format workflow and upload it
+ * @apiGroup Workflows
+ * @apiDescription Format workflow and upload it
  *
- * @post_param pipeline - Pipeline to upload
- * @response url - link to uploaded pipeline
+ * @apiSuccess {String} url Url to formated workflow on amazon s3
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "url" : "https://s3.amazonaws.com/rabix/users/ntijanic/pipelines/bwa/bwa_417435973012.json"
+ *     }
  */
 router.post('/pipeline/format/upload', function (req, res) {
     var p = req.body.pipeline;
@@ -93,7 +117,19 @@ router.post('/pipeline/format/upload', function (req, res) {
 });
 
 /**
- * Get all pipelines
+ * @apiName GetWorkflows
+ * @api {GET} /api/pipelines Get all Workflows
+ * @apiGroup Repos
+ * @apiDescription Fetch all Workflows
+ *
+ * @apiSuccess {Number} total Total number of workflows
+ * @apiSuccess {Array} list List of workflows
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "total": "1",
+ *       "list": [{workflow}]
+ *     }
  */
 router.get('/pipeline', function (req, res, next) {
 
@@ -161,9 +197,20 @@ router.get('/pipeline', function (req, res, next) {
 });
 
 /**
- * Get specific pipeline
+ * Get workflow by id
  *
- * @param :id Pipeline id
+ * @apiName GetWorkflow
+ * @api {GET} /api/repos/:id Get workflow by id
+ * @apiGroup Workflows
+ * @apiDescription Get workflow by id
+ *
+ * @apiSuccess {Obejct} data Workflow
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "total": "1",
+ *       "data": {workflow}
+ *     }
  */
 router.get('/pipeline/:id', function (req, res, next) {
 
@@ -182,9 +229,21 @@ router.get('/pipeline/:id', function (req, res, next) {
 });
 
 /**
- * Create new pipeline
+ * @apiName CreateWorkflow
+ * @api {POST} /api/pipeline Create user workflow
+ * @apiGroup Workflows
+ * @apiDescription Create user workflow
+ * @apiPermission Logged in user
+ * @apiUse NameCollisionError
  *
- * @post_param data - Pipeline json
+ * @apiSuccess {String} message Success message
+ * @apiSuccess {String} id Represents new workflow revision id
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *        "message": "Workflow successfully added",
+ *        "id": "547854cbf76a100000ac84dd"
+ *     }
  */
 router.post('/pipeline', filters.authenticated, function (req, res, next) {
 
@@ -480,7 +539,6 @@ router.get('/pipeline-revisions/:id', function (req, res, next) {
                 path: 'pipeline.user',
                 select:  '_id email username'
             }, function (err, pipe) {
-//                console.log('Pipeline populated: ', pipe.pipeline.user,  req.user.id === pipe.pipeline.user._id.toString());
                 console.log('pipe', pipe, pipeline);
                 var repo_public = p.pipeline.repo.is_public;
 

@@ -23,7 +23,7 @@ angular.module('registryApp.dyole')
          */
         var initPipeline = function (obj) {
 
-            if (!obj.json || obj.json.nodes.length === 0) {
+            if (!obj.json || (obj.json.steps && obj.json.steps.length === 0)) {
                 $scope.view.explanation = true;
             }
 
@@ -72,7 +72,9 @@ angular.module('registryApp.dyole')
 
             $scope.pipeline.json = Pipeline.getJSON();
 
-            PipelineMdl.savePipeline($scope.pipeline.pipeline ? $scope.pipeline.pipeline._id : '', $scope.pipeline)
+            var p = angular.copy($scope.pipeline);
+
+            PipelineMdl.savePipeline(p.pipeline ? $scope.pipeline.pipeline._id : '', p)
                 .then(function (data) {
 
                     if (data.id) {
@@ -115,10 +117,13 @@ angular.module('registryApp.dyole')
         });
 
         $scope.$on('pipeline:format', function () {
-            PipelineMdl.formatPipeline(Pipeline.getJSON()).then(function (pipeline) {
-                console.log(pipeline);
-                $scope.handlePipelineJson({pipeline: pipeline.json});
-            });
+
+            $scope.handlePipelineJson({pipeline: Pipeline.getJSON()});
+
+//            PipelineMdl.formatPipeline(Pipeline.getJSON()).then(function (pipeline) {
+//                console.log(pipeline);
+//                $scope.handlePipelineJson({pipeline: pipeline.json});
+//            });
         });
 
         $scope.$on('pipeline:get:url', function () {

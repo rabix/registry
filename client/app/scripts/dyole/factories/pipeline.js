@@ -6,8 +6,8 @@
 
 angular.module('registryApp.dyole')
     .factory('pipeline', ['event', 'node', 'connection', '$rootScope',
-        'systemNodeModel',
-        function (Event, Node, Connection, $rootScope, systemNodeModel) {
+        'systemNodeModel', 'Formater',
+        function (Event, Node, Connection, $rootScope, systemNodeModel, Formater) {
 
             /**
              * Pipeline constructor
@@ -18,6 +18,11 @@ angular.module('registryApp.dyole')
             var Pipeline = function (options) {
                 this.model = options.model;
                 this.$parent = options.$parent;
+
+
+                if (this.model.steps && this.model.steps.length !== 0 ) {
+                    this.model = Formater.toPipelineSchema(this.model);
+                }
 
                 this.model.schemas = this.model.schemas || {};
                 this.model.display = this.model.display || {};
@@ -1049,7 +1054,8 @@ angular.module('registryApp.dyole')
                     json.display.canvas.x = this.getEl().getTranslation().x;
                     json.display.canvas.y = this.getEl().getTranslation().y;
 
-                    return json;
+                    return Formater.toRabixSchema(json);
+//                    return json;
                 },
 
                 /**

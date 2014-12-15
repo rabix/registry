@@ -128,6 +128,25 @@ var addWebhook = function (owner, r, currentUser) {
     });
 
 };
+/**
+ * @apiDefine UnauthorizedError
+ * @apiError Message Unauthorized update
+ * @apiErrorExample UnauthorizedError:
+ *     HTTP/1.1 401
+ *     {
+ *       "message": "Unauthorized"
+ *     }
+ */
+
+/**
+ * @apiDefine NameCollisionError Name already in use
+ * @apiError message The <code>name</code> already in use.
+ * @apiErrorExample {json} Error-Response:
+ *     HTTP/1.1 400 Bad Request
+ *     {
+ *       "message": "Name already in use"
+ *     }
+ */
 
 /**
  * @apiName GetRepos
@@ -135,7 +154,8 @@ var addWebhook = function (owner, r, currentUser) {
  * @apiGroup Repos
  * @apiDescription Fetch all repositories
  *
- * @apiSuccess {Object}  repos All repositories
+ * @apiSuccess {Number} total Total number of repositories
+ * @apiSuccess {Array} list List of repositories
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
@@ -185,11 +205,12 @@ router.get('/repos', function (req, res, next) {
  * Get repos by user
  *
  * @apiName GetRepo
- * @api {GET} /api/repos/user Get all Current Logged in User Repositories
+ * @api {GET} /api/repos/:id Get repository by id
  * @apiGroup Repos
- * @apiDescription Fetch all user repositories
+ * @apiDescription Get repository by id
  *
- * @apiSuccess {Object}  repos All repositories
+ * @apiSuccess {Number} total Total number of user repositories
+ * @apiSuccess {Array} list List of user repositories
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
@@ -222,16 +243,6 @@ router.get('/repos/user', function (req, res, next) {
 });
 
 /**
- * @apiDefine NameCollisionError Name already in use
- * @apiError NameCollisionError The <code>name</code> already in use.
- * @apiErrorExample {json} Error-Response:
- *     HTTP/1.1 400 Not Found
- *     {
- *       "message": "Repo name already in use"
- *     }
- */
-
-/**
  * @apiName PostRepo
  * @api {POST} /api/repos Create user repository
  * @apiGroup Repos
@@ -252,7 +263,7 @@ router.get('/repos/user', function (req, res, next) {
  *           "git" : false,
  *           "description" : "",
  *           "user" : "547854bcf76a100000ac84dc"
- *       },
+ *       }
  *     }
  */
 router.post('/repos', filters.authenticated, function (req, res, next) {
@@ -283,20 +294,13 @@ router.post('/repos', filters.authenticated, function (req, res, next) {
 });
 
 /**
- * @apiDefine UnauthorizedError
- * @apiError Error: Unauthorized update
- * @apiErrorExample Error:
- *     HTTP/1.1 401
- *     {
- *       "message": "Unauthorized"
- *     }
- */
-/**
  * @apiName PutRepo
- * @api {POST} /api/repos/:id/:action Update repository
+ * @api {PUT} /api/repos/:id/:action Update repository
  *
  * @apiGroup Repos
  * @apiDescription Update repository info or publish it
+ *
+ * @apiPermission Logged in user
  *
  * @apiParam {Number} id Repo unique id
  * @apiParam {String} action Action to perform on repo (update, publish)
@@ -365,6 +369,30 @@ router.put('/repos/:id/:action', filters.authenticated, function (req, res, next
 
 /**
  * Get repo by id
+ *
+ * @apiName GetRepo
+ * @api {POST} /api/repos/:id/:action Update repository
+ *
+ * @apiGroup Repos
+ * @apiDescription Update repository info or publish it
+ *
+ * @apiParam {Number} id Repo unique id
+ * @apiSuccess {Object} Repo Object
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "repo": {
+ *           "_id" : "547854cbf76a100000ac84dd",
+ *           "is_public" : true,
+ *           "created_by" : "flipio",
+ *           "name" : "test",
+ *           "owner" : "flipio",
+ *           "git" : false,
+ *           "description" : "",
+ *           "user" : "547854bcf76a100000ac84dc"
+ *       }
+ *     }
+ *
  */
 router.get('/repos/:id', function (req, res, next) {
 
@@ -376,7 +404,7 @@ router.get('/repos/:id', function (req, res, next) {
 
         if (repo.is_public || user_id === repo_user_id) {
 
-            res.json({data: repo});
+            res.json({repo: repo});
 
         } else {
             res.status(401).json({message: 'Unauthorized'});
@@ -387,7 +415,107 @@ router.get('/repos/:id', function (req, res, next) {
 });
 
 /**
+ * Get repo's tools
+ *
+ * @apiName GetReposTools
+ * @api {POST} /api/repo-tools/:id Get tools from repository
+ *
+ * @apiGroup Repos
+ * @apiDescription Get tools from repository
+ *
+ * @apiParam {Number} id Repo unique id
+ * @apiSuccess {Number} total Total number of tools in repository
+ * @apiSuccess {Array} list List of tools in repository
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "total": "1",
+ *       "list": [{tool}]
+ *     }
+ */
+router.get('/repo-tools/:id', function(req, res, next) {
+
+    var limit = req.query.limit ? req.query.limit : 25;
+    var skip = req.query.skip ? req.query.skip : 0;
+    var where = {repo: req.params.id};
+
+    Repo.findById(req.params.id).populate('user').exec(function(err, repo) {
+        if (err) { return next(err); }
+
+        var user_id = (req.user ? req.user.id : '').toString();
+        var repo_user_id = repo.user._id.toString();
+
+        if (repo.is_public || user_id === repo_user_id) {
+            App.count(where, function(err, total) {
+                if (err) { return next(err); }
+
+                App.find(where).populate('user').skip(skip).limit(limit).sort({_id: 'desc'}).exec(function(err, apps) {
+                    if (err) { return next(err); }
+
+                    res.json({list: apps, total: total});
+                });
+
+            });
+        } else {
+            res.status(401).json({message: 'Unauthorized'});
+        }
+    });
+
+});
+
+/**
+ * Get repo's workflows
+ *
+ * @apiName GetReposWorkflows
+ * @api {POST} /api/repo-workflows/:id Get workflows from repository
+ *
+ * @apiGroup Repos
+ * @apiDescription Get workflows from repository
+ *
+ * @apiParam {Number} id Repo unique id
+ * @apiSuccess {Number} total Total number of workflows in repository
+ * @apiSuccess {Array} list List of workflows in repository
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "total": "1",
+ *       "list": [{workflow}]
+ *     }
+ */
+router.get('/repo-workflows/:id', function(req, res, next) {
+
+    var limit = req.query.limit ? req.query.limit : 25;
+    var skip = req.query.skip ? req.query.skip : 0;
+    var where = {repo: req.params.id};
+
+    Repo.findById(req.params.id).populate('user').exec(function(err, repo) {
+        if (err) { return next(err); }
+
+        var user_id = (req.user ? req.user.id : '').toString();
+        var repo_user_id = repo.user._id.toString();
+
+        if (repo.is_public || user_id === repo_user_id) {
+            Pipeline.count(where, function(err, total) {
+                if (err) { return next(err); }
+
+                Pipeline.find(where).populate('user').populate('latest').skip(skip).limit(limit).sort({_id: 'desc'}).exec(function(err, pipelines) {
+                    if (err) { return next(err); }
+
+                    res.json({list: pipelines, total: total});
+                });
+
+            });
+        } else {
+            res.status(401).json({message: 'Unauthorized'});
+        }
+    });
+
+});
+
+/**
  * Create GitHub repo
+ *
+ * @apiIgnore Github repo creation should not be accessible via API
  */
 router.post('/github-repos', function (req, res, next) {
 
@@ -426,6 +554,8 @@ router.post('/github-repos', function (req, res, next) {
 
 /**
  * Get github repo
+ *
+ * @apiIgnore Github repo creation should not be accessible via API
  */
 router.get('/github-repos', filters.authenticated, function (req, res, next) {
 
@@ -469,6 +599,9 @@ router.get('/github-repos', filters.authenticated, function (req, res, next) {
 
 });
 
+/**
+ * @apiIgnore Github hook should not be accessible via API
+ */
 router.post('/github-webhook', function (req, res, next) {
     var repo = req.param('repository');
     var event_type = req.headers['x-github-event'];
@@ -496,70 +629,3 @@ router.post('/github-webhook', function (req, res, next) {
     }
 
 });
-
-/**
- * Get repo's tools
- */
-router.get('/repo-tools/:id', function(req, res, next) {
-
-    var limit = req.query.limit ? req.query.limit : 25;
-    var skip = req.query.skip ? req.query.skip : 0;
-    var where = {repo: req.params.id};
-
-    Repo.findById(req.params.id).populate('user').exec(function(err, repo) {
-        if (err) { return next(err); }
-
-        var user_id = (req.user ? req.user.id : '').toString();
-        var repo_user_id = repo.user._id.toString();
-
-        if (repo.is_public || user_id === repo_user_id) {
-            App.count(where, function(err, total) {
-                if (err) { return next(err); }
-
-                App.find(where).populate('user').skip(skip).limit(limit).sort({_id: 'desc'}).exec(function(err, apps) {
-                    if (err) { return next(err); }
-
-                    res.json({list: apps, total: total});
-                });
-
-            });
-        } else {
-            res.status(401).json({message: 'Unauthorized'});
-        }
-    });
-
-});
-
-/**
- * Get repo's workflows
- */
-router.get('/repo-workflows/:id', function(req, res, next) {
-
-    var limit = req.query.limit ? req.query.limit : 25;
-    var skip = req.query.skip ? req.query.skip : 0;
-    var where = {repo: req.params.id};
-
-    Repo.findById(req.params.id).populate('user').exec(function(err, repo) {
-        if (err) { return next(err); }
-
-        var user_id = (req.user ? req.user.id : '').toString();
-        var repo_user_id = repo.user._id.toString();
-
-        if (repo.is_public || user_id === repo_user_id) {
-            Pipeline.count(where, function(err, total) {
-                if (err) { return next(err); }
-
-                Pipeline.find(where).populate('user').populate('latest').skip(skip).limit(limit).sort({_id: 'desc'}).exec(function(err, pipelines) {
-                    if (err) { return next(err); }
-
-                    res.json({list: pipelines, total: total});
-                });
-
-            });
-        } else {
-            res.status(401).json({message: 'Unauthorized'});
-        }
-    });
-
-});
-

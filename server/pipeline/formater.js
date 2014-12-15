@@ -8,7 +8,6 @@ var _ = require('lodash');
  * @public_methods {toRabixSchema}, {toPipelineSchema}
  * @type {{packedSchema: null, toRabixSchema: toRabixSchema, toPipelineSchema: toPipelineSchema, _transformRelationsToSteps: _transformRelationsToSteps, _generateSystemNodes: _generateSystemNodes, _checkSystem: _checkSystem, _attachOutput: _attachOutput, _createInOut: _createInOut, _createOneAppStep: _createOneAppStep, _transformStepsToRelations: _transformStepsToRelations}}
  */
-
 var formater = {
 
     packedSchema: null,
@@ -347,7 +346,7 @@ var formater = {
             'softwareDescription': {
                 'repo_owner': 'rabix',
                 'repo_name': 'system',
-                'type': ''
+                'type': type.slice(0 ,type.length -1)
             },
             'documentAuthor': null,
             'inputs': {
@@ -365,6 +364,8 @@ var formater = {
         model[type].properties[schema.id].id = schema.id;
 
         model.id = id;
+
+        console.log('Sys node type:', model.softwareDescription.type);
 
         return model;
     }
