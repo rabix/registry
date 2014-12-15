@@ -46,7 +46,7 @@
                 <p class="alert alert-info" ng-if="view.toolForm.inputs.properties | isEmpty">There are no values to be set at this moment.</p>
             </div>
 
-            <paginator page="view.page.values" total="view.total.values" per-page="10" handler="getMore('values', offset)"></paginator>
+            <paginator page="view.page.values" total="view.total.values" per-page="{{ view.perPage }}" handler="getMore('values', offset)"></paginator>
 
         </div>
         <!-- # .section -->

@@ -43,6 +43,8 @@ angular.module('registryApp.cliche')
             args: {}
         };
 
+        $scope.view.perPage = 10;
+
         $scope.view.classes = ['page', 'cliche'];
         $scope.view.user = null;
 
@@ -103,7 +105,9 @@ angular.module('registryApp.cliche')
 
             $scope.view.list[what].part = [];
 
-            var times = $scope.view.list[what].tmp.length > 10 ? 10 : $scope.view.list[what].tmp.length;
+            var rest = $scope.view.list[what].tmp.length - offset;
+
+            var times = (rest > 10) ? 10 : rest;
 
             _.times(times, function(i) {
                 $scope.view.list[what].part.push($scope.view.list[what].tmp[offset + i]);
@@ -195,10 +199,16 @@ angular.module('registryApp.cliche')
          * @param type
          */
         $scope.updateProps = function(type) {
+
+            // TODO: load last page
+
             $scope.prepareForPagination(Data.tool[type].properties, type);
             if (type === 'inputs') {
                 $scope.prepareForPagination(Data.tool.inputs.properties, 'values');
             }
+
+            $scope.view.page[type] = 1;
+
         };
 
         /**
