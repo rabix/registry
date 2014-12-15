@@ -5,7 +5,7 @@
   &:after {
     content: '';
     display: block;
-    background-image: inline-image('loader.gif');
+    background-image: url('/images/loader.gif');
     background-repeat: no-repeat;
     background-position: center;
     width: 100%;
@@ -13,7 +13,7 @@
   }
 }
 
-.loading-abs {
+%loading-abs {
   &:after {
     position: absolute;
     top: 0;

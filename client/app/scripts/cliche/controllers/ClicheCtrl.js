@@ -83,6 +83,7 @@ angular.module('registryApp.cliche')
         $scope.prepareForPagination = function(origin, what) {
 
             $scope.view.total[what] = _.size(origin);
+            $scope.view.list[what].tmp = [];
 
             _.each(origin, function(obj, name) {
                 $scope.view.list[what].tmp.push({key: name, obj: obj});
@@ -184,6 +185,15 @@ angular.module('registryApp.cliche')
             });
 
         }
+
+        /**
+         * Update properties array when new is added
+         *
+         * @param type
+         */
+        $scope.updateProps = function(type) {
+            $scope.prepareForPagination(Data.tool[type].properties, type);
+        };
 
         /**
          * Toggle properties visibility (expand/collapse)
@@ -472,6 +482,12 @@ angular.module('registryApp.cliche')
 
             $scope.view.loading = true;
 
+            $scope.view.list = {
+                inputs: {tmp: [], part: []},
+                outputs: {tmp: [], part: []},
+                values: {tmp: [], part: []}
+            };
+
             var name = $scope.view.toolForm.name;
 
             Data.flush().then(function(result) {
@@ -695,34 +711,6 @@ angular.module('registryApp.cliche')
                     $scope.view.reload = true;
                     $location.path('/apps');
                 });
-            });
-
-        };
-
-        /**
-         * Show json modal
-         *
-         * @param which
-         */
-        $scope.showJson = function(which) {
-
-            var modalInstance = $modal.open({
-                template: $templateCache.get('views/cliche/partials/json-preview.html'),
-                controller: 'JsonPreviewCtrl',
-                resolve: {data: function () {
-                    return {json: $scope.view[which + 'Form'], which: which};
-                }}
-            });
-
-            modalInstance.result.then(function (getUrlTrace) {
-                if (getUrlTrace) {
-
-                    $modal.open({
-                        template: $templateCache.get('views/cliche/partials/job-url-response.html'),
-                        controller: 'ModalCtrl',
-                        resolve: { data: function () { return { trace: getUrlTrace }; }}
-                    });
-                }
             });
 
         };

@@ -11,10 +11,9 @@ angular.module('registryApp')
             'delete': {method: 'DELETE'}
         });
 
-        self.jobs = $resource(apiUrl + '/jobs');
-
-        self.job = $resource(apiUrl + '/job/upload', {}, {
-            upload: {method: 'POST'}
+        self.jobs = $resource(apiUrl + '/jobs/:id', {id: '@id'}, {
+            add: {method: 'POST'},
+            'delete': {method: 'DELETE'}
         });
 
         self.validate = $resource(apiUrl + '/validate', {}, {

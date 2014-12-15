@@ -7,7 +7,7 @@
 'use strict';
 
 angular.module('registryApp.cliche')
-    .directive('enum', ['$templateCache', '$timeout', function ($templateCache, $timeout) {
+    .directive('enum', ['$templateCache', '$modal', function ($templateCache, $modal) {
         return {
             restrict: 'E',
             replace: true,
@@ -88,6 +88,24 @@ angular.module('registryApp.cliche')
                         return false;
                     }
                     scope.view.list.splice(index, 1);
+                };
+
+                /**
+                 * Open modal to enter more parameters for the input file
+                 */
+                scope.more = function(index) {
+
+                    var modalInstance = $modal.open({
+                        template: $templateCache.get('views/cliche/partials/input-file-more.html'),
+                        controller: 'InputFileMoreCtrl',
+                        windowClass: 'modal-prop',
+                        resolve: {data: function () {return {scheme: scope.view.list[index].value, key: 'item ' + index};}}
+                    });
+
+                    modalInstance.result.then(function (scheme) {
+                        scope.view.list[index].value = angular.copy(scheme);
+                    });
+
                 };
 
                 // TODO not really cool...

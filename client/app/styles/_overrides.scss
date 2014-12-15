@@ -221,7 +221,8 @@ form, .form {
       background-color: transparent;
     }
 
-    &.btn-flush-pipeline {
+    &.btn-flush-pipeline,
+    &.btn-flush-app {
       background-color: #fff;
     }
 
@@ -292,10 +293,14 @@ form, .form {
     }
   }
   &.table-hover {
+    tr {
+      td, th {
+        vertical-align: middle !important;
+      }
+    }
     tbody {
       tr {
         &:hover {
-          //background-image: url(../images/bg.png);
           background-color: #fcfcfc;
           td {
             background-color: transparent;
@@ -421,6 +426,36 @@ ul {
     margin: 0;
     .messages {
       margin-bottom: 20px;
+    }
+  }
+  .tabs {
+    overflow: hidden;
+    margin-top: 10px;
+    @extend %flex;
+    &.loading {
+      @extend %loading-abs;
+    }
+    & > .nav {
+      @include flex(0 0 auto);
+      .form-li {
+        width: 300px;
+        margin-right: 10px;
+        float: right;
+      }
+    }
+    & > section {
+      @extend %flex;
+      @include flex(1);
+      & > .content {
+        overflow-y: auto;
+        min-height: 100px;
+        max-height: 500px;
+        @include flex(1);
+        @extend %scrollbar;
+      }
+      & > .paginate {
+        @include flex(0 0 auto);
+      }
     }
   }
 }

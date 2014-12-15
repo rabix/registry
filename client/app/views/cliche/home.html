@@ -21,12 +21,8 @@
             <div class="actions pull-right">
 
                 <div class="btn-group" role="group">
-                    <button class="btn btn-default" ng-click="showJson('tool')">
-                        <i class="fa fa-code"></i> Tool JSON
-                    </button>
-                    <button ng-hide="view.app.is_script" class="btn btn-default" ng-click="showJson('job')">
-                        <i class="fa fa-code"></i> Job JSON
-                    </button>
+                    <json-preview title="Tool JSON" json="{{ view.toolForm }}"></json-preview>
+                    <json-preview title="Job JSON" json="{{ view.jobForm }}"></json-preview>
                 </div>
 
                 <button ng-if="view.user && view.mode === 'new'" ng-disabled="view.saving" class="app-create-btn btn btn-primary" ng-click="create()">

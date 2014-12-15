@@ -19,7 +19,7 @@
             <thead><tr><th>History of generated job JSONs</th></tr></thead>
             <tbody>
             <tr ng-repeat="job in view.jobs track by $index">
-                <td><a ng-href="{{ job }}" target="_blank">{{ job }}</a></td>
+                <td><a ng-href="{{ job.url }}" target="_blank">{{ job.url }}</a></td>
             </tr>
             <tr class="empty" ng-if="view.jobs.length === 0">
                 <td colspan="3"><p class="alert alert-info">There are no jobs found</p></td>

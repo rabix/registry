@@ -76,7 +76,6 @@ angular.module('registryApp')
          */
         $scope.switchTab = function (tab) {
             $scope.view.tab = tab;
-            $scope.view.resize = true;
         };
 
         /**

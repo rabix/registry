@@ -1,0 +1,61 @@
+<div class="page job">
+    <div class="heading">
+        <a ng-href="#/tasks" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
+        <h1>
+            <div class="form-group job-name">
+                <input type="text" placeholder="Task Template Name" ng-model="view.name" class="form-control" />
+            </div>
+
+            <div class="actions pull-right">
+
+                <button ng-disabled="view.saving" class="app-pick-btn btn btn-default" ng-click="pickApp()">
+                    <i class="fa fa-puzzle-piece"></i> Pick
+                </button>
+
+                <json-preview json="{{ view.job }}"></json-preview>
+
+                <button ng-if="view.user" ng-disabled="view.saving" class="job-create-btn btn btn-primary" ng-click="create()">
+                    <i class="fa fa-plus"></i> Create
+                </button>
+
+            </div>
+            <!-- # .actions -->
+        </h1>
+    </div>
+    <!-- # .heading -->
+
+    <div class="content">
+
+        <section ng-if="!view.app">
+            <p class="job-user-guide">Pick <a href ng-click="pickApp()">tool, script or workflow</a> for which you want to generate task template</p>
+        </section>
+
+        <form ng-show="view.app" class="form" name="forms.job" role="form" novalidate>
+
+            <div class="section bottom">
+
+                <div class="content">
+
+                    <div class="input-container">
+                        <input-field
+                                ng-repeat="property in view.list.part track by $index"
+                                ng-model="view.job.inputs[property.key]"
+                                key="{{ property.key }}"
+                                prop="property.obj"
+                                index="{{ $index }}"
+                                form="forms.job">
+                        </input-field>
+                    </div>
+
+                    <p class="alert alert-info" ng-if="view.list.part | isEmpty">There are no values to be set at this moment.</p>
+                </div>
+
+                <paginator page="view.page" total="view.total" per-page="10" handler="getMore(offset)"></paginator>
+
+            </div>
+            <!-- # .section -->
+
+        </form>
+
+    </div>
+</div>
