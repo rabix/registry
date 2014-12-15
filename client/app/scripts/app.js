@@ -57,10 +57,6 @@ angular
                 templateUrl: 'views/repo-instructions.html',
                 controller: 'RepoInstructionsCtrl'
             })
-            .when('/pipeline/:id/:mode', {
-                templateUrl: 'views/pipeline-editor.html',
-                controller: 'PipelineEditorCtrl'
-            })
             .when('/tasks', {
                 templateUrl: 'views/tasks.html',
                 controller: 'TasksCtrl'

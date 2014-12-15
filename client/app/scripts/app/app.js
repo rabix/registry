@@ -24,7 +24,11 @@ angular.module('registryApp.app', [])
                 controller: 'ToolRevisionCtrl'
             })
             .when('/workflow/:id', {
-                templateUrl: 'views/app/workflow.html',
-                controller: 'WorkflowCtrl'
+                templateUrl: 'views/app/workflow-view.html',
+                controller: 'WorkflowViewCtrl'
+            })
+            .when('/workflow/:id/:mode', {
+                templateUrl: 'views/app/workflow-editor.html',
+                controller: 'WorkflowEditorCtrl'
             });
     }]);

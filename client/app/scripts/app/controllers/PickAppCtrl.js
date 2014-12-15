@@ -5,24 +5,11 @@
  */
 'use strict';
 
-angular.module('registryApp')
+angular.module('registryApp.app')
     .controller('PickAppCtrl', ['$scope', '$q', '$modalInstance', 'Tool', 'Workflow', function ($scope, $q, $modalInstance, Tool, Workflow) {
 
         $scope.view = {};
         $scope.view.loading = true;
-
-        $scope.view.page = {
-            tools: 1,
-            scripts: 1,
-            workflows: 1
-        };
-
-        $scope.view.total = {
-            tools: 0,
-            scripts: 0,
-            workflows: 0
-        };
-
 
         $scope.view.tools = [];
         $scope.view.scripts = [];
@@ -31,10 +18,23 @@ angular.module('registryApp')
         $scope.view.searchTerm = '';
         $scope.view.tab = 'tools';
 
-        $scope.view.active = {
-            tools: false,
-            scripts: false,
-            workflows: false
+        /**
+         * Prepare initial controller config
+         */
+        var prepareConfig = function() {
+
+            var tabs = ['tools', 'scripts', 'workflows'];
+
+            $scope.view.active = {};
+            $scope.view.page = {};
+            $scope.view.total = {};
+
+            _.each(tabs, function(tab) {
+                $scope.view.active[tab] = false;
+                $scope.view.page[tab] = 1;
+                $scope.view.total[tab] = 0;
+            });
+
         };
 
         /**
@@ -54,45 +54,49 @@ angular.module('registryApp')
         /**
          * Callback when apps are loaded
          *
-         * @param result
+         * @param {object} result
+         * @param {string} tab
          */
-        var toolsLoaded = function(result) {
+        var appsLoaded = function(result, tab) {
 
-            $scope.view.tools = result.list;
-            $scope.view.total.tools = result.total;
+            $scope.view[tab] = result.list;
+            $scope.view.total[tab] = result.total;
         };
 
         /**
-         * Callback when scripts are loaded
+         * Load apps from the api
          *
-         * @param result
+         * @param offset
+         * @returns {*}
          */
-        var scriptsLoaded = function(result) {
+        var loadApps = function(offset) {
 
-            $scope.view.scripts = result.list;
-            $scope.view.total.scripts = result.total;
+            offset = offset || 0;
+
+            var deferred = $q.defer();
+
+            $q.all([
+                    Tool.getTools(offset, $scope.view.searchTerm),
+                    Tool.getScripts(offset, $scope.view.searchTerm),
+                    Workflow.getWorkflows(offset, $scope.view.searchTerm)
+                ]).then(function(result) {
+
+                    appsLoaded(result[0], 'tools');
+                    appsLoaded(result[1], 'scripts');
+                    appsLoaded(result[2], 'workflows');
+
+                    deferred.resolve('loaded');
+
+                });
+
+            return deferred.promise;
         };
 
-        /**
-         * Callback when workflows are loaded
-         *
-         * @param result
-         */
-        var workflowsLoaded = function(result) {
+        /* init config preparation */
+        prepareConfig();
 
-            $scope.view.workflows = result.list;
-            $scope.view.total.workflows = result.total;
-        };
-
-        $q.all([
-                Tool.getTools(0),
-                Tool.getScripts(0),
-                Workflow.getWorkflows(0)
-            ]).then(function(result) {
-                toolsLoaded(result[0]);
-                scriptsLoaded(result[1]);
-                workflowsLoaded(result[2]);
-
+        loadApps()
+            .then(function() {
                 $scope.view.loading = false;
             });
 
@@ -105,7 +109,11 @@ angular.module('registryApp')
 
             $scope.view.loading = true;
 
-            Tool.getTools(offset, null, $scope.view.searchTerm).then(toolsLoaded);
+            Tool.getTools(offset, $scope.view.searchTerm)
+                .then(function(result) {
+                    appsLoaded(result, 'tools');
+                    $scope.view.loading = false;
+                });
         };
 
         /**
@@ -117,7 +125,11 @@ angular.module('registryApp')
 
             $scope.view.loading = true;
 
-            Tool.getScripts(offset, $scope.view.searchTerm).then(toolsLoaded);
+            Tool.getScripts(offset, $scope.view.searchTerm)
+                .then(function(result) {
+                    appsLoaded(result, 'scripts');
+                    $scope.view.loading = false;
+                });
         };
 
         /**
@@ -129,7 +141,11 @@ angular.module('registryApp')
 
             $scope.view.loading = true;
 
-            Workflow.getWorkflows(offset, $scope.view.searchTerm).then(workflowsLoaded);
+            Workflow.getWorkflows(offset, $scope.view.searchTerm)
+                .then(function(result) {
+                    appsLoaded(result, 'workflows');
+                    $scope.view.loading = false;
+                });
         };
 
         /**
@@ -163,24 +179,13 @@ angular.module('registryApp')
          */
         $scope.searchApps = function() {
 
-            $scope.view.page.tools = 1;
-            $scope.view.page.scripts = 1;
-            $scope.view.page.workflows = 1;
+            prepareConfig();
 
             $scope.view.loading = true;
 
-            $q.all([
-                    Tool.getTools(0, null, $scope.view.searchTerm),
-                    Tool.getScripts(0, $scope.view.searchTerm),
-                    Workflow.getWorkflows(0, $scope.view.searchTerm)
-                ]).then(function(result) {
-
-                    toolsLoaded(result[0]);
-                    scriptsLoaded(result[1]);
-                    workflowsLoaded(result[2]);
-
-                    $scope.view.loading = false;
-                });
+            loadApps(0).then(function() {
+                $scope.view.loading = false;
+            });
 
         };
 
@@ -189,25 +194,14 @@ angular.module('registryApp')
          */
         $scope.resetSearch = function() {
 
-            $scope.view.page.tools = 1;
-            $scope.view.page.scripts = 1;
-            $scope.view.page.workflows = 1;
+            prepareConfig();
 
             $scope.view.searchTerm = '';
             $scope.view.loading = true;
 
-            $q.all([
-                    Tool.getTools(0),
-                    Tool.getScripts(0),
-                    Workflow.getWorkflows(0)
-                ]).then(function(result) {
-
-                    toolsLoaded(result[0]);
-                    scriptsLoaded(result[1]);
-                    workflowsLoaded(result[2]);
-
-                    $scope.view.loading = false;
-                });
+            loadApps(0).then(function() {
+                $scope.view.loading = false;
+            });
 
         };
 

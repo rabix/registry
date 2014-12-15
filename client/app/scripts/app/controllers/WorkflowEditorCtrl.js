@@ -3,14 +3,14 @@
  */
 'use strict';
 
-angular.module('registryApp')
-    .controller('PipelineEditorCtrl', ['$scope', '$rootScope', '$q', '$routeParams', '$modal', '$templateCache', '$location', 'Sidebar', 'Loading', 'Tool', 'Workflow', 'User', 'Repo', function ($scope, $rootScope, $q, $routeParams, $modal, $templateCache, $location, Sidebar, Loading, Tool, Workflow, User, Repo) {
+angular.module('registryApp.app')
+    .controller('WorkflowEditorCtrl', ['$scope', '$rootScope', '$q', '$routeParams', '$modal', '$templateCache', '$location', 'Sidebar', 'Loading', 'Tool', 'Workflow', 'User', 'Repo', function ($scope, $rootScope, $q, $routeParams, $modal, $templateCache, $location, Sidebar, Loading, Tool, Workflow, User, Repo) {
 
         Sidebar.setActive('dyole');
 
         $scope.view = {};
 
-        /* pipeline mode: new or edit */
+        /* workflow mode: new or edit */
         $scope.view.mode = $routeParams.mode;
 
         /* loading state of the page */
@@ -19,8 +19,8 @@ angular.module('registryApp')
         /* current tab for the right sidebar */
         $scope.view.tab = 'apps';
 
-        /* current pipeline */
-        $scope.view.pipeline = {};
+        /* current workflow */
+        $scope.view.workflow = {};
 
         /* group visibility flags for repos */
         $scope.view.groups = {
@@ -45,7 +45,7 @@ angular.module('registryApp')
         /* list of user repos*/
         $scope.view.userRepos= [];
 
-        /* flag if something is changed: params or pipeline */
+        /* flag if something is changed: params or workflow */
         $scope.view.isChanged = false;
 
         /* flag when save is clicked */
@@ -57,7 +57,7 @@ angular.module('registryApp')
         /* flag for sidebar visibility */
         $scope.view.showSidebar = true;
 
-        $scope.view.classes = ['page', 'pipeline-edit'];
+        $scope.view.classes = ['page', 'workflow-edit'];
         Loading.setClasses($scope.view.classes);
 
         $scope.Loading = Loading;
@@ -70,18 +70,18 @@ angular.module('registryApp')
             }
         });
 
-        User.getUser().then(function (result) {
-            $scope.view.user = result.user;
-        });
-
-        Repo.getRepos(0, '', true).then(function (repos) {
-            $scope.view.userRepos = repos.list;
+        $q.all([
+            User.getUser(),
+            Repo.getRepos(0, '', true)
+        ]).then(function(result) {
+                $scope.view.user = result[0].user;
+                $scope.view.userRepos = result[1].list;
         });
 
         if ($routeParams.mode === 'edit') {
             Workflow.getRevision($routeParams.id)
                 .then(function (result) {
-                    $scope.view.pipeline = result.data;
+                    $scope.view.workflow = result.data;
                 });
         }
 
@@ -255,9 +255,9 @@ angular.module('registryApp')
         };
 
         /**
-         * Callback when pipeline is changed
+         * Callback when workflow is changed
          */
-        $scope.onPipelineChange = function (value) {
+        $scope.onWorkflowChange = function (value) {
 
             $scope.view.isChanged = value;
 
@@ -272,19 +272,19 @@ angular.module('registryApp')
         };
 
         /**
-         * Initiate pipeline save
+         * Initiate workflow save
          */
         $scope.save = function () {
             var modalInstance, mode = $scope.view.mode;
 
-            if (!$scope.view.pipeline.name && mode === 'new') {
+            if (!$scope.view.workflow.name && mode === 'new') {
 
                 $modal.open({
                     template: $templateCache.get('views/partials/validation.html'),
                     size: 'sm',
                     controller: 'ModalCtrl',
                     windowClass: 'modal-validation',
-                    resolve: {data: function () { return {messages: ['You must enter pipeline name']}; }}
+                    resolve: {data: function () { return {messages: ['You must enter workflow name']}; }}
                 });
 
                 return false;
@@ -408,7 +408,7 @@ angular.module('registryApp')
 
         });
 
-        $scope.pipelineToJSON = function () {
+        $scope.workflowToJSON = function () {
             $scope.$broadcast('pipeline:format');
         };
 
@@ -439,7 +439,7 @@ angular.module('registryApp')
         };
         
         $scope.publish = function () {
-            Workflow.publishRevision($scope.view.pipeline._id, {publish: true}).then(function (data) {
+            Workflow.publishRevision($scope.view.workflow._id, {publish: true}).then(function (data) {
                 var trace = data;
 
                 $modal.open({
@@ -452,13 +452,13 @@ angular.module('registryApp')
             });
         };
 
-        $scope.format = function(pipeline) {
+        $scope.format = function(workflow) {
 
             var modal = $modal.open({
                 template: $templateCache.get('views/dyole/json-modal.html'),
                 controller: 'ModalJSONCtrl',
                 resolve: {data: function () {
-                    return {json: pipeline};
+                    return {json: workflow};
                 }}
             });
 
@@ -492,11 +492,11 @@ angular.module('registryApp')
                 windowClass: 'modal-markdown',
                 size: 'lg',
                 backdrop: 'static',
-                resolve: {data: function () {return {markdown: $scope.view.pipeline.description};}}
+                resolve: {data: function () {return {markdown: $scope.view.workflow.description};}}
             });
 
             modalInstance.result.then(function(result) {
-                $scope.view.pipeline.description = result;
+                $scope.view.workflow.description = result;
             });
         };
 
@@ -514,7 +514,7 @@ angular.module('registryApp')
             modalInstance.result.then(function (json) {
 
                 if (json) {
-                    $scope.view.pipeline = json;
+                    $scope.view.workflow = json;
                 }
             });
 

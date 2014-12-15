@@ -2,12 +2,12 @@
 
     <div class="heading">
         <a ng-if="view.mode === 'new'" ng-href="#/pipelines" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
-        <a ng-if="view.mode === 'edit'" ng-href="#/pipeline/{{ ::view.pipeline._id }}" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
+        <a ng-if="view.mode === 'edit'" ng-href="#/pipeline/{{ ::view.workflow._id }}" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
         <h1>
             <div class="form-group workflow-name">
-                <span class="pipeline-repo" ng-show="view.pipeline.pipeline.repo">({{ ::view.pipeline.pipeline.repo.owner }}/{{ ::view.pipeline.pipeline.repo.name }}) </span>
-                <input ng-show="view.mode === 'new'" type="text" placeholder="Workflow Name" ng-model="view.pipeline.name" class="form-control" />
-                <span ng-hide="view.mode === 'new'">{{ ::view.pipeline.pipeline.name }}</span>
+                <span class="pipeline-repo" ng-show="view.workflow.pipeline.repo">({{ ::view.workflow.pipeline.repo.owner }}/{{ ::view.workflow.pipeline.repo.name }}) </span>
+                <input ng-show="view.mode === 'new'" type="text" placeholder="Workflow Name" ng-model="view.workflow.name" class="form-control" />
+                <span ng-hide="view.mode === 'new'">{{ ::view.workflow.pipeline.name }}</span>
             </div>
 
             <strong class="changes-mark" ng-if="view.isChanged" tooltip="There are changes in your workflow" tooltip-placement="right">
@@ -16,7 +16,7 @@
 
             <div class="actions pull-right">
 
-                <button class="btn btn-default" ng-click="pipelineToJSON()" ng-disabled="view.saving" ><i class="fa fa-code"></i> JSON</button>
+                <button class="btn btn-default" ng-click="workflowToJSON()" ng-disabled="view.saving" ><i class="fa fa-code"></i> JSON</button>
 
                 <button ng-if="view.user" ng-click="save()" class="btn btn-default" ng-disabled="view.saving">
                     <i ng-class="{'fa-plus': view.mode === 'new', 'fa-check': view.mode === 'edit'}" class="fa"></i>
@@ -51,7 +51,7 @@
     <div ng-if="!view.loading" class="content">
 
         <div class="col content-col">
-            <div class="pipeline-wrap" pipeline="view.pipeline" edit-mode="true" pipeline-change-fn="onPipelineChange(value)" handle-pipeline-json="formatPipeline(pipeline)"></div>
+            <div class="pipeline-wrap" pipeline="view.workflow" edit-mode="true" pipeline-change-fn="onWorkflowChange(value)" handle-pipeline-json="formatPipeline(pipeline)"></div>
         </div>
 
         <div class="col sidebar-col" ng-class="{closed: !view.showSidebar}">

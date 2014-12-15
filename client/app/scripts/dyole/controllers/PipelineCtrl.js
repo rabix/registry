@@ -77,9 +77,9 @@ angular.module('registryApp.dyole')
 
                     if (data.id) {
                         if (repoId) {
-                            $location.path('/pipeline/' + data.id);
+                            $location.path('/workflow/' + data.id);
                         } else {
-                            $location.path('/pipeline/' + data.id + '/edit');
+                            $location.path('/workflow/' + data.id + '/edit');
                         }
                     } else {
                         $scope.pipelineChangeFn({value: false});
@@ -101,7 +101,7 @@ angular.module('registryApp.dyole')
             }
 
             Workflow.fork($scope.pipeline).then(function (pipeline) {
-                $location.path('/pipeline/' + pipeline.id + '/edit');
+                $location.path('/workflow/' + pipeline.id + '/edit');
             });
         });
 

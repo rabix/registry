@@ -63,7 +63,7 @@ angular.module('registryApp')
         $scope.pickApp = function() {
 
             var modalInstance = $modal.open({
-                template: $templateCache.get('views/partials/pick-app.html'),
+                template: $templateCache.get('views/app/partials/pick-app.html'),
                 controller: 'PickAppCtrl',
                 windowClass: 'modal-pick',
                 backdrop: 'static',
