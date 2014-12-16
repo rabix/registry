@@ -21,7 +21,7 @@
   },
   {
     "name": "GetRepo",
-    "type": "POST",
+    "type": "GET",
     "url": "/api/repos/:id/:action",
     "title": "Update repository",
     "group": "Repos",
@@ -141,7 +141,7 @@
   },
   {
     "name": "GetReposTools",
-    "type": "POST",
+    "type": "GET",
     "url": "/api/repo-tools/:id",
     "title": "Get tools from repository",
     "group": "Repos",
@@ -192,7 +192,7 @@
   },
   {
     "name": "GetReposWorkflows",
-    "type": "POST",
+    "type": "GET",
     "url": "/api/repo-workflows/:id",
     "title": "Get workflows from repository",
     "group": "Repos",
@@ -242,9 +242,66 @@
     "groupTitle": "Repos"
   },
   {
+    "name": "GetWorkflowRevisions",
+    "type": "GET",
+    "url": "/api/workflow-revisions",
+    "title": "Get all Workflows Revisions",
+    "group": "Repos",
+    "description": "<p>Fetch all workflow revisions</p> ",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "total",
+            "description": "<p>Total number of workflow revisions</p> "
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "list",
+            "description": "<p>List of workflow revisions</p> "
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "    HTTP/1.1 200 OK\n    {\n      \"total\": \"1\",\n      \"list\": [{workflow}]\n    }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "app/controllers/pipeline.js",
+    "groupTitle": "Repos",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Message",
+            "description": "<p>Unauthorized update</p> "
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "UnauthorizedError:",
+          "content": "    HTTP/1.1 401\n    {\n      \"message\": \"Unauthorized\"\n    }",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
     "name": "GetWorkflows",
     "type": "GET",
-    "url": "/api/pipelines",
+    "url": "/api/workflows",
     "title": "Get all Workflows",
     "group": "Repos",
     "description": "<p>Fetch all Workflows</p> ",
@@ -410,102 +467,9 @@
     }
   },
   {
-    "name": "FormatUploadWorkflow",
-    "type": "GET",
-    "url": "/api/pipeline/format/upload",
-    "title": "Format workflow and upload it",
-    "group": "Workflows",
-    "description": "<p>Format workflow and upload it</p> ",
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "String",
-            "optional": false,
-            "field": "url",
-            "description": "<p>Url to formated workflow on amazon s3</p> "
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Success-Response:",
-          "content": "    HTTP/1.1 200 OK\n    {\n      \"url\" : \"https://s3.amazonaws.com/rabix/users/ntijanic/pipelines/bwa/bwa_417435973012.json\"\n    }",
-          "type": "json"
-        }
-      ]
-    },
-    "version": "0.0.0",
-    "filename": "app/controllers/pipeline.js",
-    "groupTitle": "Workflows"
-  },
-  {
-    "name": "FormatWorkflow",
-    "type": "GET",
-    "url": "/api/pipeline/format",
-    "title": "Format workflow",
-    "group": "Workflows",
-    "description": "<p>Format workflow</p> ",
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "Object",
-            "optional": false,
-            "field": "json",
-            "description": "<p>Formated workflow</p> "
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Success-Response:",
-          "content": "    HTTP/1.1 200 OK\n    {\n      \"json\": {Workflow}\n    }",
-          "type": "json"
-        }
-      ]
-    },
-    "version": "0.0.0",
-    "filename": "app/controllers/pipeline.js",
-    "groupTitle": "Workflows"
-  },
-  {
-    "name": "GetWorkflow",
-    "type": "GET",
-    "url": "/api/repos/:id",
-    "title": "Get workflow by id",
-    "group": "Workflows",
-    "description": "<p>Get workflow by id</p> ",
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "Obejct",
-            "optional": false,
-            "field": "data",
-            "description": "<p>Workflow</p> "
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Success-Response:",
-          "content": "    HTTP/1.1 200 OK\n    {\n      \"total\": \"1\",\n      \"data\": {workflow}\n    }",
-          "type": "json"
-        }
-      ]
-    },
-    "version": "0.0.0",
-    "filename": "app/controllers/pipeline.js",
-    "groupTitle": "Workflows"
-  },
-  {
-    "name": "RepoWorkflow",
+    "name": "CreateWorkflow",
     "type": "POST",
-    "url": "/api/pipeline",
+    "url": "/api/workflows",
     "title": "Create user workflow",
     "group": "Workflows",
     "description": "<p>Create user workflow</p> ",
@@ -559,6 +523,433 @@
         {
           "title": "Error-Response:",
           "content": "    HTTP/1.1 400 Bad Request\n    {\n      \"message\": \"Name already in use\"\n    }",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "name": "DeleteWorkflow",
+    "type": "DELETE",
+    "url": "/api/workflows/:id",
+    "title": "Delete workflow",
+    "group": "Workflows",
+    "description": "<p>Delete workflow</p> ",
+    "permission": [
+      {
+        "name": "Logged in user"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Success message</p> "
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "    HTTP/1.1 200 OK\n    {\n       \"message\": \"Workflow successfully deleted\"\n    }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "app/controllers/pipeline.js",
+    "groupTitle": "Workflows",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Message",
+            "description": "<p>Unauthorized update</p> "
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "UnauthorizedError:",
+          "content": "    HTTP/1.1 401\n    {\n      \"message\": \"Unauthorized\"\n    }",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "name": "DeleteWorkflowRevision",
+    "type": "DELETE",
+    "url": "/api/workflows/:id",
+    "title": "Delete workflow revision",
+    "group": "Workflows",
+    "description": "<p>Delete workflow revision</p> ",
+    "permission": [
+      {
+        "name": "Logged in user"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Success message</p> "
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "    HTTP/1.1 200 OK\n    {\n       \"message\": \"Workflow revision successfully deleted\"\n    }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "app/controllers/pipeline.js",
+    "groupTitle": "Workflows",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Message",
+            "description": "<p>Unauthorized update</p> "
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "UnauthorizedError:",
+          "content": "    HTTP/1.1 401\n    {\n      \"message\": \"Unauthorized\"\n    }",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "name": "ForkWorkflow",
+    "type": "POST",
+    "url": "/api/workflows/fork",
+    "title": "Fork workflow",
+    "group": "Workflows",
+    "description": "<p>Fork workflow</p> ",
+    "permission": [
+      {
+        "name": "Logged in user"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Success message</p> "
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Represents new workflow revision id</p> "
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "    HTTP/1.1 200 OK\n    {\n       \"message\": \"Workflow successfully added\",\n       \"id\": \"547854cbf76a100000ac84dd\"\n    }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "app/controllers/pipeline.js",
+    "groupTitle": "Workflows",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "message",
+            "description": "<p>The <code>name</code> already in use.</p> "
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Error-Response:",
+          "content": "    HTTP/1.1 400 Bad Request\n    {\n      \"message\": \"Name already in use\"\n    }",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "name": "FormatUploadWorkflow",
+    "type": "GET",
+    "url": "/api/workflow/format/upload",
+    "title": "Format workflow and upload it",
+    "group": "Workflows",
+    "description": "<p>Format workflow and upload it</p> ",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "url",
+            "description": "<p>Url to formated workflow on amazon s3</p> "
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "    HTTP/1.1 200 OK\n    {\n      \"url\" : \"https://s3.amazonaws.com/rabix/users/ntijanic/pipelines/bwa/bwa_417435973012.json\"\n    }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "app/controllers/pipeline.js",
+    "groupTitle": "Workflows"
+  },
+  {
+    "name": "FormatWorkflow",
+    "type": "GET",
+    "url": "/api/workflow/format",
+    "title": "Format workflow",
+    "group": "Workflows",
+    "description": "<p>Format workflow</p> ",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "json",
+            "description": "<p>Formated workflow</p> "
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "    HTTP/1.1 200 OK\n    {\n      \"json\": {Workflow}\n    }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "app/controllers/pipeline.js",
+    "groupTitle": "Workflows"
+  },
+  {
+    "name": "GetWorkflow",
+    "type": "GET",
+    "url": "/api/workflows/:id",
+    "title": "Get workflow revision by id",
+    "group": "Workflows",
+    "description": "<p>Get workflow revision by id</p> ",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Obejct",
+            "optional": false,
+            "field": "data",
+            "description": "<p>Workflow revision</p> "
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "    HTTP/1.1 200 OK\n    {\n      \"data\": {workflow-revision}\n    }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "app/controllers/pipeline.js",
+    "groupTitle": "Workflows",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Message",
+            "description": "<p>Unauthorized update</p> "
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "UnauthorizedError:",
+          "content": "    HTTP/1.1 401\n    {\n      \"message\": \"Unauthorized\"\n    }",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "name": "GetWorkflow",
+    "type": "GET",
+    "url": "/api/workflows/:id",
+    "title": "Get workflow by id",
+    "group": "Workflows",
+    "description": "<p>Get workflow by id</p> ",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Obejct",
+            "optional": false,
+            "field": "data",
+            "description": "<p>Workflow</p> "
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "    HTTP/1.1 200 OK\n    {\n      \"data\": {workflow}\n    }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "app/controllers/pipeline.js",
+    "groupTitle": "Workflows"
+  },
+  {
+    "name": "UpdateWorkflow",
+    "type": "PUT",
+    "url": "/api/workflows/:id",
+    "title": "Update workflow",
+    "group": "Workflows",
+    "description": "<p>Update workflow</p> ",
+    "permission": [
+      {
+        "name": "Logged in user"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Success message</p> "
+          },
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Represents new workflow revision id</p> "
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "    HTTP/1.1 200 OK\n    {\n       \"message\": \"Successfully created new workflow revision\",\n       \"id\": \"547854cbf76a100000ac84dd\"\n    }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "app/controllers/pipeline.js",
+    "groupTitle": "Workflows",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Message",
+            "description": "<p>Ivalid workflow id</p> "
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "InvalidIDError:",
+          "content": "    HTTP/1.1 404\n    {\n      \"message\": \"There is no pipeline with id: 547854cbf76a100000ac84dd\"\n    }",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "name": "ValidateWorkflow",
+    "type": "POST",
+    "url": "/api/workflows/validate",
+    "title": "Validate workflow json",
+    "group": "Workflows",
+    "description": "<p>Validate workflow revision</p> ",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "json",
+            "description": "<p>Successfully passed validation</p> "
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "    HTTP/1.1 200 OK\n    {\n       \"json\": {workflow}\n    }",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "app/controllers/pipeline.js",
+    "groupTitle": "Workflows",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Message",
+            "description": "<p>Ivalid workflow</p> "
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "InvalidWorkflowError:",
+          "content": "    HTTP/1.1 400\n    {\n      \"message\": \"Invalid workflow\"\n    }",
           "type": "json"
         }
       ]

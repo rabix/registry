@@ -371,7 +371,7 @@ router.put('/repos/:id/:action', filters.authenticated, function (req, res, next
  * Get repo by id
  *
  * @apiName GetRepo
- * @api {POST} /api/repos/:id/:action Update repository
+ * @api {GET} /api/repos/:id/:action Update repository
  *
  * @apiGroup Repos
  * @apiDescription Update repository info or publish it
@@ -418,7 +418,7 @@ router.get('/repos/:id', function (req, res, next) {
  * Get repo's tools
  *
  * @apiName GetReposTools
- * @api {POST} /api/repo-tools/:id Get tools from repository
+ * @api {GET} /api/repo-tools/:id Get tools from repository
  *
  * @apiGroup Repos
  * @apiDescription Get tools from repository
@@ -467,7 +467,7 @@ router.get('/repo-tools/:id', function(req, res, next) {
  * Get repo's workflows
  *
  * @apiName GetReposWorkflows
- * @api {POST} /api/repo-workflows/:id Get workflows from repository
+ * @api {GET} /api/repo-workflows/:id Get workflows from repository
  *
  * @apiGroup Repos
  * @apiDescription Get workflows from repository
