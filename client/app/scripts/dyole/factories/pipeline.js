@@ -5,7 +5,7 @@
 'use strict';
 
 angular.module('registryApp.dyole')
-    .factory('pipeline', ['event', 'node', 'connection', '$rootScope', 'systemNodeModel', function (Event, Node, Connection, $rootScope, systemNodeModel) {
+    .factory('pipeline', ['event', 'node', 'connection', '$rootScope', 'systemNodeModel', 'Formater', function (Event, Node, Connection, $rootScope, systemNodeModel, Formater) {
 
             /**
              * Pipeline constructor
@@ -16,6 +16,11 @@ angular.module('registryApp.dyole')
             var Pipeline = function (options) {
                 this.model = options.model;
                 this.$parent = options.$parent;
+
+
+                if (this.model.steps && this.model.steps.length !== 0 ) {
+                    this.model = Formater.toPipelineSchema(this.model);
+                }
 
                 this.model.schemas = this.model.schemas || {};
                 this.model.display = this.model.display || {};
@@ -531,17 +536,21 @@ angular.module('registryApp.dyole')
                  * @private
                  */
                 _generateNodeId: function (model) {
-                    var name = (model.softwareDescription && model.softwareDescription.name) ? model.softwareDescription.name : model.name,
-                        n = 1;
-
-                    var check = this._checkIdAvailable(name + '_' + n);
+                    var _id, check = true, name = (model.softwareDescription && model.softwareDescription.name) ? model.softwareDescription.name : model.name,
+                        n = 0;
 
                     while (check) {
-                        n++;
                         check = this._checkIdAvailable(name + '_' + n);
+                        n = check ? n++ : n;
                     }
 
-                    return name + '_' + n;
+                    if (n === 0) {
+                        _id = name;
+                    } else {
+                        _id = name + '_' + n;
+                    }
+
+                    return _id;
                 },
 
                 /**
@@ -1047,7 +1056,8 @@ angular.module('registryApp.dyole')
                     json.display.canvas.x = this.getEl().getTranslation().x;
                     json.display.canvas.y = this.getEl().getTranslation().y;
 
-                    return json;
+                    return Formater.toRabixSchema(json);
+//                    return json;
                 },
 
                 /**

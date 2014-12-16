@@ -22,12 +22,49 @@ module.exports = function (app) {
 };
 
 /**
- * Format pipeline
- *
- * @post_param pipeline - Pipeline to format
- * @response json - Formated pipeline json
+ * @apiDefine UnauthorizedError
+ * @apiError Message Unauthorized access
+ * @apiErrorExample UnauthorizedError:
+ *     HTTP/1.1 500
+ *     {
+ *       "message": "Unauthorized"
+ *     }
  */
-router.post('/pipeline/format', function (req, res) {
+
+/**
+ * @apiDefine InvalidWorkflowError
+ * @apiError Message Ivalid workflow
+ * @apiErrorExample InvalidWorkflowError:
+ *     HTTP/1.1 400
+ *     {
+ *       "message": "Invalid workflow"
+ *     }
+ */
+
+/**
+ * @apiDefine InvalidIDError
+ * @apiError Message Ivalid workflow id
+ * @apiErrorExample InvalidIDError:
+ *     HTTP/1.1 404
+ *     {
+ *       "message": "There is no pipeline with id: 547854cbf76a100000ac84dd"
+ *     }
+ */
+
+/**
+ * @apiName FormatWorkflow
+ * @api {GET} /api/workflow/format Format workflow
+ * @apiGroup Workflows
+ * @apiDescription Format workflow
+ *
+ * @apiSuccess {Object} json Formated workflow
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "json": {Workflow}
+ *     }
+ */
+router.post('/workflow/format', function (req, res) {
 
     var p = formater.toRabixSchema(req.body.pipeline.json || req.body.pipeline);
 
@@ -40,12 +77,19 @@ router.post('/pipeline/format', function (req, res) {
 });
 
 /**
- * Format pipeline json and upload it
+ * @apiName FormatUploadWorkflow
+ * @api {GET} /api/workflow/format/upload Format workflow and upload it
+ * @apiGroup Workflows
+ * @apiDescription Format workflow and upload it
  *
- * @post_param pipeline - Pipeline to upload
- * @response url - link to uploaded pipeline
+ * @apiSuccess {String} url Url to formated workflow on amazon s3
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "url" : "https://s3.amazonaws.com/rabix/users/ntijanic/pipelines/bwa/bwa_417435973012.json"
+ *     }
  */
-router.post('/pipeline/format/upload', function (req, res) {
+router.post('/workflow/format/upload', function (req, res) {
     var p = req.body.pipeline;
 
     var folder, pipeline = formater.toRabixSchema(p.json);
@@ -93,9 +137,21 @@ router.post('/pipeline/format/upload', function (req, res) {
 });
 
 /**
- * Get all pipelines
+ * @apiName GetWorkflows
+ * @api {GET} /api/workflows Get all Workflows
+ * @apiGroup Repos
+ * @apiDescription Fetch all Workflows
+ *
+ * @apiSuccess {Number} total Total number of workflows
+ * @apiSuccess {Array} list List of workflows
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "total": "1",
+ *       "list": [{workflow}]
+ *     }
  */
-router.get('/pipeline', function (req, res, next) {
+router.get('/workflows', function (req, res, next) {
 
     var limit = req.query.limit ? req.query.limit : 25;
     var skip = req.query.skip ? req.query.skip : 0;
@@ -161,17 +217,29 @@ router.get('/pipeline', function (req, res, next) {
 });
 
 /**
- * Get specific pipeline
+ * Get workflow by id
  *
- * @param :id Pipeline id
+ * @apiName GetWorkflow
+ * @api {GET} /api/workflows/:id Get workflow by id
+ * @apiGroup Workflows
+ * @apiDescription Get workflow by id
+ *
+ * @apiSuccess {Obejct} data Workflow
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "data": {workflow}
+ *     }
  */
-router.get('/pipeline/:id', function (req, res, next) {
+router.get('/workflows/:id', function (req, res, next) {
 
 
     Pipeline.findById(req.params.id).populate('repo').populate('user', '_id email username').populate('latest').exec(function(err, pipeline) {
         if (err) { return next(err); }
 
         if ( (req.user && pipeline.user._id === req.user.id) || pipeline.repo.is_public) {
+
+            pipeline.latest.json = JSON.parse(pipeline.latest.json);
             res.json({data: pipeline});
         } else {
             res.status(401).json({message: 'Unauthorized'});
@@ -182,11 +250,23 @@ router.get('/pipeline/:id', function (req, res, next) {
 });
 
 /**
- * Create new pipeline
+ * @apiName CreateWorkflow
+ * @api {POST} /api/workflows Create user workflow
+ * @apiGroup Workflows
+ * @apiDescription Create user workflow
+ * @apiPermission Logged in user
+ * @apiUse NameCollisionError
  *
- * @post_param data - Pipeline json
+ * @apiSuccess {String} message Success message
+ * @apiSuccess {String} id Represents new workflow revision id
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *        "message": "Workflow successfully added",
+ *        "id": "547854cbf76a100000ac84dd"
+ *     }
  */
-router.post('/pipeline', filters.authenticated, function (req, res, next) {
+router.post('/workflows', filters.authenticated, function (req, res, next) {
 
     var data = req.body.data;
 
@@ -208,7 +288,7 @@ router.post('/pipeline', filters.authenticated, function (req, res, next) {
                     var revision = new PipelineRevision();
 
                     revision.description = data.description;
-                    revision.json = data.json;
+                    revision.json = JSON.stringify(data.json);
                     revision.stamp = stamp;
                     revision.name = data.name;
 
@@ -252,11 +332,26 @@ router.post('/pipeline', filters.authenticated, function (req, res, next) {
 });
 
 /**
+ *
  * Update pipeline - create new revision
  *
- * @param :id Pipeline id
+ * @apiName UpdateWorkflow
+ * @api {PUT} /api/workflows/:id Update workflow
+ * @apiGroup Workflows
+ * @apiDescription Update workflow
+ * @apiPermission Logged in user
+ * @apiUse InvalidIDError
+ *
+ * @apiSuccess {String} message Success message
+ * @apiSuccess {String} id Represents new workflow revision id
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *        "message": "Successfully created new workflow revision",
+ *        "id": "547854cbf76a100000ac84dd"
+ *     }
  */
-router.put('/pipeline/:id', filters.authenticated, function (req, res, next) {
+router.put('/workflows/:id', filters.authenticated, function (req, res, next) {
 
     var data = req.body.data;
 
@@ -274,7 +369,7 @@ router.put('/pipeline/:id', filters.authenticated, function (req, res, next) {
 
             var revision = new PipelineRevision();
 
-            revision.json = data.json;
+            revision.json = JSON.stringify(data.json);
             revision.name = data.name;
             revision.description = data.description;
             revision.pipeline = pipeline._id.toString();
@@ -304,11 +399,24 @@ router.put('/pipeline/:id', filters.authenticated, function (req, res, next) {
 });
 
 /**
- * Delete workflow if it has only unpublished revisions
  *
- * @param :id Pipeline id
+ * Delete workflow
+ *
+ * @apiName DeleteWorkflow
+ * @api {DELETE} /api/workflows/:id Delete workflow
+ * @apiGroup Workflows
+ * @apiDescription Delete workflow
+ * @apiPermission Logged in user
+ * @apiUse UnauthorizedError
+ *
+ * @apiSuccess {String} message Success message
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *        "message": "Workflow successfully deleted"
+ *     }
  */
-router.delete('/pipeline/:id', filters.authenticated, function (req, res, next) {
+router.delete('/workflows/:id', filters.authenticated, function (req, res, next) {
 
     Pipeline.findOne({_id: req.params.id}).exec(function (err, pipeline) {
         if (err) { return next(err); }
@@ -340,11 +448,26 @@ router.delete('/pipeline/:id', filters.authenticated, function (req, res, next) 
 });
 
 /**
- * Fork existing pipeline
  *
- * @post_param pipeline - Pipeline json to fork
+ * Fork workflow
+ *
+ * @apiName ForkWorkflow
+ * @api {POST} /api/workflows/fork Fork workflow
+ * @apiGroup Workflows
+ * @apiDescription Fork workflow
+ * @apiPermission Logged in user
+ * @apiUse NameCollisionError
+ *
+ * @apiSuccess {String} message Success message
+ * @apiSuccess {String} id Represents new workflow revision id
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *        "message": "Workflow successfully added",
+ *        "id": "547854cbf76a100000ac84dd"
+ *     }
  */
-router.post('/pipeline/fork', filters.authenticated, function (req, res, next) {
+router.post('/workflows/fork', filters.authenticated, function (req, res, next) {
 
     var pipeline_to_fork = req.body.pipeline;
 
@@ -367,7 +490,7 @@ router.post('/pipeline/fork', filters.authenticated, function (req, res, next) {
                     var revision = new PipelineRevision();
 
                     revision.description = pipeline_to_fork.description;
-                    revision.json = pipeline_to_fork.json;
+                    revision.json = JSON.stringify(pipeline_to_fork.json);
                     revision.stamp = stamp;
                     revision.name = pipeline_to_fork.name;
 
@@ -410,9 +533,25 @@ router.post('/pipeline/fork', filters.authenticated, function (req, res, next) {
 });
 
 /**
+ *
  * Get all pipeline revisions
+ *
+ * @apiName GetWorkflowRevisions
+ * @api {GET} /api/workflow-revisions Get all Workflows Revisions
+ * @apiGroup Repos
+ * @apiDescription Fetch all workflow revisions
+ * @apiUse UnauthorizedError
+ *
+ * @apiSuccess {Number} total Total number of workflow revisions
+ * @apiSuccess {Array} list List of workflow revisions
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "total": "1",
+ *       "list": [{workflow}]
+ *     }
  */
-router.get('/pipeline-revisions', function (req, res, next) {
+router.get('/workflow-revisions', function (req, res, next) {
 
     var limit = req.query.limit ? req.query.limit : 25;
     var skip = req.query.skip ? req.query.skip : 0;
@@ -451,6 +590,10 @@ router.get('/pipeline-revisions', function (req, res, next) {
                     PipelineRevision.find(where).skip(skip).limit(limit).sort(sort).exec(function(err, revisions) {
                         if (err) { return next(err); }
 
+                        _.forEach(revisions, function (r) {
+                            r.json = JSON.parse(r.json);
+                        });
+
                         res.json({list: revisions, total: total});
                     });
 
@@ -469,7 +612,25 @@ router.get('/pipeline-revisions', function (req, res, next) {
  *
  * @param :id Revision id
  */
-router.get('/pipeline-revisions/:id', function (req, res, next) {
+
+/**
+ * Get workflow revision by id
+ *
+ * @apiName GetWorkflow
+ * @api {GET} /api/workflows/:id Get workflow revision by id
+ * @apiGroup Workflows
+ * @apiDescription Get workflow revision by id
+ * @apiUse UnauthorizedError
+ *
+ * @apiSuccess {Obejct} data Workflow revision
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "data": {workflow-revision}
+ *     }
+ */
+
+router.get('/workflow-revisions/:id', function (req, res, next) {
     console.log('Rev id: ',req.params.id);
     PipelineRevision.findById(req.params.id).populate('pipeline').exec(function(err, pipeline) {
         if (err) { return next(err); }
@@ -480,9 +641,10 @@ router.get('/pipeline-revisions/:id', function (req, res, next) {
                 path: 'pipeline.user',
                 select:  '_id email username'
             }, function (err, pipe) {
-//                console.log('Pipeline populated: ', pipe.pipeline.user,  req.user.id === pipe.pipeline.user._id.toString());
                 console.log('pipe', pipe, pipeline);
                 var repo_public = p.pipeline.repo.is_public;
+
+                pipe.json  = JSON.parse(pipe.json);
 
                 if (repo_public || (req.user && req.user.id === pipe.pipeline.user._id.toString() )) {
                     res.json({data: pipe});
@@ -503,7 +665,7 @@ router.get('/pipeline-revisions/:id', function (req, res, next) {
  *
  * @param :revision Revision id
  */
-router.put('/pipeline-revisions/:revision', filters.authenticated, function (req, res, next) {
+router.put('/workflow-revisions/:revision', filters.authenticated, function (req, res, next) {
     var revision_id = req.params.revision,
         isPublic = true;
 
@@ -541,11 +703,24 @@ router.put('/pipeline-revisions/:revision', filters.authenticated, function (req
 });
 
 /**
- * Delete pipeline revision
  *
- * @param :revision - reivison id
+ * Delete workflow revision
+ *
+ * @apiName DeleteWorkflowRevision
+ * @api {DELETE} /api/workflows/:id Delete workflow revision
+ * @apiGroup Workflows
+ * @apiDescription Delete workflow revision
+ * @apiPermission Logged in user
+ * @apiUse UnauthorizedError
+ *
+ * @apiSuccess {String} message Success message
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *        "message": "Workflow revision successfully deleted"
+ *     }
  */
-router.delete('/pipeline-revisions/:revision', filters.authenticated, function (req, res, next) {
+router.delete('/workflow-revisions/:revision', filters.authenticated, function (req, res, next) {
     var revision_id = req.params.revision;
 
     PipelineRevision.findById(revision_id).populate('pipeline').exec(function (err, revision) {
@@ -556,7 +731,7 @@ router.delete('/pipeline-revisions/:revision', filters.authenticated, function (
         }, function (err, rev) {
             if (err) { return next(err); }
 
-            if (!rev.is_public && rev.pipeline.user._id.toString() === req.user.id) {
+            if (rev.pipeline.user._id.toString() === req.user.id) {
 
                 var pipeline_id = rev.pipeline._id;
                 Pipeline.findById(pipeline_id, function (err, pipeline) {
@@ -639,7 +814,24 @@ router.get('/workflow/repositories/:type', function (req, res, next) {
 
 });
 
-router.post('/pipeline/validate', function (req, res, next) {
+/**
+ *
+ * Validiate workflow json
+ *
+ * @apiName ValidateWorkflow
+ * @api {POST} /api/workflows/validate Validate workflow json
+ * @apiGroup Workflows
+ * @apiDescription Validate workflow revision
+ * @apiUse InvalidWorkflowError
+ *
+ * @apiSuccess {Object} json Successfully passed validation
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *        "json": {workflow}
+ *     }
+ */
+router.post('/workflow/validate', function (req, res, next) {
     var json = JSON.parse(req.body.json);
 //    json = test_json;
     
@@ -654,24 +846,4 @@ router.post('/pipeline/validate', function (req, res, next) {
     } else {
         res.status(400).json(errors);
     }
-});
-
-router.get('/validator', function (req, res, next) {
-//    var id = '5478cf8e6bce92183cd146a6';
-//    var id = '547f32a952b413e09c6a59f1';
-    var id = '54856cdeeb762f74de4d8e73';
-
-    PipelineRevision.findOne({_id: id}, function (err, rev) {
-        if (err) {return next(err);}
-
-        var errors = validator.validate(rev.json);
-
-        var formated = formater.toRabixSchema(rev.json);
-//
-//        var pipelineSchema = formater.toPipelineSchema(formated);
-//
-//        errors = validator.validate(pipelineSchema);
-
-        res.json({errors: formated});
-    });
 });

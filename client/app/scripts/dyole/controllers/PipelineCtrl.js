@@ -23,7 +23,7 @@ angular.module('registryApp.dyole')
          */
         var initPipeline = function (obj) {
 
-            if (!obj.json || obj.json.nodes.length === 0) {
+            if (!obj.json || (obj.json.steps && obj.json.steps.length === 0)) {
                 $scope.view.explanation = true;
             }
 
@@ -115,10 +115,12 @@ angular.module('registryApp.dyole')
         });
 
         $scope.$on('pipeline:format', function () {
-            Workflow.format(Pipeline.getJSON()).then(function (pipeline) {
-                console.log(pipeline);
-                $scope.handlePipelineJson({pipeline: pipeline.json});
-            });
+            $scope.handlePipelineJson({pipeline: Pipeline.getJSON()});
+
+//            Workflow.format(Pipeline.getJSON()).then(function (pipeline) {
+//                console.log(pipeline);
+//                $scope.handlePipelineJson({pipeline: pipeline.json});
+//            });
         });
 
         $scope.$on('pipeline:get:url', function () {

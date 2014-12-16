@@ -9,7 +9,7 @@ var config = {
     development: {
         root: rootPath,
         app: {
-            name: 'server',
+            name: 'Rabix',
             githubName: 'Rabix-develop'
         },
         port: 3000,
@@ -37,7 +37,7 @@ var config = {
     test: {
         root: rootPath,
         app: {
-            name: 'server'
+            name: 'Rabix Tests'
         },
         port: 3000,
         db: 'mongodb://localhost/server-test',
@@ -65,7 +65,7 @@ var config = {
     staging: {
         root: rootPath,
         app: {
-            name: 'server',
+            name: 'Rabix',
             githubName: 'Rabix-staging'
         },
         port: 5000,
