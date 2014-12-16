@@ -6,6 +6,7 @@
 
 'use strict';
 
+// TODO: separate controllers for INPUT, OUTPUT AND ARG!!!
 angular.module('registryApp.cliche')
     .controller('ManagePropertyCtrl', ['$scope', '$modalInstance', 'Data', 'options', function ($scope, $modalInstance, Data, options) {
 
@@ -22,7 +23,7 @@ angular.module('registryApp.cliche')
             case 'input':
                 $scope.view.property = {
                     type: 'string',
-                    adapter: {separator: ' '}
+                    //adapter: {separator: ' '}
                 };
                 break;
             case 'output':
@@ -48,16 +49,23 @@ angular.module('registryApp.cliche')
             }
         });
 
-        if (!$scope.view.property.adapter) {
+        if (options.type === 'output' && _.isUndefined($scope.view.property.adapter)) {
             $scope.view.property.adapter = {};
         }
 
-        if (_.isArray($scope.view.property.adapter.secondaryFiles) && $scope.view.property.adapter.secondaryFiles.length === 0) {
-            $scope.view.property.adapter.secondaryFiles = '';
+        if ($scope.view.property.adapter && _.isArray($scope.view.property.adapter.secondaryFiles) && $scope.view.property.adapter.secondaryFiles.length === 0) {
+            //$scope.view.property.adapter.secondaryFiles = '';
+            delete $scope.view.property.adapter.secondaryFiles;
             $scope.view.isSecondaryFilesExpr = true;
-        } else if (!_.isArray($scope.view.property.adapter.secondaryFiles)) {
+        } else if ($scope.view.property.adapter && !_.isArray($scope.view.property.adapter.secondaryFiles)) {
             $scope.view.isSecondaryFilesExpr = true;
         }
+
+        var checkInputAdapter = function() {
+            if (options.type === 'input' && _.isUndefined($scope.view.property.adapter)) {
+                $scope.view.property.adapter = {};
+            }
+        };
 
         /**
          * Save property changes
@@ -132,6 +140,8 @@ angular.module('registryApp.cliche')
                         options.inputs[$scope.name] = [];
                     }
 
+                    checkInputAdapter();
+
                     if (_.isUndefined($scope.view.property.items.properties)) {
                         $scope.view.property.items.properties = {};
                         $scope.view.property.adapter.prefix = '';
@@ -159,7 +169,8 @@ angular.module('registryApp.cliche')
 
         $scope.$watch('view.property.adapter.secondaryFiles.length', function(n, o) {
             if (n !== o && n === 0) {
-                $scope.view.property.adapter.secondaryFiles = '';
+                //$scope.view.property.adapter.secondaryFiles = '';
+                delete $scope.view.property.adapter.secondaryFiles;
                 $scope.view.isSecondaryFilesExpr = true;
             }
         });
@@ -189,7 +200,7 @@ angular.module('registryApp.cliche')
             if ($scope.view.isEnum) {
                 $scope.view.property.enum = [''];
             } else {
-                $scope.view.property.enum = null;
+                delete $scope.view.property.enum;
             }
         };
 
@@ -199,6 +210,7 @@ angular.module('registryApp.cliche')
          * @param value
          */
         $scope.updateTransform = function (value, key) {
+            checkInputAdapter();
             $scope.view.property.adapter[key] = value;
         };
 

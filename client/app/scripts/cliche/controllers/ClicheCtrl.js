@@ -11,6 +11,8 @@ angular.module('registryApp.cliche')
 
         Sidebar.setActive('cliche');
 
+        var schema = 'https://github.com/common-workflow-language/common-workflow-language/blob/draft-1/specification/tool-description.md';
+
         $scope.view = {};
         $scope.forms = {};
 
@@ -76,6 +78,8 @@ angular.module('registryApp.cliche')
 
         $scope.view.total = {inputs: 0, outputs: 0, values: 0};
 
+        $scope.view.fakeRequired = [];
+
         /**
          * Prepare temp list for paginating
          *
@@ -137,7 +141,7 @@ angular.module('registryApp.cliche')
 
                     var json = _.extend({
                         name: $scope.view.app.name,
-                        schema: 'https://github.com/common-workflow-language/common-workflow-language',
+                        schema: schema,
                         description: $scope.view.app.description
                     }, $scope.view.app.json);
 
@@ -177,6 +181,9 @@ angular.module('registryApp.cliche')
                         $scope.view.toolForm = Data.tool;
                         if ($scope.view.user) {
                             $scope.view.toolForm.documentAuthor = $scope.view.user.login;
+                        }
+                        if (_.isUndefined($scope.view.toolForm.schema)) {
+                            $scope.view.toolForm.schema = schema;
                         }
 
                         $scope.view.app.is_script = !Data.tool.adapter;

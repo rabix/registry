@@ -14,8 +14,9 @@ angular.module('registryApp.cliche')
                 order: '=',
                 name: '@',
                 type: '@',
+                mode: '@',
                 itemType: '@',
-                isRequired: '@',
+                isRequired: '=',
                 handle: '&'
             },
             link: function(scope) {
@@ -76,6 +77,19 @@ angular.module('registryApp.cliche')
                 scope.toggle = function() {
 
                     scope.handle({action: 'toggle'});
+
+                };
+
+                /**
+                 * Delegate action for removing from console output
+                 *
+                 * @param e
+                 */
+                scope.removeFromConsole = function(e) {
+
+                    stopPropagation(e);
+
+                    scope.handle({action: 'removeFromConsole'});
 
                 };
 

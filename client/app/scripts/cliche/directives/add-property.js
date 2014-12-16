@@ -23,6 +23,8 @@ angular.module('registryApp.cliche')
 
                 var isOpen = false;
 
+                scope.req = scope.req || [];
+
                 /**
                  * Show the modal for adding property items
                  *
