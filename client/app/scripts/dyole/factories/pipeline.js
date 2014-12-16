@@ -536,17 +536,21 @@ angular.module('registryApp.dyole')
                  * @private
                  */
                 _generateNodeId: function (model) {
-                    var name = (model.softwareDescription && model.softwareDescription.name) ? model.softwareDescription.name : model.name,
-                        n = 1;
-
-                    var check = this._checkIdAvailable(name + '_' + n);
+                    var _id, check = true, name = (model.softwareDescription && model.softwareDescription.name) ? model.softwareDescription.name : model.name,
+                        n = 0;
 
                     while (check) {
-                        n++;
                         check = this._checkIdAvailable(name + '_' + n);
+                        n = check ? n++ : n;
                     }
 
-                    return name + '_' + n;
+                    if (n === 0) {
+                        _id = name;
+                    } else {
+                        _id = name + '_' + n;
+                    }
+                    
+                    return _id;
                 },
 
                 /**

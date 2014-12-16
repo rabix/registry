@@ -239,6 +239,7 @@ angular.module('registryApp.dyole')
                             if (filter.length !== 0) {
                                 var m = _self._generateIOSchema('input', filter[0], input_id);
 
+                                m.name = input_id;
                                 schemas[input_id] = m;
 
                                 nodes.push(m);
@@ -286,6 +287,7 @@ angular.module('registryApp.dyole')
                             var m = _self._generateIOSchema('output', filter[0], output_id);
 
                             if (!schemas[output_id]) {
+                                m.name = output_id;
                                 schemas[output_id] = m;
                             }
 
