@@ -18,6 +18,7 @@ angular.module('registryApp.cliche')
                 max: '=',
                 properties: '=',
                 isRequired: '=',
+                path: '=',
                 form: '='
             },
             link: function(scope) {
@@ -33,7 +34,9 @@ angular.module('registryApp.cliche')
 
                     var itemScheme;
 
-                    if (scope.type === 'file') {
+                    if (scope.type === 'ext') {
+                        itemScheme = {path: scope.path};
+                    } else if (scope.type === 'file') {
                         itemScheme = {path: ''};
                     } else if (scope.type === 'object') {
                         itemScheme = {};
@@ -72,6 +75,7 @@ angular.module('registryApp.cliche')
                  * Add item to the list
                  */
                 scope.addItem = function() {
+
                     if (scope.max && scope.view.list.length >= scope.max) {
                         return false;
                     }
@@ -107,7 +111,7 @@ angular.module('registryApp.cliche')
 
                 };
 
-                // TODO not really cool...
+                // TODO: try to use $watchCollection
                 scope.$watch('view.list', function(n, o) {
                     if (n !== o) {
                         scope.model = _.pluck(n, 'value');
@@ -117,6 +121,16 @@ angular.module('registryApp.cliche')
                 scope.$watch('model', function(n, o) {
                     if (n !== o) {
                         scope.transformList(n);
+                    }
+                });
+
+                scope.$watch('path', function(n, o) {
+                    if (n !== o) {
+                        _.each(scope.view.list, function(item) {
+                            if (_.isEmpty(item.value.path) || item.value.path === o) {
+                                item.value.path = n;
+                            }
+                        });
                     }
                 });
 

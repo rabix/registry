@@ -134,8 +134,18 @@
 
         <div class="row">
             <div class="col-md-12">
-                <label class="control-label">Index Files</label>
-                <enum ng-model="view.property.adapter.secondaryFiles" type="'string'"></enum>
+                <label class="control-label">Secondary Files</label>
+                <div ng-if="view.isSecondaryFilesExpr" class="enum-list-wrap">
+                    <a href ng-click="toggleToList()" class="btn btn-default add-enum-item"><i class="fa fa-plus"></i></a>
+                    <div class="enum-list-container">
+                        <ul class="enum-list wide">
+                            <li>
+                                <expr ng-model="view.property.adapter.secondaryFiles" only-expr="true" handle-item-update="updateSecondaryFilesValue(value)" placeholder="Enter expression for secondary files or click + to enumerate them"></expr>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <enum ng-if="!view.isSecondaryFilesExpr" ng-model="view.property.adapter.secondaryFiles" type="'string'"></enum>
             </div>
         </div>
         <!-- END index files -->
