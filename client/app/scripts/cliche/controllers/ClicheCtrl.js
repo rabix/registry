@@ -404,6 +404,10 @@ angular.module('registryApp.cliche')
                 delete json.requirements;
             }
 
+            if (_.isString(json.adapter.baseCmd)) {
+                json.adapter.baseCmd = [json.adapter.baseCmd];
+            }
+
             Data.setTool(json);
             $scope.view.toolForm = Data.tool;
 
@@ -416,6 +420,10 @@ angular.module('registryApp.cliche')
 
             Data.setJob(job);
             $scope.view.jobForm = Data.job;
+
+            $scope.prepareForPagination(Data.tool.inputs.properties, 'inputs');
+            $scope.prepareForPagination(Data.tool.outputs.properties, 'outputs');
+            $scope.prepareForPagination(Data.tool.inputs.properties, 'values');
 
         };
 

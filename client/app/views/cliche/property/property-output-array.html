@@ -30,11 +30,12 @@
         </div>
 
         <div class="col-md-3 box-col">
-            <strong class="key">Index Files:</strong>
-            <div class="value">
+            <strong class="key">Secondary Files:</strong>
+            <div ng-if="!prop.adapter.secondaryFiles.expr" class="value">
                 <span ng-if="prop.adapter.secondaryFiles.length > 0">{{ prop.adapter.secondaryFiles.join(', ') }}</span>
-                <i ng-if="prop.adapter.secondaryFiles.length === 0">Not defined</i>
+                <i ng-if="!prop.adapter.secondaryFiles.length">Not defined</i>
             </div>
+            <div ng-if="prop.adapter.secondaryFiles.expr" class="value">{{ prop.adapter.secondaryFiles.expr.value }}</div>
         </div>
 
     </div>

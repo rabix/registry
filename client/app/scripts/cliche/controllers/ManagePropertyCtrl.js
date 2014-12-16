@@ -52,6 +52,13 @@ angular.module('registryApp.cliche')
             $scope.view.property.adapter = {};
         }
 
+        if (_.isArray($scope.view.property.adapter.secondaryFiles) && $scope.view.property.adapter.secondaryFiles.length === 0) {
+            $scope.view.property.adapter.secondaryFiles = '';
+            $scope.view.isSecondaryFilesExpr = true;
+        } else if (!_.isArray($scope.view.property.adapter.secondaryFiles)) {
+            $scope.view.isSecondaryFilesExpr = true;
+        }
+
         /**
          * Save property changes
          *
@@ -149,6 +156,31 @@ angular.module('registryApp.cliche')
                 }
             }
         });
+
+        $scope.$watch('view.property.adapter.secondaryFiles.length', function(n, o) {
+            if (n !== o && n === 0) {
+                $scope.view.property.adapter.secondaryFiles = '';
+                $scope.view.isSecondaryFilesExpr = true;
+            }
+        });
+
+        /**
+         * Toggle secondary files into array
+         */
+        $scope.toggleToList = function() {
+            $scope.view.property.adapter.secondaryFiles = [];
+            $scope.view.property.adapter.secondaryFiles.push('');
+            $scope.view.isSecondaryFilesExpr = false;
+        };
+
+        /**
+         * Update secondary files value
+         *
+         * @param value
+         */
+        $scope.updateSecondaryFilesValue = function(value) {
+            $scope.view.property.adapter.secondaryFiles = value;
+        };
 
         /**
          * Toggle enum flag
