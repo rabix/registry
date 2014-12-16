@@ -33,7 +33,7 @@ module.exports = function (app) {
 
 /**
  * @apiName FormatWorkflow
- * @api {GET} /api/pipeline/format Format workflow
+ * @api {GET} /api/workflow/format Format workflow
  * @apiGroup Workflows
  * @apiDescription Format workflow
  *
@@ -44,7 +44,7 @@ module.exports = function (app) {
  *       "json": {Workflow}
  *     }
  */
-router.post('/pipeline/format', function (req, res) {
+router.post('/workflow/format', function (req, res) {
 
     var p = formater.toRabixSchema(req.body.pipeline.json || req.body.pipeline);
 
@@ -58,7 +58,7 @@ router.post('/pipeline/format', function (req, res) {
 
 /**
  * @apiName FormatUploadWorkflow
- * @api {GET} /api/pipeline/format/upload Format workflow and upload it
+ * @api {GET} /api/workflow/format/upload Format workflow and upload it
  * @apiGroup Workflows
  * @apiDescription Format workflow and upload it
  *
@@ -69,7 +69,7 @@ router.post('/pipeline/format', function (req, res) {
  *       "url" : "https://s3.amazonaws.com/rabix/users/ntijanic/pipelines/bwa/bwa_417435973012.json"
  *     }
  */
-router.post('/pipeline/format/upload', function (req, res) {
+router.post('/workflow/format/upload', function (req, res) {
     var p = req.body.pipeline;
 
     var folder, pipeline = formater.toRabixSchema(p.json);
@@ -118,7 +118,7 @@ router.post('/pipeline/format/upload', function (req, res) {
 
 /**
  * @apiName GetWorkflows
- * @api {GET} /api/pipelines Get all Workflows
+ * @api {GET} /api/workflows Get all Workflows
  * @apiGroup Repos
  * @apiDescription Fetch all Workflows
  *
@@ -131,7 +131,7 @@ router.post('/pipeline/format/upload', function (req, res) {
  *       "list": [{workflow}]
  *     }
  */
-router.get('/pipeline', function (req, res, next) {
+router.get('/workflows', function (req, res, next) {
 
     var limit = req.query.limit ? req.query.limit : 25;
     var skip = req.query.skip ? req.query.skip : 0;
@@ -200,7 +200,7 @@ router.get('/pipeline', function (req, res, next) {
  * Get workflow by id
  *
  * @apiName GetWorkflow
- * @api {GET} /api/repos/:id Get workflow by id
+ * @api {GET} /api/workflows/:id Get workflow by id
  * @apiGroup Workflows
  * @apiDescription Get workflow by id
  *
@@ -208,17 +208,18 @@ router.get('/pipeline', function (req, res, next) {
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
- *       "total": "1",
  *       "data": {workflow}
  *     }
  */
-router.get('/pipeline/:id', function (req, res, next) {
+router.get('/workflows/:id', function (req, res, next) {
 
 
     Pipeline.findById(req.params.id).populate('repo').populate('user', '_id email username').populate('latest').exec(function(err, pipeline) {
         if (err) { return next(err); }
 
         if ( (req.user && pipeline.user._id === req.user.id) || pipeline.repo.is_public) {
+
+            pipeline.latest.json = JSON.parse(pipeline.latest.json);
             res.json({data: pipeline});
         } else {
             res.status(401).json({message: 'Unauthorized'});
@@ -230,7 +231,7 @@ router.get('/pipeline/:id', function (req, res, next) {
 
 /**
  * @apiName CreateWorkflow
- * @api {POST} /api/pipeline Create user workflow
+ * @api {POST} /api/workflows Create user workflow
  * @apiGroup Workflows
  * @apiDescription Create user workflow
  * @apiPermission Logged in user
@@ -245,7 +246,7 @@ router.get('/pipeline/:id', function (req, res, next) {
  *        "id": "547854cbf76a100000ac84dd"
  *     }
  */
-router.post('/pipeline', filters.authenticated, function (req, res, next) {
+router.post('/workflows', filters.authenticated, function (req, res, next) {
 
     var data = req.body.data;
 
@@ -267,7 +268,7 @@ router.post('/pipeline', filters.authenticated, function (req, res, next) {
                     var revision = new PipelineRevision();
 
                     revision.description = data.description;
-                    revision.json = data.json;
+                    revision.json = JSON.stringify(data.json);
                     revision.stamp = stamp;
                     revision.name = data.name;
 
@@ -315,7 +316,7 @@ router.post('/pipeline', filters.authenticated, function (req, res, next) {
  *
  * @param :id Pipeline id
  */
-router.put('/pipeline/:id', filters.authenticated, function (req, res, next) {
+router.put('/workflows/:id', filters.authenticated, function (req, res, next) {
 
     var data = req.body.data;
 
@@ -333,7 +334,7 @@ router.put('/pipeline/:id', filters.authenticated, function (req, res, next) {
 
             var revision = new PipelineRevision();
 
-            revision.json = data.json;
+            revision.json = JSON.stringify(data.json);
             revision.name = data.name;
             revision.description = data.description;
             revision.pipeline = pipeline._id.toString();
@@ -367,7 +368,7 @@ router.put('/pipeline/:id', filters.authenticated, function (req, res, next) {
  *
  * @param :id Pipeline id
  */
-router.delete('/pipeline/:id', filters.authenticated, function (req, res, next) {
+router.delete('/workflows/:id', filters.authenticated, function (req, res, next) {
 
     Pipeline.findOne({_id: req.params.id}).exec(function (err, pipeline) {
         if (err) { return next(err); }
@@ -403,7 +404,7 @@ router.delete('/pipeline/:id', filters.authenticated, function (req, res, next) 
  *
  * @post_param pipeline - Pipeline json to fork
  */
-router.post('/pipeline/fork', filters.authenticated, function (req, res, next) {
+router.post('/workflows/fork', filters.authenticated, function (req, res, next) {
 
     var pipeline_to_fork = req.body.pipeline;
 
@@ -426,7 +427,7 @@ router.post('/pipeline/fork', filters.authenticated, function (req, res, next) {
                     var revision = new PipelineRevision();
 
                     revision.description = pipeline_to_fork.description;
-                    revision.json = pipeline_to_fork.json;
+                    revision.json = JSON.stringify(pipeline_to_fork.json);
                     revision.stamp = stamp;
                     revision.name = pipeline_to_fork.name;
 
@@ -471,7 +472,7 @@ router.post('/pipeline/fork', filters.authenticated, function (req, res, next) {
 /**
  * Get all pipeline revisions
  */
-router.get('/pipeline-revisions', function (req, res, next) {
+router.get('/workflow-revisions', function (req, res, next) {
 
     var limit = req.query.limit ? req.query.limit : 25;
     var skip = req.query.skip ? req.query.skip : 0;
@@ -510,6 +511,10 @@ router.get('/pipeline-revisions', function (req, res, next) {
                     PipelineRevision.find(where).skip(skip).limit(limit).sort(sort).exec(function(err, revisions) {
                         if (err) { return next(err); }
 
+                        _.forEach(revisions, function (r) {
+                            r.json = JSON.parse(r.json);
+                        });
+
                         res.json({list: revisions, total: total});
                     });
 
@@ -528,7 +533,7 @@ router.get('/pipeline-revisions', function (req, res, next) {
  *
  * @param :id Revision id
  */
-router.get('/pipeline-revisions/:id', function (req, res, next) {
+router.get('/workflow-revisions/:id', function (req, res, next) {
     console.log('Rev id: ',req.params.id);
     PipelineRevision.findById(req.params.id).populate('pipeline').exec(function(err, pipeline) {
         if (err) { return next(err); }
@@ -541,6 +546,8 @@ router.get('/pipeline-revisions/:id', function (req, res, next) {
             }, function (err, pipe) {
                 console.log('pipe', pipe, pipeline);
                 var repo_public = p.pipeline.repo.is_public;
+
+                pipe.json  = JSON.parse(pipe.json);
 
                 if (repo_public || (req.user && req.user.id === pipe.pipeline.user._id.toString() )) {
                     res.json({data: pipe});
@@ -561,7 +568,7 @@ router.get('/pipeline-revisions/:id', function (req, res, next) {
  *
  * @param :revision Revision id
  */
-router.put('/pipeline-revisions/:revision', filters.authenticated, function (req, res, next) {
+router.put('/workflow-revisions/:revision', filters.authenticated, function (req, res, next) {
     var revision_id = req.params.revision,
         isPublic = true;
 
@@ -603,7 +610,7 @@ router.put('/pipeline-revisions/:revision', filters.authenticated, function (req
  *
  * @param :revision - reivison id
  */
-router.delete('/pipeline-revisions/:revision', filters.authenticated, function (req, res, next) {
+router.delete('/workflow-revisions/:revision', filters.authenticated, function (req, res, next) {
     var revision_id = req.params.revision;
 
     PipelineRevision.findById(revision_id).populate('pipeline').exec(function (err, revision) {
@@ -697,7 +704,7 @@ router.get('/workflow/repositories/:type', function (req, res, next) {
 
 });
 
-router.post('/pipeline/validate', function (req, res, next) {
+router.post('/workflow/validate', function (req, res, next) {
     var json = JSON.parse(req.body.json);
 //    json = test_json;
     

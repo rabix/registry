@@ -452,7 +452,7 @@ angular.module('registryApp.app')
             });
         };
 
-        $scope.format = function(workflow) {
+        $scope.formatPipeline = function(workflow) {
 
             var modal = $modal.open({
                 template: $templateCache.get('views/dyole/json-modal.html'),

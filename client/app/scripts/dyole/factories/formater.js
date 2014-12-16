@@ -103,7 +103,6 @@ angular.module('registryApp.dyole')
 
                         _self._attachOutput(rel);
 
-                        console.log('first', node_schema.softwareDescription);
                         _self._createInOut(node_schema.softwareDescription.type + 's', node_schema);
 
                     } else {
@@ -111,7 +110,7 @@ angular.module('registryApp.dyole')
                     }
 
                     if (_self._checkSystem(node_schema)) {
-                        console.log('second', node_schema.softwareDescription);
+
                         _self._createInOut(node_schema.softwareDescription.type + 's', node_schema);
                     }
 
@@ -238,7 +237,7 @@ angular.module('registryApp.dyole')
                             });
 
                             if (filter.length !== 0) {
-                                var m = _self._generateIOSchema('outputs', filter[0], input_id);
+                                var m = _self._generateIOSchema('input', filter[0], input_id);
 
                                 schemas[input_id] = m;
 
@@ -284,7 +283,7 @@ angular.module('registryApp.dyole')
 
                         if (filter.length !== 0) {
 
-                            var m = _self._generateIOSchema('inputs', filter[0], output_id);
+                            var m = _self._generateIOSchema('output', filter[0], output_id);
 
                             if (!schemas[output_id]) {
                                 schemas[output_id] = m;
@@ -344,12 +343,15 @@ angular.module('registryApp.dyole')
             },
 
             _generateIOSchema: function (type, schema, id) {
+
+                var internalType = type === 'input' ? 'outputs' : 'inputs';
+
                 var model = {
-                    'name': 'System app',
+                    'name': schema.name || 'System app',
                     'softwareDescription': {
                         'repo_owner': 'rabix',
                         'repo_name': 'system',
-                        'type': type.slice(0 ,type.length -1)
+                        'type': type
                     },
                     'documentAuthor': null,
                     'inputs': {
@@ -360,11 +362,11 @@ angular.module('registryApp.dyole')
                     }
                 };
 
-                model[type].properties = {};
-                model[type].properties[schema.id] = schema;
+                model[internalType].properties = {};
+                model[internalType].properties[schema.id] = schema;
 
-                model[type].properties[schema.id].name = schema.id;
-                model[type].properties[schema.id].id = schema.id;
+                model[internalType].properties[schema.id].name = schema.id;
+                model[internalType].properties[schema.id].id = schema.id;
 
                 model.id = id;
 

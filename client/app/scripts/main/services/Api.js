@@ -20,27 +20,27 @@ angular.module('registryApp')
             post: {method: 'POST'}
         });
 
-        self.pipelines = $resource(apiUrl + '/pipeline/:id', {id: '@id'}, {
+        self.pipelines = $resource(apiUrl + '/workflows/:id', {id: '@id'}, {
             add: {method: 'POST'},
             update: {method: 'PUT'},
             'delete': {method: 'DELETE'}
         });
 
-        self.pipelineRevs = $resource(apiUrl + '/pipeline-revisions/:id', {id: '@id'}, {
+        self.pipelineRevs = $resource(apiUrl + '/workflow-revisions/:id', {id: '@id'}, {
             add: {method: 'POST'},
             update: {method: 'PUT'},
             'delete': {method: 'DELETE'}
         });
 
-        self.formatPipeline = $resource(apiUrl + '/pipeline/format/:action', {action: '@action'}, {
+        self.formatPipeline = $resource(apiUrl + '/workflow/format/:action', {action: '@action'}, {
             format: {method: 'POST'}
         });
 
-        self.validatePipeline = $resource(apiUrl + '/pipeline/validate/', {}, {
+        self.validatePipeline = $resource(apiUrl + '/workflow/validate/', {}, {
             validate: {method: 'POST'}
         });
 
-        self.forkPipeline = $resource(apiUrl + '/pipeline/fork', {}, {
+        self.forkPipeline = $resource(apiUrl + '/workflow/fork', {}, {
             fork: {method: 'POST'}
         });
 
