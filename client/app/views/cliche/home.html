@@ -10,12 +10,12 @@
 
                 <a ng-if="view.mode === 'edit'" href class="version revision" ng-click="changeRevision()"><i class="fa fa-tag"></i> v{{ ::view.revision.version }}</a>
 
-                <label ng-if="view.mode === 'new'" class="checkbox inline">
-                    <input type="checkbox" ng-model="view.app.is_script" ng-change="adjust()" ng-disabled="view.mode === 'edit'">
-                    <span>script</span>
-                </label>
+                <!--<label ng-if="view.mode === 'new'" class="checkbox inline">-->
+                    <!--<input type="checkbox" ng-model="view.app.is_script" ng-change="adjust()" ng-disabled="view.mode === 'edit'">-->
+                    <!--<span>script</span>-->
+                <!--</label>-->
 
-                <span ng-if="view.mode === 'edit' && view.app.is_script" class="label label-info">script</span>
+                <!--<span ng-if="view.mode === 'edit' && view.app.is_script" class="label label-info">script</span>-->
             </div>
 
             <div class="actions pull-right">

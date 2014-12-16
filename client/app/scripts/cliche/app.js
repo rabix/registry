@@ -10,11 +10,11 @@ angular.module('registryApp.cliche', [])
     .config(['$routeProvider', '$localForageProvider', function ($routeProvider, $localForageProvider) {
 
         $routeProvider
-            .when('/cliche', {
+            .when('/cliche/:type', {
                 templateUrl: 'views/cliche/home.html',
                 controller: 'ClicheCtrl'
             })
-            .when('/cliche/:id/:revision', {
+            .when('/cliche/:type/:id/:revision', {
                 templateUrl: 'views/cliche/home.html',
                 controller: 'ClicheCtrl'
             });

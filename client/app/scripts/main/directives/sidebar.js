@@ -53,7 +53,7 @@ angular.module('registryApp')
                     {name: 'builds', link: 'builds', desc: 'Builds', icon: 'cube'},
                     {name: 'repos', link: 'repos', desc: 'Repositories', icon: 'code-fork'},
                     {name: 'dyole', link: 'workflow/0/new', desc: 'Workflow Editor', icon: 'terminal'},
-                    {name: 'cliche', link: 'cliche', desc: 'Tool Editorr', icon: 'terminal'}
+                    {name: 'cliche', link: 'cliche/tool', desc: 'Tool Editor', icon: 'terminal'}
                 ];
 
                 scope.SidebarService = Sidebar;

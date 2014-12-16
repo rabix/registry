@@ -12,10 +12,11 @@ var mapDefinition = {
         description: {type: 'string'},
         documentAuthor: {type: 'string', required: true},
         softwareRelease: {type: 'object'},
-        requirements: {type: 'object', required: true},
+        requirements: {type: 'object'},
         inputs: {type: 'object', required: true},
         outputs: {type: 'object', required: true},
-        adapter: {type: 'object', required: true}
+        adapter: {type: 'object'},
+        script: {type: 'string'}
     },
     softwareDescription: {
         repo_owner: {type: 'string', required: true},
@@ -124,7 +125,7 @@ var mapDefinition = {
             root: {
                 //required: {type: 'boolean'},
                 type: {type: 'string', required: true},
-                adapter: {type: 'object', required: true}
+                adapter: {type: 'object'}
             },
             adapter: {
                 stdout: {type: 'boolean'},
