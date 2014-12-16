@@ -731,7 +731,7 @@ router.delete('/workflow-revisions/:revision', filters.authenticated, function (
         }, function (err, rev) {
             if (err) { return next(err); }
 
-            if (!rev.is_public && rev.pipeline.user._id.toString() === req.user.id) {
+            if (rev.pipeline.user._id.toString() === req.user.id) {
 
                 var pipeline_id = rev.pipeline._id;
                 Pipeline.findById(pipeline_id, function (err, pipeline) {
