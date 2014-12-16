@@ -40,7 +40,7 @@ angular.module('registryApp')
             validate: {method: 'POST'}
         });
 
-        self.forkPipeline = $resource(apiUrl + '/workflow/fork', {}, {
+        self.forkPipeline = $resource(apiUrl + '/workflows/fork', {}, {
             fork: {method: 'POST'}
         });
 

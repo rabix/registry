@@ -30,7 +30,20 @@ angular.module('registryApp.dyole')
             this.selected = false;
 
             this.inputRefs = _.toArray(this.model.inputs.properties);
+
+            this.inputRefs.sort(function (a, b) {
+                if (a.name < b.name) return 1;
+                if (b.name < a.name) return -1;
+                return 0;
+            });
+
             this.outputRefs = _.toArray(this.model.outputs.properties);
+
+            this.outputRefs.sort(function (a, b) {
+                if (a.name < b.name) return 1;
+                if (b.name < a.name) return -1;
+                return 0;
+            });
 
             this._initTerminals();
 
