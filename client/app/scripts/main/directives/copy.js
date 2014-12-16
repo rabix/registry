@@ -19,6 +19,7 @@ angular.module('registryApp')
 
                 scope.view = {};
                 scope.view.text = 'Copy';
+                scope.view.error = '';
 
                 var timeoutId;
                 var clipboard;
@@ -51,9 +52,15 @@ angular.module('registryApp')
                         scope.$apply();
                     });
 
-                    clip.on('error', function() {
-                        ZeroClipboard.destroy();
-                    });
+                });
+
+                clip.on('error', function(e) {
+
+                    scope.view.error = e.message;
+
+                    ZeroClipboard.destroy();
+
+                    scope.$apply();
                 });
 
                 scope.cancelTimeout = function() {

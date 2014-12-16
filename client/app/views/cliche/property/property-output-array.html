@@ -19,14 +19,14 @@
 
         <div class="col-md-2 box-col">
             <strong class="key">Inherit:</strong>
-            <div ng-if="prop.adapter.meta.__inherit__" class="value">{{ prop.adapter.meta.__inherit__ }}</div>
-            <i ng-if="!prop.adapter.meta.__inherit__">Not defined</i>
+            <div ng-if="prop.adapter.metadata.__inherit__" class="value">{{ prop.adapter.metadata.__inherit__ }}</div>
+            <i ng-if="!prop.adapter.metadata.__inherit__">Not defined</i>
         </div>
 
         <div class="col-md-3 box-col">
-            <strong class="key">Meta:</strong>
-            <div class="value">{{ view.meta }}</div>
-            <i ng-if="!view.meta">Not defined</i>
+            <strong class="key">Metadata:</strong>
+            <div class="value">{{ view.metadata }}</div>
+            <i ng-if="!view.metadata">Not defined</i>
         </div>
 
         <div class="col-md-3 box-col">
@@ -59,7 +59,7 @@
 
         <div ng-if="prop.items.type === 'file'" class="col-md-2 col-md-offset-6 box-col">
             <strong class="key">Streamable:</strong>
-            <div class="value">{{ prop.adapter.listStreamable ? 'Yes' : 'No' }}</div>
+            <div class="value">{{ prop.adapter.streamable ? 'Yes' : 'No' }}</div>
         </div>
 
     </div>

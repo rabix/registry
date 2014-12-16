@@ -696,21 +696,31 @@ legend {
   vertical-align: middle;
   max-width: 60%;
 
-  & > span {
+  %ellipsis {
     max-width: 70%;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
   }
 
+  & > span {
+    @extend %ellipsis;
+  }
+
   & > span,
-  .btn {
+  .btn,
+  .error {
     display: inline-block;
     vertical-align: middle;
   }
 
   .btn.btn-sm {
     padding: 2px 10px;
+  }
+
+  .error {
+    @extend %ellipsis;
+    color: #ff0000;
   }
 }
 

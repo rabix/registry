@@ -8,7 +8,7 @@
 angular.module('registryApp')
     .controller('TaskCtrl', ['$scope', '$q', '$modal', '$templateCache', '$location', 'Sidebar', 'Job', 'User', 'Repo', 'Workflow', function ($scope, $q, $modal, $templateCache, $location, Sidebar, Job, User, Repo, Workflow) {
 
-        Sidebar.setActive('tasks');
+        Sidebar.setActive('task tpls');
 
         $scope.view = {};
         $scope.view.job = {inputs: {}};

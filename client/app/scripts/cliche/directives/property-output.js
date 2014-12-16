@@ -35,22 +35,22 @@ angular.module('registryApp.cliche')
                 var transformMeta = function() {
 
                     var value;
-                    var meta = [];
+                    var metadata = [];
 
                     if (scope.prop.adapter) {
-                        _.each(scope.prop.adapter.meta, function(v, k) {
+                        _.each(scope.prop.adapter.metadata, function(v, k) {
                             if (k !== '__inherit__') {
                                 value = v.expr ? v.expr.value : v;
-                                meta.push(k + ': ' + value);
+                                metadata.push(k + ': ' + value);
                             }
                         });
                     }
 
-                    return meta.join(', ');
+                    return metadata.join(', ');
                 };
 
                 /* init transform */
-                scope.view.meta = transformMeta();
+                scope.view.metadata = transformMeta();
 
                 /**
                  * Compile appropriate template
@@ -113,7 +113,7 @@ angular.module('registryApp.cliche')
                         });
 
                         scope.view.required = result.required;
-                        scope.view.meta = transformMeta();
+                        scope.view.metadata = transformMeta();
 
                         if (result.required && !_.contains(scope.req, scope.name)) {
                             scope.req.push(scope.name);

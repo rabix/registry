@@ -26,7 +26,7 @@
             <div class="row">
                 <div class="col-md-12">
 
-                    <label class="control-label">Meta</label>
+                    <label class="control-label">Metadata</label>
 
                     <div class="form-group meta-group" ng-class="{'has-error': view.newMeta.error}">
                         <div class="input-group">
@@ -42,10 +42,10 @@
                         </div>
                     </div>
 
-                    <div ng-repeat="(metaKey, metaValue) in view.scheme.meta" class="form-group meta-group">
+                    <div ng-repeat="(metaKey, metaValue) in view.scheme.metadata" class="form-group meta-group">
                         <div ng-if="metaKey !== '__inherit__'" class="input-group">
                             <div class="col-md-6 no-padding">
-                                <key-changer key="metaKey" items="view.scheme.meta"></key-changer>
+                                <key-changer key="metaKey" items="view.scheme.metadata"></key-changer>
                             </div>
                             <div class="col-md-6 no-padding">
                                 <input type="text" class="form-control" ng-model="metaValue" placeholder="key" />

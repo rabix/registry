@@ -137,6 +137,7 @@ angular.module('registryApp.cliche')
 
                     var json = _.extend({
                         name: $scope.view.app.name,
+                        schema: 'https://github.com/common-workflow-language/common-workflow-language',
                         description: $scope.view.app.description
                     }, $scope.view.app.json);
 

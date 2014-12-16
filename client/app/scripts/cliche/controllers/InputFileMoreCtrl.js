@@ -40,16 +40,16 @@ angular.module('registryApp.cliche')
 
             $scope.view.newMeta.error = false;
 
-            if (!$scope.view.scheme.meta) {
-                $scope.view.scheme.meta = {};
+            if (!$scope.view.scheme.metadata) {
+                $scope.view.scheme.metadata = {};
             }
 
-            if (!_.isUndefined($scope.view.scheme.meta[$scope.view.newMeta.key]) || $scope.view.newMeta.key === '') {
+            if (!_.isUndefined($scope.view.scheme.metadata[$scope.view.newMeta.key]) || $scope.view.newMeta.key === '') {
                 $scope.view.newMeta.error = true;
                 return false;
             }
 
-            $scope.view.scheme.meta[$scope.view.newMeta.key] = $scope.view.newMeta.value;
+            $scope.view.scheme.metadata[$scope.view.newMeta.key] = $scope.view.newMeta.value;
             $scope.view.newMeta = {key: '', value: ''};
 
         };
@@ -61,7 +61,7 @@ angular.module('registryApp.cliche')
          * @returns {boolean}
          */
         $scope.removeMeta = function (index) {
-            delete $scope.view.scheme.meta[index];
+            delete $scope.view.scheme.metadata[index];
         };
 
         /**

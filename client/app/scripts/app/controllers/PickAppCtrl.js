@@ -9,6 +9,7 @@ angular.module('registryApp.app')
     .controller('PickAppCtrl', ['$scope', '$q', '$modalInstance', 'Tool', 'Workflow', function ($scope, $q, $modalInstance, Tool, Workflow) {
 
         $scope.view = {};
+
         $scope.view.loading = true;
 
         $scope.view.tools = [];
@@ -38,20 +39,6 @@ angular.module('registryApp.app')
         };
 
         /**
-         * Close the modal
-         */
-        $scope.ok = function () {
-            $modalInstance.close();
-        };
-
-        /**
-         * Dismiss the modal
-         */
-        $scope.cancel = function () {
-            $modalInstance.dismiss('cancel');
-        };
-
-        /**
          * Callback when apps are loaded
          *
          * @param {object} result
@@ -61,6 +48,7 @@ angular.module('registryApp.app')
 
             $scope.view[tab] = result.list;
             $scope.view.total[tab] = result.total;
+
         };
 
         /**
@@ -99,6 +87,13 @@ angular.module('registryApp.app')
             .then(function() {
                 $scope.view.loading = false;
             });
+
+        /**
+         * Dismiss the modal
+         */
+        $scope.cancel = function () {
+            $modalInstance.dismiss('cancel');
+        };
 
         /**
          * Get more tools by offset
