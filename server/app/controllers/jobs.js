@@ -93,7 +93,7 @@ router.post('/jobs', filters.authenticated, function (req, res, next) {
             var job = new Job();
 
             job.name = name;
-            job.json = json;
+            job.json = JSON.stringify(json);
             job.author = req.user.login;
             job.user = req.user.id;
 
@@ -110,7 +110,7 @@ router.post('/jobs', filters.authenticated, function (req, res, next) {
 
                     Amazon.createFolder(folder)
                         .then(function() {
-                            Amazon.uploadJSON(job.name + '.json', job.json, folder)
+                            Amazon.uploadJSON(job.name + '.json', json, folder)
                                 .then(function() {
 
                                     Amazon.getFileUrl(job.name + '.json', folder, function (url) {

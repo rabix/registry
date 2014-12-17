@@ -201,6 +201,9 @@ router.get('/apps/:id/:revision', function (req, res, next) {
             Revision.findOne(where).sort({version: 'desc'}).exec(function(err, revision) {
                 if (err) { return next(err); }
 
+                app.json = _.isString(app.json) ? JSON.parse(app.json) : app.json;
+                revision.json = _.isString(revision.json) ? JSON.parse(revision.json) : revision.json;
+
                 res.json({data: app, revision: revision});
 
             });
@@ -227,14 +230,16 @@ router.get('/run/:id', function (req, res, next) {
 
         if (app) {
 
-            res.json(app.json);
+            var json = _.isString(app.json) ? JSON.parse(app.json) : app.json;
+            res.json(json);
 
         } else {
             Revision.findById(req.params.id, function(err, revision) {
                 if (err) { return next(err); }
 
                 if (revision) {
-                    res.json(revision.json);
+                    var json = _.isString(revision.json) ? JSON.parse(revision.json) : revision.json;
+                    res.json(json);
                 } else {
                     res.status(400).json({message: 'This app doesn\'t exist'});
                 }
@@ -273,10 +278,11 @@ router.post('/apps/:action', filters.authenticated, function (req, res, next) {
             var app = new App();
 
             app.name = name;
+            data.tool.name = name;
             app.description = data.tool.description;
             app.script = data.tool.script;
             app.author = req.user.login;
-            app.json = data.tool;
+            app.json = JSON.stringify(data.tool);
             app.links = {json: ''};
             app.is_script = data.is_script;
 
