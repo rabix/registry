@@ -271,10 +271,12 @@ angular.module('registryApp.dyole')
                         relations.push(relation);
                     });
 
+                    var cached_end_node = end_node;
+                    
                     _.forEach(step.outputs, function (to, output) {
                         var relation, filter, output_id;
 
-                        start_node = end_node;
+                        start_node = cached_end_node;
                         output_name = output;
 
                         input_name = to.$to;
