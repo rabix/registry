@@ -83,6 +83,9 @@ router.get('/revisions/:id', function (req, res, next) {
 
             if (app.repo.is_public || user_id === app_user_id) {
 
+                app.json = _.isString(app.json) ? JSON.parse(app.json) : app.json;
+                revision.json = _.isString(revision.json) ? JSON.parse(revision.json) : revision.json;
+
                 res.json({data: revision, app: app});
 
             } else {
@@ -126,7 +129,7 @@ router.post('/revisions', filters.authenticated, function (req, res, next) {
                 revision.description = data.tool.description;
                 revision.script = data.tool.script;
                 revision.author = data.tool.documentAuthor;
-                revision.json = data.tool;
+                revision.json = JSON.stringify(data.tool);
                 revision.app_id = data.app_id;
                 revision.version = r ? (r.version + 1) : 1;
 

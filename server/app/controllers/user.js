@@ -7,8 +7,6 @@ var mongoose = require('mongoose');
 var User = mongoose.model('User');
 var Subscriber = mongoose.model('Subscriber');
 var filters = require('../../common/route-filters');
-var https = require('https');
-var _ = require('lodash');
 
 module.exports = function (app) {
     app.use('/api', router);

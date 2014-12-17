@@ -208,6 +208,8 @@ angular.module('registryApp.app')
          */
         $scope.pick = function(app, type) {
 
+            app.json = _.isString(app.json) ? JSON.parse(app.json) : app.json;
+
             $modalInstance.close({app: app, type: type});
 
         };

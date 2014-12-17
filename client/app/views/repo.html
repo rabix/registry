@@ -42,7 +42,7 @@
                         <tbody>
                             <tr ng-repeat="app in view.apps">
                                 <td>
-                                    <a ng-href="#/app/{{ ::app._id }}" class="inline">{{ ::app.name }}</a>
+                                    <a ng-href="#/tool/{{ ::app._id }}/info" class="inline">{{ ::app.name }}</a>
                                     <div ng-if="app.is_script" class="label label-info">script</div>
                                 </td>
                                 <td><p tooltip="{{ ::app.description }}" tooltip-popup-delay="1000">{{ ::app.description }}</p></td>
@@ -70,7 +70,7 @@
                         </thead>
                         <tbody>
                             <tr ng-repeat="workflow in view.workflows">
-                                <td><a ng-href="#/pipeline/{{ ::workflow.latest._id }}">{{ ::workflow.name }}</a></td>
+                                <td><a ng-href="#/workflow/{{ ::workflow.latest._id }}">{{ ::workflow.name }}</a></td>
                                 <td><p tooltip="{{ ::workflow.description }}" tooltip-popup-delay="1000">{{ ::workflow.description }}</p></td>
                             </tr>
                             <tr class="empty" ng-if="view.workflows.length === 0">
