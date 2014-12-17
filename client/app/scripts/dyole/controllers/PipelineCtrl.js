@@ -39,10 +39,11 @@ angular.module('registryApp.dyole')
         };
 
         if ($routeParams.mode === 'new') {
-            Workflow.getLocal()
-                .then(function (json) {
-                    initPipeline(json);
-                });
+//            Workflow.getLocal()
+//                .then(function (json) {
+//                    initPipeline(json);
+//                });
+            initPipeline({});
         } else if ($scope.pipeline && Object.keys($scope.pipeline).length !== 0){
             initPipeline($scope.pipeline);
         }
@@ -164,22 +165,21 @@ angular.module('registryApp.dyole')
         $scope.dropNode = function(e, app) {
 
             app = JSON.parse(app);
+            var formated = app;
 
             $scope.view.loading = true;
             $scope.view.explanation = false;
 
             if (app.pipeline) {
 
-                Workflow.format(app).then(function (formated) {
+                formated.json = JSON.parse(formated.json);
 
-                    $scope.view.loading = false;
+                $scope.view.loading = false;
 
-                    formated.json.type = 'workflow';
-                    formated.json.name = app.name;
+                formated.json.type = 'workflow';
+                formated.json.name = app.name;
 
-                    Pipeline.addNode(formated, e.clientX, e.clientY);
-
-                });
+                Pipeline.addNode(formated, e.clientX, e.clientY);
 
             } else {
                 Tool.getRevision(app._id).then(function(result) {

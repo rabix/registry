@@ -79,6 +79,9 @@ angular.module('registryApp.dyole')
                     if (step) {
                         step.app = _.clone(node_schema);
 
+                        if (step.app.x) {delete step.app.x;}
+                        if (step.app.y) {delete step.app.y;}
+
                         _.remove(_self.packedSchema.steps, function (s) {
 
                             return s._id === step._id;

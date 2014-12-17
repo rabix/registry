@@ -34,8 +34,12 @@ angular.module('registryApp.cliche')
                     input.$job = Data.job;
                 }
 
-                if (code.indexOf('return') !== -1) {
-                    code = "(function(){"+ code +"})()";
+                // trim whitespace from beggining and end of code string
+                code = code.replace(/(^\s+|\s+$)/g, '');
+
+                // check if code starts with { to wrap it in closure
+                if (code.charAt(0) === '{') {
+                    code = '(function()' + code +')()';
                 }
 
                 Sandbox.eval(
