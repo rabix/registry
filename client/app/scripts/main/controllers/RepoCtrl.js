@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('registryApp')
-    .controller('RepoCtrl', ['$scope', '$routeParams', '$q', '$modal', '$templateCache', 'Repo', 'App', 'Build', 'User', 'Sidebar', 'Loading', function ($scope, $routeParams, $q, $modal, $templateCache, Repo, App, Build, User, Sidebar, Loading) {
+    .controller('RepoCtrl', ['$scope', '$routeParams', '$q', '$modal', '$templateCache', 'Repo', 'Build', 'User', 'Sidebar', 'Loading', function ($scope, $routeParams, $q, $modal, $templateCache, Repo, Build, User, Sidebar, Loading) {
 
         Sidebar.setActive('repos');
 
@@ -39,7 +39,7 @@ angular.module('registryApp')
 
         Repo.getRepo($routeParams.id).then(function (result) {
 
-            $scope.view.repo = result.data;
+            $scope.view.repo = result.repo;
 
             $q.all([
                 Repo.repoTools(0, $routeParams.id),
