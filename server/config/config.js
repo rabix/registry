@@ -12,6 +12,9 @@ var config = {
             name: 'Rabix',
             githubName: 'Rabix-develop'
         },
+        builds: {
+            path: '/data/storage/rabix-registry/builds'
+        },
         port: 3000,
         db: 'mongodb://localhost/server-development',
         clientPath: '../../client/app',
@@ -38,6 +41,9 @@ var config = {
         root: rootPath,
         app: {
             name: 'Rabix Tests'
+        },
+        builds: {
+            path: '/data/storage/rabix-registry/builds'
         },
         port: 3000,
         db: 'mongodb://localhost/server-test',
@@ -68,6 +74,9 @@ var config = {
             name: 'Rabix',
             githubName: 'Rabix-staging'
         },
+        builds: {
+            path: '/data/storage/rabix-registry/builds'
+        },
         port: 5000,
         db: 'mongodb://localhost/server-staging',
         clientPath: '../../client/dist',
@@ -95,6 +104,9 @@ var config = {
         app: {
             name: 'server',
             githubName: 'Rabix-registry'
+        },
+        builds: {
+            path: '/data/storage/rabix-registry/builds'
         },
         port: 3000,
         db: 'mongodb://localhost/server-production',

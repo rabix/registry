@@ -49,7 +49,7 @@ BuildClass.prototype.startBuild = function () {
     var head_commit = this.head_commit;
 
     var sha = head_commit.id;
-    var buildDir = path.normalize('/data/rabix-registry/builds');
+    var buildDir = path.normalize(config.builds.path);
     var folder = buildDir + '/build_' + repository.name + '_' + sha;
 
     var logPath = path.normalize(config.logging.builds);
