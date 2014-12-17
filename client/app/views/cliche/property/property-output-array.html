@@ -15,7 +15,7 @@
         <div class="col-md-4 box-col">
             <strong class="key">Value:</strong>
             <div class="value">
-                <div class="value">{{ prop.adapter.value.expr}}</div>
+                <div class="value">{{ prop.adapter.value.$expr}}</div>
                 <i ng-if="!prop.adapter.value">Not defined</i>
             </div>
         </div>
@@ -23,7 +23,7 @@
 
         <div class="col-md-4 box-col">
             <strong class="key">Glob:</strong>
-            <div class="value">{{ prop.adapter.glob.expr ? prop.adapter.glob.expr : prop.adapter.glob }}</div>
+            <div class="value">{{ prop.adapter.glob.$expr ? prop.adapter.glob.$expr : prop.adapter.glob }}</div>
             <i ng-if="!prop.adapter.glob">Not defined</i>
         </div>
         <!-- END Glob -->
@@ -48,11 +48,11 @@
 
         <div class="col-md-4 box-col">
             <strong class="key">Secondary Files:</strong>
-            <div ng-if="!prop.adapter.secondaryFiles.expr" class="value">
+            <div ng-if="!prop.adapter.secondaryFiles.$expr" class="value">
                 <span ng-if="prop.adapter.secondaryFiles.length > 0">{{ prop.adapter.secondaryFiles.join(', ') }}</span>
                 <i ng-if="!prop.adapter.secondaryFiles.length">Not defined</i>
             </div>
-            <div ng-if="prop.adapter.secondaryFiles.expr" class="value">{{ prop.adapter.secondaryFiles.expr }}</div>
+            <div ng-if="prop.adapter.secondaryFiles.$expr" class="value">{{ prop.adapter.secondaryFiles.$expr }}</div>
         </div>
         <!-- END Secondary Files -->
 
