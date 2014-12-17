@@ -40,7 +40,7 @@ angular.module('registryApp.cliche')
                     if (scope.prop.adapter) {
                         _.each(scope.prop.adapter.metadata, function(v, k) {
                             if (k !== '__inherit__') {
-                                value = v.expr ? v.expr.value : v;
+                                value = v.expr ? v.expr : v;
                                 metadata.push(k + ': ' + value);
                             }
                         });

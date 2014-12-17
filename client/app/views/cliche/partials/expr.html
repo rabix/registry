@@ -1,12 +1,12 @@
 <div class="expression-wrap">
 
     <div class="input-group">
-        <input ng-if="view.model.expr" type="text" class="form-control" ng-model="view.model.expr.value" readonly>
+        <input ng-if="view.model.expr" type="text" class="form-control" ng-model="view.model.expr" readonly>
         <input ng-if="!view.model.expr" type="{{ view.type }}" class="form-control" ng-model="view.model" placeholder="{{ view.placeholder }}" ng-readonly="onlyExpr">
         <span class="input-group-btn">
             <a href
                class="btn btn-expression"
-               tooltip="{{ view.model.expr ? view.model.expr.value : 'There is no expression defined. Click to add it' }}"
+               tooltip="{{ view.model.expr ? view.model.expr : 'There is no expression defined. Click to add it' }}"
                tooltip-append-to-body="true"
                ng-click="editExpression()"
                ng-class="{'btn-warning': view.model.expr, 'btn-default': !view.model.expr}">

@@ -324,8 +324,8 @@ angular.module('registryApp.cliche')
 
             _.each($scope.view.toolForm.requirements.resources, function (resource, key) {
 
-                if (_.isObject(resource) && resource.expr && _.contains(resource.expr.value, '$job')) {
-                    SandBox.evaluate(resource.expr.value, {})
+                if (_.isObject(resource) && _.contains(resource.expr, '$job')) {
+                    SandBox.evaluate(resource.expr, {})
                         .then(function (result) {
                             $scope.view.jobForm.allocatedResources[key] = result;
                         }, function (error) {
@@ -497,7 +497,7 @@ angular.module('registryApp.cliche')
 
             if (_.isObject(value)) {
 
-                SandBox.evaluate(value.expr.value, {})
+                SandBox.evaluate(value.expr, {})
                     .then(function (result) {
                         $scope.view.jobForm.allocatedResources[key] = result;
                     }, function (error) {

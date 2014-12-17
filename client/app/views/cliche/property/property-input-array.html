@@ -31,7 +31,7 @@
         <div class="col-md-3 box-col">
             <strong class="key">Value:</strong>
             <div class="value">
-                <div ng-if="prop.items.type !== 'object'" class="value">{{ prop.adapter.listValue.expr.value }}</div>
+                <div ng-if="prop.items.type !== 'object'" class="value">{{ prop.adapter.listValue.expr }}</div>
                 <i ng-if="prop.items.type === 'object'">none</i>
                 <i ng-if="prop.items.type !== 'object' && !prop.adapter.listValue">Not defined</i>
             </div>
