@@ -24,8 +24,8 @@
                     <li ng-class="{active: view.tab === 'workflows'}"><a href ng-click="switchTab('workflows')">Workflows</a></li>
                 </div>
 
-                <a ng-href="#/cliche" ng-if="view.tab === 'tools'" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> Add New Tool</a>
-                <a ng-href="#/cliche" ng-if="view.tab === 'scripts'" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> Add New Script</a>
+                <a ng-href="#/cliche/tool" ng-if="view.tab === 'tools'" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> Add New Tool</a>
+                <a ng-href="#/cliche/script" ng-if="view.tab === 'scripts'" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> Add New Script</a>
                 <a ng-href="#/workflow/0/new" ng-if="view.tab === 'workflows'" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> Add New Workflows</a>
             </div>
 

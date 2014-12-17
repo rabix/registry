@@ -23,7 +23,7 @@
                 <td><a ng-href="#/repo/{{ ::script.repo._id }}">{{ ::script.repo.owner }}/{{ ::script.repo.name }}</a></td>
                 <td><p tooltip="{{ ::script.author }}" tooltip-popup-delay="1000">{{ ::script.author }}</p></td>
                 <td class="right">
-                    <a class="btn btn-default" tooltip="Edit Script" ng-href="#/cliche/{{ ::script._id }}/latest"><i class="fa fa-pencil"></i></a>
+                    <a class="btn btn-default" tooltip="Edit Script" ng-href="#/cliche/script/{{ ::script._id }}/latest"><i class="fa fa-pencil"></i></a>
                     <a href
                        class="btn btn-default btn-toggle"
                        tooltip="Toggle Versions ({{ ::script.revisions.length }})"
@@ -53,7 +53,7 @@
                                     <i ng-if="!revision.description">No description</i>
                                 </td>
                                 <td class="right">
-                                    <a class="btn btn-sm btn-default" tooltip="Edit Revision" ng-href="#/cliche/{{ ::script._id }}/{{ ::revision._id }}"><i class="fa fa-pencil"></i></a>
+                                    <a class="btn btn-sm btn-default" tooltip="Edit Revision" ng-href="#/cliche/script/{{ ::script._id }}/{{ ::revision._id }}"><i class="fa fa-pencil"></i></a>
                                 </td>
                             </tr>
                             <tr class="empty" ng-if="script.revisions.length === 0">

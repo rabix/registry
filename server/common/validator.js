@@ -7,15 +7,16 @@ var _ = require('lodash');
 
 var mapDefinition = {
     root: {
-        schema: {type: 'string', required: true},
+        schema: {type: 'string'},
         name: {type: 'string', required: true},
         description: {type: 'string'},
         documentAuthor: {type: 'string', required: true},
         softwareRelease: {type: 'object'},
-        requirements: {type: 'object', required: true},
+        requirements: {type: 'object'},
         inputs: {type: 'object', required: true},
         outputs: {type: 'object', required: true},
-        adapter: {type: 'object', required: true}
+        adapter: {type: 'object'},
+        script: {type: 'string'}
     },
     softwareDescription: {
         repo_owner: {type: 'string', required: true},
@@ -40,20 +41,24 @@ var mapDefinition = {
     resources: {
         cpu: {type: ['number', 'object']},
         mem: {type: ['number', 'object']},
+        diskSpace: {type: 'number'},
+        network: {type: 'boolean'},
         ports: {type: 'array'}
     },
     inputs: {
         type: {type: 'string', required: true},
+        required: {type: 'array'},
         properties: {type: 'object_custom', name: 'inputs', required: true}
     },
     outputs: {
         type: {type: 'string', required: true},
+        required: {type: 'array'},
         properties: {type: 'object_custom', name: 'outputs', required: true}
     },
     adapter: {
         baseCmd: {type: 'array', required: true},
-        stdin: {type: ['string', 'object'], required: true},
-        stdout: {type: ['string', 'object'], required: true},
+        stdin: {type: ['string', 'object']},
+        stdout: {type: ['string', 'object']},
         args: {type: 'object_custom', name: 'adapter', required: true},
         environment: {type: 'object'}
     },
@@ -120,12 +125,13 @@ var mapDefinition = {
             root: {
                 //required: {type: 'boolean'},
                 type: {type: 'string', required: true},
-                adapter: {type: 'object', required: true}
+                adapter: {type: 'object'}
             },
             adapter: {
                 stdout: {type: 'boolean'},
-                glob: {type: 'object'},
-                secondaryFiles: {type: 'array'},
+                glob: {type: ['object', 'string']},
+                value: {type: 'object'},
+                secondaryFiles: {type: ['array', 'object']},
                 metadata: {type: 'object'}
             },
             types: {
@@ -441,9 +447,7 @@ var validator = function() {
                 output.required = _.cloneDeep(required);
             }
 
-//            return output;
-            //TODO: Test validation and uncomment line above
-            return {};
+            return output;
         }
     };
 }();

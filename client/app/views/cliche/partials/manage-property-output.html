@@ -20,7 +20,7 @@
             </div>
             <!-- END Name -->
 
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <div class="form-group" ng-class="{'has-error': (view.form.type.$invalid && view.form.$dirty)}">
                     <label class="control-label" for="type">Type</label>
                     <select class="form-control" id="type" name="type" ng-model="view.property.type" required>
@@ -30,13 +30,25 @@
                     </select>
                 </div>
             </div>
-            <div class="col-md-3">
+            <!-- END Type-->
+
+            <div class="col-md-2">
+                <div class="form-group" title="Value">
+                    <label class="control-label">Value</label>
+                    <expr ng-model="view.property.adapter.value" handle-item-update="updateTransform(value, 'value')" only-expr="true" self="true" placeholder="value"></expr>
+                </div>
+            </div>
+            <!-- END Transform -->
+
+            <div class="col-md-2">
                 <div class="form-group">
                     <label class="control-label">Glob</label>
                     <expr ng-model="view.property.adapter.glob" handle-item-update="updateGlobValue(value)" placeholder="value"></expr>
                 </div>
             </div>
-            <div class="col-md-3" ng-if="view.property.type === 'file' || view.property.items.type === 'file'">
+            <!-- END Glob -->
+
+            <div class="col-md-2" ng-if="view.property.type === 'file' || view.property.items.type === 'file'">
                 <div class="form-group">
                     <label class="control-label empty-label">&nbsp;</label>
                     <div class="checkbox">

@@ -4,7 +4,7 @@
      order="prop.adapter.order"
      type="{{ prop.type }}"
      item-type="{{ prop.items.type }}"
-     is-required="{{ view.required }}"
+     is-required="view.required"
      handle="handleAction(action)">
 </div>
 
@@ -12,56 +12,76 @@
 
     <div class="row">
 
-        <div class="col-md-2 box-col">
-            <strong class="key">Glob:</strong>
-            <div class="value">{{ prop.adapter.glob.expr ? prop.adapter.glob.expr.value : prop.adapter.glob }}</div>
+        <div class="col-md-4 box-col">
+            <strong class="key">Value:</strong>
+            <div class="value">
+                <div class="value">{{ prop.adapter.value.expr}}</div>
+                <i ng-if="!prop.adapter.value">Not defined</i>
+            </div>
         </div>
+        <!-- END Value -->
 
-        <div class="col-md-2 box-col">
+        <div class="col-md-4 box-col">
+            <strong class="key">Glob:</strong>
+            <div class="value">{{ prop.adapter.glob.expr ? prop.adapter.glob.expr : prop.adapter.glob }}</div>
+            <i ng-if="!prop.adapter.glob">Not defined</i>
+        </div>
+        <!-- END Glob -->
+
+        <div class="col-md-4 box-col">
             <strong class="key">Inherit:</strong>
             <div ng-if="prop.adapter.metadata.__inherit__" class="value">{{ prop.adapter.metadata.__inherit__ }}</div>
             <i ng-if="!prop.adapter.metadata.__inherit__">Not defined</i>
         </div>
-
-        <div class="col-md-3 box-col">
-            <strong class="key">Metadata:</strong>
-            <div class="value">{{ view.metadata }}</div>
-            <i ng-if="!view.metadata">Not defined</i>
-        </div>
-
-        <div class="col-md-3 box-col">
-            <strong class="key">Secondary Files:</strong>
-            <div ng-if="!prop.adapter.secondaryFiles.expr" class="value">
-                <span ng-if="prop.adapter.secondaryFiles.length > 0">{{ prop.adapter.secondaryFiles.join(', ') }}</span>
-                <i ng-if="!prop.adapter.secondaryFiles.length">Not defined</i>
-            </div>
-            <div ng-if="prop.adapter.secondaryFiles.expr" class="value">{{ prop.adapter.secondaryFiles.expr.value }}</div>
-        </div>
+        <!-- END Inherit -->
 
     </div>
 
     <div class="row">
 
-        <div class="col-md-2 box-col">
+        <div class="col-md-4 box-col">
+            <strong class="key">Metadata:</strong>
+            <div class="value">{{ view.metadata }}</div>
+            <i ng-if="!view.metadata">Not defined</i>
+        </div>
+        <!-- END Metadata -->
+
+        <div class="col-md-4 box-col">
+            <strong class="key">Secondary Files:</strong>
+            <div ng-if="!prop.adapter.secondaryFiles.expr" class="value">
+                <span ng-if="prop.adapter.secondaryFiles.length > 0">{{ prop.adapter.secondaryFiles.join(', ') }}</span>
+                <i ng-if="!prop.adapter.secondaryFiles.length">Not defined</i>
+            </div>
+            <div ng-if="prop.adapter.secondaryFiles.expr" class="value">{{ prop.adapter.secondaryFiles.expr }}</div>
+        </div>
+        <!-- END Secondary Files -->
+
+        <div ng-if="prop.items.type === 'file'" class="col-md-4 box-col">
+            <strong class="key">Streamable:</strong>
+            <div class="value">{{ prop.adapter.streamable ? 'Yes' : 'No' }}</div>
+        </div>
+        <!-- END Streamable -->
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-4 box-col">
             <strong class="key">Min:</strong>
             <div class="value">
                 <span>{{ prop.minItems }}</span>
                 <i ng-if="!prop.minItems">Not defined</i>
             </div>
         </div>
+        <!-- END Min -->
 
-        <div class="col-md-2 box-col">
+        <div class="col-md-4 box-col">
             <strong class="key">Max:</strong>
             <div class="value">
                 <span>{{ prop.maxItems }}</span>
                 <i ng-if="!prop.maxItems">Not defined</i>
             </div>
         </div>
-
-        <div ng-if="prop.items.type === 'file'" class="col-md-2 col-md-offset-6 box-col">
-            <strong class="key">Streamable:</strong>
-            <div class="value">{{ prop.adapter.streamable ? 'Yes' : 'No' }}</div>
-        </div>
+        <!-- END Max -->
 
     </div>
 

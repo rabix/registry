@@ -19,8 +19,9 @@ angular.module('registryApp.cliche')
             mirror = CodeMirror(document.querySelector('.codemirror-editor'), {
                 lineNumbers: true,
                 value: '',
-                mode:  {name: "javascript", json: true},
-                theme: 'mbo'
+                mode:  {name: 'javascript', json: true},
+                theme: 'mbo',
+                lineWrapping: true
             });
 
         }, 100);

@@ -32,7 +32,6 @@ angular.module('registryApp.cliche')
                     scope.req = scope.req || [];
                     scope.view.required = _.contains(scope.req, scope.name);
 
-
                     /**
                      * Compile appropriate template
                      */
@@ -154,6 +153,17 @@ angular.module('registryApp.cliche')
                             Data.generateCommand();
 
                         });
+                    };
+
+                    /**
+                     * Remove adapter section of the input and regenerate command
+                     */
+                    scope.removeFromConsole = function() {
+
+                        delete scope.prop.adapter;
+
+                        Data.generateCommand();
+
                     };
 
                     /**

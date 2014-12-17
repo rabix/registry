@@ -38,7 +38,7 @@ angular.module('registryApp.cliche')
                     }
                 });
 
-                scope.$watch('view.model.expr.value', function (n, o) {
+                scope.$watch('view.model.expr', function (n, o) {
                     if (n !== o) {
                         scope.handleItemUpdate({index: scope.index, value: scope.view.model});
                     }
@@ -53,13 +53,14 @@ angular.module('registryApp.cliche')
                  */
                 scope.editExpression = function () {
 
-                    var expr = _.isObject(scope.view.model) ? scope.view.model.expr.value : '';
+                    var expr = _.isObject(scope.view.model) ? scope.view.model.expr : '';
 
                     var modalInstance = $modal.open({
                         template: $templateCache.get('views/cliche/partials/edit-expression.html'),
                         controller: 'ExpressionCtrl',
                         windowClass: 'modal-expression',
                         backdrop: 'static',
+                        size: 'lg',
                         resolve: {
                             options: function () {
                                 return {
@@ -77,7 +78,7 @@ angular.module('registryApp.cliche')
                             if (!_.isObject(scope.view.model)) {
                                 scope.view.model = {};
                             }
-                            scope.view.model.expr = {value: expr, lang: 'javascript'};
+                            scope.view.model.expr = expr;
                         }
                     });
 

@@ -11,6 +11,8 @@ angular.module('registryApp.cliche')
 
         Sidebar.setActive('cliche');
 
+        var schema = 'https://github.com/common-workflow-language/common-workflow-language/blob/draft-1/specification/tool-description.md';
+
         $scope.view = {};
         $scope.forms = {};
 
@@ -76,6 +78,8 @@ angular.module('registryApp.cliche')
 
         $scope.view.total = {inputs: 0, outputs: 0, values: 0};
 
+        $scope.view.fakeRequired = [];
+
         /**
          * Prepare temp list for paginating
          *
@@ -137,7 +141,7 @@ angular.module('registryApp.cliche')
 
                     var json = _.extend({
                         name: $scope.view.app.name,
-                        schema: 'https://github.com/common-workflow-language/common-workflow-language',
+                        schema: schema,
                         description: $scope.view.app.description
                     }, $scope.view.app.json);
 
@@ -174,12 +178,18 @@ angular.module('registryApp.cliche')
 
                         $scope.view.user = result[2].user;
 
+                        $scope.view.app.is_script = $routeParams.type === 'script';
+                        Data.transformToolJson($scope.view.app.is_script);
+
                         $scope.view.toolForm = Data.tool;
                         if ($scope.view.user) {
                             $scope.view.toolForm.documentAuthor = $scope.view.user.login;
                         }
+                        if (_.isUndefined($scope.view.toolForm.schema)) {
+                            $scope.view.toolForm.schema = schema;
+                        }
 
-                        $scope.view.app.is_script = !Data.tool.adapter;
+                        //$scope.view.app.is_script = !Data.tool.adapter;
 
                         $scope.view.jobForm = Data.job;
 
@@ -314,8 +324,8 @@ angular.module('registryApp.cliche')
 
             _.each($scope.view.toolForm.requirements.resources, function (resource, key) {
 
-                if (_.isObject(resource) && resource.expr && _.contains(resource.expr.value, '$job')) {
-                    SandBox.evaluate(resource.expr.value, {})
+                if (_.isObject(resource) && _.contains(resource.expr, '$job')) {
+                    SandBox.evaluate(resource.expr, {})
                         .then(function (result) {
                             $scope.view.jobForm.allocatedResources[key] = result;
                         }, function (error) {
@@ -487,7 +497,7 @@ angular.module('registryApp.cliche')
 
             if (_.isObject(value)) {
 
-                SandBox.evaluate(value.expr.value, {})
+                SandBox.evaluate(value.expr, {})
                     .then(function (result) {
                         $scope.view.jobForm.allocatedResources[key] = result;
                     }, function (error) {
@@ -574,7 +584,7 @@ angular.module('registryApp.cliche')
 
                     modalInstance.result.then(function (revisionId) {
                         $scope.view.reload = true;
-                        $location.path('/cliche/' + $routeParams.id + '/' + revisionId);
+                        $location.path('/cliche/' + $routeParams.type + '/' + $routeParams.id + '/' + revisionId);
                     });
 
                 });
@@ -602,7 +612,7 @@ angular.module('registryApp.cliche')
                 data.is_script = $scope.view.app.is_script;
 
                 Tool.fork(data).then(function (result) {
-                    $location.path('/cliche/' + result.app._id + '/latest');
+                    $location.path('/cliche/' + $routeParams.type + '/' + result.app._id + '/latest');
                 }, function() {
                     $scope.view.saving = false;
                     $scope.view.reload = false;
@@ -659,7 +669,7 @@ angular.module('registryApp.cliche')
                         });
 
                         modalInstance.result.then(function() {
-                            $scope.redirect('/cliche/' + result.app._id + '/latest');
+                            $scope.redirect('/cliche/' + $routeParams.type + '/' + result.app._id + '/latest');
                         });
 
                     }, function () {
@@ -691,7 +701,7 @@ angular.module('registryApp.cliche')
                     });
 
                     modalInstance.result.then(function() {
-                        $scope.redirect('/cliche/' + $scope.view.app._id + '/' + result.revision._id);
+                        $scope.redirect('/cliche/' + $routeParams.type + '/' + $scope.view.app._id + '/' + result.revision._id);
                     });
 
                 }, function () {
@@ -773,24 +783,24 @@ angular.module('registryApp.cliche')
         /**
          * Adjust tool structure
          */
-        $scope.adjust = function() {
-
-            Data.transformToolJson($scope.view.app.is_script);
-            $scope.view.toolForm = Data.tool;
-
-            $scope.switchTab('general');
-
-            if ($scope.view.app.is_script) {
-                turnOffDeepWatch();
-                unWatchTheJob();
-            } else {
-                turnOnDeepWatch();
-                if ($scope.view.tab === 'values') {
-                    watchTheJob();
-                }
-            }
-
-        };
+//        $scope.adjust = function() {
+//
+//            Data.transformToolJson($scope.view.app.is_script);
+//            $scope.view.toolForm = Data.tool;
+//
+//            $scope.switchTab('general');
+//
+//            if ($scope.view.app.is_script) {
+//                turnOffDeepWatch();
+//                unWatchTheJob();
+//            } else {
+//                turnOnDeepWatch();
+//                if ($scope.view.tab === 'values') {
+//                    watchTheJob();
+//                }
+//            }
+//
+//        };
 
         /**
          * Track route change in order to prevent loss of changes

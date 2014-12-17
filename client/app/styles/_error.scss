@@ -28,4 +28,12 @@
     top: 0px;
     right: 6px;
   }
+
+  .pre {
+    pre {
+      max-height: 400px;
+      overflow-y: auto;
+      @extend %scrollbar;
+    }
+  }
 }

@@ -347,7 +347,7 @@ router.post('/apps/:action', filters.authenticated, function (req, res, next) {
  * @post_param {Object} json - json to be validated
  * @return message
  */
-router.post('/validate', filters.authenticated, function (req, res) {
+router.post('/validate', function (req, res) {
 
     var data = req.body;
 

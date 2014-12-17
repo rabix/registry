@@ -331,7 +331,7 @@
     .property-box-actions {
       float: right;
       font-weight: bold;
-      a {
+      a:not(.btn) {
         color: #555;
         font-size: 17px;
         display: inline-block;
