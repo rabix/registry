@@ -369,6 +369,17 @@
   }
 }
 
+.tabs {
+  .tab {
+    .tab-title {
+      margin: 0;
+      padding: 5px 10px;
+      border-bottom: 1px solid #ccc;
+      font-size: 20px;
+    }
+  }
+}
+
 /* Paginator */
 .paginate {
   padding: 10px;
@@ -753,3 +764,25 @@ legend {
   }
 }
 
+.input-param {
+  .form-group {
+    margin-bottom: 0;
+    .input-param-children {
+      margin-left: 15px;
+    }
+  }
+  .input-param-details {
+    display: block;
+    font-weight: bold;
+    padding: 10px 80px 10px 10px;
+    border-bottom: 1px solid #ddd;
+    i {
+      font-weight: normal;
+    }
+  }
+  .checkbox {
+    float: right;
+    margin-right: 10px;
+  }
+
+}

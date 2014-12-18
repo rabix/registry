@@ -71,12 +71,12 @@ angular.module('registryApp.app')
         });
 
         $q.all([
-            User.getUser(),
-            Repo.getRepos(0, '', true)
-        ]).then(function(result) {
+                User.getUser(),
+                Repo.getRepos(0, '', true)
+            ]).then(function(result) {
                 $scope.view.user = result[0].user;
                 $scope.view.userRepos = result[1].list;
-        });
+            });
 
         if ($routeParams.mode === 'edit') {
             Workflow.getRevision($routeParams.id)
@@ -186,30 +186,6 @@ angular.module('registryApp.app')
         $scope.toggleAppRevisions = function (rev) {
             $scope.view.appRevisions[rev].toggled = !$scope.view.appRevisions[rev].toggled;
         };
-        /* params watcher reference */
-        var paramsWatcher;
-
-        /**
-         * Watch the params in order to recognizes changes
-         */
-        var watchParams = function () {
-            paramsWatcher = $scope.$watch('view.json.params', function (n, o) {
-                if (n !== o) {
-                    $scope.view.isChanged = true;
-                }
-            }, true);
-        };
-
-        /**
-         * Unwatch params
-         */
-        var unWatchParams = function () {
-
-            if (_.isFunction(paramsWatcher)) {
-                paramsWatcher.call();
-                paramsWatcher = undefined;
-            }
-        };
 
         /* load tools/workflows grouped by repositories */
         $q.all([
@@ -226,12 +202,6 @@ angular.module('registryApp.app')
          */
         $scope.switchTab = function (tab) {
             $scope.view.tab = tab;
-
-            if (tab === 'params') {
-                watchParams();
-            } else {
-                unWatchParams();
-            }
         };
 
         /**
@@ -343,8 +313,6 @@ angular.module('registryApp.app')
          * Track node select
          */
         var onNodeSelect = function (e, model) {
-
-            if (_.isUndefined(model.params)) { model.params = {}; }
 
             $scope.view.json = model;
 
