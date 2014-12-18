@@ -131,4 +131,11 @@ var config = {
     }
 };
 
-module.exports = config[env];
+var externalConfig = config[env],
+    confArg = process.argv[2];
+
+if (confArg && confArg.indexOf('data') !== -1 && env === 'production'){
+    externalConfig = fs.readFileSync(process.argv[2]);
+}
+
+module.exports = externalConfig;
