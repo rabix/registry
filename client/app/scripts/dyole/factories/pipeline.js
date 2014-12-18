@@ -968,7 +968,7 @@ angular.module('registryApp.dyole')
                  */
                 addNode: function (nodeModel, clientX, clientY, rawCoords) {
 
-                    var rawModel = angular.copy(nodeModel),
+                    var rawModel = angular.copy(nodeModel.json || nodeModel),
                         model;
 
                     if (nodeModel.type && nodeModel.type === 'workflow') {
