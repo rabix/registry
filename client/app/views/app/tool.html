@@ -1,7 +1,7 @@
 <div ng-class="view.classes" loading="view.loading">
 
     <div class="heading">
-        <a ng-href="#/apps" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
+        <a ng-href="#/apps/#{{ view.type }}s" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
         <h1>
             <span>{{ ::view.tool.name }} <span class="tool-repo">({{ ::view.tool.repo.owner }}/{{ ::view.tool.repo.name }})</span></span>
             <div ng-if="view.revisions.length > 0" class="nav nav-pills nav-page">
@@ -10,7 +10,7 @@
             </div>
             <div class="actions pull-right">
                 <a href ng-if="!view.tool.repo.is_public" ng-click="deleteTool()" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a>
-                <a ng-href="#/cliche/{{ view.tool.is_script ? 'script' : 'tool' }}/{{ ::view.tool._id }}/latest" class="btn btn-primary"><i class="fa fa-pencil"></i> Edit</a>
+                <a ng-href="#/cliche/{{ view.type }}/{{ ::view.tool._id }}/latest" class="btn btn-primary"><i class="fa fa-pencil"></i> Edit</a>
             </div>
         </h1>
     </div>
@@ -98,7 +98,7 @@
                             <td><p tooltip="{{ ::revision.description }}" tooltip-popup-delay="1000">{{ ::revision.description }}</p></td>
                             <td class="right">
                                 <a class="btn btn-sm btn-default" tooltip="View Revision" ng-href="#/tool-revision/{{ ::revision._id }}"><i class="fa fa-eye"></i></a>
-                                <a class="btn btn-sm btn-default" tooltip="Edit Revision" ng-href="#/cliche/{{ view.tool.is_script ? 'script' : 'tool' }}/{{ ::view.tool._id }}/{{ ::revision._id }}"><i class="fa fa-pencil"></i></a>
+                                <a class="btn btn-sm btn-default" tooltip="Edit Revision" ng-href="#/cliche/{{ view.type }}/{{ ::view.tool._id }}/{{ ::revision._id }}"><i class="fa fa-pencil"></i></a>
                             </td>
                         </tr>
                         <tr class="empty" ng-if="view.revisions.length === 0">

@@ -36,6 +36,8 @@ angular.module('registryApp.app')
                 $scope.view.tool = result[1].data;
                 $scope.view.revision = result[1].revision;
 
+                $scope.view.type = $scope.view.tool.is_script ? 'script' : 'tool';
+
                 revisionsLoaded(result[2]);
 
             });

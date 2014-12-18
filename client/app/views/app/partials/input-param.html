@@ -1,0 +1,18 @@
+<div class="form-group">
+
+    <div class="checkbox">
+        <label><input type="checkbox" ng-model="model.exposed"> expose</label>
+    </div>
+
+    <div class="input-param-details">{{ key }} (<i>{{ ::model.type }}</i>)</div>
+
+    <div ng-if="!(model.items.properties | isEmpty)" class="input-param-children">
+        <input-param
+                class="input-param"
+                ng-repeat="(innerKey, property) in model.items.properties"
+                ng-model="property"
+                key="{{ innerKey }}">
+        </input-param>
+    </div>
+
+</div>
