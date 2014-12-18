@@ -446,6 +446,12 @@
     li {
       position: relative;
       margin-bottom: 10px;
+
+      .enum-field-empty {
+        padding: 7px 5px;
+        display: block;
+      }
+
       .enum-field.form-group {
         margin: 0 40px 0 0;
         border: none;

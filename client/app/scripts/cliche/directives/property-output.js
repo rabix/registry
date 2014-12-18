@@ -88,7 +88,7 @@ angular.module('registryApp.cliche')
 
                     var modalInstance = $modal.open({
                         template: $templateCache.get('views/cliche/partials/manage-property-output.html'),
-                        controller: 'ManagePropertyCtrl',
+                        controller: 'ManagePropertyOutputCtrl',
                         windowClass: 'modal-prop',
                         size: 'lg',
                         resolve: {
@@ -110,6 +110,12 @@ angular.module('registryApp.cliche')
 
                         _.each(result.prop, function(value, key) {
                             scope.prop[key] = value;
+                        });
+
+                        _.each(scope.prop, function(value, key) {
+                            if (!_.contains(_.keys(result.prop), key)) {
+                                delete scope.prop[key];
+                            }
                         });
 
                         scope.view.required = result.required;

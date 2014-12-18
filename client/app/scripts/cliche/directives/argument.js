@@ -76,7 +76,7 @@ angular.module('registryApp.cliche')
 
                     var modalInstance = $modal.open({
                         template: $templateCache.get('views/cliche/partials/manage-property-arg.html'),
-                        controller: 'ManagePropertyCtrl',
+                        controller: 'ManagePropertyArgCtrl',
                         windowClass: 'modal-prop',
                         size: 'lg',
                         resolve: {

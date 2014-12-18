@@ -730,6 +730,47 @@ angular.module('registryApp.cliche')
 
         };
 
+        /**
+         * Transform property's section structure according to its type
+         *
+         * @param orig
+         * @param dest
+         * @param exclude
+         */
+        self.transformPropertySection = function(orig, dest, exclude) {
+
+            _.each(dest, function(fields, key) {
+
+                if (!_.contains(_.keys(orig), key) && key !== exclude) {
+                    delete dest[key];
+                }
+
+                _.each(orig, function(value, field) {
+                    if (_.isUndefined(dest[field])) {
+                        dest[field] = value;
+                    }
+                });
+
+            });
+
+        };
+
+        /**
+         * Transform property structure according to its type
+         *
+         * @param property
+         * @param mode
+         * @param type
+         */
+        self.transformProperty = function(property, mode, type) {
+
+            var map = self.getMap()[mode];
+
+            self.transformPropertySection(map[type].root, property, 'adapter');
+            self.transformPropertySection(map[type].adapter, property.adapter);
+
+        };
+
         return self;
 
 

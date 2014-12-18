@@ -1,4 +1,5 @@
 <div class="enum-field form-group form-group-object">
+    <i class="enum-field-empty" ng-if="properties | isEmpty">Property not defined</i>
     <input-field
             ng-repeat="(innerKey, property) in properties"
             ng-model="item.value[innerKey]"

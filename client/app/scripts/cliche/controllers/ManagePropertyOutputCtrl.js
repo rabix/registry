@@ -1,14 +1,13 @@
 /**
  * Author: Milica Kadic
- * Date: 10/14/14
- * Time: 2:18 PM
+ * Date: 12/18/14
+ * Time: 12:30 PM
  */
 
 'use strict';
 
-// TODO: separate controllers for INPUT, OUTPUT AND ARG!!!
 angular.module('registryApp.cliche')
-    .controller('ManagePropertyCtrl', ['$scope', '$modalInstance', 'Data', 'options', function ($scope, $modalInstance, Data, options) {
+    .controller('ManagePropertyOutputCtrl', ['$scope', '$modalInstance', 'Data', 'options', function ($scope, $modalInstance, Data, options) {
 
         $scope.view = {};
         $scope.view.property = angular.copy(options.property);
@@ -16,30 +15,14 @@ angular.module('registryApp.cliche')
         $scope.view.required = options.required;
         $scope.view.mode = _.isUndefined($scope.view.property) ? 'add' : 'edit';
 
-        var map = Data.getMap()[options.type];
-
         if (_.isUndefined($scope.view.property)) {
-            switch (options.type) {
-            case 'input':
-                $scope.view.property = {
-                    type: 'string',
-                    //adapter: {separator: ' '}
-                };
-                break;
-            case 'output':
-                $scope.view.property = {
-                    type: 'file',
-                    adapter: {metadata: {}}
-                };
-                break;
-            case 'arg':
-                $scope.view.property = {separator: ' '};
-                break;
-            }
+            $scope.view.property = {
+                type: 'file',
+                adapter: {metadata: {}}
+            };
         }
 
         $scope.view.disabled = ($scope.view.property.items && $scope.view.property.items.type) === 'object';
-        $scope.view.isEnum = _.isArray($scope.view.property.enum);
         $scope.view.newMeta = {key: '', value: ''};
 
         $scope.view.inputs = [];
@@ -49,23 +32,16 @@ angular.module('registryApp.cliche')
             }
         });
 
-        if (options.type === 'output' && _.isUndefined($scope.view.property.adapter)) {
+        if (_.isUndefined($scope.view.property.adapter)) {
             $scope.view.property.adapter = {};
         }
 
-        if ($scope.view.property.adapter && _.isArray($scope.view.property.adapter.secondaryFiles) && $scope.view.property.adapter.secondaryFiles.length === 0) {
-            //$scope.view.property.adapter.secondaryFiles = '';
+        if (_.isArray($scope.view.property.adapter.secondaryFiles) && $scope.view.property.adapter.secondaryFiles.length === 0) {
             delete $scope.view.property.adapter.secondaryFiles;
             $scope.view.isSecondaryFilesExpr = true;
-        } else if ($scope.view.property.adapter && !_.isArray($scope.view.property.adapter.secondaryFiles)) {
+        } else if (!_.isArray($scope.view.property.adapter.secondaryFiles)) {
             $scope.view.isSecondaryFilesExpr = true;
         }
-
-        var checkInputAdapter = function() {
-            if (options.type === 'input' && _.isUndefined($scope.view.property.adapter)) {
-                $scope.view.property.adapter = {};
-            }
-        };
 
         /**
          * Save property changes
@@ -84,7 +60,7 @@ angular.module('registryApp.cliche')
             if ($scope.view.mode === 'edit') {
                 $modalInstance.close({prop: $scope.view.property, required: $scope.view.required});
             } else {
-                Data.addProperty(options.type, $scope.view.name, $scope.view.property, options.properties)
+                Data.addProperty('output', $scope.view.name, $scope.view.property, options.properties)
                     .then(function() {
                         $modalInstance.close({name: $scope.view.name, required: $scope.view.required});
                     }, function(error) {
@@ -97,64 +73,7 @@ angular.module('registryApp.cliche')
         /* watch for the type change in order to adjust the property structure */
         $scope.$watch('view.property.type', function(n, o) {
             if (n !== o) {
-
-                _.each($scope.view.property, function(fields, key) {
-
-                    if (!_.contains(_.keys(map[n].root), key) && key !== 'adapter') {
-                        delete $scope.view.property[key];
-                        if (key === 'enum') { $scope.view.isEnum = false; }
-                    }
-
-                    _.each(map[n].root, function(value, field) {
-                        if (_.isUndefined($scope.view.property[field])) {
-                            $scope.view.property[field] = value;
-                        }
-                    });
-
-                });
-
-                _.each($scope.view.property.adapter, function(fields, key) {
-
-                    if (!_.contains(_.keys(map[n].adapter), key)) {
-                        delete $scope.view.property.adapter[key];
-                    }
-
-                    _.each(map[n].adapter, function(value, field) {
-                        if (_.isUndefined($scope.view.property.adapter[field])) {
-                            $scope.view.property.adapter[field] = value;
-                        }
-                    });
-
-                });
-
-            }
-        });
-
-        /* watch for the items type change in order to adjust the property structure */
-        $scope.$watch('view.property.items.type', function(n, o) {
-            if (n !== o) {
-                if (n === 'object') {
-                    $scope.view.disabled = true;
-
-                    if ($scope.view.mode === 'edit') {
-                        options.inputs[$scope.name] = [];
-                    }
-
-                    checkInputAdapter();
-
-                    if (_.isUndefined($scope.view.property.items.properties)) {
-                        $scope.view.property.items.properties = {};
-                        $scope.view.property.adapter.prefix = '';
-                        $scope.view.property.adapter.listSeparator = undefined;
-                        $scope.view.property.adapter.separator = ' ';
-                        $scope.view.property.adapter.value = undefined;
-                    }
-                } else {
-                    $scope.view.disabled = false;
-                    if (!_.isUndefined($scope.view.property.items)) {
-                        delete $scope.view.property.items.properties;
-                    }
-                }
+                Data.transformProperty($scope.view.property, 'output', n);
             }
         });
 
@@ -169,7 +88,6 @@ angular.module('registryApp.cliche')
 
         $scope.$watch('view.property.adapter.secondaryFiles.length', function(n, o) {
             if (n !== o && n === 0) {
-                //$scope.view.property.adapter.secondaryFiles = '';
                 delete $scope.view.property.adapter.secondaryFiles;
                 $scope.view.isSecondaryFilesExpr = true;
             }
@@ -194,23 +112,11 @@ angular.module('registryApp.cliche')
         };
 
         /**
-         * Toggle enum flag
-         */
-        $scope.toggleEnum = function() {
-            if ($scope.view.isEnum) {
-                $scope.view.property.enum = [''];
-            } else {
-                delete $scope.view.property.enum;
-            }
-        };
-
-        /**
          * Update transform value with expression
          *
          * @param value
          */
         $scope.updateTransform = function (value, key) {
-            checkInputAdapter();
             $scope.view.property.adapter[key] = value;
         };
 
@@ -270,15 +176,6 @@ angular.module('registryApp.cliche')
          */
         $scope.updateGlobValue = function (value) {
             $scope.view.property.adapter.glob = value;
-        };
-
-        /**
-         * Update argument if expression defined
-         *
-         * @param {*} value
-         */
-        $scope.updateArgument = function (value) {
-            $scope.view.property.value = value;
         };
 
         /**
