@@ -4,7 +4,7 @@
 
 'use strict';
 angular.module('registryApp.dyole')
-    .factory('Formater', [function() {
+    .factory('Formater', [function () {
 
         var formater = {
 
@@ -23,7 +23,7 @@ angular.module('registryApp.dyole')
                     properties: {}
                 };
 
-                if ( (!json.relations || json.relations.length === 0 ) && json.nodes.length === 1) {
+                if ((!json.relations || json.relations.length === 0 ) && json.nodes.length === 1) {
                     var _id = json.nodes[0].id;
 
                     this.packedSchema.steps.push({
@@ -79,8 +79,8 @@ angular.module('registryApp.dyole')
                     if (step) {
                         step.app = _.clone(node_schema);
 
-                        if (step.app.x) {delete step.app.x;}
-                        if (step.app.y) {delete step.app.y;}
+                        if (step.app.x) { delete step.app.x; }
+                        if (step.app.y) { delete step.app.y; }
 
                         _.remove(_self.packedSchema.steps, function (s) {
 
@@ -178,9 +178,26 @@ angular.module('registryApp.dyole')
                     from = rel.output_name;
                 }
 
-                step.inputs[rel.input_name] = {
-                    $from: from
-                };
+                if (step.inputs[rel.input_name] && typeof step.inputs[rel.input_name].$from === 'string') {
+
+                    var f = step.inputs[rel.input_name].$from,
+                        arr = [f];
+
+                    arr.push(from);
+
+                    step.inputs[rel.input_name] = {
+                        $from: arr
+                    };
+
+                } else {
+                    if (step.inputs[rel.input_name] && Array.isArray(step.inputs[rel.input_name].$from)) {
+                        step.inputs[rel.input_name].$from.push(from);
+                    } else {
+                        step.inputs[rel.input_name] = {
+                            $from: from
+                        };
+                    }
+                }
 
                 return step;
             },
@@ -201,7 +218,7 @@ angular.module('registryApp.dyole')
                     schemas = this.packedSchema.schemas;
 
                 _.forEach(steps, function (step) {
-                    var end_node = step.id, input_name, output_name, start_node;
+                    var end_node = step.id;
 
 
                     if (!schemas[step.id]) {
@@ -218,10 +235,46 @@ angular.module('registryApp.dyole')
                         nodes.push(step.app);
                     }
 
-                    _.forEach(step.inputs, function (from, input) {
+                    _self._generateInputsFromStep(json, relations, schemas, nodes, step, end_node);
+                    _self._generateOutputsFromStep(json, relations, schemas, nodes, step, end_node);
+                });
+
+                _.forEach(nodes, function (model) {
+
+                    // skip system nodes (inputs, outputs)
+                    if (model.softwareDescription && model.softwareDescription.repo_name === 'system') {
+                        return;
+                    }
+
+                    _.forEach(model.inputs.properties, function (input, name) {
+                        input.name = name;
+                        input.id = input.id || name;
+                    });
+
+                    _.forEach(model.outputs.properties, function (output, name) {
+                        output.name = name;
+                        output.id = output.id || name;
+                    });
+
+                });
+
+            },
+
+            _generateInputsFromStep: function (json, relations, schemas, nodes, step, end_node) {
+                var _self = this,
+                    start_node, output_name, input_name;
+
+                _.forEach(step.inputs, function (from, input) {
+
+                    if (!Array.isArray(from.$from)) {
+                        from.$from = [from.$from];
+                    }
+
+                    _.forEach(from.$from, function (fr) {
+
                         var relation, s, filter;
 
-                        s = from.$from.split('.');
+                        s = fr.split('.');
 
                         if (s.length !== 1) {
                             start_node = s[0];
@@ -266,81 +319,65 @@ angular.module('registryApp.dyole')
                         };
 
                         relations.push(relation);
-                    });
-
-                    var cached_end_node = end_node;
-
-                    _.forEach(step.outputs, function (to, output) {
-                        var relation, filter, output_id;
-
-                        start_node = cached_end_node;
-                        output_name = output;
-
-                        input_name = to.$to;
-                        filter = _.filter(json.outputs.properties, function (out, id) {
-                            if (out.id === input_name) {
-                                output_id = id;
-                            }
-                            return out.id === input_name;
-                        });
-
-                        if (filter.length !== 0) {
-
-                            var m = _self._generateIOSchema('output', filter[0], output_id);
-
-                            if (!schemas[output_id]) {
-                                m.name = output_id;
-                                schemas[output_id] = m;
-                            }
-
-                            var ex = _.filter(nodes, function (n) {
-                                return n.id === output_id;
-                            });
-
-                            if (ex.length === 0) {
-                                nodes.push(m);
-                            }
-
-                            end_node = output_id;
-                        } else {
-                            end_node = '';
-                            throw new Error('Invalid Output name');
-                        }
-
-                        relation = {
-                            end_node: end_node,
-                            input_name: input_name,
-                            output_name: output_name,
-                            start_node: start_node,
-                            type: 'connection',
-                            // id needs to be a string
-                            id: _.random(100000, 999999) + ''
-                        };
-
-                        relations.push(relation);
 
                     });
 
                 });
+            },
 
-                _.forEach(nodes, function (model) {
+            _generateOutputsFromStep: function (json, relations, schemas, nodes, step, end_node) {
+                var _self = this,
+                    start_node, output_name, input_name,
+                    cached_end_node = end_node;
 
-                    // skip system nodes (inputs, outputs)
-                    if( model.softwareDescription && model.softwareDescription.repo_name === 'system'){
-                        return;
+                _.forEach(step.outputs, function (to, output) {
+                    var relation, filter, output_id;
+
+                    start_node = cached_end_node;
+                    output_name = output;
+
+                    input_name = to.$to;
+                    filter = _.filter(json.outputs.properties, function (out, id) {
+                        if (out.id === input_name) {
+                            output_id = id;
+                        }
+                        return out.id === input_name;
+                    });
+
+                    if (filter.length !== 0) {
+
+                        var m = _self._generateIOSchema('output', filter[0], output_id);
+
+                        if (!schemas[output_id]) {
+                            m.name = output_id;
+                            schemas[output_id] = m;
+                        }
+
+                        var ex = _.filter(nodes, function (n) {
+                            return n.id === output_id;
+                        });
+
+                        if (ex.length === 0) {
+                            nodes.push(m);
+                        }
+
+                        end_node = output_id;
+                    } else {
+                        end_node = '';
+                        throw new Error('Invalid Output name');
                     }
 
-                    console.log('model from nodes: ', model);
+                    relation = {
+                        end_node: end_node,
+                        input_name: input_name,
+                        output_name: output_name,
+                        start_node: start_node,
+                        type: 'connection',
+                        // id needs to be a string
+                        id: _.random(100000, 999999) + ''
+                    };
 
-                    _.forEach(model.inputs.properties, function (input, name) {
-                        input.name = name;
-                        input.id = input.id || name;
-                    });
-
-                    _.forEach(model.outputs.properties, function (output, name) {
-                        output.name = name;
-                        output.id = output.id || name;
-                    });
+                    relations.push(relation);
 
                 });
 

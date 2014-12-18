@@ -25,11 +25,11 @@ var formater = {
             properties: {}
         };
 
-        if ( (!json.relations || json.relations.length === 0 ) && json.nodes.length === 1) {
-            var _id = json.nodes[0]._id;
+        if ((!json.relations || json.relations.length === 0 ) && json.nodes.length === 1) {
+            var _id = json.nodes[0].id;
 
             this.packedSchema.steps.push({
-                _id: _id,
+                id: _id,
                 app: json.schemas[_id],
                 inputs: {},
                 outputs: {}
@@ -81,9 +81,12 @@ var formater = {
             if (step) {
                 step.app = _.clone(node_schema);
 
+                if (step.app.x) { delete step.app.x; }
+                if (step.app.y) { delete step.app.y; }
+
                 _.remove(_self.packedSchema.steps, function (s) {
 
-                    return s._id === step._id;
+                    return s.id === step.id;
                 });
 
                 _self.packedSchema.steps.push(step);
@@ -104,6 +107,7 @@ var formater = {
             if (_self._checkSystem(node_schema)) {
 
                 _self._attachOutput(rel);
+
                 _self._createInOut(node_schema.softwareDescription.type + 's', node_schema);
 
             } else {
@@ -111,12 +115,13 @@ var formater = {
             }
 
             if (_self._checkSystem(node_schema)) {
+
                 _self._createInOut(node_schema.softwareDescription.type + 's', node_schema);
             }
 
         });
     },
-    
+
     _checkSystem: function (node_schema) {
 
         return node_schema.softwareDescription && node_schema.softwareDescription.repo_name === 'system';
@@ -124,7 +129,7 @@ var formater = {
 
     _attachOutput: function (rel) {
         var filter = _.filter(this.packedSchema.steps, function (step) {
-            return step._id === rel.start_node;
+            return step.id === rel.start_node;
         });
 
         if (filter.length !== 0) {
@@ -151,18 +156,18 @@ var formater = {
 
         var node_schema = schemas[rel.end_node];
 
-        step._id = rel.end_node;
+        step.id = rel.end_node;
 
         exists = _.filter(this.packedSchema.steps, function (s) {
 
-            return s._id === step._id;
+            return s.id === step.id;
         });
 
         if (exists.length !== 0) {
             step = exists[0];
         } else {
             step = {
-                _id: rel.end_node,
+                id: rel.end_node,
                 app: node_schema,
                 inputs: {},
                 outputs: {}
@@ -175,9 +180,26 @@ var formater = {
             from = rel.output_name;
         }
 
-        step.inputs[rel.input_name] = {
-            $from: from
-        };
+        if (step.inputs[rel.input_name] && typeof step.inputs[rel.input_name].$from === 'string') {
+
+            var f = step.inputs[rel.input_name].$from,
+                arr = [f];
+
+            arr.push(from);
+
+            step.inputs[rel.input_name] = {
+                $from: arr
+            };
+
+        } else {
+            if (step.inputs[rel.input_name] && Array.isArray(step.inputs[rel.input_name].$from)) {
+                step.inputs[rel.input_name].$from.push(from);
+            } else {
+                step.inputs[rel.input_name] = {
+                    $from: from
+                };
+            }
+        }
 
         return step;
     },
@@ -190,7 +212,7 @@ var formater = {
      */
     _transformStepsToRelations: function (json) {
         //TODO: Please refactor this :)
-        
+
         var _self = this,
             steps = json.steps,
             relations = this.packedSchema.relations,
@@ -198,14 +220,14 @@ var formater = {
             schemas = this.packedSchema.schemas;
 
         _.forEach(steps, function (step) {
-            var end_node = step._id, input_name, output_name, start_node;
+            var end_node = step.id;
 
 
-            if (!schemas[step._id]) {
-                schemas[step._id] = step.app;
+            if (!schemas[step.id]) {
+                schemas[step.id] = step.app;
             }
 
-            step.app.id = step._id;
+            step.app.id = step.id;
 
             var ex = _.filter(nodes, function (n) {
                 return n.id === step.app.id;
@@ -215,10 +237,46 @@ var formater = {
                 nodes.push(step.app);
             }
 
-            _.forEach(step.inputs, function (from, input) {
+            _self._generateInputsFromStep(json, relations, schemas, nodes, step, end_node);
+            _self._generateOutputsFromStep(json, relations, schemas, nodes, step, end_node);
+        });
+
+        _.forEach(nodes, function (model) {
+
+            // skip system nodes (inputs, outputs)
+            if (model.softwareDescription && model.softwareDescription.repo_name === 'system') {
+                return;
+            }
+
+            _.forEach(model.inputs.properties, function (input, name) {
+                input.name = name;
+                input.id = input.id || name;
+            });
+
+            _.forEach(model.outputs.properties, function (output, name) {
+                output.name = name;
+                output.id = output.id || name;
+            });
+
+        });
+
+    },
+
+    _generateInputsFromStep: function (json, relations, schemas, nodes, step, end_node) {
+        var _self = this,
+            start_node, output_name, input_name;
+
+        _.forEach(step.inputs, function (from, input) {
+
+            if (!Array.isArray(from.$from)) {
+                from.$from = [from.$from];
+            }
+
+            _.forEach(from.$from, function (fr) {
+
                 var relation, s, filter;
 
-                s = from.$from.split('.');
+                s = fr.split('.');
 
                 if (s.length !== 1) {
                     start_node = s[0];
@@ -234,8 +292,9 @@ var formater = {
                     });
 
                     if (filter.length !== 0) {
-                        var m = _self._generateIOSchema('outputs', filter[0], input_id);
+                        var m = _self._generateIOSchema('input', filter[0], input_id);
 
+                        m.name = input_id;
                         schemas[input_id] = m;
 
                         nodes.push(m);
@@ -262,91 +321,80 @@ var formater = {
                 };
 
                 relations.push(relation);
-            });
-
-            _.forEach(step.outputs, function (to, output) {
-                var relation, filter, output_id;
-
-                start_node = end_node;
-                output_name = output;
-
-                input_name = to.$to;
-                filter = _.filter(json.outputs.properties, function (out, id) {
-                    if (out.id === input_name) {
-                        output_id = id;
-                    }
-                    return out.id === input_name;
-                });
-
-                if (filter.length !== 0) {
-
-                    var m = _self._generateIOSchema('inputs', filter[0], output_id);
-
-                    if (!schemas[output_id]) {
-                        schemas[output_id] = m;
-                    }
-
-                    var ex = _.filter(nodes, function (n) {
-                        return n.id === output_id;
-                    });
-
-                    if (ex.length === 0) {
-                        nodes.push(m);
-                    }
-
-                    end_node = output_id;
-                } else {
-                    end_node = '';
-                    throw new Error('Invalid Output name');
-                }
-
-                relation = {
-                    end_node: end_node,
-                    input_name: input_name,
-                    output_name: output_name,
-                    start_node: start_node,
-                    type: 'connection',
-                    // id needs to be a string
-                    id: _.random(100000, 999999) + ''
-                };
-
-                relations.push(relation);
 
             });
 
         });
+    },
 
-        _.forEach(nodes, function (model) {
+    _generateOutputsFromStep: function (json, relations, schemas, nodes, step, end_node) {
+        var _self = this,
+            start_node, output_name, input_name,
+            cached_end_node = end_node;
 
-            // skip system nodes (inputs, outputs)
-            if( model.softwareDescription && model.softwareDescription.repo_name === 'system'){
-                return;
+        _.forEach(step.outputs, function (to, output) {
+            var relation, filter, output_id;
+
+            start_node = cached_end_node;
+            output_name = output;
+
+            input_name = to.$to;
+            filter = _.filter(json.outputs.properties, function (out, id) {
+                if (out.id === input_name) {
+                    output_id = id;
+                }
+                return out.id === input_name;
+            });
+
+            if (filter.length !== 0) {
+
+                var m = _self._generateIOSchema('output', filter[0], output_id);
+
+                if (!schemas[output_id]) {
+                    m.name = output_id;
+                    schemas[output_id] = m;
+                }
+
+                var ex = _.filter(nodes, function (n) {
+                    return n.id === output_id;
+                });
+
+                if (ex.length === 0) {
+                    nodes.push(m);
+                }
+
+                end_node = output_id;
+            } else {
+                end_node = '';
+                throw new Error('Invalid Output name');
             }
 
-            console.log('model from nodes: ', model);
+            relation = {
+                end_node: end_node,
+                input_name: input_name,
+                output_name: output_name,
+                start_node: start_node,
+                type: 'connection',
+                // id needs to be a string
+                id: _.random(100000, 999999) + ''
+            };
 
-            _.forEach(model.inputs.properties, function (input, name) {
-                input.name = name;
-                input.id = input.id || name;
-            });
-
-            _.forEach(model.outputs.properties, function (output, name) {
-                output.name = name;
-                output.id = output.id || name;
-
-            });
+            relations.push(relation);
 
         });
 
     },
 
     _generateIOSchema: function (type, schema, id) {
+
+        var internalType = type === 'input' ? 'outputs' : 'inputs';
+
         var model = {
-            'name': 'System app',
+            'name': schema.name || 'System app',
             'softwareDescription': {
                 'repo_owner': 'rabix',
                 'repo_name': 'system',
-                'type': type.slice(0 ,type.length -1)
+                'type': type
             },
             'documentAuthor': null,
             'inputs': {
@@ -357,20 +405,19 @@ var formater = {
             }
         };
 
-        model[type].properties = {};
-        model[type].properties[schema.id] = schema;
+        model[internalType].properties = {};
+        model[internalType].properties[schema.id] = schema;
 
-        model[type].properties[schema.id].name = schema.id;
-        model[type].properties[schema.id].id = schema.id;
+        model[internalType].properties[schema.id].name = schema.id;
+        model[internalType].properties[schema.id].id = schema.id;
 
         model.id = id;
-
-        console.log('Sys node type:', model.softwareDescription.type);
 
         return model;
     }
 
 };
+
 
 
 module.exports = formater;
