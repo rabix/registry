@@ -3,10 +3,10 @@
 BASEDIR=$(readlink -m "$(dirname $(readlink -e $0))/..")
 START_DIR=`pwd`
 
-npm install -g bower grunt grunt-cli forever
+npm install -g forever
 
 cd $BASEDIR
-echo "Preparing backend"
+echo "Installing dependencies"
 
 npm install
 
