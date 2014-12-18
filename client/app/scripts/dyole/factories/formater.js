@@ -24,10 +24,10 @@ angular.module('registryApp.dyole')
                 };
 
                 if ( (!json.relations || json.relations.length === 0 ) && json.nodes.length === 1) {
-                    var _id = json.nodes[0]._id;
+                    var _id = json.nodes[0].id;
 
                     this.packedSchema.steps.push({
-                        _id: _id,
+                        id: _id,
                         app: json.schemas[_id],
                         inputs: {},
                         outputs: {}
@@ -84,7 +84,7 @@ angular.module('registryApp.dyole')
 
                         _.remove(_self.packedSchema.steps, function (s) {
 
-                            return s._id === step._id;
+                            return s.id === step.id;
                         });
 
                         _self.packedSchema.steps.push(step);
@@ -127,7 +127,7 @@ angular.module('registryApp.dyole')
 
             _attachOutput: function (rel) {
                 var filter = _.filter(this.packedSchema.steps, function (step) {
-                    return step._id === rel.start_node;
+                    return step.id === rel.start_node;
                 });
 
                 if (filter.length !== 0) {
@@ -154,18 +154,18 @@ angular.module('registryApp.dyole')
 
                 var node_schema = schemas[rel.end_node];
 
-                step._id = rel.end_node;
+                step.id = rel.end_node;
 
                 exists = _.filter(this.packedSchema.steps, function (s) {
 
-                    return s._id === step._id;
+                    return s.id === step.id;
                 });
 
                 if (exists.length !== 0) {
                     step = exists[0];
                 } else {
                     step = {
-                        _id: rel.end_node,
+                        id: rel.end_node,
                         app: node_schema,
                         inputs: {},
                         outputs: {}
@@ -178,12 +178,9 @@ angular.module('registryApp.dyole')
                     from = rel.output_name;
                 }
 
-                console.log('step:',step._id, from);
                 step.inputs[rel.input_name] = {
                     $from: from
                 };
-
-                console.log(step._id, step);
 
                 return step;
             },
@@ -204,14 +201,14 @@ angular.module('registryApp.dyole')
                     schemas = this.packedSchema.schemas;
 
                 _.forEach(steps, function (step) {
-                    var end_node = step._id, input_name, output_name, start_node;
+                    var end_node = step.id, input_name, output_name, start_node;
 
 
-                    if (!schemas[step._id]) {
-                        schemas[step._id] = step.app;
+                    if (!schemas[step.id]) {
+                        schemas[step.id] = step.app;
                     }
 
-                    step.app.id = step._id;
+                    step.app.id = step.id;
 
                     var ex = _.filter(nodes, function (n) {
                         return n.id === step.app.id;
@@ -272,7 +269,7 @@ angular.module('registryApp.dyole')
                     });
 
                     var cached_end_node = end_node;
-                    
+
                     _.forEach(step.outputs, function (to, output) {
                         var relation, filter, output_id;
 
