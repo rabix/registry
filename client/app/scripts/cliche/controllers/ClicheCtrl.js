@@ -7,7 +7,7 @@
 'use strict';
 
 angular.module('registryApp.cliche')
-    .controller('ClicheCtrl', ['$scope', '$rootScope', '$q', '$modal', '$templateCache', '$routeParams', '$location', 'Data', 'User', 'Tool', 'Repo', 'Loading', 'SandBox', 'Sidebar', function ($scope, $rootScope, $q, $modal, $templateCache, $routeParams, $location, Data, User, Tool, Repo, Loading, SandBox, Sidebar) {
+    .controller('ClicheCtrl', ['$scope', '$rootScope', '$q', '$modal', '$templateCache', '$routeParams', '$location', 'Data', 'User', 'Tool', 'Repo', 'Loading', 'SandBox', 'Sidebar', 'BeforeUnload', function ($scope, $rootScope, $q, $modal, $templateCache, $routeParams, $location, Data, User, Tool, Repo, Loading, SandBox, Sidebar, BeforeUnload) {
 
         Sidebar.setActive('cliche');
 
@@ -781,28 +781,6 @@ angular.module('registryApp.cliche')
         };
 
         /**
-         * Adjust tool structure
-         */
-//        $scope.adjust = function() {
-//
-//            Data.transformToolJson($scope.view.app.is_script);
-//            $scope.view.toolForm = Data.tool;
-//
-//            $scope.switchTab('general');
-//
-//            if ($scope.view.app.is_script) {
-//                turnOffDeepWatch();
-//                unWatchTheJob();
-//            } else {
-//                turnOnDeepWatch();
-//                if ($scope.view.tab === 'values') {
-//                    watchTheJob();
-//                }
-//            }
-//
-//        };
-
-        /**
          * Track route change in order to prevent loss of changes
          *
          * @param e
@@ -837,6 +815,12 @@ angular.module('registryApp.cliche')
 
         var onRouteChangeOff = $rootScope.$on('$locationChangeStart', onRouteChange);
 
+        var onBufferUnloadOff = BeforeUnload.register(function() { return 'Please save your changes before leaving.'; });
+
+        $scope.$on('$destroy', function() {
+            onBufferUnloadOff();
+            onBufferUnloadOff = undefined;
+        });
 
 
     }]);
