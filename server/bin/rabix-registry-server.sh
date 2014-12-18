@@ -10,6 +10,7 @@ DAEMON="/usr/local/bin/forever"
 PIDFILE=/var/tmp/rabix-registry.pid
 DAEMON_ARGS="${BASEDIR}/app.js"
 SCRIPTNAME=$BASEDIR/bin/$0
+NODE_ENV="production"
 
 [ -x "$DAEMON" ] || exit 0
 
