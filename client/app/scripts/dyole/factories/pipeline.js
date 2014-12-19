@@ -540,8 +540,14 @@ angular.module('registryApp.dyole')
                         n = 0;
 
                     while (check) {
-                        check = this._checkIdAvailable(name + '_' + n);
-                        n = check ? n++ : n;
+
+                        if (n === 0) {
+                            check = this._checkIdAvailable(name);
+                        } else {
+                            check = this._checkIdAvailable(name + '_' + n);
+                        }
+
+                        n = check ? n + 1 : n;
                     }
 
                     if (n === 0) {

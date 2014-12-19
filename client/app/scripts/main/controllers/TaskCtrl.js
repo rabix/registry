@@ -44,10 +44,7 @@ angular.module('registryApp')
             var deferred = $q.defer();
 
             if (type === 'Workflow') {
-
-                Workflow.format(json).then(function (pipeline) {
-                    deferred.resolve(pipeline.json.inputs.properties);
-                });
+                deferred.resolve(json.inputs.properties);
 
             } else {
                 deferred.resolve(json.inputs.properties);
