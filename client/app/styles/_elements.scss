@@ -376,6 +376,7 @@
       padding: 5px 10px;
       border-bottom: 1px solid #ccc;
       font-size: 20px;
+      @extend %ellipsis;
     }
   }
 }
@@ -777,6 +778,10 @@ legend {
       .form-group {
         border-left: 1px solid #eee;
       }
+    }
+    .alert {
+      margin: 0;
+      padding: 10px;
     }
   }
   .input-param-details {

@@ -576,6 +576,9 @@
 }
 
 .input-container-small {
+  .alert {
+    margin: 0;
+  }
   & > .input-property {
     & > .form-group {
       margin-bottom: 0;

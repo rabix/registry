@@ -13,17 +13,30 @@ angular.module('registryApp.app')
             scope: {
                 model: '=ngModel',
                 key: '@',
-                exposable: '@'
+                appName: '@',
+                exposed: '='
             },
             compile: function(element) {
                 return RecursionHelper.compile(element, function(scope) {
 
+                    var keyName = scope.appName + '.' + scope.key;
+
                     scope.view = {};
 
-                    scope.exposable = scope.exposable === 'true';
+                    scope.view.expose = scope.exposed ? !_.isUndefined(scope.exposed[keyName]) : false;
 
                     scope.toggleParams = function () {
                         scope.view.expand = !scope.view.expand;
+                    };
+
+                    scope.exposeParams = function () {
+
+                        if (scope.view.expose) {
+                            scope.exposed[keyName] = scope.model;
+                        } else {
+                            delete scope.exposed[keyName];
+                        }
+
                     };
 
                 });

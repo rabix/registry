@@ -29,8 +29,7 @@ angular.module('registryApp')
          */
         var setDefaults = function() {
 
-            $scope.view.list = {tmp: [], part: []};
-
+            $scope.view.pages = [];
             $scope.view.page = 1;
             $scope.view.total = 0;
 
@@ -39,16 +38,25 @@ angular.module('registryApp')
         /* init default values */
         setDefaults();
 
+        /**
+         * Get properties from app
+         *
+         * @param type
+         * @param json
+         * @returns {*}
+         */
         var getProperties = function(type, json) {
 
             var deferred = $q.defer();
 
             if (type === 'Workflow') {
-                deferred.resolve(json.inputs.properties);
-
-            } else {
-                deferred.resolve(json.inputs.properties);
+                // TODO: will be available directly, maybe
+                if (json.exposed) {
+                    _.extend(json.inputs.properties, json.exposed);
+                }
             }
+
+            deferred.resolve(json.inputs.properties);
 
             return deferred.promise;
 
@@ -79,6 +87,8 @@ angular.module('registryApp')
                         $scope.view.job.app = angular.copy($scope.view.app.json);
                         $scope.view.job.app['@type'] = result.type;
 
+                        //$scope.view.properties = properties;
+
                         setDefaults();
                         $scope.prepareForPagination(properties);
 
@@ -97,27 +107,16 @@ angular.module('registryApp')
 
             $scope.view.total = _.size(origin);
 
+            var count = 0;
+
             _.each(origin, function(obj, name) {
-                $scope.view.list.tmp.push({key: name, obj: obj});
-            });
+                if (count % 10 === 0) {
+                    $scope.view.pages.push([]);
+                }
 
-            $scope.getMore(0);
+                $scope.view.pages[$scope.view.pages.length - 1].push({key: name, obj: obj});
 
-        };
-
-        /**
-         * Get next/prev page
-         *
-         * @param offset
-         */
-        $scope.getMore = function(offset) {
-
-            $scope.view.list.part = [];
-
-            var times = $scope.view.list.tmp.length > 10 ? 10 : $scope.view.list.tmp.length;
-
-            _.times(times, function(i) {
-                $scope.view.list.part.push($scope.view.list.tmp[offset + i]);
+                count += 1;
             });
 
         };

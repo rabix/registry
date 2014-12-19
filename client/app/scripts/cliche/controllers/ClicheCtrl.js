@@ -88,6 +88,9 @@ angular.module('registryApp.cliche')
          */
         $scope.prepareForPagination = function(origin, what) {
 
+
+            // TODO: potential bug, check pagination in task controller
+
             $scope.view.total[what] = _.size(origin);
             $scope.view.list[what].tmp = [];
 
