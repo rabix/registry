@@ -783,6 +783,7 @@ angular.module('registryApp.dyole')
 
                 this.selected = true;
 
+                console.log('__select__', this.model.id);
                 this.Pipeline.Event.trigger('node:select', this.model);
             },
 
@@ -833,6 +834,8 @@ angular.module('registryApp.dyole')
             destroy: function () {
 
                 this.circle.unbindMouse().unhover().unclick().unkeyup();
+                // remove element which has events attached to it, safety purposes :)
+                this.circle.remove();
 
                 this.el.remove();
             }
