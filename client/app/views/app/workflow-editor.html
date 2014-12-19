@@ -195,8 +195,10 @@
                                 <input-param
                                         class="input-param"
                                         ng-repeat="(key, property) in view.json.inputs.properties"
+                                        ng-hide="property.type === 'file'"
                                         ng-model="property"
-                                        key="{{ key }}">
+                                        key="{{ key }}"
+                                        exposable="true">
                                 </input-param>
                             </div>
                             <p class="alert alert-info" ng-if="view.json.inputs.properties | isEmpty">There are no params set for this app.</p>

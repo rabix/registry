@@ -767,22 +767,46 @@ legend {
 .input-param {
   .form-group {
     margin-bottom: 0;
-    .input-param-children {
-      margin-left: 15px;
+    & > .input-param-children {
+      padding-left: 15px;
+      background-color: #fdfdfd;
+      display: none;
+      &.expand {
+        display: block;
+      }
+      .form-group {
+        border-left: 1px solid #eee;
+      }
     }
   }
   .input-param-details {
     display: block;
-    font-weight: bold;
-    padding: 10px 80px 10px 10px;
-    border-bottom: 1px solid #ddd;
-    i {
-      font-weight: normal;
+    padding: 7px;
+    border-bottom: 1px solid #eee;
+
+    &.exposable {
+      padding-right: 90px;
+    }
+
+    .type {
+      float: right;
+    }
+    .toggle {
+      float: left;
+      padding-right: 6px;
+      color: #29567D;
+    }
+    span {
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      display: block;
+      font-weight: bold;
     }
   }
   .checkbox {
     float: right;
-    margin-right: 10px;
+    margin: 6px 10px 6px 0;
   }
 
 }

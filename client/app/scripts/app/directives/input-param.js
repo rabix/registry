@@ -12,10 +12,19 @@ angular.module('registryApp.app')
             template: $templateCache.get('views/app/partials/input-param.html'),
             scope: {
                 model: '=ngModel',
-                key: '@'
+                key: '@',
+                exposable: '@'
             },
             compile: function(element) {
-                return RecursionHelper.compile(element, function() {
+                return RecursionHelper.compile(element, function(scope) {
+
+                    scope.view = {};
+
+                    scope.exposable = scope.exposable === 'true';
+
+                    scope.toggleParams = function () {
+                        scope.view.expand = !scope.view.expand;
+                    };
 
                 });
             }
