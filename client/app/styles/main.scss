@@ -600,6 +600,13 @@ body {
     }
   }
 
+  &.repo-apps {
+    th {
+      &:nth-child(1) { width: 30%; }
+      &:nth-child(2) { width: 70%; }
+    }
+  }
+
   .inner-table {
 
     .inner-table-body {

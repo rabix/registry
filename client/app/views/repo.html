@@ -25,14 +25,16 @@
 
         <div class="tabs">
             <div class="nav nav-tabs">
-                <li ng-class="{active: view.tab === 'apps'}" class=""><a href ng-click="switchTab('apps')">Tools</a></li>
+                <li ng-class="{active: view.tab === 'tools'}" class=""><a href ng-click="switchTab('tools')">Tools</a></li>
+                <li ng-class="{active: view.tab === 'scripts'}" class=""><a href ng-click="switchTab('scripts')">Scripts</a></li>
                 <li ng-class="{active: view.tab === 'workflows'}" class=""><a href ng-click="switchTab('workflows')">Workflows</a></li>
                 <li ng-class="{active: view.tab === 'builds'}" class=""><a href ng-click="switchTab('builds')">Builds</a></li>
             </div>
-            <section ng-show="view.tab === 'apps'" class="apps">
+
+            <section ng-show="view.tab === 'tools'" class="apps">
 
                 <div class="content">
-                    <table class="table table-hover apps">
+                    <table class="table table-hover repo-apps">
                         <thead>
                             <tr>
                                 <th>Name</th>
@@ -40,28 +42,51 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="app in view.apps">
-                                <td>
-                                    <a ng-href="#/tool/{{ ::app._id }}/info" class="inline">{{ ::app.name }}</a>
-                                    <div ng-if="app.is_script" class="label label-info">script</div>
-                                </td>
+                            <tr ng-repeat="app in view.tools">
+                                <td><a ng-href="#/tool/{{ ::app._id }}/info" class="inline">{{ ::app.name }}</a></td>
                                 <td><p tooltip="{{ ::app.description }}" tooltip-popup-delay="1000">{{ ::app.description }}</p></td>
                             </tr>
-                            <tr class="empty" ng-if="view.apps.length === 0">
-                                <td colspan="2"><p class="alert alert-info">There are no apps found in this repo</p></td>
+                            <tr class="empty" ng-if="view.tools.length === 0">
+                                <td colspan="2"><p class="alert alert-info">There are no tools found in this repo</p></td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
 
-                <paginator page="view.page.apps" total="view.total.apps" handler="getMoreApps(offset)"></paginator>
+                <paginator page="view.page.tools" total="view.total.tools" handler="getMoreTools(offset)"></paginator>
+
+            </section>
+
+            <section ng-show="view.tab === 'scripts'" class="apps">
+
+                <div class="content">
+                    <table class="table table-hover repo-apps">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="app in view.scripts">
+                                <td><a ng-href="#/tool/{{ ::app._id }}/info" class="inline">{{ ::app.name }}</a></td>
+                                <td><p tooltip="{{ ::app.description }}" tooltip-popup-delay="1000">{{ ::app.description }}</p></td>
+                            </tr>
+                            <tr class="empty" ng-if="view.scripts.length === 0">
+                                <td colspan="2"><p class="alert alert-info">There are no scripts found in this repo</p></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <paginator page="view.page.scripts" total="view.total.scripts" handler="getMoreScripts(offset)"></paginator>
 
             </section>
 
             <section ng-show="view.tab === 'workflows'" class="workflows">
 
                 <div class="content">
-                    <table class="table table-hover workflows">
+                    <table class="table table-hover repo-apps">
                         <thead>
                             <tr>
                                 <th>Name</th>

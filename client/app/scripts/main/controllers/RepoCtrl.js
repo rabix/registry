@@ -7,19 +7,22 @@ angular.module('registryApp')
 
         $scope.view = {};
         $scope.view.page = {
-            apps: 1,
+            tools: 1,
+            scripts: 1,
             workflows: 1,
             builds: 1
         };
         $scope.view.total = {
-            apps: 1,
+            tools: 1,
+            scripts: 1,
             workflows: 1,
             builds: 1
         };
         $scope.view.loading = true;
-        $scope.view.tab = 'apps';
+        $scope.view.tab = 'tools';
         $scope.view.repo = null;
-        $scope.view.apps = [];
+        $scope.view.tools = [];
+        $scope.view.scripts = [];
         $scope.view.workflows = [];
         $scope.view.builds = [];
         $scope.view.resize = false;
@@ -43,15 +46,17 @@ angular.module('registryApp')
 
             $q.all([
                 Repo.repoTools(0, $routeParams.id),
+                Repo.repoScripts(0, $routeParams.id),
                 Repo.repoWorkflows(0, $routeParams.id),
                 Build.getBuilds(0, $routeParams.id)
             ]).then(function (result) {
 
                 $scope.view.loading = false;
 
-                $scope.view.apps = itemsLoaded(result[0], 'apps');
-                $scope.view.workflows = itemsLoaded(result[1], 'workflows');
-                $scope.view.builds = itemsLoaded(result[2], 'builds');
+                $scope.view.tools = itemsLoaded(result[0], 'tools');
+                $scope.view.scripts = itemsLoaded(result[1], 'scripts');
+                $scope.view.workflows = itemsLoaded(result[2], 'workflows');
+                $scope.view.builds = itemsLoaded(result[3], 'builds');
             });
 
         });
@@ -79,16 +84,31 @@ angular.module('registryApp')
         };
 
         /**
-         * Load more apps by offset
+         * Load more tools by offset
          *
          * @param offset
          */
-        $scope.getMoreApps = function(offset) {
+        $scope.getMoreTools = function(offset) {
 
             $scope.view.loading = true;
 
             Repo.repoTools(offset, $routeParams.id).then(function (result) {
-                $scope.view.apps = itemsLoaded(result, 'apps');
+                $scope.view.tools = itemsLoaded(result, 'tools');
+            });
+
+        };
+
+        /**
+         * Load more scripts by offset
+         *
+         * @param offset
+         */
+        $scope.getMoreScripts = function(offset) {
+
+            $scope.view.loading = true;
+
+            Repo.repoScripts(offset, $routeParams.id).then(function (result) {
+                $scope.view.scripts = itemsLoaded(result, 'scripts');
             });
 
         };

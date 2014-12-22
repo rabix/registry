@@ -73,6 +73,12 @@ angular.module('registryApp')
 
         };
 
+        /**
+         * Publish particular repo
+         *
+         * @param id
+         * @returns {$promise}
+         */
         self.publishRepo = function(id) {
 
             return Api.repos.update({id: id, action: 'publish'}).$promise;
@@ -100,6 +106,19 @@ angular.module('registryApp')
         self.repoTools = function(skip, id) {
 
             return Api.repoTools.get({id: id, skip: skip}).$promise;
+
+        };
+
+        /**
+         * Get list of repo scripts
+         *
+         * @param {integer} skip
+         * @param {string} id
+         * @returns {object} $promise
+         */
+        self.repoScripts = function(skip, id) {
+
+            return Api.repoTools.get({id: id, skip: skip, is_script: true}).$promise;
 
         };
 

@@ -437,7 +437,15 @@ router.get('/repo-tools/:id', function(req, res, next) {
 
     var limit = req.query.limit ? req.query.limit : 25;
     var skip = req.query.skip ? req.query.skip : 0;
+    var is_script = req.query.is_script || false;
     var where = {repo: req.params.id};
+
+    if (is_script) {
+        where.is_script = true;
+    } else {
+        // NOTE: legacy structure, some tools don't have is_script field
+        where.is_script = {$in: [null, false]};
+    }
 
     Repo.findById(req.params.id).populate('user').exec(function(err, repo) {
         if (err) { return next(err); }
