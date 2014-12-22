@@ -36,9 +36,9 @@
 
                 <div class="content">
 
-                    <div class="input-container">
+                    <div ng-if="(view.page - 1) === $index" class="input-container" ng-repeat="page in view.pages">
                         <input-field
-                                ng-repeat="property in view.list.part track by $index"
+                                ng-repeat="property in page track by $index"
                                 ng-model="view.job.inputs[property.key]"
                                 class="input-field"
                                 key="{{ property.key }}"
@@ -48,10 +48,10 @@
                         </input-field>
                     </div>
 
-                    <p class="alert alert-info" ng-if="view.list.part | isEmpty">There are no values to be set at this moment.</p>
+                    <p class="alert alert-info" ng-if="view.list.pages.length === 0">There are no values to be set at this moment.</p>
                 </div>
 
-                <paginator page="view.page" total="view.total" per-page="10" handler="getMore(offset)"></paginator>
+                <paginator page="view.page" total="view.total" per-page="10"></paginator>
 
             </div>
             <!-- # .section -->

@@ -12,10 +12,32 @@ angular.module('registryApp.app')
             template: $templateCache.get('views/app/partials/input-param.html'),
             scope: {
                 model: '=ngModel',
-                key: '@'
+                key: '@',
+                appName: '@',
+                exposed: '='
             },
             compile: function(element) {
-                return RecursionHelper.compile(element, function() {
+                return RecursionHelper.compile(element, function(scope) {
+
+                    var keyName = scope.appName + '.' + scope.key;
+
+                    scope.view = {};
+
+                    scope.view.expose = scope.exposed ? !_.isUndefined(scope.exposed[keyName]) : false;
+
+                    scope.toggleParams = function () {
+                        scope.view.expand = !scope.view.expand;
+                    };
+
+                    scope.exposeParams = function () {
+
+                        if (scope.view.expose) {
+                            scope.exposed[keyName] = scope.model;
+                        } else {
+                            delete scope.exposed[keyName];
+                        }
+
+                    };
 
                 });
             }

@@ -10,28 +10,22 @@
 
                 <a ng-if="view.mode === 'edit'" href class="version revision" ng-click="changeRevision()"><i class="fa fa-tag"></i> v{{ ::view.revision.version }}</a>
 
-                <!--<label ng-if="view.mode === 'new'" class="checkbox inline">-->
-                    <!--<input type="checkbox" ng-model="view.app.is_script" ng-change="adjust()" ng-disabled="view.mode === 'edit'">-->
-                    <!--<span>script</span>-->
-                <!--</label>-->
-
-                <!--<span ng-if="view.mode === 'edit' && view.app.is_script" class="label label-info">script</span>-->
             </div>
 
             <div class="actions pull-right">
-
-                <div class="btn-group" role="group">
-                    <json-preview title="Tool JSON" json="{{ view.toolForm }}"></json-preview>
-                    <json-preview title="Job JSON" json="{{ view.jobForm }}"></json-preview>
-                </div>
 
                 <button ng-if="view.user && view.mode === 'new'" ng-disabled="view.saving" class="app-create-btn btn btn-primary" ng-click="create()">
                     <i class="fa fa-plus"></i> Create
                 </button>
 
-                <button ng-if="view.user && view.user.id === view.app.user._id" ng-disabled="view.saving" class="app-save-btn btn btn-default" ng-click="update()">
+                <button ng-if="view.user && view.user.id === view.app.user._id" ng-disabled="view.saving" class="app-save-btn btn btn-primary" ng-click="update()">
                     <i class="fa fa-check"></i> Update
                 </button>
+
+                <div class="btn-group" role="group">
+                    <json-preview title="Tool JSON" json="{{ view.toolForm }}"></json-preview>
+                    <json-preview title="Job JSON" json="{{ view.jobForm }}"></json-preview>
+                </div>
 
                 <div class="btn-group right" ng-class="{open: view.isMenuOpen}">
                     <button type="button" class="btn btn-default"><i class="fa fa-cog"></i></button>

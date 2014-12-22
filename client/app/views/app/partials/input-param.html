@@ -1,15 +1,22 @@
 <div class="form-group">
 
-    <div class="checkbox">
-        <label><input type="checkbox" ng-model="model.exposed"> expose</label>
+    <div ng-if="exposed" class="checkbox">
+        <label><input type="checkbox" ng-model="view.expose" ng-change="exposeParams()"> expose</label>
     </div>
 
-    <div class="input-param-details">{{ key }} (<i>{{ ::model.type }}</i>)</div>
+    <div class="input-param-details" ng-class="{exposable: exposed}">
+        <a href class="toggle" ng-if="!(model.items.properties | isEmpty)" ng-click="toggleParams()">
+            <i class="fa" ng-class="{'fa-plus-square': !view.expand, 'fa-minus-square': view.expand}"></i>
+        </a>
+        <i class="type">({{ ::model.type }})</i>
+        <span>{{ key }}</span>
+    </div>
 
-    <div ng-if="!(model.items.properties | isEmpty)" class="input-param-children">
+    <div ng-if="!(model.items.properties | isEmpty)" class="input-param-children" ng-class="{expand: view.expand}">
         <input-param
                 class="input-param"
                 ng-repeat="(innerKey, property) in model.items.properties"
+                ng-hide="property.type === 'file'"
                 ng-model="property"
                 key="{{ innerKey }}">
         </input-param>

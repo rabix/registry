@@ -190,16 +190,18 @@
                         <p class="alert alert-info" ng-if="view.json | isEmpty">Select node in order to change its parameters</p>
 
                         <form ng-if="!(view.json | isEmpty)" class="form" name="paramForms" novalidate>
+
                             <h3 class="tab-title">{{ ::view.json.name }}</h3>
-                            <div class="input-container input-container-small">
-                                <input-param
-                                        class="input-param"
-                                        ng-repeat="(key, property) in view.json.inputs.properties"
-                                        ng-model="property"
-                                        key="{{ key }}">
-                                </input-param>
-                            </div>
-                            <p class="alert alert-info" ng-if="view.json.inputs.properties | isEmpty">There are no params set for this app.</p>
+                            <input-param
+                                    class="input-param"
+                                    ng-repeat="(key, property) in view.json.inputs.properties"
+                                    ng-hide="property.type === 'file'"
+                                    ng-model="property"
+                                    key="{{ ::key }}"
+                                    app-name="{{ ::view.json.name }}"
+                                    exposed="view.workflow.json.exposed">
+                            </input-param>
+                            <p class="alert alert-info" ng-if="view.json.inputs.properties | isEmpty">There are no params that can be exposed.</p>
                         </form>
 
                     </div>
