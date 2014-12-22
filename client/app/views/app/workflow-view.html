@@ -10,8 +10,8 @@
                 </span>
             </span>
             <div ng-if="view.revisions.length > 0" class="nav nav-pills nav-page">
-                <li ng-class="{active: view.tab === 'info'}"><a href="" ng-click="switchTab('info')">Info</a></li>
-                <li ng-class="{active: view.tab === 'description'}"><a href="" ng-click="switchTab('description')">Description</a></li>
+                <li ng-class="{active: view.tab === 'info'}"><a href="" ng-click="switchTab('info')">Preview</a></li>
+                <li ng-class="{active: view.tab === 'description'}"><a href="" ng-click="switchTab('description')">Info</a></li>
                 <li ng-class="{active: view.tab === 'revisions'}"><a href="" ng-click="switchTab('revisions')">Revisions</a></li>
             </div>
             <div class="actions pull-right">
@@ -29,8 +29,38 @@
         </section>
 
         <section class="tab description" ng-show="view.tab === 'description'">
-            <p ng-if="!view.workflow.description"><i>There is no description for this pipeline</i></p>
-            <div class="markdown-body" marked="::view.workflow.description"></div>
+
+            <div class="description">
+                <p ng-if="!view.workflow.description"><i>There is no description for this pipeline</i></p>
+                <div class="markdown-body" marked="::view.workflow.description"></div>
+            </div>
+
+            <div class="description">
+                <div class="panel panel-warning panel-app horizontal">
+                    <div class="panel-body">
+                        <div class="row no-margin">
+
+                            <section class="col-md-6">
+                                <h5>Author</h5>
+                                <p><strong>Username:</strong> <a href="http://github.com/{{ ::view.workflow.pipeline.user.username }}" target="_blank">{{ ::view.workflow.pipeline.user.username }}</a> </p>
+                                <!--<p><strong>Name:</strong> {{ ::view.workflow.pipeline.user.name }} </p>-->
+                            </section>
+
+                            <section class="col-md-6">
+                                <h5>Workflow Details</h5>
+                                <p><strong>Repo:</strong> <a ng-href="#/repo/{{ ::view.workflow.pipeline.repo.id }}">{{ ::view.workflow.pipeline.repo.owner }}/{{ ::view.workflow.pipeline.repo.name }}</a></p>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="snippet">
+                <p>Use this command to run workflow</p>
+                <pre>$ rabix "<a href="/workflow/{{ ::view.workflow._id }}" target="_blank">http://rabix.org/workflow/{{ ::view.workflow._id }}</a>"</pre>
+            </div>
+
+
         </section>
 
         <section class="tab revisions" ng-show="view.tab === 'revisions'">
