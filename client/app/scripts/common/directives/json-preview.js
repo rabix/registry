@@ -5,7 +5,7 @@
  */
 'use strict';
 
-angular.module('registryApp')
+angular.module('registryApp.common')
     .directive('jsonPreview', ['$templateCache', '$modal', function ($templateCache, $modal) {
         return {
             restrict: 'E',

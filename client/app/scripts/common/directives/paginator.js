@@ -5,7 +5,7 @@
  */
 'use strict';
 
-angular.module('registryApp')
+angular.module('registryApp.common')
     .directive('paginator', ['$templateCache', function ($templateCache) {
         return {
             restrict: 'E',

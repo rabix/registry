@@ -22,7 +22,8 @@ angular
         'registryApp.app',
         'registryApp.cliche',
         'registryApp.dyole',
-        'registryApp.repo'
+        'registryApp.repo',
+        'registryApp.common'
     ])
     .config(['$routeProvider', '$httpProvider', '$localForageProvider', function ($routeProvider, $httpProvider, $localForageProvider) {
         $routeProvider

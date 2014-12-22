@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('registryApp')
+angular.module('registryApp.common')
     .directive('error', ['$templateCache', function ($templateCache) {
         return {
             restrict: 'E',

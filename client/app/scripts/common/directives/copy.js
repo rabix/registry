@@ -5,7 +5,7 @@
  */
 'use strict';
 
-angular.module('registryApp')
+angular.module('registryApp.common')
     .directive('copy', ['$templateCache', '$timeout', function ($templateCache, $timeout) {
         return {
             restrict: 'E',

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('registryApp')
+angular.module('registryApp.repo')
     .controller('ManageRepoCtrl', ['$scope', '$modalInstance', 'data', 'Repo', function ($scope, $modalInstance, data, Repo) {
 
         $scope.view = {};

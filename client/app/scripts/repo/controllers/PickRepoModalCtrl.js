@@ -3,7 +3,7 @@
  */
 'use strict';
 
-angular.module('registryApp')
+angular.module('registryApp.repo')
     .controller('PickRepoModalCtrl', ['$scope', '$modalInstance', 'data', function ($scope, $modalInstance, data) {
 
         $scope.view = {};
