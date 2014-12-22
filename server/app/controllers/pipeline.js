@@ -832,8 +832,7 @@ router.get('/workflow/repositories/:type', function (req, res, next) {
  *     }
  */
 router.post('/workflow/validate', function (req, res, next) {
-    var json = JSON.parse(req.body.json);
-//    json = test_json;
+    var json = req.body;
     
     if (typeof json === 'undefined') { res.status(400).json({error: 'Undefined json to validate'}); return false;}
 
