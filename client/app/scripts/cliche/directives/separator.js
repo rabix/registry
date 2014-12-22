@@ -32,7 +32,7 @@ angular.module('registryApp.cliche')
                         {name: 'comma', value: ','},
                         {name: 'semicolon', value: ';'},
                         {name: 'space', value: ' '},
-                        {name: 'repeat', value: 'repeat'}
+                        {name: 'repeat', value: null}
                     ]
                 };
 

@@ -145,8 +145,6 @@ angular.module('registryApp')
 
         /**
          * Manage repo name
-         *
-         * @param {Object} repo
          */
         $scope.manageRepoModal = function() {
 

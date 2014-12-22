@@ -88,7 +88,7 @@ angular.module('registryApp.cliche')
                     if (_.isUndefined($scope.view.property.items.properties)) {
                         $scope.view.property.items.properties = {};
                         $scope.view.property.adapter.prefix = '';
-                        $scope.view.property.adapter.listSeparator = undefined;
+                        $scope.view.property.adapter.itemSeparator = undefined;
                         $scope.view.property.adapter.separator = ' ';
                         $scope.view.property.adapter.value = undefined;
                     }
@@ -117,9 +117,9 @@ angular.module('registryApp.cliche')
          *
          * @param value
          */
-        $scope.updateTransform = function (value, key) {
+        $scope.updateTransform = function (value) {
             checkInputAdapter();
-            $scope.view.property.adapter[key] = value;
+            $scope.view.property.adapter.value = value;
         };
 
         /**

@@ -172,7 +172,7 @@ angular.module('registryApp.cliche')
                             maxItems: undefined,
                             items: {type: 'string'}
                         },
-                        adapter: {prefix: '', separator: ' ', order: 0, listValue: undefined, listSeparator: ','}
+                        adapter: {prefix: '', separator: ' ', order: 0, value: undefined, itemSeparator: ','}
                     },
                     boolean: {
                         root: {
@@ -364,19 +364,19 @@ angular.module('registryApp.cliche')
         };
 
         /**
-         * Parse list separator for the input value
+         * Parse item separator for the input value
          *
-         * @param listSeparator
+         * @param itemSeparator
          * @returns {string}
          */
-        self.parseListSeparator = function(listSeparator) {
+        self.parseItemSeparator = function(itemSeparator) {
 
             var output = '';
 
-            if (_.isUndefined(listSeparator) || listSeparator === ' ') {
+            if (_.isUndefined(itemSeparator) || itemSeparator === ' ') {
                 output = ' ';
             } else {
-                output = listSeparator;
+                output = itemSeparator;
             }
 
             return output;
@@ -390,16 +390,16 @@ angular.module('registryApp.cliche')
          * @param {object} input
          * @param {string} prefix
          * @param {string} separator
-         * @param {string} listSeparator
+         * @param {string} itemSeparator
          * @returns {string}
          */
-        self.parseArrayInput = function(property, input, prefix, separator, listSeparator) {
+        self.parseArrayInput = function(property, input, prefix, separator, itemSeparator) {
 
             var joiner = ' ';
             var promises = [];
 
             if (property.items && property.items.type !== 'object') {
-                joiner = listSeparator === 'repeat' ? (' ' + prefix + separator) : listSeparator;
+                joiner = _.isNull(itemSeparator) ? (' ' + prefix + separator) : itemSeparator;
             }
 
             _.each(input, function(val) {
@@ -412,7 +412,7 @@ angular.module('registryApp.cliche')
                             deferred.resolve(result);
                         });
                 } else {
-                    self.applyTransform(property.adapter.listValue, (_.isObject(val) ? val.path : val), true)
+                    self.applyTransform(property.adapter.value, (_.isObject(val) ? val.path : val), true)
                         .then(function (result) {
                             deferred.resolve(result);
                         }, function (error) {
@@ -450,14 +450,14 @@ angular.module('registryApp.cliche')
                     var deferred = $q.defer();
                     var prefix = self.parsePrefix(property.adapter.prefix);
                     var separator = self.parseSeparator(prefix, property.adapter.separator);
-                    var listSeparator = self.parseListSeparator(property.adapter.listSeparator);
+                    var itemSeparator = self.parseItemSeparator(property.adapter.itemSeparator);
 
                     var prop = _.merge({key: key, order: property.adapter.order, value: '', prefix: prefix, separator: separator}, property);
 
                     switch (property.type) {
                     case 'array':
                         /* if input is ARRAY */
-                        self.parseArrayInput(property, inputs[key], prefix, separator, listSeparator)
+                        self.parseArrayInput(property, inputs[key], prefix, separator, itemSeparator)
                             .then(function (result) {
                                 prop.value = result;
                                 deferred.resolve(prop);

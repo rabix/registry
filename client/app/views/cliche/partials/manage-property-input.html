@@ -63,21 +63,13 @@
             </div>
             <!-- END Separator -->
 
-            <div class="col-md-4" ng-if="!view.disabled && view.property.type !== 'array'">
+            <div class="col-md-4" ng-if="!view.disabled && view.property.items.type !== 'object'">
                 <div class="form-group" title="Value">
                     <label class="control-label">Value</label>
-                    <expr ng-model="view.property.adapter.value" handle-item-update="updateTransform(value, 'value')" only-expr="true" self="true" placeholder="value"></expr>
+                    <expr ng-model="view.property.adapter.value" handle-item-update="updateTransform(value)" only-expr="true" self="true" placeholder="value"></expr>
                 </div>
             </div>
             <!-- END Transform -->
-
-            <div class="col-md-4" ng-if="!view.disabled && view.property.type === 'array' && view.property.items.type !== 'object'">
-                <div class="form-group" title="Value">
-                    <label class="control-label">Value</label>
-                    <expr ng-model="view.property.adapter.listValue" handle-item-update="updateTransform(value, 'listValue')" only-expr="true" self="true" placeholder="value"></expr>
-                </div>
-            </div>
-            <!-- END List Transform -->
 
             <div class="col-md-4" ng-if="view.property.type === 'file'">
                 <div class="form-group">
@@ -137,7 +129,7 @@
             <div class="col-md-2">
                 <div class="form-group">
                     <label class="control-label">Item Separator</label>
-                    <separator type="list" model="view.property.adapter.listSeparator" is-disabled="view.disabled"></separator>
+                    <separator type="list" model="view.property.adapter.itemSeparator" is-disabled="view.disabled"></separator>
                 </div>
             </div>
             <!-- END Item Separator -->

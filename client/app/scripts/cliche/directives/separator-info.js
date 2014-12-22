@@ -31,27 +31,13 @@ angular.module('registryApp.cliche')
                         {name: 'comma', value: ','},
                         {name: 'semicolon', value: ';'},
                         {name: 'space', value: ' '},
-                        {name: 'repeat', value: 'repeat'}
+                        {name: 'repeat', value: null}
                     ]
                 };
 
                 option = _.find(scope.view.map[scope.type], {value: scope.model});
 
                 scope.view.separator = option ? option.name : 'space';
-
-//                scope.$watch('view.separator', function(n, o) {
-//                    if (n !== o) {
-//                        var option = _.find(scope.view.map[scope.type], {name: n});
-//                        scope.model = option.value;
-//                    }
-//                });
-
-//                scope.$watch('model', function(n, o) {
-//                    if (n !== o) {
-//                        option = _.find(scope.view.map[scope.type], {value: n});
-//                        scope.view.separator = option ? option.name : 'space';
-//                    }
-//                });
 
             }
         };

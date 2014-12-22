@@ -110,8 +110,8 @@ var mapDefinition = {
                         items: {type: 'object', required: true}
                     },
                     adapter: {
-                        listSeparator: {type: 'string'},
-                        listValue: {type: 'object'},
+                        itemSeparator: {type: ['string', 'object']}, // separator can be null which is type of object
+                        value: {type: 'object'},
                         streamable: {type: 'boolean'}
                     },
                     items: {
