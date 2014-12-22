@@ -418,6 +418,4 @@ var formater = {
 
 };
 
-
-
 module.exports = formater;
