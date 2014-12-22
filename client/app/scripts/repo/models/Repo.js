@@ -1,6 +1,6 @@
 "use strict";
 
-angular.module('registryApp')
+angular.module('registryApp.repo')
     .service('Repo', ['Api', function (Api) {
 
         var self = {};

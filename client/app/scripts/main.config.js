@@ -21,7 +21,8 @@ angular
         'hc.marked',
         'registryApp.app',
         'registryApp.cliche',
-        'registryApp.dyole'
+        'registryApp.dyole',
+        'registryApp.repo'
     ])
     .config(['$routeProvider', '$httpProvider', '$localForageProvider', function ($routeProvider, $httpProvider, $localForageProvider) {
         $routeProvider
@@ -37,25 +38,9 @@ angular
                 templateUrl: 'views/build.html',
                 controller: 'BuildCtrl'
             })
-            .when('/repos', {
-                templateUrl: 'views/repos.html',
-                controller: 'ReposCtrl'
-            })
-            .when('/repo/:id', {
-                templateUrl: 'views/repo.html',
-                controller: 'RepoCtrl'
-            })
             .when('/settings', {
                 templateUrl: 'views/settings.html',
                 controller: 'SettingsCtrl'
-            })
-            .when('/add-your-github-repo', {
-                templateUrl: 'views/add-your-github-repo.html',
-                controller: 'AddYourGitHubRepoCtrl'
-            })
-            .when('/repo-instructions/:id', {
-                templateUrl: 'views/repo-instructions.html',
-                controller: 'RepoInstructionsCtrl'
             })
             .when('/tasks', {
                 templateUrl: 'views/tasks.html',

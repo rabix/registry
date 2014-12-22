@@ -92,7 +92,7 @@
     <!-- endbuild -->
 
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
-    <script src="scripts/app.js"></script>
+    <script src="scripts/main.config.js"></script>
     <script src="scripts/template.js"></script>
 
     <script src="scripts/main/controllers/MasterCtrl.js"></script>
@@ -101,11 +101,7 @@
     <script src="scripts/main/controllers/ModalJSONCtrl.js"></script>
     <script src="scripts/main/controllers/BuildsCtrl.js"></script>
     <script src="scripts/main/controllers/BuildCtrl.js"></script>
-    <script src="scripts/main/controllers/ReposCtrl.js"></script>
-    <script src="scripts/main/controllers/RepoCtrl.js"></script>
     <script src="scripts/main/controllers/SettingsCtrl.js"></script>
-    <script src="scripts/main/controllers/AddYourGitHubRepoCtrl.js"></script>
-    <script src="scripts/main/controllers/RepoInstructionsCtrl.js"></script>
     <script src="scripts/main/controllers/ManageRepoCtrl.js"></script>
     <script src="scripts/main/controllers/PickRepoModalCtrl.js"></script>
     <script src="scripts/main/controllers/MarkdownCtrl.js"></script>
@@ -135,9 +131,8 @@
     <script src="scripts/main/models/User.js"></script>
     <script src="scripts/main/models/Job.js"></script>
     <script src="scripts/main/models/Build.js"></script>
-    <script src="scripts/main/models/Repo.js"></script>
 
-    <script src="scripts/app/app.js"></script>
+    <script src="scripts/app/app.config.js"></script>
 
     <script src="scripts/app/controllers/AppsCtrl.js"></script>
     <script src="scripts/app/controllers/ToolCtrl.js"></script>
@@ -151,10 +146,19 @@
     <script src="scripts/app/models/Tool.js"></script>
     <script src="scripts/app/models/Workflow.js"></script>
 
+    <script src="scripts/repo/repo.config.js"></script>
+
+    <script src="scripts/repo/controllers/ReposCtrl.js"></script>
+    <script src="scripts/repo/controllers/RepoCtrl.js"></script>
+    <script src="scripts/repo/controllers/AddYourGitHubRepoCtrl.js"></script>
+    <script src="scripts/repo/controllers/RepoInstructionsCtrl.js"></script>
+
+    <script src="scripts/repo/models/Repo.js"></script>
+
     <!-- endbuild -->
 
     <!-- build:js({.tmp,app}) scripts/dyole.js -->
-    <script src="scripts/dyole/app.js"></script>
+    <script src="scripts/dyole/dyole.config.js"></script>
 
     <script src="scripts/dyole/controllers/PipelineCtrl.js"></script>
     <script src="scripts/dyole/controllers/NodeEditCtrl.js"></script>
@@ -171,7 +175,7 @@
     <!-- endbuild -->
 
     <!-- build:js({.tmp,app}) scripts/cliche.js -->
-    <script src="scripts/cliche/app.js"></script>
+    <script src="scripts/cliche/cliche.config.js"></script>
 
     <script src="scripts/cliche/constants/tool.js"></script>
     <script src="scripts/cliche/constants/job.js"></script>

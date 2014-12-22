@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('registryApp')
+angular.module('registryApp.repo')
     .controller('AddYourGitHubRepoCtrl', ['$scope', '$timeout', '$location', '$filter', 'Repo', 'Sidebar', 'Loading', function ($scope, $timeout, $location, $filter, Repo, Sidebar, Loading) {
 
         Sidebar.setActive('repos');

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('registryApp')
+angular.module('registryApp.repo')
     .controller('RepoInstructionsCtrl', ['$scope', '$routeParams', 'Repo', 'Sidebar', 'Loading', function ($scope, $routeParams, Repo, Sidebar, Loading) {
 
         Sidebar.setActive('repos');

@@ -28,8 +28,10 @@
                 </div>
 
                 <div class="btn-group right" ng-class="{open: view.isMenuOpen}">
-                    <button type="button" class="btn btn-default"><i class="fa fa-cog"></i></button>
-                    <button type="button" ng-click="toggleMenu()" class="btn btn-default dropdown-toggle"><span class="caret"></span></button>
+                    <button type="button" ng-click="toggleMenu()" class="btn btn-default dropdown-toggle">
+                        <i class="fa fa-cog"></i>
+                        <span class="caret"></span>
+                    </button>
                     <ul class="dropdown-menu" role="menu" ng-click="toggleMenu()">
 
                         <li><a href ng-click="loadMarkdown()"><i class="fa fa-ellipsis-h"></i> <span>Description</span></a></li>

@@ -51,7 +51,7 @@
                             <strong class="label label-primary" ng-if="revision.version"><i class="fa fa-tag"></i> v{{ ::revision.version }}</strong>
                         </td>
 
-                        <td><p tooltip="{{ ::revision.description }}" tooltip-popup-delay="1000">{{ ::revision.description || 'This workflow doesn\'t have description' }}</p></td>
+                        <td><p tooltip="{{ ::revision.description }}" tooltip-popup-delay="1000">{{ ::revision.description || 'This workflow doesn\'t have a description' }}</p></td>
 
                         <td class="right">
                             <a class="btn btn-sm btn-default" tooltip="View Revision" ng-href="#/workflow/{{ ::revision._id }}"><i class="fa fa-eye"></i></a>

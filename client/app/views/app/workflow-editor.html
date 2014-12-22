@@ -24,8 +24,10 @@
                 </button>
 
                 <div class="btn-group right" ng-class="{open: view.isMenuOpen}">
-                    <button type="button" class="btn btn-default"><i class="fa fa-cog"></i></button>
-                    <button type="button" ng-click="toggleMenu()" class="btn btn-default dropdown-toggle"><span class="caret"></span></button>
+                    <button type="button" ng-click="toggleMenu()" class="btn btn-default dropdown-toggle">
+                        <i class="fa fa-cog"></i>
+                        <span class="caret"></span>
+                    </button>
                     <ul class="dropdown-menu" role="menu" ng-click="toggleMenu()">
                         <li>
                             <a href ng-click="loadJsonImport()"><i class="fa fa-cloud-download"></i> <span>Import</span></a>
@@ -67,7 +69,7 @@
 
                     <li ng-class="{active: view.tab === 'apps'}"><a href ng-click="switchTab('apps')">Apps</a></li>
                     <li ng-class="{active: view.tab === 'params'}"><a href ng-click="switchTab('params')">Params</a></li>
-                    <li ng-class="{active: view.tab === 'properties'}"><a href ng-click="switchTab('properties')">Properties</a></li>
+                    <!--<li ng-class="{active: view.tab === 'properties'}"><a href ng-click="switchTab('properties')">Properties</a></li>-->
                 </ul>
             </div>
 

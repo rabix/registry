@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('registryApp')
+angular.module('registryApp.repo')
     .controller('ReposCtrl', ['$scope', '$q', '$injector', 'Repo', 'Sidebar', 'Loading', 'User', function ($scope, $q, $injector, Repo, Sidebar, Loading, User) {
 
         Sidebar.setActive('repos');
