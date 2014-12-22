@@ -193,7 +193,7 @@ router.get('/workflows', function (req, res, next) {
 
             Pipeline.find(wherePipelines)
                 .populate('repo')
-                .populate('user', '_id email username')
+                .populate('user', '_id email username name')
                 .populate('latest', 'name description')
                 .populate({
                     path: 'revisions',

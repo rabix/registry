@@ -12,6 +12,7 @@ var _ = require('lodash');
 
 var App = mongoose.model('App');
 var Revision = mongoose.model('Revision');
+var PipelineRevision = mongoose.model('PipelineRevision');
 
 module.exports = function (app) {
     app.use('/', router);
@@ -48,6 +49,24 @@ router.get('/tool-revision/:id', function (req, res, next) {
             res.json(json);
         } else {
             res.status(400).json({message: 'This tool revision doesn\'t exist'});
+        }
+    });
+
+});
+
+/**
+ * Get tool by id
+ */
+router.get('/workflow/:revision', function (req, res, next) {
+
+    PipelineRevision.findById(req.params.revision, function(err, app) {
+        if (err) { return next(err); }
+
+        if (app) {
+            var json = _.isString(app.json) ? JSON.parse(app.json) : app.json;
+            res.json(json);
+        } else {
+            res.status(400).json({message: 'This tool doesn\'t exist'});
         }
     });
 
