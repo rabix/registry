@@ -121,6 +121,8 @@ angular.module('registryApp.cliche')
 
                             if (oldType !== scope.prop.type) { compileTpl(); }
 
+                            scope.handler();
+
                             Data.generateCommand();
 
                         });
