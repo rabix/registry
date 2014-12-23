@@ -52,7 +52,7 @@ module.exports = function (app) {
 
 /**
  * @apiName FormatWorkflow
- * @api {GET} /api/workflow/format Format workflow
+ * @api {POST} /api/workflow/format Format workflow
  * @apiGroup Workflows
  * @apiDescription Format workflow
  *
@@ -77,7 +77,7 @@ router.post('/workflow/format', function (req, res) {
 
 /**
  * @apiName FormatUploadWorkflow
- * @api {GET} /api/workflow/format/upload Format workflow and upload it
+ * @api {POST} /api/workflow/format/upload Format workflow and upload it
  * @apiGroup Workflows
  * @apiDescription Format workflow and upload it
  *
@@ -773,7 +773,6 @@ router.get('/workflow/repositories/:type', function (req, res, next) {
 
     var type = req.params.type;
     var where = {};
-    var match = {};
 
     if (type === 'my') {
         if (!req.user) {
@@ -783,33 +782,37 @@ router.get('/workflow/repositories/:type', function (req, res, next) {
 
         where.user = req.user.id;
     } else {
+
         if (req.user) {
             where.user = {$ne: req.user.id};
         }
-        match.$or = [];
-        match.$or.push({
-            is_public: true
-        });
+
+        where.is_public = true;
     }
+    Repo.find(where).exec(function (err, repos) {
 
-    Pipeline.find(where)
-        .populate('repo')
-        .populate('user', '_id email username')
-        .populate('latest')
-        .populate({
-            path: 'revisions',
-            match: match
-        })
-        .sort({_id: 'desc'})
-        .exec(function (err, pipelines) {
-            if (err) { return next(err);}
+        if (err) {return next(err);}
 
-            var grouped = _.groupBy(pipelines, function (p) {
-                return p.repo.owner + '/' + p.repo.name;
+        var whereApps = {repo: {$in: _.pluck(repos, '_id')}};
+
+        Pipeline.find(whereApps)
+            .populate('repo')
+            .populate('user', '_id email username')
+            .populate('latest')
+            .populate('revisions')
+            .sort({_id: 'desc'})
+            .exec(function (err, pipelines) {
+                if (err) { return next(err);}
+
+                var grouped = _.groupBy(pipelines, function (p) {
+                    return p.repo.owner + '/' + p.repo.name;
+                });
+
+                console.log('whereApps: ', whereApps, 'Type: ', type, 'List keys:', Object.keys(grouped));
+                res.json({list: grouped});
             });
 
-            res.json({list: grouped});
-        });
+    });
 
 });
 
