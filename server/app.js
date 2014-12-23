@@ -1,16 +1,27 @@
 var express = require('express'),
     config = require('./config/config'),
     fs = require('fs'),
-    mongoose = require('mongoose');
+    mongoose = require('mongoose'),
+    mongoOpts = {};
 
+if (typeof config.db === 'object') {
+    mongoOpts = {
+        server: {
+            ssl: true,
+            sslCert: fs.readFileSync('/etc/ssl/mongodb.pem'), //TODO: read pem file from passed config
+            sslKey: fs.readFileSync('/etc/ssl/mongodb.pem') //TODO: read pem file from passed config
+        }
+    };
+}
 
-mongoose.connect(config.db);
+mongoose.connect(config.db, mongoOpts);
 var db = mongoose.connection;
 db.on('error', function () {
     throw new Error('unable to connect to database at ' + config.db);
 });
 
 var modelsPath = __dirname + '/app/models';
+
 fs.readdirSync(modelsPath).forEach(function (file) {
     if (file.indexOf('.js') >= 0) {
         require(modelsPath + '/' + file);
