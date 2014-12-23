@@ -7,17 +7,74 @@
 
     <div ng-if="!view.loading" class="content">
 
-        <p>Rabix is an open-source toolkit for developing tools and workflows for the <a target="_blank" href="https://github.com/common-workflow-language/common-workflow-language">common-workflow-language</a> specification.</p>
-
-        <p>
-            CWL is an informal task force consisting of people from various organizations that have an interest in portability of bioinformatics workflows.
-            The goal is to specify a way to describe bioinformatics tools and workflows that is powerful, easy to use and allows for portability of tools/workflows
-            and reproducibility of runs. Join the <a target="_blank" href="https://groups.google.com/forum/#!forum/common-workflow-language">mailing list</a> if interested in contributing!
-        </p>
-
-        <p>Rabix is based on the <a target="_blank" href="https://github.com/common-workflow-language/common-workflow-language/blob/draft-1/specification/tool-description.md">draft1</a> specification of CWL, but also includes some <a target="_blank" href="https://github.com/rabix/rabix/tree/devel/docs">own extensions</a>.</p>
-
-        <p>Check out the <a target="_blank" href="https://github.com/rabix/rabix/wiki">wiki</a> for user manual.</p>
+        <div class="markdown-body">
+            <p>Rabix is an open-source toolkit for developing tools and workflows for the <a href="https://github.com/common-workflow-language/common-workflow-language">common-workflow-language</a> specification.</p>
+            <p>CWL is an informal task force consisting of people from various organizations that have an interest in portability of bioinformatics workflows. The goal is to specify a way to describe bioinformatics tools and workflows that is powerful, easy to use and allows for portability of tools/workflows and reproducibility of runs. Join the <a href="https://groups.google.com/forum/#!forum/common-workflow-language">mailing list</a> if interested in contributing!</p>
+            <p>Rabix is based on the <a href="https://github.com/common-workflow-language/common-workflow-language/blob/draft-1/specification/tool-description.md">draft1</a> specification of CWL, but also includes some <a href="https://github.com/rabix/rabix/tree/devel/docs">own extensions</a>.</p>
+            <p>There are four components of the toolkit:</p>
+            <ul>
+                <li>App registry, for storing (revisions of) tools and workflows.</li>
+                <li>Tool editor, for creating and editing tool descriptions.</li>
+                <li>Workflow editor, for creating and editing workflows.</li>
+                <li>Python executor, for running tools and workflow locally.</li>
+            </ul>
+            <h2 id="creating-tools">Creating tools</h2>
+            <p>You can play around with the tool editor anonymously here. At any point, you can export the created JSON file. </p>
+            <p>For easier development, it's best to log in with your Github account and make a repository (repositories created on rabix are independent from Github repositories). Once inside your repository, click on "tools" and then on the "new tool" button.</p>
+            <p>While editing a tool that belongs to a rabix repository, the "update" button will create a new revision. You can use the URL on the tool page to run the latest revision (using the Python executor) or the URLs from revision pages to run a specific snapshot.</p>
+            <h3 id="creating-a-docker-image">Creating a docker image</h3>
+            <p>CWL currently only allows docker images for distribution of binaries. To create a docker image for your tool, check out <a href="https://docs.docker.com/articles/basics/">docker documentation</a>. If you are describing someone else's tool, check the <a href="https://registry.hub.docker.com/">docker hub</a> first - someone may have already created an image.</p>
+            <p>For local development, it is enough to specify the image ID. Once you push the image to the docker registry, enter the imageRepo with optional tag (e.g. jsmith/mytoolkit#2.0).</p>
+            <h3 id="specifying-required-resources">Specifying required resources</h3>
+            <p>You can enter the number of CPU cores and memory (in MB) required to run the tool. A CPU value of zero means that the tool can run multithreaded in any number of cores allocated for the run.
+                If the required memory varies based on inputs or settings, you can use an expression in place of a constant. More on expressions later.</p>
+            <h3 id="describing-inputs">Describing inputs</h3>
+            <p>In the "inputs" tab, click on the "+" button to add a new input. Tool inputs are files or parameters that get passed through the process arguments or stdin.</p>
+            <p>The input name must be unique for the tool. Type can be a primitive (string, number, boolean), an object (a structure with own keys and values), or an array of such. For strings, you can enumerate allowed values by ticking the "enum" box.</p>
+            <p>In addition to these fields, you can configure some adapter fields that specify how this input will be propagated to command line.</p>
+            <ul>
+                <li>Order - position of the argument on the command line. Lower means first.</li>
+                <li>Prefix - For keyword arguments (e.g. --input or -p). Blank for positional arguments. For boolean values, only prefix is added as argument if value is <code>true</code>. If <code>false</code> or <code>null</code>, nothing is added to process arguments.</li>
+                <li>Separator - Only applicable if prefix is specified. "Space" means pass as separate arguments.</li>
+                <li>Item separator - Only applicable for arrays. If blank, each item is repeated. If specified, string representations of items are concatenated with itemSeparator as a single process argument.</li>
+                <li>Value - Used if some manipulation is needed before passing the value to process. Click the &lt;/&gt; button to enter a javascript expression that modifies the original value.</li>
+            </ul>
+            <p>Some tools may have inputs that are not passed to the underlying process. These are usually parameters used to tweak embedded expressions. To disable the adapter for a specific input, click the broken link icon next to its name.</p>
+            <p>The "Test" tab will be populated with a generated form according to described inputs. Enter some test values to preview the command line in the "console" panel.</p>
+            <h3 id="describing-outputs">Describing outputs</h3>
+            <p>Similar to tool inputs, you can describe the outputs on the "outputs" tab. There are a few major differences:</p>
+            <ul>
+                <li>Types are for the moment restricted to files and file arrays.</li>
+                <li>Adapters do not specify how to map values to process arguments. Rather, they specify how to create the output structure from files produced by the tool.</li>
+                <li>Specify a glob pattern to match files for that output. Can be a constant or an expression.</li>
+                <li>You can also specify key-value pairs for metadata of generate file(s). Values can be expressions with <code>$self</code> variable bound to path matching the glob pattern.</li>
+                <li>Metadata can also be inherited from some input (before being overridden by above key-value pairs).</li>
+                <li>You can also specify a list of suffixes to "attach" any index files that may have been created.</li>
+            </ul>
+            <p>Unlike command line generation, there is currently no way to test output descriptions from the browser.
+                Easiest way to test is to run the JSON file with some inputs using the "rabix" command. A URL for the latest revision of tool JSON can be found on the tool page.</p>
+            <h3 id="additional-adapter-configuration">Additional adapter configuration</h3>
+            <p>The "adapter" tab allows you to set the base command (array of process arguments, first of which is the executable path), stdin and stdout redirection, as well as specify input-independent adapters (same as adapters attached to inputs described above, except the "value" field must be specified). </p>
+            <h3 id="testing-command-line-generation">Testing command line generation</h3>
+            <p>As mentioned above, the "test" tab will hold a form generated according to input definitions. At any point, you can view the generated command line in the "console" panel. The panel is updated on any change in either tab.</p>
+            <p>The "allocated resources" section allows you to specify amount of allocated CPU and RAM, also for the purpose of testing command line generation (since some arguments may be bound to these, e.g. --num-threads).</p>
+            <h3 id="expressions">Expressions</h3>
+            <p>In many places you are able to specify either a constant or an "expression". Clicking the &lt;/&gt; button will pop up a dialog where you can write javascript code in two ways:</p>
+            <ul>
+                <li>A one-liner JS expression. Example: <code>$job.allocatedResources.cpu</code></li>
+                <li>A function block. Example: <code>{ var x=1; return x*2; }</code></li>
+            </ul>
+            <p>If an expression starts with the "{" character, it must be a function block.</p>
+            <p>All expressions have the <code>$job</code> variable bound to the JobOrder structure (see specification for details). You can see the JobOrder JSON object by clicking on the Job button.</p>
+            <p>If an expression is used in the context of "value" field of an input adapter, a <code>$self</code> variable will be bound to the value for that input. If used in context of output metadata values, the <code>$self</code> variable is bound to the path matched by glob pattern.</p>
+            <h2 id="creating-workflows">Creating workflows</h2>
+            <p>You can combine tools and workflows into a workflow DAG using the workflow editor. Same as for tools, you can play around anonymously and import/export the JSON, or log in and store workflow revisions in a rabix repository.</p>
+            <p>Common-workflow-language draft1 does not specify workflow descriptions, so we are using <a href="https://github.com/rabix/rabix/blob/devel/docs/workflows.md">a custom specification</a>. Draft2 is planned to specify workflows and introduce some backward-incompatible changes to tool descriptions as well.</p>
+            <h2 id="examples">Examples</h2>
+            <p>Take a look at <a href="http://www.rabix.org/#/apps">public apps</a> for examples of tools and workflows.</p>
+            <h2 id="running-tools-and-workflows">Running tools and workflows</h2>
+            <p>The Rabix toolkit includes a Python executor implementation. See installation and use instructions <a href="https://github.com/rabix/rabix/blob/master/README.md">here</a>.</p>
+        </div>
 
         <section class="subscribe">
 

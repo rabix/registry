@@ -54,7 +54,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "    HTTP/1.1 200 OK\n    {\n      \"repo\": {\n          \"_id\" : \"547854cbf76a100000ac84dd\",\n          \"is_public\" : true,\n          \"created_by\" : \"flipio\",\n          \"name\" : \"test\",\n          \"owner\" : \"flipio\",\n          \"git\" : false,\n          \"description\" : \"\",\n          \"user\" : \"547854bcf76a100000ac84dc\"\n      }\n    }",
+          "content": "HTTP/1.1 200 OK\n{\n  \"repo\": {\n      \"_id\" : \"547854cbf76a100000ac84dd\",\n      \"is_public\" : true,\n      \"created_by\" : \"flipio\",\n      \"name\" : \"test\",\n      \"owner\" : \"flipio\",\n      \"git\" : false,\n      \"description\" : \"\",\n      \"user\" : \"547854bcf76a100000ac84dc\"\n  }\n}",
           "type": "json"
         }
       ]
@@ -92,7 +92,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "    HTTP/1.1 200 OK\n    {\n      \"total\": \"1\",\n      \"list\": [{repo}]\n    }",
+          "content": "HTTP/1.1 200 OK\n{\n  \"total\": \"1\",\n  \"list\": [{repo}]\n}",
           "type": "json"
         }
       ]
@@ -130,7 +130,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "    HTTP/1.1 200 OK\n    {\n      \"total\": \"1\",\n      \"list\": [{repo}]\n    }",
+          "content": "HTTP/1.1 200 OK\n{\n  \"total\": \"1\",\n  \"list\": [{repo}]\n}",
           "type": "json"
         }
       ]
@@ -181,7 +181,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "    HTTP/1.1 200 OK\n    {\n      \"total\": \"1\",\n      \"list\": [{tool}]\n    }",
+          "content": "HTTP/1.1 200 OK\n{\n  \"total\": \"1\",\n  \"list\": [{tool}]\n}",
           "type": "json"
         }
       ]
@@ -232,13 +232,51 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "    HTTP/1.1 200 OK\n    {\n      \"total\": \"1\",\n      \"list\": [{workflow}]\n    }",
+          "content": "HTTP/1.1 200 OK\n{\n  \"total\": \"1\",\n  \"list\": [{workflow}]\n}",
           "type": "json"
         }
       ]
     },
     "version": "0.0.0",
     "filename": "app/controllers/repos.js",
+    "groupTitle": "Repos"
+  },
+  {
+    "name": "GetTools",
+    "type": "GET",
+    "url": "/api/apps",
+    "title": "Get all Tools",
+    "group": "Repos",
+    "description": "<p>Fetch all Tools</p> ",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "total",
+            "description": "<p>Total number of tools</p> "
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "list",
+            "description": "<p>List of tools</p> "
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"total\": \"1\",\n  \"list\": [{tool}]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "app/controllers/apps.js",
     "groupTitle": "Repos"
   },
   {
@@ -270,7 +308,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "    HTTP/1.1 200 OK\n    {\n      \"total\": \"1\",\n      \"list\": [{workflow}]\n    }",
+          "content": "HTTP/1.1 200 OK\n{\n  \"total\": \"1\",\n  \"list\": [{workflow}]\n}",
           "type": "json"
         }
       ]
@@ -285,14 +323,14 @@
             "group": "Error 4xx",
             "optional": false,
             "field": "Message",
-            "description": "<p>Unauthorized update</p> "
+            "description": "<p>Unauthorized access</p> "
           }
         ]
       },
       "examples": [
         {
           "title": "UnauthorizedError:",
-          "content": "    HTTP/1.1 401\n    {\n      \"message\": \"Unauthorized\"\n    }",
+          "content": "HTTP/1.1 401\n{\n  \"message\": \"Unauthorized\"\n}",
           "type": "json"
         }
       ]
@@ -327,7 +365,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "    HTTP/1.1 200 OK\n    {\n      \"total\": \"1\",\n      \"list\": [{workflow}]\n    }",
+          "content": "HTTP/1.1 200 OK\n{\n  \"total\": \"1\",\n  \"list\": [{workflow}]\n}",
           "type": "json"
         }
       ]
@@ -363,7 +401,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "    HTTP/1.1 200 OK\n    {\n      \"repo\": {\n          \"_id\" : \"547854cbf76a100000ac84dd\",\n          \"is_public\" : true,\n          \"created_by\" : \"flipio\",\n          \"name\" : \"test\",\n          \"owner\" : \"flipio\",\n          \"git\" : false,\n          \"description\" : \"\",\n          \"user\" : \"547854bcf76a100000ac84dc\"\n      }\n    }",
+          "content": "HTTP/1.1 200 OK\n{\n  \"repo\": {\n      \"_id\" : \"547854cbf76a100000ac84dd\",\n      \"is_public\" : true,\n      \"created_by\" : \"flipio\",\n      \"name\" : \"test\",\n      \"owner\" : \"flipio\",\n      \"git\" : false,\n      \"description\" : \"\",\n      \"user\" : \"547854bcf76a100000ac84dc\"\n  }\n}",
           "type": "json"
         }
       ]
@@ -385,7 +423,7 @@
       "examples": [
         {
           "title": "Error-Response:",
-          "content": "    HTTP/1.1 400 Bad Request\n    {\n      \"message\": \"Name already in use\"\n    }",
+          "content": "HTTP/1.1 400 Bad Request\n{\n  \"message\": \"Name already in use\"\n}",
           "type": "json"
         }
       ]
@@ -438,7 +476,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "    HTTP/1.1 200 OK\n    {\n      \"repo\": {\n          \"_id\" : \"547854cbf76a100000ac84dd\",\n          \"is_public\" : true,\n          \"created_by\" : \"flipio\",\n          \"name\" : \"test\",\n          \"owner\" : \"flipio\",\n          \"git\" : false,\n          \"description\" : \"\",\n          \"user\" : \"547854bcf76a100000ac84dc\"\n      },\n      \"message\": \"Successfully updated repo\"\n    }",
+          "content": "HTTP/1.1 200 OK\n{\n  \"repo\": {\n      \"_id\" : \"547854cbf76a100000ac84dd\",\n      \"is_public\" : true,\n      \"created_by\" : \"flipio\",\n      \"name\" : \"test\",\n      \"owner\" : \"flipio\",\n      \"git\" : false,\n      \"description\" : \"\",\n      \"user\" : \"547854bcf76a100000ac84dc\"\n  },\n  \"message\": \"Successfully updated repo\"\n}",
           "type": "json"
         }
       ]
@@ -453,18 +491,797 @@
             "group": "Error 4xx",
             "optional": false,
             "field": "Message",
-            "description": "<p>Unauthorized update</p> "
+            "description": "<p>Unauthorized access</p> "
           }
         ]
       },
       "examples": [
         {
           "title": "UnauthorizedError:",
-          "content": "    HTTP/1.1 401\n    {\n      \"message\": \"Unauthorized\"\n    }",
+          "content": "HTTP/1.1 401\n{\n  \"message\": \"Unauthorized\"\n}",
           "type": "json"
         }
       ]
     }
+  },
+  {
+    "name": "CreateTool",
+    "type": "POST",
+    "url": "/apps/:action",
+    "title": "Create new tool",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "allowedValues": [
+              "\"create\"",
+              "\"fork\""
+            ],
+            "optional": false,
+            "field": "action",
+            "description": "<p>Type of the action</p> "
+          }
+        ]
+      }
+    },
+    "group": "Tools",
+    "description": "<p>Create new tool from clean template or by forking it</p> ",
+    "permission": [
+      {
+        "name": "Logged in user"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Success message</p> "
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "app",
+            "description": "<p>Tool details</p> "
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"message\": \"Tool has been successfully created\"\n  \"app\": {tool}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "app/controllers/apps.js",
+    "groupTitle": "Tools",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Message",
+            "description": "<p>Unauthorized access</p> "
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "message",
+            "description": "<p>The <code>name</code> already in use.</p> "
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "UnauthorizedError:",
+          "content": "HTTP/1.1 401\n{\n  \"message\": \"Unauthorized\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 400 Bad Request\n{\n  \"message\": \"Name already in use\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "InvalidToolError:",
+          "content": "HTTP/1.1 400 Bad Request\n{\n  \"message\": \"Invalid tool\"\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "name": "CreateToolRevision",
+    "type": "POST",
+    "url": "/revisions",
+    "title": "Create new tool revision",
+    "group": "Tools",
+    "description": "<p>Create new tool revision</p> ",
+    "permission": [
+      {
+        "name": "Logged in user"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Success message</p> "
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "revision",
+            "description": "<p>Tool revision details</p> "
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"message\": \"Revision has been successfully created\"\n  \"revision\": {revision}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "app/controllers/revisions.js",
+    "groupTitle": "Tools",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Message",
+            "description": "<p>Unauthorized access</p> "
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Invalid tool</p> "
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "UnauthorizedError:",
+          "content": "HTTP/1.1 401\n{\n  \"message\": \"Unauthorized\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "InvalidToolError:",
+          "content": "HTTP/1.1 400 Bad Request\n{\n  \"message\": \"Invalid tool\"\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "name": "DeleteTool",
+    "type": "DELETE",
+    "url": "/api/revisions/:id",
+    "title": "Delete revision by id",
+    "group": "Tools",
+    "description": "<p>Delete tool revision</p> ",
+    "permission": [
+      {
+        "name": "Logged in user"
+      }
+    ],
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Forbidden revision delete from public repo</p> "
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Message",
+            "description": "<p>Unauthorized access</p> "
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "PublicRepoError:",
+          "content": "HTTP/1.1 403 Bad Request\n{\n  \"message\": \"This revision belongs to public repo and it can't be delete it\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "LastRevisionError:",
+          "content": "HTTP/1.1 403 Bad Request\n{\n  \"message\": \"This is the only revision of the tool so it can't be deleted\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "UnauthorizedError:",
+          "content": "HTTP/1.1 401\n{\n  \"message\": \"Unauthorized\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Success message</p> "
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n   \"message\": \"Revision successfully deleted\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "app/controllers/revisions.js",
+    "groupTitle": "Tools"
+  },
+  {
+    "name": "DeleteTool",
+    "type": "DELETE",
+    "url": "/api/apps/:id",
+    "title": "Delete tool",
+    "group": "Tools",
+    "description": "<p>Delete tool</p> ",
+    "permission": [
+      {
+        "name": "Logged in user"
+      }
+    ],
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Forbidden tool delete from the public repo</p> "
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Message",
+            "description": "<p>Unauthorized access</p> "
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "PublicRepoError:",
+          "content": "HTTP/1.1 403 Bad Request\n{\n  \"message\": \"This app belongs to public repo and it can't be deleted.\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "UnauthorizedError:",
+          "content": "HTTP/1.1 401\n{\n  \"message\": \"Unauthorized\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Success message</p> "
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n   \"message\": \"Tool successfully deleted\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "app/controllers/apps.js",
+    "groupTitle": "Tools"
+  },
+  {
+    "name": "GetTool",
+    "type": "GET",
+    "url": "/apps/:id/:revision",
+    "title": "Get tool by revision",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>ID of the tool</p> "
+          },
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "revision",
+            "description": "<p>ID of the revision</p> "
+          }
+        ]
+      }
+    },
+    "group": "Tools",
+    "description": "<p>Get tool by revision</p> ",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>Tool details</p> "
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "revision",
+            "description": "<p>Tool revision details</p> "
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"data\": {tool}\n  \"revision\": {tool-revision}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "app/controllers/apps.js",
+    "groupTitle": "Tools",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Message",
+            "description": "<p>Unauthorized access</p> "
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "UnauthorizedError:",
+          "content": "HTTP/1.1 401\n{\n  \"message\": \"Unauthorized\"\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "name": "GetToolRevision",
+    "type": "GET",
+    "url": "/revisions/:id",
+    "title": "Get revision by id",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>ID of the revision</p> "
+          }
+        ]
+      }
+    },
+    "group": "Tools",
+    "description": "<p>Get tool revision</p> ",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>Revision details</p> "
+          },
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "app",
+            "description": "<p>Parent tool details</p> "
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"data\": {revision}\n  \"app\": {tool}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "app/controllers/revisions.js",
+    "groupTitle": "Tools",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Message",
+            "description": "<p>Unauthorized access</p> "
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "UnauthorizedError:",
+          "content": "HTTP/1.1 401\n{\n  \"message\": \"Unauthorized\"\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "name": "GetToolRevisions",
+    "type": "GET",
+    "url": "/api/revisions",
+    "title": "Get tool revisions",
+    "group": "Tools",
+    "description": "<p>Fetch all tool revisions</p> ",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "total",
+            "description": "<p>Total number of revisions</p> "
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "list",
+            "description": "<p>List of revisions</p> "
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"total\": \"1\",\n  \"list\": [{revision}]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "app/controllers/revisions.js",
+    "groupTitle": "Tools",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Message",
+            "description": "<p>Unauthorized access</p> "
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "UnauthorizedError:",
+          "content": "HTTP/1.1 401\n{\n  \"message\": \"Unauthorized\"\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "name": "GetToolsGroupedByRepo",
+    "type": "GET",
+    "url": "/tool/repositories/:type",
+    "title": "Get grouped tools and scripts",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "allowedValues": [
+              "\"my\"",
+              "\"other\""
+            ],
+            "optional": false,
+            "field": "type",
+            "description": "<p>Defines whose repos to fetch</p> "
+          }
+        ]
+      }
+    },
+    "group": "Tools",
+    "description": "<p>Fetch tools and scripts grouped by repo</p> ",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "list",
+            "description": "<p>List of tools and scripts grouped by repo</p> "
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"list\": {tools: [tools], scripts: [scripts]}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "app/controllers/apps.js",
+    "groupTitle": "Tools"
+  },
+  {
+    "name": "ValidateWorkflow",
+    "type": "POST",
+    "url": "/api/validate",
+    "title": "Validate tool json",
+    "group": "Tools",
+    "description": "<p>Validate tool json</p> ",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "json",
+            "description": "<p>Successfully passed validation</p> "
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n   {json}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "app/controllers/apps.js",
+    "groupTitle": "Tools",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Invalid tool</p> "
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "InvalidToolError:",
+          "content": "HTTP/1.1 400 Bad Request\n{\n  \"message\": \"Invalid tool\"\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "name": "GenerateUserToken",
+    "type": "PUT",
+    "url": "/api/user/token",
+    "title": "Generate token for the user",
+    "group": "Users",
+    "permission": [
+      {
+        "name": "Logged in user"
+      }
+    ],
+    "description": "<p>Generate token for the user</p> ",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "token",
+            "description": "<p>User&#39;s token</p> "
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"token\": \"{token}\",\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "app/controllers/user.js",
+    "groupTitle": "Users"
+  },
+  {
+    "name": "GetUser",
+    "type": "GET",
+    "url": "/api/user",
+    "title": "Get user details",
+    "group": "Users",
+    "description": "<p>Fetch user details</p> ",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "user",
+            "description": "<p>User details</p> "
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"user\": \"{user}\",\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "app/controllers/user.js",
+    "groupTitle": "Users"
+  },
+  {
+    "name": "GetUserToken",
+    "type": "GET",
+    "url": "/api/user/token",
+    "title": "Get user's token",
+    "group": "Users",
+    "permission": [
+      {
+        "name": "Logged in user"
+      }
+    ],
+    "description": "<p>Fetch user&#39;s token</p> ",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "token",
+            "description": "<p>User&#39;s token</p> "
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"token\": \"{token}\",\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "app/controllers/user.js",
+    "groupTitle": "Users"
+  },
+  {
+    "name": "RevokeUserToken",
+    "type": "DELETE",
+    "url": "/api/user/token",
+    "title": "Revoke user's token",
+    "group": "Users",
+    "permission": [
+      {
+        "name": "Logged in user"
+      }
+    ],
+    "description": "<p>Revoke user&#39;s token</p> ",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "token",
+            "description": "<p>User&#39;s token</p> "
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"token\": \"{token}\",\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "app/controllers/user.js",
+    "groupTitle": "Users"
+  },
+  {
+    "name": "SubscribeUser",
+    "type": "POST",
+    "url": "/api/subscribe",
+    "title": "Subscribe to the Rabix list",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "email",
+            "description": "<p>Email of the subscriber</p> "
+          }
+        ]
+      }
+    },
+    "group": "Users",
+    "description": "<p>Subscribe to the Rabix list</p> ",
+    "success": {
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "app/controllers/user.js",
+    "groupTitle": "Users"
   },
   {
     "name": "CreateWorkflow",
@@ -500,7 +1317,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "    HTTP/1.1 200 OK\n    {\n       \"message\": \"Workflow successfully added\",\n       \"id\": \"547854cbf76a100000ac84dd\"\n    }",
+          "content": "HTTP/1.1 200 OK\n{\n   \"message\": \"Workflow successfully added\",\n   \"id\": \"547854cbf76a100000ac84dd\"\n}",
           "type": "json"
         }
       ]
@@ -522,7 +1339,7 @@
       "examples": [
         {
           "title": "Error-Response:",
-          "content": "    HTTP/1.1 400 Bad Request\n    {\n      \"message\": \"Name already in use\"\n    }",
+          "content": "HTTP/1.1 400 Bad Request\n{\n  \"message\": \"Name already in use\"\n}",
           "type": "json"
         }
       ]
@@ -555,7 +1372,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "    HTTP/1.1 200 OK\n    {\n       \"message\": \"Workflow successfully deleted\"\n    }",
+          "content": "HTTP/1.1 200 OK\n{\n   \"message\": \"Workflow successfully deleted\"\n}",
           "type": "json"
         }
       ]
@@ -570,14 +1387,14 @@
             "group": "Error 4xx",
             "optional": false,
             "field": "Message",
-            "description": "<p>Unauthorized update</p> "
+            "description": "<p>Unauthorized access</p> "
           }
         ]
       },
       "examples": [
         {
           "title": "UnauthorizedError:",
-          "content": "    HTTP/1.1 401\n    {\n      \"message\": \"Unauthorized\"\n    }",
+          "content": "HTTP/1.1 401\n{\n  \"message\": \"Unauthorized\"\n}",
           "type": "json"
         }
       ]
@@ -610,7 +1427,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "    HTTP/1.1 200 OK\n    {\n       \"message\": \"Workflow revision successfully deleted\"\n    }",
+          "content": "HTTP/1.1 200 OK\n{\n   \"message\": \"Workflow revision successfully deleted\"\n}",
           "type": "json"
         }
       ]
@@ -625,14 +1442,14 @@
             "group": "Error 4xx",
             "optional": false,
             "field": "Message",
-            "description": "<p>Unauthorized update</p> "
+            "description": "<p>Unauthorized access</p> "
           }
         ]
       },
       "examples": [
         {
           "title": "UnauthorizedError:",
-          "content": "    HTTP/1.1 401\n    {\n      \"message\": \"Unauthorized\"\n    }",
+          "content": "HTTP/1.1 401\n{\n  \"message\": \"Unauthorized\"\n}",
           "type": "json"
         }
       ]
@@ -672,7 +1489,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "    HTTP/1.1 200 OK\n    {\n       \"message\": \"Workflow successfully added\",\n       \"id\": \"547854cbf76a100000ac84dd\"\n    }",
+          "content": "HTTP/1.1 200 OK\n{\n   \"message\": \"Workflow successfully added\",\n   \"id\": \"547854cbf76a100000ac84dd\"\n}",
           "type": "json"
         }
       ]
@@ -694,7 +1511,7 @@
       "examples": [
         {
           "title": "Error-Response:",
-          "content": "    HTTP/1.1 400 Bad Request\n    {\n      \"message\": \"Name already in use\"\n    }",
+          "content": "HTTP/1.1 400 Bad Request\n{\n  \"message\": \"Name already in use\"\n}",
           "type": "json"
         }
       ]
@@ -702,7 +1519,7 @@
   },
   {
     "name": "FormatUploadWorkflow",
-    "type": "GET",
+    "type": "POST",
     "url": "/api/workflow/format/upload",
     "title": "Format workflow and upload it",
     "group": "Workflows",
@@ -722,7 +1539,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "    HTTP/1.1 200 OK\n    {\n      \"url\" : \"https://s3.amazonaws.com/rabix/users/ntijanic/pipelines/bwa/bwa_417435973012.json\"\n    }",
+          "content": "HTTP/1.1 200 OK\n{\n  \"url\" : \"https://s3.amazonaws.com/rabix/users/ntijanic/pipelines/bwa/bwa_417435973012.json\"\n}",
           "type": "json"
         }
       ]
@@ -733,7 +1550,7 @@
   },
   {
     "name": "FormatWorkflow",
-    "type": "GET",
+    "type": "POST",
     "url": "/api/workflow/format",
     "title": "Format workflow",
     "group": "Workflows",
@@ -753,7 +1570,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "    HTTP/1.1 200 OK\n    {\n      \"json\": {Workflow}\n    }",
+          "content": "HTTP/1.1 200 OK\n{\n  \"json\": {Workflow}\n}",
           "type": "json"
         }
       ]
@@ -784,7 +1601,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "    HTTP/1.1 200 OK\n    {\n      \"data\": {workflow-revision}\n    }",
+          "content": "HTTP/1.1 200 OK\n{\n  \"data\": {workflow-revision}\n}",
           "type": "json"
         }
       ]
@@ -799,14 +1616,14 @@
             "group": "Error 4xx",
             "optional": false,
             "field": "Message",
-            "description": "<p>Unauthorized update</p> "
+            "description": "<p>Unauthorized access</p> "
           }
         ]
       },
       "examples": [
         {
           "title": "UnauthorizedError:",
-          "content": "    HTTP/1.1 401\n    {\n      \"message\": \"Unauthorized\"\n    }",
+          "content": "HTTP/1.1 401\n{\n  \"message\": \"Unauthorized\"\n}",
           "type": "json"
         }
       ]
@@ -834,7 +1651,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "    HTTP/1.1 200 OK\n    {\n      \"data\": {workflow}\n    }",
+          "content": "HTTP/1.1 200 OK\n{\n  \"data\": {workflow}\n}",
           "type": "json"
         }
       ]
@@ -877,7 +1694,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "    HTTP/1.1 200 OK\n    {\n       \"message\": \"Successfully created new workflow revision\",\n       \"id\": \"547854cbf76a100000ac84dd\"\n    }",
+          "content": "HTTP/1.1 200 OK\n{\n   \"message\": \"Successfully created new workflow revision\",\n   \"id\": \"547854cbf76a100000ac84dd\"\n}",
           "type": "json"
         }
       ]
@@ -892,14 +1709,14 @@
             "group": "Error 4xx",
             "optional": false,
             "field": "Message",
-            "description": "<p>Ivalid workflow id</p> "
+            "description": "<p>Invalid workflow id</p> "
           }
         ]
       },
       "examples": [
         {
           "title": "InvalidIDError:",
-          "content": "    HTTP/1.1 404\n    {\n      \"message\": \"There is no pipeline with id: 547854cbf76a100000ac84dd\"\n    }",
+          "content": "HTTP/1.1 404\n{\n  \"message\": \"There is no pipeline with id: 547854cbf76a100000ac84dd\"\n}",
           "type": "json"
         }
       ]
@@ -927,7 +1744,7 @@
       "examples": [
         {
           "title": "Success-Response:",
-          "content": "    HTTP/1.1 200 OK\n    {\n       \"json\": {workflow}\n    }",
+          "content": "HTTP/1.1 200 OK\n{\n   \"json\": {workflow}\n}",
           "type": "json"
         }
       ]
@@ -949,7 +1766,7 @@
       "examples": [
         {
           "title": "InvalidWorkflowError:",
-          "content": "    HTTP/1.1 400\n    {\n      \"message\": \"Invalid workflow\"\n    }",
+          "content": "HTTP/1.1 400\n{\n  \"message\": \"Invalid workflow\"\n}",
           "type": "json"
         }
       ]

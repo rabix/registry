@@ -17,7 +17,23 @@ module.exports = function (app) {
 };
 
 /**
- * Get all revisions
+ * Get all tool revisions
+ *
+ * @apiName GetToolRevisions
+ * @api {GET} /api/revisions Get tool revisions
+ * @apiGroup Tools
+ * @apiDescription Fetch all tool revisions
+ *
+ * @apiUse UnauthorizedError
+ *
+ * @apiSuccess {Number} total Total number of revisions
+ * @apiSuccess {Array} list List of revisions
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "total": "1",
+ *       "list": [{revision}]
+ *     }
  */
 router.get('/revisions', function (req, res, next) {
 
@@ -67,8 +83,21 @@ router.get('/revisions', function (req, res, next) {
 /**
  * Get revision by id
  *
- * @param {String} id - id of the revision
- * @result revision
+ * @apiName GetToolRevision
+ * @api {GET} /revisions/:id Get revision by id
+ * @apiParam {String} id ID of the revision
+ * @apiGroup Tools
+ * @apiDescription Get tool revision
+ * @apiUse UnauthorizedError
+ *
+ * @apiSuccess {Object} data Revision details
+ * @apiSuccess {Object} app Parent tool details
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "data": {revision}
+ *       "app": {tool}
+ *     }
  */
 router.get('/revisions/:id', function (req, res, next) {
 
@@ -101,7 +130,22 @@ router.get('/revisions/:id', function (req, res, next) {
 /**
  * Create new revision
  *
- * @post_param {Object} json
+ * @apiName CreateToolRevision
+ * @api {POST} /revisions Create new tool revision
+ * @apiGroup Tools
+ * @apiDescription Create new tool revision
+ * @apiPermission Logged in user
+ * @apiUse UnauthorizedError
+ * @apiUse InvalidToolError
+ *
+ * @apiSuccess {String} message Success message
+ * @apiSuccess {Object} revision Tool revision details
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "message": "Revision has been successfully created"
+ *       "revision": {revision}
+ *     }
  */
 router.post('/revisions', filters.authenticated, function (req, res, next) {
 
@@ -162,9 +206,36 @@ router.post('/revisions', filters.authenticated, function (req, res, next) {
 });
 
 /**
+ *
  * Delete revision by id
  *
- * @param {String} id - id of the revision
+ * @apiName DeleteTool
+ * @api {DELETE} /api/revisions/:id Delete revision by id
+ * @apiGroup Tools
+ * @apiDescription Delete tool revision
+ * @apiPermission Logged in user
+ * @apiUse UnauthorizedError
+ *
+ * @apiError message Forbidden revision delete from public repo
+ * @apiErrorExample {json} PublicRepoError:
+ *     HTTP/1.1 403 Bad Request
+ *     {
+ *       "message": "This revision belongs to public repo and it can't be delete it"
+ *     }
+ *
+ * @apiError message Forbidden revision delete if it's the last one
+ * @apiErrorExample {json} LastRevisionError:
+ *     HTTP/1.1 403 Bad Request
+ *     {
+ *       "message": "This is the only revision of the tool so it can't be deleted"
+ *     }
+ *
+ * @apiSuccess {String} message Success message
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *        "message": "Revision successfully deleted"
+ *     }
  */
 router.delete('/revisions/:id', filters.authenticated, function (req, res, next) {
 

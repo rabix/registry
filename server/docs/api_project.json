@@ -1,9 +1,13 @@
 {
   "name": "Rabix",
   "version": "0.0.1",
+  "description": "",
+  "sampleUrl": false,
+  "apidoc": "0.2.0",
   "generator": {
-    "version": "0.9.0",
-    "time": "2014-12-16T14:53:56.891Z"
-  },
-  "apidoc": "0.2.0"
+    "name": "apidoc",
+    "time": "2014-12-23T16:25:44.150Z",
+    "url": "http://apidocjs.com",
+    "version": "0.12.0"
+  }
 }

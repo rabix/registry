@@ -130,7 +130,7 @@ var addWebhook = function (owner, r, currentUser) {
 };
 /**
  * @apiDefine UnauthorizedError
- * @apiError Message Unauthorized update
+ * @apiError Message Unauthorized access
  * @apiErrorExample UnauthorizedError:
  *     HTTP/1.1 401
  *     {
