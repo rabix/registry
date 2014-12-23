@@ -118,8 +118,15 @@ angular.module('registryApp.cliche')
          * @param value
          */
         $scope.updateTransform = function (value) {
+
             checkInputAdapter();
-            $scope.view.property.adapter.value = value;
+
+            if (_.isObject(value)) {
+                $scope.view.property.adapter.value = value;
+            } else {
+                delete $scope.view.property.adapter.value;
+            }
+
         };
 
         /**

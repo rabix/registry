@@ -4,7 +4,6 @@ var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
 var _ = require('lodash');
-var fs = require('fs');
 
 var Pipeline = mongoose.model('Pipeline');
 var PipelineRevision = mongoose.model('PipelineRevision');
@@ -43,7 +42,7 @@ module.exports = function (app) {
 
 /**
  * @apiDefine InvalidIDError
- * @apiError Message Ivalid workflow id
+ * @apiError Message Invalid workflow id
  * @apiErrorExample InvalidIDError:
  *     HTTP/1.1 404
  *     {

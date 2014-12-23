@@ -7,44 +7,17 @@
 
     <div ng-if="!view.loading" class="content">
 
-        <section>
-            <h2>Reproducible Analyses for Bioinformatics</h2>
-            <p>Rabix is an open source implementation of the specification being developed on the <a href="https://groups.google.com/forum/#!forum/common-workflow-language">Common Workflow Language mailing list</a>.</p>
-            <p>CWL is an informal task force consisting of people from various organizations that have an interest in portability of bioinformatics workflows. The goal is to specify a way to describe bioinformatics tools and workflows that is powerful, easy to use and allows for portability of tools/workflows and reproducibility of runs.</p>
-        </section>
+        <p>Rabix is an open-source toolkit for developing tools and workflows for the <a target="_blank" href="https://github.com/common-workflow-language/common-workflow-language">common-workflow-language</a> specification.</p>
 
-        <section>
-            <h2>Install</h2>
+        <p>
+            CWL is an informal task force consisting of people from various organizations that have an interest in portability of bioinformatics workflows.
+            The goal is to specify a way to describe bioinformatics tools and workflows that is powerful, easy to use and allows for portability of tools/workflows
+            and reproducibility of runs. Join the <a target="_blank" href="https://groups.google.com/forum/#!forum/common-workflow-language">mailing list</a> if interested in contributing!
+        </p>
 
+        <p>Rabix is based on the <a target="_blank" href="https://github.com/common-workflow-language/common-workflow-language/blob/draft-1/specification/tool-description.md">draft1</a> specification of CWL, but also includes some <a target="_blank" href="https://github.com/rabix/rabix/tree/devel/docs">own extensions</a>.</p>
 
-            <div class="snippet">
-                <p><strong>1.</strong> First, install <a href="https://docs.docker.com/installation/#installation" target="_blank">docker</a> on a linux machine.</p>
-            </div>
-
-            <div class="snippet">
-                <p><strong>2.</strong> Second, install rabix via pip:</p>
-                <pre>$ pip install git+https://github.com/rabix/rabix</pre>
-            </div>
-
-            <div class="snippet">
-                <p><strong>3.</strong> Check if everything works by installing an example pipeline:</p>
-                <pre>$ rabix --install https://s3.amazonaws.com/rabix/rabix-test/bwa-mem.json#tool</pre>
-            </div>
-
-            <div class="snippet">
-                <p><strong>4.</strong> The "install" command simply pre-fetches referenced docker images. If you don't want to download hundreds of megabytes, you can just attempt to run the pipeline, which should fetch only the JSON files and present you with input options:</p>
-                <pre>$ rabix https://s3.amazonaws.com/rabix/rabix-test/bwa-mem.json#tool </pre>
-            </div>
-
-            <div class="snippet">
-                <p><strong>5.</strong> Optionally, run the pipeline with some example data. It won't take long:</p>
-                <pre>$ rabix https://s3.amazonaws.com/rabix/rabix-test/bwa-mem.json#tool -- \
-  --reference https://s3.amazonaws.com/rabix/rabix-test/chr20.fa \
-  --reads https://s3.amazonaws.com/rabix/rabix-test/example_human_Illumina.pe_1.fastq \
-  --reads https://s3.amazonaws.com/rabix/rabix-test/example_human_Illumina.pe_2.fastq</pre>
-            </div>
-
-        </section>
+        <p>Check out the <a target="_blank" href="https://github.com/rabix/rabix/wiki">wiki</a> for user manual.</p>
 
         <section class="subscribe">
 
