@@ -123,6 +123,8 @@ router.post('/revisions', filters.authenticated, function (req, res, next) {
 
             Revision.findOne({app_id: data.app_id}).sort({_id: 'desc'}).exec(function(err, r) {
 
+                data.tool['@type'] = app.is_script ? 'Script' : 'CommandLine';
+
                 var revision = new Revision();
 
                 revision.name = app.name;

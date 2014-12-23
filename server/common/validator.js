@@ -16,7 +16,8 @@ var mapDefinition = {
         inputs: {type: 'object', required: true},
         outputs: {type: 'object', required: true},
         adapter: {type: 'object'},
-        script: {type: 'string'}
+        script: {type: 'string'},
+        '@type': {type: 'string'}
     },
     softwareDescription: {
         repo_owner: {type: 'string', required: true},
