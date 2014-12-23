@@ -145,8 +145,8 @@ angular.module('registryApp.cliche')
                     var json = _.extend({
                         name: $scope.view.app.name,
                         schema: schema,
-                        description: $scope.view.app.description
-                    }, $scope.view.app.json);
+                        description: $scope.view.revision.description
+                    }, $scope.view.revision.json);
 
                     // legacy structure
                     delete json.softwareDescription;

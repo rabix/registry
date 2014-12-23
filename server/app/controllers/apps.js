@@ -275,6 +275,8 @@ router.post('/apps/:action', filters.authenticated, function (req, res, next) {
             res.status(400).json({message: 'The "'+name+'" tool already exists, please choose another name!'});
         } else {
 
+            data.tool['@type'] = data.is_script ? 'Script' : 'CommandLine';
+
             var app = new App();
 
             app.name = name;
