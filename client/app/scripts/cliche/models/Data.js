@@ -717,11 +717,11 @@ angular.module('registryApp.cliche')
             var rawTool = $injector.get('rawTool');
 
             if (isScript) {
-                delete transformed.script;
+                transformed.script = '';
                 delete transformed.adapter;
                 delete transformed.requirements;
             } else {
-                transformed.script = '';
+                delete transformed.script;
                 transformed.adapter = angular.copy(rawTool.adapter);
                 transformed.requirements = angular.copy(rawTool.requirements);
             }
