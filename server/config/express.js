@@ -1,6 +1,5 @@
 'use strict';
 
-
 var express = require('express');
 var fs = require('fs');
 var path = require('path');
@@ -14,12 +13,14 @@ var methodOverride = require('method-override');
 var passport = require('passport');
 var session = require('express-session');
 
+var winston = require('../common/logger');
+
 module.exports = function (app, config) {
     app.set('views', config.root + '/app/views');
     app.set('view engine', 'ejs');
 
     app.use(favicon(config.root + config.clientPath + '/images/favicon.ico'));
-    app.use(logger('dev'));
+
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({
         extended: true
@@ -29,6 +30,13 @@ module.exports = function (app, config) {
 
     app.use('/', express.static(config.root + config.clientPath));
     app.use('/docs', express.static(config.root + '/docs'));
+
+    app.use(logger({
+        'format': 'dev',
+        'stream': {
+            write: function(str) { winston.info(str); }
+        }})
+    );
 
     app.use(methodOverride());
 
