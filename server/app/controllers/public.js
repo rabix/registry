@@ -30,7 +30,7 @@ router.get('/tool/:id', function (req, res, next) {
             var json = _.isString(app.json) ? JSON.parse(app.json) : app.json;
             res.json(json);
         } else {
-            res.status(400).json({message: 'This tool doesn\'t exist'});
+            res.status(404).json({message: 'This tool doesn\'t exist'});
         }
     });
 
@@ -48,14 +48,14 @@ router.get('/tool-revision/:id', function (req, res, next) {
             var json = _.isString(revision.json) ? JSON.parse(revision.json) : revision.json;
             res.json(json);
         } else {
-            res.status(400).json({message: 'This tool revision doesn\'t exist'});
+            res.status(404).json({message: 'This tool revision doesn\'t exist'});
         }
     });
 
 });
 
 /**
- * Get tool by id
+ * Get workflow by id
  */
 router.get('/workflow/:revision', function (req, res, next) {
 
@@ -66,7 +66,7 @@ router.get('/workflow/:revision', function (req, res, next) {
             var json = _.isString(app.json) ? JSON.parse(app.json) : app.json;
             res.json(json);
         } else {
-            res.status(400).json({message: 'This tool doesn\'t exist'});
+            res.status(404).json({message: 'This tool doesn\'t exist'});
         }
     });
 

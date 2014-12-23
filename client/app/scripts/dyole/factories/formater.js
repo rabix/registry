@@ -46,7 +46,9 @@ angular.module('registryApp.dyole')
                 return json;
             },
 
-            toPipelineSchema: function (json) {
+            toPipelineSchema: function (j) {
+
+                var json = _.clone(j);
 
                 // reset schema
                 this.packedSchema = {};
