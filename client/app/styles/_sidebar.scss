@@ -73,6 +73,7 @@
       }
 
       .logo {
+        position: relative;
         padding: 0 0 0 50px;
         color: #fff;
         text-decoration: none;
@@ -85,6 +86,17 @@
         @include background-size(20px 28px);
 
         @extend %opacity-anim;
+
+        small {
+          font-size: 10px;
+          line-height: 10px;
+          display: block;
+          color: #f3f3f3;
+          position: absolute;
+          right: 0;
+          bottom: 6px;
+          text-shadow: none;
+        }
 
       }
 
