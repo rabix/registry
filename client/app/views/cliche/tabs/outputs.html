@@ -5,23 +5,20 @@
                 type="output"
                 open-on-keypress="true"
                 properties="view.toolForm.outputs.properties"
-                req="view.toolForm.outputs.required"
-                handler="updateProps('outputs')">
+                req="view.toolForm.outputs.required">
         </add-property>
     </legend>
 
     <property-output
-            ng-repeat="property in view.list.outputs.part track by $index"
-            ng-model="property.obj"
-            active="view.active.outputs[property.key]"
-            name="{{ property.key }}"
+            ng-repeat="(key, property) in view.toolForm.outputs.properties"
+            ng-model="property"
+            active="view.active.outputs[key]"
+            name="{{ key }}"
             properties="view.toolForm.outputs.properties"
-            req="view.toolForm.outputs.required"
-            handler="updateProps('outputs')">
+            req="view.toolForm.outputs.required">
     </property-output>
 
     <p class="alert alert-info" ng-if="view.toolForm.outputs.properties | isEmpty">There are no outputs at this moment.</p>
 </div>
 
-<paginator page="view.page.outputs" total="view.total.outputs" per-page="{{ view.perPage }}" handler="getMore('outputs', offset)"></paginator>
 

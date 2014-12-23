@@ -39,6 +39,13 @@ angular.module('registryApp.cliche')
 
                 scope.view.separator = option ? option.name : 'space';
 
+                scope.$watch('model', function(n, o) {
+                    if (n !== o) {
+                        option = _.find(scope.view.map[scope.type], {value: n});
+                        scope.view.separator = option ? option.name : 'space';
+                    }
+                });
+
             }
         };
     }]);

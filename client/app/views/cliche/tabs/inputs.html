@@ -6,23 +6,22 @@
                 open-on-keypress="true"
                 properties="view.toolForm.inputs.properties"
                 req="view.toolForm.inputs.required"
-                handler="updateProps('inputs')">
+                handler="updateInputs()">
         </add-property>
     </legend>
 
     <property-input
-            ng-repeat="property in view.list.inputs.part track by $index"
-            ng-model="property.obj"
-            active="view.active.inputs[property.key]"
-            name="{{ property.key }}"
+            ng-repeat="(key, property) in view.toolForm.inputs.properties"
+            ng-model="property"
+            active="view.active.inputs[key]"
+            name="{{ key }}"
             inputs="view.jobForm.inputs"
             properties="view.toolForm.inputs.properties"
             req="view.toolForm.inputs.required"
-            handler="updateProps('inputs')">
+            handler="updateInputs()">
     </property-input>
 
     <p class="alert alert-info" ng-if="view.toolForm.inputs.properties | isEmpty">There are no inputs at this moment.</p>
 </div>
 
-<paginator page="view.page.inputs" total="view.total.inputs" per-page="{{ view.perPage }}" handler="getMore('inputs', offset)"></paginator>
 

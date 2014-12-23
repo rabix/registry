@@ -17,8 +17,7 @@ angular.module('registryApp.cliche')
                 prop: '=ngModel',
                 active: '=',
                 req: '=',
-                properties: '=',
-                handler: '&'
+                properties: '='
             },
             link: function(scope, element) {
 
@@ -149,7 +148,6 @@ angular.module('registryApp.cliche')
 
                     modalInstance.result.then(function () {
                         Data.deleteProperty('output', scope.name, scope.properties);
-                        scope.handler();
                         Data.generateCommand();
                     });
                 };

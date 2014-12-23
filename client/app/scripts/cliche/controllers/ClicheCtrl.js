@@ -68,14 +68,8 @@ angular.module('registryApp.cliche')
             $scope.view.userRepos = repos.list;
         });
 
-        $scope.view.list = {
-            inputs: {tmp: [], part: []},
-            outputs: {tmp: [], part: []},
-            values: {tmp: [], part: []}
-        };
-
+        $scope.view.pages = {values: []};
         $scope.view.page = {inputs: 1, outputs: 1, values: 1};
-
         $scope.view.total = {inputs: 0, outputs: 0, values: 0};
 
         $scope.view.fakeRequired = [];
@@ -88,36 +82,20 @@ angular.module('registryApp.cliche')
          */
         $scope.prepareForPagination = function(origin, what) {
 
-
-            // TODO: potential bug, check pagination in task controller
-
             $scope.view.total[what] = _.size(origin);
-            $scope.view.list[what].tmp = [];
+
+            var count = 0;
+            $scope.view.pages[what] = [];
+            $scope.view.page[what] = 1;
 
             _.each(origin, function(obj, name) {
-                $scope.view.list[what].tmp.push({key: name, obj: obj});
-            });
+                if (count % 10 === 0) {
+                    $scope.view.pages[what].push([]);
+                }
 
-            $scope.getMore(what, 0);
+                $scope.view.pages[what][$scope.view.pages[what].length - 1].push({key: name, obj: obj});
 
-        };
-
-        /**
-         * Get next/prev page
-         *
-         * @param what
-         * @param offset
-         */
-        $scope.getMore = function(what, offset) {
-
-            $scope.view.list[what].part = [];
-
-            var rest = $scope.view.list[what].tmp.length - offset;
-
-            var times = (rest > 10) ? 10 : rest;
-
-            _.times(times, function(i) {
-                $scope.view.list[what].part.push($scope.view.list[what].tmp[offset + i]);
+                count += 1;
             });
 
         };
@@ -162,8 +140,6 @@ angular.module('registryApp.cliche')
 
                     if ($scope.view.showConsole) { turnOnDeepWatch(); }
 
-                    $scope.prepareForPagination(Data.tool.inputs.properties, 'inputs');
-                    $scope.prepareForPagination(Data.tool.outputs.properties, 'outputs');
                     $scope.prepareForPagination(Data.tool.inputs.properties, 'values');
 
                 });
@@ -198,8 +174,6 @@ angular.module('registryApp.cliche')
 
                         if ($scope.view.showConsole) { turnOnDeepWatch(); }
 
-                        $scope.prepareForPagination(Data.tool.inputs.properties, 'inputs');
-                        $scope.prepareForPagination(Data.tool.outputs.properties, 'outputs');
                         $scope.prepareForPagination(Data.tool.inputs.properties, 'values');
 
                     });
@@ -208,20 +182,11 @@ angular.module('registryApp.cliche')
         }
 
         /**
-         * Update properties array when new is added
-         *
-         * @param type
+         * Update input values form when props are changed
          */
-        $scope.updateProps = function(type) {
+        $scope.updateInputs = function () {
 
-            // TODO: load last page
-
-            $scope.prepareForPagination(Data.tool[type].properties, type);
-            if (type === 'inputs') {
-                $scope.prepareForPagination(Data.tool.inputs.properties, 'values');
-            }
-
-            $scope.view.page[type] = 1;
+            $scope.prepareForPagination(Data.tool.inputs.properties, 'values');
 
         };
 
@@ -233,12 +198,10 @@ angular.module('registryApp.cliche')
 
             $scope.view.propsExpanded[tab] = !$scope.view.propsExpanded[tab];
 
-            var props = (tab !== 'args') ? $scope.view.list[tab].part : $scope.view.toolForm.adapter.args;
-            var k;
+            var props = (tab !== 'args') ? $scope.view.toolForm[tab].properties : $scope.view.toolForm.adapter.args;
 
             _.each(props, function(value, key) {
-                k = (tab === 'args') ? key : value.key;
-                $scope.view.active[tab][k] = $scope.view.propsExpanded[tab];
+                $scope.view.active[tab][key] = $scope.view.propsExpanded[tab];
             });
 
         };
@@ -520,11 +483,11 @@ angular.module('registryApp.cliche')
 
             $scope.view.loading = true;
 
-            $scope.view.list = {
-                inputs: {tmp: [], part: []},
-                outputs: {tmp: [], part: []},
-                values: {tmp: [], part: []}
-            };
+            $scope.view.tab = 'general';
+
+            $scope.view.page = {inputs: 1, outputs: 1, values: 1};
+            $scope.view.total = {inputs: 0, outputs: 0, values: 0};
+            $scope.view.pages = {values: []};
 
             var name = $scope.view.toolForm.name;
 
