@@ -17,6 +17,12 @@ module.exports = function (grunt) {
                 file: 'app.js'
             }
         },
+        apidoc: {
+            registry: {
+                src: 'app/controllers',
+                dest: 'docs/'
+            }
+        },
         watch: {
             options: {
                 nospawn: true,
@@ -59,4 +65,5 @@ module.exports = function (grunt) {
     });
 
     grunt.registerTask('default', ['develop', 'watch']);
+    grunt.registerTask('docs',['apidoc']);
 };

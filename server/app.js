@@ -1,21 +1,26 @@
+'use strict';
+
 var express = require('express'),
     config = require('./config/config'),
     fs = require('fs'),
     mongoose = require('mongoose'),
-    mongoOpts = {};
+    mongoOpts = {},
+    dbPath = config.db;
 
-if (typeof config.db === 'object') {
+// Check if we got db config as object and ssl config in server property
+if (typeof config.db === 'object' && config.db.server) {
+
     mongoOpts = {
-        server: {
-            ssl: true,
-            sslCert: fs.readFileSync('/etc/ssl/mongodb.pem'), //TODO: read pem file from passed config
-            sslKey: fs.readFileSync('/etc/ssl/mongodb.pem') //TODO: read pem file from passed config
-        }
+        server: config.db.server
     };
+
+    dbPath = config.db.path;
 }
 
-mongoose.connect(config.db, mongoOpts);
+mongoose.connect(dbPath, mongoOpts);
+
 var db = mongoose.connection;
+
 db.on('error', function () {
     throw new Error('unable to connect to database at ' + config.db);
 });
@@ -27,6 +32,7 @@ fs.readdirSync(modelsPath).forEach(function (file) {
         require(modelsPath + '/' + file);
     }
 });
+
 var app = express();
 
 require('./config/express')(app, config);

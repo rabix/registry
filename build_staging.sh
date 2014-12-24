@@ -26,6 +26,8 @@ pwd
 
 npm install
 
+grunt docs
+
 cd ..
 
 pwd
