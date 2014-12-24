@@ -31,6 +31,9 @@ module.exports = function (app, config) {
     app.use('/', express.static(config.root + config.clientPath));
     app.use('/docs', express.static(config.root + '/docs'));
 
+    /**
+     * Stream logs through winston logger
+     */
     app.use(logger({
         'format': 'dev',
         'stream': {

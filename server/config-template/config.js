@@ -7,8 +7,15 @@ var config = {
         name: 'rabix-registry',
         githubName: 'Rabix-registry'
     },
-    port: ${SBG:PORT},
-    db: 'mongodb://${SBG:MONGODB_HOST}/rabix-registry',
+    port: '${SBG:PORT}',
+    db: {
+        path: 'mongodb://${SBG:MONGODB_HOST}/rabix-registry',
+        server: {
+            ssl: true,
+            sslCert: '${SBG:SSL_CERT_FILE}',
+            sslKey: '${SBG:SSL_KEY_FILE}'
+        }
+    },
     clientPath: '/data/app/rabix-registry-client',
     github: {
         clientId: '${SBG:GITHUB_OAUTH_CLIENT_ID}',
