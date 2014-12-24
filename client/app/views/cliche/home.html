@@ -70,7 +70,21 @@
 
     <div ng-if="!view.loading" class="content">
 
-        <ng-include class="include" src="view.tabViewPath"></ng-include>
+        <div ng-show="view.tab === 'general'" class="tab general">
+            <ng-include class="include" src="'views/cliche/tabs/general.html'"></ng-include>
+        </div>
+        <div ng-show="view.tab === 'inputs'" class="tab inputs">
+            <ng-include class="include" src="'views/cliche/tabs/inputs.html'"></ng-include>
+        </div>
+        <div ng-show="view.tab === 'outputs'" class="tab outputs">
+            <ng-include class="include" src="'views/cliche/tabs/outputs.html'"></ng-include>
+        </div>
+        <div ng-if="!view.app.is_script" ng-show="view.tab === 'adapter'" class="tab adapter">
+            <ng-include class="include" src="'views/cliche/tabs/adapter.html'"></ng-include>
+        </div>
+        <div ng-if="!view.app.is_script" ng-show="view.tab === 'values'" class="tab values">
+            <ng-include class="include" src="'views/cliche/tabs/values.html'"></ng-include>
+        </div>
 
     </div>
     <!-- # .content -->

@@ -35,53 +35,55 @@ angular.module('registryApp')
         return self;
 
     }])
-    .directive('sidebar', ['$templateCache', 'User', 'Sidebar', function ($templateCache, User, Sidebar) {
+    .directive('sidebar', ['$templateCache', function ($templateCache) {
         return {
             restrict: 'E',
             template: $templateCache.get('views/partials/sidebar.html'),
             scope: {},
-            link: function (scope) {
+            controller: ['$scope', 'User', 'Sidebar', function ($scope, User, Sidebar) {
 
-                scope.view = {};
-                scope.view.loading = true;
-                scope.view.active = Sidebar.getActive();
-                scope.view.open = Sidebar.open;
+                $scope.view = {};
+                $scope.view.loading = true;
+                $scope.view.active = Sidebar.getActive();
+                $scope.view.open = Sidebar.open;
 
-                scope.view.navigation = [
+                $scope.view.navigation = [
                     {name: 'apps', link: 'apps', desc: 'Apps', icon: 'puzzle-piece'},
 //                    {name: 'task tpls', link: 'tasks', desc: 'Task Templates', icon: 'rocket'},
 //                    {name: 'builds', link: 'builds', desc: 'Builds', icon: 'cube'},
                     {name: 'repos', link: 'repos', desc: 'Repositories', icon: 'code-fork'},
                     {name: 'Workflow Editor', link: 'workflow/0/new', desc: 'Workflow Editor', icon: 'terminal'},
-                    {name: 'Tool Editor', link: 'cliche/tool', desc: 'Tool Editor', icon: 'terminal'}
+                    {name: 'Tool Editor', link: 'cliche/tool', desc: 'Tool Editor', icon: 'terminal'},
+                    {name: 'Script Editor', link: 'cliche/script', desc: 'Script Editor', icon: 'terminal'}
                 ];
 
-                scope.SidebarService = Sidebar;
+                $scope.SidebarService = Sidebar;
 
                 User.getUser().then(function(result) {
-                    scope.view.user = result.user;
-                    scope.view.loading = false;
+                    $scope.view.user = result.user;
+                    $scope.view.loading = false;
 
                     if (!_.isEmpty(result.user)) {
-                        scope.view.navigation.push({name: 'settings',link: 'settings',  desc: 'Settings', icon: 'gear'});
+                        $scope.view.navigation.push({name: 'settings',link: 'settings',  desc: 'Settings', icon: 'gear'});
                     }
 
                 });
 
-                scope.$watch('SidebarService.active', function (n, o) {
+                $scope.$watch('SidebarService.active', function (n, o) {
                     if (n !== o) {
-                        scope.view.active = n;
+                        $scope.view.active = n;
                     }
                 });
 
                 /**
                  * Toggle sidebar visibility
                  */
-                scope.toggleSidebar = function () {
-                    scope.view.open = !scope.view.open;
+                $scope.toggleSidebar = function () {
+                    $scope.view.open = !$scope.view.open;
                     Sidebar.toggleOpen();
                 };
 
-            }
+            }],
+            link: function () {}
         };
     }]);

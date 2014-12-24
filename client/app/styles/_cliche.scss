@@ -8,6 +8,11 @@
         width: 100%;
       }
 
+      & > .tab {
+        @include flex(1);
+        @extend %flex;
+      }
+
       .include {
         @include flex(1);
         @extend %flex;
@@ -296,96 +301,101 @@
     border: 1px solid #bbb;
   }
 
-  & > .property-box-header {
-    margin: 0;
-    background-color: #eee;
-    cursor: pointer;
-    position: relative;
-    @include user-select(none);
+  & > .include {
 
-    &:before {
-      content: '';
-      display: block;
-      position: absolute;
-      top: 50%;
-      left: 10px;
-      border-left: 5px solid #555;
-      border-top: 5px solid transparent;
-      border-bottom: 5px solid transparent;
-      margin-top: -5px;
-    }
+    & > .property-box-header {
+      margin: 0;
+      background-color: #eee;
+      cursor: pointer;
+      position: relative;
+      @include user-select(none);
 
-    .property-box-short-info {
-      padding: 10px 10px 10px 25px;
-      margin-right: 60px;
-      .order {
-        background-color: $orange;
-        color: #fff;
-        padding: 0 5px;
-      }
-      .required {
-        color: #cc0000;
-      }
-    }
-
-    .property-box-actions {
-      float: right;
-      font-weight: bold;
-      a:not(.btn) {
-        color: #555;
-        font-size: 17px;
-        display: inline-block;
-        vertical-align: middle;
-        padding: 7.5px 10px;
-        &:last-child {
-          margin-left: -5px;
-        }
-        &:hover {
-          background-color: #ddd;
-        }
-      }
-    }
-  }
-
-  & > .property-box-body {
-    display: none;
-    padding: 10px;
-    background-color: #f9f9f9;
-
-    .box-col {
-      .key {
-        float: left;
-        margin-right: 10px;
-      }
-      .value {
+      &:before {
+        content: '';
         display: block;
-        margin: 0;
-        text-overflow: ellipsis;
-        max-width: 100%;
-        white-space: nowrap;
-        overflow: hidden;
+        position: absolute;
+        top: 50%;
+        left: 10px;
+        border-left: 5px solid #555;
+        border-top: 5px solid transparent;
+        border-bottom: 5px solid transparent;
+        margin-top: -5px;
+      }
+
+      .property-box-short-info {
+        padding: 10px 10px 10px 25px;
+        margin-right: 60px;
+        .order {
+          background-color: $orange;
+          color: #fff;
+          padding: 0 5px;
+        }
+        .required {
+          color: #cc0000;
+        }
+      }
+
+      .property-box-actions {
+        float: right;
+        font-weight: bold;
+        a:not(.btn) {
+          color: #555;
+          font-size: 17px;
+          display: inline-block;
+          vertical-align: middle;
+          padding: 7.5px 10px;
+          &:last-child {
+            margin-left: -5px;
+          }
+          &:hover {
+            background-color: #ddd;
+          }
+        }
       }
     }
 
-    .legend-small {
-      font-size: 14px;
-      margin-top: 10px;
+    & > .property-box-body {
+      display: none;
+      padding: 10px;
+      background-color: #f9f9f9;
+
+      .box-col {
+        .key {
+          float: left;
+          margin-right: 10px;
+        }
+        .value {
+          display: block;
+          margin: 0;
+          text-overflow: ellipsis;
+          max-width: 100%;
+          white-space: nowrap;
+          overflow: hidden;
+        }
+      }
+
+      .legend-small {
+        font-size: 14px;
+        margin-top: 10px;
+      }
     }
   }
 
   &.active {
-    & > .property-box-header {
-      border-bottom: 1px solid #ddd;
-      &:before {
-        border-top: 5px solid #555;
-        border-left: 5px solid transparent;
-        border-right: 5px solid transparent;
-        border-bottom: none;
-        margin-top: -2.5px;
+    & > .include {
+      & > .property-box-header {
+        border-bottom: 1px solid #ddd;
+        &:before {
+          border-top: 5px solid #555;
+          border-left: 5px solid transparent;
+          border-right: 5px solid transparent;
+          border-bottom: none;
+          margin-top: -2.5px;
+        }
       }
-    }
-    & > .property-box-body {
-      display: block;
+      & > .property-box-body {
+        display: block;
+      }
     }
   }
 
@@ -527,52 +537,54 @@
 /* Input box */
 .input-property {
 
-  & > .form-group {
-    margin: 0 0 10px 0;
-    border: 1px solid #ddd;
+  //& > .include {
+    & > .form-group {
+      margin: 0 0 10px 0;
+      border: 1px solid #ddd;
 
-    &:hover {
-      @include transition(border 0.3s ease);
-      border: 1px solid #bbb;
+      &:hover {
+        @include transition(border 0.3s ease);
+        border: 1px solid #bbb;
+
+        & > .control-label {
+          border-bottom: 1px solid #bbb;
+          background-color: #ddd;
+        }
+        & > .input-property-body {
+          background-color: #f3f3f3;
+        }
+      }
 
       & > .control-label {
-        border-bottom: 1px solid #bbb;
-        background-color: #ddd;
+        padding: 5px 10px;
+        margin: 0;
+        position: relative;
+        border-bottom: 1px solid #ddd;
+        display: block;
+        background-color: #eee;
       }
+
       & > .input-property-body {
-        background-color: #f3f3f3;
-      }
-    }
+        padding: 10px;
+        background-color: #f9f9f9;
+        overflow: auto;
 
-    & > .control-label {
-      padding: 5px 10px;
-      margin: 0;
-      position: relative;
-      border-bottom: 1px solid #ddd;
-      display: block;
-      background-color: #eee;
-    }
-
-    & > .input-property-body {
-      padding: 10px;
-      background-color: #f9f9f9;
-      overflow: auto;
-
-      &.split {
-        & > .form-control {
-          display: inline-block;
-          &:nth-child(1) {
-            width: 40%;
-          }
-          &:nth-child(2) {
-            margin-left: -5px;
-            width: 60%;
+        &.split {
+          & > .form-control {
+            display: inline-block;
+            &:nth-child(1) {
+              width: 40%;
+            }
+            &:nth-child(2) {
+              margin-left: -5px;
+              width: 60%;
+            }
           }
         }
       }
-    }
 
-  }
+    }
+  //}
 }
 
 .input-container-small {

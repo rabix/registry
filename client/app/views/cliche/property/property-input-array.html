@@ -88,7 +88,8 @@
                     name="{{ key }}"
                     inputs="inputs[name]"
                     properties="prop.items.properties"
-                    req="prop.items.required">
+                    req="prop.items.required"
+                    handler="handler()">
             </property-input>
             <p class="alert alert-info" ng-if="prop.items.properties | isEmpty">There are no properties at this moment.</p>
         </div>

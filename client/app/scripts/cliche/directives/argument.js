@@ -11,50 +11,29 @@ angular.module('registryApp.cliche')
 
         return {
             restrict: 'E',
-            template: '<div class="property-box" ng-class="{active: active}"></div>',
+            template: '<div class="property-box" ng-class="{active: active}"><ng-include class="include" src="view.tpl"></ng-include></div>',
             scope: {
                 name: '@',
                 prop: '=ngModel',
                 active: '=',
                 properties: '='
             },
-            link: function(scope, element) {
+            controller: ['$scope', function ($scope) {
 
-                scope.view = {};
-
-                /**
-                 * Compile appropriate template
-                 */
-                var compileTpl = function() {
-
-                    var template = $templateCache.get('views/cliche/property/property-argument.html');
-
-                    var $box = angular.element(element[0].querySelector('.property-box'));
-                    var $header = $box[0].querySelector('.property-box-header');
-                    var $body = $box[0].querySelector('.property-box-body');
-
-                    if ($header) { angular.element($header).remove(); }
-                    if ($body) { angular.element($body).remove(); }
-
-                    $box.append(template);
-
-                    $compile($box.contents())(scope);
-                };
-
-                /* init compile */
-                compileTpl();
+                $scope.view = {};
+                $scope.view.tpl = 'views/cliche/property/property-argument.html';
 
                 /**
                  * Toggle argument box visibility
                  */
-                scope.toggle = function() {
-                    scope.active = !scope.active;
+                $scope.toggle = function() {
+                    $scope.active = !$scope.active;
                 };
 
                 /**
                  * Remove particular property
                  */
-                scope.remove = function() {
+                $scope.remove = function() {
 
                     var modalInstance = $modal.open({
                         template: $templateCache.get('views/partials/confirm-delete.html'),
@@ -64,7 +43,7 @@ angular.module('registryApp.cliche')
                     });
 
                     modalInstance.result.then(function () {
-                        Data.deleteProperty('arg', scope.name, scope.properties);
+                        Data.deleteProperty('arg', $scope.name, $scope.properties);
                         Data.generateCommand();
                     });
                 };
@@ -72,7 +51,7 @@ angular.module('registryApp.cliche')
                 /**
                  * Edit property
                  */
-                scope.edit = function() {
+                $scope.edit = function() {
 
                     var modalInstance = $modal.open({
                         template: $templateCache.get('views/cliche/partials/manage-property-arg.html'),
@@ -83,9 +62,9 @@ angular.module('registryApp.cliche')
                             options: function () {
                                 return {
                                     type: 'arg',
-                                    name: scope.name,
-                                    property: scope.prop,
-                                    properties: scope.properties
+                                    name: $scope.name,
+                                    property: $scope.prop,
+                                    properties: $scope.properties
                                 };
                             }
                         }
@@ -94,7 +73,7 @@ angular.module('registryApp.cliche')
                     modalInstance.result.then(function(result) {
 
                         _.each(result.prop, function(value, key) {
-                            scope.prop[key] = value;
+                            $scope.prop[key] = value;
                         });
 
                         Data.generateCommand();
@@ -107,13 +86,14 @@ angular.module('registryApp.cliche')
                  *
                  * @param action
                  */
-                scope.handleAction = function(action) {
+                $scope.handleAction = function(action) {
 
-                    if (typeof scope[action] === 'function') {
-                        scope[action]();
+                    if (typeof $scope[action] === 'function') {
+                        $scope[action]();
                     }
                 };
 
-            }
+            }],
+            link: function() {}
         };
     }]);

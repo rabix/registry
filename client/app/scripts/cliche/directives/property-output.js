@@ -7,11 +7,11 @@
 'use strict';
 
 angular.module('registryApp.cliche')
-    .directive('propertyOutput', ['$templateCache', '$modal', '$compile', 'Data', function ($templateCache, $modal, $compile, Data) {
+    .directive('propertyOutput', ['$templateCache', function ($templateCache) {
 
         return {
             restrict: 'E',
-            template: '<div class="property-box" ng-class="{active: active}"></div>',
+            template: '<div class="property-box" ng-class="{active: active}"><ng-include class="include" src="view.tpl"></ng-include></div>',
             scope: {
                 name: '@',
                 prop: '=ngModel',
@@ -19,12 +19,13 @@ angular.module('registryApp.cliche')
                 req: '=',
                 properties: '='
             },
-            link: function(scope, element) {
+            controller: ['$scope', '$modal', 'Data', function ($scope, $modal, Data) {
 
-                scope.view = {};
+                $scope.view = {};
 
-                scope.req = scope.req || [];
-                scope.view.required = _.contains(scope.req, scope.name);
+                $scope.req = $scope.req || [];
+                $scope.view.required = _.contains($scope.req, $scope.name);
+                $scope.view.tpl = 'views/cliche/property/property-output-' + $scope.prop.type  + '.html';
 
                 /**
                  * Transform meta into string
@@ -36,8 +37,8 @@ angular.module('registryApp.cliche')
                     var value;
                     var metadata = [];
 
-                    if (scope.prop.adapter) {
-                        _.each(scope.prop.adapter.metadata, function(v, k) {
+                    if ($scope.prop.adapter) {
+                        _.each($scope.prop.adapter.metadata, function(v, k) {
                             if (k !== '__inherit__') {
                                 value = v.$expr ? v.$expr : v;
                                 metadata.push(k + ': ' + value);
@@ -49,41 +50,19 @@ angular.module('registryApp.cliche')
                 };
 
                 /* init transform */
-                scope.view.metadata = transformMeta();
-
-                /**
-                 * Compile appropriate template
-                 */
-                var compileTpl = function() {
-
-                    var template = $templateCache.get('views/cliche/property/property-output-' + scope.prop.type  + '.html');
-
-                    var $box = angular.element(element[0].querySelector('.property-box'));
-                    var $header = $box[0].querySelector('.property-box-header');
-                    var $body = $box[0].querySelector('.property-box-body');
-
-                    if ($header) { angular.element($header).remove(); }
-                    if ($body) { angular.element($body).remove(); }
-
-                    $box.append(template);
-
-                    $compile($box.contents())(scope);
-                };
-
-                /* init compile */
-                compileTpl();
+                $scope.view.metadata = transformMeta();
 
                 /**
                  * Toggle property box visibility
                  */
-                scope.toggle = function() {
-                    scope.active = !scope.active;
+                $scope.toggle = function() {
+                    $scope.active = !$scope.active;
                 };
 
                 /**
                  * Edit property
                  */
-                scope.edit = function() {
+                $scope.edit = function() {
 
                     var modalInstance = $modal.open({
                         template: $templateCache.get('views/cliche/partials/manage-property-output.html'),
@@ -94,10 +73,10 @@ angular.module('registryApp.cliche')
                             options: function () {
                                 return {
                                     type: 'output',
-                                    name: scope.name,
-                                    property: scope.prop,
-                                    properties: scope.properties,
-                                    required: scope.view.required
+                                    name: $scope.name,
+                                    property: $scope.prop,
+                                    properties: $scope.properties,
+                                    required: $scope.view.required
                                 };
                             }
                         }
@@ -105,28 +84,26 @@ angular.module('registryApp.cliche')
 
                     modalInstance.result.then(function(result) {
 
-                        var oldType = scope.prop.type;
+                        var keys = _.keys(result.prop);
 
                         _.each(result.prop, function(value, key) {
-                            scope.prop[key] = value;
+                            $scope.prop[key] = value;
                         });
 
-                        _.each(scope.prop, function(value, key) {
-                            if (!_.contains(_.keys(result.prop), key)) {
-                                delete scope.prop[key];
+                        _.each($scope.prop, function(value, key) {
+                            if (!_.contains(keys, key)) {
+                                delete $scope.prop[key];
                             }
                         });
 
-                        scope.view.required = result.required;
-                        scope.view.metadata = transformMeta();
+                        $scope.view.required = result.required;
+                        $scope.view.metadata = transformMeta();
 
-                        if (result.required && !_.contains(scope.req, scope.name)) {
-                            scope.req.push(scope.name);
+                        if (result.required && !_.contains($scope.req, $scope.name)) {
+                            $scope.req.push($scope.name);
                         } else {
-                            _.remove(scope.req, function(key) { return key === scope.name; });
+                            _.remove($scope.req, function(key) { return key === $scope.name; });
                         }
-
-                        if (oldType !== result.prop.type) { compileTpl(); }
 
                         Data.generateCommand();
 
@@ -137,7 +114,7 @@ angular.module('registryApp.cliche')
                 /**
                  * Remove particular property
                  */
-                scope.remove = function() {
+                $scope.remove = function() {
 
                     var modalInstance = $modal.open({
                         template: $templateCache.get('views/partials/confirm-delete.html'),
@@ -147,7 +124,7 @@ angular.module('registryApp.cliche')
                     });
 
                     modalInstance.result.then(function () {
-                        Data.deleteProperty('output', scope.name, scope.properties);
+                        Data.deleteProperty('output', $scope.name, $scope.properties);
                         Data.generateCommand();
                     });
                 };
@@ -157,13 +134,14 @@ angular.module('registryApp.cliche')
                  *
                  * @param action
                  */
-                scope.handleAction = function(action) {
+                $scope.handleAction = function(action) {
 
-                    if (typeof scope[action] === 'function') {
-                        scope[action]();
+                    if (typeof $scope[action] === 'function') {
+                        $scope[action]();
                     }
                 };
 
-            }
+            }],
+            link: function() {}
         };
     }]);

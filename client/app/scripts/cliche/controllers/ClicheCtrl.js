@@ -31,8 +31,6 @@ angular.module('registryApp.cliche')
 
         $scope.view.showConsole = true;
 
-        $scope.view.tabViewPath = 'views/cliche/tabs/general.html';
-
         $scope.view.propsExpanded = {
             inputs: false,
             outputs: false,
@@ -212,7 +210,6 @@ angular.module('registryApp.cliche')
          */
         $scope.switchTab = function(tab) {
             $scope.view.tab = tab;
-            $scope.view.tabViewPath = 'views/cliche/tabs/' + tab + '.html';
 
             if (tab === 'values') {
                 watchTheJob();
@@ -397,8 +394,6 @@ angular.module('registryApp.cliche')
             Data.setJob(job);
             $scope.view.jobForm = Data.job;
 
-            $scope.prepareForPagination(Data.tool.inputs.properties, 'inputs');
-            $scope.prepareForPagination(Data.tool.outputs.properties, 'outputs');
             $scope.prepareForPagination(Data.tool.inputs.properties, 'values');
 
         };

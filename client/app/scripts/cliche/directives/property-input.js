@@ -7,11 +7,11 @@
 'use strict';
 
 angular.module('registryApp.cliche')
-    .directive('propertyInput', ['$templateCache', '$modal', '$compile', 'Data', 'RecursionHelper', function ($templateCache, $modal, $compile, Data, RecursionHelper) {
+    .directive('propertyInput', ['$templateCache', 'RecursionHelper', function ($templateCache, RecursionHelper) {
 
         return {
             restrict: 'E',
-            template: '<div class="property-box" ng-class="{active: active}"></div>',
+            template: '<div class="property-box" ng-class="{active: active}"><ng-include class="include" src="view.tpl"></ng-include></div>',
             scope: {
                 name: '@',
                 prop: '=ngModel',
@@ -21,174 +21,151 @@ angular.module('registryApp.cliche')
                 req: '=',
                 handler: '&'
             },
-            compile: function(element) {
-                return RecursionHelper.compile(element, function(scope, iElement) {
+            controller: ['$scope', '$modal', 'Data', function ($scope, $modal, Data) {
 
-                    scope.view = {};
+                $scope.view = {};
 
-                    scope.view.propsExpanded = false;
-                    scope.view.active = {};
+                $scope.view.propsExpanded = false;
+                $scope.view.active = {};
 
-                    scope.req = scope.req || [];
-                    scope.view.required = _.contains(scope.req, scope.name);
+                $scope.req = $scope.req || [];
+                $scope.view.required = _.contains($scope.req, $scope.name);
+                $scope.view.tpl = 'views/cliche/property/property-input-' + $scope.prop.type  + '.html';
 
-                    /**
-                     * Compile appropriate template
-                     */
-                    var compileTpl = function() {
+                /**
+                 * Toggle property box visibility
+                 */
+                $scope.toggle = function() {
+                    $scope.active = !$scope.active;
+                };
 
-                        var template = $templateCache.get('views/cliche/property/property-input-' + scope.prop.type  + '.html');
+                /**
+                 * Toggle properties visibility (expand/collapse)
+                 */
+                $scope.toggleProperties = function() {
 
-                        var $box = angular.element(iElement[0].querySelector('.property-box'));
-                        var $header = $box[0].querySelector('.property-box-header');
-                        var $body = $box[0].querySelector('.property-box-body');
+                    $scope.view.propsExpanded = !$scope.view.propsExpanded;
 
-                        if ($header) { angular.element($header).remove(); }
-                        if ($body) { angular.element($body).remove(); }
+                    _.each($scope.prop.items.properties, function(value, key) {
+                        $scope.view.active[key] = $scope.view.propsExpanded;
+                    });
 
-                        $box.append(template);
+                };
 
-                        $compile($box.contents())(scope);
-                    };
+                /**
+                 * Edit property
+                 */
+                $scope.edit = function() {
 
-                    /* init compile */
-                    compileTpl();
+                    var modalInstance = $modal.open({
+                        template: $templateCache.get('views/cliche/partials/manage-property-input.html'),
+                        controller: 'ManagePropertyInputCtrl',
+                        windowClass: 'modal-prop',
+                        size: 'lg',
+                        resolve: {
+                            options: function () {
+                                return {
+                                    type: 'input',
+                                    name: $scope.name,
+                                    property: $scope.prop,
+                                    properties: $scope.properties,
+                                    inputs: $scope.inputs,
+                                    required: $scope.view.required
+                                };
+                            }
+                        }
+                    });
 
-                    /**
-                     * Toggle property box visibility
-                     */
-                    scope.toggle = function() {
-                        scope.active = !scope.active;
-                    };
+                    modalInstance.result.then(function(result) {
 
-                    /**
-                     * Toggle properties visibility (expand/collapse)
-                     */
-                    scope.toggleProperties = function() {
+                        var keys = _.keys(result.prop);
 
-                        scope.view.propsExpanded = !scope.view.propsExpanded;
-
-                        _.each(scope.prop.items.properties, function(value, key) {
-                            scope.view.active[key] = scope.view.propsExpanded;
+                        _.each(result.prop, function(value, key) {
+                            $scope.prop[key] = value;
                         });
-                    };
 
-                    /**
-                     * Edit property
-                     */
-                    scope.edit = function() {
-
-                        var modalInstance = $modal.open({
-                            template: $templateCache.get('views/cliche/partials/manage-property-input.html'),
-                            controller: 'ManagePropertyInputCtrl',
-                            windowClass: 'modal-prop',
-                            size: 'lg',
-                            resolve: {
-                                options: function () {
-                                    return {
-                                        type: 'input',
-                                        name: scope.name,
-                                        property: scope.prop,
-                                        properties: scope.properties,
-                                        inputs: scope.inputs,
-                                        required: scope.view.required
-                                    };
-                                }
+                        _.each($scope.prop, function(value, key) {
+                            if (!_.contains(keys, key)) {
+                                delete $scope.prop[key];
                             }
                         });
 
-                        modalInstance.result.then(function(result) {
+                        $scope.view.required = result.required;
 
-                            var oldType = scope.prop.type;
+                        if (result.required && !_.contains($scope.req, $scope.name)) {
+                            $scope.req.push($scope.name);
+                        } else {
+                            _.remove($scope.req, function(key) { return key === $scope.name; });
+                        }
 
-                            _.each(result.prop, function(value, key) {
-                                scope.prop[key] = value;
-                            });
-
-                            _.each(scope.prop, function(value, key) {
-                                if (!_.contains(_.keys(result.prop), key)) {
-                                    delete scope.prop[key];
-                                }
-                            });
-
-                            scope.view.required = result.required;
-
-                            if (result.required && !_.contains(scope.req, scope.name)) {
-                                scope.req.push(scope.name);
-                            } else {
-                                _.remove(scope.req, function(key) { return key === scope.name; });
-                            }
-
-                            if (oldType !== scope.prop.type) { compileTpl(); }
-
-                            scope.handler();
-
-                            Data.generateCommand();
-
-                        });
-
-                    };
-
-                    /**
-                     * Remove particular property
-                     */
-                    scope.remove = function() {
-
-                        var modalInstance = $modal.open({
-                            template: $templateCache.get('views/partials/confirm-delete.html'),
-                            controller: 'ModalCtrl',
-                            windowClass: 'modal-confirm',
-                            resolve: {data: function () { return {}; }}
-                        });
-
-                        modalInstance.result.then(function () {
-                            Data.deleteProperty('input', scope.name, scope.properties);
-
-                            if (scope.inputs &&  !_.isUndefined(scope.inputs[scope.name])) {
-                                delete scope.inputs[scope.name];
-                            }
-
-                            if (_.isArray(scope.inputs)) {
-                                _.each(scope.inputs, function(input) {
-                                    if (!_.isUndefined(input)) {
-                                        delete input[scope.name];
-                                    }
-                                });
-                            }
-
-                            scope.handler();
-
-                            Data.generateCommand();
-
-                        });
-                    };
-
-                    /**
-                     * Remove adapter section of the input and regenerate command
-                     */
-                    scope.removeFromConsole = function() {
-
-                        delete scope.prop.adapter;
+                        $scope.handler();
 
                         Data.generateCommand();
 
-                    };
+                    });
 
-                    /**
-                     * Handle actions initiated from the property header
-                     *
-                     * @param action
-                     */
-                    scope.handleAction = function(action) {
+                };
 
-                        if (typeof scope[action] === 'function') {
-                            scope[action]();
+                /**
+                 * Remove particular property
+                 */
+                $scope.remove = function() {
+
+                    var modalInstance = $modal.open({
+                        template: $templateCache.get('views/partials/confirm-delete.html'),
+                        controller: 'ModalCtrl',
+                        windowClass: 'modal-confirm',
+                        resolve: {data: function () { return {}; }}
+                    });
+
+                    modalInstance.result.then(function () {
+                        Data.deleteProperty('input', $scope.name, $scope.properties);
+
+                        if ($scope.inputs &&  !_.isUndefined($scope.inputs[$scope.name])) {
+                            delete $scope.inputs[$scope.name];
                         }
-                    };
 
+                        if (_.isArray($scope.inputs)) {
+                            _.each($scope.inputs, function(input) {
+                                if (!_.isUndefined(input)) {
+                                    delete input[$scope.name];
+                                }
+                            });
+                        }
 
+                        $scope.handler();
 
-                });
+                        Data.generateCommand();
+
+                    });
+                };
+
+                /**
+                 * Remove adapter section of the input and regenerate command
+                 */
+                $scope.removeFromConsole = function() {
+
+                    delete $scope.prop.adapter;
+
+                    Data.generateCommand();
+
+                };
+
+                /**
+                 * Handle actions initiated from the property header
+                 *
+                 * @param action
+                 */
+                $scope.handleAction = function(action) {
+
+                    if (typeof $scope[action] === 'function') {
+                        $scope[action]();
+                    }
+                };
+
+            }],
+            compile: function(element) {
+                return RecursionHelper.compile(element, function() {});
             }
         };
     }]);

@@ -22,6 +22,7 @@
         "angular": false,
         "_": false,
         "Raphael": false,
-        "ZeroClipboard": false
+        "ZeroClipboard": false,
+        "CodeMirror": false
     }
 }
