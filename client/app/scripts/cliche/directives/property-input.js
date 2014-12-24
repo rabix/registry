@@ -11,9 +11,10 @@ angular.module('registryApp.cliche')
 
         return {
             restrict: 'E',
-            template: '<div class="property-box" ng-class="{active: active}"><ng-include class="include" src="view.tpl"></ng-include></div>',
+            template: '<div class="property-box {{ type }}" ng-class="{active: active}"><ng-include class="include" src="view.tpl"></ng-include></div>',
             scope: {
                 name: '@',
+                type: '@',
                 prop: '=ngModel',
                 active: '=',
                 properties: '=',
@@ -30,7 +31,7 @@ angular.module('registryApp.cliche')
 
                 $scope.req = $scope.req || [];
                 $scope.view.required = _.contains($scope.req, $scope.name);
-                $scope.view.tpl = 'views/cliche/property/property-input-' + $scope.prop.type  + '.html';
+                $scope.view.tpl = 'views/cliche/property/property-input-' + $scope.type + '-' + $scope.prop.type  + '.html';
 
                 /**
                  * Toggle property box visibility
@@ -58,7 +59,7 @@ angular.module('registryApp.cliche')
                 $scope.edit = function() {
 
                     var modalInstance = $modal.open({
-                        template: $templateCache.get('views/cliche/partials/manage-property-input.html'),
+                        template: $templateCache.get('views/cliche/partials/manage-property-' + $scope.type + '-input.html'),
                         controller: 'ManagePropertyInputCtrl',
                         windowClass: 'modal-prop',
                         size: 'lg',
@@ -66,6 +67,7 @@ angular.module('registryApp.cliche')
                             options: function () {
                                 return {
                                     type: 'input',
+                                    toolType: $scope.type,
                                     name: $scope.name,
                                     property: $scope.prop,
                                     properties: $scope.properties,

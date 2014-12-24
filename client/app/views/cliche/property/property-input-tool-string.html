@@ -1,6 +1,6 @@
 <div property-header
+     class="property-box-header tool"
      name="{{ name }}"
-     class="property-box-header"
      order="prop.adapter.order"
      type="{{ prop.type }}"
      mode="input"
@@ -26,11 +26,19 @@
             </div>
         </div>
 
-        <div class="col-md-8 box-col">
+        <div class="col-md-5 box-col">
             <strong class="key">Value:</strong>
             <div class="value">
                 <div class="value">{{ prop.adapter.value.$expr}}</div>
                 <i ng-if="!prop.adapter.value">Not defined</i>
+            </div>
+        </div>
+
+        <div class="col-md-3 box-col">
+            <strong class="key">Enum:</strong>
+            <div class="value">
+                <span ng-if="prop.enum">{{ prop.enum.join(', ') }}</span>
+                <i ng-if="!prop.enum">Not defined</i>
             </div>
         </div>
     </div>

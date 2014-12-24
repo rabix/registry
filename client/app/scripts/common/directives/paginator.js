@@ -16,13 +16,13 @@ angular.module('registryApp.common')
                 total: '=',
                 handler: '&'
             },
-            link: function(scope) {
+            controller: ['$scope', function ($scope) {
 
-                scope.paginator = {};
-                scope.paginator.prev = false;
-                scope.paginator.next = false;
-                scope.paginator.perPage = scope.perPage ? parseInt(scope.perPage, 10) : 25;
-                scope.paginator.total = 0;
+                $scope.paginator = {};
+                $scope.paginator.prev = false;
+                $scope.paginator.next = false;
+                $scope.paginator.perPage = $scope.perPage ? parseInt($scope.perPage, 10) : 25;
+                $scope.paginator.total = 0;
 
 
                 /**
@@ -30,21 +30,21 @@ angular.module('registryApp.common')
                  *
                  * @param dir
                  */
-                scope.goToPage = function(dir) {
+                $scope.goToPage = function(dir) {
 
                     if (dir === 'prev') {
-                        scope.page -= 1;
+                        $scope.page -= 1;
                     }
                     if (dir === 'next') {
-                        scope.page += 1;
+                        $scope.page += 1;
                     }
 
-                    var offset = (scope.page - 1) * scope.paginator.perPage;
+                    var offset = ($scope.page - 1) * $scope.paginator.perPage;
 
-                    scope.handler({offset: offset});
+                    $scope.handler({offset: offset});
 
-                    scope.paginator.prev = scope.page > 1;
-                    scope.paginator.next = (scope.page * scope.paginator.perPage) < scope.total;
+                    $scope.paginator.prev = $scope.page > 1;
+                    $scope.paginator.next = ($scope.page * $scope.paginator.perPage) < $scope.total;
 
                 };
 
@@ -53,18 +53,23 @@ angular.module('registryApp.common')
                  */
                 var resultLoaded = function() {
 
-                    scope.paginator.prev = scope.page > 1;
-                    scope.paginator.next = (scope.page * scope.paginator.perPage) < scope.total;
-                    scope.paginator.total = Math.ceil(scope.total / scope.paginator.perPage);
+                    $scope.paginator.prev = $scope.page > 1;
+                    $scope.paginator.next = ($scope.page * $scope.paginator.perPage) < $scope.total;
+                    $scope.paginator.total = Math.ceil($scope.total / $scope.paginator.perPage);
 
                 };
 
                 resultLoaded();
 
-                scope.$watch('total', function(n, o) {
+                $scope.$watch('total', function(n, o) {
                     if (n !== o) { resultLoaded(); }
                 });
 
-            }
+                $scope.$watch('page', function(n, o) {
+                    if (n !== o) { resultLoaded(); }
+                });
+
+            }],
+            link: function() {}
         };
     }]);

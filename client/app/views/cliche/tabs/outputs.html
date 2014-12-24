@@ -1,8 +1,9 @@
 <div class="content">
-    <legend class="legend-small toggle" ng-class="{active: view.propsExpanded.outputs}" ng-click="toggleProperties('outputs')">
+    <legend class="legend-small" ng-class="{active: view.propsExpanded.outputs, toggle: view.type === 'tool'}" ng-click="toggleProperties('outputs')">
         Properties
         <add-property
                 type="output"
+                tool-type="{{ view.type }}"
                 properties="view.toolForm.outputs.properties"
                 req="view.toolForm.outputs.required">
         </add-property>
@@ -13,6 +14,7 @@
             ng-model="property"
             active="view.active.outputs[key]"
             name="{{ key }}"
+            type="{{ view.type }}"
             properties="view.toolForm.outputs.properties"
             req="view.toolForm.outputs.required">
     </property-output>

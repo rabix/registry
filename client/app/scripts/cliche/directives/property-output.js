@@ -14,6 +14,7 @@ angular.module('registryApp.cliche')
             template: '<div class="property-box" ng-class="{active: active}"><ng-include class="include" src="view.tpl"></ng-include></div>',
             scope: {
                 name: '@',
+                type: '@',
                 prop: '=ngModel',
                 active: '=',
                 req: '=',
@@ -25,7 +26,7 @@ angular.module('registryApp.cliche')
 
                 $scope.req = $scope.req || [];
                 $scope.view.required = _.contains($scope.req, $scope.name);
-                $scope.view.tpl = 'views/cliche/property/property-output-' + $scope.prop.type  + '.html';
+                $scope.view.tpl = 'views/cliche/property/property-output-' + $scope.type + '-' + $scope.prop.type  + '.html';
 
                 /**
                  * Transform meta into string
@@ -65,7 +66,7 @@ angular.module('registryApp.cliche')
                 $scope.edit = function() {
 
                     var modalInstance = $modal.open({
-                        template: $templateCache.get('views/cliche/partials/manage-property-output.html'),
+                        template: $templateCache.get('views/cliche/partials/manage-property-' + $scope.type + '-output.html'),
                         controller: 'ManagePropertyOutputCtrl',
                         windowClass: 'modal-prop',
                         size: 'lg',
@@ -73,6 +74,7 @@ angular.module('registryApp.cliche')
                             options: function () {
                                 return {
                                     type: 'output',
+                                    toolType: $scope.type,
                                     name: $scope.name,
                                     property: $scope.prop,
                                     properties: $scope.properties,

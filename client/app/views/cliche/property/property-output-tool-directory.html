@@ -1,6 +1,6 @@
 <div property-header
+     class="property-box-header tool"
      name="{{ name }}"
-     class="property-box-header"
      order="prop.adapter.order"
      type="{{ prop.type }}"
      is-required="view.required"
@@ -33,10 +33,10 @@
             <i ng-if="!prop.adapter.metadata.__inherit__">Not defined</i>
         </div>
         <!-- END Inherit -->
-        
+
     </div>
-    
     <div class="row">
+
         <div class="col-md-4 box-col">
             <strong class="key">Metadata:</strong>
             <div class="value">{{ view.metadata }}</div>
@@ -53,12 +53,6 @@
             <div ng-if="prop.adapter.secondaryFiles.$expr" class="value">{{ prop.adapter.secondaryFiles.$expr }}</div>
         </div>
         <!-- END Secondary Files -->
-
-        <div class="col-md-4 box-col">
-            <strong class="key">Streamable:</strong>
-            <div class="value">{{ prop.adapter.streamable ? 'Yes' : 'No' }}</div>
-        </div>
-        <!-- END Streamable -->
     </div>
 
 </div>

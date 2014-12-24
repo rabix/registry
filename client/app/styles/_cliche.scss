@@ -306,20 +306,23 @@
     & > .property-box-header {
       margin: 0;
       background-color: #eee;
-      cursor: pointer;
       position: relative;
       @include user-select(none);
 
-      &:before {
-        content: '';
-        display: block;
-        position: absolute;
-        top: 50%;
-        left: 10px;
-        border-left: 5px solid #555;
-        border-top: 5px solid transparent;
-        border-bottom: 5px solid transparent;
-        margin-top: -5px;
+      &.tool {
+        cursor: pointer;
+
+        &:before {
+          content: '';
+          display: block;
+          position: absolute;
+          top: 50%;
+          left: 10px;
+          border-left: 5px solid #555;
+          border-top: 5px solid transparent;
+          border-bottom: 5px solid transparent;
+          margin-top: -5px;
+        }
       }
 
       .property-box-short-info {
@@ -332,6 +335,11 @@
         }
         .required {
           color: #cc0000;
+        }
+        .info-block {
+          display: inline-block;
+          vertical-align: middle;
+          margin-right: 10px;
         }
       }
 
@@ -381,16 +389,19 @@
     }
   }
 
+  &.script,
   &.active {
     & > .include {
       & > .property-box-header {
         border-bottom: 1px solid #ddd;
-        &:before {
-          border-top: 5px solid #555;
-          border-left: 5px solid transparent;
-          border-right: 5px solid transparent;
-          border-bottom: none;
-          margin-top: -2.5px;
+        &.tool {
+          &:before {
+            border-top: 5px solid #555;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-bottom: none;
+            margin-top: -2.5px;
+          }
         }
       }
       & > .property-box-body {

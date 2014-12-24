@@ -14,6 +14,7 @@ angular.module('registryApp.cliche')
             template: '<a href ng-click="addItem($event)" class="btn btn-default"><i class="fa fa-plus"></i></a>',
             scope: {
                 type: '@',
+                toolType: '@',
                 properties: '=',
                 req: '=',
                 handler: '&'
@@ -37,8 +38,10 @@ angular.module('registryApp.cliche')
 
                     isOpen = true;
 
+                    var tplName = $scope.toolType ? $scope.toolType + '-' + $scope.type : $scope.type;
+
                     var modalInstance = $modal.open({
-                        template: $templateCache.get('views/cliche/partials/manage-property-' + $scope.type + '.html'),
+                        template: $templateCache.get('views/cliche/partials/manage-property-' + tplName + '.html'),
                         controller: 'ManageProperty' + $scope.type.charAt(0).toUpperCase() + $scope.type.slice(1) + 'Ctrl',
                         windowClass: 'modal-prop',
                         size: 'lg',
@@ -46,6 +49,7 @@ angular.module('registryApp.cliche')
                             options: function () {
                                 return {
                                     type: $scope.type,
+                                    toolType: $scope.toolType,
                                     properties: $scope.properties
                                 };
                             }

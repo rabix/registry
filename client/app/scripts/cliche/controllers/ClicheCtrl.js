@@ -72,6 +72,8 @@ angular.module('registryApp.cliche')
 
         $scope.view.fakeRequired = [];
 
+        $scope.view.type = $routeParams.type;
+
         /**
          * Prepare temp list for paginating
          *
@@ -193,6 +195,8 @@ angular.module('registryApp.cliche')
          * @param {string} tab
          */
         $scope.toggleProperties = function(tab) {
+
+            if ($routeParams.type === 'script') { return false; }
 
             $scope.view.propsExpanded[tab] = !$scope.view.propsExpanded[tab];
 

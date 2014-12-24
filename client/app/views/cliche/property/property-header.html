@@ -1,7 +1,7 @@
 <div class="property-box-header-inner" ng-click="toggle()">
 
     <div class="property-box-actions">
-        <a href ng-if="mode === 'input'" ng-click="removeFromConsole($event)" title="remove from console"><i class="fa fa-unlink"></i></a>
+        <a href ng-if="mode === 'input' && toolType === 'tool'" ng-click="removeFromConsole($event)" title="remove from console"><i class="fa fa-unlink"></i></a>
         <a href ng-click="edit($event)"><i class="fa fa-pencil"></i></a>
         <a href ng-click="remove($event)"><i class="fa fa-times"></i></a>
     </div>

@@ -1,6 +1,6 @@
 <div property-header
+     class="property-box-header tool"
      name="{{ name }}"
-     class="property-box-header"
      order="prop.adapter.order"
      type="{{ prop.type }}"
      mode="input"
@@ -77,6 +77,7 @@
                 Properties
                 <add-property
                         type="input"
+                        tool-type="tool"
                         properties="prop.items.properties"
                         req="prop.items.required">
                 </add-property>
@@ -86,6 +87,7 @@
                     ng-model="property"
                     active="view.active[key]"
                     name="{{ key }}"
+                    type="{{ type }}"
                     inputs="inputs[name]"
                     properties="prop.items.properties"
                     req="prop.items.required"
