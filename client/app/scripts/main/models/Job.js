@@ -10,11 +10,15 @@ angular.module('registryApp')
          *
          * @params {integer} skip
          * @params {string} searchTerm
+         * @params {string} type
          * @returns {object} $promise
          */
-        self.getJobs = function(skip, searchTerm) {
+        self.getJobs = function(skip, searchTerm, type, ref) {
 
-            var params = {skip: skip};
+            var params = {skip: skip, ref: ref, type: type};
+//            if (!_.isUndefined(type)) {
+//                params.type = type;
+//            }
 
             params.q = searchTerm || null;
 

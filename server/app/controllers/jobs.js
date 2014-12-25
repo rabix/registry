@@ -52,6 +52,15 @@ router.get('/jobs', function (req, res, next) {
             ];
         }
 
+        if (req.query.type) { whereJobs.type = req.query.type; }
+        if (req.query.type && req.query.ref) {
+            if (req.query.type === 'Workflow') {
+                whereJobs.workflow = req.query.ref;
+            } else {
+                whereJobs.tool = req.query.ref;
+            }
+        }
+
         Job.count(whereJobs).exec(function(err, total) {
             if (err) { return next(err); }
 

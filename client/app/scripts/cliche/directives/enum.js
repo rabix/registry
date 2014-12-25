@@ -20,7 +20,7 @@ angular.module('registryApp.cliche')
                 isRequired: '=',
                 path: '=',
                 form: '=',
-                req: '='
+                req: '=?'
             },
             controller: ['$scope', '$modal', function ($scope, $modal) {
 

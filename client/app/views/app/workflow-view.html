@@ -13,6 +13,7 @@
                 <li ng-class="{active: view.tab === 'info'}"><a href="" ng-click="switchTab('info')">Preview</a></li>
                 <li ng-class="{active: view.tab === 'description'}"><a href="" ng-click="switchTab('description')">Info</a></li>
                 <li ng-class="{active: view.tab === 'revisions'}"><a href="" ng-click="switchTab('revisions')">Revisions</a></li>
+                <li ng-class="{active: view.tab === 'tasks'}"><a href="" ng-click="switchTab('tasks')">Task Templates</a></li>
             </div>
             <div class="actions pull-right">
                 <a href="" ng-if="view.showDelete" ng-click="deleteWorkflow()" class="btn btn-danger" tooltip="Delete workflow" tooltip-placement="bottom"><i class="fa fa-trash"></i> Delete</a>
@@ -97,9 +98,45 @@
                 </table>
             </div>
 
-            <paginator page="view.page" total="view.total" handler="getMoreRevision(offset)"></paginator>
+            <paginator page="view.page.revisions" total="view.total.revisions" handler="getMoreRevision(offset)"></paginator>
 
         </section>
+        <!-- # .revisions -->
+
+        <section class="tab jobs" ng-show="view.tab === 'tasks'">
+
+            <div class="content">
+                <table class="table table-hover jobs">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Repo</th>
+                        <th>Author</th>
+                        <th>Url</th>
+                        <th class="right">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="job in view.jobs">
+                        <td>{{ ::job.name }}</td>
+                        <td><a ng-href="#/repo/{{ ::job.repo._id }}">{{ ::job.repo.owner }}/{{ ::job.repo.name }}</a></td>
+                        <td>{{ ::job.author }}</td>
+                        <td><a ng-href="{{ ::job.url }}" class="job-link" target="_blank">{{ ::job.url }}</a></td>
+                        <td class="right">
+                            <a ng-href="#/task/{{ job._id }}" ng-if="view.user.id === job.user" class="btn btn-default" tooltip="Edit Task Template"><i class="fa fa-pencil"></i></a>
+                        </td>
+                    </tr>
+                    <tr class="empty" ng-if="view.jobs.length === 0">
+                        <td colspan="5"><p class="alert alert-info">There are no task templates for this app</p></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <paginator page="view.page.jobs" total="view.total.jobs" handler="getMoreJobs(offset)"></paginator>
+
+        </section>
+        <!-- # .jobs -->
 
     </div>
     <!-- # .content -->
