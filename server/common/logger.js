@@ -24,7 +24,7 @@ var logger = new (winston.Logger)({
             dirname: config.logging.path,
             timestamp: timeFormatFn
         }),
-        new (winston.transports.Console)({ json: false, timestamp: true }),
+//        new (winston.transports.Console)({ json: false, timestamp: true }),
         new winston.transports.File({ filename: debugLog, json: false })
     ],
     exceptionHandlers: [
