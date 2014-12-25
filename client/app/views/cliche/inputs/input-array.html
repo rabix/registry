@@ -1,6 +1,6 @@
 <div class="form-group"
      ng-hide="ignoreFiles && prop.items.type === 'file'"
-     ng-class="{required: prop.required, 'has-error': (prop.required || model.length) && ((model.length < prop.minItems && prop.minItems > 0) || (model.length > prop.maxItems && prop.maxItems > 0))}">
+     ng-class="{required: view.required, 'has-error': (view.required || model.length) && ((model.length < prop.minItems && prop.minItems > 0) || (model.length > prop.maxItems && prop.maxItems > 0))}">
 
     <label class="control-label">
         {{ key }}
@@ -17,7 +17,8 @@
              min="prop.minItems"
              max="prop.maxItems"
              properties="prop.items.properties"
-             is-required="prop.required"
+             is-required="view.required"
+             req="prop.items.required"
              form="form">
         </enum>
     </div>

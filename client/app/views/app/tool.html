@@ -9,7 +9,7 @@
                 <li ng-class="{active: view.tab === 'revisions'}"><a ng-href="#/tool/{{ ::view.tool._id }}/revisions">Revisions</a></li>
             </div>
             <div class="actions pull-right">
-                <a href ng-if="!view.tool.repo.is_public" ng-click="deleteTool()" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a>
+                <a href ng-if="!view.tool.repo.is_public && view.tool.user._id === view.user.id" ng-click="deleteTool()" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a>
                 <a ng-href="#/cliche/{{ view.type }}/{{ ::view.tool._id }}/latest" class="btn btn-primary"><i class="fa fa-pencil"></i> Edit</a>
             </div>
         </h1>

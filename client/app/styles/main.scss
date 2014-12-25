@@ -96,6 +96,13 @@ body {
       vertical-align: middle;
       margin: 0;
     }
+    
+    .url {
+      display: inline-block;
+      vertical-align: middle;
+      margin-left: 10px;
+      font-size: 16px;
+    }
 
     .actions {
       & > .btn,

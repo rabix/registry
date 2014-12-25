@@ -13,6 +13,7 @@ angular.module('registryApp')
 
         self.jobs = $resource(apiUrl + '/jobs/:id', {id: '@id'}, {
             add: {method: 'POST'},
+            update: {method: 'PUT'},
             'delete': {method: 'DELETE'}
         });
 

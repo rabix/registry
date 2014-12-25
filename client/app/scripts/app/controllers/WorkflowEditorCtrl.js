@@ -4,9 +4,9 @@
 'use strict';
 
 angular.module('registryApp.app')
-    .controller('WorkflowEditorCtrl', ['$scope', '$rootScope', '$q', '$routeParams', '$modal', '$templateCache', '$location', 'Sidebar', 'Loading', 'Tool', 'Workflow', 'User', 'Repo', function ($scope, $rootScope, $q, $routeParams, $modal, $templateCache, $location, Sidebar, Loading, Tool, Workflow, User, Repo) {
+    .controller('WorkflowEditorCtrl', ['$scope', '$rootScope', '$q', '$routeParams', '$modal', '$templateCache', '$location', 'Sidebar', 'Loading', 'Tool', 'Workflow', 'User', 'Repo', 'BeforeRedirect', function ($scope, $rootScope, $q, $routeParams, $modal, $templateCache, $location, Sidebar, Loading, Tool, Workflow, User, Repo, BeforeRedirect) {
 
-        Sidebar.setActive('dyole');
+        Sidebar.setActive('workflow editor');
 
         $scope.view = {};
 
@@ -50,9 +50,6 @@ angular.module('registryApp.app')
 
         /* flag when save is clicked */
         $scope.view.saving = false;
-
-        /* flag to enforce page reload */
-        $scope.view.reload = false;
 
         /* flag for sidebar visibility */
         $scope.view.showSidebar = true;
@@ -260,7 +257,7 @@ angular.module('registryApp.app')
                 return false;
 
             } else if (mode === 'edit') {
-                $scope.view.reload = true;
+                BeforeRedirect.setReload(true);
                 $scope.$broadcast('save', null);
             } else {
                 modalInstance = $modal.open({
@@ -277,7 +274,7 @@ angular.module('registryApp.app')
 
                     if (typeof data.repoId !== 'undefined') {
 
-                        $scope.view.reload = true;
+                        BeforeRedirect.setReload(true);
                         $scope.view.saving = true;
                         $scope.view.loading = true;
                         $scope.$broadcast('save', data.repoId);
@@ -344,47 +341,29 @@ angular.module('registryApp.app')
         };
 
 
-        /**
-         * Track route change in order to prevent loss of changes
-         *
-         * @param e
-         * @param nextLocation
-         */
-        var onRouteChange = function(e, nextLocation) {
-
-            if($scope.view.reload) { return; }
-
-            var modalInstance = $modal.open({
-                template: $templateCache.get('views/partials/confirm-leave.html'),
-                controller: 'ModalCtrl',
-                windowClass: 'modal-confirm',
-                resolve: {data: function () {return {};}}
-            });
-
-            modalInstance.result.then(function () {
-
-                onRouteChangeOff();
-
-                $scope.view.reload = true;
-
-                if ($routeParams.mode === 'new') { $scope.$broadcast('save-local', true); }
-
-                $location.path(nextLocation.split('#\/')[1]);
-
-            });
-
-            e.preventDefault();
-
-        };
-
         var onNodeSelectOff = $rootScope.$on('node:select', onNodeSelect);
         var onNodeDeselectOff = $rootScope.$on('node:deselect', onNodeDeselect);
-        var onRouteChangeOff = $rootScope.$on('$locationChangeStart', onRouteChange);
+
+        var onBeforeRedirectOff = BeforeRedirect.register(function () {
+
+            var deferred = $q.defer();
+
+            if ($routeParams.mode === 'new') {
+                $scope.$broadcast('save-local', true);
+            }
+
+            deferred.resolve();
+
+            return deferred.promise;
+
+        });
 
         $scope.$on('$destroy', function () {
             onNodeSelectOff();
             onNodeDeselectOff();
-            onRouteChangeOff();
+
+            onBeforeRedirectOff();
+            onBeforeRedirectOff = undefined;
 
         });
 
@@ -402,7 +381,7 @@ angular.module('registryApp.app')
 
             modalInstance.result.then(function (data) {
                 if (data.repoId) {
-                    $scope.view.reload = true;
+                    BeforeRedirect.setReload(true);
                     $scope.$broadcast('pipeline:fork', data.repoId, data.name);
                 } else {
                     $modal.open({

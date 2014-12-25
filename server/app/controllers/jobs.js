@@ -70,6 +70,82 @@ router.get('/jobs', function (req, res, next) {
 
 });
 
+router.get('/jobs/:id', function (req, res, next) {
+
+    Job.findById(req.params.id).populate('user').populate('repo').exec(function(err, job) {
+        if (err) { return next(err); }
+
+        var user_id = (req.user ? req.user.id : '').toString();
+        var job_user_id = job.user._id.toString();
+
+        if (job.repo.is_public || user_id === job_user_id) {
+
+            job.json = _.isObject(job.json) ? job.json : JSON.parse(job.json);
+
+            res.json({data: job});
+
+        } else {
+            res.status(401).json({message: 'Unauthorized'});
+        }
+
+    });
+
+});
+
+router.put('/jobs/:id', filters.authenticated, function (req, res, next) {
+
+    var j = req.param('job');
+
+    Job.findById(req.params.id).populate('user').populate('repo').exec(function(err, job) {
+        if (err) { return next(err); }
+
+        var user_id = req.user.id.toString();
+        var repo_user_id = job.repo.user.toString();
+
+        if (job.repo.is_public || user_id === repo_user_id) {
+            Job.findOne({name: j.name, _id: {$ne: req.params.id}}, function (err, check) {
+                if (err) { return next(err); }
+
+                if (!check) {
+
+                    job.name = j.name;
+                    job.json = JSON.stringify(j.json);
+
+                    var folder = 'users/' + req.user.login + '/jobs/' + job.repo.owner + '-' + job.repo.name;
+
+                    Amazon.createFolder(folder)
+                        .then(function() {
+                            Amazon.uploadJSON(job.name + '.json', j.json, folder)
+                                .then(function() {
+
+                                    Amazon.getFileUrl(job.name + '.json', folder, function (url) {
+
+                                        job.url = url;
+
+                                        job.save(function() {
+                                            res.json({url: url, message: 'Task has been successfully updated'});
+                                        });
+
+                                    });
+                                }, function (error) {
+                                    res.status(500).json(error);
+                                });
+                        }, function(error) {
+                            res.status(500).json(error);
+                        });
+
+                } else {
+                    res.status(400).json({message: 'Task name already in use'});
+                }
+            });
+        } else {
+            res.status(401).json({message: 'Unauthorized'});
+        }
+
+    });
+
+});
+
 /**
  * Create job and save it on s3 as well
  *
@@ -79,25 +155,26 @@ router.get('/jobs', function (req, res, next) {
  */
 router.post('/jobs', filters.authenticated, function (req, res, next) {
 
-    var json = req.param('json');
-    var name = req.param('name');
-    var repo = req.param('repo');
+    var j = req.param('job');
 
-    Job.count({name: name}).exec(function(err, count) {
+    Job.count({name: j.name}, function(err, count) {
         if (err) { return next(err); }
 
         if (count > 0) {
-            res.status(400).json({message: 'The "' + name + '" job already exists, please choose another name!'});
+            res.status(400).json({message: 'The "' + name + '" task already exists, please choose another name!'});
         } else {
 
             var job = new Job();
 
-            job.name = name;
-            job.json = JSON.stringify(json);
+            job.name = j.name;
+            job.type = j.type;
+            job.json = JSON.stringify(j.json);
             job.author = req.user.login;
             job.user = req.user.id;
+            if (j.type === 'Workflow') { job.workflow = j.ref; } else { job.tool = j.ref; }
 
-            Repo.findById(repo).populate('user').exec(function (err, repo) {
+            Repo.findById(j.repo).populate('user').exec(function (err, repo) {
+                if (err) { return next(err); }
 
                 var user_id = req.user.id.toString();
                 var repo_user_id = repo.user._id.toString();
@@ -110,7 +187,7 @@ router.post('/jobs', filters.authenticated, function (req, res, next) {
 
                     Amazon.createFolder(folder)
                         .then(function() {
-                            Amazon.uploadJSON(job.name + '.json', json, folder)
+                            Amazon.uploadJSON(job.name + '.json', j.json, folder)
                                 .then(function() {
 
                                     Amazon.getFileUrl(job.name + '.json', folder, function (url) {
@@ -118,7 +195,7 @@ router.post('/jobs', filters.authenticated, function (req, res, next) {
                                         job.url = url;
 
                                         job.save(function() {
-                                            res.json({url: url, message: 'Job has been successfully created'});
+                                            res.json({id: job._id, url: url, message: 'Task has been successfully created'});
                                         });
 
                                     });

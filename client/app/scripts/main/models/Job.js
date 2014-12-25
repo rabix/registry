@@ -23,16 +23,38 @@ angular.module('registryApp')
         };
 
         /**
+         * Get job by id
+         *
+         * @param id
+         */
+        self.getJob = function (id) {
+
+            return Api.jobs.get({id: id}).$promise;
+
+        };
+
+        /**
          * Create job json
          *
-         * @param {object} json
-         * @param {string} name
-         * @param {string} repo
+         * @param {object} job
          * @returns {object} $promise
          */
-        self.createJob = function(json, name, repo) {
+        self.createJob = function(job) {
 
-            return Api.jobs.add({}, {json: json, name: name, repo: repo}).$promise;
+            return Api.jobs.add({}, {job: job}).$promise;
+
+        };
+
+        /**
+         * Update job json
+         *
+         * @param {string} id
+         * @param {object} job
+         * @returns {object} $promise
+         */
+        self.updateJob = function (id, job) {
+
+            return Api.jobs.update({id: id}, {job: job}).$promise;
 
         };
 

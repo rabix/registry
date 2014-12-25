@@ -19,7 +19,8 @@ angular.module('registryApp.cliche')
                 prop: '=',
                 key: '@',
                 ignoreFiles: '@',
-                form: '='
+                form: '=',
+                req: '='
             },
             controller: ['$scope', '$modal', function ($scope, $modal) {
 
@@ -27,6 +28,9 @@ angular.module('registryApp.cliche')
 
                 uniqueId++;
                 $scope.view.uniqueId = uniqueId;
+
+                $scope.view.required = _.contains($scope.req, $scope.key);
+
 
                 /**
                  * Get default input scheme
@@ -87,12 +91,12 @@ angular.module('registryApp.cliche')
 
                     inputScheme = getFileScheme($scope.model);
 
-                /* type OBJECT */
+                    /* type OBJECT */
                 } else if($scope.prop.type === 'object') {
 
                     inputScheme = getObjectScheme($scope.model);
 
-                /* type ARRAY */
+                    /* type ARRAY */
                 } else if($scope.prop.type === 'array') {
 
                     inputScheme = [];
@@ -100,25 +104,25 @@ angular.module('registryApp.cliche')
                     $scope.prop.items = $scope.prop.items || {type: 'string'};
 
                     switch($scope.prop.items.type) {
-                    case 'object':
-                        _.each($scope.model, function(value) {
-                            var innerScheme = getObjectScheme(value);
-                            delete innerScheme.path;
-                            inputScheme.push(innerScheme);
-                        });
-                        break;
-                    case 'file':
-                        _.each($scope.model, function(value) {
-                            inputScheme.push(getFileScheme(value));
-                        });
-                        break;
-                    default:
-                        _.each($scope.model, function(value) {
-                            inputScheme.push(getDefaultScheme(value));
-                        });
-                        break;
+                        case 'object':
+                            _.each($scope.model, function(value) {
+                                var innerScheme = getObjectScheme(value);
+                                delete innerScheme.path;
+                                inputScheme.push(innerScheme);
+                            });
+                            break;
+                        case 'file':
+                            _.each($scope.model, function(value) {
+                                inputScheme.push(getFileScheme(value));
+                            });
+                            break;
+                        default:
+                            _.each($scope.model, function(value) {
+                                inputScheme.push(getDefaultScheme(value));
+                            });
+                            break;
                     }
-                /* type STRING, NUMBER, INTEGER, BOOLEAN */
+                    /* type STRING, NUMBER, INTEGER, BOOLEAN */
                 } else {
                     inputScheme = getDefaultScheme($scope.model);
                 }

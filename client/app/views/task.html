@@ -1,22 +1,29 @@
-<div class="page job">
+<div ng-class="view.classes" loading="view.loading">
     <div class="heading">
         <a ng-href="#/tasks" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
         <h1>
             <div class="form-group job-name">
-                <input type="text" placeholder="Task Template Name" ng-model="view.name" class="form-control" />
+                <input type="text" placeholder="Task Template Name" name="jobName" ng-model="view.job.name" class="form-control" required />
             </div>
+            <a class="url" ng-if="view.job.url" href="{{ ::view.job.url }}" target="_blank">url</a>
 
             <div class="actions pull-right">
 
-                <button ng-disabled="view.saving" class="app-pick-btn btn btn-default" ng-click="pickApp()">
+                <button ng-if="view.mode === 'new'" ng-disabled="view.saving" class="app-pick-btn btn btn-default" ng-click="pickApp()">
                     <i class="fa fa-puzzle-piece"></i> Pick
                 </button>
 
-                <json-preview class="btn-group" json="{{ view.job }}"></json-preview>
-
-                <button ng-if="view.user" ng-disabled="view.saving" class="job-create-btn btn btn-primary" ng-click="create()">
+                <button ng-if="view.mode === 'new' && view.user" ng-disabled="view.saving" class="job-create-btn btn btn-primary" ng-click="create()">
                     <i class="fa fa-plus"></i> Create
                 </button>
+
+                <button ng-if="view.mode === 'edit' && view.user" ng-disabled="view.saving" class="job-update-btn btn btn-primary" ng-click="update()">
+                    <i class="fa fa-check"></i> Update
+                </button>
+
+                <json-preview class="btn-group" json="{{ view.job.json.inputs }}"></json-preview>
+
+                <a href ng-if="!view.job.repo.is_public && view.job.user._id === view.user.id" ng-click="delete()" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a>
 
             </div>
             <!-- # .actions -->
@@ -24,34 +31,31 @@
     </div>
     <!-- # .heading -->
 
-    <div class="content">
+    <div ng-if="!view.loading" class="content">
 
         <section ng-if="!view.app">
             <p class="job-user-guide">Pick <a href ng-click="pickApp()">tool, script or workflow</a> for which you want to generate task template</p>
         </section>
 
-        <form ng-show="view.app" class="form" name="forms.job" role="form" novalidate>
+        <form ng-show="view.app" class="form" name="form.jobForm" role="form" novalidate>
 
             <div class="section bottom">
 
                 <div class="content">
 
-                    <div ng-if="(view.page - 1) === $index" class="input-container" ng-repeat="page in view.pages">
-                        <input-field
-                                ng-repeat="property in page track by $index"
-                                ng-model="view.job.inputs[property.key]"
-                                class="input-field"
-                                key="{{ property.key }}"
-                                prop="property.obj"
-                                index="{{ $index }}"
-                                form="forms.job">
-                        </input-field>
-                    </div>
+                    <input-field
+                            ng-repeat="(key, property) in view.properties"
+                            ng-model="view.job.json.inputs[key]"
+                            class="input-field"
+                            key="{{ key }}"
+                            prop="property"
+                            index="{{ $index }}"
+                            form="form.jobForm"
+                            req="view.required">
+                    </input-field>
 
-                    <p class="alert alert-info" ng-if="view.pages.length === 0">There are no values to be set at this moment.</p>
+                    <p class="alert alert-info" ng-if="(view.properties | isEmpty)">There are no values to be set at this moment.</p>
                 </div>
-
-                <paginator page="view.page" total="view.total" per-page="10"></paginator>
 
             </div>
             <!-- # .section -->
