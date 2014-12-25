@@ -19,12 +19,12 @@ var timeFormatFn = function() {
 
 var logger = new (winston.Logger)({
     transports: [
-        new(winston.transports.DailyRotateFile)({
+        new (winston.transports.DailyRotateFile)({
             filename: debugLog,
             dirname: config.logging.path,
             timestamp: timeFormatFn
         }),
-        new (winston.transports.Console)({ json: true, timestamp: true }),
+        new (winston.transports.Console)({ json: false, timestamp: true }),
         new winston.transports.File({ filename: debugLog, json: false })
     ],
     exceptionHandlers: [
@@ -33,7 +33,7 @@ var logger = new (winston.Logger)({
             dirname: config.logging.path,
             timestamp: timeFormatFn
         }),
-        new (winston.transports.Console)({ json: true, timestamp: true }),
+        new (winston.transports.Console)({ json: false, timestamp: true }),
         new winston.transports.File({ filename: exceptionLog, json: false })
     ],
     exitOnError: false
