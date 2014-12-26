@@ -37,7 +37,7 @@ module.exports = function (app, config) {
     app.use(logger({
         'format': 'dev',
         'stream': {
-            write: function(str) { winston.info(str); }
+            write: function(str) { console.log(str); winston.info(str); }
         }})
     );
 
