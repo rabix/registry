@@ -23,6 +23,9 @@ angular.module('registryApp')
         $scope.subscribe = {};
         $scope.subscribe.email = '';
 
+        $scope.sayHello = function () {
+            $scope.greeting = 'Hello Ari';
+        };
         /**
          * Subscribe user to the mailing list
          *
