@@ -130,6 +130,10 @@ angular.module('registryApp.cliche')
 
                     Data.setTool(json);
                     $scope.view.toolForm = Data.tool;
+
+                    if (_.isUndefined($scope.view.toolForm.inputs.properties)) {
+                        $scope.view.toolForm.inputs.properties = {};
+                    }
                     if (_.isUndefined($scope.view.toolForm.outputs.properties)) {
                         $scope.view.toolForm.outputs.properties = {};
                     }
@@ -489,12 +493,11 @@ angular.module('registryApp.cliche')
 
             var name = $scope.view.toolForm.name;
 
-            Data.flush().then(function(result) {
+            Data.flush(name).then(function(result) {
 
-                $scope.view.toolForm = result.tool;
-                $scope.view.jobForm = result.job;
+                $scope.view.toolForm = angular.copy(result.tool);
+                $scope.view.jobForm = angular.copy(result.job);
                 $scope.view.command = '';
-                $scope.view.toolForm.name = name;
 
                 if ($scope.view.user) {
 
