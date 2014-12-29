@@ -16,7 +16,21 @@ module.exports = function (app) {
 };
 
 /**
- * Get all saved jobs
+ * Get all jobs
+ *
+ * @apiName GetJobs
+ * @api {GET} /api/jobs Get all jobs
+ * @apiGroup Repos
+ * @apiDescription Fetch all jobs
+ *
+ * @apiSuccess {Number} total Total number of jobs
+ * @apiSuccess {Array} list List of jobs
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "total": "1",
+ *       "list": [{job}]
+ *     }
  */
 router.get('/jobs', function (req, res, next) {
 
@@ -79,6 +93,23 @@ router.get('/jobs', function (req, res, next) {
 
 });
 
+/**
+ * Get job by id
+ *
+ * @apiName GetJob
+ * @api {GET} /jobs/:id Get job by id
+ * @apiParam {String} id ID of the job
+ * @apiGroup Jobs
+ * @apiDescription Get job by id
+ * @apiUse UnauthorizedError
+ *
+ * @apiSuccess {Object} data Job details
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "data": {job}
+ *     }
+ */
 router.get('/jobs/:id', function (req, res, next) {
 
     Job.findById(req.params.id).populate('user').populate('repo').exec(function(err, job) {
@@ -101,6 +132,25 @@ router.get('/jobs/:id', function (req, res, next) {
 
 });
 
+/**
+ * Update existing job
+ *
+ * @apiName UpdateJob
+ * @api {PUT} /jobs/:id Update job by id
+ * @apiParam {String} id ID of the job
+ * @apiGroup Jobs
+ * @apiDescription Update existing job by id
+ * @apiPermission Logged in user
+ * @apiUse UnauthorizedError
+ * @apiUse NameCollisionError
+ *
+ * @apiSuccess {String} message Success message
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "message": "Job has been successfully updated"
+ *     }
+ */
 router.put('/jobs/:id', filters.authenticated, function (req, res, next) {
 
     var j = req.param('job');
@@ -156,11 +206,22 @@ router.put('/jobs/:id', filters.authenticated, function (req, res, next) {
 });
 
 /**
- * Create job and save it on s3 as well
+ * Create new job
  *
- * @post-param {object} json
- * @post-param {string} name
- * @post-param {string} repo
+ * @apiName CreateJob
+ * @api {POST} /jobs Create new job
+ * @apiGroup Jobs
+ * @apiDescription Create new job
+ * @apiPermission Logged in user
+ * @apiUse UnauthorizedError
+ * @apiUse NameCollisionError
+ *
+ * @apiSuccess {String} message Success message
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "message": "Job has been successfully created"
+ *     }
  */
 router.post('/jobs', filters.authenticated, function (req, res, next) {
 
@@ -231,6 +292,31 @@ router.post('/jobs', filters.authenticated, function (req, res, next) {
  *
  * @param {String} id - id of the job
  * @return message
+ */
+/**
+ *
+ * Delete job by id
+ *
+ * @apiName DeleteJob
+ * @api {DELETE} /api/jobs/:id Delete job by id
+ * @apiGroup Jobs
+ * @apiDescription Delete job by id
+ * @apiPermission Logged in user
+ * @apiUse UnauthorizedError
+ *
+ * @apiError message Forbidden job delete from the public repo
+ * @apiErrorExample {json} PublicRepoError:
+ *     HTTP/1.1 403 Bad Request
+ *     {
+ *       "message": "This job belongs to public repo and it can't be deleted."
+ *     }
+ *
+ * @apiSuccess {String} message Success message
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *        "message": "Job successfully deleted"
+ *     }
  */
 router.delete('/jobs/:id', filters.authenticated, function (req, res, next) {
 

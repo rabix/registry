@@ -20,6 +20,356 @@ define({ "api": [
     "groupTitle": "Auth"
   },
   {
+    "name": "CreateJob",
+    "type": "POST",
+    "url": "/jobs",
+    "title": "Create new job",
+    "group": "Jobs",
+    "description": "<p>Create new job</p> ",
+    "permission": [
+      {
+        "name": "Logged in user"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Success message</p> "
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"message\": \"Job has been successfully created\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "app/controllers/jobs.js",
+    "groupTitle": "Jobs",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Message",
+            "description": "<p>Unauthorized access</p> "
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "message",
+            "description": "<p>The <code>name</code> already in use.</p> "
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "UnauthorizedError:",
+          "content": "HTTP/1.1 401\n{\n  \"message\": \"Unauthorized\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 400 Bad Request\n{\n  \"message\": \"Name already in use\"\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "name": "DeleteJob",
+    "type": "DELETE",
+    "url": "/api/jobs/:id",
+    "title": "Delete job by id",
+    "group": "Jobs",
+    "description": "<p>Delete job by id</p> ",
+    "permission": [
+      {
+        "name": "Logged in user"
+      }
+    ],
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Forbidden job delete from the public repo</p> "
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Message",
+            "description": "<p>Unauthorized access</p> "
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "PublicRepoError:",
+          "content": "HTTP/1.1 403 Bad Request\n{\n  \"message\": \"This job belongs to public repo and it can't be deleted.\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "UnauthorizedError:",
+          "content": "HTTP/1.1 401\n{\n  \"message\": \"Unauthorized\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Success message</p> "
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n   \"message\": \"Job successfully deleted\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "app/controllers/jobs.js",
+    "groupTitle": "Jobs"
+  },
+  {
+    "name": "GetJob",
+    "type": "GET",
+    "url": "/jobs/:id",
+    "title": "Get job by id",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>ID of the job</p> "
+          }
+        ]
+      }
+    },
+    "group": "Jobs",
+    "description": "<p>Get job by id</p> ",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "data",
+            "description": "<p>Job details</p> "
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"data\": {job}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "app/controllers/jobs.js",
+    "groupTitle": "Jobs",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Message",
+            "description": "<p>Unauthorized access</p> "
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "UnauthorizedError:",
+          "content": "HTTP/1.1 401\n{\n  \"message\": \"Unauthorized\"\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "name": "UpdateJob",
+    "type": "PUT",
+    "url": "/jobs/:id",
+    "title": "Update job by id",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>ID of the job</p> "
+          }
+        ]
+      }
+    },
+    "group": "Jobs",
+    "description": "<p>Update existing job by id</p> ",
+    "permission": [
+      {
+        "name": "Logged in user"
+      }
+    ],
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "message",
+            "description": "<p>Success message</p> "
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"message\": \"Job has been successfully updated\"\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "app/controllers/jobs.js",
+    "groupTitle": "Jobs",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Message",
+            "description": "<p>Unauthorized access</p> "
+          },
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "message",
+            "description": "<p>The <code>name</code> already in use.</p> "
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "UnauthorizedError:",
+          "content": "HTTP/1.1 401\n{\n  \"message\": \"Unauthorized\"\n}",
+          "type": "json"
+        },
+        {
+          "title": "Error-Response:",
+          "content": "HTTP/1.1 400 Bad Request\n{\n  \"message\": \"Name already in use\"\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "name": "GetJobs",
+    "type": "GET",
+    "url": "/api/jobs",
+    "title": "Get all jobs",
+    "group": "Repos",
+    "description": "<p>Fetch all jobs</p> ",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "total",
+            "description": "<p>Total number of jobs</p> "
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "list",
+            "description": "<p>List of jobs</p> "
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"total\": \"1\",\n  \"list\": [{job}]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "app/controllers/jobs.js",
+    "groupTitle": "Repos"
+  },
+  {
+    "name": "GetRepo",
+    "type": "GET",
+    "url": "/api/repos/:id",
+    "title": "Get repository by id",
+    "group": "Repos",
+    "description": "<p>Get repository by id</p> ",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "total",
+            "description": "<p>Total number of user repositories</p> "
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "list",
+            "description": "<p>List of user repositories</p> "
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"total\": \"1\",\n  \"list\": [{repo}]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "app/controllers/repos.js",
+    "groupTitle": "Repos"
+  },
+  {
     "name": "GetRepo",
     "type": "GET",
     "url": "/api/repos/:id/:action",
@@ -55,44 +405,6 @@ define({ "api": [
         {
           "title": "Success-Response:",
           "content": "HTTP/1.1 200 OK\n{\n  \"repo\": {\n      \"_id\" : \"547854cbf76a100000ac84dd\",\n      \"is_public\" : true,\n      \"created_by\" : \"flipio\",\n      \"name\" : \"test\",\n      \"owner\" : \"flipio\",\n      \"git\" : false,\n      \"description\" : \"\",\n      \"user\" : \"547854bcf76a100000ac84dc\"\n  }\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "version": "0.0.0",
-    "filename": "app/controllers/repos.js",
-    "groupTitle": "Repos"
-  },
-  {
-    "name": "GetRepo",
-    "type": "GET",
-    "url": "/api/repos/:id",
-    "title": "Get repository by id",
-    "group": "Repos",
-    "description": "<p>Get repository by id</p> ",
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "Number",
-            "optional": false,
-            "field": "total",
-            "description": "<p>Total number of user repositories</p> "
-          },
-          {
-            "group": "Success 200",
-            "type": "Array",
-            "optional": false,
-            "field": "list",
-            "description": "<p>List of user repositories</p> "
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n  \"total\": \"1\",\n  \"list\": [{repo}]\n}",
           "type": "json"
         }
       ]
