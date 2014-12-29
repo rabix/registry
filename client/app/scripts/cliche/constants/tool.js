@@ -28,10 +28,12 @@ angular.module('registryApp.cliche')
         },
         inputs: {
             type: 'object',
-            'properties': {}
+            required: [],
+            properties: {}
         },
         outputs: {
             type: 'object',
+            required: [],
             properties: {}
         },
         adapter: {

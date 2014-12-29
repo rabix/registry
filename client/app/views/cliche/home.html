@@ -61,10 +61,7 @@
             <li ng-hide="view.app.is_script" ng-class="{active: view.tab === 'adapter'}"><a href ng-click="switchTab('adapter')">Adapter</a></li>
             <li ng-hide="view.app.is_script" ng-class="{active: view.tab === 'values'}"><a href ng-click="switchTab('values')">Test</a></li>
         </ul>
-
-        <a class="btn btn-flush btn-flush-cliche" href ng-click="flush()" tooltip="Start with clean template" tooltip-placement="left">
-            <i class="fa fa-trash"></i>
-        </a>
+        <a href class="btn btn-flush btn-flush-cliche" title="Start with clean template" ng-click="flush()"><i class="fa fa-trash"></i></a>
     </div>
     <!-- # .heading -->
 

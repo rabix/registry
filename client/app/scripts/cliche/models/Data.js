@@ -680,13 +680,14 @@ angular.module('registryApp.cliche')
          *
          * @returns {Object}
          */
-        self.flush = function() {
+        self.flush = function(name) {
 
             var tool = $injector.get('rawTool');
             var job = $injector.get('rawJob');
             var isScript = !self.tool.adapter;
 
             self.tool = tool;
+            self.tool.name = name;
             self.job = job;
             self.command = '';
 
