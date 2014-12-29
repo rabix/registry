@@ -1,5 +1,12 @@
 <div class="form-group" ng-class="{required: view.required, 'has-error': inputForm.inputBoolean.$invalid}">
 
+    <label ng-if="exposed" class="control-label">
+        <div class="checkbox">
+            <label><input type="checkbox" ng-model="view.expose" ng-change="exposeParams()"> expose</label>
+        </div>
+        <span class="input-key">&nbsp;</span>
+    </label>
+
     <div class="input-property-body">
 
         <div class="checkbox">

@@ -273,9 +273,9 @@
   top: 0;
   right: 0;
   color: #555;
-  padding: 6px 8px;
-  background-color: #ddd;
-  @include border-radius(15px);
+  padding: 5px 8px;
+  //background-color: #ddd;
+  //@include border-radius(15px);
 
   &:hover, &:active, &:focus {
     text-decoration: none;
@@ -580,6 +580,18 @@
         border-bottom: 1px solid #ddd;
         display: block;
         background-color: #eee;
+
+        & > .input-key {
+          display: inline-block;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          max-width: 90%;
+        }
+
+        .checkbox {
+          float: right;
+          margin: 0;
+        }
       }
 
       & > .input-property-body {

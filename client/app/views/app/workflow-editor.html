@@ -194,15 +194,6 @@
                         <form ng-if="!(view.json | isEmpty)" class="form" name="paramForms" novalidate>
 
                             <h3 class="tab-title">{{ ::view.json.name }}</h3>
-                            <input-param
-                                    class="input-param"
-                                    ng-repeat="(key, property) in view.json.inputs.properties"
-                                    ng-hide="property.type === 'file'"
-                                    ng-model="property"
-                                    key="{{ ::key }}"
-                                    app-name="{{ ::view.json.name }}"
-                                    exposed="view.workflow.json.exposed">
-                            </input-param>
 
                             <input-field
                                     ng-repeat="(key, property) in view.json.inputs.properties"
@@ -213,7 +204,9 @@
                                     prop="property"
                                     index="{{ $index }}"
                                     form="form.jobForm"
-                                    req="view.required">
+                                    req="view.required"
+                                    app-name="{{ ::view.json.name }}"
+                                    exposed="view.workflow.json.exposed">
                             </input-field>
 
                             <p class="alert alert-info" ng-if="view.json.inputs.properties | isEmpty">There are no params that can be exposed.</p>
