@@ -203,6 +203,19 @@
                                     app-name="{{ ::view.json.name }}"
                                     exposed="view.workflow.json.exposed">
                             </input-param>
+
+                            <input-field
+                                    ng-repeat="(key, property) in view.json.inputs.properties"
+                                    ng-hide="property.type === 'file' || (property.type === 'array' && property.items.type === 'file')"
+                                    ng-model="view.json.params[key]"
+                                    class="input-field input-field-sm"
+                                    key="{{ key }}"
+                                    prop="property"
+                                    index="{{ $index }}"
+                                    form="form.jobForm"
+                                    req="view.required">
+                            </input-field>
+
                             <p class="alert alert-info" ng-if="view.json.inputs.properties | isEmpty">There are no params that can be exposed.</p>
                         </form>
 
