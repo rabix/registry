@@ -1,6 +1,19 @@
-%flex {
+.flex-box-column {
   @include flex-box();
-  @include flex-flow(column nowrap);
+  @include flex-direction(column);
+}
+
+.flex-box-row {
+  @include flex-box();
+  @include flex-direction(row);
+}
+
+.flex-auto {
+  @include flex(0 0 auto);
+}
+
+.flex-one {
+  @include flex(1);
 }
 
 %trace-box {
@@ -36,26 +49,6 @@
 
 %scrollbar-blue {
   @include scrollbar($blue);
-}
-
-%flex-job-form {
-  @extend %flex;
-  @include flex(1);
-
-  .section {
-    &.top {
-      @include flex(0 0 auto);
-      padding: 10px 10px 0 10px;
-      border-bottom: 1px solid #ddd;
-    }
-    &.bottom {
-      @extend %flex;
-      @include flex(1);
-      & > .content {
-        padding: 10px;
-      }
-    }
-  }
 }
 
 %ellipsis {

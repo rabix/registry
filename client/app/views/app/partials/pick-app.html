@@ -4,8 +4,9 @@
 </div>
 <div class="modal-body no-padding">
 
-    <div class="tabs" ng-class="{loading: view.loading}">
-        <div class="nav nav-tabs">
+    <div class="tabs flex-box-column" ng-class="{loading: view.loading}">
+
+        <div class="nav nav-tabs flex-auto">
             <li ng-class="{active: view.tab === 'tools'}" class=""><a href ng-click="switchTab('tools')">Tools</a></li>
             <li ng-class="{active: view.tab === 'scripts'}" class=""><a href ng-click="switchTab('scripts')">Scripts</a></li>
             <li ng-class="{active: view.tab === 'workflows'}" class=""><a href ng-click="switchTab('workflows')">Workflows</a></li>
@@ -22,8 +23,8 @@
             </li>
         </div>
 
-        <section ng-show="view.tab === 'tools'" class="tools">
-            <div class="content">
+        <section ng-show="view.tab === 'tools'" class="tab tools flex-box-column flex-one">
+            <div class="content flex-one">
                 <table class="table table-hover apps">
                     <thead>
                     <tr>
@@ -91,12 +92,12 @@
                     </tbody>
                 </table>
             </div>
-            <paginator page="view.page.tools" total="view.total.tools" handler="getMoreTools(offset)"></paginator>
+            <paginator class="paginator" page="view.page.tools" total="view.total.tools" handler="getMoreTools(offset)"></paginator>
         </section>
         <!-- # .tools -->
 
-        <section ng-show="view.tab === 'scripts'" class="scripts">
-            <div class="content">
+        <section ng-show="view.tab === 'scripts'" class="tab scripts flex-box-column flex-one">
+            <div class="content flex-one">
                 <table class="table table-hover apps">
                     <thead>
                         <tr>
@@ -164,12 +165,12 @@
                     </tbody>
                 </table>
             </div>
-            <paginator page="view.page.scripts" total="view.total.scripts" handler="getMoreScripts(offset)"></paginator>
+            <paginator class="paginator" page="view.page.scripts" total="view.total.scripts" handler="getMoreScripts(offset)"></paginator>
         </section>
         <!-- # .scripts -->
 
-        <section ng-show="view.tab === 'workflows'" class="workflows">
-            <div class="content">
+        <section ng-show="view.tab === 'workflows'" class="tab workflows flex-box-column flex-one">
+            <div class="content flex-one">
                 <table class="table table-hover apps">
                     <thead>
                     <tr>
@@ -237,7 +238,7 @@
                     </tbody>
                 </table>
             </div>
-            <paginator page="view.page.workflows" total="view.total.workflows" handler="getMoreWorkflows(offset)"></paginator>
+            <paginator class="paginator" page="view.page.workflows" total="view.total.workflows" handler="getMoreWorkflows(offset)"></paginator>
         </section>
         <!-- # .workflows -->
     </div>

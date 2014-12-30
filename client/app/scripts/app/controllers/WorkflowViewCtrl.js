@@ -30,7 +30,7 @@ angular.module('registryApp.app')
 
         $scope.view.showDelete = false;
 
-        $scope.view.classes = ['page', 'pipeline-view'];
+        $scope.view.classes = ['page', 'workflow-view'];
         Loading.setClasses($scope.view.classes);
 
         $scope.Loading = Loading;

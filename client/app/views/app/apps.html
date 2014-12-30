@@ -33,20 +33,20 @@
     </div>
     <!-- # .filters -->
 
-    <div ng-show="!view.loading" class="content">
+    <div ng-show="!view.loading" class="content content-tbl flex-box-column">
 
-        <div class="tabs">
+        <div class="tabs flex-box-column flex-one">
 
-            <div ng-show="view.tab === 'tools'" class="section tools">
-                <ng-include class="include" src="'views/app/tabs/tools.html'"></ng-include>
+            <div ng-show="view.tab === 'tools'" class="tab tools flex-box-column flex-one">
+                <ng-include class="include flex-box-column flex-one" src="'views/app/tabs/tools.html'"></ng-include>
             </div>
             <!-- # .tools -->
 
-            <div ng-show="view.tab === 'scripts'" class="section scripts">
-                <ng-include class="include" src="'views/app/tabs/scripts.html'"></ng-include>
+            <div ng-show="view.tab === 'scripts'" class="tab scripts flex-box-column flex-one">
+                <ng-include class="include flex-box-column flex-one" src="'views/app/tabs/scripts.html'"></ng-include>
             </div>
-            <div ng-show="view.tab === 'workflows'" class="section workflows">
-                <ng-include class="include" src="'views/app/tabs/workflows.html'"></ng-include>
+            <div ng-show="view.tab === 'workflows'" class="tab workflows flex-box-column flex-one">
+                <ng-include class="include flex-box-column flex-one" src="'views/app/tabs/workflows.html'"></ng-include>
             </div>
 
         </div>

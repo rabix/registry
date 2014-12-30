@@ -1,42 +1,17 @@
 .page {
   &.cliche {
     & > .content {
-      padding: 0;
-      @extend %flex;
-
       & > .form {
         width: 100%;
       }
 
-      & > .tab {
-        @include flex(1);
-        @extend %flex;
+      .section.top {
+        padding: 10px 10px 0 10px;
+        border-bottom: 1px solid #ddd;
       }
 
-      .include {
-        @include flex(1);
-        @extend %flex;
-
-        & > .content {
-          padding: 10px;
-
-          &.flex {
-            @extend %flex;
-            padding: 0;
-
-            & > .form {
-              @extend %flex-job-form;
-            }
-          }
-        }
-
-        & > .paginate {
-          @include flex(0 0 auto);
-        }
-
-        .row {
-          margin: 0 !important;
-        }
+      .row {
+        margin: 0 !important;
       }
     }
 
@@ -44,10 +19,9 @@
       position: relative;
     }
 
-    & > .console {
+    .console {
       position: relative;
       overflow: hidden;
-      @include flex(0 0 auto);
 
       .heading {
         font-weight: bold;
@@ -119,44 +93,7 @@
   }
 }
 
-/* App/Job actions box (save, publish, import) */
-.app-actions-wrap,
-.job-actions-wrap {
-  .app-action-btns,
-  .job-action-btns {
-    position: absolute;
-    bottom: 5px;
-    right: 15px;
-    @media (max-width: 600px) {
-      button {
-        width: 40px;
-        padding: 6px 0;
-        i {
-          width: 40px;
-          margin: 0 auto;
-        }
-      }
-    }
-  }
-  p {
-    position: absolute;
-    padding: 20px 30px;
-    top: 50%;
-    left: 50%;
-    width: 200px;
-    margin-left: -100px;
-    margin-top: -50px;
-    color: #ff0000;
-    border: 1px solid #cc0000;
-    text-align: center;
-    background-color: rgba(0, 0, 0, 0.5);
-  }
-  label {
-    color: #fff;
-    margin: 0 10px;
-  }
-}
-
+/* Revisions list from the modal */
 .revisions-list {
   margin: 0;
   max-height: 456px;
@@ -184,69 +121,6 @@
     }
 
     &:last-child {
-      border-bottom: none;
-    }
-  }
-}
-
-/* App listing in modal (for the import) */
-.app-list {
-  margin: 10px 0;
-  max-height: 456px;
-  overflow: auto;
-  border-top: 1px solid #ddd;
-  border-bottom: 1px solid #ddd;
-  padding: 1px 0;
-  @extend %scrollbar-blue;
-
-  & > li {
-    cursor: pointer;
-    border-bottom: 1px solid #ddd;
-
-    & > .app-list-item {
-      overflow: auto;
-      & > span {
-        padding: 7px 10px;
-      }
-    }
-
-    &.selected {
-      & > .app-list-item {
-        background-color: $blue;
-        color: #fff;
-        a {
-          color: #fff;
-        }
-      }
-    }
-
-    &.disabled {
-      & > .app-list-item {
-        cursor: auto;
-        color: #ccc;
-      }
-    }
-
-    & > .app-list-item {
-      & > span {
-        display: inline-block;
-        .glyphicon {
-          color: #eee;
-          margin: 10px;
-        }
-      }
-      & > a {
-        float: right;
-        margin: 7px 10px;
-      }
-    }
-
-    &:last-child {
-      border-bottom: none;
-    }
-
-    .app-list {
-      margin: 0 0 0 10px;
       border-bottom: none;
     }
   }
@@ -281,19 +155,11 @@
   }
 }
 
-.expr-text {
-  color: #555;
-  &:hover {
-    color: #555;
-  }
-  &.not-defined {
-    font-style: italic;
-  }
-}
-
+/* Property box for displaying input/output/argument values */
 .property-box {
   margin: 0 0 10px 0;
   border: 1px solid #ddd;
+
   &:hover {
     @include transition(border 0.3s ease);
     border: 1px solid #bbb;

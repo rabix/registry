@@ -437,34 +437,28 @@ ul {
       margin-bottom: 20px;
     }
   }
+
   .tabs {
     overflow: hidden;
     margin-top: 10px;
-    @extend %flex;
+
     &.loading {
       @extend %loading-abs;
     }
-    & > .nav {
-      @include flex(0 0 auto);
+
+    .nav.nav-tabs {
       .form-li {
         width: 300px;
         margin-right: 10px;
         float: right;
       }
     }
-    & > section {
-      @extend %flex;
-      @include flex(1);
-      & > .content {
-        overflow-y: auto;
-        min-height: 100px;
-        max-height: 500px;
-        @include flex(1);
-        @extend %scrollbar;
-      }
-      & > .paginate {
-        @include flex(0 0 auto);
-      }
+
+    .content {
+      overflow-y: auto;
+      min-height: 100px;
+      max-height: 500px;
+      @extend %scrollbar;
     }
   }
 }
@@ -488,10 +482,10 @@ ul {
 }
 
 .no-padding {
-  padding: 0;
+  padding: 0 !important;
 }
 .no-margin {
-  margin: 0;
+  margin: 0 !important;
 }
 .inline {
   display: inline-block !important;

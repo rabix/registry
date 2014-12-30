@@ -1,106 +1,6 @@
 .page {
 
-  .heading,
-  .filters {
-    padding: 0 10px;
-    background-color: $gray;
-    border-bottom: 2px solid $orange;
-    background-image: url(../images/bg.png);
-    @include flex(0 0 auto);
-
-    .nav.nav-pills {
-      float: left;
-    }
-  }
-
-  /* Page heading */
-  .heading {
-
-    h1 {
-
-      .label {
-        font-size: 14px;
-        font-weight: normal;
-        padding: 2px 5px;
-      }
-
-      .pipeline-repo,
-      .tool-repo {
-        font-size: 14px;
-        line-height: 22px;
-      }
-
-      .form-group {
-        &.workflow-name,
-        &.tool-name {
-          width: auto;
-
-          & > input[type=text] {
-            display: inline-block;
-            margin-left: 5px;
-            width: auto;
-            vertical-align: middle;
-          }
-        }
-        &.workflow-name {
-          & > span {
-            font-size: 20px;
-            margin-top: -7px;
-
-            &.pipeline-repo {
-              font-size: 14px;
-              line-height: 21px;
-            }
-          }
-        }
-        &.tool-name {
-          & > span {
-            margin-right: 10px;
-          }
-          .checkbox {
-            margin: 0 0 0 20px;
-            min-height: initial;
-            input[type=checkbox] {
-              margin-top: 3px;
-            }
-          }
-        }
-      }
-
-    }
-
-    @include flex(0 0 auto);
-    .go-back {
-      margin: 12.5px 0;
-    }
-
-  }
-
-  /* Page filters */
-  .filters {
-    height: 61px;
-    padding: 13px 0;
-
-    &.empty {
-      height: 10px;
-    }
-
-    .label {
-      font-size: 15px;
-      display: inline-block;
-      line-height: 22px;
-      .close {
-        color: #fff;
-        font-weight: normal;
-        text-shadow: none;
-        float: none;
-        @include opacity(1);
-      }
-    }
-    .tags {
-      padding: 2px 0;
-    }
-  }
+  @import "heading";
 
   /* Page description */
   .description {
@@ -144,6 +44,7 @@
           }
         }
       }
+
       &.horizontal {
         .panel-body {
           padding: 0;
@@ -164,37 +65,6 @@
           }
         }
       }
-    }
-  }
-
-  /* Page section */
-  section {
-    margin: 0 0 30px 0;
-    position: relative;
-
-    table {
-      &.apps {
-        th {
-          &:nth-child(1) {
-            width: 30% !important;
-          }
-          &:nth-child(2) {
-            width: 70% !important;
-          }
-        }
-      }
-      thead {
-        tr {
-          background-color: $gray;
-          border: {
-            left: 1px solid #ddd;
-            right: 1px solid #ddd;
-          }
-        }
-      }
-    }
-    &.loading {
-      @extend %loading-abs;
     }
   }
 
@@ -292,65 +162,18 @@
   }
 
   .col {
-    @include flex-box();
-    @include flex-flow(column nowrap);
-
-    & > .heading {
-      padding: 0;
+   .tab {
       position: relative;
-      @include flex(0 0 auto);
-    }
-
-    & > .filter {
-      @include flex(0 0 auto);
-    }
-
-    & > .content {
-      padding: 0;
-      @include flex(1);
-      @include flex-box();
-      @include flex-flow(column nowrap);
-
-      & > .tabs {
-        position: relative;
-        @include flex(1);
-        @include flex-box();
-        @include flex-flow(column nowrap);
-
-        & > .tab {
-          @include flex(1);
-          @include flex-box();
-          @include flex-flow(column nowrap);
-          .json-trace,
-          .console-trace {
-            @include flex(1);
-            @include flex-box();
-            @include flex-flow(column nowrap);
-            pre {
-              overflow-y: auto;
-              @include flex(1);
-              @extend %scrollbar;
-            }
-          }
-
-          &.loading {
-            @extend %loading-abs;
-          }
-
-        }
+      &.loading {
+        @extend %loading-abs;
       }
-
     }
 
-    &.content-col {
-      @include flex(1);
-    }
     &.sidebar-col {
       width: 450px;
       border-left: 2px solid $orange;
       overflow-x: hidden;
       @include transition(width 0.2s ease);
-      @include flex(0 0 auto);
 
       .filter,
       .content,
@@ -375,6 +198,9 @@
 
 .tabs {
   .tab {
+    &.tab-tbl {
+      margin: 0 -10px;
+    }
     .tab-title {
       margin: 0;
       padding: 5px 10px;
@@ -386,14 +212,14 @@
 }
 
 /* Paginator */
-.paginate {
+.paginator {
   padding: 10px;
   overflow: auto;
   background-color: $gray;
   background-image: url(../images/bg.png);
   border-top: 1px solid #ddd;
   text-align: center;
-  @include flex(0 0 auto);
+  @extend .flex-auto;
 
   .page-number {
     display: inline-block;
@@ -409,10 +235,6 @@
   white-space: nowrap;
   overflow: hidden;
   display: block;
-}
-
-.no-margin {
-  margin: 0px !important;
 }
 
 /* Browser happy box */
@@ -632,20 +454,8 @@ legend {
 /* Pipeline */
 .pipeline-wrap {
   position: relative;
-  @include flex(1);
-  //@include flex-box();
-  //@include flex-flow(column nowrap);
-  @extend %flex;
-
-  .pipeline-inner {
-    @extend %flex;
-    @include flex(1);
-  }
 
   .pipeline-drop-area {
-    @include flex(1);
-    @include flex-box();
-    @include flex-flow(column nowrap);
     position: relative;
 
     &.drag-over {
@@ -656,16 +466,11 @@ legend {
       @extend %loading-abs;
     }
 
-    .pipeline {
-      @include flex(1);
-    }
-
     .pipeline-actions {
       position: absolute;
       bottom: 10px;
       right: 10px;
     }
-
 
     .pipeline-user-guide {
       width: 400px;
@@ -678,7 +483,6 @@ legend {
     }
 
   }
-
 }
 
 .job-user-guide {

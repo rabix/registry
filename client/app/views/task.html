@@ -31,34 +31,29 @@
     </div>
     <!-- # .heading -->
 
-    <div ng-if="!view.loading" class="content">
+    <div ng-if="!view.loading" class="content content-tbl flex-box-column">
 
         <section ng-if="!view.app">
             <p class="job-user-guide">Pick <a href ng-click="pickApp()">tool, script or workflow</a> for which you want to generate task template</p>
         </section>
 
-        <form ng-show="view.app" class="form" name="form.jobForm" role="form" novalidate>
+        <form ng-show="view.app" class="form flex-box-column flex-one" name="forms.jobForm" role="form" novalidate>
 
-            <div class="section bottom">
+            <div class="content content-ten">
 
-                <div class="content">
+                <input-field
+                        ng-repeat="(key, property) in view.properties"
+                        ng-model="view.job.json.inputs[key]"
+                        class="input-field"
+                        key="{{ key }}"
+                        prop="property"
+                        index="{{ $index }}"
+                        form="form.jobForm"
+                        req="view.required">
+                </input-field>
 
-                    <input-field
-                            ng-repeat="(key, property) in view.properties"
-                            ng-model="view.job.json.inputs[key]"
-                            class="input-field"
-                            key="{{ key }}"
-                            prop="property"
-                            index="{{ $index }}"
-                            form="form.jobForm"
-                            req="view.required">
-                    </input-field>
-
-                    <p class="alert alert-info" ng-if="(view.properties | isEmpty)">There are no values to be set at this moment.</p>
-                </div>
-
+                <p class="alert alert-info" ng-if="(view.properties | isEmpty)">There are no values to be set at this moment.</p>
             </div>
-            <!-- # .section -->
 
         </form>
 

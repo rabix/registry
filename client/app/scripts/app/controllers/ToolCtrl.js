@@ -26,7 +26,7 @@ angular.module('registryApp.app')
         $scope.view.tab = $routeParams.tab || 'info';
         $scope.view.isJsonVisible = false;
 
-        $scope.view.classes = ['page', 'app'];
+        $scope.view.classes = ['page', 'tool'];
         Loading.setClasses($scope.view.classes);
 
         $scope.Loading = Loading;

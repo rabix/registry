@@ -16,14 +16,14 @@
             <div class="col-md-8">
                 <div class="actions pull-right" ng-if="view.user">
                     <a href ng-click="manageRepoModal()" class="btn btn-primary"><i class="fa fa-plus"></i> New Repo</a>
-                    <!--<a ng-href="#/add-your-github-repo" class="btn btn-default add-github">Add Your GitHub Repo</a>-->
+                    <!--<a ng-href="#/add-your-github-repo" class="btn btn-default"><i class="fa fa-github"></i> Add Your GitHub Repo</a>-->
                 </div>
             </div>
         </div>
     </div>
     <!-- # .filters -->
 
-    <div ng-if="!view.loading" class="content">
+    <div ng-if="!view.loading" class="content content-tbl">
         <table class="table table-hover repos">
             <thead>
                 <tr>
@@ -58,6 +58,6 @@
     </div>
     <!-- # .content -->
 
-    <paginator page="view.page" total="view.total" handler="getMoreRepos(offset)"></paginator>
+    <paginator class="paginator" page="view.page" total="view.total" handler="getMoreRepos(offset)"></paginator>
 
 </div>

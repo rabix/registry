@@ -3,7 +3,7 @@
     <div class="filters empty"></div>
     <!-- # .filters -->
 
-    <div ng-if="!view.loading" class="content">
+    <div ng-if="!view.loading" class="content content-tbl">
         <table class="table table-hover builds">
             <thead>
                 <tr>
@@ -47,6 +47,6 @@
     </div>
     <!-- # .content -->
 
-    <paginator page="view.page" total="view.total" handler="getMoreBuilds(offset)"></paginator>
+    <paginator class="paginator" page="view.page" total="view.total" handler="getMoreBuilds(offset)"></paginator>
 
 </div>
