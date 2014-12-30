@@ -450,6 +450,8 @@
   .alert {
     padding: 6px 10px;
     margin: 0;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
   .add-enum-item {
     float: left;
@@ -469,7 +471,6 @@
       }
 
       .enum-field.form-group {
-        margin: 0 40px 0 0;
         border: none;
         &.form-group-object {
           border-bottom: 1px solid #ddd;
@@ -767,55 +768,4 @@ legend {
     padding: 10px;
     font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
   }
-}
-
-.input-param {
-  .form-group {
-    margin-bottom: 0;
-    & > .input-param-children {
-      padding-left: 15px;
-      background-color: #fdfdfd;
-      display: none;
-      &.expand {
-        display: block;
-      }
-      .form-group {
-        border-left: 1px solid #eee;
-      }
-    }
-    .alert {
-      margin: 0;
-      padding: 10px;
-    }
-  }
-  .input-param-details {
-    display: block;
-    padding: 7px;
-    border-bottom: 1px solid #eee;
-
-    &.exposable {
-      padding-right: 90px;
-    }
-
-    .type {
-      float: right;
-    }
-    .toggle {
-      float: left;
-      padding-right: 6px;
-      color: #29567D;
-    }
-    span {
-      text-overflow: ellipsis;
-      overflow: hidden;
-      white-space: nowrap;
-      display: block;
-      font-weight: bold;
-    }
-  }
-  .checkbox {
-    float: right;
-    margin: 6px 10px 6px 0;
-  }
-
 }

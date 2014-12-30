@@ -1,5 +1,10 @@
 <div class="form-group" ng-class="{required: view.required, 'has-error': inputForm.inputNumber.$invalid}">
-    <label class="control-label">{{ key }}</label>
+    <label class="control-label">
+        <div ng-if="exposed" class="checkbox">
+            <label><input type="checkbox" ng-model="view.expose" ng-change="exposeParams()"> expose</label>
+        </div>
+        <span class="input-key" title="{{ key }}">{{ key }}</span>
+    </label>
 
     <div class="input-property-body">
 

@@ -321,9 +321,15 @@ angular.module('registryApp.app')
                 $scope.view.workflow.json.exposed = {};
             }
 
+            if (_.isUndefined($scope.view.json.params)) {
+                $scope.view.json.params = {};
+            }
+
             if (model.type === 'workflow') {
                 _.extend($scope.view.json.inputs.properties, $scope.view.json.exposed);
             }
+
+            console.log($scope.view.json);
 
             $scope.$digest();
 

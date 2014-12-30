@@ -20,9 +20,13 @@ angular.module('registryApp.cliche')
                 key: '@',
                 ignoreFiles: '@',
                 form: '=',
-                req: '='
+                req: '=',
+                appName: '@',
+                exposed: '=?'
             },
             controller: ['$scope', '$modal', function ($scope, $modal) {
+
+                var keyName = $scope.appName + '.' + $scope.key;
 
                 $scope.view = {};
 
@@ -31,6 +35,9 @@ angular.module('registryApp.cliche')
 
                 $scope.view.required = _.contains($scope.req, $scope.key);
 
+                $scope.view.expose = $scope.exposed ? !_.isUndefined($scope.exposed[keyName]) : false;
+
+                $scope.view.exposible = !_.isUndefined($scope.exposed);
 
                 /**
                  * Get default input scheme
@@ -104,23 +111,23 @@ angular.module('registryApp.cliche')
                     $scope.prop.items = $scope.prop.items || {type: 'string'};
 
                     switch($scope.prop.items.type) {
-                        case 'object':
-                            _.each($scope.model, function(value) {
-                                var innerScheme = getObjectScheme(value);
-                                delete innerScheme.path;
-                                inputScheme.push(innerScheme);
-                            });
-                            break;
-                        case 'file':
-                            _.each($scope.model, function(value) {
-                                inputScheme.push(getFileScheme(value));
-                            });
-                            break;
-                        default:
-                            _.each($scope.model, function(value) {
-                                inputScheme.push(getDefaultScheme(value));
-                            });
-                            break;
+                    case 'object':
+                        _.each($scope.model, function(value) {
+                            var innerScheme = getObjectScheme(value);
+                            delete innerScheme.path;
+                            inputScheme.push(innerScheme);
+                        });
+                        break;
+                    case 'file':
+                        _.each($scope.model, function(value) {
+                            inputScheme.push(getFileScheme(value));
+                        });
+                        break;
+                    default:
+                        _.each($scope.model, function(value) {
+                            inputScheme.push(getDefaultScheme(value));
+                        });
+                        break;
                     }
                     /* type STRING, NUMBER, INTEGER, BOOLEAN */
                 } else {
@@ -144,6 +151,19 @@ angular.module('registryApp.cliche')
                     modalInstance.result.then(function (scheme) {
                         $scope.model = angular.copy(scheme);
                     });
+
+                };
+
+                /**
+                 * Expose current parameter
+                 */
+                $scope.exposeParams = function () {
+
+                    if ($scope.view.expose) {
+                        $scope.exposed[keyName] = $scope.prop;
+                    } else {
+                        delete $scope.exposed[keyName];
+                    }
 
                 };
 
