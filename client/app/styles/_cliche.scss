@@ -276,138 +276,7 @@
 
 }
 
-/* Property/Argument box */
-.property-wrap,
-.argument-wrap {
-  margin: 0 0 10px 0;
-  border: 1px solid #ddd;
-
-  &:hover {
-    @include transition(border 0.3s ease);
-    border: 1px solid #bbb;
-
-    & > .legend-tiny {
-      background-color: #ddd;
-    }
-    & > .property-body {
-      background-color: #f3f3f3;
-    }
-
-    &.active {
-      & > .legend-tiny {
-        border-bottom: 1px solid #bbb;
-      }
-    }
-  }
-
-  &.active {
-    & > .legend-tiny {
-      border-bottom: 1px solid #ddd;
-    }
-    & > .property-body {
-      display: block;
-    }
-  }
-
-  & > .legend-tiny {
-    padding: 5px 30px 5px 25px;
-    margin: 0;
-    position: relative;
-    overflow: auto;
-
-    .checkbox {
-      display: inline-block;
-      margin: 5px 10px 0 5px;
-      float: right;
-    }
-
-    .remove {
-      position: absolute;
-      right: 0;
-      top: 50%;
-      line-height: 15px;
-      font-size: 25px;
-      padding: 8px;
-      color: #666;
-      margin-top: -15px;
-      &:hover {
-        color: #333;
-      }
-    }
-  }
-
-  & > .property-body {
-    display: none;
-    padding: 10px;
-    background-color: #f9f9f9;
-    & > .row {
-      margin-left: 0;
-      margin-right: 0;
-      & > div {
-        padding: 0 5px;
-      }
-    }
-    .control-label {
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      width: 100%;
-      display: block;
-      overflow: hidden;
-    }
-  }
-
-  .checkbox {
-    &.no-margin {
-      margin: 5px 0;
-    }
-  }
-
-  .property-name {
-    margin: 5px 110px 5px 0;
-    span {
-      text-overflow: ellipsis;
-      max-width: 85%;
-      overflow: hidden;
-      white-space: nowrap;
-    }
-    a {
-      padding: 0px 5px;
-      color: #555;
-    }
-    span, a {
-      display: inline-block;
-      vertical-align: middle;
-    }
-  }
-  .property-name-form {
-    font-weight: normal;
-    width: 240px;
-    float: left;
-    margin: 1px 0;
-    .input-group {
-      margin-left: -5px;
-      input {
-        height: 30px;
-        padding: 5px;
-      }
-      button {
-        padding: 4px 8px;
-      }
-    }
-    .alert {
-      padding: 5px;
-    }
-  }
-}
-
-/* Argument box */
-.argument-wrap {
-  & > .legend-tiny {
-    overflow: hidden;
-  }
-}
-
-/* Input box */
+/* Input property box small */
 .input-field-sm {
   .input-property {
     & > .form-group {
@@ -425,6 +294,8 @@
     }
   }
 }
+
+/* Input property box regular */
 .input-property {
   & > .form-group {
     margin: 0 0 10px 0;
@@ -493,6 +364,7 @@
   }
 }
 
+/* Expression edit form */
 .expression-form {
   margin-bottom: 10px;
   .form-group {

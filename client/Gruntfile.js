@@ -396,12 +396,12 @@ module.exports = function (grunt) {
                     }
                 ]
             },
-            styles: {
-                expand: true,
-                cwd: '<%= yeoman.app %>/styles',
-                dest: '.tmp/styles/',
-                src: '{,*/}*.css'
-            }
+//            styles: {
+//                expand: true,
+//                cwd: '<%= yeoman.app %>/styles',
+//                dest: '.tmp/styles/',
+//                src: '{,*/}*.css'
+//            }
         },
 
         // Run some tasks in parallel to speed up the build process
