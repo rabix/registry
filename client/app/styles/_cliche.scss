@@ -274,8 +274,6 @@
   right: 0;
   color: #555;
   padding: 5px 8px;
-  //background-color: #ddd;
-  //@include border-radius(15px);
 
   &:hover, &:active, &:focus {
     text-decoration: none;
@@ -500,8 +498,6 @@
 
   .property-name {
     margin: 5px 110px 5px 0;
-    //float: left;
-    //max-width: 70%;
     span {
       text-overflow: ellipsis;
       max-width: 85%;
@@ -550,96 +546,84 @@
   .input-property {
     & > .form-group {
       margin-bottom: 0;
+      & > .control-label {
+        .input-key-inner {
+          display: block;
+          text-overflow: ellipsis;
+          overflow: hidden;
+        }
+        .min-max {
+          display: block;
+        }
+      }
     }
   }
 }
 .input-property {
+  & > .form-group {
+    margin: 0 0 10px 0;
+    border: 1px solid #ddd;
 
-  //& > .include {
-    & > .form-group {
-      margin: 0 0 10px 0;
-      border: 1px solid #ddd;
-
-      &:hover {
-        @include transition(border 0.3s ease);
-        border: 1px solid #bbb;
-
-        & > .control-label {
-          border-bottom: 1px solid #bbb;
-          background-color: #ddd;
-        }
-        & > .input-property-body {
-          background-color: #f3f3f3;
-        }
-      }
+    &:hover {
+      @include transition(border 0.3s ease);
+      border: 1px solid #bbb;
 
       & > .control-label {
-        padding: 5px 10px;
-        margin: 0;
-        position: relative;
-        border-bottom: 1px solid #ddd;
-        display: block;
-        background-color: #eee;
+        border-bottom: 1px solid #bbb;
+        background-color: #ddd;
+      }
+      & > .input-property-body {
+        background-color: #f3f3f3;
+      }
+    }
 
-        & > .input-key {
-          display: inline-block;
-          text-overflow: ellipsis;
-          overflow: hidden;
-          max-width: 90%;
-        }
+    & > .control-label {
+      padding: 5px 10px;
+      margin: 0;
+      position: relative;
+      border-bottom: 1px solid #ddd;
+      display: block;
+      background-color: #eee;
 
-        .checkbox {
-          float: right;
-          margin: 0;
+      & > .input-key {
+        display: inline-block;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        max-width: 80%;
+      }
+
+      .min-max {
+        font-weight: normal;
+        i {
+          font-style: normal;
         }
       }
 
-      & > .input-property-body {
-        padding: 10px;
-        background-color: #f9f9f9;
-        overflow: auto;
+      .checkbox {
+        float: right;
+        margin: 0;
+      }
+    }
 
-        &.split {
-          & > .form-control {
-            display: inline-block;
-            &:nth-child(1) {
-              width: 40%;
-            }
-            &:nth-child(2) {
-              margin-left: -5px;
-              width: 60%;
-            }
+    & > .input-property-body {
+      padding: 10px;
+      background-color: #f9f9f9;
+      overflow: auto;
+
+      &.split {
+        & > .form-control {
+          display: inline-block;
+          &:nth-child(1) {
+            width: 40%;
+          }
+          &:nth-child(2) {
+            margin-left: -5px;
+            width: 60%;
           }
         }
       }
-
     }
-  //}
-}
 
-.input-container-small {
-  .alert {
-    margin: 0;
-  }
-  & > .input-property {
-    & > .form-group {
-      margin-bottom: 0;
-    }
-  }
-}
-
-.expression-action {
-  margin: 0;
-  color: #555;
-  label {
-    float: right;
-  }
-}
-
-.evaluate-wrap {
-  float: right;
-  .btn {
-    padding: 0 5px;
   }
 }
 
@@ -652,17 +636,6 @@
     }
     .form-control {
       width: 100px;
-    }
-  }
-}
-
-.evaluate-expr-form {
-  width: 200px;
-  .form-group {
-    .expr {
-      font-size: 20px;
-      padding: 10px;
-      font-weight: bold;
     }
   }
 }
