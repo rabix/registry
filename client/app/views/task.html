@@ -24,37 +24,32 @@
     </div>
     <!-- # .heading -->
 
-    <div class="content">
+    <div class="content content-tbl flex-box-column">
 
         <section ng-if="!view.app">
             <p class="job-user-guide">Pick <a href ng-click="pickApp()">tool, script or workflow</a> for which you want to generate task template</p>
         </section>
 
-        <form ng-show="view.app" class="form" name="forms.job" role="form" novalidate>
+        <form ng-show="view.app" class="form flex-box-column flex-one" name="forms.job" role="form" novalidate>
 
-            <div class="section bottom">
+            <div class="content content-ten">
 
-                <div class="content">
-
-                    <div ng-if="(view.page - 1) === $index" class="input-container" ng-repeat="page in view.pages">
-                        <input-field
-                                ng-repeat="property in page track by $index"
-                                ng-model="view.job.inputs[property.key]"
-                                class="input-field"
-                                key="{{ property.key }}"
-                                prop="property.obj"
-                                index="{{ $index }}"
-                                form="forms.job">
-                        </input-field>
-                    </div>
-
-                    <p class="alert alert-info" ng-if="view.pages.length === 0">There are no values to be set at this moment.</p>
+                <div ng-if="(view.page - 1) === $index" class="input-container" ng-repeat="page in view.pages">
+                    <input-field
+                            ng-repeat="property in page track by $index"
+                            ng-model="view.job.inputs[property.key]"
+                            class="input-field"
+                            key="{{ property.key }}"
+                            prop="property.obj"
+                            index="{{ $index }}"
+                            form="forms.job">
+                    </input-field>
                 </div>
 
-                <paginator page="view.page" total="view.total" per-page="10"></paginator>
-
+                <p class="alert alert-info" ng-if="view.pages.length === 0">There are no values to be set at this moment.</p>
             </div>
-            <!-- # .section -->
+
+            <paginator class="paginator" page="view.page" total="view.total" per-page="10"></paginator>
 
         </form>
 

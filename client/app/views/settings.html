@@ -13,7 +13,7 @@
     </div>
     <!-- # .heading -->
 
-    <div class="content" ng-if="!view.loading">
+    <div class="content content-tbl" ng-if="!view.loading">
 
         <table class="table table-hover jobs">
             <thead><tr><th>History of generated job JSONs</th></tr></thead>
@@ -29,6 +29,6 @@
 
     </div>
 
-    <paginator page="view.page" total="view.total" handler="getMoreJobs(offset)"></paginator>
+    <paginator class="paginator" page="view.page" total="view.total" handler="getMoreJobs(offset)"></paginator>
 
 </div>

@@ -1,13 +1,19 @@
-<div class="pipeline-inner">
+<div class="pipeline-inner flex-box-column flex-one">
+
     <button ng-if="view.canFlush" class="btn btn-flush btn-flush-pipeline" ng-click="flush()" tooltip="Start with clean canvas" tooltip-placement="left">
         <i class="fa fa-trash"></i>
     </button>
-    <div class="pipeline-drop-area" ng-class="{loading: view.loading}" drop="dropNode(e, id)">
+
+    <div class="pipeline-drop-area flex-box-column flex-one" ng-class="{loading: view.loading}" drop="dropNode(e, id)">
+
         <div ng-show="view.explanation && view.canFlush" class="pipeline-user-guide">Drag apps from sidebar on the right to the drawing area</div>
-        <div class="pipeline"></div>
+
+        <div class="pipeline flex-one"></div>
+
         <div class="pipeline-actions">
             <button class="btn btn-default" ng-click="pipelineActions.zoomIn()" ><i class="fa fa-plus"></i></button>
             <button class="btn btn-default" ng-click="pipelineActions.zoomOut()"><i class="fa fa-minus"></i></button>
         </div>
     </div>
+
 </div>

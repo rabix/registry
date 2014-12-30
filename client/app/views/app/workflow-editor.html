@@ -50,15 +50,15 @@
     </div>
     <!-- # .heading -->
 
-    <div ng-if="!view.loading" class="content">
+    <div ng-if="!view.loading" class="content content-tbl flex-box-row">
 
-        <div class="col content-col">
-            <div class="pipeline-wrap" pipeline="view.workflow" edit-mode="true" pipeline-change-fn="onWorkflowChange(value)" handle-pipeline-json="formatPipeline(pipeline)"></div>
+        <div class="col flex-box-column flex-one content-col">
+            <div class="pipeline-wrap flex-box-column flex-one" pipeline="view.workflow" edit-mode="true" pipeline-change-fn="onWorkflowChange(value)" handle-pipeline-json="formatPipeline(pipeline)"></div>
         </div>
 
-        <div class="col sidebar-col" ng-class="{closed: !view.showSidebar}">
+        <div class="col flex-box-column flex-auto sidebar-col" ng-class="{closed: !view.showSidebar}">
 
-            <div class="heading">
+            <div class="heading no-padding">
                 <ul class="nav nav-tabs nav-tabs-steps">
 
                     <li class="toggle-action">
@@ -73,11 +73,11 @@
                 </ul>
             </div>
 
-            <div class="content">
+            <div class="content content-tbl flex-box-column">
 
-                <div class="tabs right" ng-switch="view.tab">
+                <div class="tabs right flex-one" ng-switch="view.tab">
 
-                    <div class="tab" ng-class="{loading: view.filtering}" ng-switch-when="apps">
+                    <div class="tab flex-box-column flex-one" ng-class="{loading: view.filtering}" ng-switch-when="apps">
 
                         <ul class="app-sidebar-list">
 
@@ -88,7 +88,6 @@
                                 </span>
 
                                 <ul>
-                                    <!--<li ng-if="view.message"><p class="alert alert-warning">{{ view.message }}</p></li>-->
                                     <li ng-if="(repoTypeObj | isEmpty) && (repoTypeObj | isEmpty)">
                                         <p class="alert alert-info">
                                             <span ng-if="repoType === 'myRepositories' && !view.user"> {{ view.message }}</span>
@@ -187,7 +186,7 @@
 
                     </div>
 
-                    <div class="tab" ng-switch-when="params">
+                    <div class="tab flex-one" ng-switch-when="params">
 
                         <p class="alert alert-info" ng-if="view.json | isEmpty">Select node in order to change its parameters</p>
 
@@ -208,7 +207,7 @@
 
                     </div>
 
-                    <div class="tab" ng-switch-when="properties">
+                    <div class="tab flex-one" ng-switch-when="properties">
                         <h3>Properties</h3>
                     </div>
 
