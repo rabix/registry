@@ -1,7 +1,7 @@
 <div class="property-box-header-inner">
 
-    <div class="property-box-actions">
-        <a href ng-click="edit($event)"><i class="fa fa-pencil"></i></a>
+    <div class="property-box-actions pull-right">
+        <a href ng-click="edit($event)"><i class="fa fa-pencil-square"></i></a>
         <a href ng-click="remove($event)"><i class="fa fa-times"></i></a>
     </div>
 
@@ -11,6 +11,9 @@
             <strong class="name" tooltip="name">{{ name }}</strong>
             <i class="type" tooltip="type">{{ type }} {{ itemType ? ' (' + itemType + ')' : '' }}</i>
             <span ng-if="isRequired" class="required" tooltip="required">*</span>
+            <span class="property-box-actions">
+                <a href ng-click="editName($event)" title="Edit Name"><i class="fa fa-pencil"></i></a>
+            </span>
         </div>
 
         <div ng-if="minItems" class="info-block">

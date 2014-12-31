@@ -54,6 +54,18 @@ angular.module('registryApp.cliche')
                 };
 
                 /**
+                 * Trigger edit name handler
+                 *
+                 * @param e
+                 */
+                $scope.editName = function(e) {
+
+                    stopPropagation(e);
+
+                    $scope.handle({action: 'editName'});
+                };
+
+                /**
                  * Trigger remove handler
                  *
                  * @param e

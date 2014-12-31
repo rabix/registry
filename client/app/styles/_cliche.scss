@@ -191,8 +191,17 @@
         }
       }
 
+      .property-box-header-inner.arg {
+        .property-box-short-info {
+          padding: {
+            top: 10px;
+            bottom: 10px;
+          }
+        }
+      }
+
       .property-box-short-info {
-        padding: 10px 10px 10px 25px;
+        padding: 0px 10px 0px 25px;
         margin-right: 60px;
         .order {
           background-color: $orange;
@@ -210,8 +219,10 @@
       }
 
       .property-box-actions {
-        float: right;
         font-weight: bold;
+        display: inline-block;
+        margin-left: 5px;
+
         a:not(.btn) {
           color: #555;
           font-size: 17px;

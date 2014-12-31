@@ -114,6 +114,28 @@ angular.module('registryApp.cliche')
                 };
 
                 /**
+                 * Edit property name
+                 */
+                $scope.editName = function() {
+
+                    $modal.open({
+                        template: $templateCache.get('views/cliche/partials/manage-property-name.html'),
+                        controller: 'ManagePropertyOutputNameCtrl',
+                        windowClass: 'modal-prop',
+                        size: 'sm',
+                        resolve: {
+                            options: function () {
+                                return {
+                                    name: $scope.name,
+                                    properties: $scope.properties
+                                };
+                            }
+                        }
+                    });
+
+                };
+
+                /**
                  * Remove particular property
                  */
                 $scope.remove = function() {
@@ -142,6 +164,12 @@ angular.module('registryApp.cliche')
                         $scope[action]();
                     }
                 };
+
+                $scope.$watch('prop.type', function(n, o) {
+                    if (n !== o) {
+                        $scope.view.tpl = 'views/cliche/property/property-input-' + $scope.type + '-' + $scope.prop.type  + '.html';
+                    }
+                });
 
             }],
             link: function() {}
