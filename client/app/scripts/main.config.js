@@ -47,7 +47,7 @@ angular
                 templateUrl: 'views/tasks.html',
                 controller: 'TasksCtrl'
             })
-            .when('/task', {
+            .when('/task/:id', {
                 templateUrl: 'views/task.html',
                 controller: 'TaskCtrl'
             })

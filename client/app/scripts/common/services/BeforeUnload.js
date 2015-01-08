@@ -7,7 +7,7 @@
 'use strict';
 
 
-angular.module('registryApp')
+angular.module('registryApp.common')
     .factory('BeforeUnload', [function() {
 
         var callback;

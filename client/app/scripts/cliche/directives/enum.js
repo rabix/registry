@@ -19,12 +19,16 @@ angular.module('registryApp.cliche')
                 properties: '=',
                 isRequired: '=',
                 path: '=',
-                form: '='
+                form: '=',
+                req: '=?',
+                exposible: '@'
             },
             controller: ['$scope', '$modal', function ($scope, $modal) {
 
                 $scope.view = {};
                 $scope.view.tplPath = 'views/cliche/enum/enum-' + $scope.type  + '.html';
+
+                $scope.req = $scope.req || [];
 
                 /**
                  * Get schema for the appropriate enum type

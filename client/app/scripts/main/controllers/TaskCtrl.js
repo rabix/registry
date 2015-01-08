@@ -6,14 +6,27 @@
 'use strict';
 
 angular.module('registryApp')
-    .controller('TaskCtrl', ['$scope', '$q', '$modal', '$templateCache', '$location', 'Sidebar', 'Job', 'User', 'Repo', 'Workflow', function ($scope, $q, $modal, $templateCache, $location, Sidebar, Job, User, Repo, Workflow) {
+    .controller('TaskCtrl', ['$scope', '$q', '$modal', '$templateCache', '$location', '$route', '$routeParams', 'Sidebar', 'Loading', 'Job', 'User', 'Repo', 'Workflow', 'BeforeUnload', 'BeforeRedirect', function ($scope, $q, $modal, $templateCache, $location, $route, $routeParams, Sidebar, Loading, Job, User, Repo, Workflow, BeforeUnload, BeforeRedirect) {
 
         Sidebar.setActive('task tpls');
 
+        $scope.form = {};
         $scope.view = {};
-        $scope.view.job = {inputs: {}};
+        $scope.view.job = {json: {inputs: {}}};
         $scope.view.app = null;
+        $scope.view.mode = $routeParams.id === 'new' ? 'new' : 'edit';
         $scope.view.userRepos = [];
+        $scope.view.properties = [];
+        $scope.view.ref = null;
+
+        $scope.view.classes = ['page', 'job'];
+
+        Loading.setClasses($scope.view.classes);
+
+        $scope.Loading = Loading;
+        $scope.$watch('Loading.classes', function(n, o) {
+            if (n !== o) { $scope.view.classes = n; }
+        });
 
         $q.all([
                 Repo.getRepos(0, '', true),
@@ -23,33 +36,42 @@ angular.module('registryApp')
                 $scope.view.user = result[1].user;
             });
 
+        if ($routeParams.id !== 'new') {
 
-        /**
-         * Set default values
-         */
-        var setDefaults = function() {
+            $scope.view.loading = true;
 
-            $scope.view.pages = [];
-            $scope.view.page = 1;
-            $scope.view.total = 0;
+            Job.getJob($routeParams.id)
+                .then(function (result) {
 
-        };
+                    $scope.view.job = result.data;
 
-        /* init default values */
-        setDefaults();
+                    $scope.view.app = result.data.json.app;
+                    $scope.view.type = result.data.type;
+
+                    $scope.view.required = $scope.view.app.inputs.required;
+
+                    getProperties()
+                        .then(function(properties) {
+
+                            $scope.view.loading = false;
+
+                            $scope.view.properties = properties;
+                        });
+                });
+        }
 
         /**
          * Get properties from app
          *
-         * @param type
-         * @param json
          * @returns {*}
          */
-        var getProperties = function(type, json) {
+        var getProperties = function() {
 
             var deferred = $q.defer();
 
-            if (type === 'Workflow') {
+            var json = $scope.view.app;
+
+            if ($scope.view.type === 'Workflow') {
                 // TODO: will be available directly, maybe
                 if (json.exposed) {
                     _.extend(json.inputs.properties, json.exposed);
@@ -78,19 +100,20 @@ angular.module('registryApp')
 
             modalInstance.result.then(function (result) {
 
-                $scope.view.app = result.app;
+                $scope.view.ref = result.id;
+                console.log($scope.view.ref);
+                $scope.view.app = result.app.json;
                 $scope.view.type = result.type;
 
-                getProperties(result.type, result.app.json)
+                $scope.view.required = $scope.view.app.inputs.required;
+
+                getProperties()
                     .then(function(properties) {
 
-                        $scope.view.job.app = angular.copy($scope.view.app.json);
-                        $scope.view.job.app['@type'] = result.type;
+                        $scope.view.job.json.app = angular.copy($scope.view.app);
+                        $scope.view.job.json.app['@type'] = result.type;
 
-                        //$scope.view.properties = properties;
-
-                        setDefaults();
-                        $scope.prepareForPagination(properties);
+                        $scope.view.properties = properties;
 
                     });
 
@@ -99,24 +122,100 @@ angular.module('registryApp')
         };
 
         /**
-         * Prepare temp list for paginating
+         * Get form validation error message
          *
-         * @param origin
+         * @returns {string}
          */
-        $scope.prepareForPagination = function(origin) {
+        var getValidationMessage = function () {
 
-            $scope.view.total = _.size(origin);
+            var errorsNum = 0;
 
-            var count = 0;
+            _.each($scope.form.jobForm.$error, function (errors) {
+                errorsNum += errors.length;
+            });
 
-            _.each(origin, function(obj, name) {
-                if (count % 10 === 0) {
-                    $scope.view.pages.push([]);
-                }
+            return 'You must enter valid values (' + errorsNum + ' ' + 'error' + (errorsNum !== 1 ? 's' : '') + ')';
 
-                $scope.view.pages[$scope.view.pages.length - 1].push({key: name, obj: obj});
+        };
 
-                count += 1;
+        /**
+         * Update task json
+         *
+         * @returns {boolean}
+         */
+        $scope.update = function () {
+
+            var isEmptyName = _.isEmpty($scope.view.job.name);
+            var isFormInvalid = $scope.form.jobForm.$invalid;
+
+            if (isEmptyName || isFormInvalid) {
+
+                var errors = [];
+
+                if (isEmptyName) { errors.push('You must enter the name of the job'); }
+                if (isFormInvalid) { errors.push(getValidationMessage()); }
+
+                $modal.open({
+                    template: $templateCache.get('views/partials/validation.html'),
+                    size: 'sm',
+                    controller: 'ModalCtrl',
+                    windowClass: 'modal-validation',
+                    resolve: {data: function () { return {messages: errors}; }}
+                });
+
+                return false;
+            }
+
+            $scope.view.saving = true;
+
+            var job = {
+                name: $scope.view.job.name,
+                json: $scope.view.job.json
+            };
+
+            Job.updateJob($routeParams.id, job).then(function (result) {
+
+                var modalInstance = $modal.open({
+                    template: $templateCache.get('views/cliche/partials/job-url-response.html'),
+                    controller: 'ModalCtrl',
+                    resolve: { data: function () { return { trace: result }; }}
+                });
+
+                BeforeRedirect.setReload(true);
+
+                modalInstance.result.then(function () {
+                    $route.reload();
+                }, function () {
+                    $route.reload();
+                });
+
+                $scope.view.saving = false;
+
+            }, function () {
+                $scope.view.saving = false;
+            });
+        };
+
+        /**
+         * Delete task
+         */
+        $scope.delete = function() {
+
+            if (_.isUndefined($scope.view.job._id)) { return false; }
+
+            var modalInstance = $modal.open({
+                template: $templateCache.get('views/partials/confirm-delete.html'),
+                controller: 'ModalCtrl',
+                windowClass: 'modal-confirm',
+                resolve: {data: function () { return {}; }}
+            });
+
+            modalInstance.result.then(function () {
+                Job.deleteJob($scope.view.job._id)
+                    .then(function () {
+                        BeforeRedirect.setReload(true);
+                        $location.path('tasks');
+                    });
             });
 
         };
@@ -128,15 +227,17 @@ angular.module('registryApp')
          */
         $scope.create = function() {
 
-            var isEmptyName = _.isEmpty($scope.view.name);
+            var isEmptyName = _.isEmpty($scope.view.job.name);
             var isEmptyApp = _.isEmpty($scope.view.app);
+            var isFormInvalid = $scope.form.jobForm.$invalid;
 
-            if (isEmptyName || isEmptyApp) {
+            if (isEmptyName || isEmptyApp || isFormInvalid) {
 
                 var errors = [];
 
                 if (isEmptyName) { errors.push('You must enter the name of the job'); }
                 if (isEmptyApp) { errors.push('You must pick the app for your job'); }
+                if (isFormInvalid) { errors.push(getValidationMessage()); }
 
                 $modal.open({
                     template: $templateCache.get('views/partials/validation.html'),
@@ -161,7 +262,15 @@ angular.module('registryApp')
 
                 $scope.view.saving = true;
 
-                Job.createJob($scope.view.job, $scope.view.name, data.repoId).then(function (result) {
+                var job = {
+                    name: $scope.view.job.name,
+                    json: $scope.view.job.json,
+                    ref: $scope.view.ref,
+                    type: $scope.view.type,
+                    repo: data.repoId
+                };
+
+                Job.createJob(job).then(function (result) {
 
                     var modalInstance = $modal.open({
                         template: $templateCache.get('views/cliche/partials/job-url-response.html'),
@@ -169,7 +278,13 @@ angular.module('registryApp')
                         resolve: { data: function () { return { trace: result }; }}
                     });
 
-                    modalInstance.result.then(goBack, goBack);
+                    BeforeRedirect.setReload(true);
+
+                    modalInstance.result.then(function () {
+                        $location.path('/task/' + result.id);
+                    }, function () {
+                        $location.path('/task/' + result.id);
+                    });
 
 
                 }, function () {
@@ -177,14 +292,17 @@ angular.module('registryApp')
                 });
             });
 
-
         };
 
-        /**
-         * Go back to the job listing
-         */
-        var goBack = function() {
-            $location.path('/tasks');
-        };
+        var onBufferUnloadOff = BeforeUnload.register(function() { return 'Please save your changes before leaving.'; });
+        var onBeforeRedirectOff = BeforeRedirect.register();
+
+        $scope.$on('$destroy', function() {
+            onBufferUnloadOff();
+            onBufferUnloadOff = undefined;
+
+            onBeforeRedirectOff();
+            onBeforeRedirectOff = undefined;
+        });
 
     }]);

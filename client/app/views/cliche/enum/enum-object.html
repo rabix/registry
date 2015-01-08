@@ -2,10 +2,12 @@
     <i class="enum-field-empty" ng-if="properties | isEmpty">Property not defined</i>
     <input-field
             ng-repeat="(innerKey, property) in properties"
+            ng-hide="exposible && (property.type === 'file' || (property.type === 'array' && property.items.type === 'file'))"
             ng-model="item.value[innerKey]"
             class="input-field"
             key="{{ innerKey }}"
             prop="property"
-            form="form">
+            form="form"
+            req="req">
     </input-field>
 </div>

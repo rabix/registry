@@ -7,9 +7,9 @@
 'use strict';
 
 angular.module('registryApp.cliche')
-    .controller('ClicheCtrl', ['$scope', '$rootScope', '$q', '$modal', '$templateCache', '$routeParams', '$location', 'Data', 'User', 'Tool', 'Repo', 'Loading', 'SandBox', 'Sidebar', 'BeforeUnload', function ($scope, $rootScope, $q, $modal, $templateCache, $routeParams, $location, Data, User, Tool, Repo, Loading, SandBox, Sidebar, BeforeUnload) {
+    .controller('ClicheCtrl', ['$scope', '$q', '$modal', '$templateCache', '$routeParams', '$location', 'Data', 'User', 'Tool', 'Repo', 'Loading', 'SandBox', 'Sidebar', 'BeforeUnload', 'BeforeRedirect', function ($scope, $q, $modal, $templateCache, $routeParams, $location, Data, User, Tool, Repo, Loading, SandBox, Sidebar, BeforeUnload, BeforeRedirect) {
 
-        Sidebar.setActive('cliche');
+        Sidebar.setActive($routeParams.type + ' editor');
 
         var schema = 'https://github.com/common-workflow-language/common-workflow-language/blob/draft-1/specification/tool-description.md';
 
@@ -20,7 +20,6 @@ angular.module('registryApp.cliche')
 
         $scope.view.tab = 'general';
         $scope.view.saving = false;
-        $scope.view.reload = false;
         $scope.view.app = {};
 
         /* cliche mode: new or edit */
@@ -518,7 +517,7 @@ angular.module('registryApp.cliche')
          */
         $scope.redirect = function(url) {
 
-            $scope.view.reload = true;
+            BeforeRedirect.setReload(true);
             $location.path(url);
 
         };
@@ -551,7 +550,6 @@ angular.module('registryApp.cliche')
                     });
 
                     modalInstance.result.then(function (revisionId) {
-                        $scope.view.reload = true;
                         $location.path('/cliche/' + $routeParams.type + '/' + $routeParams.id + '/' + revisionId);
                     });
 
@@ -575,7 +573,7 @@ angular.module('registryApp.cliche')
             modalInstance.result.then(function(data) {
 
                 $scope.view.saving = true;
-                $scope.view.reload = true;
+                BeforeRedirect.setReload(true);
 
                 data.is_script = $scope.view.app.is_script;
 
@@ -583,7 +581,7 @@ angular.module('registryApp.cliche')
                     $location.path('/cliche/' + $routeParams.type + '/' + result.app._id + '/latest');
                 }, function() {
                     $scope.view.saving = false;
-                    $scope.view.reload = false;
+                    BeforeRedirect.setReload(false);
                 });
 
             });
@@ -711,7 +709,7 @@ angular.module('registryApp.cliche')
                 $scope.view.saving = true;
                 Tool.deleteRevision($scope.view.revision._id).then(function () {
                     $scope.view.saving = false;
-                    $scope.view.reload = true;
+                    BeforeRedirect.setReload(true);
                     $location.path('/apps');
                 }, function() {
                     $scope.view.saving = false;
@@ -748,46 +746,18 @@ angular.module('registryApp.cliche')
             });
         };
 
-        /**
-         * Track route change in order to prevent loss of changes
-         *
-         * @param e
-         * @param nextLocation
-         */
-        var onRouteChange = function(e, nextLocation) {
 
-            if($scope.view.reload) { return; }
+        var onBeforeUnloadOff = BeforeUnload.register(function() { return 'Please save your changes before leaving.'; });
 
-            var modalInstance = $modal.open({
-                template: $templateCache.get('views/partials/confirm-leave.html'),
-                controller: 'ModalCtrl',
-                windowClass: 'modal-confirm',
-                resolve: {data: function () {return {};}}
-            });
-
-            modalInstance.result.then(function () {
-
-                onRouteChangeOff();
-
-                $scope.view.reload = true;
-
-                Data.save()
-                    .then(function() {
-                        $location.path(nextLocation.split('#\/')[1]);
-                    });
-            });
-
-            e.preventDefault();
-
-        };
-
-        var onRouteChangeOff = $rootScope.$on('$locationChangeStart', onRouteChange);
-
-        var onBufferUnloadOff = BeforeUnload.register(function() { return 'Please save your changes before leaving.'; });
+        var onBeforeRedirectOff = BeforeRedirect.register(function () { return Data.save(); });
 
         $scope.$on('$destroy', function() {
-            onBufferUnloadOff();
-            onBufferUnloadOff = undefined;
+
+            onBeforeUnloadOff();
+            onBeforeUnloadOff = undefined;
+
+            onBeforeRedirectOff();
+            onBeforeRedirectOff = undefined;
         });
 
 

@@ -15,6 +15,10 @@ angular.module('registryApp.cliche')
 
         $scope.view.newMeta = {key: '', value: ''};
 
+        if (_.isUndefined($scope.view.scheme.secondaryFiles)) {
+            $scope.view.scheme.secondaryFiles = [];
+        }
+
         /**
          * Do the schema update
          *

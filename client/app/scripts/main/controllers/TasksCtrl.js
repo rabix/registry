@@ -6,7 +6,7 @@
 'use strict';
 
 angular.module('registryApp')
-    .controller('TasksCtrl', ['$scope', '$q', '$injector', 'Sidebar', 'Loading', 'Job', 'User', function ($scope, $q, $injector, Sidebar, Loading, Job, User) {
+    .controller('TasksCtrl', ['$scope', '$q', 'Sidebar', 'Loading', 'Job', 'User', function ($scope, $q, Sidebar, Loading, Job, User) {
 
         Sidebar.setActive('task tpls');
 
@@ -82,33 +82,5 @@ angular.module('registryApp')
             Job.getJobs(0, '').then(jobsLoaded);
 
         };
-
-        /**
-         * Delete job
-         *
-         * @param job
-         */
-        $scope.deleteJob = function(job) {
-
-            var $modal = $injector.get('$modal');
-            var $templateCache = $injector.get('$templateCache');
-            var $route = $injector.get('$route');
-
-            var modalInstance = $modal.open({
-                template: $templateCache.get('views/partials/confirm-delete.html'),
-                controller: 'ModalCtrl',
-                windowClass: 'modal-confirm',
-                resolve: {data: function () { return {}; }}
-            });
-
-            modalInstance.result.then(function () {
-                Job.deleteJob(job._id)
-                    .then(function () {
-                        $route.reload();
-                    });
-            });
-
-        };
-
 
     }]);

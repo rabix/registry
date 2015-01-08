@@ -203,14 +203,15 @@ angular.module('registryApp.app')
         /**
          * Pick the app from the list
          *
+         * @param {string} id
          * @param {object} app
          * @param {string} type
          */
-        $scope.pick = function(app, type) {
+        $scope.pick = function(id, app, type) {
 
             app.json = _.isString(app.json) ? JSON.parse(app.json) : app.json;
 
-            $modalInstance.close({app: app, type: type});
+            $modalInstance.close({app: app, type: type, id: id});
 
         };
 

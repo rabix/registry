@@ -19,14 +19,25 @@ angular.module('registryApp.cliche')
                 prop: '=',
                 key: '@',
                 ignoreFiles: '@',
-                form: '='
+                form: '=',
+                req: '=',
+                appName: '@',
+                exposed: '=?'
             },
             controller: ['$scope', '$modal', function ($scope, $modal) {
+
+                var keyName = $scope.appName + '.' + $scope.key;
 
                 $scope.view = {};
 
                 uniqueId++;
                 $scope.view.uniqueId = uniqueId;
+
+                $scope.view.required = _.contains($scope.req, $scope.key);
+
+                $scope.view.expose = $scope.exposed ? !_.isUndefined($scope.exposed[keyName]) : false;
+
+                $scope.view.exposible = !_.isUndefined($scope.exposed);
 
                 /**
                  * Get default input scheme
@@ -87,12 +98,12 @@ angular.module('registryApp.cliche')
 
                     inputScheme = getFileScheme($scope.model);
 
-                /* type OBJECT */
+                    /* type OBJECT */
                 } else if($scope.prop.type === 'object') {
 
                     inputScheme = getObjectScheme($scope.model);
 
-                /* type ARRAY */
+                    /* type ARRAY */
                 } else if($scope.prop.type === 'array') {
 
                     inputScheme = [];
@@ -118,7 +129,7 @@ angular.module('registryApp.cliche')
                         });
                         break;
                     }
-                /* type STRING, NUMBER, INTEGER, BOOLEAN */
+                    /* type STRING, NUMBER, INTEGER, BOOLEAN */
                 } else {
                     inputScheme = getDefaultScheme($scope.model);
                 }
@@ -140,6 +151,19 @@ angular.module('registryApp.cliche')
                     modalInstance.result.then(function (scheme) {
                         $scope.model = angular.copy(scheme);
                     });
+
+                };
+
+                /**
+                 * Expose current parameter
+                 */
+                $scope.exposeParams = function () {
+
+                    if ($scope.view.expose) {
+                        $scope.exposed[keyName] = $scope.prop;
+                    } else {
+                        delete $scope.exposed[keyName];
+                    }
 
                 };
 

@@ -1,10 +1,10 @@
-<div ng-hide="ignoreFiles" class="form-group" ng-class="{required: prop.required, 'has-error': inputForm.inputFile.$invalid}">
+<div ng-hide="ignoreFiles" class="form-group" ng-class="{required: view.required, 'has-error': inputForm.inputFile.$invalid}">
     <label class="control-label">{{ key }}</label>
 
     <div class="input-property-body">
 
         <div class="input-group">
-            <input type="text" class="form-control" name="inputFile" ng-model="model.path" ng-required="prop.required">
+            <input type="text" class="form-control" name="inputFile" ng-model="model.path" ng-required="view.required">
             <span class="input-group-btn">
                 <a href class="btn btn-default" ng-click="more()"><i class="fa fa-ellipsis-h"></i></a>
             </span>

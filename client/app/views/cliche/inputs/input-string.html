@@ -1,11 +1,16 @@
-<div class="form-group" ng-class="{required: prop.required, 'has-error': inputForm.inputString.$invalid}">
-    <label class="control-label">{{ key }}</label>
+<div class="form-group" ng-class="{required: view.required, 'has-error': inputForm.inputString.$invalid}">
+    <label class="control-label">
+        <div ng-if="exposed" class="checkbox">
+            <label><input type="checkbox" ng-model="view.expose" ng-change="exposeParams()"> expose</label>
+        </div>
+        <span class="input-key" title="{{ key }}">{{ key }}</span>
+    </label>
 
     <div class="input-property-body">
 
-        <input ng-show="!prop.enum" type="text" class="form-control" name="inputString" ng-model="model" ng-required="prop.required">
+        <input ng-show="!prop.enum" type="text" class="form-control" name="inputString" ng-model="model" ng-required="view.required">
 
-        <select ng-show="prop.enum" class="form-control" name="inputString" ng-model="model" ng-required="prop.required" ng-options="option for option in prop.enum">
+        <select ng-show="prop.enum" class="form-control" name="inputString" ng-model="model" ng-required="view.required" ng-options="option for option in prop.enum">
             <option value>-- choose --</option>
         </select>
 
