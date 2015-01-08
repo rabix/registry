@@ -834,13 +834,13 @@ router.get('/workflow/repositories/:type', function (req, res, next) {
  *     }
  */
 router.post('/workflow/validate', function (req, res, next) {
-    var json = req.body;
+    var json = req.body.json || req.body;
     
     if (typeof json === 'undefined') { res.status(400).json({error: 'Undefined json to validate'}); return false;}
+    if (typeof json === 'string') { json = JSON.parse(json); }
 
     var formated = formater.toPipelineSchema(json);
     var errors = validator.validate(formated);
-
 
     if (errors.errors.length === 0 && errors.paramErrors.length === 0) {
         res.json({json: formated});
