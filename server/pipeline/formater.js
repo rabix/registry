@@ -45,6 +45,9 @@ var formater = {
 
         json = _.extend(json, this.packedSchema);
 
+        json.inputs.type = 'object';
+        json.outputs.type = 'object';
+
         return json;
     },
 
