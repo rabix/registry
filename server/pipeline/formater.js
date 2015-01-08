@@ -396,7 +396,8 @@ var formater = {
             'softwareDescription': {
                 'repo_owner': 'rabix',
                 'repo_name': 'system',
-                'type': type
+                'type': type,
+                'name': schema.name
             },
             'documentAuthor': null,
             'inputs': {
@@ -419,7 +420,5 @@ var formater = {
     }
 
 };
-
-
 
 module.exports = formater;
