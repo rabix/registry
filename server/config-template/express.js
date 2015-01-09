@@ -33,7 +33,7 @@ module.exports = function (app, config) {
     app.use(methodOverride());
 
     app.use(session({
-        secret: '${SBG:SESSION_SECRET}',
+        secret: '%{SBG:SESSION_SECRET}',
         saveUninitialized: true,
         resave: true
     }));
