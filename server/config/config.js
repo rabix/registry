@@ -2,8 +2,17 @@ var path = require('path'),
     rootPath = path.normalize(__dirname + '/..'),
     env = process.env.NODE_ENV || 'development',
     fs = require('fs'),
-    confPath = env === 'development' ? __dirname + '/config.json' : '/data/config/rabix/config.json',
+    confPath = env === 'development' ? __dirname + '/config.json' : '/data/config/rabix-registry/config.json',
+    conf;
+
+/**
+ * Wrapping reading of json in case configuration is passed as a deamon argument and will be parsed later
+ */
+try {
     conf = JSON.parse(fs.readFileSync(confPath).toString());
+} catch (e){
+    conf = { mail: {} };
+}
 
 var config = {
     development: {
@@ -138,6 +147,9 @@ if (confArg && confArg.indexOf('data') !== -1 && env === 'production'){
 
     externalConfig = fs.readFileSync(process.argv[2]);
 
+    /**
+     * Adding propreties that need to be set in runtime
+     */
     externalConfig.root = rootPath;
     externalConfig.tmpDir = {
         path: rootPath + '/tmp'
