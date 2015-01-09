@@ -1,6 +1,7 @@
-/* TWITTER OVERRIDES OVERRIDES
+/* TWITTER BOOTSTRAP, MARKDOWN and CODEMIRROR OVERRIDES OVERRIDES
 ================================================ */
 
+/* Nav tabs override */
 .nav-tabs {
   li {
     a {
@@ -73,6 +74,7 @@
   }
 }
 
+/* Nav pills override */
 .nav-pills {
   &.nav-page {
     margin: 0 10px;
@@ -98,6 +100,7 @@
   }
 }
 
+/* Form group override */
 .form-group {
   &.required {
     & > .control-label {
@@ -112,7 +115,9 @@
   }
 }
 
-form, .form {
+/* Form override */
+form,
+.form {
   .form-control {
     color: #555;
     height: 33px;
@@ -140,6 +145,7 @@ form, .form {
         width: 41px;
       }
     }
+
     &.unit {
       &:after {
         content: 'KB';
@@ -152,6 +158,7 @@ form, .form {
         padding-right: 30px;
       }
     }
+
     .checkboxes {
       .checkbox {
         display: inline-block;
@@ -163,6 +170,7 @@ form, .form {
         }
       }
     }
+
     &.form-group-email {
       input[type=email] {
         padding-left: 60px;
@@ -179,20 +187,34 @@ form, .form {
   }
 }
 
+/* Form control override */
 .form-control {
   color: #555;
   @include border-radius(0);
+
+  &.script-area {
+    resize: none;
+    min-height: 400px;
+    background-color: #222;
+    color: $orange;
+    border-color: $orange;
+    padding: 10px;
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+  }
 }
 
+/* Help block override */
 .help-block {
   margin: 0;
   font-size: 12px;
 }
 
+/* Alert box override */
 .alert {
   @include border-radius(0);
 }
 
+/* Btn override with additional extensions */
 .btn {
   @include border-radius(0);
   &.btn-orange {
@@ -204,10 +226,6 @@ form, .form {
       color: #fff;
     }
   }
-
-  //&.btn-expression {
-  //  padding-top: 7px;
-  //}
 
   &:active, &:focus {
     outline: none;
@@ -244,6 +262,7 @@ form, .form {
   }
 }
 
+/* Input group override */
 .input-group {
   &.input-group-lg {
     .form-control {
@@ -255,12 +274,14 @@ form, .form {
   }
 }
 
+/* Panel override */
 .panel {
   .panel-heading, .panel-body {
     @include border-radius(0);
   }
 }
 
+/* Table override */
 .table {
   thead {
     tr {
@@ -321,14 +342,17 @@ form, .form {
   }
 }
 
+/* Pre tag override */
 pre {
   background-color: #f2f2f2;
 }
 
+/* Center block override */
 .center-block {
   text-align: center;
 }
 
+/* Label extension */
 label {
   &.empty-label {
     @media (max-width: 600px) {
@@ -338,6 +362,7 @@ label {
   }
 }
 
+/* Legend extension */
 legend {
   &.legend-small {
     font-size: 16px;
@@ -363,22 +388,30 @@ legend {
   }
 }
 
+/* Ul list override */
 ul {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
+/* Markdown style override */
 .markdown-body {
   h1 {
     padding-left: 0;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    color: #555;
+    font-weight: normal !important;
   }
   ul {
     list-style: initial;
   }
 }
 
+/* Modal override */
 .modal {
+
   &.modal-prop {
     .modal-dialog {
       .main-actions {
@@ -409,10 +442,12 @@ ul {
   }
 }
 
+/* Modal content override */
 .modal-content {
   @include border-radius(0);
 }
 
+/* Modal header override */
 .modal-header {
   .close {
     margin-top: 0;
@@ -426,6 +461,7 @@ ul {
   }
 }
 
+/* Modal body override */
 .modal-body {
   &.alert {
     margin: 0;
@@ -433,38 +469,33 @@ ul {
       margin-bottom: 20px;
     }
   }
+
   .tabs {
     overflow: hidden;
     margin-top: 10px;
-    @extend %flex;
+
     &.loading {
       @extend %loading-abs;
     }
-    & > .nav {
-      @include flex(0 0 auto);
+
+    .nav.nav-tabs {
       .form-li {
         width: 300px;
         margin-right: 10px;
         float: right;
       }
     }
-    & > section {
-      @extend %flex;
-      @include flex(1);
-      & > .content {
-        overflow-y: auto;
-        min-height: 100px;
-        max-height: 500px;
-        @include flex(1);
-        @extend %scrollbar;
-      }
-      & > .paginate {
-        @include flex(0 0 auto);
-      }
+
+    .content {
+      overflow-y: auto;
+      min-height: 100px;
+      max-height: 500px;
+      @extend %scrollbar;
     }
   }
 }
 
+/* Modal footer override */
 .modal-footer {
   & > .btn,
   & > .copy-btn {
@@ -472,6 +503,7 @@ ul {
   }
 }
 
+/* CodeMirror override */
 .codemirror {
   .CodeMirror {
     margin-bottom: 10px;
@@ -483,29 +515,20 @@ ul {
   }
 }
 
-.no-padding {
-  padding: 0;
-}
-.no-margin {
-  margin: 0;
-}
+/* Inline override */
 .inline {
   display: inline-block !important;
   width: auto !important;
   vertical-align: middle;
   margin-right: 10px;
+  margin-left: 20px;
 }
 
 [draggable] {
   @include user-select(none);
 }
 
-.preload {
-  img {
-    display: none;
-  }
-}
-
+/* Btn group override */
 .btn-group {
   &.right {
     .dropdown-menu {
@@ -515,6 +538,7 @@ ul {
   }
 }
 
+/* Dropdown menu override */
 .dropdown-menu {
   li {
     a {

@@ -22,7 +22,8 @@ angular
         'registryApp.app',
         'registryApp.cliche',
         'registryApp.dyole',
-        'registryApp.repo'
+        'registryApp.repo',
+        'registryApp.common'
     ])
     .config(['$routeProvider', '$httpProvider', '$localForageProvider', function ($routeProvider, $httpProvider, $localForageProvider) {
         $routeProvider
@@ -46,7 +47,7 @@ angular
                 templateUrl: 'views/tasks.html',
                 controller: 'TasksCtrl'
             })
-            .when('/task', {
+            .when('/task/:id', {
                 templateUrl: 'views/task.html',
                 controller: 'TaskCtrl'
             })

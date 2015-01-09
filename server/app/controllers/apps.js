@@ -19,7 +19,31 @@ module.exports = function (app) {
 };
 
 /**
- * Get all tools
+ * @apiDefine InvalidToolError
+ * @apiError message Invalid tool
+ * @apiErrorExample {json} InvalidToolError:
+ *     HTTP/1.1 400 Bad Request
+ *     {
+ *       "message": "Invalid tool"
+ *     }
+ */
+
+/**
+ * Get all Tools
+ *
+ * @apiName GetTools
+ * @api {GET} /api/apps Get all Tools
+ * @apiGroup Repos
+ * @apiDescription Fetch all Tools
+ *
+ * @apiSuccess {Number} total Total number of tools
+ * @apiSuccess {Array} list List of tools
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "total": "1",
+ *       "list": [{tool}]
+ *     }
  */
 router.get('/apps', function (req, res, next) {
 
@@ -92,10 +116,20 @@ router.get('/apps', function (req, res, next) {
 });
 
 /**
- * Get all tools grouped by repository
+ * Get grouped tools and scripts
  *
- * @param {String} type - values my|other
- * @response list - list of tools grouped by repo
+ * @apiName GetToolsGroupedByRepo
+ * @api {GET} /tool/repositories/:type Get grouped tools and scripts
+ * @apiParam {string="my","other"} type Defines whose repos to fetch
+ * @apiGroup Tools
+ * @apiDescription Fetch tools and scripts grouped by repo
+ *
+ * @apiSuccess {Object} list List of tools and scripts grouped by repo
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "list": {tools: [tools], scripts: [scripts]}
+ *     }
  */
 router.get('/tool/repositories/:type', function (req, res, next) {
 
@@ -166,8 +200,7 @@ router.get('/tool/repositories/:type', function (req, res, next) {
 
                     res.json({list: {tools: result[0], scripts: result[1]}});
 
-                })
-                .fail(function(error) {
+                }).fail(function(error) {
                     res.json(error);
                 });
 
@@ -182,9 +215,22 @@ router.get('/tool/repositories/:type', function (req, res, next) {
 /**
  * Get tool by revision
  *
- * @param {String} id - id of the tool
- * @param {String} revision - id of the tool revision
- * @return result - tool and revision object
+ * @apiName GetTool
+ * @api {GET} /apps/:id/:revision Get tool by revision
+ * @apiParam {String} id ID of the tool
+ * @apiParam {String} revision ID of the revision
+ * @apiGroup Tools
+ * @apiDescription Get tool by revision
+ * @apiUse UnauthorizedError
+ *
+ * @apiSuccess {Object} data Tool details
+ * @apiSuccess {Object} revision Tool revision details
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "data": {tool}
+ *       "revision": {tool-revision}
+ *     }
  */
 router.get('/apps/:id/:revision', function (req, res, next) {
 
@@ -217,43 +263,26 @@ router.get('/apps/:id/:revision', function (req, res, next) {
 });
 
 /**
- * Get the tool's json by tool's id or tool revision's id
- *
- * @param {String} id - id of the tool or id of the tool revision's id
- */
-router.get('/run/:id', function (req, res, next) {
-
-    // TODO: check if public?
-
-    App.findById(req.params.id, function(err, app) {
-        if (err) { return next(err); }
-
-        if (app) {
-
-            var json = _.isString(app.json) ? JSON.parse(app.json) : app.json;
-            res.json(json);
-
-        } else {
-            Revision.findById(req.params.id, function(err, revision) {
-                if (err) { return next(err); }
-
-                if (revision) {
-                    var json = _.isString(revision.json) ? JSON.parse(revision.json) : revision.json;
-                    res.json(json);
-                } else {
-                    res.status(400).json({message: 'This app doesn\'t exist'});
-                }
-            });
-        }
-    });
-
-});
-
-/**
  * Create new tool
  *
- * @post_param {String} action - values create|fork
- * @return result - created tool and message
+ * @apiName CreateTool
+ * @api {POST} /apps/:action Create new tool
+ * @apiParam {String="create","fork"} action Type of the action
+ * @apiGroup Tools
+ * @apiDescription Create new tool from clean template or by forking it
+ * @apiPermission Logged in user
+ * @apiUse UnauthorizedError
+ * @apiUse NameCollisionError
+ * @apiUse InvalidToolError
+ *
+ * @apiSuccess {String} message Success message
+ * @apiSuccess {Object} app Tool details
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "message": "Tool has been successfully created"
+ *       "app": {tool}
+ *     }
  */
 router.post('/apps/:action', filters.authenticated, function (req, res, next) {
 
@@ -274,6 +303,8 @@ router.post('/apps/:action', filters.authenticated, function (req, res, next) {
         if (count > 0) {
             res.status(400).json({message: 'The "'+name+'" tool already exists, please choose another name!'});
         } else {
+
+            data.tool['@type'] = data.is_script ? 'Script' : 'CommandLine';
 
             var app = new App();
 
@@ -324,7 +355,7 @@ router.post('/apps/:action', filters.authenticated, function (req, res, next) {
                                             app.revisions.push(revision._id);
 
                                             app.save(function() {
-                                                res.json({app: app, message: 'App has been successfully created'});
+                                                res.json({app: app, message: 'Tool has been successfully created'});
                                             });
 
                                         });
@@ -348,10 +379,21 @@ router.post('/apps/:action', filters.authenticated, function (req, res, next) {
 });
 
 /**
- * Validate tool's json
  *
- * @post_param {Object} json - json to be validated
- * @return message
+ * Validate tool json
+ *
+ * @apiName ValidateWorkflow
+ * @api {POST} /api/validate Validate tool json
+ * @apiGroup Tools
+ * @apiDescription Validate tool json
+ * @apiUse InvalidToolError
+ *
+ * @apiSuccess {Object} json Successfully passed validation
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *        {json}
+ *     }
  */
 router.post('/validate', function (req, res) {
 
@@ -369,10 +411,29 @@ router.post('/validate', function (req, res) {
 });
 
 /**
+ *
  * Delete tool and it's revisions
  *
- * @param {String} id - id of the tool
- * @return message
+ * @apiName DeleteTool
+ * @api {DELETE} /api/apps/:id Delete tool
+ * @apiGroup Tools
+ * @apiDescription Delete tool
+ * @apiPermission Logged in user
+ * @apiUse UnauthorizedError
+ *
+ * @apiError message Forbidden tool delete from the public repo
+ * @apiErrorExample {json} PublicRepoError:
+ *     HTTP/1.1 403 Bad Request
+ *     {
+ *       "message": "This app belongs to public repo and it can't be deleted."
+ *     }
+ *
+ * @apiSuccess {String} message Success message
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *        "message": "Tool successfully deleted"
+ *     }
  */
 router.delete('/apps/:id', filters.authenticated, function (req, res, next) {
 
@@ -388,7 +449,7 @@ router.delete('/apps/:id', filters.authenticated, function (req, res, next) {
 
                 // TODO: allow app delete from public repo?
 
-                res.status(400).json({message: 'This app belongs to public repo and it can\'t be deleted.'});
+                res.status(403).json({message: 'This app belongs to public repo and it can\'t be deleted.'});
 
             } else {
 

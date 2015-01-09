@@ -23,9 +23,7 @@ angular.module('registryApp.repo')
 
             params.mine = mine || null;
 
-            var promise = Api.repos.get(params).$promise;
-
-            return promise;
+            return Api.repos.get(params).$promise;
 
         };
 
@@ -37,9 +35,7 @@ angular.module('registryApp.repo')
          */
         self.getRepo = function(id) {
 
-            var promise = Api.repos.get({id: id}).$promise;
-
-            return promise;
+            return Api.repos.get({id: id}).$promise;
 
         };
 

@@ -7,9 +7,9 @@
 'use strict';
 
 angular.module('registryApp.cliche')
-    .controller('ClicheCtrl', ['$scope', '$rootScope', '$q', '$modal', '$templateCache', '$routeParams', '$location', 'Data', 'User', 'Tool', 'Repo', 'Loading', 'SandBox', 'Sidebar', 'BeforeUnload', function ($scope, $rootScope, $q, $modal, $templateCache, $routeParams, $location, Data, User, Tool, Repo, Loading, SandBox, Sidebar, BeforeUnload) {
+    .controller('ClicheCtrl', ['$scope', '$q', '$modal', '$templateCache', '$routeParams', '$location', 'Data', 'User', 'Tool', 'Repo', 'Loading', 'SandBox', 'Sidebar', 'BeforeUnload', 'BeforeRedirect', function ($scope, $q, $modal, $templateCache, $routeParams, $location, Data, User, Tool, Repo, Loading, SandBox, Sidebar, BeforeUnload, BeforeRedirect) {
 
-        Sidebar.setActive('cliche');
+        Sidebar.setActive($routeParams.type + ' editor');
 
         var schema = 'https://github.com/common-workflow-language/common-workflow-language/blob/draft-1/specification/tool-description.md';
 
@@ -20,7 +20,6 @@ angular.module('registryApp.cliche')
 
         $scope.view.tab = 'general';
         $scope.view.saving = false;
-        $scope.view.reload = false;
         $scope.view.app = {};
 
         /* cliche mode: new or edit */
@@ -30,8 +29,6 @@ angular.module('registryApp.cliche')
         $scope.view.userRepos = [];
 
         $scope.view.showConsole = true;
-
-        $scope.view.tabViewPath = 'views/cliche/tabs/general.html';
 
         $scope.view.propsExpanded = {
             inputs: false,
@@ -68,17 +65,13 @@ angular.module('registryApp.cliche')
             $scope.view.userRepos = repos.list;
         });
 
-        $scope.view.list = {
-            inputs: {tmp: [], part: []},
-            outputs: {tmp: [], part: []},
-            values: {tmp: [], part: []}
-        };
-
+        $scope.view.pages = {values: []};
         $scope.view.page = {inputs: 1, outputs: 1, values: 1};
-
         $scope.view.total = {inputs: 0, outputs: 0, values: 0};
 
         $scope.view.fakeRequired = [];
+
+        $scope.view.type = $routeParams.type;
 
         /**
          * Prepare temp list for paginating
@@ -88,36 +81,20 @@ angular.module('registryApp.cliche')
          */
         $scope.prepareForPagination = function(origin, what) {
 
-
-            // TODO: potential bug, check pagination in task controller
-
             $scope.view.total[what] = _.size(origin);
-            $scope.view.list[what].tmp = [];
+
+            var count = 0;
+            $scope.view.pages[what] = [];
+            $scope.view.page[what] = 1;
 
             _.each(origin, function(obj, name) {
-                $scope.view.list[what].tmp.push({key: name, obj: obj});
-            });
+                if (count % 10 === 0) {
+                    $scope.view.pages[what].push([]);
+                }
 
-            $scope.getMore(what, 0);
+                $scope.view.pages[what][$scope.view.pages[what].length - 1].push({key: name, obj: obj});
 
-        };
-
-        /**
-         * Get next/prev page
-         *
-         * @param what
-         * @param offset
-         */
-        $scope.getMore = function(what, offset) {
-
-            $scope.view.list[what].part = [];
-
-            var rest = $scope.view.list[what].tmp.length - offset;
-
-            var times = (rest > 10) ? 10 : rest;
-
-            _.times(times, function(i) {
-                $scope.view.list[what].part.push($scope.view.list[what].tmp[offset + i]);
+                count += 1;
             });
 
         };
@@ -145,14 +122,18 @@ angular.module('registryApp.cliche')
                     var json = _.extend({
                         name: $scope.view.app.name,
                         schema: schema,
-                        description: $scope.view.app.description
-                    }, $scope.view.app.json);
+                        description: $scope.view.revision.description
+                    }, $scope.view.revision.json);
 
                     // legacy structure
                     delete json.softwareDescription;
 
                     Data.setTool(json);
                     $scope.view.toolForm = Data.tool;
+
+                    if (_.isUndefined($scope.view.toolForm.inputs.properties)) {
+                        $scope.view.toolForm.inputs.properties = {};
+                    }
                     if (_.isUndefined($scope.view.toolForm.outputs.properties)) {
                         $scope.view.toolForm.outputs.properties = {};
                     }
@@ -162,8 +143,6 @@ angular.module('registryApp.cliche')
 
                     if ($scope.view.showConsole) { turnOnDeepWatch(); }
 
-                    $scope.prepareForPagination(Data.tool.inputs.properties, 'inputs');
-                    $scope.prepareForPagination(Data.tool.outputs.properties, 'outputs');
                     $scope.prepareForPagination(Data.tool.inputs.properties, 'values');
 
                 });
@@ -198,8 +177,6 @@ angular.module('registryApp.cliche')
 
                         if ($scope.view.showConsole) { turnOnDeepWatch(); }
 
-                        $scope.prepareForPagination(Data.tool.inputs.properties, 'inputs');
-                        $scope.prepareForPagination(Data.tool.outputs.properties, 'outputs');
                         $scope.prepareForPagination(Data.tool.inputs.properties, 'values');
 
                     });
@@ -208,20 +185,11 @@ angular.module('registryApp.cliche')
         }
 
         /**
-         * Update properties array when new is added
-         *
-         * @param type
+         * Update input values form when props are changed
          */
-        $scope.updateProps = function(type) {
+        $scope.updateInputs = function () {
 
-            // TODO: load last page
-
-            $scope.prepareForPagination(Data.tool[type].properties, type);
-            if (type === 'inputs') {
-                $scope.prepareForPagination(Data.tool.inputs.properties, 'values');
-            }
-
-            $scope.view.page[type] = 1;
+            $scope.prepareForPagination(Data.tool.inputs.properties, 'values');
 
         };
 
@@ -231,14 +199,14 @@ angular.module('registryApp.cliche')
          */
         $scope.toggleProperties = function(tab) {
 
+            if ($routeParams.type === 'script') { return false; }
+
             $scope.view.propsExpanded[tab] = !$scope.view.propsExpanded[tab];
 
-            var props = (tab !== 'args') ? $scope.view.list[tab].part : $scope.view.toolForm.adapter.args;
-            var k;
+            var props = (tab !== 'args') ? $scope.view.toolForm[tab].properties : $scope.view.toolForm.adapter.args;
 
             _.each(props, function(value, key) {
-                k = (tab === 'args') ? key : value.key;
-                $scope.view.active[tab][k] = $scope.view.propsExpanded[tab];
+                $scope.view.active[tab][key] = $scope.view.propsExpanded[tab];
             });
 
         };
@@ -249,7 +217,6 @@ angular.module('registryApp.cliche')
          */
         $scope.switchTab = function(tab) {
             $scope.view.tab = tab;
-            $scope.view.tabViewPath = 'views/cliche/tabs/' + tab + '.html';
 
             if (tab === 'values') {
                 watchTheJob();
@@ -434,8 +401,6 @@ angular.module('registryApp.cliche')
             Data.setJob(job);
             $scope.view.jobForm = Data.job;
 
-            $scope.prepareForPagination(Data.tool.inputs.properties, 'inputs');
-            $scope.prepareForPagination(Data.tool.outputs.properties, 'outputs');
             $scope.prepareForPagination(Data.tool.inputs.properties, 'values');
 
         };
@@ -520,20 +485,19 @@ angular.module('registryApp.cliche')
 
             $scope.view.loading = true;
 
-            $scope.view.list = {
-                inputs: {tmp: [], part: []},
-                outputs: {tmp: [], part: []},
-                values: {tmp: [], part: []}
-            };
+            $scope.view.tab = 'general';
+
+            $scope.view.page = {inputs: 1, outputs: 1, values: 1};
+            $scope.view.total = {inputs: 0, outputs: 0, values: 0};
+            $scope.view.pages = {values: []};
 
             var name = $scope.view.toolForm.name;
 
-            Data.flush().then(function(result) {
+            Data.flush(name).then(function(result) {
 
-                $scope.view.toolForm = result.tool;
-                $scope.view.jobForm = result.job;
+                $scope.view.toolForm = angular.copy(result.tool);
+                $scope.view.jobForm = angular.copy(result.job);
                 $scope.view.command = '';
-                $scope.view.toolForm.name = name;
 
                 if ($scope.view.user) {
 
@@ -553,7 +517,7 @@ angular.module('registryApp.cliche')
          */
         $scope.redirect = function(url) {
 
-            $scope.view.reload = true;
+            BeforeRedirect.setReload(true);
             $location.path(url);
 
         };
@@ -586,7 +550,6 @@ angular.module('registryApp.cliche')
                     });
 
                     modalInstance.result.then(function (revisionId) {
-                        $scope.view.reload = true;
                         $location.path('/cliche/' + $routeParams.type + '/' + $routeParams.id + '/' + revisionId);
                     });
 
@@ -610,7 +573,7 @@ angular.module('registryApp.cliche')
             modalInstance.result.then(function(data) {
 
                 $scope.view.saving = true;
-                $scope.view.reload = true;
+                BeforeRedirect.setReload(true);
 
                 data.is_script = $scope.view.app.is_script;
 
@@ -618,7 +581,7 @@ angular.module('registryApp.cliche')
                     $location.path('/cliche/' + $routeParams.type + '/' + result.app._id + '/latest');
                 }, function() {
                     $scope.view.saving = false;
-                    $scope.view.reload = false;
+                    BeforeRedirect.setReload(false);
                 });
 
             });
@@ -746,7 +709,7 @@ angular.module('registryApp.cliche')
                 $scope.view.saving = true;
                 Tool.deleteRevision($scope.view.revision._id).then(function () {
                     $scope.view.saving = false;
-                    $scope.view.reload = true;
+                    BeforeRedirect.setReload(true);
                     $location.path('/apps');
                 }, function() {
                     $scope.view.saving = false;
@@ -783,46 +746,18 @@ angular.module('registryApp.cliche')
             });
         };
 
-        /**
-         * Track route change in order to prevent loss of changes
-         *
-         * @param e
-         * @param nextLocation
-         */
-        var onRouteChange = function(e, nextLocation) {
 
-            if($scope.view.reload) { return; }
+        var onBeforeUnloadOff = BeforeUnload.register(function() { return 'Please save your changes before leaving.'; });
 
-            var modalInstance = $modal.open({
-                template: $templateCache.get('views/partials/confirm-leave.html'),
-                controller: 'ModalCtrl',
-                windowClass: 'modal-confirm',
-                resolve: {data: function () {return {};}}
-            });
-
-            modalInstance.result.then(function () {
-
-                onRouteChangeOff();
-
-                $scope.view.reload = true;
-
-                Data.save()
-                    .then(function() {
-                        $location.path(nextLocation.split('#\/')[1]);
-                    });
-            });
-
-            e.preventDefault();
-
-        };
-
-        var onRouteChangeOff = $rootScope.$on('$locationChangeStart', onRouteChange);
-
-        var onBufferUnloadOff = BeforeUnload.register(function() { return 'Please save your changes before leaving.'; });
+        var onBeforeRedirectOff = BeforeRedirect.register(function () { return Data.save(); });
 
         $scope.$on('$destroy', function() {
-            onBufferUnloadOff();
-            onBufferUnloadOff = undefined;
+
+            onBeforeUnloadOff();
+            onBeforeUnloadOff = undefined;
+
+            onBeforeRedirectOff();
+            onBeforeRedirectOff = undefined;
         });
 
 

@@ -9,6 +9,9 @@ var JobSchema = new Schema({
     author: String,
     url: String,
     repo: { type: Schema.Types.ObjectId, ref: 'Repo', required: true },
+    type: String,
+    tool: { type: Schema.Types.ObjectId, ref: 'Tool'},
+    workflow: { type: Schema.Types.ObjectId, ref: 'Workflow'},
     json: Schema.Types.Mixed
 });
 

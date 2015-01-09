@@ -259,7 +259,7 @@ angular.module('registryApp.cliche')
             } else {
                 if (properties && !_.isUndefined(properties[name])) {
 
-                    deferred.reject('Choose another key, the one already exists');
+                    deferred.reject('Choose another name, the one already exists');
 
                 } else {
 
@@ -680,13 +680,14 @@ angular.module('registryApp.cliche')
          *
          * @returns {Object}
          */
-        self.flush = function() {
+        self.flush = function(name) {
 
             var tool = $injector.get('rawTool');
             var job = $injector.get('rawJob');
             var isScript = !self.tool.adapter;
 
             self.tool = tool;
+            self.tool.name = name;
             self.job = job;
             self.command = '';
 
@@ -717,11 +718,11 @@ angular.module('registryApp.cliche')
             var rawTool = $injector.get('rawTool');
 
             if (isScript) {
-                delete transformed.script;
+                transformed.script = '';
                 delete transformed.adapter;
                 delete transformed.requirements;
             } else {
-                transformed.script = '';
+                delete transformed.script;
                 transformed.adapter = angular.copy(rawTool.adapter);
                 transformed.requirements = angular.copy(rawTool.requirements);
             }

@@ -7,30 +7,30 @@
 'use strict';
 
 angular.module('registryApp.cliche')
-    .directive('addProperty', ['$templateCache', '$modal', '$document', function ($templateCache, $modal, $document) {
+    .directive('addProperty', ['$templateCache', function ($templateCache) {
 
         return {
             restrict: 'E',
             template: '<a href ng-click="addItem($event)" class="btn btn-default"><i class="fa fa-plus"></i></a>',
             scope: {
                 type: '@',
-                openOnKeypress: '@',
+                toolType: '@',
                 properties: '=',
                 req: '=',
                 handler: '&'
             },
-            link: function(scope) {
+            controller: ['$scope', '$modal', function ($scope, $modal) {
 
                 var isOpen = false;
 
-                scope.req = scope.req || [];
+                $scope.req = $scope.req || [];
 
                 /**
                  * Show the modal for adding property items
                  *
                  * @param e
                  */
-                scope.addItem = function(e) {
+                $scope.addItem = function(e) {
 
                     e.stopPropagation();
 
@@ -38,16 +38,19 @@ angular.module('registryApp.cliche')
 
                     isOpen = true;
 
+                    var tplName = $scope.toolType ? $scope.toolType + '-' + $scope.type : $scope.type;
+
                     var modalInstance = $modal.open({
-                        template: $templateCache.get('views/cliche/partials/manage-property-' + scope.type + '.html'),
-                        controller: 'ManageProperty' + scope.type.charAt(0).toUpperCase() + scope.type.slice(1) + 'Ctrl',
+                        template: $templateCache.get('views/cliche/partials/manage-property-' + tplName + '.html'),
+                        controller: 'ManageProperty' + $scope.type.charAt(0).toUpperCase() + $scope.type.slice(1) + 'Ctrl',
                         windowClass: 'modal-prop',
                         size: 'lg',
                         resolve: {
                             options: function () {
                                 return {
-                                    type: scope.type,
-                                    properties: scope.properties
+                                    type: $scope.type,
+                                    toolType: $scope.toolType,
+                                    properties: $scope.properties
                                 };
                             }
                         }
@@ -56,32 +59,16 @@ angular.module('registryApp.cliche')
                     modalInstance.result.then(function(result) {
                         isOpen = false;
 
-                        if (result.required) { scope.req.push(result.name); }
+                        if (result.required) { $scope.req.push(result.name); }
 
-                        if (typeof scope.handler === 'function') { scope.handler(); }
+                        if (typeof $scope.handler === 'function') { $scope.handler(); }
 
                     }, function() {
                         isOpen = false;
                     });
                 };
 
-                /**
-                 * Catch the space key down in order to open modal
-                 *
-                 * @param e
-                 */
-                var keyHandler = function(e) {
-                    if (e.keyCode === 65 && e.shiftKey) { scope.addItem(e); }
-                };
-
-                if (scope.openOnKeypress) {
-                    $document.bind('keydown', keyHandler);
-                }
-
-                scope.$on('$destroy', function() {
-                    $document.unbind('keydown', keyHandler);
-                });
-
-            }
+            }],
+            link: function() {}
         };
     }]);

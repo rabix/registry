@@ -15,14 +15,14 @@
             </div>
             <div class="col-md-8">
                 <div class="actions pull-right" ng-if="view.user">
-                    <a ng-href="#/task" class="btn btn-primary"><i class="fa fa-plus"></i> Add New Task Template</a>
+                    <a ng-href="#/task/new" class="btn btn-primary"><i class="fa fa-plus"></i> New Task Template</a>
                 </div>
             </div>
         </div>
     </div>
     <!-- # .filters -->
 
-    <div ng-if="!view.loading" class="content">
+    <div ng-if="!view.loading" class="content content-tbl">
         <table class="table table-hover jobs">
             <thead>
                 <tr>
@@ -37,12 +37,12 @@
             <tbody>
                 <tr ng-repeat="job in view.jobs">
                     <td>{{ ::job.name }}</td>
-                    <td><span class="label label-primary">{{ ::job.json.app['@type'] || 'CommandTool' }}</span></td>
+                    <td><span class="label label-primary">{{ ::job.type }}</span></td>
                     <td><a ng-href="#/repo/{{ ::job.repo._id }}">{{ ::job.repo.owner }}/{{ ::job.repo.name }}</a></td>
                     <td>{{ ::job.author }}</td>
                     <td><a ng-href="{{ ::job.url }}" class="job-link" target="_blank">{{ ::job.url }}</a></td>
                     <td class="right">
-                        <a href ng-if="view.user.id === job.user" ng-click="deleteJob(job)" class="btn btn-default" tooltip="Delete Task Template"><i class="fa fa-trash"></i></a>
+                        <a ng-href="#/task/{{ job._id }}" ng-if="view.user.id === job.user" class="btn btn-default" tooltip="Edit Task Template"><i class="fa fa-pencil"></i></a>
                     </td>
                 </tr>
                 <tr class="empty" ng-if="view.jobs.length === 0">
@@ -53,7 +53,7 @@
     </div>
     <!-- # .content -->
 
-    <paginator page="view.page" total="view.total" handler="getMoreJobs(offset)"></paginator>
+    <paginator class="paginator" page="view.page" total="view.total" handler="getMoreJobs(offset)"></paginator>
 
 
 </div>

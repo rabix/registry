@@ -1,0 +1,189 @@
+h1 {
+  margin: 0;
+  padding: 13px 0 13px 90px;
+  font-size: 26px;
+  font-weight: normal;
+
+  &.main-title {
+    padding-left: 0;
+  }
+
+  .label-status {
+    font-size: 18px;
+    padding: 6px 20px 8px 7px;
+    font-weight: normal;
+    @include border-radius(16px 4px 4px 16px);
+  }
+
+  .label {
+    font-size: 14px;
+  }
+
+  & > span {
+    &:first-child {
+      max-width: 75%;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+  }
+
+  & > span,
+  & > span > i {
+    display: inline-block;
+    vertical-align: middle;
+    i {
+      &.running {
+        @include animation(rotate 1.2s infinite linear);
+      }
+    }
+    span {
+      margin-left: 5px;
+    }
+  }
+
+  .checkbox {
+    font-weight: normal;
+    font-size: 14px;
+  }
+
+  .form-group {
+    width: 200px;
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0;
+  }
+
+  .actions {
+    & > .btn,
+    & > .btn-group,
+    & > .fa {
+      margin-left: 10px;
+      vertical-align: middle;
+    }
+  }
+
+  .version {
+    font-size: 13px;
+    background-color: #555;
+    color: #fff;
+    padding: 3px 5px;
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 17px;
+    @include border-radius(4px);
+
+    &:hover {
+      text-decoration: none;
+    }
+
+    &.revision {
+      background-color: $orange;
+      margin-right: 10px;
+    }
+  }
+}
+
+h2 {
+  font-size: 24px;
+  font-weight: normal;
+  margin: 0 0 20px 0;
+}
+
+.heading,
+.filters {
+  padding: 0 10px;
+  background-color: $gray;
+  border-bottom: 2px solid $orange;
+  background-image: url(../images/bg.png);
+  @extend .flex-auto;
+}
+
+/* Page heading */
+.heading {
+
+  .label {
+    font-size: 14px;
+    font-weight: normal;
+    padding: 2px 5px;
+  }
+
+  .pipeline-repo,
+  .tool-repo {
+    font-size: 14px;
+    line-height: 22px;
+  }
+
+  .form-group {
+    &.workflow-name,
+    &.tool-name {
+      width: auto;
+
+      & > input[type=text] {
+        display: inline-block;
+        margin-left: 5px;
+        width: auto;
+        vertical-align: middle;
+      }
+    }
+
+    &.workflow-name {
+      & > span {
+        font-size: 20px;
+        margin-top: -7px;
+
+        &.pipeline-repo {
+          font-size: 14px;
+          line-height: 21px;
+        }
+      }
+    }
+
+    &.tool-name {
+      & > span {
+        margin-right: 10px;
+      }
+      .checkbox {
+        margin: 0 0 0 20px;
+        min-height: initial;
+        input[type=checkbox] {
+          margin-top: 3px;
+        }
+      }
+    }
+  }
+
+  .go-back {
+    margin: 12.5px 0;
+  }
+
+  .created-by {
+    font-size: 15px;
+  }
+}
+
+/* Page filters */
+.filters {
+  height: 61px;
+  padding: 13px 0;
+
+  &.empty {
+    height: 10px;
+  }
+
+  .label {
+    font-size: 15px;
+    display: inline-block;
+    line-height: 22px;
+    .close {
+      color: #fff;
+      font-weight: normal;
+      text-shadow: none;
+      float: none;
+      @include opacity(1);
+    }
+  }
+  .tags {
+    padding: 2px 0;
+  }
+}

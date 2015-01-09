@@ -1,9 +1,14 @@
-<div class="form-group" ng-class="{required: prop.required, 'has-error': !(model | isInteger) || inputForm.inputInteger.$invalid}">
-    <label class="control-label">{{ key }}</label>
+<div class="form-group" ng-class="{required: view.required, 'has-error': !(model | isInteger) || inputForm.inputInteger.$invalid}">
+    <label class="control-label">
+        <div ng-if="exposed" class="checkbox">
+            <label><input type="checkbox" ng-model="view.expose" ng-change="exposeParams()"> expose</label>
+        </div>
+        <span class="input-key" title="{{ key }}">{{ key }}</span>
+    </label>
 
     <div class="input-property-body">
 
-        <input type="number" class="form-control" name="inputInteger" ng-model="model" ng-required="prop.required">
+        <input type="number" class="form-control" name="inputInteger" ng-model="model" ng-required="view.required">
 
         <span ng-if="!(model | isInteger) || inputForm.inputInteger.$invalid" class="help-block">Please provide correct value</span>
 

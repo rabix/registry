@@ -15,11 +15,18 @@ angular.module('registryApp.dyole')
                 var json = _.clone(j);
                 // reset schema
                 this.packedSchema = {};
+
+                this.packedSchema['@type'] = 'Workflow';
+
                 this.packedSchema.steps = [];
+
                 this.packedSchema.inputs = {
+                    type: 'object',
                     properties: {}
                 };
+
                 this.packedSchema.outputs = {
+                    type: 'object',
                     properties: {}
                 };
 
@@ -46,7 +53,9 @@ angular.module('registryApp.dyole')
                 return json;
             },
 
-            toPipelineSchema: function (json) {
+            toPipelineSchema: function (j) {
+
+                var json = _.clone(j);
 
                 // reset schema
                 this.packedSchema = {};
@@ -392,7 +401,8 @@ angular.module('registryApp.dyole')
                     'softwareDescription': {
                         'repo_owner': 'rabix',
                         'repo_name': 'system',
-                        'type': type
+                        'type': type,
+                        'name': schema.name
                     },
                     'documentAuthor': null,
                     'inputs': {

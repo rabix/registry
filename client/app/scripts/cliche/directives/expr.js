@@ -7,7 +7,7 @@
 'use strict';
 
 angular.module('registryApp.cliche')
-    .directive('expr', ['$templateCache', '$modal', function ($templateCache, $modal) {
+    .directive('expr', ['$templateCache', function ($templateCache) {
 
         return {
             restrict: 'E',
@@ -21,44 +21,45 @@ angular.module('registryApp.cliche')
                 onlyExpr: '@',
                 handleItemUpdate: '&'
             },
-            link: function(scope) {
+            controller: ['$scope', '$modal', function ($scope, $modal) {
 
-                scope.view = {};
-                scope.view.model = scope.ngModel;
-                scope.view.placeholder = scope.placeholder || 'Enter value';
-                scope.view.type = scope.type || 'string';
+                $scope.view = {};
+                $scope.view.model = $scope.ngModel;
+                $scope.view.placeholder = $scope.placeholder || 'Enter value';
+                $scope.view.type = $scope.type || 'string';
 
-                if (scope.view.model && scope.view.model.expr) {
-                    scope.view.model.$expr = scope.view.model.expr;
-                    delete scope.view.model.expr;
+                // legacy structure
+                if ($scope.view.model && $scope.view.model.expr) {
+                    $scope.view.model.$expr = $scope.view.model.expr;
+                    delete $scope.view.model.expr;
                 }
 
-                scope.$watch('view.model', function (n, o) {
+                $scope.$watch('view.model', function (n, o) {
                     if (n !== o) {
-                        if (_.isUndefined(scope.handleItemUpdate)) {
-                            scope.ngModel = n;
+                        if (_.isUndefined($scope.handleItemUpdate)) {
+                            $scope.ngModel = n;
                         } else {
-                            scope.handleItemUpdate({index: scope.index, value: n});
+                            $scope.handleItemUpdate({index: $scope.index, value: n});
                         }
                     }
                 });
 
-                scope.$watch('view.model.$expr', function (n, o) {
+                $scope.$watch('view.model.$expr', function (n, o) {
                     if (n !== o) {
-                        scope.handleItemUpdate({index: scope.index, value: scope.view.model});
+                        $scope.handleItemUpdate({index: $scope.index, value: $scope.view.model});
                     }
                 });
 
-                scope.$watch('ngModel', function (n, o) {
-                    if (n !== o) { scope.view.model = n; }
+                $scope.$watch('ngModel', function (n, o) {
+                    if (n !== o) { $scope.view.model = n; }
                 });
 
                 /**
                  * Edit custom expression for input value evaluation
                  */
-                scope.editExpression = function () {
+                $scope.editExpression = function () {
 
-                    var expr = _.isObject(scope.view.model) ? scope.view.model.$expr : '';
+                    var expr = _.isObject($scope.view.model) ? $scope.view.model.$expr : '';
 
                     var modalInstance = $modal.open({
                         template: $templateCache.get('views/cliche/partials/edit-expression.html'),
@@ -70,7 +71,7 @@ angular.module('registryApp.cliche')
                             options: function () {
                                 return {
                                     expr: expr,
-                                    self: scope.self ? true : false
+                                    self: $scope.self ? true : false
                                 };
                             }
                         }
@@ -78,18 +79,19 @@ angular.module('registryApp.cliche')
 
                     modalInstance.result.then(function (expr) {
                         if (_.isEmpty(expr)) {
-                            scope.view.model = '';
+                            $scope.view.model = '';
                         } else {
-                            if (!_.isObject(scope.view.model)) {
-                                scope.view.model = {};
+                            if (!_.isObject($scope.view.model)) {
+                                $scope.view.model = {};
                             }
-                            scope.view.model.$expr = expr;
+                            $scope.view.model.$expr = expr;
                         }
                     });
 
 
                 };
 
-            }
+            }],
+            link: function() {}
         };
     }]);

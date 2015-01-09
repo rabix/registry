@@ -12,12 +12,12 @@
 
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700' rel='stylesheet' type='text/css'>
 
-    <!-- build:css({.tmp,app}) styles/main.css -->
+    <!-- build:css({.tmp,app}) styles/styles.css -->
     <link rel="stylesheet" href="bower_components/fontawesome/css/font-awesome.css">
     <link rel="stylesheet" href="bower_components/codemirror/lib/codemirror.css">
     <link rel="stylesheet" href="bower_components/codemirror/theme/mbo.css">
-    <link rel="stylesheet" href="styles/main.css">
     <link rel="stylesheet" href="bower_components/github-markdown-css/github-markdown.css">
+    <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
 
     <link rel="jsandbox" href="vendor/jsandbox/src/jsandbox-worker.js"/>
@@ -97,26 +97,17 @@
 
     <script src="scripts/main/controllers/MasterCtrl.js"></script>
     <script src="scripts/main/controllers/HomeCtrl.js"></script>
-    <script src="scripts/main/controllers/ModalCtrl.js"></script>
     <script src="scripts/main/controllers/ModalJSONCtrl.js"></script>
     <script src="scripts/main/controllers/BuildsCtrl.js"></script>
     <script src="scripts/main/controllers/BuildCtrl.js"></script>
     <script src="scripts/main/controllers/SettingsCtrl.js"></script>
-    <script src="scripts/main/controllers/ManageRepoCtrl.js"></script>
-    <script src="scripts/main/controllers/PickRepoModalCtrl.js"></script>
-    <script src="scripts/main/controllers/MarkdownCtrl.js"></script>
     <script src="scripts/main/controllers/TasksCtrl.js"></script>
     <script src="scripts/main/controllers/TaskCtrl.js"></script>
 
-    <script src="scripts/main/directives/error.js"></script>
-    <script src="scripts/main/directives/loading.js"></script>
     <script src="scripts/main/directives/sidebar.js"></script>
     <script src="scripts/main/directives/drag.js"></script>
     <script src="scripts/main/directives/drop.js"></script>
     <script src="scripts/main/directives/preload.js"></script>
-    <script src="scripts/main/directives/paginator.js"></script>
-    <script src="scripts/main/directives/copy.js"></script>
-    <script src="scripts/main/directives/json-preview.js"></script>
 
     <script src="scripts/main/filters/is-empty.js"></script>
     <script src="scripts/main/filters/encode.js"></script>
@@ -126,7 +117,6 @@
 
     <script src="scripts/main/services/Api.js"></script>
     <script src="scripts/main/services/HTTPInterceptor.js"></script>
-    <script src="scripts/main/services/BeforeUnload.js"></script>
 
     <script src="scripts/main/models/User.js"></script>
     <script src="scripts/main/models/Job.js"></script>
@@ -141,8 +131,6 @@
     <script src="scripts/app/controllers/WorkflowEditorCtrl.js"></script>
     <script src="scripts/app/controllers/PickAppCtrl.js"></script>
 
-    <script src="scripts/app/directives/input-param.js"></script>
-
     <script src="scripts/app/models/Tool.js"></script>
     <script src="scripts/app/models/Workflow.js"></script>
 
@@ -152,8 +140,24 @@
     <script src="scripts/repo/controllers/RepoCtrl.js"></script>
     <script src="scripts/repo/controllers/AddYourGitHubRepoCtrl.js"></script>
     <script src="scripts/repo/controllers/RepoInstructionsCtrl.js"></script>
+    <script src="scripts/repo/controllers/PickRepoModalCtrl.js"></script>
+    <script src="scripts/repo/controllers/ManageRepoCtrl.js"></script>
 
     <script src="scripts/repo/models/Repo.js"></script>
+
+    <script src="scripts/common/common.config.js"></script>
+
+    <script src="scripts/common/controllers/MarkdownCtrl.js"></script>
+    <script src="scripts/common/controllers/ModalCtrl.js"></script>
+
+    <script src="scripts/common/directives/copy.js"></script>
+    <script src="scripts/common/directives/loading.js"></script>
+    <script src="scripts/common/directives/paginator.js"></script>
+    <script src="scripts/common/directives/json-preview.js"></script>
+    <script src="scripts/common/directives/error.js"></script>
+
+    <script src="scripts/common/services/BeforeUnload.js"></script>
+    <script src="scripts/common/services/BeforeRedirect.js"></script>
 
     <!-- endbuild -->
 
@@ -188,6 +192,8 @@
     <script src="scripts/cliche/controllers/ManagePropertyArgCtrl.js"></script>
     <script src="scripts/cliche/controllers/ManagePropertyInputCtrl.js"></script>
     <script src="scripts/cliche/controllers/ManagePropertyOutputCtrl.js"></script>
+    <script src="scripts/cliche/controllers/ManagePropertyInputNameCtrl.js"></script>
+    <script src="scripts/cliche/controllers/ManagePropertyOutputNameCtrl.js"></script>
 
     <script src="scripts/cliche/directives/property-input.js"></script>
     <script src="scripts/cliche/directives/property-output.js"></script>
@@ -202,6 +208,7 @@
     <script src="scripts/cliche/directives/separator.js"></script>
     <script src="scripts/cliche/directives/separator-info.js"></script>
     <script src="scripts/cliche/directives/property-header.js"></script>
+    <script src="scripts/cliche/directives/property-header-script.js"></script>
 
     <script src="scripts/cliche/filters/contains.js"></script>
     <script src="scripts/cliche/filters/size.js"></script>
@@ -210,6 +217,7 @@
 
     <script src="scripts/cliche/services/RecursionHelper.js"></script>
     <script src="scripts/cliche/services/JSandbox.js"></script>
+    <script src="scripts/cliche/services/Separator.js"></script>
     <!-- endbuild -->
 
 </body>

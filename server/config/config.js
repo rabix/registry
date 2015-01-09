@@ -135,7 +135,14 @@ var externalConfig = config[env],
     confArg = process.argv[2];
 
 if (confArg && confArg.indexOf('data') !== -1 && env === 'production'){
+
     externalConfig = fs.readFileSync(process.argv[2]);
+
+    externalConfig.root = rootPath;
+    externalConfig.tmpDir = {
+        path: rootPath + '/tmp'
+    };
+
 }
 
 module.exports = externalConfig;

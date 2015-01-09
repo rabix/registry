@@ -61,21 +61,32 @@
             <li ng-hide="view.app.is_script" ng-class="{active: view.tab === 'adapter'}"><a href ng-click="switchTab('adapter')">Adapter</a></li>
             <li ng-hide="view.app.is_script" ng-class="{active: view.tab === 'values'}"><a href ng-click="switchTab('values')">Test</a></li>
         </ul>
-
-        <a class="btn btn-flush btn-flush-cliche" href ng-click="flush()" tooltip="Start with clean template" tooltip-placement="left" tooltip-append-to-body="true">
-            <i class="fa fa-trash"></i>
-        </a>
+        <a href class="btn btn-flush btn-flush-cliche" title="Start with clean template" ng-click="flush()"><i class="fa fa-trash"></i></a>
     </div>
     <!-- # .heading -->
 
-    <div ng-if="!view.loading" class="content">
+    <div ng-if="!view.loading" class="content content-tbl flex-box-column">
 
-        <ng-include class="include" src="view.tabViewPath"></ng-include>
+        <div ng-show="view.tab === 'general'" class="tab general flex-box-column flex-one">
+            <ng-include class="include flex-box-column flex-one" src="'views/cliche/tabs/general.html'"></ng-include>
+        </div>
+        <div ng-show="view.tab === 'inputs'" class="tab inputs flex-box-column flex-one">
+            <ng-include class="include flex-box-column flex-one" src="'views/cliche/tabs/inputs.html'"></ng-include>
+        </div>
+        <div ng-show="view.tab === 'outputs'" class="tab outputs flex-box-column flex-one">
+            <ng-include class="include flex-box-column flex-one" src="'views/cliche/tabs/outputs.html'"></ng-include>
+        </div>
+        <div ng-if="!view.app.is_script" ng-show="view.tab === 'adapter'" class="tab adapter flex-box-column flex-one">
+            <ng-include class="include flex-box-column flex-one" src="'views/cliche/tabs/adapter.html'"></ng-include>
+        </div>
+        <div ng-if="!view.app.is_script" ng-show="view.tab === 'values'" class="tab values flex-box-column flex-one">
+            <ng-include class="include flex-box-column flex-one" src="'views/cliche/tabs/values.html'"></ng-include>
+        </div>
 
     </div>
     <!-- # .content -->
 
-    <div ng-if="!view.loading && !view.app.is_script" class="console" ng-class="{'console-hide': !view.showConsole}">
+    <div class="console flex-auto" ng-if="!view.loading && !view.app.is_script" ng-class="{'console-hide': !view.showConsole}">
         <div ng-click="toggleConsole()" class="heading">console <i ng-class="{'fa-chevron-down': view.showConsole, 'fa-chevron-right': !view.showConsole}" class="fa pull-right"></i></div>
         <zclip data="command"></zclip>
         <pre class="console-trace" ng-class="{wait: view.generatingCommand}">{{ view.command }}</pre>

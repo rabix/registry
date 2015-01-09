@@ -4,7 +4,6 @@ var express = require('express');
 var router = express.Router();
 var mongoose = require('mongoose');
 var _ = require('lodash');
-var fs = require('fs');
 
 var Pipeline = mongoose.model('Pipeline');
 var PipelineRevision = mongoose.model('PipelineRevision');
@@ -43,7 +42,7 @@ module.exports = function (app) {
 
 /**
  * @apiDefine InvalidIDError
- * @apiError Message Ivalid workflow id
+ * @apiError Message Invalid workflow id
  * @apiErrorExample InvalidIDError:
  *     HTTP/1.1 404
  *     {
@@ -53,7 +52,7 @@ module.exports = function (app) {
 
 /**
  * @apiName FormatWorkflow
- * @api {GET} /api/workflow/format Format workflow
+ * @api {POST} /api/workflow/format Format workflow
  * @apiGroup Workflows
  * @apiDescription Format workflow
  *
@@ -78,7 +77,7 @@ router.post('/workflow/format', function (req, res) {
 
 /**
  * @apiName FormatUploadWorkflow
- * @api {GET} /api/workflow/format/upload Format workflow and upload it
+ * @api {POST} /api/workflow/format/upload Format workflow and upload it
  * @apiGroup Workflows
  * @apiDescription Format workflow and upload it
  *
@@ -774,7 +773,6 @@ router.get('/workflow/repositories/:type', function (req, res, next) {
 
     var type = req.params.type;
     var where = {};
-    var match = {};
 
     if (type === 'my') {
         if (!req.user) {
@@ -784,33 +782,37 @@ router.get('/workflow/repositories/:type', function (req, res, next) {
 
         where.user = req.user.id;
     } else {
+
         if (req.user) {
             where.user = {$ne: req.user.id};
         }
-        match.$or = [];
-        match.$or.push({
-            is_public: true
-        });
+
+        where.is_public = true;
     }
+    Repo.find(where).exec(function (err, repos) {
 
-    Pipeline.find(where)
-        .populate('repo')
-        .populate('user', '_id email username')
-        .populate('latest')
-        .populate({
-            path: 'revisions',
-            match: match
-        })
-        .sort({_id: 'desc'})
-        .exec(function (err, pipelines) {
-            if (err) { return next(err);}
+        if (err) {return next(err);}
 
-            var grouped = _.groupBy(pipelines, function (p) {
-                return p.repo.owner + '/' + p.repo.name;
+        var whereApps = {repo: {$in: _.pluck(repos, '_id')}};
+
+        Pipeline.find(whereApps)
+            .populate('repo')
+            .populate('user', '_id email username')
+            .populate('latest')
+            .populate('revisions')
+            .sort({_id: 'desc'})
+            .exec(function (err, pipelines) {
+                if (err) { return next(err);}
+
+                var grouped = _.groupBy(pipelines, function (p) {
+                    return p.repo.owner + '/' + p.repo.name;
+                });
+
+                console.log('whereApps: ', whereApps, 'Type: ', type, 'List keys:', Object.keys(grouped));
+                res.json({list: grouped});
             });
 
-            res.json({list: grouped});
-        });
+    });
 
 });
 
@@ -832,13 +834,13 @@ router.get('/workflow/repositories/:type', function (req, res, next) {
  *     }
  */
 router.post('/workflow/validate', function (req, res, next) {
-    var json = req.body;
+    var json = req.body.json || req.body;
     
     if (typeof json === 'undefined') { res.status(400).json({error: 'Undefined json to validate'}); return false;}
+    if (typeof json === 'string') { json = JSON.parse(json); }
 
     var formated = formater.toPipelineSchema(json);
     var errors = validator.validate(formated);
-
 
     if (errors.errors.length === 0 && errors.paramErrors.length === 0) {
         res.json({json: formated});

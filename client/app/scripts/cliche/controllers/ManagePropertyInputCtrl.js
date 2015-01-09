@@ -27,7 +27,7 @@ angular.module('registryApp.cliche')
          */
         var checkInputAdapter = function() {
 
-            if (_.isUndefined($scope.view.property.adapter)) {
+            if (_.isUndefined($scope.view.property.adapter) && options.toolType === 'tool') {
                 $scope.view.property.adapter = {};
             }
 
@@ -87,10 +87,12 @@ angular.module('registryApp.cliche')
 
                     if (_.isUndefined($scope.view.property.items.properties)) {
                         $scope.view.property.items.properties = {};
-                        $scope.view.property.adapter.prefix = '';
-                        $scope.view.property.adapter.itemSeparator = undefined;
-                        $scope.view.property.adapter.separator = ' ';
-                        $scope.view.property.adapter.value = undefined;
+                        if (options.toolType === 'tool') {
+                            $scope.view.property.adapter.prefix = '';
+                            $scope.view.property.adapter.itemSeparator = undefined;
+                            $scope.view.property.adapter.separator = ' ';
+                            $scope.view.property.adapter.value = undefined;
+                        }
                     }
                 } else {
                     $scope.view.disabled = false;
@@ -118,8 +120,15 @@ angular.module('registryApp.cliche')
          * @param value
          */
         $scope.updateTransform = function (value) {
+
             checkInputAdapter();
-            $scope.view.property.adapter.value = value;
+
+            if (_.isObject(value)) {
+                $scope.view.property.adapter.value = value;
+            } else {
+                delete $scope.view.property.adapter.value;
+            }
+
         };
 
         /**

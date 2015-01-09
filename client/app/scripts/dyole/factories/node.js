@@ -761,7 +761,9 @@ angular.module('registryApp.dyole')
                         }
                     });
 
-                    this.label.attr('text', name);
+                    this.label.attr('text', name)
+                    this._destroyButtons();
+                    this._showButtons();
 
                 }
             },

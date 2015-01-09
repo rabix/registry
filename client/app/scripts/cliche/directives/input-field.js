@@ -7,7 +7,7 @@
 'use strict';
 
 angular.module('registryApp.cliche')
-    .directive('inputField', ['$templateCache', '$compile', '$timeout', '$q', '$modal', 'RecursionHelper', function ($templateCache, $compile, $timeout, $q, $modal, RecursionHelper) {
+    .directive('inputField', ['$templateCache', '$compile', 'RecursionHelper', function ($templateCache, $compile, RecursionHelper) {
 
         var uniqueId = 0;
 
@@ -19,62 +19,157 @@ angular.module('registryApp.cliche')
                 prop: '=',
                 key: '@',
                 ignoreFiles: '@',
-                form: '='
+                form: '=',
+                req: '=',
+                appName: '@',
+                exposed: '=?'
             },
-            compile: function(element) {
-                return RecursionHelper.compile(element, function(scope, iElement) {
+            controller: ['$scope', '$modal', function ($scope, $modal) {
 
-                    scope.view = {};
+                var keyName = $scope.appName + '.' + $scope.key;
 
-                    uniqueId++;
-                    scope.view.uniqueId = uniqueId;
+                $scope.view = {};
 
+                uniqueId++;
+                $scope.view.uniqueId = uniqueId;
 
-                    var inputScheme = scope.model;
-                    var validFileKeys = ['path', 'size', 'secondaryFiles', 'metadata'];
+                $scope.view.required = _.contains($scope.req, $scope.key);
 
-                    if (scope.prop.type === 'file') {
+                $scope.view.expose = $scope.exposed ? !_.isUndefined($scope.exposed[keyName]) : false;
 
-                        inputScheme = _.intersection(validFileKeys, _.keys(scope.model)).length > 0 ? scope.model : {path: scope.model};
+                $scope.view.exposible = !_.isUndefined($scope.exposed);
 
+                /**
+                 * Get default input scheme
+                 *
+                 * @param {*} value
+                 * @returns {*}
+                 */
+                var getDefaultScheme = function (value) {
 
-                    } else if(scope.prop.type === 'object') {
-
-                        inputScheme = _.isObject(scope.model) ? scope.model : {};
-
-                    } else if(scope.prop.type === 'array') {
-
-                        inputScheme = [];
-
-                        scope.prop.items = scope.prop.items || {type: 'string'};
-
-                        switch(scope.prop.items.type) {
-                        case 'object':
-                            _.each(scope.model, function(value) {
-                                var innerScheme = _.isObject(value) ? value : {};
-                                delete innerScheme.path;
-                                inputScheme.push(innerScheme);
-                            });
-                            break;
-                        case 'file':
-                            _.each(scope.model, function(value) {
-                                //var innerScheme = {path: (_.contains(_.keys(value, 'path'), 'path') ? value.path : value)};
-                                var innerScheme = _.intersection(validFileKeys, _.keys(value)).length > 0 ? value : {path: value};
-                                inputScheme.push(innerScheme);
-                            });
-                            break;
-                        default:
-                            _.each(scope.model, function(value) {
-                                var innerScheme = _.isObject(value) ? '' : value;
-                                inputScheme.push(innerScheme);
-                            });
-                            break;
-                        }
+                    if (_.isObject(value)) {
+                        return '';
                     } else {
-                        inputScheme = _.isObject(scope.model) ? '' : scope.model;
+                        return value;
                     }
 
-                    scope.model = inputScheme;
+                };
+
+                /**
+                 * Get file input scheme
+                 *
+                 * @param {*} value
+                 * @returns {*}
+                 */
+                var getFileScheme = function (value) {
+
+                    var validFileKeys = ['path', 'size', 'secondaryFiles', 'metadata'];
+
+                    var intersection = _.intersection(validFileKeys, _.keys(value));
+
+                    if (intersection.length > 0) {
+                        return value;
+                    } else {
+                        return {path: value};
+                    }
+
+                };
+
+                /**
+                 * Get object input scheme
+                 *
+                 * @param {*} value
+                 * @returns {*}
+                 */
+                var getObjectScheme = function (value) {
+
+                    if (_.isObject(value)) {
+                        return value;
+                    } else {
+                        return {};
+                    }
+
+                };
+
+                var inputScheme = $scope.model;
+
+                /* type FILE */
+                if ($scope.prop.type === 'file') {
+
+                    inputScheme = getFileScheme($scope.model);
+
+                    /* type OBJECT */
+                } else if($scope.prop.type === 'object') {
+
+                    inputScheme = getObjectScheme($scope.model);
+
+                    /* type ARRAY */
+                } else if($scope.prop.type === 'array') {
+
+                    inputScheme = [];
+
+                    $scope.prop.items = $scope.prop.items || {type: 'string'};
+
+                    switch($scope.prop.items.type) {
+                    case 'object':
+                        _.each($scope.model, function(value) {
+                            var innerScheme = getObjectScheme(value);
+                            delete innerScheme.path;
+                            inputScheme.push(innerScheme);
+                        });
+                        break;
+                    case 'file':
+                        _.each($scope.model, function(value) {
+                            inputScheme.push(getFileScheme(value));
+                        });
+                        break;
+                    default:
+                        _.each($scope.model, function(value) {
+                            inputScheme.push(getDefaultScheme(value));
+                        });
+                        break;
+                    }
+                    /* type STRING, NUMBER, INTEGER, BOOLEAN */
+                } else {
+                    inputScheme = getDefaultScheme($scope.model);
+                }
+
+                $scope.model = inputScheme;
+
+                /**
+                 * Open modal to enter more parameters for the input file
+                 */
+                $scope.more = function() {
+
+                    var modalInstance = $modal.open({
+                        template: $templateCache.get('views/cliche/partials/input-file-more.html'),
+                        controller: 'InputFileMoreCtrl',
+                        windowClass: 'modal-prop',
+                        resolve: {data: function () {return {scheme: $scope.model, key: $scope.key};}}
+                    });
+
+                    modalInstance.result.then(function (scheme) {
+                        $scope.model = angular.copy(scheme);
+                    });
+
+                };
+
+                /**
+                 * Expose current parameter
+                 */
+                $scope.exposeParams = function () {
+
+                    if ($scope.view.expose) {
+                        $scope.exposed[keyName] = $scope.prop;
+                    } else {
+                        delete $scope.exposed[keyName];
+                    }
+
+                };
+
+            }],
+            compile: function(element) {
+                return RecursionHelper.compile(element, function(scope, iElement) {
 
                     var template = $templateCache.get('views/cliche/inputs/input-' + scope.prop.type  + '.html');
 
@@ -83,24 +178,6 @@ angular.module('registryApp.cliche')
                     $frm.append(template);
 
                     $compile($frm.contents())(scope);
-
-                    /**
-                     * Open modal to enter more parameters for the input file
-                     */
-                    scope.more = function() {
-
-                        var modalInstance = $modal.open({
-                            template: $templateCache.get('views/cliche/partials/input-file-more.html'),
-                            controller: 'InputFileMoreCtrl',
-                            windowClass: 'modal-prop',
-                            resolve: {data: function () {return {scheme: scope.model, key: scope.key};}}
-                        });
-
-                        modalInstance.result.then(function (scheme) {
-                            scope.model = angular.copy(scheme);
-                        });
-
-                    };
 
                 });
             }

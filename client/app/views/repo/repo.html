@@ -17,13 +17,13 @@
     </div>
     <!-- # .heading -->
 
-    <div ng-show="!view.loading" class="content">
+    <div ng-show="!view.loading" class="content content-mix flex-box-column">
 
-        <div class="content-top">
+        <div class="content-top flex-auto">
             <p class="description">{{ ::view.repo.description }}<i ng-if="!view.repo.description">There is no description for this repo</i></p>
         </div>
 
-        <div class="tabs">
+        <div class="tabs flex-box-column flex-one">
             <div class="nav nav-tabs">
                 <li ng-class="{active: view.tab === 'tools'}" class=""><a href ng-click="switchTab('tools')">Tools</a></li>
                 <li ng-class="{active: view.tab === 'scripts'}" class=""><a href ng-click="switchTab('scripts')">Scripts</a></li>
@@ -31,9 +31,9 @@
                 <li ng-class="{active: view.tab === 'builds'}" class=""><a href ng-click="switchTab('builds')">Builds</a></li>
             </div>
 
-            <section ng-show="view.tab === 'tools'" class="apps">
+            <section ng-show="view.tab === 'tools'" class="tab tab-tbl apps flex-box-column flex-one">
 
-                <div class="content">
+                <div class="content content-tbl">
                     <table class="table table-hover repo-apps">
                         <thead>
                             <tr>
@@ -53,13 +53,13 @@
                     </table>
                 </div>
 
-                <paginator page="view.page.tools" total="view.total.tools" handler="getMoreTools(offset)"></paginator>
+                <paginator class="paginator" page="view.page.tools" total="view.total.tools" handler="getMoreTools(offset)"></paginator>
 
             </section>
 
-            <section ng-show="view.tab === 'scripts'" class="apps">
+            <section ng-show="view.tab === 'scripts'" class="tab tab-tbl apps flex-box-column flex-one">
 
-                <div class="content">
+                <div class="content content-tbl">
                     <table class="table table-hover repo-apps">
                         <thead>
                             <tr>
@@ -79,13 +79,13 @@
                     </table>
                 </div>
 
-                <paginator page="view.page.scripts" total="view.total.scripts" handler="getMoreScripts(offset)"></paginator>
+                <paginator class="paginator" page="view.page.scripts" total="view.total.scripts" handler="getMoreScripts(offset)"></paginator>
 
             </section>
 
-            <section ng-show="view.tab === 'workflows'" class="workflows">
+            <section ng-show="view.tab === 'workflows'" class="tab tab-tbl workflows flex-box-column flex-one">
 
-                <div class="content">
+                <div class="content content-tbl">
                     <table class="table table-hover repo-apps">
                         <thead>
                             <tr>
@@ -105,13 +105,13 @@
                     </table>
                 </div>
 
-                <paginator page="view.page.workflows" total="view.total.workflows" handler="getMoreWorkflows(offset)"></paginator>
+                <paginator class="paginator" page="view.page.workflows" total="view.total.workflows" handler="getMoreWorkflows(offset)"></paginator>
 
             </section>
 
-            <section ng-show="view.tab === 'builds'" class="builds">
+            <section ng-show="view.tab === 'builds'" class="tab tab-tbl builds flex-box-column flex-one">
 
-                <div class="content">
+                <div class="content content-tbl">
                     <table class="table table-hover builds">
                         <thead>
                             <tr>
@@ -150,7 +150,7 @@
                     </table>
                 </div>
 
-                <paginator page="view.page.builds" total="view.total.builds" handler="getMoreBuilds(offset)"></paginator>
+                <paginator class="paginator" page="view.page.builds" total="view.total.builds" handler="getMoreBuilds(offset)"></paginator>
 
             </section>
         </div>

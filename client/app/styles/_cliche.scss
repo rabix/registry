@@ -1,37 +1,17 @@
 .page {
   &.cliche {
     & > .content {
-      padding: 0;
-      @extend %flex;
-
       & > .form {
         width: 100%;
       }
 
-      .include {
-        @include flex(1);
-        @extend %flex;
+      .section.top {
+        padding: 10px 10px 0 10px;
+        border-bottom: 1px solid #ddd;
+      }
 
-        & > .content {
-          padding: 10px;
-
-          &.flex {
-            @extend %flex;
-            padding: 0;
-
-            & > .form {
-              @extend %flex-job-form;
-            }
-          }
-        }
-
-        & > .paginate {
-          @include flex(0 0 auto);
-        }
-
-        .row {
-          margin: 0 !important;
-        }
+      .row {
+        margin: 0 !important;
       }
     }
 
@@ -39,10 +19,9 @@
       position: relative;
     }
 
-    & > .console {
+    .console {
       position: relative;
       overflow: hidden;
-      @include flex(0 0 auto);
 
       .heading {
         font-weight: bold;
@@ -114,44 +93,7 @@
   }
 }
 
-/* App/Job actions box (save, publish, import) */
-.app-actions-wrap,
-.job-actions-wrap {
-  .app-action-btns,
-  .job-action-btns {
-    position: absolute;
-    bottom: 5px;
-    right: 15px;
-    @media (max-width: 600px) {
-      button {
-        width: 40px;
-        padding: 6px 0;
-        i {
-          width: 40px;
-          margin: 0 auto;
-        }
-      }
-    }
-  }
-  p {
-    position: absolute;
-    padding: 20px 30px;
-    top: 50%;
-    left: 50%;
-    width: 200px;
-    margin-left: -100px;
-    margin-top: -50px;
-    color: #ff0000;
-    border: 1px solid #cc0000;
-    text-align: center;
-    background-color: rgba(0, 0, 0, 0.5);
-  }
-  label {
-    color: #fff;
-    margin: 0 10px;
-  }
-}
-
+/* Revisions list from the modal */
 .revisions-list {
   margin: 0;
   max-height: 456px;
@@ -184,69 +126,6 @@
   }
 }
 
-/* App listing in modal (for the import) */
-.app-list {
-  margin: 10px 0;
-  max-height: 456px;
-  overflow: auto;
-  border-top: 1px solid #ddd;
-  border-bottom: 1px solid #ddd;
-  padding: 1px 0;
-  @extend %scrollbar-blue;
-
-  & > li {
-    cursor: pointer;
-    border-bottom: 1px solid #ddd;
-
-    & > .app-list-item {
-      overflow: auto;
-      & > span {
-        padding: 7px 10px;
-      }
-    }
-
-    &.selected {
-      & > .app-list-item {
-        background-color: $blue;
-        color: #fff;
-        a {
-          color: #fff;
-        }
-      }
-    }
-
-    &.disabled {
-      & > .app-list-item {
-        cursor: auto;
-        color: #ccc;
-      }
-    }
-
-    & > .app-list-item {
-      & > span {
-        display: inline-block;
-        .glyphicon {
-          color: #eee;
-          margin: 10px;
-        }
-      }
-      & > a {
-        float: right;
-        margin: 7px 10px;
-      }
-    }
-
-    &:last-child {
-      border-bottom: none;
-    }
-
-    .app-list {
-      margin: 0 0 0 10px;
-      border-bottom: none;
-    }
-  }
-}
-
 .meta-list {
   margin-bottom: 10px;
 }
@@ -268,9 +147,7 @@
   top: 0;
   right: 0;
   color: #555;
-  padding: 6px 8px;
-  background-color: #ddd;
-  @include border-radius(15px);
+  padding: 5px 8px;
 
   &:hover, &:active, &:focus {
     text-decoration: none;
@@ -278,255 +155,159 @@
   }
 }
 
-.expr-text {
-  color: #555;
-  &:hover {
-    color: #555;
-  }
-  &.not-defined {
-    font-style: italic;
-  }
-}
-
+/* Property box for displaying input/output/argument values */
 .property-box {
   margin: 0 0 10px 0;
   border: 1px solid #ddd;
+
   &:hover {
     @include transition(border 0.3s ease);
     border: 1px solid #bbb;
   }
 
-  & > .property-box-header {
-    margin: 0;
-    background-color: #eee;
-    cursor: pointer;
-    position: relative;
-    @include user-select(none);
+  & > .include {
 
-    &:before {
-      content: '';
-      display: block;
-      position: absolute;
-      top: 50%;
-      left: 10px;
-      border-left: 5px solid #555;
-      border-top: 5px solid transparent;
-      border-bottom: 5px solid transparent;
-      margin-top: -5px;
-    }
-
-    .property-box-short-info {
-      padding: 10px 10px 10px 25px;
-      margin-right: 60px;
-      .order {
-        background-color: $orange;
-        color: #fff;
-        padding: 0 5px;
-      }
-      .required {
-        color: #cc0000;
-      }
-    }
-
-    .property-box-actions {
-      float: right;
-      font-weight: bold;
-      a:not(.btn) {
-        color: #555;
-        font-size: 17px;
-        display: inline-block;
-        vertical-align: middle;
-        padding: 7.5px 10px;
-        &:last-child {
-          margin-left: -5px;
-        }
-        &:hover {
-          background-color: #ddd;
-        }
-      }
-    }
-  }
-
-  & > .property-box-body {
-    display: none;
-    padding: 10px;
-    background-color: #f9f9f9;
-
-    .box-col {
-      .key {
-        float: left;
-        margin-right: 10px;
-      }
-      .value {
-        display: block;
-        margin: 0;
-        text-overflow: ellipsis;
-        max-width: 100%;
-        white-space: nowrap;
-        overflow: hidden;
-      }
-    }
-
-    .legend-small {
-      font-size: 14px;
-      margin-top: 10px;
-    }
-  }
-
-  &.active {
     & > .property-box-header {
-      border-bottom: 1px solid #ddd;
-      &:before {
-        border-top: 5px solid #555;
-        border-left: 5px solid transparent;
-        border-right: 5px solid transparent;
-        border-bottom: none;
-        margin-top: -2.5px;
+      margin: 0;
+      background-color: #eee;
+      position: relative;
+      @include user-select(none);
+
+      &.tool {
+        cursor: pointer;
+
+        &:before {
+          content: '';
+          display: block;
+          position: absolute;
+          top: 50%;
+          left: 10px;
+          border-left: 5px solid #555;
+          border-top: 5px solid transparent;
+          border-bottom: 5px solid transparent;
+          margin-top: -5px;
+        }
+      }
+
+      .property-box-header-inner.arg {
+        .property-box-short-info {
+          padding: {
+            top: 10px;
+            bottom: 10px;
+          }
+        }
+      }
+
+      .property-box-short-info {
+        padding: 0px 10px 0px 25px;
+        margin-right: 60px;
+        .order {
+          background-color: $orange;
+          color: #fff;
+          padding: 0 5px;
+        }
+        .required {
+          color: #cc0000;
+        }
+        .info-block {
+          display: inline-block;
+          vertical-align: middle;
+          margin-right: 10px;
+        }
+      }
+
+      .property-box-actions {
+        font-weight: bold;
+        display: inline-block;
+        margin-left: 5px;
+
+        a:not(.btn) {
+          color: #555;
+          font-size: 17px;
+          display: inline-block;
+          vertical-align: middle;
+          padding: 7.5px 10px;
+          &:last-child {
+            margin-left: -5px;
+          }
+          &:hover {
+            background-color: #ddd;
+          }
+        }
       }
     }
+
     & > .property-box-body {
-      display: block;
-    }
-  }
+      display: none;
+      padding: 10px;
+      background-color: #f9f9f9;
 
-}
+      .box-col {
+        .key {
+          float: left;
+          margin-right: 10px;
+        }
+        .value {
+          display: block;
+          margin: 0;
+          text-overflow: ellipsis;
+          max-width: 100%;
+          white-space: nowrap;
+          overflow: hidden;
+        }
+      }
 
-/* Property/Argument box */
-.property-wrap,
-.argument-wrap {
-  margin: 0 0 10px 0;
-  border: 1px solid #ddd;
-
-  &:hover {
-    @include transition(border 0.3s ease);
-    border: 1px solid #bbb;
-
-    & > .legend-tiny {
-      background-color: #ddd;
-    }
-    & > .property-body {
-      background-color: #f3f3f3;
-    }
-
-    &.active {
-      & > .legend-tiny {
-        border-bottom: 1px solid #bbb;
+      .legend-small {
+        font-size: 14px;
+        margin-top: 10px;
       }
     }
   }
 
+  &.script,
   &.active {
-    & > .legend-tiny {
-      border-bottom: 1px solid #ddd;
-    }
-    & > .property-body {
-      display: block;
-    }
-  }
-
-  & > .legend-tiny {
-    padding: 5px 30px 5px 25px;
-    margin: 0;
-    position: relative;
-    overflow: auto;
-
-    .checkbox {
-      display: inline-block;
-      margin: 5px 10px 0 5px;
-      float: right;
-    }
-
-    .remove {
-      position: absolute;
-      right: 0;
-      top: 50%;
-      line-height: 15px;
-      font-size: 25px;
-      padding: 8px;
-      color: #666;
-      margin-top: -15px;
-      &:hover {
-        color: #333;
+    & > .include {
+      & > .property-box-header {
+        border-bottom: 1px solid #ddd;
+        &.tool {
+          &:before {
+            border-top: 5px solid #555;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-bottom: none;
+            margin-top: -2.5px;
+          }
+        }
+      }
+      & > .property-box-body {
+        display: block;
       }
     }
   }
 
-  & > .property-body {
-    display: none;
-    padding: 10px;
-    background-color: #f9f9f9;
-    & > .row {
-      margin-left: 0;
-      margin-right: 0;
-      & > div {
-        padding: 0 5px;
-      }
-    }
-    .control-label {
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      width: 100%;
-      display: block;
-      overflow: hidden;
-    }
-  }
+}
 
-  .checkbox {
-    &.no-margin {
-      margin: 5px 0;
-    }
-  }
-
-  .property-name {
-    margin: 5px 110px 5px 0;
-    //float: left;
-    //max-width: 70%;
-    span {
-      text-overflow: ellipsis;
-      max-width: 85%;
-      overflow: hidden;
-      white-space: nowrap;
-    }
-    a {
-      padding: 0px 5px;
-      color: #555;
-    }
-    span, a {
-      display: inline-block;
-      vertical-align: middle;
-    }
-  }
-  .property-name-form {
-    font-weight: normal;
-    width: 240px;
-    float: left;
-    margin: 1px 0;
-    .input-group {
-      margin-left: -5px;
-      input {
-        height: 30px;
-        padding: 5px;
+/* Input property box small */
+.input-field-sm {
+  .input-property {
+    & > .form-group {
+      margin-bottom: 0;
+      & > .control-label {
+        .input-key-inner {
+          display: block;
+          text-overflow: ellipsis;
+          overflow: hidden;
+        }
+        .min-max {
+          display: block;
+        }
       }
-      button {
-        padding: 4px 8px;
-      }
-    }
-    .alert {
-      padding: 5px;
     }
   }
 }
 
-/* Argument box */
-.argument-wrap {
-  & > .legend-tiny {
-    overflow: hidden;
-  }
-}
-
-/* Input box */
+/* Input property box regular */
 .input-property {
-
   & > .form-group {
     margin: 0 0 10px 0;
     border: 1px solid #ddd;
@@ -551,6 +332,25 @@
       border-bottom: 1px solid #ddd;
       display: block;
       background-color: #eee;
+
+      & > .input-key {
+        display: inline-block;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        max-width: 80%;
+      }
+
+      .min-max {
+        font-weight: normal;
+        i {
+          font-style: normal;
+        }
+      }
+
+      .checkbox {
+        float: right;
+        margin: 0;
+      }
     }
 
     & > .input-property-body {
@@ -575,32 +375,7 @@
   }
 }
 
-.input-container-small {
-  .alert {
-    margin: 0;
-  }
-  & > .input-property {
-    & > .form-group {
-      margin-bottom: 0;
-    }
-  }
-}
-
-.expression-action {
-  margin: 0;
-  color: #555;
-  label {
-    float: right;
-  }
-}
-
-.evaluate-wrap {
-  float: right;
-  .btn {
-    padding: 0 5px;
-  }
-}
-
+/* Expression edit form */
 .expression-form {
   margin-bottom: 10px;
   .form-group {
@@ -610,17 +385,6 @@
     }
     .form-control {
       width: 100px;
-    }
-  }
-}
-
-.evaluate-expr-form {
-  width: 200px;
-  .form-group {
-    .expr {
-      font-size: 20px;
-      padding: 10px;
-      font-weight: bold;
     }
   }
 }

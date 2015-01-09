@@ -4,25 +4,33 @@
 'use strict';
 
 angular.module('registryApp.app')
-    .controller('WorkflowViewCtrl', ['$scope', '$q', '$location', '$routeParams', 'Sidebar', 'Loading', 'Workflow', 'User', '$modal', '$templateCache', function ($scope, $q, $location, $routeParams, Sidebar, Loading, Workflow, User, $modal, $templateCache) {
+    .controller('WorkflowViewCtrl', ['$scope', '$q', '$location', '$routeParams', 'Sidebar', 'Loading', 'Workflow', 'User', 'Job', '$modal', '$templateCache', function ($scope, $q, $location, $routeParams, Sidebar, Loading, Workflow, User, Job, $modal, $templateCache) {
 
         Sidebar.setActive('apps');
 
         $scope.view = {};
         $scope.view.loading = true;
 
-        $scope.view.page = 1;
-        $scope.view.total = 0;
+        $scope.view.page = {
+            revisions: 1,
+            jobs: 1
+        };
+
+        $scope.view.total = {
+            revisions: 0,
+            jobs: 0
+        };
 
         $scope.view.workflow = {};
         $scope.view.explanation = false;
         $scope.view.tab = 'info';
 
         $scope.view.revisions = [];
+        $scope.view.jobs = [];
 
         $scope.view.showDelete = false;
 
-        $scope.view.classes = ['page', 'pipeline-view'];
+        $scope.view.classes = ['page', 'workflow-view'];
         Loading.setClasses($scope.view.classes);
 
         $scope.Loading = Loading;
@@ -35,10 +43,12 @@ angular.module('registryApp.app')
 
             $q.all([
                     Workflow.getRevisions(0, '', $scope.view.workflow.pipeline._id),
+                    Job.getJobs(0, '', 'Workflow', $scope.view.workflow.pipeline._id),
                     User.getUser()
                 ]).then(function(result) {
                     revisionsLoaded(result[0]);
-                    $scope.view.user = result[1].user;
+                    jobsLoaded(result[1]);
+                    $scope.view.user = result[2].user;
                 });
 
         });
@@ -53,7 +63,7 @@ angular.module('registryApp.app')
             $scope.view.revisions = result.list;
             $scope.view.loading = false;
 
-            $scope.view.total = result.total;
+            $scope.view.total.revisions = result.total;
 
             var publicRevs = _.filter($scope.view.revisions, function (rev) {
                 return rev.is_public;
@@ -84,6 +94,32 @@ angular.module('registryApp.app')
 
             Workflow.getRevisions(offset, '', $scope.view.workflow.pipeline._id).then(revisionsLoaded);
 
+        };
+
+        /**
+         * Callback when jobs are loaded
+         *
+         * @param result
+         */
+        var jobsLoaded = function (result) {
+
+            $scope.view.jobs = result.list;
+            $scope.view.loading = false;
+
+            $scope.view.total.jobs = result.total;
+
+        };
+
+        /**
+         * Get more jobs by offset
+         *
+         * @param offset
+         */
+        $scope.getMoreJobs = function(offset) {
+
+            $scope.view.loading = true;
+
+            Job.getJobs(offset, '', 'Workflow', $routeParams.id).then(jobsLoaded);
         };
 
         /**

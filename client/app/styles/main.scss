@@ -17,12 +17,12 @@ body {
 .container-fluid {
   padding: 0;
   height: 100%;
-  @include flex-box();
+  @extend .flex-box-row;
 }
 
 .main {
   height: 100%;
-  @include flex(1);
+  @extend .flex-one;
 }
 
 @import "common";
@@ -38,173 +38,30 @@ body {
   position: relative;
   background-color: #fff;
   height: 100%;
-  @include flex-box();
-  @include flex-flow(column nowrap);
-
-  h1 {
-    margin: 0;
-    padding: 13px 0 13px 90px;
-    font-size: 26px;
-    font-weight: normal;
-
-    &.main-title {
-      padding-left: 0;
-    }
-
-    .label-status {
-      font-size: 18px;
-      padding: 6px 20px 8px 7px;
-      font-weight: normal;
-      @include border-radius(16px 4px 4px 16px);
-    }
-
-    .label {
-      font-size: 14px;
-    }
-
-    & > span {
-      &:first-child {
-        max-width: 75%;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
-      }
-    }
-
-    & > span,
-    & > span > i {
-      display: inline-block;
-      vertical-align: middle;
-      i {
-        &.running {
-          @include animation(rotate 1.2s infinite linear);
-        }
-      }
-      span {
-        margin-left: 5px;
-      }
-    }
-
-    .checkbox {
-      font-weight: normal;
-      font-size: 14px;
-    }
-
-    .form-group {
-      width: 200px;
-      display: inline-block;
-      vertical-align: middle;
-      margin: 0;
-    }
-
-    .actions {
-      & > .btn,
-      & > .btn-group,
-      & > .fa {
-        margin-left: 10px;
-        vertical-align: middle;
-      }
-    }
-
-    .version {
-      font-size: 13px;
-      background-color: #555;
-      color: #fff;
-      padding: 3px 5px;
-      display: inline-block;
-      vertical-align: middle;
-      line-height: 17px;
-      @include border-radius(4px);
-
-      &:hover {
-        text-decoration: none;
-      }
-      
-      &.revision {
-        background-color: $orange;
-        margin-right: 10px;
-      }
-    }
-  }
-
-  h2 {
-    font-size: 24px;
-    font-weight: normal;
-    margin: 0 0 20px 0;
-  }
+  @extend .flex-box-column;
 
   .content {
     overflow-x: hidden;
     overflow-y: auto;
-    padding-top: 20px;
+    padding: 20px 10px 0;
     @extend %scrollbar;
-    @include flex(1);
-  }
+    @extend .flex-one;
 
-  /* Builds page */
-  &.builds {
-    .content {
+    &.content-tbl {
+      padding: 0;
+    }
+
+    &.content-mix {
       padding-top: 0;
     }
-  }
 
-  /* Build page */
-  &.build {
-    .heading {
-      margin: 0;
-    }
-    .content {
-      padding: 20px 10px 0;
+    &.content-ten {
+      padding: 10px;
     }
   }
-
-  /* Repos page */
-  &.repos {
-    .add-github {
-      background-image: url(../images/icon-github.png);
-      background-repeat: no-repeat;
-      background-position: center left 6px;
-      padding-left: 30px;
-    }
-    .content {
-      padding-top: 0;
-    }
-  }
-
-  /* Add Your GitHub Repo */
-  &.add-your-github-repo {
-    .icon-added {
-      color: $green;
-      float: right;
-      padding: 7px 12px;
-    }
-    .heading {
-      margin: 0;
-    }
-    .content {
-      padding-top: 0;
-    }
-  }
-
-  /* Repo instructions page */
-  &.repo-instructions {
-    .content {
-      padding: 20px 10px 0;
-    }
-  }
-
-  /* Settings page */
-  &.settings {
-    .content {
-      padding: 0px 10px 0;
-    }
-  }
-
+  
   /* Home page */
   &.home {
-    .content {
-      padding: 20px 10px 0;
-    }
     .log-in-btn {
       width: 300px;
       margin: 20px auto;
@@ -212,6 +69,7 @@ body {
     }
     .subscribe {
       text-align: center;
+      margin-top: 100px;
       .alert {
         width: 400px;
         margin: 5px auto;
@@ -224,157 +82,26 @@ body {
     }
   }
 
-  /* Apps page */
-  &.apps {
-    & > .content {
-      padding-top: 0;
-      @extend %flex;
-      .tabs {
-        @extend %flex;
-        @include flex(1);
-        .section,
-        .include {
-          @extend %flex;
-          @include flex(1);
-        }
-        .include {
-          padding: 0;
-          margin: 0;
-          .content {
-            padding-top: 0;
-          }
-        }
-      }
-    }
-  }
-
-  /* App page */
-  &.app {
-    .heading {
-      margin: 0;
-    }
-    & > .content {
-      padding: 0px 10px;
-      @include flex-box();
-      @include flex-flow(column nowrap);
-    }
-    section {
-      table {
-        thead {
-          tr {
-            border-top: 1px solid #ddd;
-          }
-        }
-      }
-    }
-  }
-
   /* Repo page */
   &.repo {
-    .created-by {
-      font-size: 15px;
+
+    .nav-tabs {
+      position: relative;
+      z-index: 1;
+      border-bottom: none;
+      @extend .flex-auto;
     }
-    & > .content {
-      @include flex-box();
-      @include flex-flow(column nowrap);
-      padding: 20px 10px 0;
 
-      .content-top {
-        @include flex(0 0 auto);
-      }
-      .tabs {
-        @include flex(1);
-        @include flex-box();
-        @include flex-flow(column nowrap);
-
-        & > .nav-tabs {
-          position: relative;
-          z-index: 1;
-          border-bottom: none;
-          @include flex(0 0 auto);
-        }
-
-        & > section {
-          margin-top: -1px;
-          border-top: 1px solid #ddd;
-        }
-      }
-    }
-  }
-
-  /* App and Repo page */
-  &.app,
-  &.repo {
-    section {
-      &.revisions,
-      &.apps,
-      &.workflows,
-      &.builds {
-        margin: 0 -10px;
-        @include flex(1);
-        @include flex-box();
-        @include flex-flow(column nowrap);
-        & > .content {
-          padding: 0;
-          @include flex(1);
-        }
-      }
-    }
-  }
-
-  /* Revision page */
-  &.revision {
-    .content {
-      padding: 0px 10px;
-    }
-  }
-
-  /* Tasks and task page */
-  &.jobs,
-  &.job {
-    .content {
-      padding-top: 0;
-    }
-  }
-
-  /* Pipelines page */
-  &.pipelines {
-    .content {
-      padding-top: 0;
-    }
-  }
-
-  /* Pipeline View page */
-  &.pipeline-view {
-    .content {
-      padding: 0px;
-      @include flex-box();
-      @include flex-flow(column nowrap);
-      & > .tab {
-        &.info, &.revisions {
-          margin: 0;
-          @include flex(1);
-          @include flex-box();
-          @include flex-flow(column nowrap);
-        }
-        &.description,
-        &.revisions {
-          padding: 0 10px;
-          & > .content {
-            padding: 0;
-            @include flex(1);
-          }
-        }
-      }
+    .tab.tab-tbl {
+      margin-top: -1px;
+      border-top: 1px solid #ddd;
     }
   }
 
   /* Workflow Editor page */
   &.workflow-edit {
     & > .content {
-      padding: 0;
       overflow-x: hidden;
-      @include flex-box();
     }
 
     .sidebar-col {
@@ -394,293 +121,15 @@ body {
     .nav-tabs {
       &.nav-tabs-steps {
         li {
-          width: 30%;
+          width: 42%;
         }
-      }
-    }
-  }
-
-  /* New Job page */
-  &.job {
-    & > .content {
-      position: relative;
-      @extend %flex;
-      & > section {
-        padding: 0 10px;
-      }
-      & > .form {
-        @extend %flex-job-form;
       }
     }
   }
 
 }
 
-.table {
-  margin: 0;
-  td {
-    vertical-align: middle;
-    p {
-      margin: 0;
-      &:not(.alert) {
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        float: left;
-      }
-      &.alert {
-        padding: 15px;
-      }
-    }
-    a {
-      &:not(.btn) {
-        width: 100%;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        display: block;
-        white-space: nowrap;
-        i {
-          color: #555;
-        }
-      }
-    }
-    &.revision {
-      text-align: center;
-    }
-    .github-flag {
-      font-size: 20px;
-    }
-  }
-  .status {
-    width: 20px;
-    font-size: 20px;
-    display: block;
-    margin: 0 auto;
-    padding: 0;
-    @include border-radius(7.5px);
-
-    &.success {
-      color: $green;
-    }
-    &.running {
-      color: $blue;
-      @include animation(rotate 1.2s infinite linear);
-    }
-    &.failure {
-      color: $red;
-    }
-    &.pending {
-      color: $orange;
-    }
-  }
-  /* Apps table */
-  &.apps {
-    th {
-      &:nth-child(1),
-      &:nth-child(2) { width: 15%; }
-      &:nth-child(3) { width: 50%; }
-      &:nth-child(4) { width: 20%; }
-    }
-    td {
-      p {
-        &:not(.alert) {
-          max-width: 500px;
-        }
-      }
-    }
-  }
-
-  &.app-revisions,
-  &.pipeline-revisions {
-    th {
-      &:nth-child(1),
-      &:nth-child(2) { width: 15%; }
-      &:nth-child(3) { width: 50%; }
-    }
-  }
-
-  /* Revisions table */
-  &.revisions {
-    th {
-      &:nth-child(1) {
-        text-align: center;
-        width: 10%;
-      }
-      &:nth-child(2) { width: 50%; }
-      &:nth-child(3) { width: 40%; }
-    }
-    td {
-      p {
-        &:not(.alert) {
-          max-width: 500px;
-        }
-      }
-    }
-    &.revisions-short {
-      th {
-        &:nth-child(2) {
-          width: 40%;
-          text-align: left;
-        }
-      }
-    }
-  }
-
-  /* Builds table */
-  &.builds {
-    th {
-      &.field-status,
-      &.field-id { width: 5%; }
-      &.field-message { width: 30%; }
-      &.field-commit,
-      &.field-committer,
-      &.field-repo,
-      &.field-date { width: 15%; }
-    }
-    td {
-      p {
-        &:not(.alert) {
-          max-width: 500px;
-        }
-      }
-      &.field-commit {
-        a {
-          width: 100px;
-        }
-      }
-      &.field-id {
-        a {
-          width: 50px;
-        }
-      }
-    }
-  }
-  /* Repos table */
-  &.repos {
-    th {
-      &:nth-child(1) { width: 20%; }
-      &:nth-child(2) { width: 20%; }
-      &:nth-child(3) { width: 40%; }
-      &:nth-child(4) { width: 10%; }
-    }
-    td {
-      p {
-        &:not(.alert) {
-          max-width: 500px;
-        }
-      }
-    }
-  }
-
-  /* GitHub Repos table */
-  &.github-repos {
-    th {
-      &:nth-child(1) { width: 80%; }
-      &:nth-child(2) { width: 20%; }
-    }
-  }
-
-  /* Jobs table */
-  &.jobs {
-    th {
-      &:nth-child(1) { width: 15%; }
-      &:nth-child(2) { width: 15%; }
-      &:nth-child(3) { width: 15%; }
-      &:nth-child(4) { width: 15%; }
-      &:nth-child(5) { width: 30%; }
-      &:nth-child(6) { width: 10%; }
-    }
-    td {
-      .job-link {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        max-width: 300px;
-        white-space: nowrap;
-      }
-    }
-  }
-
-  &.repo-apps {
-    th {
-      &:nth-child(1) { width: 30%; }
-      &:nth-child(2) { width: 70%; }
-    }
-  }
-
-  .inner-table {
-
-    .inner-table-body {
-      display: none;
-    }
-
-    &.active {
-      .inner-table-body {
-        display: block;
-      }
-      & > td {
-        border-top: 1px solid #ddd;
-      }
-    }
-
-    &:hover {
-      background-image: none;
-    }
-    &:last-child {
-      border-bottom: 1px solid #ddd;
-    }
-    & > td {
-      padding: 0 0 0 30px;
-      background-image: url(../images/bg.png);
-      border-top: none;
-      .table {
-        border-left: 2px solid #ddd;
-        th {
-          padding: 1px 8px;
-        }
-        td {
-          padding: 5px 8px;
-        }
-      }
-    }
-    .empty {
-      td {
-        padding: 0 !important;
-        .alert {
-          padding: 8px 10px;
-        }
-      }
-    }
-  }
-}
-
-
-@mixin rotate-rule($prefix: '') {
-  0% {
-    #{$prefix}transform: rotate(0deg);
-  }
-  100% {
-    #{$prefix}transform: rotate(359deg);
-  }
-}
-
-@keyframes rotate {
-  @include rotate-rule();
-}
-@-webkit-keyframes rotate {
-  @include rotate-rule(-webkit-);
-}
-@-moz-keyframes rotate {
-  @include rotate-rule(-moz-);
-}
-@-o-keyframes anim-rotate {
-  @include rotate-rule(-o-);
-}
-@-ms-keyframes rotate {
-  @include rotate-rule(-ms-);
-}
-
-div.pipeline-editor {
-  @include user-select(none);
-}
-
+@import "tables";
 @import "overrides";
+
+

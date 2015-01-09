@@ -211,6 +211,27 @@
   flex:  $values;
 }
 
+@mixin flex-direction($value) {
+
+  -webkit-flex-direction: $value;
+  -ms-flex-direction: $value;
+  flex-direction: $value;
+
+  -webkit-box-direction: normal;
+  -moz-box-direction: normal;
+  box-direction: normal;
+
+  @if $value == 'row' {
+    -webkit-box-orient: horizontal;
+    -moz-box-orient: horizontal;
+    box-orient: horizontal;
+  } @else {
+    -webkit-box-orient: vertical;
+    -moz-box-orient: vertical;
+    box-orient: vertical;
+  }
+}
+
 @mixin order($val) {
   -webkit-box-ordinal-group: $val;
   -moz-box-ordinal-group: $val;

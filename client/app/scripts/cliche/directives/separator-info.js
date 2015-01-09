@@ -15,30 +15,25 @@ angular.module('registryApp.cliche')
                 type: '@',
                 model: '='
             },
-            link: function(scope) {
+            controller: ['$scope', 'Separator', function ($scope, Separator) {
 
                 var option;
+                var map = Separator.getMap();
 
-                scope.view = {};
+                $scope.view = {};
 
-                scope.view.map = {
-                    item: [
-                        {name: 'empty', value: ''},
-                        {name: 'space', value: ' '},
-                        {name: 'equal', value: '='}
-                    ],
-                    list: [
-                        {name: 'comma', value: ','},
-                        {name: 'semicolon', value: ';'},
-                        {name: 'space', value: ' '},
-                        {name: 'repeat', value: null}
-                    ]
-                };
+                option = _.find(map[$scope.type], {value: $scope.model});
 
-                option = _.find(scope.view.map[scope.type], {value: scope.model});
+                $scope.view.separator = option ? option.name : 'space';
 
-                scope.view.separator = option ? option.name : 'space';
+                $scope.$watch('model', function(n, o) {
+                    if (n !== o) {
+                        option = _.find(map[$scope.type], {value: n});
+                        $scope.view.separator = option ? option.name : 'space';
+                    }
+                });
 
-            }
+            }],
+            link: function() {}
         };
     }]);

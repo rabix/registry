@@ -1,12 +1,17 @@
 <div class="form-group"
      ng-hide="ignoreFiles && prop.items.type === 'file'"
-     ng-class="{required: prop.required, 'has-error': (prop.required || model.length) && ((model.length < prop.minItems && prop.minItems > 0) || (model.length > prop.maxItems && prop.maxItems > 0))}">
+     ng-class="{required: view.required, 'has-error': (view.required || model.length) && ((model.length < prop.minItems && prop.minItems > 0) || (model.length > prop.maxItems && prop.maxItems > 0))}">
 
     <label class="control-label">
-        {{ key }}
-        <span ng-if="prop.minItems || prop.maxItems">
-            (<strong ng-if="prop.minItems">min: {{ prop.minItems }} </strong>
-            <strong ng-if="prop.maxItems">max: {{ prop.maxItems }}</strong>)
+        <div ng-if="exposed && prop.items.type !== 'file'" class="checkbox">
+            <label><input type="checkbox" ng-model="view.expose" ng-change="exposeParams()"> expose</label>
+        </div>
+        <span class="input-key" title="{{ key }}">
+            <span class="input-key-inner">{{ key }}</span>
+            <small ng-if="prop.minItems || prop.maxItems" class="min-max">
+                (<i ng-if="prop.minItems">min: {{ prop.minItems }} </i>
+                <i ng-if="prop.maxItems">max: {{ prop.maxItems }}</i>)
+            </small>
         </span>
     </label>
 
@@ -17,7 +22,9 @@
              min="prop.minItems"
              max="prop.maxItems"
              properties="prop.items.properties"
-             is-required="prop.required"
+             is-required="view.required"
+             req="prop.items.required"
+             exposible="{{ view.exposible }}"
              form="form">
         </enum>
     </div>

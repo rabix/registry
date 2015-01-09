@@ -8,8 +8,8 @@ LOG_DIR="/data/log/rabix-registry"
 BASEDIR=$(readlink -m "$(dirname $(readlink -e $0))/..")
 DAEMON="/usr/local/bin/forever"
 PIDFILE=/var/tmp/rabix-registry.pid
-LOGS="-l ${LOG_DIR}/forever.log -o ${LOG_DIR}/rabix-registry.log -e ${LOG_DIR}/rabix-registry-err.log"
-DAEMON_ARGS="start -pidFile ${PIDFILE} ${LOGS} ${BASEDIR}/app.js $CONFIG"
+LOGS="-l ${LOG_DIR}/forever.log -o '${LOG_DIR}/rabix-registry.log' -e '${LOG_DIR}/rabix-registry-err.log'"
+DAEMON_ARGS="start -pidFile ${PIDFILE} ${LOGS} -a ${BASEDIR}/app.js $CONFIG"
 SCRIPTNAME=$BASEDIR/bin/$0
 NODE_ENV="production"
 

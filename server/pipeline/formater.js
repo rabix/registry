@@ -17,11 +17,18 @@ var formater = {
         var json = _.clone(j);
         // reset schema
         this.packedSchema = {};
+
+        this.packedSchema['@type'] = 'Workflow';
+
         this.packedSchema.steps = [];
+
         this.packedSchema.inputs = {
+            type: 'object',
             properties: {}
         };
+
         this.packedSchema.outputs = {
+            type: 'object',
             properties: {}
         };
 
@@ -48,7 +55,9 @@ var formater = {
         return json;
     },
 
-    toPipelineSchema: function (json) {
+    toPipelineSchema: function (j) {
+
+        var json = _.clone(j);
 
         // reset schema
         this.packedSchema = {};
@@ -394,7 +403,8 @@ var formater = {
             'softwareDescription': {
                 'repo_owner': 'rabix',
                 'repo_name': 'system',
-                'type': type
+                'type': type,
+                'name': schema.name
             },
             'documentAuthor': null,
             'inputs': {

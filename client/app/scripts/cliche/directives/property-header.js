@@ -19,15 +19,15 @@ angular.module('registryApp.cliche')
                 isRequired: '=',
                 handle: '&'
             },
-            link: function(scope) {
+            controller: ['$scope', function ($scope) {
 
-                scope.view = {};
-                scope.view.order = scope.order || 0;
+                $scope.view = {};
+                $scope.view.order = $scope.order || 0;
 
                 /* watch for order to change */
-                scope.$watch('order', function(n, o) {
+                $scope.$watch('order', function(n, o) {
                     if (n !== o) {
-                        scope.view.order = n || 0;
+                        $scope.view.order = n || 0;
                     }
                 });
 
@@ -52,11 +52,23 @@ angular.module('registryApp.cliche')
                  *
                  * @param e
                  */
-                scope.edit = function(e) {
+                $scope.edit = function(e) {
 
                     stopPropagation(e);
 
-                    scope.handle({action: 'edit'});
+                    $scope.handle({action: 'edit'});
+                };
+
+                /**
+                 * Trigger edit name handler
+                 *
+                 * @param e
+                 */
+                $scope.editName = function(e) {
+
+                    stopPropagation(e);
+
+                    $scope.handle({action: 'editName'});
                 };
 
                 /**
@@ -64,19 +76,19 @@ angular.module('registryApp.cliche')
                  *
                  * @param e
                  */
-                scope.remove = function(e) {
+                $scope.remove = function(e) {
 
                     stopPropagation(e);
 
-                    scope.handle({action: 'remove'});
+                    $scope.handle({action: 'remove'});
                 };
 
                 /**
                  * Trigger toggle handler
                  */
-                scope.toggle = function() {
+                $scope.toggle = function() {
 
-                    scope.handle({action: 'toggle'});
+                    $scope.handle({action: 'toggle'});
 
                 };
 
@@ -85,14 +97,15 @@ angular.module('registryApp.cliche')
                  *
                  * @param e
                  */
-                scope.removeFromConsole = function(e) {
+                $scope.removeFromConsole = function(e) {
 
                     stopPropagation(e);
 
-                    scope.handle({action: 'removeFromConsole'});
+                    $scope.handle({action: 'removeFromConsole'});
 
                 };
 
-            }
+            }],
+            link: function() {}
         };
     }]);

@@ -1,24 +1,32 @@
 'use strict';
 
 angular.module('registryApp.app')
-    .controller('ToolCtrl', ['$scope', '$routeParams', '$q', '$injector', '$location', 'Tool', 'User', 'Sidebar', 'Loading', function ($scope, $routeParams, $q, $injector, $location, Tool, User, Sidebar, Loading) {
+    .controller('ToolCtrl', ['$scope', '$routeParams', '$q', '$injector', '$location', 'Tool', 'User', 'Job', 'Sidebar', 'Loading', function ($scope, $routeParams, $q, $injector, $location, Tool, User, Job, Sidebar, Loading) {
 
         Sidebar.setActive('apps');
 
         $scope.view = {};
 
-        $scope.view.page = 1;
-        $scope.view.total = 0;
+        $scope.view.page = {
+            revisions: 1,
+            jobs: 1
+        };
+
+        $scope.view.total = {
+            revisions: 0,
+            jobs: 0
+        };
 
         $scope.view.loading = true;
 
         $scope.view.tool = null;
         $scope.view.revisions = [];
+        $scope.view.jobs = [];
 
         $scope.view.tab = $routeParams.tab || 'info';
         $scope.view.isJsonVisible = false;
 
-        $scope.view.classes = ['page', 'app'];
+        $scope.view.classes = ['page', 'tool'];
         Loading.setClasses($scope.view.classes);
 
         $scope.Loading = Loading;
@@ -36,9 +44,14 @@ angular.module('registryApp.app')
                 $scope.view.tool = result[1].data;
                 $scope.view.revision = result[1].revision;
 
+                $scope.view.revisions = result[2].list;
+                $scope.view.total.revisions = result[2].total;
+
                 $scope.view.type = $scope.view.tool.is_script ? 'script' : 'tool';
 
-                revisionsLoaded(result[2]);
+                $scope.view.atType = $scope.view.tool.is_script ? 'Script' : 'CommandLine';
+
+                Job.getJobs(0, '', $scope.view.atType, $routeParams.id).then(jobsLoaded);
 
             });
 
@@ -52,7 +65,7 @@ angular.module('registryApp.app')
             $scope.view.revisions = result.list;
             $scope.view.loading = false;
 
-            $scope.view.total = result.total;
+            $scope.view.total.revisions = result.total;
 
         };
 
@@ -66,6 +79,32 @@ angular.module('registryApp.app')
             $scope.view.loading = true;
 
             Tool.getRevisions(offset, '', $routeParams.id).then(revisionsLoaded);
+        };
+
+        /**
+         * Callback when jobs are loaded
+         *
+         * @param result
+         */
+        var jobsLoaded = function (result) {
+
+            $scope.view.jobs = result.list;
+            $scope.view.loading = false;
+
+            $scope.view.total.jobs = result.total;
+
+        };
+
+        /**
+         * Get more jobs by offset
+         *
+         * @param offset
+         */
+        $scope.getMoreJobs = function(offset) {
+
+            $scope.view.loading = true;
+
+            Job.getJobs(offset, '', $scope.view.atType, $routeParams.id).then(jobsLoaded);
         };
 
         /**

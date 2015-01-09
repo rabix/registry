@@ -1,7 +1,8 @@
-<div class="content flex">
-    <ng-form class="form" name="forms.jobForm" role="form" novalidate>
+<div class="content content-tbl flex-box-column">
 
-        <div class="section top">
+    <ng-form class="form flex-box-column flex-one" name="forms.jobForm" role="form" novalidate>
+
+        <div class="section top flex-auto">
             <div class="input-property">
                 <div class="form-group">
                     <label class="control-label">Allocated Resources</label>
@@ -23,34 +24,37 @@
                     </div>
                 </div>
             </div>
+
+            <h4>Inputs</h4>
         </div>
         <!-- # .section -->
 
-        <div class="section bottom">
+        <div class="section bottom flex-box-column flex-one">
 
-            <div class="content">
-                <legend class="legend-small">Inputs</legend>
-
+            <div class="content content-ten">
                 <div class="input-container">
-                    <input-field
-                            ng-repeat="property in view.list.values.part track by $index"
-                            ng-model="view.jobForm.inputs[property.key]"
-                            class="input-field"
-                            key="{{ property.key }}"
-                            prop="property.obj"
-                            index="{{ $index }}"
-                            form="forms.jobForm">
-                    </input-field>
+                    <div ng-if="(view.page.values - 1) === $index" class="input-container" ng-repeat="page in view.pages.values">
+                        <input-field
+                                ng-repeat="property in page track by $index"
+                                ng-model="view.jobForm.inputs[property.key]"
+                                class="input-field"
+                                key="{{ property.key }}"
+                                prop="property.obj"
+                                index="{{ $index }}"
+                                form="forms.jobForm">
+                        </input-field>
+                    </div>
                 </div>
 
                 <p class="alert alert-info" ng-if="view.toolForm.inputs.properties | isEmpty">There are no values to be set at this moment.</p>
             </div>
 
-            <paginator page="view.page.values" total="view.total.values" per-page="{{ view.perPage }}" handler="getMore('values', offset)"></paginator>
+            <paginator class="paginator" page="view.page.values" total="view.total.values" per-page="{{ view.perPage }}"></paginator>
 
         </div>
         <!-- # .section -->
 
     </ng-form>
+
 </div>
 

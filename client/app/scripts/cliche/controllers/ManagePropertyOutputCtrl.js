@@ -16,10 +16,10 @@ angular.module('registryApp.cliche')
         $scope.view.mode = _.isUndefined($scope.view.property) ? 'add' : 'edit';
 
         if (_.isUndefined($scope.view.property)) {
-            $scope.view.property = {
-                type: 'file',
-                adapter: {metadata: {}}
-            };
+            $scope.view.property = {type: 'file'};
+            if (options.toolType === 'tool') {
+                $scope.view.property.adapter = {metadata: {}};
+            }
         }
 
         $scope.view.disabled = ($scope.view.property.items && $scope.view.property.items.type) === 'object';
@@ -32,16 +32,42 @@ angular.module('registryApp.cliche')
             }
         });
 
-        if (_.isUndefined($scope.view.property.adapter)) {
-            $scope.view.property.adapter = {};
+        if (options.toolType === 'tool') {
+
+            if (_.isUndefined($scope.view.property.adapter)) {
+                $scope.view.property.adapter = {};
+            }
+
+            if (_.isArray($scope.view.property.adapter.secondaryFiles) && $scope.view.property.adapter.secondaryFiles.length === 0) {
+                delete $scope.view.property.adapter.secondaryFiles;
+                $scope.view.isSecondaryFilesExpr = true;
+            } else if (!_.isArray($scope.view.property.adapter.secondaryFiles)) {
+                $scope.view.isSecondaryFilesExpr = true;
+            }
+
+            /* watch for inherit property change */
+            $scope.$watch('view.property.adapter.metadata.__inherit__', function(n, o) {
+                if (n !== o) {
+                    if (_.isEmpty(n)) {
+                        delete $scope.view.property.adapter.metadata.__inherit__;
+                    }
+                }
+            });
+
+            $scope.$watch('view.property.adapter.secondaryFiles.length', function(n, o) {
+                if (n !== o && n === 0) {
+                    delete $scope.view.property.adapter.secondaryFiles;
+                    $scope.view.isSecondaryFilesExpr = true;
+                }
+            });
         }
 
-        if (_.isArray($scope.view.property.adapter.secondaryFiles) && $scope.view.property.adapter.secondaryFiles.length === 0) {
-            delete $scope.view.property.adapter.secondaryFiles;
-            $scope.view.isSecondaryFilesExpr = true;
-        } else if (!_.isArray($scope.view.property.adapter.secondaryFiles)) {
-            $scope.view.isSecondaryFilesExpr = true;
-        }
+        /* watch for the type change in order to adjust the property structure */
+        $scope.$watch('view.property.type', function(n, o) {
+            if (n !== o) {
+                Data.transformProperty($scope.view.property, 'output', n);
+            }
+        });
 
         /**
          * Save property changes
@@ -70,29 +96,6 @@ angular.module('registryApp.cliche')
 
         };
 
-        /* watch for the type change in order to adjust the property structure */
-        $scope.$watch('view.property.type', function(n, o) {
-            if (n !== o) {
-                Data.transformProperty($scope.view.property, 'output', n);
-            }
-        });
-
-        /* watch for inherit property change */
-        $scope.$watch('view.property.adapter.metadata.__inherit__', function(n, o) {
-            if (n !== o) {
-                if (_.isEmpty(n)) {
-                    delete $scope.view.property.adapter.metadata.__inherit__;
-                }
-            }
-        });
-
-        $scope.$watch('view.property.adapter.secondaryFiles.length', function(n, o) {
-            if (n !== o && n === 0) {
-                delete $scope.view.property.adapter.secondaryFiles;
-                $scope.view.isSecondaryFilesExpr = true;
-            }
-        });
-
         /**
          * Toggle secondary files into array
          */
@@ -116,8 +119,13 @@ angular.module('registryApp.cliche')
          *
          * @param value
          */
-        $scope.updateTransform = function (value, key) {
-            $scope.view.property.adapter[key] = value;
+        $scope.updateTransform = function (value) {
+
+            if (_.isObject(value)) {
+                $scope.view.property.adapter.value = value;
+            } else {
+                delete $scope.view.property.adapter.value;
+            }
         };
 
         /**

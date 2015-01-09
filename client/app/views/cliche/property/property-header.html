@@ -1,9 +1,9 @@
-<div class="property-box-header-inner" ng-click="toggle()">
+<div class="property-box-header-inner {{ type }}" ng-click="toggle()">
 
-    <div class="property-box-actions">
-        <a href ng-if="mode === 'input'" ng-click="removeFromConsole($event)" title="remove from console"><i class="fa fa-unlink"></i></a>
-        <a href ng-click="edit($event)"><i class="fa fa-pencil"></i></a>
-        <a href ng-click="remove($event)"><i class="fa fa-times"></i></a>
+    <div class="property-box-actions pull-right">
+        <a href ng-if="mode === 'input' && toolType === 'tool'" ng-click="removeFromConsole($event)" title="remove from console"><i class="fa fa-unlink"></i></a>
+        <a href ng-click="edit($event)" title="Edit"><i class="fa fa-pencil-square"></i></a>
+        <a href ng-click="remove($event)" title="Delete"><i class="fa fa-times"></i></a>
     </div>
 
     <div class="property-box-short-info">
@@ -11,6 +11,9 @@
         <strong class="name" tooltip="name">{{ name }}</strong>
         <i ng-if="type !== 'arg'" class="type" tooltip="type">{{ type }} {{ itemType ? ' (' + itemType + ')' : '' }}</i>
         <span ng-if="isRequired" class="required" tooltip="required">*</span>
+        <span ng-if="type !== 'arg'" class="property-box-actions">
+            <a href ng-click="editName($event)" title="Edit Name"><i class="fa fa-pencil"></i></a>
+        </span>
     </div>
 
 </div>

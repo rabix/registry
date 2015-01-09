@@ -16,44 +16,33 @@ angular.module('registryApp.cliche')
                 model: '=',
                 isDisabled: '='
             },
-            link: function(scope) {
+            controller: ['$scope', 'Separator', function ($scope, Separator) {
 
                 var option;
 
-                scope.view = {};
+                $scope.view = {};
 
-                scope.view.map = {
-                    item: [
-                        {name: 'empty', value: ''},
-                        {name: 'space', value: ' '},
-                        {name: 'equal', value: '='}
-                    ],
-                    list: [
-                        {name: 'comma', value: ','},
-                        {name: 'semicolon', value: ';'},
-                        {name: 'space', value: ' '},
-                        {name: 'repeat', value: null}
-                    ]
-                };
+                $scope.view.map = Separator.getMap();
 
-                option = _.find(scope.view.map[scope.type], {value: scope.model});
+                option = _.find($scope.view.map[$scope.type], {value: $scope.model});
 
-                scope.view.separator = option ? option.name : 'space';
+                $scope.view.separator = option ? option.name : 'space';
 
-                scope.$watch('view.separator', function(n, o) {
+                $scope.$watch('view.separator', function(n, o) {
                     if (n !== o) {
-                        var option = _.find(scope.view.map[scope.type], {name: n});
-                        scope.model = option.value;
+                        var option = _.find($scope.view.map[$scope.type], {name: n});
+                        $scope.model = option.value;
                     }
                 });
 
-                scope.$watch('model', function(n, o) {
+                $scope.$watch('model', function(n, o) {
                     if (n !== o) {
-                        option = _.find(scope.view.map[scope.type], {value: n});
-                        scope.view.separator = option ? option.name : 'space';
+                        option = _.find($scope.view.map[$scope.type], {value: n});
+                        $scope.view.separator = option ? option.name : 'space';
                     }
                 });
 
-            }
+            }],
+            link: function() {}
         };
     }]);

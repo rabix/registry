@@ -1,0 +1,36 @@
+<div class="property-box-header-inner">
+
+    <div class="property-box-actions pull-right">
+        <a href ng-click="edit($event)"><i class="fa fa-pencil-square"></i></a>
+        <a href ng-click="remove($event)"><i class="fa fa-times"></i></a>
+    </div>
+
+    <div class="property-box-short-info">
+
+        <div class="info-block">
+            <strong class="name" tooltip="name">{{ name }}</strong>
+            <i class="type" tooltip="type">{{ type }} {{ itemType ? ' (' + itemType + ')' : '' }}</i>
+            <span ng-if="isRequired" class="required" tooltip="required">*</span>
+            <span class="property-box-actions">
+                <a href ng-click="editName($event)" title="Edit Name"><i class="fa fa-pencil"></i></a>
+            </span>
+        </div>
+
+        <div ng-if="minItems" class="info-block">
+            <strong class="name">Min:</strong>
+            <span class="value">{{ minItems }}</span>
+        </div>
+
+        <div ng-if="maxItems" class="info-block">
+            <strong class="name">Max:</strong>
+            <span class="value">{{ maxItems }}</span>
+        </div>
+
+        <div ng-if="enum" class="info-block">
+            <strong class="name">Enum:</strong>
+            <span class="value">{{ enum.join(', ') }}</span>
+        </div>
+
+    </div>
+
+</div>

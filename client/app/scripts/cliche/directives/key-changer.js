@@ -7,7 +7,7 @@
 'use strict';
 
 angular.module('registryApp.cliche')
-    .directive('keyChanger', ['$templateCache', '$timeout', function ($templateCache, $timeout) {
+    .directive('keyChanger', ['$templateCache', function ($templateCache) {
 
         return {
             restrict: 'E',
@@ -16,22 +16,23 @@ angular.module('registryApp.cliche')
                 key: '=',
                 items: '='
             },
-            link: function(scope, element) {
+            controller: ['$scope', '$element', '$timeout', function ($scope, $element, $timeout) {
 
                 var timeoutId;
-                scope.view = {};
+                $scope.view = {};
 
                 /**
                  * Init key edit and focus the input for key editing
                  */
-                scope.initUpdateMetaKey = function () {
+                $scope.initUpdateMetaKey = function () {
 
-                    scope.view.metaKey = scope.key;
-                    scope.view.oldKey = angular.copy(scope.key);
+                    $scope.view.metaKey = $scope.key;
+                    $scope.view.oldKey = angular.copy($scope.key);
 
-                    scope.cancelTimeout();
+                    $scope.cancelTimeout();
+
                     timeoutId = $timeout(function () {
-                        var input = element[0].querySelector('.meta-key-value');
+                        var input = $element[0].querySelector('.meta-key-value');
                         input.focus();
                     }, 100);
 
@@ -42,41 +43,42 @@ angular.module('registryApp.cliche')
                  *
                  * @returns {boolean}
                  */
-                scope.updateMetaKey = function () {
+                $scope.updateMetaKey = function () {
 
 
-                    scope.view.error = false;
+                    $scope.view.error = false;
 
-                    if (scope.view.metaKey === scope.view.oldKey) {
-                        scope.view.metaKey = '';
+                    if ($scope.view.metaKey === $scope.view.oldKey) {
+                        $scope.view.metaKey = '';
                         return false;
                     }
 
-                    if (!_.isUndefined(scope.items[scope.view.metaKey]) || scope.view.metaKey === '') {
-                        scope.view.error = true;
+                    if (!_.isUndefined($scope.items[$scope.view.metaKey]) || $scope.view.metaKey === '') {
+                        $scope.view.error = true;
                         return false;
                     }
 
-                    scope.items[scope.view.metaKey] = scope.items[scope.view.oldKey];
-                    delete scope.items[scope.view.oldKey];
-                    scope.view.metaKey = '';
+                    $scope.items[$scope.view.metaKey] = $scope.items[$scope.view.oldKey];
+                    delete $scope.items[$scope.view.oldKey];
+                    $scope.view.metaKey = '';
 
                 };
 
                 /**
                  * Cancel timeout used for input focus
                  */
-                scope.cancelTimeout = function () {
+                $scope.cancelTimeout = function () {
                     if (angular.isDefined(timeoutId)) {
                         $timeout.cancel(timeoutId);
                         timeoutId = undefined;
                     }
                 };
 
-                scope.$on('$destroy', function () {
-                    scope.cancelTimeout();
+                $scope.$on('$destroy', function () {
+                    $scope.cancelTimeout();
                 });
 
-            }
+            }],
+            link: function() {}
         };
     }]);
