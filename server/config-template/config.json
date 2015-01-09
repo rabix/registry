@@ -1,0 +1,35 @@
+{
+    "app": {
+        "name": "rabix-registry",
+        "githubName": "Rabix-registry"
+    },
+    "port": "${SBG:PORT}",
+    "db": {
+        "path": "mongodb://${SBG:MONGODB_HOST}/rabix-registry",
+        "server": {
+            "ssl": true,
+            "sslCert": "${SBG:SSL_CERT_FILE}",
+            "sslKey": "${SBG:SSL_KEY_FILE}"
+        }
+    },
+    "clientPath": "/data/app/rabix-registry-client",
+    "github": {
+        "clientId": "${SBG:GITHUB_OAUTH_CLIENT_ID}",
+        "clientSecret": "${SBG:GITHUB_OAUTH_CLIENT_SECRET}",
+        "callbackURL": "http://www.rabix.org/auth/github/callback",
+        "scope": "repo:status,read:org,read:repo_hook,write:repo_hook,admin:repo_hook,user"
+    },
+    "logging": {
+        "path": "/data/log/rabix-registry",
+        "builds": "/data/log/rabix-registry/builds"
+    },
+    "amazon": {
+        "path": "/data/config/rabix-registry/amazon.json"
+    },
+    "mail": {
+        "user": "${SBG:MAIL_USER}",
+        "pass": "${SBG:MAIL_PASSWORD}"
+    }
+}
+
+
