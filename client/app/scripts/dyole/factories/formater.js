@@ -15,11 +15,18 @@ angular.module('registryApp.dyole')
                 var json = _.clone(j);
                 // reset schema
                 this.packedSchema = {};
+
+                this.packedSchema['@type'] = 'Workflow';
+
                 this.packedSchema.steps = [];
+
                 this.packedSchema.inputs = {
+                    type: 'object',
                     properties: {}
                 };
+
                 this.packedSchema.outputs = {
+                    type: 'object',
                     properties: {}
                 };
 
@@ -42,9 +49,6 @@ angular.module('registryApp.dyole')
                 delete json.nodes;
 
                 json = _.extend(json, this.packedSchema);
-
-                json.inputs.type = 'object';
-                json.outputs.type = 'object';
 
                 return json;
             },
