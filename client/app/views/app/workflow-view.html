@@ -13,7 +13,7 @@
                 <li ng-class="{active: view.tab === 'info'}"><a href="" ng-click="switchTab('info')">Preview</a></li>
                 <li ng-class="{active: view.tab === 'description'}"><a href="" ng-click="switchTab('description')">Info</a></li>
                 <li ng-class="{active: view.tab === 'revisions'}"><a href="" ng-click="switchTab('revisions')">Revisions</a></li>
-                <li ng-class="{active: view.tab === 'tasks'}"><a href="" ng-click="switchTab('tasks')">Task Templates</a></li>
+                <!--<li ng-class="{active: view.tab === 'tasks'}"><a href="" ng-click="switchTab('tasks')">Task Templates</a></li>-->
             </div>
             <div class="actions pull-right">
                 <a href="" ng-if="view.showDelete" ng-click="deleteWorkflow()" class="btn btn-danger" tooltip="Delete workflow" tooltip-placement="bottom"><i class="fa fa-trash"></i> Delete</a>
@@ -133,7 +133,7 @@
                 </table>
             </div>
 
-            <paginator class="paginator" page="view.page.jobs" total="view.total.jobs" handler="getMoreJobs(offset)"></paginator>
+            <!--<paginator class="paginator" page="view.page.jobs" total="view.total.jobs" handler="getMoreJobs(offset)"></paginator>-->
 
         </section>
         <!-- # .jobs -->

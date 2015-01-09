@@ -7,7 +7,7 @@
             <div ng-if="view.revisions.length > 0" class="nav nav-pills nav-page">
                 <li ng-class="{active: view.tab === 'info'}"><a ng-href="#/tool/{{ ::view.tool._id }}/info">Info</a></li>
                 <li ng-class="{active: view.tab === 'revisions'}"><a ng-href="#/tool/{{ ::view.tool._id }}/revisions">Revisions</a></li>
-                <li ng-class="{active: view.tab === 'tasks'}"><a ng-href="#/tool/{{ ::view.tool._id }}/tasks">Task Templates</a></li>
+                <!--<li ng-class="{active: view.tab === 'tasks'}"><a ng-href="#/tool/{{ ::view.tool._id }}/tasks">Task Templates</a></li>-->
             </div>
             <div class="actions pull-right">
                 <a href ng-if="!view.tool.repo.is_public && view.tool.user._id === view.user.id" ng-click="deleteTool()" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a>
