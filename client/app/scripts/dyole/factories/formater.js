@@ -10,7 +10,10 @@ angular.module('registryApp.dyole')
 
             packedSchema: null,
 
-            toRabixSchema: function (j) {
+            toRabixSchema: function (j, exposed, values) {
+
+                exposed = exposed || false;
+                values = values || false;
 
                 var json = _.clone(j);
                 // reset schema
@@ -20,12 +23,7 @@ angular.module('registryApp.dyole')
 
                 this.packedSchema.steps = [];
 
-                this.packedSchema.inputs = {
-                    type: 'object',
-                    properties: {}
-                };
-
-                this.packedSchema.outputs = {
+                this.packedSchema.inputs = this.packedSchema.outputs = {
                     type: 'object',
                     properties: {}
                 };
@@ -41,7 +39,7 @@ angular.module('registryApp.dyole')
                     });
 
                 } else {
-                    this._transformRelationsToSteps(json.relations || [], json.nodes, json.schemas);
+                    this._transformRelationsToSteps(json.relations || [], json.nodes, json.schemas, exposed, values);
                 }
 
                 delete json.relations;
@@ -70,7 +68,7 @@ angular.module('registryApp.dyole')
 
             },
 
-            _transformRelationsToSteps: function (relations, nodes, schemas) {
+            _transformRelationsToSteps: function (relations, nodes, schemas, exposed, values) {
 
                 var _self = this;
 
@@ -102,6 +100,76 @@ angular.module('registryApp.dyole')
 
                 this._generateSystemNodes(relations, nodes, schemas);
 
+                if (exposed) {
+                    this._addExposedParams(exposed);
+                }
+
+                if (values) {
+                    this._addValuesToSteps(values);
+                }
+
+            },
+
+            _addExposedParams: function (exposed) {
+                var packedSchema = this.packedSchema;
+
+                _.forEach(exposed, function (schema, ids) {
+                    var node_id = ids.split('#')[0],
+                        param_id = ids.split('#')[1];
+
+                    packedSchema.inputs.properties[ids] = schema;
+
+                    var step = _.find(packedSchema.steps, function (s) {
+                        return s.id === node_id;
+                    });
+
+                    if (step) {
+
+                        step.inputs[param_id] = {
+                            $from: ids
+                        };
+
+                    } else {
+                        throw Error('Step not found to add exposed params to: ' + node_id);
+                    }
+
+                });
+
+            },
+
+            _addValuesToSteps: function (values) {
+                var steps = this.packedSchema.steps;
+
+                _.forEach(values, function (values, node_id) {
+
+                    var app = _.find(steps, function (step) {
+                        return step.id === node_id;
+                    });
+
+                    if (app) {
+
+                        _.forEach(values, function (param, param_id) {
+                            app.inputs[param_id] = param;
+                        });
+
+                    } else {
+                        throw Error('App not found to add values to: ' + node_id);
+                    }
+                });
+            },
+
+            _createParamValue: function (params, node_id) {
+                var values = this.packedSchema.values[node_id] = this.packedSchema.values[node_id] || {};
+
+                _.forEach(params, function (param, param_id) {
+                    values[param_id] = param;
+                });
+            },
+            
+            _createExposedParam: function (from, node_id, paramSchema) {
+                var exposed = this.packedSchema.exposed[node_id] = this.packedSchema.exposed[node_id] || {};
+
+                exposed[from.$from] = paramSchema;
             },
 
             _generateSystemNodes: function (relations, nodes, schemas) {
@@ -218,7 +286,6 @@ angular.module('registryApp.dyole')
              * @private
              */
             _transformStepsToRelations: function (json) {
-                //TODO: Please refactor this :)
 
                 var _self = this,
                     steps = json.steps,
@@ -228,7 +295,6 @@ angular.module('registryApp.dyole')
 
                 _.forEach(steps, function (step) {
                     var end_node = step.id;
-
 
                     if (!schemas[step.id]) {
                         schemas[step.id] = step.app;
@@ -275,7 +341,21 @@ angular.module('registryApp.dyole')
 
                 _.forEach(step.inputs, function (from, input) {
 
-                    if (!Array.isArray(from.$from)) {
+                    if (typeof from.$from === 'undefined') {
+                        _self._createParamValue(from, step.id);
+
+                        return false;
+                    }
+
+                    if (typeof from.$from !== 'undefined' && from.$from.indexOf('#') !== -1) {
+                        var paramSchema = step.app.inputs.properties[from.$from.split('#')[1]];
+
+                        _self._createExposedParam(from, step.id, paramSchema);
+
+                        return false;
+                    }
+
+                    if (!_.isArray(from.$from)) {
                         from.$from = [from.$from];
                     }
 
