@@ -2,7 +2,7 @@
      ng-hide="ignoreFiles && prop.items.type === 'file'"
      ng-class="{required: view.required, 'has-error': (view.required || model.length) && ((model.length < prop.minItems && prop.minItems > 0) || (model.length > prop.maxItems && prop.maxItems > 0))}">
 
-    <label class="control-label">
+    <div class="control-label">
         <div ng-if="exposed && prop.items.type !== 'file'" class="checkbox">
             <label><input type="checkbox" ng-model="view.expose" ng-change="exposeParams()"> expose</label>
         </div>
@@ -13,7 +13,7 @@
                 <i ng-if="prop.maxItems">max: {{ prop.maxItems }}</i>)
             </small>
         </span>
-    </label>
+    </div>
 
     <div class="input-property-body">
         <enum
@@ -25,7 +25,8 @@
              is-required="view.required"
              req="prop.items.required"
              exposible="{{ view.exposible }}"
-             form="form">
+             form="form"
+             is-disabled="isDisabled">
         </enum>
     </div>
 

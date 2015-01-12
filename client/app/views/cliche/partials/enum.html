@@ -1,6 +1,6 @@
 <div class="enum-list-wrap">
 
-    <a href ng-click="addItem()" class="btn btn-default add-enum-item" ng-class="{disabled: max && view.list.length >= max}"><i class="fa fa-plus"></i></a>
+    <a href ng-click="addItem()" class="btn btn-default add-enum-item" ng-class="{disabled: ((max && view.list.length >= max) || isDisabled)}"><i class="fa fa-plus"></i></a>
 
     <div class="enum-list-container">
         <ul class="enum-list" ng-class="{wide: min && view.list.length <= min}">

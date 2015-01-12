@@ -21,7 +21,8 @@ angular.module('registryApp.cliche')
                 path: '=',
                 form: '=',
                 req: '=?',
-                exposible: '@'
+                exposible: '@',
+                isDisabled: '=?'
             },
             controller: ['$scope', '$modal', function ($scope, $modal) {
 
@@ -91,7 +92,7 @@ angular.module('registryApp.cliche')
                  * @param index
                  */
                 $scope.removeItem = function(index) {
-                    if ($scope.min && $scope.view.list.length <= $scope.min) {
+                    if (($scope.min && $scope.view.list.length <= $scope.min) || $scope.isDisabled) {
                         return false;
                     }
                     $scope.view.list.splice(index, 1);
