@@ -71,12 +71,12 @@ angular.module('registryApp')
 
             var json = $scope.view.app;
 
-            if ($scope.view.type === 'Workflow') {
-                // TODO: will be available directly, maybe
-                if (json.exposed) {
-                    _.extend(json.inputs.properties, json.exposed);
-                }
-            }
+//            if ($scope.view.type === 'Workflow') {
+//                // TODO: will be available directly, maybe
+//                if (json.exposed) {
+//                    _.extend(json.inputs.properties, json.exposed);
+//                }
+//            }
 
             deferred.resolve(json.inputs.properties);
 

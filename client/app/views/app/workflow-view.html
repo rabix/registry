@@ -103,9 +103,9 @@
         </section>
         <!-- # .revisions -->
 
-        <section class="tab jobs" ng-show="view.tab === 'tasks'">
+        <section class="tab tab-tbl flex-box-column flex-one jobs" ng-show="view.tab === 'tasks'">
 
-            <div class="content">
+            <div class="content content-tbl">
                 <table class="table table-hover jobs">
                     <thead>
                     <tr>
@@ -133,7 +133,7 @@
                 </table>
             </div>
 
-            <!--<paginator class="paginator" page="view.page.jobs" total="view.total.jobs" handler="getMoreJobs(offset)"></paginator>-->
+            <paginator class="paginator" page="view.page.jobs" total="view.total.jobs" handler="getMoreJobs(offset)"></paginator>
 
         </section>
         <!-- # .jobs -->

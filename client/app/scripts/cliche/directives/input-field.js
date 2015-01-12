@@ -22,11 +22,12 @@ angular.module('registryApp.cliche')
                 form: '=',
                 req: '=',
                 appName: '@',
-                exposed: '=?'
+                exposed: '=?',
+                isDisabled: '=?'
             },
             controller: ['$scope', '$modal', function ($scope, $modal) {
 
-                var keyName = $scope.appName + '.' + $scope.key;
+                var keyName = $scope.appName + '#' + $scope.key;
 
                 $scope.view = {};
 
@@ -161,9 +162,13 @@ angular.module('registryApp.cliche')
 
                     if ($scope.view.expose) {
                         $scope.exposed[keyName] = $scope.prop;
+                        $scope.isDisabled = true;
                     } else {
                         delete $scope.exposed[keyName];
+                        $scope.isDisabled = false;
                     }
+
+                    console.log($scope.exposed);
 
                 };
 
