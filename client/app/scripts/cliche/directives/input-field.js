@@ -27,7 +27,7 @@ angular.module('registryApp.cliche')
             },
             controller: ['$scope', '$modal', function ($scope, $modal) {
 
-                var keyName = $scope.appName + '.' + $scope.key;
+                var keyName = $scope.appName + '#' + $scope.key;
 
                 $scope.view = {};
 
@@ -167,6 +167,8 @@ angular.module('registryApp.cliche')
                         delete $scope.exposed[keyName];
                         $scope.isDisabled = false;
                     }
+
+                    console.log($scope.exposed);
 
                 };
 

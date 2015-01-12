@@ -313,19 +313,12 @@ angular.module('registryApp.app')
 
             $scope.view.json = model;
 
-            // TODO: check if this is ok, in case when creating new workflow
-            if (_.isUndefined($scope.view.workflow.json)) {
-                $scope.view.workflow.json = {};
-            }
-            if (_.isUndefined($scope.view.workflow.json.exposed)) {
-                $scope.view.workflow.json.exposed = {};
-            }
-
             $scope.view.values = values;
+            $scope.view.exposed = exposed;
 
-            if (model.type === 'workflow') {
-                _.extend($scope.view.json.inputs.properties, $scope.view.json.exposed);
-            }
+//            if (model.type === 'workflow') {
+//                _.extend($scope.view.json.inputs.properties, $scope.view.json.exposed);
+//            }
 
             $scope.view.required = $scope.view.json.inputs.required;
 
