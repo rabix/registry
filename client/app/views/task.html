@@ -37,7 +37,7 @@
             <p class="job-user-guide">Pick <a href ng-click="pickApp()">tool, script or workflow</a> for which you want to generate task template</p>
         </section>
 
-        <form ng-show="view.app" class="form flex-box-column flex-one" name="forms.jobForm" role="form" novalidate>
+        <ng-form ng-show="view.app" class="form flex-box-column flex-one" name="form.jobForm" role="form" novalidate>
 
             <div class="content content-ten">
 
@@ -55,7 +55,7 @@
                 <p class="alert alert-info" ng-if="(view.properties | isEmpty)">There are no values to be set at this moment.</p>
             </div>
 
-        </form>
+        </ng-form>
 
     </div>
 </div>
