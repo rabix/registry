@@ -50,39 +50,11 @@ angular.module('registryApp')
 
                     $scope.view.required = $scope.view.app.inputs.required;
 
-                    getProperties()
-                        .then(function(properties) {
+                    $scope.view.properties = $scope.view.app.inputs.properties;
 
-                            $scope.view.loading = false;
-
-                            $scope.view.properties = properties;
-                        });
+                    $scope.view.loading = false;
                 });
         }
-
-        /**
-         * Get properties from app
-         *
-         * @returns {*}
-         */
-        var getProperties = function() {
-
-            var deferred = $q.defer();
-
-            var json = $scope.view.app;
-
-//            if ($scope.view.type === 'Workflow') {
-//                // TODO: will be available directly, maybe
-//                if (json.exposed) {
-//                    _.extend(json.inputs.properties, json.exposed);
-//                }
-//            }
-
-            deferred.resolve(json.inputs.properties);
-
-            return deferred.promise;
-
-        };
 
         /**
          * Pick app from the list
@@ -101,21 +73,16 @@ angular.module('registryApp')
             modalInstance.result.then(function (result) {
 
                 $scope.view.ref = result.id;
-                console.log($scope.view.ref);
+
                 $scope.view.app = result.app.json;
                 $scope.view.type = result.type;
 
                 $scope.view.required = $scope.view.app.inputs.required;
 
-                getProperties()
-                    .then(function(properties) {
+                $scope.view.job.json.app = angular.copy($scope.view.app);
+                $scope.view.job.json.app['@type'] = result.type;
 
-                        $scope.view.job.json.app = angular.copy($scope.view.app);
-                        $scope.view.job.json.app['@type'] = result.type;
-
-                        $scope.view.properties = properties;
-
-                    });
+                $scope.view.properties = $scope.view.app.inputs.properties;
 
             });
 
