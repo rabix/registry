@@ -33,8 +33,8 @@ angular.module('registryApp.dyole')
                  * Values for params and exposed params holders
                  * @type {{}}
                  */
-                this.exposed = {};
-                this.values = {};
+                this.exposed = this.model.exposed || {};
+                this.values = this.model.values || {};
 
                 /**
                  * Clone event object for every pipeline
