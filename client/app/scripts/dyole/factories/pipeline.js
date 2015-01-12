@@ -1071,8 +1071,7 @@ angular.module('registryApp.dyole')
                     json.display.canvas.x = this.getEl().getTranslation().x;
                     json.display.canvas.y = this.getEl().getTranslation().y;
 
-                    return Formater.toRabixSchema(json);
-//                    return json;
+                    return Formater.toRabixSchema(json, exposed, values);
                 },
 
                 /**
