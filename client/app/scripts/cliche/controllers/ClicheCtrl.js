@@ -493,20 +493,21 @@ angular.module('registryApp.cliche')
 
             var name = $scope.view.toolForm.name;
 
-            Data.flush(name).then(function(result) {
+            Data.flush(name)
+                .then(function() {
 
-                $scope.view.toolForm = angular.copy(result.tool);
-                $scope.view.jobForm = angular.copy(result.job);
-                $scope.view.command = '';
+                    $scope.view.toolForm = Data.tool;
+                    $scope.view.jobForm = Data.job;
+                    $scope.view.command = '';
 
-                if ($scope.view.user) {
+                    if ($scope.view.user) {
 
-                    $scope.view.toolForm.documentAuthor = $scope.view.user.email;
-                }
+                        $scope.view.toolForm.documentAuthor = $scope.view.user.email;
+                    }
 
-                $scope.view.loading = false;
+                    $scope.view.loading = false;
 
-            });
+                });
 
         };
 

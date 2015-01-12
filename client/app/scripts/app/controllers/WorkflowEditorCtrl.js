@@ -329,7 +329,7 @@ angular.module('registryApp.app')
                 _.extend($scope.view.json.inputs.properties, $scope.view.json.exposed);
             }
 
-            console.log($scope.view.json);
+            $scope.view.required = $scope.view.json.inputs.required;
 
             $scope.$digest();
 

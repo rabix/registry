@@ -244,7 +244,7 @@ angular.module('registryApp.cliche')
          * @param type
          * @param name
          * @param prop
-         * @param property
+         * @param properties
          */
         self.addProperty = function(type, name, prop, properties) {
 
@@ -695,15 +695,7 @@ angular.module('registryApp.cliche')
                 delete self.tool.adapter;
             }
 
-            return $q.all([
-                    $localForage.setItem('tool', tool),
-                    $localForage.setItem('job', job)
-                ]).then(function() {
-                    return {
-                        tool: tool,
-                        job: job
-                    };
-                });
+            return $q.all([$localForage.setItem('tool', tool), $localForage.setItem('job', job)]);
 
         };
 
