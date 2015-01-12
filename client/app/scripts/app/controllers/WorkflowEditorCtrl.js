@@ -309,7 +309,7 @@ angular.module('registryApp.app')
         /**
          * Track node select
          */
-        var onNodeSelect = function (e, model) {
+        var onNodeSelect = function (e, model, exposed, values) {
 
             $scope.view.json = model;
 

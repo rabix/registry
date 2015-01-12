@@ -30,6 +30,13 @@ angular.module('registryApp.dyole')
                 this.connections = {};
 
                 /**
+                 * Values for params and exposed params holders
+                 * @type {{}}
+                 */
+                this.exposed = {};
+                this.values = {};
+
+                /**
                  * Clone event object for every pipeline
                  */
                 this.Event = _.clone(Event);
@@ -130,7 +137,7 @@ angular.module('registryApp.dyole')
                     this.Event.subscribe('node:select', function (model) {
 
                         if (!model.softwareDescription || model.softwareDescription.repo_name !== 'system') {
-                            $rootScope.$broadcast('node:select', model);
+                            $rootScope.$broadcast('node:select', model, _self.exposed, _self.values);
                         }
 
                     });
@@ -1040,7 +1047,9 @@ angular.module('registryApp.dyole')
                  * @returns {*}
                  */
                 getJSON: function () {
-                    var json = angular.copy(this.model);
+                    var json = angular.copy(this.model),
+                        exposed = angular.copy(this.exposed),
+                        values = angular.copy(this.values);
 
                     json.relations = this._getConnections();
                     json.nodes = this._getNodes();

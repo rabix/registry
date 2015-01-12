@@ -11,9 +11,12 @@ angular.module('registryApp.dyole')
         var NodePreview = function (options) {
 
             Super = Node.getInstance(options);
+
+            //do stuff
         };
 
-        NodePreview.prototype = Super;
+        NodePreview.prototype = Super.prototype;
+        NodePreview.super = Super.prototype;
 
         NodePreview.prototype.constructor = NodePreview;
 
