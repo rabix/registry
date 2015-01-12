@@ -100,7 +100,7 @@ var config = {
             builds: '/data/log/staging/rabix-registry/builds'
         },
         amazon: {
-            path: '/data/config/rabix/amazon.json'
+            path: '/data/config/rabix-registry/amazon.json'
         },
         tmpDir: {
             path: rootPath + '/tmp'
