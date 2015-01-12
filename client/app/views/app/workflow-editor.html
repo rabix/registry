@@ -197,7 +197,7 @@
                             <input-field
                                     ng-repeat="(key, property) in view.json.inputs.properties"
                                     ng-hide="property.type === 'file' || (property.type === 'array' && property.items.type === 'file')"
-                                    ng-model="view.values[key]"
+                                    ng-model="view.values[view.json.name][key]"
                                     class="input-field input-field-sm"
                                     key="{{ key }}"
                                     prop="property"
