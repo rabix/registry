@@ -347,7 +347,7 @@ router.put('/repos/:id/:action', filters.authenticated, function (req, res, next
 
                     if (!check) {
 
-                        Repo.findOneAndUpdate({_id: req.params.id}, {name: repo.name, description: repo.description}, function(err, r) {
+                        Repo.findOneAndUpdate({_id: req.params.id}, {name: repo.name, description: (repo.description || '')}, function(err, r) {
                             if (err) { return next(err); }
 
                             res.json({message: 'Successfully updated repo', repo: r});

@@ -23,7 +23,7 @@
 
                 <json-preview class="btn-group" json="{{ view.job.json.inputs }}"></json-preview>
 
-                <a href ng-if="!view.job.repo.is_public && view.job.user._id === view.user.id" ng-click="delete()" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a>
+                <a href ng-if="view.mode === 'edit' && view.user && !view.job.repo.is_public && view.job.user._id === view.user.id" ng-click="delete()" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a>
 
             </div>
             <!-- # .actions -->
