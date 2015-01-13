@@ -173,14 +173,14 @@ angular.module('registryApp.dyole')
 
             _createParamValue: function (params, input_id, node_id) {
                 var values = this.packedSchema.values[node_id] = this.packedSchema.values[node_id] || {};
-
-                if (typeof params === 'object') {
-                    _.forEach(params, function (param, param_id) {
-                        values[param_id] = param;
-                    });
-                } else {
+//
+//                if (typeof params === 'object') {
+//                    _.forEach(params, function (param, param_id) {
+//                        values[param_id] = param;
+//                    });
+//                } else {
                     values[input_id] = params;
-                }
+//                }
 
             },
 
@@ -359,7 +359,7 @@ angular.module('registryApp.dyole')
 
                 _.forEach(step.inputs, function (from, input) {
 
-                    if (typeof from !== 'object') {
+                    if (typeof from.$from === 'undefined') {
 
                         _self._createParamValue(from, input, step.id);
 
