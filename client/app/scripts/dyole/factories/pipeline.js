@@ -36,13 +36,10 @@ angular.module('registryApp.dyole')
                 this.exposed = this.model.exposed || {};
                 this.values = this.model.values || {};
 
-                console.log('Exposed', this.exposed);
-                console.log('Values', this.values);
-
                 /**
                  * Clone event object for every pipeline
                  */
-                this.Event = _.clone(Event);
+                this.Event = angular.copy(Event);
 
                 /**
                  * Pipeline in preview?
@@ -126,7 +123,6 @@ angular.module('registryApp.dyole')
                     });
 
                     this.Event.subscribe('node:deselect', function () {
-
                         _.each(_self.selectedNodes, function (node) {
                             if (node.selected) {
                                 node._deselect();
@@ -138,6 +134,7 @@ angular.module('registryApp.dyole')
                     });
 
                     this.Event.subscribe('node:select', function (model) {
+                        console.log('subscribeovo sam se jednom?');
 
                         if (!model.softwareDescription || model.softwareDescription.repo_name !== 'system') {
                             $rootScope.$broadcast('node:select', model, _self.exposed, _self.values);
@@ -1050,6 +1047,29 @@ angular.module('registryApp.dyole')
 
                 },
 
+                _prepareExposedValues: function (exposed, values) {
+
+                    _.forEach(exposed, function (schema, hash) {
+
+                        var h = hash.split('#'),
+                            node_id = h[0],
+                            param_id;
+
+                        if (h.length > 2 ) {
+                            h.shift();
+                            param_id = h.join('#');
+                        } else {
+                            param_id = h[1];
+                        }
+
+                        if (typeof values[node_id] !== 'undefined' && typeof values[node_id][param_id] !== 'undefined') {
+                            delete values[node_id][param_id];
+                        }
+
+                    });
+
+                },
+
                 /**
                  * Get pipeline model
                  *
@@ -1059,6 +1079,8 @@ angular.module('registryApp.dyole')
                     var json = angular.copy(this.model),
                         exposed = angular.copy(this.exposed),
                         values = angular.copy(this.values);
+
+                    this._prepareExposedValues(exposed, values);
 
                     json.relations = this._getConnections();
                     json.nodes = this._getNodes();

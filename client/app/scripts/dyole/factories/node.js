@@ -434,7 +434,7 @@ angular.module('registryApp.dyole')
                 });
 
                 borders.click(function () {
-
+                    console.log('kliknuo sam na node');
                     var dragged = this.dragged;
 
                     if (typeof dragged !== 'undefined' && !dragged) {
@@ -810,12 +810,10 @@ angular.module('registryApp.dyole')
                     }
                 });
 
-                console.log('Inputs', this.inputs);
                 _.each(this.inputs, function (t) {
                     t.destroy();
                 });
 
-                console.log('Outputs', this.outputs);
                 _.each(this.outputs, function (t) {
                     t.destroy();
                 });

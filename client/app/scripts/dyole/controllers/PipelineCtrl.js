@@ -315,6 +315,11 @@ angular.module('registryApp.dyole')
             onNodeInfoOff();
             onNodeLabelEditOff();
 
+            if (angular.isDefined(Pipeline)) {
+                Pipeline.destroy();
+                Pipeline = null;
+            }
+
         });
         
         $scope.pipelineActions = {

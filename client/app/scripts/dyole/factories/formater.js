@@ -134,8 +134,16 @@ angular.module('registryApp.dyole')
                         return false;
                     }
 
-                    var node_id = ids.split('#')[0],
-                        param_id = ids.split('#')[1];
+                    var h = ids.split('#'),
+                        node_id = h[0],
+                        param_id;
+
+                    if (h.length > 2 ) {
+                        h.shift();
+                        param_id = h.join('#');
+                    } else {
+                        param_id = h[1];
+                    }
 
                     packedSchema.inputs.properties[ids] = schema;
 
@@ -372,7 +380,19 @@ angular.module('registryApp.dyole')
 
 
                     } else if (typeof from === 'object' && typeof from.$from !== 'undefined' && from.$from.indexOf('#') !== -1) {
-                        var paramSchema = step.app.inputs.properties[from.$from.split('#')[1]];
+
+                        var h = from.$from.split('#'),
+                            param_id;
+
+                        if (h.length > 2 ) {
+                            h.shift();
+                            param_id = h.join('#');
+                        } else {
+                            param_id = h[1];
+                        }
+
+
+                        var paramSchema = step.app.inputs.properties[param_id];
 
                         _self._createExposedParam(from, step.id, paramSchema);
 

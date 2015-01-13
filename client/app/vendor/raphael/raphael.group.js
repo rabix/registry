@@ -298,6 +298,7 @@ Raphael.fn.group = function () {
             },
 
             remove: function () {
+                $(this.node).unbind();
                 set.remove();
             },
 
