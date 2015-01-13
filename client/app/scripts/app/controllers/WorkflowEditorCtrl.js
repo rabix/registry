@@ -316,7 +316,6 @@ angular.module('registryApp.app')
                 delete $scope.view.values[appName];
             }
 
-
         };
 
         /**
@@ -327,6 +326,10 @@ angular.module('registryApp.app')
             console.log(values);
             console.log(exposed);
             $scope.view.json = model;
+
+            console.log('*********************');
+            console.log('Values from NODE SELECT: ', values);
+            console.log('*********************');
 
             $scope.view.values = values;
             $scope.view.exposed = exposed;
