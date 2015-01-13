@@ -40,3 +40,4 @@ template.js
 
 /server/config/config.json
 /server/config/amazon.json
+/server/nodemon.json
