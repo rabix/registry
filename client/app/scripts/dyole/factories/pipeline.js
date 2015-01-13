@@ -968,6 +968,9 @@ angular.module('registryApp.dyole')
 
                     this.Event = null;
 
+                    this.values = null;
+                    this.exposed = null;
+
                     $('body').off('mouseup');
                 },
 

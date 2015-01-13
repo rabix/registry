@@ -1,4 +1,4 @@
-<div class="form-group" ng-class="{required: view.required, 'has-error': inputForm.inputString.$invalid}">
+<div class="form-group" ng-class="{required: view.required, 'has-error': (inputForm.inputString.$invalid && !isDisabled)}">
     <div class="control-label">
         <div ng-if="exposed" class="checkbox">
             <label><input type="checkbox" ng-model="view.expose" ng-change="exposeParams()"> expose</label>
@@ -14,6 +14,6 @@
             <option value>-- choose --</option>
         </select>
 
-        <span ng-if="inputForm.inputString.$invalid" class="help-block">Please provide correct value</span>
+        <span ng-if="inputForm.inputString.$invalid && !isDisabled" class="help-block">Please provide correct value</span>
     </div>
 </div>

@@ -1,4 +1,4 @@
-<div class="form-group" ng-class="{required: view.required, 'has-error': inputForm.inputBoolean.$invalid}">
+<div class="form-group" ng-class="{required: view.required, 'has-error': (inputForm.inputBoolean.$invalid && !isDisabled)}">
 
     <div ng-if="exposed" class="control-label">
         <div class="checkbox">

@@ -171,7 +171,12 @@ angular.module('registryApp.cliche')
                             $scope.view.toolForm.schema = schema;
                         }
 
-                        //$scope.view.app.is_script = !Data.tool.adapter;
+                        if (_.isUndefined($scope.view.toolForm.inputs.properties)) {
+                            $scope.view.toolForm.inputs.properties = {};
+                        }
+                        if (_.isUndefined($scope.view.toolForm.outputs.properties)) {
+                            $scope.view.toolForm.outputs.properties = {};
+                        }
 
                         $scope.view.jobForm = Data.job;
 

@@ -308,7 +308,7 @@ angular.module('registryApp.app')
 
         $scope.onExpose = function (appName, key) {
 
-            if (!_.isUndefined($scope.view.values[appName][key])) {
+            if (!_.isUndefined($scope.view.values[appName]) && !_.isUndefined($scope.view.values[appName][key])) {
                 delete $scope.view.values[appName][key];
             }
 
