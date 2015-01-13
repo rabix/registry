@@ -316,7 +316,6 @@ angular.module('registryApp.app')
                 delete $scope.view.values[appName];
             }
 
-            console.log($scope.view.values);
 
         };
 
