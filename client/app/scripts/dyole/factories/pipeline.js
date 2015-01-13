@@ -14,9 +14,9 @@ angular.module('registryApp.dyole')
              * @constructor
              */
             var Pipeline = function (options) {
+
                 this.model = options.model;
                 this.$parent = options.$parent;
-
 
                 if (this.model.steps && this.model.steps.length !== 0 ) {
                     this.model = Formater.toPipelineSchema(this.model);
@@ -35,6 +35,9 @@ angular.module('registryApp.dyole')
                  */
                 this.exposed = this.model.exposed || {};
                 this.values = this.model.values || {};
+
+                console.log('Exposed', this.exposed);
+                console.log('Values', this.values);
 
                 /**
                  * Clone event object for every pipeline
@@ -970,6 +973,9 @@ angular.module('registryApp.dyole')
 
                     this.values = null;
                     this.exposed = null;
+
+                    delete this.values;
+                    delete this.exposed;
 
                     $('body').off('mouseup');
                 },

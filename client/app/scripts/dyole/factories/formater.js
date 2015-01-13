@@ -53,6 +53,8 @@ angular.module('registryApp.dyole')
 
                 json = _.extend(json, this.packedSchema);
 
+                this.packedSchema = null;
+
                 return json;
             },
 
@@ -61,6 +63,7 @@ angular.module('registryApp.dyole')
                 var json = _.clone(j);
 
                 // reset schema
+                this.packedSchema = null;
                 this.packedSchema = {};
                 this.packedSchema.schemas = {};
                 this.packedSchema.nodes = [];
@@ -72,7 +75,11 @@ angular.module('registryApp.dyole')
 
                 this._transformStepsToRelations(json);
 
-                return this.packedSchema;
+                var r = _.cloneDeep(this.packedSchema);
+
+                this.packedSchema = null;
+                
+                return r;
 
             },
 
