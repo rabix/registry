@@ -306,6 +306,14 @@ angular.module('registryApp.app')
 
         };
 
+        $scope.onExpose = function (appName, key) {
+
+            if (!_.isUndefined($scope.view.values[appName][key])) {
+                delete $scope.view.values[appName][key];
+            }
+
+        };
+
         /**
          * Track node select
          */
@@ -315,10 +323,6 @@ angular.module('registryApp.app')
 
             $scope.view.values = values;
             $scope.view.exposed = exposed;
-
-//            if (model.type === 'workflow') {
-//                _.extend($scope.view.json.inputs.properties, $scope.view.json.exposed);
-//            }
 
             $scope.view.required = $scope.view.json.inputs.required;
 
@@ -336,7 +340,6 @@ angular.module('registryApp.app')
             $scope.$digest();
 
         };
-
 
         var onNodeSelectOff = $rootScope.$on('node:select', onNodeSelect);
         var onNodeDeselectOff = $rootScope.$on('node:deselect', onNodeDeselect);

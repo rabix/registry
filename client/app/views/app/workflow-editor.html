@@ -205,7 +205,8 @@
                                     form="form.jobForm"
                                     req="view.required"
                                     app-name="{{ ::view.json.id }}"
-                                    exposed="view.exposed">
+                                    exposed="view.exposed"
+                                    handle-expose="onExpose(appName, key)">
                             </input-field>
 
                             <p class="alert alert-info" ng-if="view.json.inputs.properties | isEmpty">There are no params that can be exposed.</p>

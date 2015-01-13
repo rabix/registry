@@ -23,7 +23,8 @@ angular.module('registryApp.cliche')
                 req: '=',
                 appName: '@',
                 exposed: '=?',
-                isDisabled: '=?'
+                isDisabled: '=?',
+                handleExpose: '&'
             },
             controller: ['$scope', '$modal', function ($scope, $modal) {
 
@@ -112,23 +113,23 @@ angular.module('registryApp.cliche')
                     $scope.prop.items = $scope.prop.items || {type: 'string'};
 
                     switch($scope.prop.items.type) {
-                    case 'object':
-                        _.each($scope.model, function(value) {
-                            var innerScheme = getObjectScheme(value);
-                            delete innerScheme.path;
-                            inputScheme.push(innerScheme);
-                        });
-                        break;
-                    case 'file':
-                        _.each($scope.model, function(value) {
-                            inputScheme.push(getFileScheme(value));
-                        });
-                        break;
-                    default:
-                        _.each($scope.model, function(value) {
-                            inputScheme.push(getDefaultScheme(value));
-                        });
-                        break;
+                        case 'object':
+                            _.each($scope.model, function(value) {
+                                var innerScheme = getObjectScheme(value);
+                                delete innerScheme.path;
+                                inputScheme.push(innerScheme);
+                            });
+                            break;
+                        case 'file':
+                            _.each($scope.model, function(value) {
+                                inputScheme.push(getFileScheme(value));
+                            });
+                            break;
+                        default:
+                            _.each($scope.model, function(value) {
+                                inputScheme.push(getDefaultScheme(value));
+                            });
+                            break;
                     }
                     /* type STRING, NUMBER, INTEGER, BOOLEAN */
                 } else {
@@ -163,12 +164,12 @@ angular.module('registryApp.cliche')
                     if ($scope.view.expose) {
                         $scope.exposed[keyName] = $scope.prop;
                         $scope.isDisabled = true;
+                        $scope.handleExpose({appName: $scope.appName, key: $scope.key});
                     } else {
                         delete $scope.exposed[keyName];
                         $scope.isDisabled = false;
                     }
 
-                    console.log($scope.exposed);
 
                 };
 
