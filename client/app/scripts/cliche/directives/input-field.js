@@ -38,6 +38,7 @@ angular.module('registryApp.cliche')
                 $scope.view.required = _.contains($scope.req, $scope.key);
 
                 $scope.view.expose = $scope.exposed ? !_.isUndefined($scope.exposed[keyName]) : false;
+                if ($scope.view.expose) { $scope.isDisabled = true; }
 
                 $scope.view.exposible = !_.isUndefined($scope.exposed);
 

@@ -312,6 +312,12 @@ angular.module('registryApp.app')
                 delete $scope.view.values[appName][key];
             }
 
+            if (!_.isUndefined($scope.view.values[appName]) && _.isEmpty($scope.view.values[appName])) {
+                delete $scope.view.values[appName];
+            }
+
+            console.log($scope.view.values);
+
         };
 
         /**
