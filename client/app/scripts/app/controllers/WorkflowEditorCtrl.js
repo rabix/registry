@@ -324,6 +324,8 @@ angular.module('registryApp.app')
          */
         var onNodeSelect = function (e, model, exposed, values) {
 
+            console.log(values);
+            console.log(exposed);
             $scope.view.json = model;
 
             $scope.view.values = values;

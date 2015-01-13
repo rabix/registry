@@ -60,6 +60,8 @@ angular.module('registryApp.cliche')
                  */
                 $scope.transformList = function (list) {
 
+                    if ($scope.isDisabled) { return false; }
+
                     $scope.view.list = [];
 
                     if ((!_.isArray(list) || list.length === 0) && !isNaN($scope.min)) {
