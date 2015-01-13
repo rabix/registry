@@ -312,6 +312,8 @@ angular.module('registryApp.app')
                 delete $scope.view.values[appName][key];
             }
 
+            console.log($scope.view.values);
+
             if (!_.isUndefined($scope.view.values[appName]) && _.isEmpty($scope.view.values[appName])) {
                 delete $scope.view.values[appName];
             }
@@ -323,8 +325,6 @@ angular.module('registryApp.app')
          */
         var onNodeSelect = function (e, model, exposed, values) {
 
-            console.log(values);
-            console.log(exposed);
             $scope.view.json = model;
 
             console.log('*********************');

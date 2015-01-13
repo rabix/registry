@@ -60,7 +60,10 @@ angular.module('registryApp.cliche')
                  */
                 $scope.transformList = function (list) {
 
-                    if ($scope.isDisabled) { return false; }
+                    if ($scope.isDisabled) {
+                        delete $scope.view.list;
+                        return false;
+                    }
 
                     $scope.view.list = [];
 
@@ -82,6 +85,10 @@ angular.module('registryApp.cliche')
                  * Add item to the list
                  */
                 $scope.addItem = function() {
+
+                    if ($scope.isDisabled) { return false; }
+
+                    if (_.isUndefined($scope.view.list)) { $scope.transformList($scope.model); }
 
                     if ($scope.max && $scope.view.list.length >= $scope.max) {
                         return false;
