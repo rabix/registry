@@ -103,7 +103,7 @@ var validator = {
         _.forEach(nodes, function (node) {
             // only inputs should be validated since outputs
             node = node.json || node;
-            var inputs = node.inputs.propreties;
+            var inputs = node.inputs.properties;
 
             _.forEach(inputs, function (input) {
                 if ((input.type === 'file' || input.items && input.items.type === 'file') && input.required === true) {
