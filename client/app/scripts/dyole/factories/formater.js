@@ -4,7 +4,7 @@
 
 'use strict';
 angular.module('registryApp.dyole')
-    .factory('Formater', [function () {
+    .factory('Formater', ['Const', function (Const) {
 
         var formater = {
 
@@ -130,17 +130,17 @@ angular.module('registryApp.dyole')
 
                 _.forEach(exposed, function (schema, ids) {
 
-                    if (ids.indexOf('#') === -1) {
+                    if (ids.indexOf(Const.exposedSeparator) === -1) {
                         return false;
                     }
 
-                    var h = ids.split('#'),
+                    var h = ids.split(Const.exposedSeparator),
                         node_id = h[0],
                         param_id;
 
                     if (h.length > 2 ) {
                         h.shift();
-                        param_id = h.join('#');
+                        param_id = h.join(Const.exposedSeparator);
                     } else {
                         param_id = h[1];
                     }
@@ -379,14 +379,14 @@ angular.module('registryApp.dyole')
                         _self._createParamValue(from, input, step.id);
 
 
-                    } else if (typeof from === 'object' && typeof from.$from !== 'undefined' && from.$from.indexOf('#') !== -1) {
+                    } else if (typeof from === 'object' && typeof from.$from !== 'undefined' && from.$from.indexOf(Const.exposedSeparator) !== -1) {
 
-                        var h = from.$from.split('#'),
+                        var h = from.$from.split(Const.exposedSeparator),
                             param_id;
 
                         if (h.length > 2 ) {
                             h.shift();
-                            param_id = h.join('#');
+                            param_id = h.join(Const.exposedSeparator);
                         } else {
                             param_id = h[1];
                         }

@@ -7,7 +7,7 @@
 'use strict';
 
 angular.module('registryApp.cliche')
-    .directive('inputField', ['$templateCache', '$compile', 'RecursionHelper', function ($templateCache, $compile, RecursionHelper) {
+    .directive('inputField', ['$templateCache', '$compile', 'RecursionHelper', 'Const', function ($templateCache, $compile, RecursionHelper, Const) {
 
         var uniqueId = 0;
 
@@ -28,7 +28,7 @@ angular.module('registryApp.cliche')
             },
             controller: ['$scope', '$modal', function ($scope, $modal) {
 
-                var keyName = $scope.appName + '#' + $scope.key;
+                var keyName = $scope.appName + Const.exposedSeparator + $scope.key;
 
                 $scope.view = {};
 

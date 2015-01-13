@@ -25,6 +25,9 @@ angular
         'registryApp.repo',
         'registryApp.common'
     ])
+    .constant('Const', {
+        exposedSeparator: '$'
+    })
     .config(['$routeProvider', '$httpProvider', '$localForageProvider', function ($routeProvider, $httpProvider, $localForageProvider) {
         $routeProvider
             .when('/', {

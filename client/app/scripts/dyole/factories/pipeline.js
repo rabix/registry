@@ -5,7 +5,7 @@
 'use strict';
 
 angular.module('registryApp.dyole')
-    .factory('pipeline', ['event', 'node', 'connection', '$rootScope', 'systemNodeModel', 'Formater', function (Event, Node, Connection, $rootScope, systemNodeModel, Formater) {
+    .factory('pipeline', ['event', 'node', 'connection', '$rootScope', 'systemNodeModel', 'Formater', 'Const', function (Event, Node, Connection, $rootScope, systemNodeModel, Formater, Const) {
 
             /**
              * Pipeline constructor
@@ -1051,13 +1051,13 @@ angular.module('registryApp.dyole')
 
                     _.forEach(exposed, function (schema, hash) {
 
-                        var h = hash.split('#'),
+                        var h = hash.split(Const.exposedSeparator),
                             node_id = h[0],
                             param_id;
 
                         if (h.length > 2 ) {
                             h.shift();
-                            param_id = h.join('#');
+                            param_id = h.join(Const.exposedSeparator);
                         } else {
                             param_id = h[1];
                         }
