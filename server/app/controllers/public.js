@@ -15,7 +15,7 @@ var Revision = mongoose.model('Revision');
 var PipelineRevision = mongoose.model('PipelineRevision');
 
 module.exports = function (app) {
-    app.use('/api', router);
+    app.use('/', router);
 };
 
 /**
@@ -32,7 +32,7 @@ module.exports = function (app) {
  * Get public tool
  *
  * @apiName GetPublicTool
- * @api {GET} /public/tool/:id Get public tool by id
+ * @api {GET} /tool/:id Get public tool by id
  *
  * @apiGroup Tools
  * @apiDescription Get public tool by id
@@ -44,7 +44,7 @@ module.exports = function (app) {
  *     HTTP/1.1 200 OK
  *     {json}
  */
-router.get('/public/tool/:id', function (req, res, next) {
+router.get('/tool/:id', function (req, res, next) {
 
     App.findById(req.params.id, function(err, app) {
         if (err) { return next(err); }
@@ -63,7 +63,7 @@ router.get('/public/tool/:id', function (req, res, next) {
  * Get public tool revision
  *
  * @apiName GetPublicToolRevision
- * @api {GET} /public/tool-revision/:id Get public tool revision by id
+ * @api {GET} /tool-revision/:id Get public tool revision by id
  *
  * @apiGroup Tools
  * @apiDescription Get public tool revision by id
@@ -75,7 +75,7 @@ router.get('/public/tool/:id', function (req, res, next) {
  *     HTTP/1.1 200 OK
  *     {json}
  */
-router.get('/public/tool-revision/:id', function (req, res, next) {
+router.get('/tool-revision/:id', function (req, res, next) {
 
     Revision.findById(req.params.id, function(err, revision) {
         if (err) { return next(err); }
@@ -94,7 +94,7 @@ router.get('/public/tool-revision/:id', function (req, res, next) {
  * Get public workflow revision
  *
  * @apiName GetPublicWorkflowRevision
- * @api {GET} /public/workflows/:revision Get public workflow revision by id
+ * @api {GET} /workflows/:revision Get public workflow revision by id
  *
  * @apiGroup Workflows
  * @apiDescription Get public workflow revision by id
@@ -106,7 +106,7 @@ router.get('/public/tool-revision/:id', function (req, res, next) {
  *     HTTP/1.1 200 OK
  *     {json}
  */
-router.get('/public/workflow/:revision', function (req, res, next) {
+router.get('/workflow/:revision', function (req, res, next) {
 
     PipelineRevision.findById(req.params.revision, function(err, app) {
         if (err) { return next(err); }

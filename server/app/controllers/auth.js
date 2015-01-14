@@ -152,7 +152,7 @@ module.exports = function (app) {
  * Login middle handler (direct output of /auth/github is too ugly!)
  *
  * @apiName Login
- * @api {GET} /api/login Github Login
+ * @api {GET} /login Github Login
  * @apiGroup Auth
  */
 router.get('/login',
@@ -167,7 +167,7 @@ router.get('/login',
  * Logout user and redirect to home
  *
  * @apiName Logout
- * @api {GET} /api/logout Logout
+ * @api {GET} /logout Logout
  * @apiGroup Auth
  */
 router.get('/logout', function (req, res) {

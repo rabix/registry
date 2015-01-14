@@ -2,7 +2,7 @@ define({ "api": [
   {
     "name": "Login",
     "type": "GET",
-    "url": "/api/login",
+    "url": "/login",
     "title": "Github Login",
     "group": "Auth",
     "version": "0.0.0",
@@ -12,7 +12,7 @@ define({ "api": [
   {
     "name": "Logout",
     "type": "GET",
-    "url": "/api/logout",
+    "url": "/logout",
     "title": "Logout",
     "group": "Auth",
     "version": "0.0.0",
@@ -22,7 +22,7 @@ define({ "api": [
   {
     "name": "CreateJob",
     "type": "POST",
-    "url": "/jobs",
+    "url": "/api/jobs",
     "title": "Create new job",
     "group": "Jobs",
     "description": "<p>Create new job</p> ",
@@ -154,7 +154,7 @@ define({ "api": [
   {
     "name": "GetJob",
     "type": "GET",
-    "url": "/jobs/:id",
+    "url": "/api/jobs/:id",
     "title": "Get job by id",
     "parameter": {
       "fields": {
@@ -217,7 +217,7 @@ define({ "api": [
   {
     "name": "UpdateJob",
     "type": "PUT",
-    "url": "/jobs/:id",
+    "url": "/api/jobs/:id",
     "title": "Update job by id",
     "parameter": {
       "fields": {
@@ -870,7 +870,7 @@ define({ "api": [
   {
     "name": "CreateTool",
     "type": "POST",
-    "url": "/apps/:action",
+    "url": "/api/apps/:action",
     "title": "Create new tool",
     "parameter": {
       "fields": {
@@ -965,7 +965,7 @@ define({ "api": [
   {
     "name": "CreateToolRevision",
     "type": "POST",
-    "url": "/revisions",
+    "url": "/api/revisions",
     "title": "Create new tool revision",
     "group": "Tools",
     "description": "<p>Create new tool revision</p> ",
@@ -1175,7 +1175,7 @@ define({ "api": [
   {
     "name": "GetPublicTool",
     "type": "GET",
-    "url": "/public/tool/:id",
+    "url": "/tool/:id",
     "title": "Get public tool by id",
     "group": "Tools",
     "description": "<p>Get public tool by id</p> ",
@@ -1238,7 +1238,7 @@ define({ "api": [
   {
     "name": "GetPublicToolRevision",
     "type": "GET",
-    "url": "/public/tool-revision/:id",
+    "url": "/tool-revision/:id",
     "title": "Get public tool revision by id",
     "group": "Tools",
     "description": "<p>Get public tool revision by id</p> ",
@@ -1301,7 +1301,7 @@ define({ "api": [
   {
     "name": "GetTool",
     "type": "GET",
-    "url": "/apps/:id/:revision",
+    "url": "/api/apps/:id/:revision",
     "title": "Get tool by revision",
     "parameter": {
       "fields": {
@@ -1378,7 +1378,7 @@ define({ "api": [
   {
     "name": "GetToolRevision",
     "type": "GET",
-    "url": "/revisions/:id",
+    "url": "/api/revisions/:id",
     "title": "Get revision by id",
     "parameter": {
       "fields": {
@@ -1505,7 +1505,7 @@ define({ "api": [
   {
     "name": "GetToolsGroupedByRepo",
     "type": "GET",
-    "url": "/tool/repositories/:type",
+    "url": "/api/tool/repositories/:type",
     "title": "Get grouped tools and scripts",
     "parameter": {
       "fields": {
@@ -2071,7 +2071,7 @@ define({ "api": [
   {
     "name": "GetPublicWorkflowRevision",
     "type": "GET",
-    "url": "/public/workflows/:revision",
+    "url": "/workflows/:revision",
     "title": "Get public workflow revision by id",
     "group": "Workflows",
     "description": "<p>Get public workflow revision by id</p> ",

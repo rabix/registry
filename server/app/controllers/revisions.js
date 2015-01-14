@@ -84,7 +84,7 @@ router.get('/revisions', function (req, res, next) {
  * Get revision by id
  *
  * @apiName GetToolRevision
- * @api {GET} /revisions/:id Get revision by id
+ * @api {GET} /api/revisions/:id Get revision by id
  * @apiParam {String} id ID of the revision
  * @apiGroup Tools
  * @apiDescription Get tool revision
@@ -131,7 +131,7 @@ router.get('/revisions/:id', function (req, res, next) {
  * Create new revision
  *
  * @apiName CreateToolRevision
- * @api {POST} /revisions Create new tool revision
+ * @api {POST} /api/revisions Create new tool revision
  * @apiGroup Tools
  * @apiDescription Create new tool revision
  * @apiPermission Logged in user
