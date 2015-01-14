@@ -132,6 +132,19 @@ angular.module('registryApp.repo')
 
         };
 
+        /**
+         * Get list of repo tasks
+         *
+         * @param {integer} skip
+         * @param {string} id
+         * @returns {object} $promise
+         */
+        self.repoTasks = function(skip, id) {
+
+            return Api.repoTasks.get({id: id, skip: skip}).$promise;
+
+        };
+
         return self;
 
     }]);

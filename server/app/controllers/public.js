@@ -19,7 +19,30 @@ module.exports = function (app) {
 };
 
 /**
- * Get tool by id
+ * @apiDefine InvalidIDError
+ * @apiError Message Invalid id
+ * @apiErrorExample InvalidIDError:
+ *     HTTP/1.1 404
+ *     {
+ *       "message": "There is no item with such id"
+ *     }
+ */
+
+/**
+ * Get public tool
+ *
+ * @apiName GetPublicTool
+ * @api {GET} /tool/:id Get public tool by id
+ *
+ * @apiGroup Tools
+ * @apiDescription Get public tool by id
+ * @apiUse InvalidIDError
+ *
+ * @apiParam {Number} id Id of the tool
+ * @apiSuccess {Object} json Json of the tool
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {json}
  */
 router.get('/tool/:id', function (req, res, next) {
 
@@ -37,7 +60,20 @@ router.get('/tool/:id', function (req, res, next) {
 });
 
 /**
- * Get tool revision by id
+ * Get public tool revision
+ *
+ * @apiName GetPublicToolRevision
+ * @api {GET} /tool-revision/:id Get public tool revision by id
+ *
+ * @apiGroup Tools
+ * @apiDescription Get public tool revision by id
+ * @apiUse InvalidIDError
+ *
+ * @apiParam {Number} id Id of the tool revision
+ * @apiSuccess {Object} json Json of the tool revision
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {json}
  */
 router.get('/tool-revision/:id', function (req, res, next) {
 
@@ -55,7 +91,20 @@ router.get('/tool-revision/:id', function (req, res, next) {
 });
 
 /**
- * Get workflow by id
+ * Get public workflow revision
+ *
+ * @apiName GetPublicWorkflowRevision
+ * @api {GET} /workflows/:revision Get public workflow revision by id
+ *
+ * @apiGroup Workflows
+ * @apiDescription Get public workflow revision by id
+ * @apiUse InvalidIDError
+ *
+ * @apiParam {Number} revision Id of the workflow revision
+ * @apiSuccess {Object} json Json of the workflow
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {json}
  */
 router.get('/workflow/:revision', function (req, res, next) {
 

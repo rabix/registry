@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('registryApp.repo')
-    .controller('RepoCtrl', ['$scope', '$routeParams', '$q', '$modal', '$templateCache', 'Repo', 'Build', 'User', 'Sidebar', 'Loading', function ($scope, $routeParams, $q, $modal, $templateCache, Repo, Build, User, Sidebar, Loading) {
+    .controller('RepoCtrl', ['$scope', '$routeParams', '$q', '$modal', '$templateCache', 'Repo', 'Build', 'Job', 'User', 'Sidebar', 'Loading', function ($scope, $routeParams, $q, $modal, $templateCache, Repo, Build, Job, User, Sidebar, Loading) {
 
         Sidebar.setActive('repos');
 
@@ -10,22 +10,27 @@ angular.module('registryApp.repo')
             tools: 1,
             scripts: 1,
             workflows: 1,
+            tasks: 1,
             builds: 1
         };
         $scope.view.total = {
             tools: 1,
             scripts: 1,
             workflows: 1,
+            tasks: 1,
             builds: 1
         };
+
         $scope.view.loading = true;
         $scope.view.tab = 'tools';
         $scope.view.repo = null;
+
         $scope.view.tools = [];
         $scope.view.scripts = [];
         $scope.view.workflows = [];
+        $scope.view.tasks = [];
         $scope.view.builds = [];
-        $scope.view.resize = false;
+
         $scope.view.user = {};
 
         $scope.view.classes = ['page', 'repo'];
@@ -48,6 +53,7 @@ angular.module('registryApp.repo')
                 Repo.repoTools(0, $routeParams.id),
                 Repo.repoScripts(0, $routeParams.id),
                 Repo.repoWorkflows(0, $routeParams.id),
+                Repo.repoTasks(0, $routeParams.id),
                 Build.getBuilds(0, $routeParams.id)
             ]).then(function (result) {
 
@@ -56,7 +62,8 @@ angular.module('registryApp.repo')
                 $scope.view.tools = itemsLoaded(result[0], 'tools');
                 $scope.view.scripts = itemsLoaded(result[1], 'scripts');
                 $scope.view.workflows = itemsLoaded(result[2], 'workflows');
-                $scope.view.builds = itemsLoaded(result[3], 'builds');
+                $scope.view.tasks = itemsLoaded(result[3], 'tasks');
+                $scope.view.builds = itemsLoaded(result[4], 'builds');
             });
 
         });
@@ -124,6 +131,21 @@ angular.module('registryApp.repo')
 
             Repo.repoWorkflows(offset, $routeParams.id).then(function (result) {
                 $scope.view.workflows = itemsLoaded(result, 'workflows');
+            });
+
+        };
+
+        /**
+         * Load more tasks by offset
+         *
+         * @param offset
+         */
+        $scope.getMoreTasks = function(offset) {
+
+            $scope.view.loading = true;
+
+            Repo.repoTasks(offset, $routeParams.id).then(function (result) {
+                $scope.view.tasks = itemsLoaded(result, 'tasks');
             });
 
         };

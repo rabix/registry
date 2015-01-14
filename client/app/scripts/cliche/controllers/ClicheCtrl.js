@@ -7,7 +7,7 @@
 'use strict';
 
 angular.module('registryApp.cliche')
-    .controller('ClicheCtrl', ['$scope', '$q', '$modal', '$templateCache', '$routeParams', '$location', 'Data', 'User', 'Tool', 'Repo', 'Loading', 'SandBox', 'Sidebar', 'BeforeUnload', 'BeforeRedirect', function ($scope, $q, $modal, $templateCache, $routeParams, $location, Data, User, Tool, Repo, Loading, SandBox, Sidebar, BeforeUnload, BeforeRedirect) {
+    .controller('ClicheCtrl', ['$scope', '$q', '$modal', '$templateCache', '$routeParams', '$location', 'Data', 'User', 'Tool', 'Repo', 'Loading', 'SandBox', 'Sidebar', 'BeforeUnload', 'BeforeRedirect', 'Helper', function ($scope, $q, $modal, $templateCache, $routeParams, $location, Data, User, Tool, Repo, Loading, SandBox, Sidebar, BeforeUnload, BeforeRedirect, Helper) {
 
         Sidebar.setActive($routeParams.type + ' editor');
 
@@ -601,14 +601,14 @@ angular.module('registryApp.cliche')
          */
         $scope.create = function() {
 
-            if (_.isEmpty($scope.view.toolForm.name)) {
+            if (!Helper.isValidName($scope.view.toolForm.name)) {
 
                 $modal.open({
                     template: $templateCache.get('views/partials/validation.html'),
                     size: 'sm',
                     controller: 'ModalCtrl',
                     windowClass: 'modal-validation',
-                    resolve: {data: function () { return {messages: ['You must enter name of the tool']}; }}
+                    resolve: {data: function () { return {messages: ['You must enter valid name (avoid characters \'#\' and \'.\')']}; }}
                 });
 
                 return false;

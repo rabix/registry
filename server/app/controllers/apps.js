@@ -119,7 +119,7 @@ router.get('/apps', function (req, res, next) {
  * Get grouped tools and scripts
  *
  * @apiName GetToolsGroupedByRepo
- * @api {GET} /tool/repositories/:type Get grouped tools and scripts
+ * @api {GET} /api/tool/repositories/:type Get grouped tools and scripts
  * @apiParam {string="my","other"} type Defines whose repos to fetch
  * @apiGroup Tools
  * @apiDescription Fetch tools and scripts grouped by repo
@@ -216,7 +216,7 @@ router.get('/tool/repositories/:type', function (req, res, next) {
  * Get tool by revision
  *
  * @apiName GetTool
- * @api {GET} /apps/:id/:revision Get tool by revision
+ * @api {GET} /api/apps/:id/:revision Get tool by revision
  * @apiParam {String} id ID of the tool
  * @apiParam {String} revision ID of the revision
  * @apiGroup Tools
@@ -266,7 +266,7 @@ router.get('/apps/:id/:revision', function (req, res, next) {
  * Create new tool
  *
  * @apiName CreateTool
- * @api {POST} /apps/:action Create new tool
+ * @api {POST} /api/apps/:action Create new tool
  * @apiParam {String="create","fork"} action Type of the action
  * @apiGroup Tools
  * @apiDescription Create new tool from clean template or by forking it

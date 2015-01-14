@@ -97,7 +97,7 @@ router.get('/jobs', function (req, res, next) {
  * Get job by id
  *
  * @apiName GetJob
- * @api {GET} /jobs/:id Get job by id
+ * @api {GET} /api/jobs/:id Get job by id
  * @apiParam {String} id ID of the job
  * @apiGroup Jobs
  * @apiDescription Get job by id
@@ -136,7 +136,7 @@ router.get('/jobs/:id', function (req, res, next) {
  * Update existing job
  *
  * @apiName UpdateJob
- * @api {PUT} /jobs/:id Update job by id
+ * @api {PUT} /api/jobs/:id Update job by id
  * @apiParam {String} id ID of the job
  * @apiGroup Jobs
  * @apiDescription Update existing job by id
@@ -209,7 +209,7 @@ router.put('/jobs/:id', filters.authenticated, function (req, res, next) {
  * Create new job
  *
  * @apiName CreateJob
- * @api {POST} /jobs Create new job
+ * @api {POST} /api/jobs Create new job
  * @apiGroup Jobs
  * @apiDescription Create new job
  * @apiPermission Logged in user
