@@ -7,7 +7,7 @@
 'use strict';
 
 angular.module('registryApp.common')
-    .factory('Helper', [function() {
+    .factory('Helper', ['$injector', function($injector) {
 
         /**
          * Check if name is valid
@@ -36,8 +36,24 @@ angular.module('registryApp.common')
 
         };
 
+        /**
+         * Get current domain with appropriate protocol and port
+         *
+         * @returns {string}
+         */
+        var getDomain = function () {
+
+            var $location = $injector.get('$location');
+
+            var port = $location.port() ? (':' + $location.port()) : '';
+
+            return $location.protocol() + '://' + $location.host() + port;
+
+        };
+
         return {
-            isValidName: isValidName
+            isValidName: isValidName,
+            getDomain: getDomain
         };
 
     }]);

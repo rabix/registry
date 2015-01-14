@@ -4,7 +4,7 @@
 'use strict';
 
 angular.module('registryApp.app')
-    .controller('WorkflowViewCtrl', ['$scope', '$q', '$location', '$routeParams', 'Sidebar', 'Loading', 'Workflow', 'User', 'Job', '$modal', '$templateCache', function ($scope, $q, $location, $routeParams, Sidebar, Loading, Workflow, User, Job, $modal, $templateCache) {
+    .controller('WorkflowViewCtrl', ['$scope', '$q', '$location', '$routeParams', 'Sidebar', 'Loading', 'Workflow', 'User', 'Job', '$modal', '$templateCache', 'Helper', function ($scope, $q, $location, $routeParams, Sidebar, Loading, Workflow, User, Job, $modal, $templateCache, Helper) {
 
         Sidebar.setActive('apps');
 
@@ -30,7 +30,7 @@ angular.module('registryApp.app')
 
         $scope.view.showDelete = false;
 
-        $scope.view.domain = $location.protocol() + '://' + $location.host() + ($location.port() ? ':' + $location.port() : '');
+        $scope.view.domain = Helper.getDomain();
 
         $scope.view.classes = ['page', 'workflow-view'];
         Loading.setClasses($scope.view.classes);
