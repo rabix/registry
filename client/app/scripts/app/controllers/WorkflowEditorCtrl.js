@@ -4,7 +4,7 @@
 'use strict';
 
 angular.module('registryApp.app')
-    .controller('WorkflowEditorCtrl', ['$scope', '$rootScope', '$q', '$routeParams', '$modal', '$templateCache', '$location', 'Sidebar', 'Loading', 'Tool', 'Workflow', 'User', 'Repo', 'BeforeRedirect', function ($scope, $rootScope, $q, $routeParams, $modal, $templateCache, $location, Sidebar, Loading, Tool, Workflow, User, Repo, BeforeRedirect) {
+    .controller('WorkflowEditorCtrl', ['$scope', '$rootScope', '$q', '$routeParams', '$modal', '$templateCache', '$location', 'Sidebar', 'Loading', 'Tool', 'Workflow', 'User', 'Repo', 'BeforeRedirect', 'Helper', function ($scope, $rootScope, $q, $routeParams, $modal, $templateCache, $location, Sidebar, Loading, Tool, Workflow, User, Repo, BeforeRedirect, Helper) {
 
         Sidebar.setActive('workflow editor');
 
@@ -244,14 +244,14 @@ angular.module('registryApp.app')
         $scope.save = function () {
             var modalInstance, mode = $scope.view.mode;
 
-            if (!$scope.view.workflow.name && mode === 'new') {
+            if (!Helper.isValidName($scope.view.workflow.name) && mode === 'new') {
 
                 $modal.open({
                     template: $templateCache.get('views/partials/validation.html'),
                     size: 'sm',
                     controller: 'ModalCtrl',
                     windowClass: 'modal-validation',
-                    resolve: {data: function () { return {messages: ['You must enter workflow name']}; }}
+                    resolve: {data: function () { return {messages: ['You must enter valid name (avoid characters \'#\' and \'.\')']}; }}
                 });
 
                 return false;

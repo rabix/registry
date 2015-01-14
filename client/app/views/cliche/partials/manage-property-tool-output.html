@@ -15,7 +15,8 @@
             <div class="col-md-3">
                 <div class="form-group" ng-class="{'has-error': (view.form.name.$invalid && view.form.$dirty)}">
                     <label class="control-label" for="name">Name</label>
-                    <input type="text" class="form-control" id="name" name="name" ng-model="view.name" ng-readonly="view.mode === 'edit'" required>
+                    <input type="text" class="form-control" id="name" name="name" ng-model="view.name" ng-readonly="view.mode === 'edit'" is-valid-name required>
+                    <span class="help-block">Characters such as . and # are forbidden</span>
                 </div>
             </div>
             <!-- END Name -->
