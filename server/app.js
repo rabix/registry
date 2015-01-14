@@ -11,7 +11,8 @@ var express = require('express'),
 if (typeof config.db === 'object' && config.db.server) {
 
     mongoOpts = {
-        server: config.db.server
+        server: config.db.server,
+        auth: config.db.auth
     };
 
     dbPath = config.db.path;
