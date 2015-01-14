@@ -31,6 +31,12 @@ module.exports = function (app, config) {
     app.use('/', express.static(config.root + config.clientPath));
     app.use('/docs', express.static(config.root + '/docs'));
 
+    app.use(function(req, res, next) {
+        res.header('Access-Control-Allow-Origin', '*');
+        res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+        next();
+    });
+
     /**
      * Stream logs through winston logger
      */
@@ -38,8 +44,8 @@ module.exports = function (app, config) {
         'format': 'dev',
         'stream': {
             write: function(str) { console.log(str); winston.info(str); }
-        }})
-    );
+        }
+    }));
 
     app.use(methodOverride());
 

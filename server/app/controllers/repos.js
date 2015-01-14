@@ -12,6 +12,7 @@ var Repo = mongoose.model('Repo');
 var User = mongoose.model('User');
 var App = mongoose.model('App');
 var Pipeline = mongoose.model('Pipeline');
+var Job = mongoose.model('Job');
 
 var BuildClass = require('../../builds/Build');
 
@@ -510,6 +511,55 @@ router.get('/repo-workflows/:id', function(req, res, next) {
                     if (err) { return next(err); }
 
                     res.json({list: pipelines, total: total});
+                });
+
+            });
+        } else {
+            res.status(401).json({message: 'Unauthorized'});
+        }
+    });
+
+});
+
+/**
+ * Get repo's tasks
+ *
+ * @apiName GetReposTasks
+ * @api {GET} /api/repo-tasks/:id Get tasks from repository
+ *
+ * @apiGroup Repos
+ * @apiDescription Get tasks from repository
+ *
+ * @apiParam {Number} id Repo unique id
+ * @apiSuccess {Number} total Total number of tasks in repository
+ * @apiSuccess {Array} list List of tasks in repository
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "total": "1",
+ *       "list": [{task}]
+ *     }
+ */
+router.get('/repo-tasks/:id', function(req, res, next) {
+
+    var limit = req.query.limit ? req.query.limit : 25;
+    var skip = req.query.skip ? req.query.skip : 0;
+    var where = {repo: req.params.id};
+
+    Repo.findById(req.params.id).populate('user').exec(function(err, repo) {
+        if (err) { return next(err); }
+
+        var user_id = (req.user ? req.user.id : '').toString();
+        var repo_user_id = repo.user._id.toString();
+
+        if (repo.is_public || user_id === repo_user_id) {
+            Job.count(where, function(err, total) {
+                if (err) { return next(err); }
+
+                Job.find(where).populate('user').skip(skip).limit(limit).sort({_id: 'desc'}).exec(function(err, tasks) {
+                    if (err) { return next(err); }
+
+                    res.json({list: tasks, total: total});
                 });
 
             });

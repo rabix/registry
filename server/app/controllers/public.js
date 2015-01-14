@@ -15,13 +15,36 @@ var Revision = mongoose.model('Revision');
 var PipelineRevision = mongoose.model('PipelineRevision');
 
 module.exports = function (app) {
-    app.use('/', router);
+    app.use('/api', router);
 };
 
 /**
- * Get tool by id
+ * @apiDefine InvalidIDError
+ * @apiError Message Invalid id
+ * @apiErrorExample InvalidIDError:
+ *     HTTP/1.1 404
+ *     {
+ *       "message": "There is no item with such id"
+ *     }
  */
-router.get('/tool/:id', function (req, res, next) {
+
+/**
+ * Get public tool
+ *
+ * @apiName GetPublicTool
+ * @api {GET} /public/tool/:id Get public tool by id
+ *
+ * @apiGroup Tools
+ * @apiDescription Get public tool by id
+ * @apiUse InvalidIDError
+ *
+ * @apiParam {Number} id Id of the tool
+ * @apiSuccess {Object} json Json of the tool
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {json}
+ */
+router.get('/public/tool/:id', function (req, res, next) {
 
     App.findById(req.params.id, function(err, app) {
         if (err) { return next(err); }
@@ -37,9 +60,22 @@ router.get('/tool/:id', function (req, res, next) {
 });
 
 /**
- * Get tool revision by id
+ * Get public tool revision
+ *
+ * @apiName GetPublicToolRevision
+ * @api {GET} /public/tool-revision/:id Get public tool revision by id
+ *
+ * @apiGroup Tools
+ * @apiDescription Get public tool revision by id
+ * @apiUse InvalidIDError
+ *
+ * @apiParam {Number} id Id of the tool revision
+ * @apiSuccess {Object} json Json of the tool revision
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {json}
  */
-router.get('/tool-revision/:id', function (req, res, next) {
+router.get('/public/tool-revision/:id', function (req, res, next) {
 
     Revision.findById(req.params.id, function(err, revision) {
         if (err) { return next(err); }
@@ -55,9 +91,22 @@ router.get('/tool-revision/:id', function (req, res, next) {
 });
 
 /**
- * Get workflow by id
+ * Get public workflow revision
+ *
+ * @apiName GetPublicWorkflowRevision
+ * @api {GET} /public/workflows/:revision Get public workflow revision by id
+ *
+ * @apiGroup Workflows
+ * @apiDescription Get public workflow revision by id
+ * @apiUse InvalidIDError
+ *
+ * @apiParam {Number} revision Id of the workflow revision
+ * @apiSuccess {Object} json Json of the workflow
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {json}
  */
-router.get('/workflow/:revision', function (req, res, next) {
+router.get('/public/workflow/:revision', function (req, res, next) {
 
     PipelineRevision.findById(req.params.revision, function(err, app) {
         if (err) { return next(err); }

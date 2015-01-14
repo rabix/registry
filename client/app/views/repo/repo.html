@@ -28,6 +28,7 @@
                 <li ng-class="{active: view.tab === 'tools'}" class=""><a href ng-click="switchTab('tools')">Tools</a></li>
                 <li ng-class="{active: view.tab === 'scripts'}" class=""><a href ng-click="switchTab('scripts')">Scripts</a></li>
                 <li ng-class="{active: view.tab === 'workflows'}" class=""><a href ng-click="switchTab('workflows')">Workflows</a></li>
+                <li ng-class="{active: view.tab === 'tasks'}" class=""><a href ng-click="switchTab('tasks')">Tasks</a></li>
                 <li ng-class="{active: view.tab === 'builds'}" class=""><a href ng-click="switchTab('builds')">Builds</a></li>
             </div>
 
@@ -56,6 +57,7 @@
                 <paginator class="paginator" page="view.page.tools" total="view.total.tools" handler="getMoreTools(offset)"></paginator>
 
             </section>
+            <!-- # .tab.tools -->
 
             <section ng-show="view.tab === 'scripts'" class="tab tab-tbl apps flex-box-column flex-one">
 
@@ -82,6 +84,7 @@
                 <paginator class="paginator" page="view.page.scripts" total="view.total.scripts" handler="getMoreScripts(offset)"></paginator>
 
             </section>
+            <!-- # .tab.scripts -->
 
             <section ng-show="view.tab === 'workflows'" class="tab tab-tbl workflows flex-box-column flex-one">
 
@@ -108,6 +111,42 @@
                 <paginator class="paginator" page="view.page.workflows" total="view.total.workflows" handler="getMoreWorkflows(offset)"></paginator>
 
             </section>
+            <!-- # .tab.workflows -->
+
+            <section ng-show="view.tab === 'tasks'" class="tab tab-tbl tasks flex-box-column flex-one">
+
+                <div class="content content-tbl">
+                    <table class="table table-hover tasks">
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Author</th>
+                            <th>Url</th>
+                            <th class="right">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="task in view.tasks">
+                            <td>{{ ::task.name }}</td>
+                            <td><span class="label label-primary">{{ ::task.type }}</span></td>
+                            <td>{{ ::task.author }}</td>
+                            <td><a ng-href="{{ ::task.url }}" class="job-link" target="_blank">{{ ::task.url }}</a></td>
+                            <td class="right">
+                                <a ng-href="#/task/{{ task._id }}" ng-if="view.user.id === task.user._id" class="btn btn-default" tooltip="Edit Task Template"><i class="fa fa-pencil"></i></a>
+                            </td>
+                        </tr>
+                        <tr class="empty" ng-if="view.tasks.length === 0">
+                            <td colspan="5"><p class="alert alert-info">There are no task templates found in this repo</p></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <paginator class="paginator" page="view.page.tasks" total="view.total.tasks" handler="getMoreTasks(offset)"></paginator>
+
+            </section>
+            <!-- # .tab.tasks -->
 
             <section ng-show="view.tab === 'builds'" class="tab tab-tbl builds flex-box-column flex-one">
 
@@ -153,6 +192,7 @@
                 <paginator class="paginator" page="view.page.builds" total="view.total.builds" handler="getMoreBuilds(offset)"></paginator>
 
             </section>
+            <!-- # .tab.build -->
         </div>
         <!-- # .tabs -->
 

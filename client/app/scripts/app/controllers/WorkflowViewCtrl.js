@@ -30,6 +30,8 @@ angular.module('registryApp.app')
 
         $scope.view.showDelete = false;
 
+        $scope.view.domain = $location.protocol() + '://' + $location.host() + ($location.port() ? ':' + $location.port() : '');
+
         $scope.view.classes = ['page', 'workflow-view'];
         Loading.setClasses($scope.view.classes);
 

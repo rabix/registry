@@ -452,6 +452,57 @@ define({ "api": [
     "groupTitle": "Repos"
   },
   {
+    "name": "GetReposTasks",
+    "type": "GET",
+    "url": "/api/repo-tasks/:id",
+    "title": "Get tasks from repository",
+    "group": "Repos",
+    "description": "<p>Get tasks from repository</p> ",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Repo unique id</p> "
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "total",
+            "description": "<p>Total number of tasks in repository</p> "
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "list",
+            "description": "<p>List of tasks in repository</p> "
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"total\": \"1\",\n  \"list\": [{task}]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "app/controllers/repos.js",
+    "groupTitle": "Repos"
+  },
+  {
     "name": "GetReposTools",
     "type": "GET",
     "url": "/api/repo-tools/:id",
@@ -1120,6 +1171,132 @@ define({ "api": [
     "version": "0.0.0",
     "filename": "app/controllers/apps.js",
     "groupTitle": "Tools"
+  },
+  {
+    "name": "GetPublicTool",
+    "type": "GET",
+    "url": "/public/tool/:id",
+    "title": "Get public tool by id",
+    "group": "Tools",
+    "description": "<p>Get public tool by id</p> ",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Id of the tool</p> "
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "json",
+            "description": "<p>Json of the tool</p> "
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{json}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "app/controllers/public.js",
+    "groupTitle": "Tools",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Message",
+            "description": "<p>Invalid id</p> "
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "InvalidIDError:",
+          "content": "HTTP/1.1 404\n{\n  \"message\": \"There is no item with such id\"\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "name": "GetPublicToolRevision",
+    "type": "GET",
+    "url": "/public/tool-revision/:id",
+    "title": "Get public tool revision by id",
+    "group": "Tools",
+    "description": "<p>Get public tool revision by id</p> ",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Id of the tool revision</p> "
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "json",
+            "description": "<p>Json of the tool revision</p> "
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{json}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "app/controllers/public.js",
+    "groupTitle": "Tools",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Message",
+            "description": "<p>Invalid id</p> "
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "InvalidIDError:",
+          "content": "HTTP/1.1 404\n{\n  \"message\": \"There is no item with such id\"\n}",
+          "type": "json"
+        }
+      ]
+    }
   },
   {
     "name": "GetTool",
@@ -1892,6 +2069,100 @@ define({ "api": [
     "groupTitle": "Workflows"
   },
   {
+    "name": "GetPublicWorkflowRevision",
+    "type": "GET",
+    "url": "/public/workflows/:revision",
+    "title": "Get public workflow revision by id",
+    "group": "Workflows",
+    "description": "<p>Get public workflow revision by id</p> ",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": "revision",
+            "description": "<p>Id of the workflow revision</p> "
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "json",
+            "description": "<p>Json of the workflow</p> "
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{json}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "app/controllers/public.js",
+    "groupTitle": "Workflows",
+    "error": {
+      "fields": {
+        "Error 4xx": [
+          {
+            "group": "Error 4xx",
+            "optional": false,
+            "field": "Message",
+            "description": "<p>Invalid id</p> "
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "InvalidIDError:",
+          "content": "HTTP/1.1 404\n{\n  \"message\": \"There is no item with such id\"\n}",
+          "type": "json"
+        }
+      ]
+    }
+  },
+  {
+    "name": "GetWorkflow",
+    "type": "GET",
+    "url": "/api/workflows/:id",
+    "title": "Get workflow by id",
+    "group": "Workflows",
+    "description": "<p>Get workflow by id</p> ",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Obejct",
+            "optional": false,
+            "field": "data",
+            "description": "<p>Workflow</p> "
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"data\": {workflow}\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "app/controllers/pipeline.js",
+    "groupTitle": "Workflows"
+  },
+  {
     "name": "GetWorkflow",
     "type": "GET",
     "url": "/api/workflows/:id",
@@ -1942,37 +2213,6 @@ define({ "api": [
     }
   },
   {
-    "name": "GetWorkflow",
-    "type": "GET",
-    "url": "/api/workflows/:id",
-    "title": "Get workflow by id",
-    "group": "Workflows",
-    "description": "<p>Get workflow by id</p> ",
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "Obejct",
-            "optional": false,
-            "field": "data",
-            "description": "<p>Workflow</p> "
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n  \"data\": {workflow}\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "version": "0.0.0",
-    "filename": "app/controllers/pipeline.js",
-    "groupTitle": "Workflows"
-  },
-  {
     "name": "UpdateWorkflow",
     "type": "PUT",
     "url": "/api/workflows/:id",
@@ -2021,14 +2261,14 @@ define({ "api": [
             "group": "Error 4xx",
             "optional": false,
             "field": "Message",
-            "description": "<p>Invalid workflow id</p> "
+            "description": "<p>Invalid id</p> "
           }
         ]
       },
       "examples": [
         {
           "title": "InvalidIDError:",
-          "content": "HTTP/1.1 404\n{\n  \"message\": \"There is no pipeline with id: 547854cbf76a100000ac84dd\"\n}",
+          "content": "HTTP/1.1 404\n{\n  \"message\": \"There is no item with such id\"\n}",
           "type": "json"
         }
       ]

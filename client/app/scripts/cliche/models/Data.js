@@ -229,9 +229,9 @@ angular.module('registryApp.cliche')
                 $localForage.setItem('tool', self.tool),
                 $localForage.setItem('job', self.job)
             ]).then(
-                function() {
+                function () {
                     deferred.resolve();
-                }, function() {
+                }, function () {
                     deferred.reject();
                 });
 

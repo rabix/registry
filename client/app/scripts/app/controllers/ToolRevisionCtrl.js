@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('registryApp.app')
-    .controller('ToolRevisionCtrl', ['$scope', '$routeParams', '$q', 'Tool', 'Sidebar', 'Loading', function ($scope, $routeParams, $q, Tool, Sidebar, Loading) {
+    .controller('ToolRevisionCtrl', ['$scope', '$routeParams', '$q', '$location', 'Tool', 'Sidebar', 'Loading', function ($scope, $routeParams, $q, $location, Tool, Sidebar, Loading) {
 
         Sidebar.setActive('apps');
 
@@ -13,6 +13,8 @@ angular.module('registryApp.app')
         $scope.view.author = null;
 
         $scope.view.isJsonVisible = false;
+
+        $scope.view.domain = $location.protocol() + '://' + $location.host() + ($location.port() ? ':' + $location.port() : '');
 
         $scope.view.classes = ['page', 'revision'];
         Loading.setClasses($scope.view.classes);
