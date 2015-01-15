@@ -2,7 +2,7 @@
 
     <div class="heading">
         <a ng-if="view.mode === 'new'" ng-href="#/apps" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
-        <a ng-if="view.mode === 'edit'" ng-href="#/tool/{{ ::view.app._id }}/info" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
+        <a ng-if="view.mode === 'edit'" ng-href="#/tool/{{ ::view.app._id }}/preview" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
         <h1>
             <div class="form-group tool-name">
                 <input ng-show="view.mode === 'new'" type="text" placeholder="Tool Name" ng-model="view.toolForm.name" class="form-control" />

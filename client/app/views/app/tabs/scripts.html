@@ -19,7 +19,7 @@
         </thead>
         <tbody>
             <tr ng-repeat-start="script in view.scripts">
-                <td><a ng-href="#/tool/{{ ::script._id }}/info" ng-click="change($event, script)">{{ ::script.name }}</a></td>
+                <td><a ng-href="#/tool/{{ ::script._id }}/preview" ng-click="change($event, script)">{{ ::script.name }}</a></td>
                 <td><a ng-href="#/repo/{{ ::script.repo._id }}">{{ ::script.repo.owner }}/{{ ::script.repo.name }}</a></td>
                 <td><p tooltip="{{ ::script.author }}" tooltip-popup-delay="1000">{{ ::script.author }}</p></td>
                 <td class="right">

@@ -23,7 +23,7 @@ angular.module('registryApp.app')
         $scope.view.revisions = [];
         $scope.view.jobs = [];
 
-        $scope.view.tab = $routeParams.tab || 'info';
+        $scope.view.tab = $routeParams.tab || 'preview';
         $scope.view.isJsonVisible = false;
 
         $scope.view.domain = Helper.getDomain();

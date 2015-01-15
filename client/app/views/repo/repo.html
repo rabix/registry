@@ -44,7 +44,7 @@
                         </thead>
                         <tbody>
                             <tr ng-repeat="app in view.tools">
-                                <td><a ng-href="#/tool/{{ ::app._id }}/info" class="inline">{{ ::app.name }}</a></td>
+                                <td><a ng-href="#/tool/{{ ::app._id }}/preview" class="inline">{{ ::app.name }}</a></td>
                                 <td><p tooltip="{{ ::app.description }}" tooltip-popup-delay="1000">{{ ::app.description }}</p></td>
                             </tr>
                             <tr class="empty" ng-if="view.tools.length === 0">
@@ -71,7 +71,7 @@
                         </thead>
                         <tbody>
                             <tr ng-repeat="app in view.scripts">
-                                <td><a ng-href="#/tool/{{ ::app._id }}/info" class="inline">{{ ::app.name }}</a></td>
+                                <td><a ng-href="#/tool/{{ ::app._id }}/preview" class="inline">{{ ::app.name }}</a></td>
                                 <td><p tooltip="{{ ::app.description }}" tooltip-popup-delay="1000">{{ ::app.description }}</p></td>
                             </tr>
                             <tr class="empty" ng-if="view.scripts.length === 0">

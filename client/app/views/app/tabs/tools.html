@@ -19,7 +19,7 @@
         </thead>
         <tbody>
             <tr ng-repeat-start="tool in view.tools">
-                <td><a ng-href="#/tool/{{ ::tool._id }}/info" ng-click="change($event, tool)">{{ ::tool.name }}</a></td>
+                <td><a ng-href="#/tool/{{ ::tool._id }}/preview" ng-click="change($event, tool)">{{ ::tool.name }}</a></td>
                 <td><a ng-href="#/repo/{{ ::tool.repo._id }}">{{ ::tool.repo.owner }}/{{ ::tool.repo.name }}</a></td>
                 <td><p tooltip="{{ ::tool.author }}" tooltip-popup-delay="1000">{{ ::tool.author }}</p></td>
                 <td class="right">
