@@ -36,6 +36,12 @@ module.exports = function (app) {
  * @apiGroup Repos
  * @apiDescription Fetch all Tools
  *
+ * @apiParam {integer} limit=25 Tools limit per page
+ * @apiParam {integer} skip=0 Page offset
+ * @apiParam {string} q Search term
+ * @apiParam {boolean} mine=false Defines if only logged-in user's tools should be displayed
+ * @apiParam {boolean} is_script=false Defines if script tools should be displayed
+ *
  * @apiSuccess {Number} total Total number of tools
  * @apiSuccess {Array} list List of tools
  * @apiSuccessExample {json} Success-Response:
@@ -79,7 +85,7 @@ router.get('/apps', function (req, res, next) {
         if (is_script) {
             whereApps.is_script = true;
         } else {
-            // NOTE: legacy structure, some tools don't have is_script field
+            // TODO: legacy structure, some tools don't have is_script field, will be obsolete on fresh db
             whereApps.is_script = {$in: [null, false]};
         }
 
@@ -416,6 +422,7 @@ router.post('/validate', function (req, res) {
  *
  * @apiName DeleteTool
  * @api {DELETE} /api/apps/:id Delete tool
+ * @apiParam {String} id ID of the tool
  * @apiGroup Tools
  * @apiDescription Delete tool
  * @apiPermission Logged in user

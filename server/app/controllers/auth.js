@@ -152,7 +152,7 @@ module.exports = function (app) {
  * Login middle handler (direct output of /auth/github is too ugly!)
  *
  * @apiName Login
- * @api {GET} /login Github Login
+ * @api {GET} /auth/login Github Login
  * @apiGroup Auth
  */
 router.get('/login',
@@ -167,7 +167,7 @@ router.get('/login',
  * Logout user and redirect to home
  *
  * @apiName Logout
- * @api {GET} /logout Logout
+ * @api {GET} /auth/logout Logout
  * @apiGroup Auth
  */
 router.get('/logout', function (req, res) {
@@ -177,14 +177,13 @@ router.get('/logout', function (req, res) {
 
 /**
  * GitHub handler which initiate GitHub login
- *
  */
 router.get('/github',
     passport.authenticate('github'),
     function () { /* will never be called */ });
 
 /**
- * GitHub callback after successfull authentication
+ * GitHub callback after successful authentication
  */
 router.get('/github/callback',
     passport.authenticate('github', { failureRedirect: '/' }),

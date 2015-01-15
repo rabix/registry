@@ -16,12 +16,19 @@ module.exports = function (app) {
 };
 
 /**
- * Get all jobs
+ * Get all Jobs
  *
  * @apiName GetJobs
- * @api {GET} /api/jobs Get all jobs
+ * @api {GET} /api/jobs Get all Jobs
  * @apiGroup Repos
  * @apiDescription Fetch all jobs
+ *
+ * @apiParam {integer} limit=25 Jobs limit per page
+ * @apiParam {integer} skip=0 Page offset
+ * @apiParam {string} q Search term
+ * @apiParam {boolean} mine=false Defines if only logged-in user's jobs should be displayed
+ * @apiParam {string} ref ID of the referenced object (tool, script or workflow); If defined the "type" param needs to be provided
+ * @apiParam {string="CommandLine","Script","Workflow"} type Type of the referenced object
  *
  * @apiSuccess {Number} total Total number of jobs
  * @apiSuccess {Array} list List of jobs
@@ -33,6 +40,8 @@ module.exports = function (app) {
  *     }
  */
 router.get('/jobs', function (req, res, next) {
+
+    // TODO: think about using dynamic references
 
     var limit = req.query.limit ? req.query.limit : 25;
     var skip = req.query.skip ? req.query.skip : 0;
@@ -138,6 +147,7 @@ router.get('/jobs/:id', function (req, res, next) {
  * @apiName UpdateJob
  * @api {PUT} /api/jobs/:id Update job by id
  * @apiParam {String} id ID of the job
+ * @apiParam {Object} job Job json
  * @apiGroup Jobs
  * @apiDescription Update existing job by id
  * @apiPermission Logged in user
@@ -210,6 +220,7 @@ router.put('/jobs/:id', filters.authenticated, function (req, res, next) {
  *
  * @apiName CreateJob
  * @api {POST} /api/jobs Create new job
+ * @apiParam {Object} job Job json
  * @apiGroup Jobs
  * @apiDescription Create new job
  * @apiPermission Logged in user
@@ -288,17 +299,12 @@ router.post('/jobs', filters.authenticated, function (req, res, next) {
 });
 
 /**
- * Delete job
- *
- * @param {String} id - id of the job
- * @return message
- */
-/**
  *
  * Delete job by id
  *
  * @apiName DeleteJob
  * @api {DELETE} /api/jobs/:id Delete job by id
+ * @apiParam {String} id ID of the job
  * @apiGroup Jobs
  * @apiDescription Delete job by id
  * @apiPermission Logged in user

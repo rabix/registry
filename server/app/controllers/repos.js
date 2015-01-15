@@ -155,6 +155,11 @@ var addWebhook = function (owner, r, currentUser) {
  * @apiGroup Repos
  * @apiDescription Fetch all repositories
  *
+ * @apiParam {integer} limit=25 Repos limit per page
+ * @apiParam {integer} skip=0 Page offset
+ * @apiParam {string} q Search term
+ * @apiParam {boolean} mine=false Defines if only logged-in user's repos should be displayed
+ *
  * @apiSuccess {Number} total Total number of repositories
  * @apiSuccess {Array} list List of repositories
  * @apiSuccessExample {json} Success-Response:
@@ -207,6 +212,9 @@ router.get('/repos', function (req, res, next) {
  *
  * @apiName GetRepo
  * @api {GET} /api/repos/:id Get repository by id
+ * @apiParam id ID of the repo
+ * @apiParam {integer} limit=25 Repos limit per page
+ * @apiParam {integer} skip=0 Page offset
  * @apiGroup Repos
  * @apiDescription Get repository by id
  *
@@ -304,7 +312,7 @@ router.post('/repos', filters.authenticated, function (req, res, next) {
  * @apiPermission Logged in user
  *
  * @apiParam {Number} id Repo unique id
- * @apiParam {String} action Action to perform on repo (update, publish)
+ * @apiParam {String="update","publish"} action Action to perform on repo
  *
  * @apiUse UnauthorizedError
  *
@@ -372,7 +380,7 @@ router.put('/repos/:id/:action', filters.authenticated, function (req, res, next
  * Get repo by id
  *
  * @apiName GetRepo
- * @api {GET} /api/repos/:id/:action Update repository
+ * @api {GET} /api/repos/:id Get repo by id
  *
  * @apiGroup Repos
  * @apiDescription Update repository info or publish it
@@ -425,6 +433,9 @@ router.get('/repos/:id', function (req, res, next) {
  * @apiDescription Get tools from repository
  *
  * @apiParam {Number} id Repo unique id
+ * @apiParam {integer} limit=25 Tools limit per page
+ * @apiParam {integer} skip=0 Page offset
+ * @apiParam {boolean} is_script=false Defines if script tools should be displayed
  * @apiSuccess {Number} total Total number of tools in repository
  * @apiSuccess {Array} list List of tools in repository
  * @apiSuccessExample {json} Success-Response:
@@ -482,6 +493,8 @@ router.get('/repo-tools/:id', function(req, res, next) {
  * @apiDescription Get workflows from repository
  *
  * @apiParam {Number} id Repo unique id
+ * @apiParam {integer} limit=25 Repos limit per page
+ * @apiParam {integer} skip=0 Page offset
  * @apiSuccess {Number} total Total number of workflows in repository
  * @apiSuccess {Array} list List of workflows in repository
  * @apiSuccessExample {json} Success-Response:
@@ -531,6 +544,8 @@ router.get('/repo-workflows/:id', function(req, res, next) {
  * @apiDescription Get tasks from repository
  *
  * @apiParam {Number} id Repo unique id
+ * @apiParam {integer} limit=25 Repos limit per page
+ * @apiParam {integer} skip=0 Page offset
  * @apiSuccess {Number} total Total number of tasks in repository
  * @apiSuccess {Array} list List of tasks in repository
  * @apiSuccessExample {json} Success-Response:

@@ -24,6 +24,10 @@ module.exports = function (app) {
  * @apiGroup Tools
  * @apiDescription Fetch all tool revisions
  *
+ * @apiParam {integer} limit=25 Revisions limit per page
+ * @apiParam {integer} skip=0 Page offset
+ * @apiParam {string} field_app_id ID of the app to which revisions belong to
+ *
  * @apiUse UnauthorizedError
  *
  * @apiSuccess {Number} total Total number of revisions

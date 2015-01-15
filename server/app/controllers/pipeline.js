@@ -56,7 +56,7 @@ module.exports = function (app) {
  * @apiGroup Workflows
  * @apiDescription Format workflow
  *
- * @apiSuccess {Object} json Formated workflow
+ * @apiSuccess {Object} json Formatted workflow
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
@@ -76,12 +76,12 @@ router.post('/workflow/format', function (req, res) {
 });
 
 /**
- * @apiName FormatUploadWorkflow
+ * @apiName FormatAndUploadWorkflow
  * @api {POST} /api/workflow/format/upload Format workflow and upload it
  * @apiGroup Workflows
  * @apiDescription Format workflow and upload it
  *
- * @apiSuccess {String} url Url to formated workflow on amazon s3
+ * @apiSuccess {String} url Url to formatted workflow on amazon s3
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
@@ -140,6 +140,11 @@ router.post('/workflow/format/upload', function (req, res) {
  * @api {GET} /api/workflows Get all Workflows
  * @apiGroup Repos
  * @apiDescription Fetch all Workflows
+ *
+ * @apiParam {integer} limit=25 Workflows limit per page
+ * @apiParam {integer} skip=0 Page offset
+ * @apiParam {string} q Search term
+ * @apiParam {boolean} mine=false Defines if only logged-in user's workflows should be displayed
  *
  * @apiSuccess {Number} total Total number of workflows
  * @apiSuccess {Array} list List of workflows
@@ -220,10 +225,11 @@ router.get('/workflows', function (req, res, next) {
  *
  * @apiName GetWorkflow
  * @api {GET} /api/workflows/:id Get workflow by id
+ * @apiParam {String} id ID of the workflow revision
  * @apiGroup Workflows
  * @apiDescription Get workflow by id
  *
- * @apiSuccess {Obejct} data Workflow
+ * @apiSuccess {Object} data Workflow
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
@@ -336,6 +342,7 @@ router.post('/workflows', filters.authenticated, function (req, res, next) {
  *
  * @apiName UpdateWorkflow
  * @api {PUT} /api/workflows/:id Update workflow
+ * @apiParam {String} id ID of the workflow revision
  * @apiGroup Workflows
  * @apiDescription Update workflow
  * @apiPermission Logged in user
@@ -403,6 +410,7 @@ router.put('/workflows/:id', filters.authenticated, function (req, res, next) {
  *
  * @apiName DeleteWorkflow
  * @api {DELETE} /api/workflows/:id Delete workflow
+ * @apiParam {String} id ID of the workflow revision
  * @apiGroup Workflows
  * @apiDescription Delete workflow
  * @apiPermission Logged in user
@@ -541,6 +549,9 @@ router.post('/workflows/fork', filters.authenticated, function (req, res, next) 
  * @apiDescription Fetch all workflow revisions
  * @apiUse UnauthorizedError
  *
+ * @apiParam {integer} limit=25 Revisions limit per page
+ * @apiParam {integer} skip=0 Page offset
+ *
  * @apiSuccess {Number} total Total number of workflow revisions
  * @apiSuccess {Array} list List of workflow revisions
  * @apiSuccessExample {json} Success-Response:
@@ -602,26 +613,21 @@ router.get('/workflow-revisions', function (req, res, next) {
                 res.status(401).json({message: 'Unauthorized, repository that this workflow belongs to is not public'});
             }
 
-    });
+        });
 
 });
-
-/**
- * Get Pipeline revision by id
- *
- * @param :id Revision id
- */
 
 /**
  * Get workflow revision by id
  *
  * @apiName GetWorkflow
- * @api {GET} /api/workflows/:id Get workflow revision by id
+ * @api {GET} /api/workflow-revisions/:id Get workflow revision by id
+ * @apiParam {String} id ID of the workflow revision
  * @apiGroup Workflows
  * @apiDescription Get workflow revision by id
  * @apiUse UnauthorizedError
  *
- * @apiSuccess {Obejct} data Workflow revision
+ * @apiSuccess {Object} data Workflow revision
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
@@ -630,7 +636,7 @@ router.get('/workflow-revisions', function (req, res, next) {
  */
 
 router.get('/workflow-revisions/:id', function (req, res, next) {
-    console.log('Rev id: ',req.params.id);
+
     PipelineRevision.findById(req.params.id).populate('pipeline').exec(function(err, pipeline) {
         if (err) { return next(err); }
 
@@ -640,7 +646,7 @@ router.get('/workflow-revisions/:id', function (req, res, next) {
                 path: 'pipeline.user',
                 select:  '_id email username'
             }, function (err, pipe) {
-                console.log('pipe', pipe, pipeline);
+
                 var repo_public = p.pipeline.repo.is_public;
 
                 pipe.json  = JSON.parse(pipe.json);
@@ -706,7 +712,8 @@ router.put('/workflow-revisions/:revision', filters.authenticated, function (req
  * Delete workflow revision
  *
  * @apiName DeleteWorkflowRevision
- * @api {DELETE} /api/workflows/:id Delete workflow revision
+ * @api {DELETE} /api/workflow-revisions/:revision Delete workflow revision
+ * @apiParam {String} revision ID of the workflow revision
  * @apiGroup Workflows
  * @apiDescription Delete workflow revision
  * @apiPermission Logged in user
@@ -768,7 +775,22 @@ router.delete('/workflow-revisions/:revision', filters.authenticated, function (
 
 });
 
-
+/**
+ * Get grouped workflows
+ *
+ * @apiName GetWorkflowsGroupedByRepo
+ * @api {GET} /api/workflow/repositories/:type Get grouped workflows
+ * @apiParam {string="my","other"} type Defines whose repos to fetch
+ * @apiGroup Workflows
+ * @apiDescription Fetch workflows grouped by repo
+ *
+ * @apiSuccess {Object} list List of workflows grouped by repo
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "list": [{workflows}]
+ *     }
+ */
 router.get('/workflow/repositories/:type', function (req, res, next) {
 
     var type = req.params.type;
@@ -808,7 +830,6 @@ router.get('/workflow/repositories/:type', function (req, res, next) {
                     return p.repo.owner + '/' + p.repo.name;
                 });
 
-                console.log('whereApps: ', whereApps, 'Type: ', type, 'List keys:', Object.keys(grouped));
                 res.json({list: grouped});
             });
 
@@ -818,10 +839,10 @@ router.get('/workflow/repositories/:type', function (req, res, next) {
 
 /**
  *
- * Validiate workflow json
+ * Validate workflow json
  *
  * @apiName ValidateWorkflow
- * @api {POST} /api/workflows/validate Validate workflow json
+ * @api {POST} /api/workflow/validate Validate workflow json
  * @apiGroup Workflows
  * @apiDescription Validate workflow revision
  * @apiUse InvalidWorkflowError
@@ -839,11 +860,11 @@ router.post('/workflow/validate', function (req, res, next) {
     if (typeof json === 'undefined') { res.status(400).json({error: 'Undefined json to validate'}); return false;}
     if (typeof json === 'string') { json = JSON.parse(json); }
 
-    var formated = formater.toPipelineSchema(json);
+    var formatted = formater.toPipelineSchema(json);
     var errors = validator.validate(formated);
 
     if (errors.errors.length === 0 && errors.paramErrors.length === 0) {
-        res.json({json: formated});
+        res.json({json: formatted});
     } else {
         res.status(400).json(errors);
     }

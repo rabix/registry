@@ -2,7 +2,7 @@
   {
     "name": "Login",
     "type": "GET",
-    "url": "/login",
+    "url": "/auth/login",
     "title": "Github Login",
     "group": "Auth",
     "version": "0.0.0",
@@ -12,7 +12,7 @@
   {
     "name": "Logout",
     "type": "GET",
-    "url": "/logout",
+    "url": "/auth/logout",
     "title": "Logout",
     "group": "Auth",
     "version": "0.0.0",
@@ -24,6 +24,19 @@
     "type": "POST",
     "url": "/api/jobs",
     "title": "Create new job",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "optional": false,
+            "field": "job",
+            "description": "<p>Job json</p> "
+          }
+        ]
+      }
+    },
     "group": "Jobs",
     "description": "<p>Create new job</p> ",
     "permission": [
@@ -90,6 +103,19 @@
     "type": "DELETE",
     "url": "/api/jobs/:id",
     "title": "Delete job by id",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>ID of the job</p> "
+          }
+        ]
+      }
+    },
     "group": "Jobs",
     "description": "<p>Delete job by id</p> ",
     "permission": [
@@ -228,6 +254,13 @@
             "optional": false,
             "field": "id",
             "description": "<p>ID of the job</p> "
+          },
+          {
+            "group": "Parameter",
+            "type": "Object",
+            "optional": false,
+            "field": "job",
+            "description": "<p>Job json</p> "
           }
         ]
       }
@@ -297,9 +330,65 @@
     "name": "GetJobs",
     "type": "GET",
     "url": "/api/jobs",
-    "title": "Get all jobs",
+    "title": "Get all Jobs",
     "group": "Repos",
     "description": "<p>Fetch all jobs</p> ",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": false,
+            "field": "limit",
+            "defaultValue": "25",
+            "description": "<p>Jobs limit per page</p> "
+          },
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": false,
+            "field": "skip",
+            "defaultValue": "0",
+            "description": "<p>Page offset</p> "
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "q",
+            "description": "<p>Search term</p> "
+          },
+          {
+            "group": "Parameter",
+            "type": "boolean",
+            "optional": false,
+            "field": "mine",
+            "defaultValue": "false",
+            "description": "<p>Defines if only logged-in user&#39;s jobs should be displayed</p> "
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "ref",
+            "description": "<p>ID of the referenced object (tool, script or workflow); If defined the &quot;type&quot; param needs to be provided</p> "
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "allowedValues": [
+              "\"CommandLine\"",
+              "\"Script\"",
+              "\"Workflow\""
+            ],
+            "optional": false,
+            "field": "type",
+            "description": "<p>Type of the referenced object</p> "
+          }
+        ]
+      }
+    },
     "success": {
       "fields": {
         "Success 200": [
@@ -335,45 +424,7 @@
     "name": "GetRepo",
     "type": "GET",
     "url": "/api/repos/:id",
-    "title": "Get repository by id",
-    "group": "Repos",
-    "description": "<p>Get repository by id</p> ",
-    "success": {
-      "fields": {
-        "Success 200": [
-          {
-            "group": "Success 200",
-            "type": "Number",
-            "optional": false,
-            "field": "total",
-            "description": "<p>Total number of user repositories</p> "
-          },
-          {
-            "group": "Success 200",
-            "type": "Array",
-            "optional": false,
-            "field": "list",
-            "description": "<p>List of user repositories</p> "
-          }
-        ]
-      },
-      "examples": [
-        {
-          "title": "Success-Response:",
-          "content": "HTTP/1.1 200 OK\n{\n  \"total\": \"1\",\n  \"list\": [{repo}]\n}",
-          "type": "json"
-        }
-      ]
-    },
-    "version": "0.0.0",
-    "filename": "app/controllers/repos.js",
-    "groupTitle": "Repos"
-  },
-  {
-    "name": "GetRepo",
-    "type": "GET",
-    "url": "/api/repos/:id/:action",
-    "title": "Update repository",
+    "title": "Get repo by id",
     "group": "Repos",
     "description": "<p>Update repository info or publish it</p> ",
     "parameter": {
@@ -414,12 +465,115 @@
     "groupTitle": "Repos"
   },
   {
+    "name": "GetRepo",
+    "type": "GET",
+    "url": "/api/repos/:id",
+    "title": "Get repository by id",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "optional": false,
+            "field": "id",
+            "description": "<p>ID of the repo</p> "
+          },
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": false,
+            "field": "limit",
+            "defaultValue": "25",
+            "description": "<p>Repos limit per page</p> "
+          },
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": false,
+            "field": "skip",
+            "defaultValue": "0",
+            "description": "<p>Page offset</p> "
+          }
+        ]
+      }
+    },
+    "group": "Repos",
+    "description": "<p>Get repository by id</p> ",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "total",
+            "description": "<p>Total number of user repositories</p> "
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "list",
+            "description": "<p>List of user repositories</p> "
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"total\": \"1\",\n  \"list\": [{repo}]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "app/controllers/repos.js",
+    "groupTitle": "Repos"
+  },
+  {
     "name": "GetRepos",
     "type": "GET",
     "url": "/api/repos",
     "title": "Get all Repositories",
     "group": "Repos",
     "description": "<p>Fetch all repositories</p> ",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": false,
+            "field": "limit",
+            "defaultValue": "25",
+            "description": "<p>Repos limit per page</p> "
+          },
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": false,
+            "field": "skip",
+            "defaultValue": "0",
+            "description": "<p>Page offset</p> "
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "q",
+            "description": "<p>Search term</p> "
+          },
+          {
+            "group": "Parameter",
+            "type": "boolean",
+            "optional": false,
+            "field": "mine",
+            "defaultValue": "false",
+            "description": "<p>Defines if only logged-in user&#39;s repos should be displayed</p> "
+          }
+        ]
+      }
+    },
     "success": {
       "fields": {
         "Success 200": [
@@ -467,6 +621,22 @@
             "optional": false,
             "field": "id",
             "description": "<p>Repo unique id</p> "
+          },
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": false,
+            "field": "limit",
+            "defaultValue": "25",
+            "description": "<p>Repos limit per page</p> "
+          },
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": false,
+            "field": "skip",
+            "defaultValue": "0",
+            "description": "<p>Page offset</p> "
           }
         ]
       }
@@ -518,6 +688,30 @@
             "optional": false,
             "field": "id",
             "description": "<p>Repo unique id</p> "
+          },
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": false,
+            "field": "limit",
+            "defaultValue": "25",
+            "description": "<p>Tools limit per page</p> "
+          },
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": false,
+            "field": "skip",
+            "defaultValue": "0",
+            "description": "<p>Page offset</p> "
+          },
+          {
+            "group": "Parameter",
+            "type": "boolean",
+            "optional": false,
+            "field": "is_script",
+            "defaultValue": "false",
+            "description": "<p>Defines if script tools should be displayed</p> "
           }
         ]
       }
@@ -569,6 +763,22 @@
             "optional": false,
             "field": "id",
             "description": "<p>Repo unique id</p> "
+          },
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": false,
+            "field": "limit",
+            "defaultValue": "25",
+            "description": "<p>Repos limit per page</p> "
+          },
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": false,
+            "field": "skip",
+            "defaultValue": "0",
+            "description": "<p>Page offset</p> "
           }
         ]
       }
@@ -611,6 +821,51 @@
     "title": "Get all Tools",
     "group": "Repos",
     "description": "<p>Fetch all Tools</p> ",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": false,
+            "field": "limit",
+            "defaultValue": "25",
+            "description": "<p>Tools limit per page</p> "
+          },
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": false,
+            "field": "skip",
+            "defaultValue": "0",
+            "description": "<p>Page offset</p> "
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "q",
+            "description": "<p>Search term</p> "
+          },
+          {
+            "group": "Parameter",
+            "type": "boolean",
+            "optional": false,
+            "field": "mine",
+            "defaultValue": "false",
+            "description": "<p>Defines if only logged-in user&#39;s tools should be displayed</p> "
+          },
+          {
+            "group": "Parameter",
+            "type": "boolean",
+            "optional": false,
+            "field": "is_script",
+            "defaultValue": "false",
+            "description": "<p>Defines if script tools should be displayed</p> "
+          }
+        ]
+      }
+    },
     "success": {
       "fields": {
         "Success 200": [
@@ -649,6 +904,28 @@
     "title": "Get all Workflows Revisions",
     "group": "Repos",
     "description": "<p>Fetch all workflow revisions</p> ",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": false,
+            "field": "limit",
+            "defaultValue": "25",
+            "description": "<p>Revisions limit per page</p> "
+          },
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": false,
+            "field": "skip",
+            "defaultValue": "0",
+            "description": "<p>Page offset</p> "
+          }
+        ]
+      }
+    },
     "success": {
       "fields": {
         "Success 200": [
@@ -706,6 +983,43 @@
     "title": "Get all Workflows",
     "group": "Repos",
     "description": "<p>Fetch all Workflows</p> ",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": false,
+            "field": "limit",
+            "defaultValue": "25",
+            "description": "<p>Workflows limit per page</p> "
+          },
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": false,
+            "field": "skip",
+            "defaultValue": "0",
+            "description": "<p>Page offset</p> "
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "q",
+            "description": "<p>Search term</p> "
+          },
+          {
+            "group": "Parameter",
+            "type": "boolean",
+            "optional": false,
+            "field": "mine",
+            "defaultValue": "false",
+            "description": "<p>Defines if only logged-in user&#39;s workflows should be displayed</p> "
+          }
+        ]
+      }
+    },
     "success": {
       "fields": {
         "Success 200": [
@@ -817,9 +1131,13 @@
           {
             "group": "Parameter",
             "type": "String",
+            "allowedValues": [
+              "\"update\"",
+              "\"publish\""
+            ],
             "optional": false,
             "field": "action",
-            "description": "<p>Action to perform on repo (update, publish)</p> "
+            "description": "<p>Action to perform on repo</p> "
           }
         ]
       }
@@ -1111,6 +1429,19 @@
     "type": "DELETE",
     "url": "/api/apps/:id",
     "title": "Delete tool",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>ID of the tool</p> "
+          }
+        ]
+      }
+    },
     "group": "Tools",
     "description": "<p>Delete tool</p> ",
     "permission": [
@@ -1228,8 +1559,8 @@
       },
       "examples": [
         {
-          "title": "InvalidIDError:",
-          "content": "HTTP/1.1 404\n{\n  \"message\": \"There is no item with such id\"\n}",
+          "title": "InvalidAppError:",
+          "content": "HTTP/1.1 404\n{\n  \"message\": \"There is no app with such id\"\n}",
           "type": "json"
         }
       ]
@@ -1291,8 +1622,8 @@
       },
       "examples": [
         {
-          "title": "InvalidIDError:",
-          "content": "HTTP/1.1 404\n{\n  \"message\": \"There is no item with such id\"\n}",
+          "title": "InvalidAppError:",
+          "content": "HTTP/1.1 404\n{\n  \"message\": \"There is no app with such id\"\n}",
           "type": "json"
         }
       ]
@@ -1452,6 +1783,35 @@
     "title": "Get tool revisions",
     "group": "Tools",
     "description": "<p>Fetch all tool revisions</p> ",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": false,
+            "field": "limit",
+            "defaultValue": "25",
+            "description": "<p>Revisions limit per page</p> "
+          },
+          {
+            "group": "Parameter",
+            "type": "integer",
+            "optional": false,
+            "field": "skip",
+            "defaultValue": "0",
+            "description": "<p>Page offset</p> "
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "field_app_id",
+            "description": "<p>ID of the app to which revisions belong to</p> "
+          }
+        ]
+      }
+    },
     "success": {
       "fields": {
         "Success 200": [
@@ -1839,6 +2199,19 @@
     "type": "DELETE",
     "url": "/api/workflows/:id",
     "title": "Delete workflow",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>ID of the workflow revision</p> "
+          }
+        ]
+      }
+    },
     "group": "Workflows",
     "description": "<p>Delete workflow</p> ",
     "permission": [
@@ -1892,8 +2265,21 @@
   {
     "name": "DeleteWorkflowRevision",
     "type": "DELETE",
-    "url": "/api/workflows/:id",
+    "url": "/api/workflow-revisions/:revision",
     "title": "Delete workflow revision",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "revision",
+            "description": "<p>ID of the workflow revision</p> "
+          }
+        ]
+      }
+    },
     "group": "Workflows",
     "description": "<p>Delete workflow revision</p> ",
     "permission": [
@@ -2007,7 +2393,7 @@
     }
   },
   {
-    "name": "FormatUploadWorkflow",
+    "name": "FormatAndUploadWorkflow",
     "type": "POST",
     "url": "/api/workflow/format/upload",
     "title": "Format workflow and upload it",
@@ -2021,7 +2407,7 @@
             "type": "String",
             "optional": false,
             "field": "url",
-            "description": "<p>Url to formated workflow on amazon s3</p> "
+            "description": "<p>Url to formatted workflow on amazon s3</p> "
           }
         ]
       },
@@ -2052,7 +2438,7 @@
             "type": "Object",
             "optional": false,
             "field": "json",
-            "description": "<p>Formated workflow</p> "
+            "description": "<p>Formatted workflow</p> "
           }
         ]
       },
@@ -2124,8 +2510,8 @@
       },
       "examples": [
         {
-          "title": "InvalidIDError:",
-          "content": "HTTP/1.1 404\n{\n  \"message\": \"There is no item with such id\"\n}",
+          "title": "InvalidAppError:",
+          "content": "HTTP/1.1 404\n{\n  \"message\": \"There is no app with such id\"\n}",
           "type": "json"
         }
       ]
@@ -2136,6 +2522,19 @@
     "type": "GET",
     "url": "/api/workflows/:id",
     "title": "Get workflow by id",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>ID of the workflow revision</p> "
+          }
+        ]
+      }
+    },
     "group": "Workflows",
     "description": "<p>Get workflow by id</p> ",
     "success": {
@@ -2143,7 +2542,7 @@
         "Success 200": [
           {
             "group": "Success 200",
-            "type": "Obejct",
+            "type": "Object",
             "optional": false,
             "field": "data",
             "description": "<p>Workflow</p> "
@@ -2165,8 +2564,21 @@
   {
     "name": "GetWorkflow",
     "type": "GET",
-    "url": "/api/workflows/:id",
+    "url": "/api/workflow-revisions/:id",
     "title": "Get workflow revision by id",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>ID of the workflow revision</p> "
+          }
+        ]
+      }
+    },
     "group": "Workflows",
     "description": "<p>Get workflow revision by id</p> ",
     "success": {
@@ -2174,7 +2586,7 @@
         "Success 200": [
           {
             "group": "Success 200",
-            "type": "Obejct",
+            "type": "Object",
             "optional": false,
             "field": "data",
             "description": "<p>Workflow revision</p> "
@@ -2213,10 +2625,71 @@
     }
   },
   {
+    "name": "GetWorkflowsGroupedByRepo",
+    "type": "GET",
+    "url": "/api/workflow/repositories/:type",
+    "title": "Get grouped workflows",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "allowedValues": [
+              "\"my\"",
+              "\"other\""
+            ],
+            "optional": false,
+            "field": "type",
+            "description": "<p>Defines whose repos to fetch</p> "
+          }
+        ]
+      }
+    },
+    "group": "Workflows",
+    "description": "<p>Fetch workflows grouped by repo</p> ",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Object",
+            "optional": false,
+            "field": "list",
+            "description": "<p>List of workflows grouped by repo</p> "
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success-Response:",
+          "content": "HTTP/1.1 200 OK\n{\n  \"list\": [{workflows}]\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "version": "0.0.0",
+    "filename": "app/controllers/pipeline.js",
+    "groupTitle": "Workflows"
+  },
+  {
     "name": "UpdateWorkflow",
     "type": "PUT",
     "url": "/api/workflows/:id",
     "title": "Update workflow",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>ID of the workflow revision</p> "
+          }
+        ]
+      }
+    },
     "group": "Workflows",
     "description": "<p>Update workflow</p> ",
     "permission": [
@@ -2261,14 +2734,14 @@
             "group": "Error 4xx",
             "optional": false,
             "field": "Message",
-            "description": "<p>Invalid id</p> "
+            "description": "<p>Invalid workflow id</p> "
           }
         ]
       },
       "examples": [
         {
           "title": "InvalidIDError:",
-          "content": "HTTP/1.1 404\n{\n  \"message\": \"There is no item with such id\"\n}",
+          "content": "HTTP/1.1 404\n{\n  \"message\": \"There is no pipeline with id: 547854cbf76a100000ac84dd\"\n}",
           "type": "json"
         }
       ]
@@ -2277,7 +2750,7 @@
   {
     "name": "ValidateWorkflow",
     "type": "POST",
-    "url": "/api/workflows/validate",
+    "url": "/api/workflow/validate",
     "title": "Validate workflow json",
     "group": "Workflows",
     "description": "<p>Validate workflow revision</p> ",

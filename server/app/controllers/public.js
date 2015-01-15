@@ -19,12 +19,12 @@ module.exports = function (app) {
 };
 
 /**
- * @apiDefine InvalidIDError
+ * @apiDefine InvalidAppError
  * @apiError Message Invalid id
- * @apiErrorExample InvalidIDError:
+ * @apiErrorExample InvalidAppError:
  *     HTTP/1.1 404
  *     {
- *       "message": "There is no item with such id"
+ *       "message": "There is no app with such id"
  *     }
  */
 
@@ -36,7 +36,7 @@ module.exports = function (app) {
  *
  * @apiGroup Tools
  * @apiDescription Get public tool by id
- * @apiUse InvalidIDError
+ * @apiUse InvalidAppError
  *
  * @apiParam {Number} id Id of the tool
  * @apiSuccess {Object} json Json of the tool
@@ -67,7 +67,7 @@ router.get('/tool/:id', function (req, res, next) {
  *
  * @apiGroup Tools
  * @apiDescription Get public tool revision by id
- * @apiUse InvalidIDError
+ * @apiUse InvalidAppError
  *
  * @apiParam {Number} id Id of the tool revision
  * @apiSuccess {Object} json Json of the tool revision
@@ -98,7 +98,7 @@ router.get('/tool-revision/:id', function (req, res, next) {
  *
  * @apiGroup Workflows
  * @apiDescription Get public workflow revision by id
- * @apiUse InvalidIDError
+ * @apiUse InvalidAppError
  *
  * @apiParam {Number} revision Id of the workflow revision
  * @apiSuccess {Object} json Json of the workflow
