@@ -12,7 +12,7 @@
             "sslKey": "%{SBG:SSL_KEY_FILE}"
         }
     },
-    "clientPath": "/data/app/rabix-registry-client",
+    "clientPath": "/data/app/rabix-registry/client/dist",
     "github": {
         "clientId": "%{SBG:GITHUB_OAUTH_CLIENT_ID}",
         "clientSecret": "%{SBG:GITHUB_OAUTH_CLIENT_SECRET}",
