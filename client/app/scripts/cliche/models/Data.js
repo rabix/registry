@@ -481,10 +481,20 @@ angular.module('registryApp.cliche')
                         break;
                     case 'boolean':
                         /* if input is BOOLEAN */
-                        prop.value = '';
-                        deferred.resolve(prop);
-                        if (inputs[key]) {
-                            promises.push(deferred.promise);
+                        if (property.adapter.value) {
+                            //TODO: this is hack, if bool type has expression defined then it works in the same way as (for example) string input type
+                            prop.type = 'string';
+                            self.applyTransform(property.adapter.value, inputs[key], true)
+                                .then(function (result) {
+                                    prop.value = result;
+                                    deferred.resolve(prop);
+                                });
+                        } else {
+                            prop.value = '';
+                            deferred.resolve(prop);
+                            if (inputs[key]) {
+                                promises.push(deferred.promise);
+                            }
                         }
                         break;
                     default:
