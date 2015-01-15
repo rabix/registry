@@ -17,22 +17,11 @@ angular.module('registryApp.common')
          */
         var isValidName = function (name) {
 
-            if (_.isEmpty(name)) {
-                return false;
-            }
+            if (_.isEmpty(name)) { return false; }
 
-            var forbidden = ['#', '.'];
+            var pattern = /[\$\.]/g;
 
-            var isValid = true;
-
-            _.each(forbidden, function (char) {
-                if (_.contains(name, char)) {
-                    isValid = false;
-                    return false;
-                }
-            });
-
-            return isValid;
+            return !pattern.test(name);
 
         };
 

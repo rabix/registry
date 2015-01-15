@@ -43,7 +43,7 @@
                             <a href ng-click="loadJsonEditor()"><i class="fa fa-cloud-download"></i> <span>Import</span></a>
                         </li>
                         <li ng-if="view.user && view.user.id === view.app.user._id && !view.app.repo.is_public">
-                            <a href ng-disabled="view.saving" ng-click="delete()"><i class="fa fa-trash"></i> <span>Delete</span></a>
+                            <a href ng-disabled="view.saving" ng-click="deleteApp()"><i class="fa fa-trash"></i> <span>Delete</span></a>
                         </li>
                     </ul>
                 </div>

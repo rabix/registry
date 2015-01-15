@@ -57,7 +57,7 @@ angular.module('registryApp.app')
          */
         var getTool = function(id, revision) {
 
-            return Api.apps.get({id: id, revision: revision}).$promise;;
+            return Api.apps.get({id: id, revision: revision}).$promise;
 
         };
 

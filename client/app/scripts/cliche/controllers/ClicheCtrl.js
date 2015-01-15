@@ -138,7 +138,7 @@ angular.module('registryApp.cliche')
                         $scope.view.toolForm.outputs.properties = {};
                     }
 
-                    var job = $scope.view.revision.job ? JSON.parse($scope.view.revision.job) : {};
+                    var job = $scope.view.revision.job ? JSON.parse($scope.view.revision.job) : null;
 
                     Data.setJob(job);
                     $scope.view.jobForm = Data.job;
@@ -610,7 +610,7 @@ angular.module('registryApp.cliche')
                     size: 'sm',
                     controller: 'ModalCtrl',
                     windowClass: 'modal-validation',
-                    resolve: {data: function () { return {messages: ['You must enter valid name (avoid characters \'#\' and \'.\')']}; }}
+                    resolve: {data: function () { return {messages: ['You must enter valid name (avoid characters \'$\' and \'.\')']}; }}
                 });
 
                 return false;
@@ -704,7 +704,7 @@ angular.module('registryApp.cliche')
         /**
          * Delete app
          */
-        $scope.delete = function () {
+        $scope.deleteApp = function () {
 
             var modalInstance = $modal.open({
                 template: $templateCache.get('views/partials/confirm-delete.html'),

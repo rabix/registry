@@ -251,7 +251,7 @@ angular.module('registryApp.app')
                     size: 'sm',
                     controller: 'ModalCtrl',
                     windowClass: 'modal-validation',
-                    resolve: {data: function () { return {messages: ['You must enter valid name (avoid characters \'#\' and \'.\')']}; }}
+                    resolve: {data: function () { return {messages: ['You must enter valid name (avoid characters \'$\' and \'.\')']}; }}
                 });
 
                 return false;
