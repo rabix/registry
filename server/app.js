@@ -10,7 +10,9 @@ var express = require('express'),
 // Check if we got db config as object and ssl config in server property
 if (typeof config.db === 'object' && config.db.options) {
 
-    mongoOpts = config.db.options;
+    mongoOpts = {
+        ssl: config.db.options.ssl
+    };
 
     dbPath = config.db.path;
 }
