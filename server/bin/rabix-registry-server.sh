@@ -8,10 +8,11 @@ LOG_DIR="/data/log/rabix-registry"
 BASEDIR=$(readlink -m "$(dirname $(readlink -e $0))/..")
 DAEMON="/usr/local/bin/forever"
 PIDFILE=/var/tmp/rabix-registry.pid
-LOGS="-l ${LOG_DIR}/forever.log -o '${LOG_DIR}/rabix-registry.log' -e '${LOG_DIR}/rabix-registry-err.log'"
+LOGS="-l ${LOG_DIR}/forever.log -o ${LOG_DIR}/rabix-registry.log -e ${LOG_DIR}/rabix-registry-err.log"
 DAEMON_ARGS="start -pidFile ${PIDFILE} ${LOGS} -a ${BASEDIR}/app.js $CONFIG"
 SCRIPTNAME=$BASEDIR/bin/$0
-NODE_ENV="production"
+
+export NODE_ENV="production"
 
 [ -x "$DAEMON" ] || exit 0
 
@@ -26,27 +27,18 @@ VERBOSE=yes
 do_start()
 {
 mkdir -p $LOG_DIR
-start-stop-daemon --start --quiet --pidfile $PIDFILE --exec $DAEMON --test > /dev/null \
-|| return 1
-start-stop-daemon --start --quiet --pidfile $PIDFILE --exec $DAEMON -- \
-$DAEMON_ARGS \
-|| return 2
+$DAEMON $DAEMON_ARGS || return 2
 }
 
 do_stop()
 {
-start-stop-daemon --stop --quiet --retry=TERM/30/KILL/5 --pidfile $PIDFILE --name $PROCESSNAME
-RETVAL="$?"
-[ "$RETVAL" = 2 ] && return 2
-start-stop-daemon --stop --quiet --oknodo --retry=0/30/KILL/5 --exec $DAEMON
-[ "$?" = 2 ] && return 2
-return "$RETVAL"
+$DAEMON stop ${BASEDIR}/app.js
 }
 
-do_reload() {
-start-stop-daemon --stop --signal 1 --quiet --pidfile $PIDFILE --name $PROCESSNAME
-return 0
-}
+#do_reload() {
+#start-stop-daemon --stop --signal 1 --quiet --pidfile $PIDFILE --name $PROCESSNAME
+#return 0
+#}
 
 case "$1" in
   start)
@@ -92,7 +84,7 @@ log_end_msg 1
 esac
 ;;
   *)
-echo "Usage: $SCRIPTNAME {start|stop|status|restart|reload|force-reload}" >&2
+echo "Usage: $SCRIPTNAME {start|stop|status|restart}" >&2
 exit 3
 ;;
 esac
