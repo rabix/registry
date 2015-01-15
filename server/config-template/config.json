@@ -5,14 +5,11 @@
     },
     "port": "%{SBG:PORT}",
     "db": {
-        "path": "mongodb://%{SBG:MONGODB_USER}:%{SBG:MONGODB_PASS}@%{SBG:MONGODB_HOST}/rabix-registry",
-        "server": {
+        "path": "mongodb://%{SBG:MONGODB_USER}:%{SBG:MONGODB_PASS}@%{SBG:MONGODB_HOST}/%{SBG:MONGODB_DATABASE}",
+        "options": {
             "ssl": true,
             "sslCert": "%{SBG:SSL_CERT_FILE}",
             "sslKey": "%{SBG:SSL_KEY_FILE}"
-        },
-        "auth": {
-            "authdb": "admin"
         }
     },
     "clientPath": "/data/app/rabix-registry-client",
