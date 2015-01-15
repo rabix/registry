@@ -145,7 +145,7 @@ var externalConfig = config[env],
 
 if (confArg && confArg.indexOf('data') !== -1 && env === 'production'){
 
-    externalConfig = fs.readFileSync(process.argv[2]);
+    externalConfig = JSON.parse(fs.readFileSync(process.argv[2]).toString());
 
     /**
      * Adding propreties that need to be set in runtime
