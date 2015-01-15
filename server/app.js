@@ -7,14 +7,17 @@ var express = require('express'),
     mongoOpts = {},
     dbPath = config.db;
 
-// Check if we got db config as object and ssl config in server property
-if (typeof config.db === 'object' && config.db.options) {
+// Check if we got db config as object and ssl config
+if (typeof config.db === 'object') {
 
     mongoOpts = {
-        ssl: config.db.options.ssl
+        server: {
+            ssl: config.db.options.ssl
+        }
     };
 
     dbPath = config.db.path;
+
 }
 
 mongoose.connect(dbPath, mongoOpts);

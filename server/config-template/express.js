@@ -13,12 +13,20 @@ var compress = require('compression');
 var methodOverride = require('method-override');
 var passport = require('passport');
 var session = require('express-session');
+var clientPath = '';
 
 module.exports = function (app, config) {
+
+    clientPath = config.clientPath;
+
+    if (config.clientPath.charAt(0) !== '/') {
+        clientPath = config.root + config.clientPath;
+    }
+
     app.set('views', config.root + '/app/views');
     app.set('view engine', 'ejs');
 
-    app.use(favicon(config.root + config.clientPath + '/images/favicon.ico'));
+    app.use(favicon(clientPath + '/images/favicon.ico'));
     app.use(logger('dev'));
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({
@@ -27,7 +35,7 @@ module.exports = function (app, config) {
     app.use(cookieParser());
     app.use(compress());
 
-    app.use('/', express.static(config.root + config.clientPath));
+    app.use('/', express.static(clientPath));
     app.use('/docs', express.static(config.root + '/docs'));
 
     app.use(methodOverride());
