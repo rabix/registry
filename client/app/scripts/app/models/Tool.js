@@ -69,7 +69,7 @@ angular.module('registryApp.app')
          */
         var create = function(data) {
 
-            return Api.apps.add({id: 'create'}, {tool: Data.tool, repo_id: data.repoId, is_script: data.is_script}).$promise;
+            return Api.apps.add({id: 'create'}, {tool: Data.tool, job: Data.job, repo_id: data.repoId, is_script: data.is_script}).$promise;
 
         };
 
@@ -81,7 +81,7 @@ angular.module('registryApp.app')
          */
         var fork = function(data) {
 
-            return Api.apps.add({id: 'fork'}, {tool: Data.tool, repo_id: data.repoId, name: data.name, is_script: data.is_script}).$promise;
+            return Api.apps.add({id: 'fork'}, {tool: Data.tool, job: Data.job, repo_id: data.repoId, name: data.name, is_script: data.is_script}).$promise;
 
         };
 
@@ -93,7 +93,7 @@ angular.module('registryApp.app')
          */
         var update = function(appId) {
 
-            return Api.revisions.add({}, {tool: Data.tool, app_id: appId}).$promise;
+            return Api.revisions.add({}, {tool: Data.tool, job: Data.job, app_id: appId}).$promise;
 
         };
 

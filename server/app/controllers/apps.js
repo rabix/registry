@@ -353,6 +353,7 @@ router.post('/apps/:action', filters.authenticated, function (req, res, next) {
                                         revision.script = app.script;
                                         revision.author = app.author;
                                         revision.json = app.json;
+                                        revision.job = JSON.stringify(data.job);
                                         revision.app_id = app._id;
 
                                         revision.save(function(err) {

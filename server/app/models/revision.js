@@ -10,6 +10,7 @@ var RevisionSchema = new Schema({
     author: String,
     script: String,
     json: Schema.Types.Mixed,
+    job: Schema.Types.Mixed,
     version: {type: Number, default: 1},
     app_id: { type: Schema.Types.ObjectId, ref: 'App' }
 });

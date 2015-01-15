@@ -138,7 +138,9 @@ angular.module('registryApp.cliche')
                         $scope.view.toolForm.outputs.properties = {};
                     }
 
-                    Data.setJob();
+                    var job = $scope.view.revision.job ? JSON.parse($scope.view.revision.job) : {};
+
+                    Data.setJob(job);
                     $scope.view.jobForm = Data.job;
 
                     if ($scope.view.showConsole) { turnOnDeepWatch(); }
