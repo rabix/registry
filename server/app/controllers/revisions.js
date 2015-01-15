@@ -180,6 +180,7 @@ router.post('/revisions', filters.authenticated, function (req, res, next) {
                 revision.script = data.tool.script;
                 revision.author = data.tool.documentAuthor;
                 revision.json = JSON.stringify(data.tool);
+                revision.job = JSON.stringify(data.job);
                 revision.app_id = data.app_id;
                 revision.version = r ? (r.version + 1) : 1;
 
