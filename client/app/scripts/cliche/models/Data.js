@@ -7,7 +7,7 @@
 'use strict';
 
 angular.module('registryApp.cliche')
-    .factory('Data', ['$localForage', '$http', '$q', '$injector', function ($localForage, $http, $q, $injector) {
+    .factory('Data', ['$localForage', '$http', '$q', '$injector', 'rawTool', 'rawJob', function ($localForage, $http, $q, $injector, rawTool, rawJob) {
 
         var self = {};
 
@@ -16,7 +16,7 @@ angular.module('registryApp.cliche')
          *
          * @type {number}
          */
-        self.version = 20;
+        self.version = 21;
 
         /**
          * Tool json object
@@ -104,6 +104,29 @@ angular.module('registryApp.cliche')
         };
 
         /**
+         * Fetch tool and job from local db if exist
+         *
+         * @returns {*}
+         */
+        self.fetchLocalToolAndJob = function () {
+
+            var deferred = $q.defer();
+
+            $q.all([
+                    $localForage.getItem('tool'),
+                    $localForage.getItem('job')
+                ]).then(function (result) {
+
+                    self.tool = result[0];
+                    self.job = result[1];
+
+                    deferred.resolve({tool: self.tool, job: self.job});
+                });
+
+            return deferred.promise;
+        };
+
+        /**
          * Set tool object
          *
          * @param {Object} tool
@@ -123,7 +146,7 @@ angular.module('registryApp.cliche')
          */
         self.setJob = function(job) {
 
-            job = job || $injector.get('rawJob');
+            job = job || rawJob;
 
             self.job = angular.copy(job);
 
@@ -673,8 +696,8 @@ angular.module('registryApp.cliche')
 
                     $q.all([
                             $localForage.setItem('version', self.version),
-                            $localForage.setItem('tool', {}),
-                            $localForage.setItem('job', {})
+                            $localForage.setItem('tool', rawTool),
+                            $localForage.setItem('job', rawJob)
                         ]).then(function() {
                             deferred.resolve();
                         });
@@ -692,8 +715,8 @@ angular.module('registryApp.cliche')
          */
         self.flush = function(name) {
 
-            var tool = $injector.get('rawTool');
-            var job = $injector.get('rawJob');
+            var tool = angular.copy(rawTool);
+            var job = angular.copy(rawJob);
             var isScript = !self.tool.adapter;
 
             self.tool = tool;
@@ -717,7 +740,6 @@ angular.module('registryApp.cliche')
         self.transformToolJson = function(isScript) {
 
             var transformed = angular.copy(self.tool);
-            var rawTool = $injector.get('rawTool');
 
             if (isScript) {
                 transformed.script = '';

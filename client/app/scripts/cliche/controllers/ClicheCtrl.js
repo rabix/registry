@@ -106,90 +106,68 @@ angular.module('registryApp.cliche')
             Data.generateCommand();
         };
 
-        if ($routeParams.id) {
+        Data.checkStructure().then(function() {
 
-            $q.all([
-                    Tool.getTool($routeParams.id, $routeParams.revision),
-                    User.getUser()
-                ]).then(function(result) {
+            var q = [];
 
-                    $scope.view.loading = false;
+            if ($routeParams.id) {
+                q.push(Tool.getTool($routeParams.id, $routeParams.revision));
+            } else {
+                q.push(Data.fetchLocalToolAndJob());
+            }
+            q.push(User.getUser());
+
+            $q.all(q).then(function (result) {
+
+                $scope.view.loading = false;
+
+                if ($routeParams.id) {
 
                     $scope.view.app = result[0].data;
                     $scope.view.revision = result[0].revision;
-                    $scope.view.user = result[1].user;
 
-                    var json = _.extend({
+                    var tool = _.extend({
                         name: $scope.view.app.name,
                         schema: schema,
                         description: $scope.view.revision.description
                     }, $scope.view.revision.json);
 
                     // legacy structure
-                    delete json.softwareDescription;
-
-                    Data.setTool(json);
-                    $scope.view.toolForm = Data.tool;
-
-                    if (_.isUndefined($scope.view.toolForm.inputs.properties)) {
-                        $scope.view.toolForm.inputs.properties = {};
-                    }
-                    if (_.isUndefined($scope.view.toolForm.outputs.properties)) {
-                        $scope.view.toolForm.outputs.properties = {};
-                    }
+                    delete tool.softwareDescription;
 
                     var job = $scope.view.revision.job ? JSON.parse($scope.view.revision.job) : null;
 
+                    Data.setTool(tool);
                     Data.setJob(job);
-                    $scope.view.jobForm = Data.job;
 
-                    if ($scope.view.showConsole) { turnOnDeepWatch(); }
+                } else {
 
-                    $scope.prepareForPagination(Data.tool.inputs.properties, 'values');
+                    $scope.view.app.is_script = $routeParams.type === 'script';
+                    Data.transformToolJson($scope.view.app.is_script);
 
-                });
+                    if ($scope.view.user) {
+                        $scope.view.toolForm.documentAuthor = $scope.view.user.login;
+                    }
+                    if (_.isUndefined($scope.view.toolForm.schema)) {
+                        $scope.view.toolForm.schema = schema;
+                    }
 
-        } else {
+                }
 
-            Data.checkStructure().then(function() {
-                $q.all([
-                        Data.fetchTool(),
-                        Data.fetchJob(),
-                        User.getUser()
-                    ]).then(function(result) {
+                $scope.view.user = result[1].user;
 
-                        $scope.view.loading = false;
+                $scope.view.toolForm = Data.tool;
+                $scope.view.jobForm = Data.job;
 
-                        $scope.view.user = result[2].user;
+                if (_.isUndefined($scope.view.toolForm.inputs.properties)) { $scope.view.toolForm.inputs.properties = {}; }
+                if (_.isUndefined($scope.view.toolForm.outputs.properties)) { $scope.view.toolForm.outputs.properties = {}; }
 
-                        $scope.view.app.is_script = $routeParams.type === 'script';
-                        Data.transformToolJson($scope.view.app.is_script);
+                if ($scope.view.showConsole) { turnOnDeepWatch(); }
 
-                        $scope.view.toolForm = Data.tool;
-                        if ($scope.view.user) {
-                            $scope.view.toolForm.documentAuthor = $scope.view.user.login;
-                        }
-                        if (_.isUndefined($scope.view.toolForm.schema)) {
-                            $scope.view.toolForm.schema = schema;
-                        }
+                $scope.prepareForPagination(Data.tool.inputs.properties, 'values');
 
-                        if (_.isUndefined($scope.view.toolForm.inputs.properties)) {
-                            $scope.view.toolForm.inputs.properties = {};
-                        }
-                        if (_.isUndefined($scope.view.toolForm.outputs.properties)) {
-                            $scope.view.toolForm.outputs.properties = {};
-                        }
-
-                        $scope.view.jobForm = Data.job;
-
-                        if ($scope.view.showConsole) { turnOnDeepWatch(); }
-
-                        $scope.prepareForPagination(Data.tool.inputs.properties, 'values');
-
-                    });
             });
-
-        }
+        });
 
         /**
          * Update input values form when props are changed
