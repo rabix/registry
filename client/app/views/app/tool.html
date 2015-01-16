@@ -21,7 +21,9 @@
     <div ng-if="!view.loading" class="content content-mix flex-box-column">
 
         <section ng-show="view.tab === 'preview'" class="tab preview">
-            <p>Node preview</p>
+            <div class="col flex-box-column flex-one content-col">
+                <div class="pipeline-wrap flex-box-column flex-one" pipeline="{}" preview-node="::view.previewNode"></div>
+            </div>
         </section>
 
         <section ng-show="view.tab === 'info'" class="tab info">

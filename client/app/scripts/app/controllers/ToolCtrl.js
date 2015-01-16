@@ -55,6 +55,8 @@ angular.module('registryApp.app')
 
                 Job.getJobs(0, '', $scope.view.atType, $routeParams.id).then(jobsLoaded);
 
+
+                $scope.view.previewNode = $scope.view.tool;
             });
 
         /**
