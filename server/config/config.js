@@ -145,7 +145,11 @@ var externalConfig = config[env],
 
 if (confArg && confArg.indexOf('data') !== -1 && env === 'production'){
 
-    externalConfig = JSON.parse(fs.readFileSync(process.argv[2]).toString());
+    try {
+        externalConfig = JSON.parse(fs.readFileSync(process.argv[2]).toString());
+    } catch(e) {
+        console.log('Cannot read configuration passed: ', e);
+    }
 
     /**
      * Adding propreties that need to be set in runtime
