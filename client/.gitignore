@@ -4,6 +4,5 @@ dist
 .sass-cache
 bower_components
 template.js
-/test/*
 *.css
 *.css.map

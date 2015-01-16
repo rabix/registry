@@ -51,16 +51,6 @@ module.exports = function (grunt) {
             gruntfile: {
                 files: ['Gruntfile.js']
             },
-//            livereload: {
-//                options: {
-//                    livereload: '<%= connect.options.livereload %>'
-//                },
-//                files: [
-//                    '<%= yeoman.app %>/{,*/}*.html',
-//                    '.tmp/styles/{,*/}*.css',
-//                    '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
-//                ]
-//            },
             template: {
                 files: [
                     '<%= yeoman.app %>/views/{,*/}*.html',
@@ -422,7 +412,7 @@ module.exports = function (grunt) {
         // Test settings
         karma: {
             unit: {
-                configFile: 'test/karma.conf.js',
+                configFile: 'karma.conf.js',
                 singleRun: true
             }
         },
