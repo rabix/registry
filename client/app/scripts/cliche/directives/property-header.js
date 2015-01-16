@@ -17,7 +17,8 @@ angular.module('registryApp.cliche')
                 mode: '@',
                 itemType: '@',
                 isRequired: '=',
-                handle: '&'
+                handle: '&',
+                adapter: '=?'
             },
             controller: ['$scope', function ($scope) {
 
@@ -100,6 +101,8 @@ angular.module('registryApp.cliche')
                 $scope.removeFromConsole = function(e) {
 
                     stopPropagation(e);
+
+                    if (!$scope.adapter) { return false; }
 
                     $scope.handle({action: 'removeFromConsole'});
 

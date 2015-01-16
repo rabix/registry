@@ -227,11 +227,18 @@
           display: inline-block;
           vertical-align: middle;
           padding: 7.5px 10px;
+
           &:last-child {
             margin-left: -5px;
           }
-          &:hover {
-            background-color: #ddd;
+          &:not(.disabled) {
+            &:hover {
+              background-color: #ddd;
+            }
+          }
+          &.disabled {
+            opacity: 0.7;
+            cursor: default;
           }
         }
       }
