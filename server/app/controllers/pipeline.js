@@ -860,11 +860,11 @@ router.post('/workflow/validate', function (req, res, next) {
     if (typeof json === 'undefined') { res.status(400).json({error: 'Undefined json to validate'}); return false;}
     if (typeof json === 'string') { json = JSON.parse(json); }
 
-    var formatted = formater.toPipelineSchema(json);
+    var formated = formater.toPipelineSchema(json);
     var errors = validator.validate(formated);
 
     if (errors.errors.length === 0 && errors.paramErrors.length === 0) {
-        res.json({json: formatted});
+        res.json({json: formated});
     } else {
         res.status(400).json(errors);
     }

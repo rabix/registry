@@ -42,8 +42,19 @@ angular.module('registryApp.dyole')
 //                    initPipeline(json);
 //                });
             initPipeline({});
-        } else if ($scope.pipeline && Object.keys($scope.pipeline).length !== 0){
+        } else if ($scope.pipeline){
             initPipeline($scope.pipeline);
+        }
+
+        if ($scope.previewNode) {
+
+            var e = {
+                clientX: 300,
+                clientY: 150
+            };
+
+            Pipeline.addNode($scope.previewNode, e.clientX, e.clientY);
+
         }
 
         $scope.$watch('pipeline', function(n, o) {

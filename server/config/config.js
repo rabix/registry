@@ -92,7 +92,7 @@ var config = {
         github: {
             clientId: 'b62763ecddeb47ab5f42',
             clientSecret: '796a4c862a99f747ed319ee5472f58929fc21ae9',
-            callbackURL: 'http://www.rabix.org:3333/auth/github/callback',
+            callbackURL: 'https://www.rabix.org:3333/auth/github/callback',
             scope: 'repo:status,read:org,read:repo_hook,write:repo_hook,admin:repo_hook,user'
         },
         logging: {
