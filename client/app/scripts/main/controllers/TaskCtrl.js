@@ -12,7 +12,7 @@ angular.module('registryApp')
 
         $scope.form = {};
         $scope.view = {};
-        $scope.view.job = {json: {inputs: {}}};
+        $scope.view.job = {json: {inputs: {}, '@type': 'TaskTemplate'}};
         $scope.view.app = null;
         $scope.view.mode = $routeParams.id === 'new' ? 'new' : 'edit';
         $scope.view.userRepos = [];

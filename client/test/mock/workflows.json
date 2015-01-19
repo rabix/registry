@@ -1,0 +1,9 @@
+{
+    "name": "workflows",
+    "fixtures": {
+        "list": [
+            {"id": 1}
+        ],
+        "total": 0
+    }
+}

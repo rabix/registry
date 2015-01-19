@@ -19,9 +19,9 @@ describe('Controller: AppsCtrl', function () {
     var apiHandlers = {};
 
     var store = {
-        apps: {list: [{id: 1}], total: 0},
-        workflows: {list: [], total: 0},
-        user: {}
+        apps: _.find(__FIXTURES__, {name: 'tools'}).fixtures,
+        workflows: _.find(__FIXTURES__, {name: 'workflows'}).fixtures,
+        user: _.find(__FIXTURES__, {name: 'user'}).fixtures
     };
 
     function createController() {
@@ -279,8 +279,46 @@ describe('Controller: AppsCtrl', function () {
         });
     });
 
-    xit('should toggle version visibility', function () {
-        //TODO: toggle global and per app test
+    it('should toggle version visibility', function () {
+
+        $httpBackend.flush();
+
+        var tab = 'tools';
+        var len = $scope.view[tab].length;
+        var states;
+
+        $scope.toggleRevisions(tab);
+
+        expect($scope.view.active[tab]).toBeTruthy();
+
+        states = _.filter(_.pluck($scope.view[tab], 'active'), function(state) {return state;});
+
+        expect(states.length).toEqual(len);
+
+        $scope.toggleRevisions(tab);
+
+        expect($scope.view.active[tab]).toBeFalsy();
+
+        states = _.filter(_.pluck($scope.view[tab], 'active'), function(state) {return !state;});
+
+        expect(states.length).toEqual(len);
+
+        if (len > 1) {
+
+            var item = $scope.view[tab][0];
+
+            $scope.toggleRevisions(tab, item);
+
+            expect(item.active).toBeTruthy();
+
+            $scope.toggleRevisions(tab, item);
+
+            expect(item.active).toBeFalsy();
+
+        }
+
+
+
     });
 
 });
