@@ -23,6 +23,14 @@
         "_": false,
         "Raphael": false,
         "ZeroClipboard": false,
-        "CodeMirror": false
+        "CodeMirror": false,
+        "$": false,
+        "describe": false,
+        "it": false,
+        "beforeEach": false,
+        "afterEach": false,
+        "expect": false,
+        "xit": false,
+        "inject": false
     }
 }
