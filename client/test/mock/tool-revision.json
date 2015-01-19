@@ -1,7 +1,98 @@
 {
-    "name": "tool",
+    "name": "tool-revision",
     "fixtures": {
         "data": {
+            "app_id": "54b9334086b3c977657736cd",
+            "job": "{\"inputs\":{\"database_name\":\"GRCh37.71\"},\"allocatedResources\":{\"cpu\":0,\"ports\":[],\"diskSpace\":0,\"network\":false}}",
+            "json": {
+                "@type": "CommandLine",
+                "adapter": {
+                    "args": [
+                        {
+                            "order": 1,
+                            "prefix": "-c",
+                            "value": {
+                                "$expr": "\"/snpEff/snpEff.config\""
+                            },
+                            "separator": " "
+                        },
+                        {
+                            "value": "-download",
+                            "order": 2,
+                            "prefix": "",
+                            "separator": ""
+                        },
+                        {
+                            "value": "-v",
+                            "order": 3,
+                            "prefix": "",
+                            "separator": ""
+                        }
+                    ],
+                    "stdout": "",
+                    "baseCmd": [
+                        "java -jar /snpEff/snpEff.jar eff"
+                    ]
+                },
+                "outputs": {
+                    "properties": {
+                        "database_zip": {
+                            "adapter": {
+                                "glob": {
+                                    "$expr": "\"snpEff_v3_6_\" + $job.inputs.database_name + \".zip\""
+                                }
+                            },
+                            "type": "file"
+                        }
+                    },
+                    "required": [],
+                    "type": "object"
+                },
+                "inputs": {
+                    "properties": {
+                        "database_name": {
+                            "adapter": {
+                                "order": 4,
+                                "prefix": ""
+                            },
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "database_vcf",
+                        "input_vcf"
+                    ],
+                    "type": "object"
+                },
+                "requirements": {
+                    "resources": {
+                        "network": false,
+                        "diskSpace": 0,
+                        "ports": [],
+                        "mem": null,
+                        "cpu": 0
+                    },
+                    "environment": {
+                        "container": {
+                            "imageId": "5c9ead98e1e6",
+                            "uri": "djordjeklisic/sbg-snpeff:v1",
+                            "type": "docker"
+                        }
+                    }
+                },
+                "documentAuthor": "djordje.klisic@sbgenomics.com",
+                "description": "",
+                "schema": "https://github.com/common-workflow-language/common-workflow-language/blob/draft-1/specification/tool-description.md",
+                "name": "snpEff_download"
+            },
+            "author": "djordje.klisic@sbgenomics.com",
+            "description": "",
+            "name": "snpEff_download",
+            "_id": "54bd09c986b3c977657736ef",
+            "__v": 0,
+            "version": 3
+        },
+        "app": {
             "__v": 2,
             "_id": "54b9334086b3c977657736cd",
             "author": "djordje.klisic@sbgenomics.com",
@@ -125,97 +216,6 @@
                 "54b934f786b3c977657736cf",
                 "54bd09c986b3c977657736ef"
             ]
-        },
-        "revision": {
-            "app_id": "54b9334086b3c977657736cd",
-            "job": "{\"inputs\":{\"database_name\":\"GRCh37.71\"},\"allocatedResources\":{\"cpu\":0,\"ports\":[],\"diskSpace\":0,\"network\":false}}",
-            "json": {
-                "@type": "CommandLine",
-                "adapter": {
-                    "args": [
-                        {
-                            "order": 1,
-                            "prefix": "-c",
-                            "value": {
-                                "$expr": "\"/snpEff/snpEff.config\""
-                            },
-                            "separator": " "
-                        },
-                        {
-                            "value": "-download",
-                            "order": 2,
-                            "prefix": "",
-                            "separator": ""
-                        },
-                        {
-                            "value": "-v",
-                            "order": 3,
-                            "prefix": "",
-                            "separator": ""
-                        }
-                    ],
-                    "stdout": "",
-                    "baseCmd": [
-                        "java -jar /snpEff/snpEff.jar eff"
-                    ]
-                },
-                "outputs": {
-                    "properties": {
-                        "database_zip": {
-                            "adapter": {
-                                "glob": {
-                                    "$expr": "\"snpEff_v3_6_\" + $job.inputs.database_name + \".zip\""
-                                }
-                            },
-                            "type": "file"
-                        }
-                    },
-                    "required": [],
-                    "type": "object"
-                },
-                "inputs": {
-                    "properties": {
-                        "database_name": {
-                            "adapter": {
-                                "order": 4,
-                                "prefix": ""
-                            },
-                            "type": "string"
-                        }
-                    },
-                    "required": [
-                        "database_vcf",
-                        "input_vcf"
-                    ],
-                    "type": "object"
-                },
-                "requirements": {
-                    "resources": {
-                        "network": false,
-                        "diskSpace": 0,
-                        "ports": [],
-                        "mem": null,
-                        "cpu": 0
-                    },
-                    "environment": {
-                        "container": {
-                            "imageId": "5c9ead98e1e6",
-                            "uri": "djordjeklisic/sbg-snpeff:v1",
-                            "type": "docker"
-                        }
-                    }
-                },
-                "documentAuthor": "djordje.klisic@sbgenomics.com",
-                "description": "",
-                "schema": "https://github.com/common-workflow-language/common-workflow-language/blob/draft-1/specification/tool-description.md",
-                "name": "snpEff_download"
-            },
-            "author": "djordje.klisic@sbgenomics.com",
-            "description": "",
-            "name": "snpEff_download",
-            "_id": "54bd09c986b3c977657736ef",
-            "__v": 0,
-            "version": 3
         }
     }
 }
