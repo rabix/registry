@@ -205,7 +205,7 @@ angular.module('registryApp.app')
          *
          * @param {string} id
          * @param {object} app
-         * @param {string} type
+         * @param {string} type - available values CommandLine|Script|Workflow
          */
         $scope.pick = function(id, app, type) {
 
