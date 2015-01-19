@@ -25,12 +25,14 @@
         "ZeroClipboard": false,
         "CodeMirror": false,
         "$": false,
+        "jasmine": false,
         "describe": false,
         "it": false,
         "beforeEach": false,
         "afterEach": false,
         "expect": false,
         "xit": false,
+        "xdescribe": false,
         "inject": false
     }
 }

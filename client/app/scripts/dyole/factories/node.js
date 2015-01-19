@@ -162,7 +162,7 @@ angular.module('registryApp.dyole')
                 borders = canvas.group();
                 borders.push(outerBorder).push(innerBorder);
 
-                label = canvas.text(0, radius + labelOffset, ((model.softwareDescription && model.softwareDescription.name) ? model.softwareDescription.name : model.name));
+                label = canvas.text(0, radius + labelOffset, ((model.softwareDescription && model.softwareDescription.name) ? model.softwareDescription.name : model.name || model.id));
 
                 label.attr({
                     'font-size': 14
@@ -412,9 +412,6 @@ angular.module('registryApp.dyole')
                         output.showTerminalName();
                     });
 
-                    //                if (!_self.selected && _self.model.get('isOutdated')) {
-                    //                    _self.showTooltip();
-                    //                }
                 });
 
                 node.mouseout(function () {
@@ -434,19 +431,11 @@ angular.module('registryApp.dyole')
                 });
 
                 borders.click(function () {
-                    console.log('kliknuo sam na node');
+
                     var dragged = this.dragged;
 
                     if (typeof dragged !== 'undefined' && !dragged) {
-                        //                    if (!globals.pipelineEditMode) {
-                        //
-                        //                        this.showModal();
-                        //
-                        //                    } else if (!dragged) {
-                        //
-                        //                        if (!e.ctrlKey && !e.metaKey) {
-                        //                        }
-                        //
+
                         this.Pipeline.Event.trigger('node:deselect');
 
                         if (this.Pipeline.editMode) {
@@ -720,7 +709,7 @@ angular.module('registryApp.dyole')
 
                         old = this.Pipeline.model.schemas[this.model.id].outputs.properties[ter.model.id];
 
-                        old.id = old.name = name;
+                        old.name = name;
 
                         this.Pipeline.model.schemas[this.model.id].outputs.properties[name] = old;
 
@@ -738,7 +727,7 @@ angular.module('registryApp.dyole')
 
                         old = this.Pipeline.model.schemas[this.model.id].inputs.properties[ter.model.id];
 
-                        old.id = old.name = name;
+                        old.name = name;
 
                         this.Pipeline.model.schemas[this.model.id].inputs.properties[name] = old;
 

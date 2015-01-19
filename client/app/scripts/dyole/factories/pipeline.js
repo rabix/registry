@@ -487,7 +487,7 @@ angular.module('registryApp.dyole')
                         }).length;
 
                         terId = 'input' + '_' + (count + 1);
-                        terName = 'Input' + '_' + (count + 1);
+                        terName = 'input' + '_' + (count + 1);
 
                         model.softwareDescription.name = terName;
                         model.softwareDescription.type = 'input';
@@ -509,7 +509,7 @@ angular.module('registryApp.dyole')
                         }).length;
 
                         terId = 'output' + '_' + (count + 1);
-                        terName = 'Output' + '_' + (count + 1);
+                        terName = 'output' + '_' + (count + 1);
 
                         model.name = terName;
                         model.softwareDescription.name = terName;
