@@ -1,23 +1,20 @@
 'use strict';
 
-describe('Controller: AppsCtrl', function () {
+describe('Controller: PickAppCtrl', function () {
 
     var controllerFactory;
     var $scope;
     var $q;
-    var $location;
     var $httpBackend;
-
-    var mockSidebar = {};
-    var mockLoading = {};
 
     var apiBase = '/api';
     var apiHandlers = {};
 
+    var mockModalInstance = {};
+
     var store = {
         apps: _.find(__FIXTURES__, {name: 'tools'}).fixtures,
-        workflows: _.find(__FIXTURES__, {name: 'workflows'}).fixtures,
-        user: _.find(__FIXTURES__, {name: 'user'}).fixtures
+        workflows: _.find(__FIXTURES__, {name: 'workflows'}).fixtures
     };
 
     /**
@@ -27,10 +24,9 @@ describe('Controller: AppsCtrl', function () {
      */
     function createController() {
 
-        return controllerFactory('AppsCtrl', {
+        return controllerFactory('PickAppCtrl', {
             $scope: $scope,
-            Sidebar: mockSidebar,
-            Loading: mockLoading
+            $modalInstance: mockModalInstance
         });
     }
 
@@ -55,10 +51,9 @@ describe('Controller: AppsCtrl', function () {
 
     beforeEach(module('registryApp'));
 
-    beforeEach(inject(function ($controller, $rootScope, _$q_, _$location_, _$httpBackend_) {
+    beforeEach(inject(function ($controller, $rootScope, _$q_, _$httpBackend_) {
         $scope = $rootScope.$new();
         $q = _$q_;
-        $location = _$location_;
         $httpBackend = _$httpBackend_;
 
         controllerFactory = $controller;
@@ -67,14 +62,13 @@ describe('Controller: AppsCtrl', function () {
 
     beforeEach(function () {
 
-        setMock(mockLoading, 'setClasses', true);
-        setMock(mockSidebar, 'setActive', true);
+        setMock(mockModalInstance, 'dismiss', true);
+        setMock(mockModalInstance, 'close', true);
 
         createController();
 
         apiHandlers.apps = $httpBackend.when('GET', /\/api\/apps/).respond(store.apps);
         apiHandlers.workflows = $httpBackend.when('GET', /\/api\/workflows/).respond(store.workflows);
-        apiHandlers.user = $httpBackend.when('GET', /\/api\/user/).respond(store.user);
 
     });
 
@@ -83,27 +77,26 @@ describe('Controller: AppsCtrl', function () {
         $httpBackend.verifyNoOutstandingRequest();
     });
 
-    it('should have switchTab, getMoreTools, getMoreScripts, getMoreWorkflows, searchApps, resetSearch, toggleMyApps, toggleRevisions functions', function() {
+    it('should have cancel, getMoreTools, getMoreScripts, getMoreWorkflows, toggleRevisions, switchTab, searchApps, resetSearch and pick functions', function() {
 
-        expect(angular.isFunction($scope.switchTab)).toBe(true);
+        expect(angular.isFunction($scope.cancel)).toBe(true);
         expect(angular.isFunction($scope.getMoreTools)).toBe(true);
         expect(angular.isFunction($scope.getMoreScripts)).toBe(true);
         expect(angular.isFunction($scope.getMoreWorkflows)).toBe(true);
+        expect(angular.isFunction($scope.toggleRevisions)).toBe(true);
+        expect(angular.isFunction($scope.switchTab)).toBe(true);
         expect(angular.isFunction($scope.searchApps)).toBe(true);
         expect(angular.isFunction($scope.resetSearch)).toBe(true);
-        expect(angular.isFunction($scope.toggleMyApps)).toBe(true);
-        expect(angular.isFunction($scope.toggleRevisions)).toBe(true);
+        expect(angular.isFunction($scope.pick)).toBe(true);
 
         $httpBackend.flush();
     });
-
 
     it('should attach a view object to the scope', function () {
 
         expect($scope.view).toEqual(jasmine.any(Object));
 
         expect($scope.view.loading).toBeTruthy();
-        expect($scope.view.classes).toEqual(jasmine.any(Array));
 
         expect($scope.view.tools).toEqual(jasmine.any(Array));
         expect($scope.view.scripts).toEqual(jasmine.any(Array));
@@ -134,15 +127,6 @@ describe('Controller: AppsCtrl', function () {
 
     });
 
-    it('should call Loading.setClasses and Sidebar.setActive on load', function () {
-
-        expect(mockLoading.setClasses).toHaveBeenCalledWith(['page', 'apps']);
-        expect(mockSidebar.setActive).toHaveBeenCalledWith('apps');
-
-        $httpBackend.flush();
-
-    });
-
     describe('when initiated', function () {
 
         afterEach(function () {
@@ -161,10 +145,6 @@ describe('Controller: AppsCtrl', function () {
             $httpBackend.expectGET(apiBase + '/workflows?skip=0');
         });
 
-        it('should load current user from api', function () {
-            $httpBackend.expectGET(apiBase + '/user');
-        });
-
     });
 
     describe('active tab', function () {
@@ -177,14 +157,13 @@ describe('Controller: AppsCtrl', function () {
             expect($scope.view.tab).toEqual('tools');
         });
 
-        it('should be changed when clicked, including location hash', function () {
+        it('should be changed when clicked', function () {
 
-            var tab = 'workflows';
+            var tab = 'scripts';
 
             $scope.switchTab(tab);
 
             expect($scope.view.tab).toEqual(tab);
-            expect($location.hash()).toEqual(tab);
         });
 
     });
@@ -284,7 +263,7 @@ describe('Controller: AppsCtrl', function () {
 
         $httpBackend.flush();
 
-        var tab = 'tools';
+        var tab = 'workflows';
         var len = $scope.view[tab].length;
         var states;
 
@@ -304,7 +283,7 @@ describe('Controller: AppsCtrl', function () {
 
         expect(states.length).toEqual(len);
 
-        if (len > 0) {
+        if (len > 1) {
 
             var item = $scope.view[tab][0];
 
@@ -317,6 +296,38 @@ describe('Controller: AppsCtrl', function () {
             expect(item.active).toBeFalsy();
 
         }
+
+    });
+
+    it('should call $modalInstance.dismiss on modal cancel', function () {
+
+        $httpBackend.flush();
+
+        $scope.cancel();
+
+        expect(mockModalInstance.dismiss).toHaveBeenCalledWith('cancel');
+
+    });
+
+    it('should close modal when app is picked', function () {
+
+        $httpBackend.flush();
+
+        if ($scope.view.tools.length > 0) {
+
+            var item = $scope.view.tools[0];
+            var revision = item.revisions[0];
+
+            var id = item._id;
+            var type = 'CommandLine';
+
+            $scope.pick(id, revision, type);
+
+            var params = {app: revision, type: type, id: id};
+
+            expect(mockModalInstance.close).toHaveBeenCalledWith(params);
+        }
+
 
     });
 

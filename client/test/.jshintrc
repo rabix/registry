@@ -33,6 +33,7 @@
         "spyOn": false,
         "element": false,
         "by": false,
-        "_": true
+        "_": true,
+        "__FIXTURES__": false
     }
 }

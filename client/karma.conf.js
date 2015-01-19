@@ -6,7 +6,8 @@ module.exports = function (config) {
         plugins: [
 //            'karma-chrome-launcher',
             'karma-jasmine',
-            'karma-phantomjs-launcher'
+            'karma-phantomjs-launcher',
+            'karma-fixtures-preprocessor'
         ],
         // base path, that will be used to resolve files and exclude
         basePath: '',
@@ -62,9 +63,13 @@ module.exports = function (config) {
             'app/scripts/repo/**/*.js',
             'app/scripts/app/**/*.js',
 
-            //'test/mock/*.json',
+            'test/mock/*.json',
             'test/spec/**/*.js'
         ],
+
+        preprocessors: {
+            'test/mock/*.json': ['fixtures']
+        },
 
         // list of files / patterns to exclude
         exclude: [],
