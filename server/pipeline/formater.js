@@ -2,6 +2,10 @@
 
 var _ = require('lodash');
 
+var Const = {
+    exposedSeparator: '$'
+};
+
 /**
  * Formatter for pipeline schemas
  *
@@ -12,7 +16,10 @@ var formater = {
 
     packedSchema: null,
 
-    toRabixSchema: function (j) {
+    toRabixSchema: function (j, exposed, values) {
+
+        exposed = exposed || false;
+        values = values || false;
 
         var json = _.clone(j);
         // reset schema
@@ -43,7 +50,7 @@ var formater = {
             });
 
         } else {
-            this._transformRelationsToSteps(json.relations || [], json.nodes, json.schemas);
+            this._transformRelationsToSteps(json.relations || [], json.nodes, json.schemas, exposed, values);
         }
 
         delete json.relations;
@@ -51,6 +58,8 @@ var formater = {
         delete json.nodes;
 
         json = _.extend(json, this.packedSchema);
+
+        this.packedSchema = null;
 
         return json;
     },
@@ -60,19 +69,27 @@ var formater = {
         var json = _.clone(j);
 
         // reset schema
+        this.packedSchema = null;
         this.packedSchema = {};
         this.packedSchema.schemas = {};
         this.packedSchema.nodes = [];
         this.packedSchema.relations = [];
         this.packedSchema.display = json.display;
 
+        this.packedSchema.values = {};
+        this.packedSchema.exposed = {};
+
         this._transformStepsToRelations(json);
 
-        return this.packedSchema;
+        var r = _.cloneDeep(this.packedSchema);
+
+        this.packedSchema = null;
+
+        return r;
 
     },
 
-    _transformRelationsToSteps: function (relations, nodes, schemas) {
+    _transformRelationsToSteps: function (relations, nodes, schemas, exposed, values) {
 
         var _self = this;
 
@@ -104,6 +121,94 @@ var formater = {
 
         this._generateSystemNodes(relations, nodes, schemas);
 
+        if (exposed) {
+            this._addExposedParams(exposed);
+        }
+
+        if (values) {
+            this._addValuesToSteps(values);
+        }
+
+    },
+
+    _addExposedParams: function (exposed) {
+        var packedSchema = this.packedSchema;
+
+        _.forEach(exposed, function (schema, ids) {
+
+            if (ids.indexOf(Const.exposedSeparator) === -1) {
+                return false;
+            }
+
+            var h = ids.split(Const.exposedSeparator),
+                node_id = h[0],
+                param_id;
+
+            if (h.length > 2 ) {
+                h.shift();
+                param_id = h.join(Const.exposedSeparator);
+            } else {
+                param_id = h[1];
+            }
+
+            packedSchema.inputs.properties[ids] = schema;
+
+            var step = _.find(packedSchema.steps, function (s) {
+                return s.id === node_id;
+            });
+
+            if (step) {
+
+                step.inputs[param_id] = {
+                    $from: ids
+                };
+
+            } else {
+                throw Error('Step not found to add exposed params to: ' + node_id);
+            }
+
+        });
+
+    },
+
+    _addValuesToSteps: function (values) {
+        var steps = this.packedSchema.steps;
+
+        _.forEach(values, function (values, node_id) {
+
+            var app = _.find(steps, function (step) {
+                return step.id === node_id;
+            });
+
+            if (app) {
+
+                _.forEach(values, function (param, param_id) {
+                    app.inputs[param_id] = param;
+                });
+
+            } else {
+                throw Error('App not found to add values to: ' + node_id);
+            }
+        });
+    },
+
+    _createParamValue: function (params, input_id, node_id) {
+        var values = this.packedSchema.values[node_id] = this.packedSchema.values[node_id] || {};
+//
+//                if (typeof params === 'object') {
+//                    _.forEach(params, function (param, param_id) {
+//                        values[param_id] = param;
+//                    });
+//                } else {
+        values[input_id] = params;
+//                }
+
+    },
+
+    _createExposedParam: function (from, node_id, paramSchema) {
+        var exposed = this.packedSchema.exposed = this.packedSchema.exposed || {};
+
+        exposed[from.$from] = paramSchema;
     },
 
     _generateSystemNodes: function (relations, nodes, schemas) {
@@ -220,7 +325,6 @@ var formater = {
      * @private
      */
     _transformStepsToRelations: function (json) {
-        //TODO: Please refactor this :)
 
         var _self = this,
             steps = json.steps,
@@ -230,7 +334,6 @@ var formater = {
 
         _.forEach(steps, function (step) {
             var end_node = step.id;
-
 
             if (!schemas[step.id]) {
                 schemas[step.id] = step.app;
@@ -273,65 +376,90 @@ var formater = {
 
     _generateInputsFromStep: function (json, relations, schemas, nodes, step, end_node) {
         var _self = this,
-            start_node, output_name, input_name;
+            start_node, output_name, input_name, count = 0;
 
         _.forEach(step.inputs, function (from, input) {
 
-            if (!Array.isArray(from.$from)) {
-                from.$from = [from.$from];
-            }
+            if (typeof from.$from === 'undefined') {
 
-            _.forEach(from.$from, function (fr) {
+                _self._createParamValue(from, input, step.id);
 
-                var relation, s, filter;
 
-                s = fr.split('.');
+            } else if (typeof from === 'object' && typeof from.$from !== 'undefined' && from.$from.indexOf(Const.exposedSeparator) !== -1) {
 
-                if (s.length !== 1) {
-                    start_node = s[0];
-                    output_name = s[1];
+                var h = from.$from.split(Const.exposedSeparator),
+                    param_id;
+
+                if (h.length > 2 ) {
+                    h.shift();
+                    param_id = h.join(Const.exposedSeparator);
                 } else {
-                    var input_id;
-
-                    filter = _.filter(json.inputs.properties, function (input, id) {
-                        if (input.id === s[0]) {
-                            input_id = id;
-                        }
-                        return input.id === s[0];
-                    });
-
-                    if (filter.length !== 0) {
-                        var m = _self._generateIOSchema('input', filter[0], input_id);
-
-                        m.name = input_id;
-                        schemas[input_id] = m;
-
-                        nodes.push(m);
-
-                        start_node = input_id;
-                    } else {
-                        start_node = '';
-                        throw new Error('Invalid Input name');
-                    }
-
-                    output_name = s[0];
+                    param_id = h[1];
                 }
 
-                input_name = input;
 
-                relation = {
-                    end_node: end_node,
-                    input_name: input_name,
-                    output_name: output_name,
-                    start_node: start_node,
-                    type: 'connection',
-                    // id needs to be a string
-                    id: _.random(100000, 999999) + ''
-                };
+                var paramSchema = step.app.inputs.properties[param_id];
 
-                relations.push(relation);
+                _self._createExposedParam(from, step.id, paramSchema);
 
-            });
+            } else {
+
+                if (!_.isArray(from.$from)) {
+                    from.$from = [from.$from];
+                }
+
+                _.forEach(from.$from, function (fr) {
+
+                    var relation, s, filter;
+
+                    s = fr.split('.');
+
+                    if (s.length !== 1) {
+                        start_node = s[0];
+                        output_name = s[1];
+                    } else {
+                        var input_id;
+
+                        filter = _.filter(json.inputs.properties, function (input, id) {
+                            if (input.id === s[0]) {
+                                input_id = id;
+                            }
+                            return input.id === s[0];
+                        });
+
+                        if (filter.length !== 0) {
+                            var m = _self._generateIOSchema('input', filter[0], input_id);
+
+                            m.name = input_id;
+                            schemas[input_id] = m;
+
+                            nodes.push(m);
+
+                            start_node = input_id;
+                        } else {
+                            start_node = '';
+                            throw new Error('Invalid Input name');
+                        }
+
+                        output_name = s[0];
+                    }
+
+                    input_name = input;
+
+                    relation = {
+                        end_node: end_node,
+                        input_name: input_name,
+                        output_name: output_name,
+                        start_node: start_node,
+                        type: 'connection',
+                        // id needs to be a string
+                        id: _.random(100000, 999999) + ''
+                    };
+
+                    relations.push(relation);
+
+                });
+            }
 
         });
     },
@@ -427,5 +555,6 @@ var formater = {
     }
 
 };
+
 
 module.exports = formater;

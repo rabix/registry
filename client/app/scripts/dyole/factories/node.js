@@ -162,7 +162,7 @@ angular.module('registryApp.dyole')
                 borders = canvas.group();
                 borders.push(outerBorder).push(innerBorder);
 
-                label = canvas.text(0, radius + labelOffset, ((model.softwareDescription && model.softwareDescription.name) ? model.softwareDescription.name : model.name));
+                label = canvas.text(0, radius + labelOffset, ((model.softwareDescription && model.softwareDescription.name) ? model.softwareDescription.name : model.name || model.id));
 
                 label.attr({
                     'font-size': 14
@@ -709,7 +709,7 @@ angular.module('registryApp.dyole')
 
                         old = this.Pipeline.model.schemas[this.model.id].outputs.properties[ter.model.id];
 
-                        old.id = old.name = name;
+                        old.name = name;
 
                         this.Pipeline.model.schemas[this.model.id].outputs.properties[name] = old;
 
@@ -727,7 +727,7 @@ angular.module('registryApp.dyole')
 
                         old = this.Pipeline.model.schemas[this.model.id].inputs.properties[ter.model.id];
 
-                        old.id = old.name = name;
+                        old.name = name;
 
                         this.Pipeline.model.schemas[this.model.id].inputs.properties[name] = old;
 
