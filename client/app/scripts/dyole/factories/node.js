@@ -412,9 +412,6 @@ angular.module('registryApp.dyole')
                         output.showTerminalName();
                     });
 
-                    //                if (!_self.selected && _self.model.get('isOutdated')) {
-                    //                    _self.showTooltip();
-                    //                }
                 });
 
                 node.mouseout(function () {
@@ -434,19 +431,11 @@ angular.module('registryApp.dyole')
                 });
 
                 borders.click(function () {
-                    console.log('kliknuo sam na node');
+
                     var dragged = this.dragged;
 
                     if (typeof dragged !== 'undefined' && !dragged) {
-                        //                    if (!globals.pipelineEditMode) {
-                        //
-                        //                        this.showModal();
-                        //
-                        //                    } else if (!dragged) {
-                        //
-                        //                        if (!e.ctrlKey && !e.metaKey) {
-                        //                        }
-                        //
+
                         this.Pipeline.Event.trigger('node:deselect');
 
                         if (this.Pipeline.editMode) {
