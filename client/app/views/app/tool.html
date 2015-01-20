@@ -54,7 +54,7 @@
                                 <p>
                                     <strong>Docker Repo[#tag]:</strong>
                                     <i ng-if="!view.tool.json.requirements.environment.container.uri">Not defined</i>
-                                    <copy ng-if="view.tool.json.requirements.environment.container.uri" string="{{ ::view.tool.json.requirements.environment.container.uri }}" show-string="true" is-small="true"></copy>
+                                    <copy ng-if="view.tool.json.requirements.environment.container.uri" data="{{ view.tool.json.requirements.environment.container.uri }}" show-string="true" is-small="true"></copy>
                                 </p>
                             </section>
 
