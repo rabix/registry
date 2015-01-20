@@ -78,7 +78,7 @@ angular.module('registryApp.app')
          *
          * @param offset
          */
-        $scope.getMoreRevision = function(offset) {
+        $scope.getMoreRevisions = function(offset) {
 
             $scope.view.loading = true;
 
@@ -132,6 +132,8 @@ angular.module('registryApp.app')
                         $location.path('/apps');
                     });
             });
+
+            return modalInstance;
 
         };
 

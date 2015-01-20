@@ -1,0 +1,41 @@
+{
+    "name": "tool-revisions",
+    "fixtures": {
+        "list": [
+            {
+                "app_id": "54b9334086b3c977657736cd",
+                "job": "{\"inputs\":{\"database_name\":\"GRCh37.71\"},\"allocatedResources\":{\"cpu\":0,\"ports\":[],\"diskSpace\":0,\"network\":false}}",
+                "json": "{\"name\":\"snpEff_download\",\"schema\":\"https://github.com/common-workflow-language/common-workflow-language/blob/draft-1/specification/tool-description.md\",\"description\":\"\",\"documentAuthor\":\"djordje.klisic@sbgenomics.com\",\"requirements\":{\"environment\":{\"container\":{\"type\":\"docker\",\"uri\":\"djordjeklisic/sbg-snpeff:v1\",\"imageId\":\"5c9ead98e1e6\"}},\"resources\":{\"cpu\":0,\"mem\":null,\"ports\":[],\"diskSpace\":0,\"network\":false}},\"inputs\":{\"type\":\"object\",\"required\":[\"database_vcf\",\"input_vcf\"],\"properties\":{\"database_name\":{\"type\":\"string\",\"adapter\":{\"prefix\":\"\",\"order\":4}}}},\"outputs\":{\"type\":\"object\",\"required\":[],\"properties\":{\"database_zip\":{\"type\":\"file\",\"adapter\":{\"glob\":{\"$expr\":\"\\\"snpEff_v3_6_\\\" + $job.inputs.database_name + \\\".zip\\\"\"}}}}},\"adapter\":{\"baseCmd\":[\"java -jar /snpEff/snpEff.jar eff\"],\"stdout\":\"\",\"args\":[{\"separator\":\" \",\"value\":{\"$expr\":\"\\\"/snpEff/snpEff.config\\\"\"},\"prefix\":\"-c\",\"order\":1},{\"separator\":\"\",\"prefix\":\"\",\"order\":2,\"value\":\"-download\"},{\"separator\":\"\",\"prefix\":\"\",\"order\":3,\"value\":\"-v\"}]},\"@type\":\"CommandLine\"}",
+                "author": "djordje.klisic@sbgenomics.com",
+                "description": "",
+                "name": "snpEff_download",
+                "_id": "54bd09c986b3c977657736ef",
+                "__v": 0,
+                "version": 3
+            },
+            {
+                "app_id": "54b9334086b3c977657736cd",
+                "job": "{\"inputs\":{\"database_name\":\"GRCh37.71\"},\"allocatedResources\":{\"cpu\":0,\"ports\":[],\"diskSpace\":0,\"network\":false}}",
+                "json": "{\"name\":\"snpEff_download\",\"schema\":\"https://github.com/common-workflow-language/common-workflow-language/blob/draft-1/specification/tool-description.md\",\"description\":\"\",\"@type\":\"CommandLine\",\"adapter\":{\"args\":[{\"order\":1,\"prefix\":\"-c\",\"value\":{\"$expr\":\"\\\"/snpEff/snpEff.config\\\"\"},\"separator\":\" \"},{\"value\":\"-download\",\"order\":2,\"prefix\":\"\",\"separator\":\"\"},{\"value\":\"-v\",\"order\":3,\"prefix\":\"\",\"separator\":\"\"}],\"stdout\":\"\",\"baseCmd\":[\"java -jar /snpEff/snpEff.jar eff\"]},\"outputs\":{\"properties\":{\"database_zip\":{\"adapter\":{\"glob\":{\"$expr\":\"\\\"snpEff_v3_6_\\\" + $job.inputs.database_name + \\\".zip\\\"\"}},\"type\":\"file\"}},\"required\":[],\"type\":\"object\"},\"inputs\":{\"properties\":{\"database_name\":{\"adapter\":{\"order\":4,\"prefix\":\"\"},\"type\":\"string\"}},\"required\":[\"database_vcf\",\"input_vcf\"],\"type\":\"object\"},\"requirements\":{\"resources\":{\"network\":false,\"diskSpace\":0,\"ports\":[],\"mem\":null,\"cpu\":0},\"environment\":{\"container\":{\"imageId\":\"bfff3f5bbb28\",\"uri\":\"djordjeklisic/sbg-snpeff:v1\",\"type\":\"docker\"}}},\"documentAuthor\":\"djordje.klisic@sbgenomics.com\"}",
+                "author": "djordje.klisic@sbgenomics.com",
+                "description": "",
+                "name": "snpEff_download",
+                "_id": "54b934f786b3c977657736cf",
+                "__v": 0,
+                "version": 2
+            },
+            {
+                "app_id": "54b9334086b3c977657736cd",
+                "job": "{\"inputs\":{\"database_name\":\"GRCh37.71\"},\"allocatedResources\":{\"cpu\":0,\"ports\":[],\"diskSpace\":0,\"network\":false}}",
+                "json": "{\"name\":\"snpEff_download\",\"schema\":\"https://github.com/common-workflow-language/common-workflow-language/blob/draft-1/specification/tool-description.md\",\"description\":\"\",\"documentAuthor\":\"djordje.klisic@sbgenomics.com\",\"requirements\":{\"environment\":{\"container\":{\"type\":\"docker\",\"uri\":\"djordjeklisic/sbg-snpeff:v1\",\"imageId\":\"bfff3f5bbb28\"}},\"resources\":{\"cpu\":0,\"mem\":null,\"ports\":[],\"diskSpace\":0,\"network\":false}},\"inputs\":{\"type\":\"object\",\"required\":[\"database_vcf\",\"input_vcf\"],\"properties\":{\"database_name\":{\"type\":\"string\",\"adapter\":{\"prefix\":\"-database\",\"order\":4}}}},\"outputs\":{\"type\":\"object\",\"required\":[],\"properties\":{\"database_zip\":{\"type\":\"file\",\"adapter\":{\"metadata\":{},\"glob\":{\"$expr\":\"\\\"snpEff_v3_6_\\\" + $job.inputs.database_name + \\\".zip\\\"\"}}}}},\"adapter\":{\"baseCmd\":[\"java -jar /snpEff/snpEff.jar eff\"],\"stdout\":\"\",\"args\":[{\"separator\":\" \",\"value\":{\"$expr\":\"\\\"/snpEff/snpEff.config\\\"\"},\"prefix\":\"-c\",\"order\":1},{\"separator\":\"\",\"prefix\":\"\",\"order\":2,\"value\":\"-download\"},{\"separator\":\"\",\"prefix\":\"\",\"order\":3,\"value\":\"-v\"}]},\"@type\":\"CommandLine\"}",
+                "author": "djordjeklisic",
+                "description": "",
+                "name": "snpEff_download",
+                "_id": "54b9334086b3c977657736ce",
+                "__v": 0,
+                "version": 1
+            }
+        ],
+        "total": 3
+    }
+}

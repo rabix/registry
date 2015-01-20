@@ -10,7 +10,7 @@ angular.module('registryApp.common')
         return {
             restrict: 'E',
             scope: {
-                string: '@',
+                data: '@',
                 isSmall: '@',
                 showString: '@'
             },
@@ -33,7 +33,7 @@ angular.module('registryApp.common')
                         scope.view.copying = true;
 
                         clipboard = event.clipboardData;
-                        clipboard.setData('text/plain', scope.string);
+                        clipboard.setData('text/plain', scope.data);
 
                         scope.$apply();
                     });

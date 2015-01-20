@@ -14,7 +14,7 @@ angular.module('registryApp.app')
         var getTools = function(skip, searchTerm, mine) {
 
             var isSearch = !(_.isUndefined(searchTerm) || _.isEmpty(searchTerm));
-            var params = {skip: skip};
+            var params = {skip: (skip || 0)};
 
             if (isSearch) {
                 params.q = searchTerm;
@@ -36,7 +36,7 @@ angular.module('registryApp.app')
         var getScripts = function(skip, searchTerm, mine) {
 
             var isSearch = !(_.isUndefined(searchTerm) || _.isEmpty(searchTerm));
-            var params = {skip: skip, is_script: true};
+            var params = {skip: skip || 0, is_script: true};
 
             if (isSearch) {
                 params.q = searchTerm;

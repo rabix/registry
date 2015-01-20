@@ -54,7 +54,7 @@
                                 <p>
                                     <strong>Docker Repo[#tag]:</strong>
                                     <i ng-if="!view.tool.json.requirements.environment.container.uri">Not defined</i>
-                                    <copy ng-if="view.tool.json.requirements.environment.container.uri" string="{{ ::view.tool.json.requirements.environment.container.uri }}" show-string="true" is-small="true"></copy>
+                                    <copy ng-if="view.tool.json.requirements.environment.container.uri" data="{{ view.tool.json.requirements.environment.container.uri }}" show-string="true" is-small="true"></copy>
                                 </p>
                             </section>
 
@@ -116,7 +116,7 @@
                 </table>
             </div>
 
-            <paginator class="paginator" page="view.page.revisions" total="view.total.revisions" handler="getMoreRevision(offset)"></paginator>
+            <paginator class="paginator" page="view.page.revisions" total="view.total.revisions" handler="getMoreRevisions(offset)"></paginator>
 
         </section>
         <!-- # .revisions -->
