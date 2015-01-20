@@ -49,6 +49,9 @@ describe('Service: Formater', function () {
 
         var rp = service.toRabixSchema(store.pipeline);
 
+        // do multiple formating
+        rp = service.toPipelineSchema(rp);
+        rp = service.toRabixSchema(rp);
 
         expect(rp['@type']).not.toBeUndefined();
         expect(rp['@type']).toBe('Workflow');
@@ -77,6 +80,11 @@ describe('Service: Formater', function () {
 
         var rp = service.toPipelineSchema(store.rabixPipeline);
 
+
+        // do multiple formating
+        rp = service.toRabixSchema(rp);
+        rp = service.toPipelineSchema(rp);
+
         expect(rp.relations.length).toBeGreaterThan(0);
 
         _.forEach(rp.relations, function (relation) {
@@ -88,6 +96,9 @@ describe('Service: Formater', function () {
             expect(relation.id).not.toBeUndefined();
             expect(relation.id).not.toBe('');
         });
+
+        expect(rp.schemas).not.toBeUndefined();
+        expect(rp.nodes).not.toBeUndefined();
 
         expect(rp.exposed).not.toBeUndefined();
         expect(rp.values).not.toBeUndefined();
