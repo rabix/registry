@@ -16,7 +16,9 @@ angular.module('registryApp.dyole')
                 values = values || false;
 
                 var json = _.clone(j);
+
                 // reset schema
+                this.packedSchema = null;
                 this.packedSchema = {};
 
                 this.packedSchema['@type'] = 'Workflow';

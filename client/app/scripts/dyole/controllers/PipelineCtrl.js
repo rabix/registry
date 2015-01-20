@@ -134,6 +134,7 @@ angular.module('registryApp.dyole')
         });
 
         $scope.$on('pipeline:format', function () {
+
             $scope.handlePipelineJson({pipeline: Pipeline.getJSON()});
 
 //            Workflow.format(Pipeline.getJSON()).then(function (pipeline) {
