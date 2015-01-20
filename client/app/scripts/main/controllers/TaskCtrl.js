@@ -97,11 +97,17 @@ angular.module('registryApp')
 
             var errorsNum = 0;
 
-            _.each($scope.form.jobForm.$error, function (errors) {
-                errorsNum += errors.length;
+            _.each($scope.form.jobForm.$error, function (errors, key) {
+                if (key !== 'required') {
+                    errorsNum += errors.length;
+                }
             });
 
-            return 'You must enter valid values (' + errorsNum + ' ' + 'error' + (errorsNum !== 1 ? 's' : '') + ')';
+            if (errorsNum > 0) {
+                return 'You must enter valid values (' + errorsNum + ' ' + 'error' + (errorsNum !== 1 ? 's' : '') + ')';
+            } else {
+                return '';
+            }
 
         };
 
@@ -113,14 +119,15 @@ angular.module('registryApp')
         $scope.update = function () {
 
             var isEmptyName = _.isEmpty($scope.view.job.name);
-            var isFormInvalid = $scope.form.jobForm.$invalid;
+            //var isFormInvalid = $scope.form.jobForm.$invalid;
+            var validationMsg = getValidationMessage();
 
-            if (isEmptyName || isFormInvalid) {
+            if (isEmptyName || validationMsg) {
 
                 var errors = [];
 
                 if (isEmptyName) { errors.push('You must enter the name of the job'); }
-                if (isFormInvalid) { errors.push(getValidationMessage()); }
+                if (validationMsg) { errors.push(validationMsg); }
 
                 $modal.open({
                     template: $templateCache.get('views/partials/validation.html'),
@@ -196,15 +203,16 @@ angular.module('registryApp')
 
             var isEmptyName = _.isEmpty($scope.view.job.name);
             var isEmptyApp = _.isEmpty($scope.view.app);
-            var isFormInvalid = $scope.form.jobForm.$invalid;
+            //var isFormInvalid = $scope.form.jobForm.$invalid;
+            var validationMsg = getValidationMessage();
 
-            if (isEmptyName || isEmptyApp || isFormInvalid) {
+            if (isEmptyName || isEmptyApp || validationMsg) {
 
                 var errors = [];
 
                 if (isEmptyName) { errors.push('You must enter the name of the job'); }
                 if (isEmptyApp) { errors.push('You must pick the app for your job'); }
-                if (isFormInvalid) { errors.push(getValidationMessage()); }
+                if (validationMsg) { errors.push(validationMsg); }
 
                 $modal.open({
                     template: $templateCache.get('views/partials/validation.html'),
