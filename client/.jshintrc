@@ -33,6 +33,7 @@
         "expect": false,
         "xit": false,
         "xdescribe": false,
+        "__FIXTURES__": false,
         "inject": false
     }
 }

@@ -1,0 +1,217 @@
+{
+    "name": "rabixPipeline",
+    "fixtures": {
+        "display": {
+            "canvas": {
+                "x": 0,
+                "y": 0,
+                "zoom": 1
+            },
+            "description": "",
+            "name": "Test Pipeline",
+            "nodes": {
+                "chimerascan_gtf2genepred": {
+                    "x": 397,
+                    "y": 240
+                },
+                "chimerascan_index": {
+                    "x": 272,
+                    "y": 203
+                },
+                "Input_1": {
+                    "x": 96,
+                    "y": 111
+                },
+                "Input_2": {
+                    "x": 108,
+                    "y": 277
+                },
+                "Output_1": {
+                    "x": 588,
+                    "y": 383
+                }
+            }
+        },
+        "@type": "Workflow",
+        "steps": [
+            {
+                "id": "chimerascan_gtf2genepred",
+                "app": {
+                    "documentAuthor": "arsenijae",
+                    "inputs": {
+                        "type": "object",
+                        "required": ["reads", "input_file"],
+                        "properties": {
+                            "genes": {
+                                "adapter": {
+                                    "order": 0
+                                },
+                                "type": "file"
+                            }
+                        }
+                    },
+                    "outputs": {
+                        "type": "object",
+                        "required": ["sam", "output_file"],
+                        "properties": {
+                            "genepred": {
+                                "type": "file",
+                                "adapter": {
+                                    "glob": {
+                                        "$expr": "{ filename = $job.inputs.genes.path     \n  return filename.split('.').slice(0, filename.split('.').length-1).concat(\"genePred.txt\").join(\".\").replace(/^.*[\\\\\\\\\\\\/]/, '')}\n\n"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "adapter": {
+                        "baseCmd": ["python", "/home/chimerascan-0.4.5/chimerascan/tools/gtf_to_genepred.py"],
+                        "stdout": "",
+                        "args": [
+                            {
+                                "value": {
+                                    "$expr": "{ filename = $job.inputs.genes.path     \n  return filename.split('.').slice(0, filename.split('.').length-1).concat(\"genePred.txt\").join(\".\").replace(/^.*[\\\\\\\\\\\\/]/, '')}"
+                                },
+                                "separator": " "
+                            }
+                        ]
+                    },
+                    "requirements": {
+                        "environment": {
+                            "container": {
+                                "type": "docker",
+                                "uri": "chimerascan_0.4.5",
+                                "imageId": "5ab23a4e69dc"
+                            }
+                        },
+                        "resources": {
+                            "cpu": 0,
+                            "mem": 5000,
+                            "ports": [],
+                            "diskSpace": 0,
+                            "network": false
+                        }
+                    },
+                    "@type": "CommandLine",
+                    "description": "",
+                    "schema": "https://github.com/common-workflow-language/common-workflow-language/blob/draft-1/specification/tool-description.md",
+                    "name": "chimerascan_gtf2genepred"
+                },
+                "inputs": {
+                    "genes": {
+                        "$from": "chimerascan_index.index"
+                    }
+                },
+                "outputs": {
+                    "genepred": {
+                        "$to": "output_1"
+                    }
+                }
+            },
+            {
+                "id": "chimerascan_index",
+                "app": {
+                    "@type": "CommandLine",
+                    "requirements": {
+                        "environment": {
+                            "container": {
+                                "type": "docker",
+                                "uri": "chimerascan_0.4.5",
+                                "imageId": "5ab23a4e69dc"
+                            }
+                        },
+                        "resources": {
+                            "cpu": 0,
+                            "mem": 5000,
+                            "ports": [],
+                            "diskSpace": 0,
+                            "network": false
+                        }
+                    },
+                    "adapter": {
+                        "baseCmd": ["python", "/home/chimerascan-0.4.5/chimerascan/chimerascan_index.py"],
+                        "stdout": "",
+                        "args": [
+                            {
+                                "separator": " ",
+                                "value": "index.out",
+                                "order": 2
+                            }
+                        ]
+                    },
+                    "outputs": {
+                        "properties": {
+                            "index": {
+                                "adapter": {
+                                    "glob": "index.out"
+                                },
+                                "type": "directory"
+                            }
+                        },
+                        "required": ["sam", "output_file"],
+                        "type": "object"
+                    },
+                    "inputs": {
+                        "properties": {
+                            "genes": {
+                                "type": "file",
+                                "adapter": {
+                                    "order": 1
+                                }
+                            },
+                            "reference": {
+                                "type": "file",
+                                "adapter": {
+                                    "order": 0
+                                }
+                            }
+                        },
+                        "required": ["reads", "input_file", "genes"],
+                        "type": "object"
+                    },
+                    "documentAuthor": "arsenijae",
+                    "description": "",
+                    "schema": "https://github.com/common-workflow-language/common-workflow-language/blob/draft-1/specification/tool-description.md",
+                    "name": "chimerascan_index"
+                },
+                "inputs": {
+                    "reference": {
+                        "$from": "input_1"
+                    },
+                    "genes": {
+                        "$from": "input_2"
+                    }
+                },
+                "outputs": {}
+            }
+        ],
+        "inputs": {
+            "type": "object",
+            "properties": {
+                "Input_1": {
+                    "name": "Input_1",
+                    "id": "input_1",
+                    "required": false,
+                    "type": "file"
+                },
+                "Input_2": {
+                    "name": "Input_2",
+                    "id": "input_2",
+                    "required": false,
+                    "type": "file"
+                }
+            }
+        },
+        "outputs": {
+            "type": "object",
+            "properties": {
+                "Output_1": {
+                    "name": "Output_1",
+                    "id": "output_1",
+                    "required": false,
+                    "type": "file"
+                }
+            }
+        }
+    }
+}

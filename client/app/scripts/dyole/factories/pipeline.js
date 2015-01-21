@@ -483,7 +483,7 @@ angular.module('registryApp.dyole')
                         count = _.filter(this.nodes, function (n) {
                             var desc = n.model.softwareDescription;
                             var name = (desc && desc.name) ? desc.name : n.model.name;
-                            return name.indexOf('Input') !== -1 && desc && desc.repo_name === 'system';
+                            return name.indexOf('input') !== -1 && desc && desc.repo_name === 'system';
                         }).length;
 
                         terId = 'input' + '_' + (count + 1);
@@ -505,7 +505,7 @@ angular.module('registryApp.dyole')
                         count = _.filter(this.nodes, function (n) {
                             var desc = n.model.softwareDescription;
                             var name = (desc && desc.name) ? desc.name : n.model.name;
-                            return name.indexOf('Output') !== -1 && desc && desc.repo_name === 'system';
+                            return name.indexOf('output') !== -1 && desc && desc.repo_name === 'system';
                         }).length;
 
                         terId = 'output' + '_' + (count + 1);
