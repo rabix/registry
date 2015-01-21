@@ -37,18 +37,25 @@ angular.module('registryApp.cliche')
 
             var code = mirror.getValue();
 
-            SandBox.evaluate(code, {$self: $scope.arg})
-                .then(function (result) {
+            try {
+                var self = JSON.parse($scope.arg);
 
-                    $scope.view.result = result;
-                    $scope.view.error = '';
+                SandBox.evaluate(code, {$self: self})
+                    .then(function (result) {
 
-                }, function (error) {
+                        $scope.view.result = result;
+                        $scope.view.error = '';
 
-                    $scope.view.result = '';
-                    $scope.view.error = error;
+                    }, function (error) {
 
-                });
+                        $scope.view.result = '';
+                        $scope.view.error = error;
+
+                    });
+            } catch (e) {
+                $scope.view.error = e;
+            }
+
         };
 
         /**
@@ -58,26 +65,32 @@ angular.module('registryApp.cliche')
 
             var code = mirror.getValue();
 
-            SandBox.evaluate(code, {$self: $scope.arg})
-                .then(function () {
+            try {
+                var self = JSON.parse($scope.arg);
 
-                    $scope.handleLoad({expr: code});
+                SandBox.evaluate(code, {$self: self})
+                    .then(function () {
 
-                }, function (error) {
-
-                    if (!$scope.view.firstTry) {
-
-                        $scope.view.firstTry = true;
-
-                        $scope.view.result = '';
-                        $scope.view.error = error;
-
-                    } else {
                         $scope.handleLoad({expr: code});
-                    }
 
+                    }, function (error) {
 
-                });
+                        if (!$scope.view.firstTry) {
+
+                            $scope.view.firstTry = true;
+
+                            $scope.view.result = '';
+                            $scope.view.error = error;
+
+                        } else {
+                            $scope.handleLoad({expr: code});
+                        }
+
+                    });
+            } catch (e) {
+                $scope.view.error = e;
+            }
+
         };
 
         /**

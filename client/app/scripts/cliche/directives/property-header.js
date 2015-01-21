@@ -93,20 +93,6 @@ angular.module('registryApp.cliche')
 
                 };
 
-                /**
-                 * Delegate action for removing from console output
-                 *
-                 * @param e
-                 */
-                $scope.removeFromConsole = function(e) {
-
-                    stopPropagation(e);
-
-                    if (!$scope.adapter) { return false; }
-
-                    $scope.handle({action: 'removeFromConsole'});
-
-                };
 
             }],
             link: function() {}

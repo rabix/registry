@@ -391,15 +391,22 @@
 /* Expression edit form */
 .expression-form {
   margin-bottom: 10px;
-  .form-group {
-    margin-right: 10px;
-    .control-label {
-      margin-right: 10px;
-    }
-    .form-control {
-      width: 100px;
+
+  .control-label {
+    font-weight: bold;
+  }
+
+  .form-control {
+    margin-left: 5px;
+  }
+
+  .flex-box-row {
+    @include align-items();
+    .flex-box-row {
+      margin-left: 10px;
     }
   }
+
 }
 
 /* Modal main actions (cancel, ok and so on) */

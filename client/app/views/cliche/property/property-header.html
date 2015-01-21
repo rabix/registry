@@ -1,7 +1,6 @@
 <div class="property-box-header-inner {{ type }}" ng-click="toggle()">
 
     <div class="property-box-actions pull-right">
-        <a href ng-if="mode === 'input'" ng-click="removeFromConsole($event)" title="remove from console" ng-class="{disabled: !adapter}"><i class="fa fa-unlink"></i></a>
         <a href ng-click="edit($event)" title="Edit"><i class="fa fa-pencil-square"></i></a>
         <a href ng-click="remove($event)" title="Delete"><i class="fa fa-times"></i></a>
     </div>

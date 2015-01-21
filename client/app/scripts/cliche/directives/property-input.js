@@ -199,17 +199,6 @@ angular.module('registryApp.cliche')
                 };
 
                 /**
-                 * Remove adapter section of the input and regenerate command
-                 */
-                $scope.removeFromConsole = function() {
-
-                    delete $scope.prop.adapter;
-
-                    Data.generateCommand();
-
-                };
-
-                /**
                  * Handle actions initiated from the property header
                  *
                  * @param action

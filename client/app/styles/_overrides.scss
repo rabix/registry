@@ -367,6 +367,7 @@ legend {
   &.legend-small {
     font-size: 16px;
     margin-bottom: 5px;
+    font-weight: normal;
 
     &.nb {
       border-bottom: none;
@@ -377,6 +378,10 @@ legend {
       line-height: 20px;
       margin: 3px;
       font-size: 12px;
+    }
+
+    label {
+      font-weight: normal;
     }
   }
   &.legend-r {
