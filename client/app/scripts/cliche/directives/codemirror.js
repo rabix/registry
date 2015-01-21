@@ -15,6 +15,8 @@ angular.module('registryApp.cliche')
         $scope.view.result = '';
         $scope.view.error = '';
 
+        $scope.view.defaultResult = true;
+
         var timeoutId = $timeout(function () {
 
             mirror = CodeMirror($element[0].querySelector('.codemirror-editor'), {
@@ -30,6 +32,8 @@ angular.module('registryApp.cliche')
          * Execute the code and show the result
          */
         $scope.execute = function () {
+
+            $scope.view.defaultResult = false;
 
             var code = mirror.getValue();
 
@@ -61,8 +65,17 @@ angular.module('registryApp.cliche')
 
                 }, function (error) {
 
-                    $scope.view.result = '';
-                    $scope.view.error = error;
+                    if (!$scope.view.firstTry) {
+
+                        $scope.view.firstTry = true;
+
+                        $scope.view.result = '';
+                        $scope.view.error = error;
+
+                    } else {
+                        $scope.handleLoad({expr: code});
+                    }
+
 
                 });
         };

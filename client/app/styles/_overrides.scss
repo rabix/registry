@@ -516,6 +516,16 @@ ul {
 
   .result {
     margin-bottom: 10px;
+    background-color: #333;
+    color: $orange;
+    padding: 15px;
+    font-family: monospace;
+    border: 1px solid $orange;
+
+    &.error {
+      color: #ff0000;
+      border: 1px solid #cc0000;
+    }
   }
 }
 

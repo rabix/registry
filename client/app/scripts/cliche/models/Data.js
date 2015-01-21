@@ -155,7 +155,7 @@ angular.module('registryApp.cliche')
         };
 
         /**
-         * Get map for the input
+         * Get scheme for the input and output
          *
          * @type {object}
          */
@@ -184,7 +184,7 @@ angular.module('registryApp.cliche')
                     },
                     number: {
                         root: {
-                            type: 'string',
+                            type: 'string'
                         },
                         adapter: {prefix: '', separator: ' ', order: 0, value: undefined}
                     },
@@ -425,7 +425,7 @@ angular.module('registryApp.cliche')
                 joiner = _.isNull(itemSeparator) ? (' ' + prefix + separator) : itemSeparator;
             }
 
-            _.each(input, function(val) {
+            var evaluate = function (val) {
 
                 var deferred = $q.defer();
 
@@ -433,6 +433,8 @@ angular.module('registryApp.cliche')
                     self.parseObjectInput(property.items.properties, val)
                         .then(function (result) {
                             deferred.resolve(result);
+                        }, function (error) {
+                            deferred.reject(error);
                         });
                 } else {
                     self.applyTransform(property.adapter.value, (_.isObject(val) ? val.path : val), true)
@@ -443,14 +445,19 @@ angular.module('registryApp.cliche')
                         });
                 }
 
-                promises.push(deferred.promise);
+                return deferred.promise;
+
+            };
+
+            _.each(input, function(val) {
+                promises.push(evaluate(val));
             });
 
             return $q.all(promises)
                     .then(function (result) {
                         return result.join(joiner);
                     }, function (error) {
-                        return '"' + error.message + '"';
+                        return $q.reject(error);
                     });
 
         };
@@ -468,6 +475,7 @@ angular.module('registryApp.cliche')
 
             /* go through properties */
             _.each(properties, function(property, key) {
+
                 if (!_.isUndefined(inputs[key]) && property.adapter) {
 
                     var deferred = $q.defer();
@@ -484,6 +492,8 @@ angular.module('registryApp.cliche')
                             .then(function (result) {
                                 prop.value = result;
                                 deferred.resolve(prop);
+                            }, function (error) {
+                                deferred.reject(error);
                             });
                         break;
                     case 'file':
@@ -492,6 +502,8 @@ angular.module('registryApp.cliche')
                             .then(function (result) {
                                 prop.value = result;
                                 deferred.resolve(prop);
+                            }, function (error) {
+                                deferred.reject(error);
                             });
                         break;
                     case 'object':
@@ -500,6 +512,8 @@ angular.module('registryApp.cliche')
                             .then(function (result) {
                                 prop.value = result;
                                 deferred.resolve(prop);
+                            }, function (error) {
+                                deferred.reject(error);
                             });
                         break;
                     case 'boolean':
@@ -511,6 +525,8 @@ angular.module('registryApp.cliche')
                                 .then(function (result) {
                                     prop.value = result;
                                     deferred.resolve(prop);
+                                }, function (error) {
+                                    deferred.reject(error);
                                 });
                         } else {
                             prop.value = '';
@@ -526,6 +542,8 @@ angular.module('registryApp.cliche')
                             .then(function (result) {
                                 prop.value = result;
                                 deferred.resolve(prop);
+                            }, function (error) {
+                                deferred.reject(error);
                             });
 
                         break;
@@ -567,7 +585,7 @@ angular.module('registryApp.cliche')
 
                     return output;
 
-                });
+                }, function (error) { return $q.reject(error); });
 
         };
 
@@ -589,6 +607,7 @@ angular.module('registryApp.cliche')
                 .then(function (props) {
 
                     var argsPromises = [];
+
                     _.each(self.tool.adapter.args, function(arg, key) {
 
                         var deferred = $q.defer();
@@ -602,14 +621,17 @@ angular.module('registryApp.cliche')
                             .then(function (result) {
                                 prop.value = result;
                                 deferred.resolve(prop);
+                            }, function (error) {
+                                deferred.reject(error);
                             });
 
                         argsPromises.push(deferred.promise);
                     });
 
-                    return $q.all(argsPromises).then(function (args) {
-                            return _.sortBy(props.concat(args), 'order');
-                        });
+                    return $q.all(argsPromises)
+                            .then(function (args) {
+                                return _.sortBy(props.concat(args), 'order');
+                            }, function (error) { return $q.reject(error); });
 
                 })
                 /* generate command from arguments and inputs and apply transforms on baseCmd */
@@ -640,14 +662,17 @@ angular.module('registryApp.cliche')
                         self.applyTransform(baseCmd, baseCmd)
                             .then(function (result) {
                                 deferred.resolve(result);
+                            }, function (error) {
+                                deferred.reject(error);
                             });
 
                         baseCmdPromises.push(deferred.promise);
                     });
 
-                    return $q.all(baseCmdPromises).then(function (cmds) {
+                    return $q.all(baseCmdPromises)
+                        .then(function (cmds) {
                             return {command: command, baseCmd: cmds.join(' ')};
-                        });
+                        }, function (error) { return $q.reject(error); });
 
                 })
                 /* apply transforms on stdin/stdout */
@@ -657,7 +682,7 @@ angular.module('registryApp.cliche')
                             self.applyTransform(self.tool.adapter.stdout, self.tool.adapter.stdout)
                         ]).then(function(result) {
                             return {command: res.command, baseCmd: res.baseCmd, stdin: result[0], stdout: result[1]};
-                        });
+                        }, function (error) { return $q.reject(error); });
                 })
                 /* generate final command */
                 .then(function (result) {
@@ -674,7 +699,8 @@ angular.module('registryApp.cliche')
 
                     return self.command;
 
-                });
+                })
+                .catch(function (error) { return $q.reject(error); });
         };
 
         /**

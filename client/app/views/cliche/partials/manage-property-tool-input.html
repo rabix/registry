@@ -67,7 +67,7 @@
             <div class="col-md-4" ng-if="!view.disabled && view.property.items.type !== 'object'">
                 <div class="form-group" title="Value">
                     <label class="control-label">Value</label>
-                    <expr ng-model="view.property.adapter.value" handle-item-update="updateTransform(value)" only-expr="true" self="true" placeholder="value"></expr>
+                    <expr ng-model="view.property.adapter.value" handle-item-update="updateTransform(value)" only-expr="true" self="true" self-type="view.property.type" self-item-type="view.property.items.type" placeholder="value"></expr>
                 </div>
             </div>
             <!-- END Transform -->

@@ -26,8 +26,6 @@ angular.module('registryApp.cliche')
 
                 Sandbox = new JSandbox();
 
-                console.log(code);
-
                 var deferred = $q.defer();
 
                 if (typeof input === 'object' && Data.job) {

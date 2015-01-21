@@ -89,7 +89,8 @@
     <div class="console flex-auto" ng-if="!view.loading && !view.app.is_script" ng-class="{'console-hide': !view.showConsole}">
         <div ng-click="toggleConsole()" class="heading">console <i ng-class="{'fa-chevron-down': view.showConsole, 'fa-chevron-right': !view.showConsole}" class="fa pull-right"></i></div>
         <zclip data="command"></zclip>
-        <pre class="console-trace" ng-class="{wait: view.generatingCommand}">{{ view.command }}</pre>
+        {{ view.cmdErrors.length }}
+        <pre class="console-trace" ng-class="{wait: view.generatingCommand, error: view.cmdError}">{{ view.command || view.cmdError }}</pre>
     </div>
     <!-- # .console -->
 

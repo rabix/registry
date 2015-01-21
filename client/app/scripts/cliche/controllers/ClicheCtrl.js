@@ -73,6 +73,8 @@ angular.module('registryApp.cliche')
 
         $scope.view.type = $routeParams.type;
 
+        $scope.view.cmdError = '';
+
         /**
          * Prepare temp list for paginating
          *
@@ -211,6 +213,30 @@ angular.module('registryApp.cliche')
 
         };
 
+        /**
+         * Output error message if something was wrong with expressions evaluation
+         */
+        var outputError = function () {
+
+            $scope.view.generatingCommand = false;
+            $scope.view.command = '';
+            $scope.view.cmdError = 'There are some errors in some of your expressions';
+
+        };
+
+        /**
+         * Output command generated from the form
+         *
+         * @param {string} command
+         */
+        var outputCommand = function (command) {
+
+            $scope.view.generatingCommand = false;
+            $scope.view.command = command;
+            $scope.view.cmdError = '';
+
+        };
+
         /* watchers list */
         var watchers = [];
 
@@ -223,10 +249,7 @@ angular.module('registryApp.cliche')
 
                 $scope.view.generatingCommand = true;
                 Data.generateCommand()
-                    .then(function (command) {
-                        $scope.view.command = command;
-                        $scope.view.generatingCommand = false;
-                    });
+                    .then(outputCommand, outputError);
 
                 var watch = [
                     'view.toolForm.adapter.baseCmd',
@@ -239,10 +262,7 @@ angular.module('registryApp.cliche')
                         if (n !== o) {
                             $scope.view.generatingCommand = true;
                             Data.generateCommand()
-                                .then(function (command) {
-                                    $scope.view.command = command;
-                                    $scope.view.generatingCommand = false;
-                                });
+                                .then(outputCommand, outputError);
                         }
                     }, true);
                     watchers.push(watcher);
@@ -283,8 +303,6 @@ angular.module('registryApp.cliche')
                     SandBox.evaluate(resource.$expr, {})
                         .then(function (result) {
                             $scope.view.jobForm.allocatedResources[key] = result;
-                        }, function (error) {
-                            console.log(error);
                         });
                 }
             });
@@ -303,10 +321,7 @@ angular.module('registryApp.cliche')
                 if ($scope.view.showConsole) {
                     $scope.view.generatingCommand = true;
                     Data.generateCommand()
-                        .then(function (command) {
-                            $scope.view.command = command;
-                            $scope.view.generatingCommand = false;
-                        });
+                        .then(outputCommand, outputError);
                 }
 
                 jobWatcher = $scope.$watch('view.jobForm.inputs', function(n, o) {
@@ -315,10 +330,7 @@ angular.module('registryApp.cliche')
                         if ($scope.view.showConsole) {
                             $scope.view.generatingCommand = true;
                             Data.generateCommand()
-                                .then(function (command) {
-                                    $scope.view.command = command;
-                                    $scope.view.generatingCommand = false;
-                                });
+                                .then(outputCommand, outputError);
                         }
                     }
                 }, true);
@@ -453,8 +465,6 @@ angular.module('registryApp.cliche')
                 SandBox.evaluate(value.$expr, {})
                     .then(function (result) {
                         $scope.view.jobForm.allocatedResources[key] = result;
-                    }, function (error) {
-                        console.log(error);
                     });
             } else {
                 if ($scope.view.jobForm.allocatedResources[key] < value) {

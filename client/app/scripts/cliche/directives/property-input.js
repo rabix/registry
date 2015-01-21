@@ -7,7 +7,7 @@
 'use strict';
 
 angular.module('registryApp.cliche')
-    .directive('propertyInput', ['$templateCache', 'RecursionHelper', function ($templateCache, RecursionHelper) {
+    .directive('propertyInput', ['$templateCache', 'RecursionHelper', 'SandBox', function ($templateCache, RecursionHelper, SandBox) {
 
         return {
             restrict: 'E',
@@ -22,7 +22,7 @@ angular.module('registryApp.cliche')
                 req: '=',
                 handler: '&'
             },
-            controller: ['$scope', '$modal', 'Data', function ($scope, $modal, Data) {
+            controller: ['$scope', '$modal', 'Data', 'Helper', function ($scope, $modal, Data, Helper) {
 
                 $scope.view = {};
 
@@ -32,6 +32,33 @@ angular.module('registryApp.cliche')
                 $scope.req = $scope.req || [];
                 $scope.view.required = _.contains($scope.req, $scope.name);
                 $scope.view.tpl = 'views/cliche/property/property-input-' + $scope.type + '-' + $scope.prop.type  + '.html';
+
+                $scope.view.exprError = '';
+
+                /**
+                 * Check if expression is valid
+                 */
+                var checkExpression = function () {
+
+                    if ($scope.prop.adapter && $scope.prop.adapter.value && $scope.prop.adapter.value.$expr) {
+
+                        var itemType = ($scope.prop.items && $scope.prop.items.type) ? $scope.prop.items.type : null;
+                        var self = {$self: Helper.getTestData($scope.prop.type, itemType)};
+
+                        SandBox.evaluate($scope.prop.adapter.value.$expr, self)
+                            .then(function () {
+                                $scope.view.exprError = '';
+                            }, function (error) {
+                                $scope.view.exprError = error.name + ':' + error.message;
+                            });
+                    } else {
+                        $scope.view.exprError = '';
+                    }
+
+                };
+
+                /* init check of the expression if defined */
+                checkExpression();
 
                 /**
                  * Toggle property box visibility
@@ -102,6 +129,7 @@ angular.module('registryApp.cliche')
 
                         $scope.handler();
 
+                        checkExpression();
                         Data.generateCommand();
 
                     });
