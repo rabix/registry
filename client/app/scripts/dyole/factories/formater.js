@@ -444,7 +444,7 @@ angular.module('registryApp.dyole')
                                     start_node = input_id;
                                 } else {
                                     start_node = '';
-                                    throw new Error('Invalid Input name');
+                                    throw new Error('Invalid Input name: ' + s[0]);
                                 }
 
                                 output_name = s[0];
@@ -509,7 +509,7 @@ angular.module('registryApp.dyole')
                         end_node = output_id;
                     } else {
                         end_node = '';
-                        throw new Error('Invalid Output name');
+                        throw 'Invalid Output name';
                     }
 
                     relation = {

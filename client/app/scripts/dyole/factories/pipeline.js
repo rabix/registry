@@ -495,7 +495,6 @@ angular.module('registryApp.dyole')
                         model.outputs.properties[terId] = {
                             'name': terName,
                             'id': terId,
-                            'required': false,
                             'type': 'file'
                         };
 
@@ -518,7 +517,6 @@ angular.module('registryApp.dyole')
                         model.inputs.properties[terId] = {
                             'name': terName,
                             'id': terId,
-                            'required': false,
                             'type': 'file'
                         };
 
@@ -821,7 +819,7 @@ angular.module('registryApp.dyole')
                  * @private
                  */
                 _getNodes: function () {
-                    return _.pluck(this.nodes, 'model');
+                    return angular.copy(_.pluck(this.nodes, 'model'));
                 },
 
                 /**

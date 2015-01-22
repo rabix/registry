@@ -21,8 +21,10 @@ var formater = {
         exposed = exposed || false;
         values = values || false;
 
-        var json = _.clone(j);
+        var json = _.cloneDeep(j);
+
         // reset schema
+        this.packedSchema = null;
         this.packedSchema = {};
 
         this.packedSchema['@type'] = 'Workflow';
@@ -59,6 +61,16 @@ var formater = {
 
         json = _.extend(json, this.packedSchema);
 
+        if (json.exposed) {
+            delete json.exposed;
+        }
+
+
+        if (json.values) {
+
+            delete json.values;
+        }
+
         this.packedSchema = null;
 
         return json;
@@ -66,7 +78,7 @@ var formater = {
 
     toPipelineSchema: function (j) {
 
-        var json = _.clone(j);
+        var json = _.cloneDeep(j);
 
         // reset schema
         this.packedSchema = null;
@@ -438,7 +450,7 @@ var formater = {
                             start_node = input_id;
                         } else {
                             start_node = '';
-                            throw new Error('Invalid Input name');
+                            throw new Error('Invalid Input name: ' + s[0]);
                         }
 
                         output_name = s[0];
@@ -503,7 +515,7 @@ var formater = {
                 end_node = output_id;
             } else {
                 end_node = '';
-                throw new Error('Invalid Output name');
+                throw 'Invalid Output name';
             }
 
             relation = {
@@ -546,7 +558,7 @@ var formater = {
         model[internalType].properties = {};
         model[internalType].properties[schema.id] = schema;
 
-        model[internalType].properties[schema.id].name = schema.id;
+        model[internalType].properties[schema.id].name = schema.name || schema.id;
         model[internalType].properties[schema.id].id = schema.id;
 
         model.id = id;
@@ -555,6 +567,8 @@ var formater = {
     }
 
 };
+
+
 
 
 module.exports = formater;

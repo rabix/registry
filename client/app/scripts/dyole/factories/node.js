@@ -8,6 +8,7 @@ angular.module('registryApp.dyole')
     .factory('node', ['$rootScope', 'terminal', function ($rootScope, Terminal) {
 
         var Node = function (options) {
+            var _self = this;
 
             this.canvas = options.canvas;
 
@@ -28,6 +29,12 @@ angular.module('registryApp.dyole')
             this.dragged = false;
 
             this.selected = false;
+            
+            _.forEach(this.model.inputs.required, function (inp) {
+                if (_self.model.inputs.properties[inp]) {
+                    _self.model.inputs.properties[inp].required = true;
+                }
+            });
 
             this.inputRefs = _.toArray(this.model.inputs.properties);
 
@@ -696,7 +703,7 @@ angular.module('registryApp.dyole')
 
             _changeNodeName: function (name) {
 
-                var ter, old,
+                var ter, old, oldId,
                     isInput = this.inputs.length === 0;
 
                 if (this.model.softwareDescription && this.model.softwareDescription.repo_name === 'system') {
@@ -704,53 +711,96 @@ angular.module('registryApp.dyole')
                     this.model.name = name;
                     this.Pipeline.model.schemas[this.model.id].name = name;
 
+                    //TODO: Refactor this to use one function
                     if (isInput) {
                         ter = this.outputs[0];
 
                         old = this.Pipeline.model.schemas[this.model.id].outputs.properties[ter.model.id];
+                        oldId = ter.model.id;
 
                         old.name = name;
-
-                        this.Pipeline.model.schemas[this.model.id].outputs.properties[name] = old;
-
-                        delete this.Pipeline.model.schemas[this.model.id].outputs.properties[ter.model.id];
+                        old.id = name;
 
                         this.model.outputs.properties[name] = old;
 
                         delete this.model.outputs.properties[ter.model.id];
 
+                        this.Pipeline.model.schemas[name] = this.Pipeline.model.schemas[oldId];
+
+                        this.Pipeline.model.schemas[name].outputs.properties[name] = old;
+
+                        delete this.Pipeline.model.schemas[name].outputs.properties[oldId];
+
                         ter.model.name = ter.model.id = name;
 
                         ter.changeTerminalName(name);
+
+                        this.model.outputs.properties[ter.model.id] = ter.model;
+
                     } else {
+
                         ter = this.inputs[0];
 
                         old = this.Pipeline.model.schemas[this.model.id].inputs.properties[ter.model.id];
+                        oldId = ter.model.id;
 
                         old.name = name;
-
-                        this.Pipeline.model.schemas[this.model.id].inputs.properties[name] = old;
-
-                        delete this.Pipeline.model.schemas[this.model.id].inputs.properties[ter.model.id];
+                        old.id = name;
 
                         this.model.inputs.properties[name] = old;
 
                         delete this.model.inputs.properties[ter.model.id];
 
+                        this.Pipeline.model.schemas[name] = this.Pipeline.model.schemas[oldId];
+
+                        this.Pipeline.model.schemas[name].inputs.properties[name] = old;
+
+                        delete this.Pipeline.model.schemas[name].inputs.properties[oldId];
+
                         ter.model.name = ter.model.id = name;
 
                         ter.changeTerminalName(name);
+
+                        this.model.inputs.properties[ter.model.id] = ter.model;
+
+                    }
+
+                    this.model.id = name;
+
+                    this.Pipeline.model.schemas[name].id = this.model.id;
+
+                    delete this.Pipeline.model.schemas[oldId];
+
+                    this.Pipeline.nodes[name] = this.Pipeline.nodes[oldId];
+                    delete this.Pipeline.nodes[oldId];
+
+                    if (this.Pipeline.model.display.nodes[oldId]) {
+                        delete this.Pipeline.model.display.nodes[oldId];
+                    }
+
+                    // Delete unwanted props from schema
+                    // when id changes it picks up whole model with x and y coordinates which we dont wont
+                    if (isInput) {
+                        delete this.Pipeline.model.schemas[this.model.id].outputs.properties[this.model.id].x;
+                        delete this.Pipeline.model.schemas[this.model.id].outputs.properties[this.model.id].y;
+                        delete this.Pipeline.model.schemas[this.model.id].outputs.properties[this.model.id].input;
+                    } else {
+                        delete this.Pipeline.model.schemas[this.model.id].inputs.properties[this.model.id].x;
+                        delete this.Pipeline.model.schemas[this.model.id].inputs.properties[this.model.id].y;
+                        delete this.Pipeline.model.schemas[this.model.id].inputs.properties[this.model.id].input;
                     }
 
                     _.each(this.connections, function (c) {
                         if (isInput) {
                             c.model.output_name = name;
+                            c.model.start_node = name;
                         } else {
                             c.model.input_name = name;
+                            c.model.end_node = name;
                         }
                     });
 
-                    this.label.attr('text', name)
+                    this.label.attr('text', name);
                     this._destroyButtons();
                     this._showButtons();
 

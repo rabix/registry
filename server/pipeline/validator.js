@@ -17,6 +17,7 @@ var validator = {
         this._duplicateRelations(json);
         this._cyclicGraph(json);
         this._requiredInputs(json);
+        this._requiredParams(json);
 
         return {
             errors: _.uniq(this.errors),
@@ -115,6 +116,41 @@ var validator = {
                 }
             });
         });
+    },
+
+    /**
+     * Go through schemas and check if there are required parametars that are not set or exposed
+     *
+     * @param json
+     * @private
+     */
+    _requiredParams: function (json) {
+        var _self = this,
+            schemas = json.schemas;
+
+        _.forEach(schemas, function (schema) {
+            var inputs = schema.inputs;
+
+            _.forEach(inputs.required, function (input) {
+                if (inputs.properties[input]) {
+                    _self._checkInputSet(json, schema, input);
+                }
+            });
+        });
+    },
+
+    _checkInputSet: function (json, schema, input) {
+        var exists;
+
+        exists = json.values[schema.id] && json.values[schema.id][input];
+
+        if (!exists) {
+            exists = json.exposed[schema.id+'$'+input];
+
+            if (!exists) {
+                this.paramErrors.push('There is required input: ' + input + ' in app: ' + schema.id + ' ;that has no value and is not exposed');
+            }
+        }
     }
     
 };

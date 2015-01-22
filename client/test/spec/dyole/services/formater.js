@@ -45,7 +45,8 @@ describe('Service: Formater', function () {
         expect(angular.isFunction(service.toPipelineSchema)).toBe(true);
     });
 
-    it('should return rabix json from pipeline json', function () {
+    it('shoul' +
+        'd return rabix json from pipeline json', function () {
 
         var rp = service.toRabixSchema(store.pipeline);
 
