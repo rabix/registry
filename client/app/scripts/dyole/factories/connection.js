@@ -176,6 +176,7 @@ angular.module('registryApp.dyole')
                     scale = this.parent.getScale().x;
 
                 coords = this._getCoords(input, output);
+
                 attr = {
                     stroke: this.strokeColor,
                     'stroke-width': this.strokeWidth * scale

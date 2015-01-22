@@ -350,11 +350,14 @@ angular.module('registryApp.dyole')
 
                 scale = this.Pipeline.getEl().getScale();
                 parent = this.parent.el.getTranslation();
-                pipeline = this.Pipeline.getEl().getTranslation();
+                pipeline = this.Pipeline.pipelineWrap.getTranslation();
                 translation = this.el.getTranslation();
 
-                translation.x += parent.x + pipeline.x;
-                translation.y += parent.y + pipeline.y;
+                translation.x += parent.x;
+                translation.y += parent.y;
+
+                translation.x += pipeline.x / scale.x;
+                translation.y += pipeline.y / scale.y;
 
                 translation.x = translation.x * scale.x;
                 translation.y = translation.y * scale.y;
@@ -365,17 +368,18 @@ angular.module('registryApp.dyole')
             _getConnectionCoordsDiff: function (e) {
                 var diff = {},
                     ctm = this.terminal.node.getScreenCTM(),
-                    translation;
+                    translation, pt;
 
                 translation = this._getElTranslation();
 
-                diff.x = e.clientX - ( ctm.e - translation.x );
-                diff.y = e.clientY - ( ctm.f - translation.y );
+                diff.x = e.clientX - ( ctm.e - translation.x);
+                diff.y = e.clientY - ( ctm.f - translation.y);
 
                 return diff;
             },
 
             drawConnection: function (e) {
+
                 var attr, coords,
                     diff = this._getConnectionCoordsDiff(e),
                     scale = this.pipelineWrap.getScale().x;
