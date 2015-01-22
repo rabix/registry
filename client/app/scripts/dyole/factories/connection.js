@@ -157,10 +157,10 @@ angular.module('registryApp.dyole')
                 outputCoords.e = outputCoords.e / scale;
                 outputCoords.f = outputCoords.f / scale;
 
-                inputCoords.e -= parentTrans.x;
-                inputCoords.f -= parentTrans.y;
-                outputCoords.e -= parentTrans.x;
-                outputCoords.f -= parentTrans.y;
+                inputCoords.e -= parentTrans.x / scale;
+                inputCoords.f -= parentTrans.y / scale;
+                outputCoords.e -= parentTrans.x / scale;
+                outputCoords.f -= parentTrans.y / scale;
 
                 return {
                     x1: inputCoords.e,
