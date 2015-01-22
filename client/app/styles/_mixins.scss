@@ -239,3 +239,10 @@
   -webkit-order: $val;
   order: $val;
 }
+
+@mixin align-items($align: center) {
+  -webkit-flex-align: $align;
+  -ms-flex-align: $align;
+  -webkit-align-items: $align;
+  align-items: $align;
+}

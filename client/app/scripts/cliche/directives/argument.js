@@ -7,7 +7,7 @@
 'use strict';
 
 angular.module('registryApp.cliche')
-    .directive('argument', ['$templateCache', '$modal', '$compile', 'Data', function ($templateCache, $modal, $compile, Data) {
+    .directive('argument', ['$templateCache', '$modal', '$compile', 'Data', 'SandBox', function ($templateCache, $modal, $compile, Data, SandBox) {
 
         return {
             restrict: 'E',
@@ -22,6 +22,30 @@ angular.module('registryApp.cliche')
 
                 $scope.view = {};
                 $scope.view.tpl = 'views/cliche/property/property-argument.html';
+
+                $scope.view.exprError = '';
+
+                /**
+                 * Check if expression is valid
+                 */
+                var checkExpression = function () {
+
+                    if ($scope.prop.value && $scope.prop.value.$expr) {
+
+                        SandBox.evaluate($scope.prop.value.$expr, {})
+                            .then(function () {
+                                $scope.view.exprError = '';
+                            }, function (error) {
+                                $scope.view.exprError = error.name + ':' + error.message;
+                            });
+                    } else {
+                        $scope.view.exprError = '';
+                    }
+
+                };
+
+                /* init check of the expression if defined */
+                checkExpression();
 
                 /**
                  * Toggle argument box visibility
@@ -76,6 +100,7 @@ angular.module('registryApp.cliche')
                             $scope.prop[key] = value;
                         });
 
+                        checkExpression();
                         Data.generateCommand();
                     });
 

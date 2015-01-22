@@ -36,7 +36,7 @@
             <div class="col-md-2">
                 <div class="form-group" title="Value">
                     <label class="control-label">Value</label>
-                    <expr ng-model="view.property.adapter.value" handle-item-update="updateTransform(value)" only-expr="true" self="true" placeholder="value"></expr>
+                    <expr ng-model="view.property.adapter.value" handle-item-update="updateTransform(value)" only-expr="true" self="true" self-type="view.property.type" self-item-type="view.property.items.type" placeholder="value"></expr>
                 </div>
             </div>
             <!-- END Transform -->
@@ -105,7 +105,7 @@
                                 <input type="text" class="form-control" ng-model="view.newMeta.key" placeholder="key" />
                             </div>
                             <div class="col-md-6 no-padding">
-                                <expr ng-model="view.newMeta.value" handle-item-update="updateNewMeta(value)" placeholder="value" self="true"></expr>
+                                <expr ng-model="view.newMeta.value" handle-item-update="updateNewMeta(value)" placeholder="value" self="true" self-type="view.property.type" self-item-type="view.property.items.type"></expr>
                             </div>
                             <span class="input-group-btn">
                                 <a href ng-click="addMeta()" class="btn btn-primary"><i class="fa fa-plus"></i></a>
@@ -119,7 +119,7 @@
                                 <key-changer key="metaKey" items="view.property.adapter.metadata"></key-changer>
                             </div>
                             <div class="col-md-6 no-padding">
-                                <expr ng-model="metaValue" index="{{ metaKey }}" handle-item-update="updateMetaValue(index, value)" placeholder="value" self="true"></expr>
+                                <expr ng-model="metaValue" index="{{ metaKey }}" handle-item-update="updateMetaValue(index, value)" placeholder="value" self="true" self-type="view.property.type" self-item-type="view.property.items.type"></expr>
                             </div>
                             <span class="input-group-btn">
                                 <a href ng-click="removeMeta(metaKey)" class="btn btn-default"><i class="fa fa-remove"></i></a>

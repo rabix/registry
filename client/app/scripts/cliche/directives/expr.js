@@ -18,17 +18,45 @@ angular.module('registryApp.cliche')
                 index: '@',
                 placeholder: '@',
                 self: '@',
+                selfType: '=?',
+                selfItemType: '=?',
                 onlyExpr: '@',
                 handleItemUpdate: '&'
             },
-            controller: ['$scope', '$modal', function ($scope, $modal) {
+            controller: ['$scope', '$modal', 'SandBox', 'Helper', function ($scope, $modal, SandBox, Helper) {
 
                 $scope.view = {};
                 $scope.view.model = $scope.ngModel;
                 $scope.view.placeholder = $scope.placeholder || 'Enter value';
                 $scope.view.type = $scope.type || 'string';
 
-                // legacy structure
+                $scope.view.exprError = '';
+
+                /**
+                 * Check if expression is valid
+                 */
+                var checkExpression = function () {
+
+                    if ($scope.view.model && $scope.view.model.$expr) {
+
+                        var self = $scope.self ? {$self: Helper.getTestData($scope.selfType, $scope.selfItemType)} : {};
+
+                        SandBox.evaluate($scope.view.model.$expr, self)
+                            .then(function () {
+                                $scope.view.exprError = '';
+                            }, function (error) {
+                                $scope.view.exprError = error.name + ':' + error.message;
+                            });
+                    } else {
+                        $scope.view.exprError = '';
+                    }
+
+                };
+
+                /* init check of the expression if defined */
+                checkExpression();
+
+                // legacy structure, can be deleted later
                 if ($scope.view.model && $scope.view.model.expr) {
                     $scope.view.model.$expr = $scope.view.model.expr;
                     delete $scope.view.model.expr;
@@ -36,6 +64,7 @@ angular.module('registryApp.cliche')
 
                 $scope.$watch('view.model', function (n, o) {
                     if (n !== o) {
+                        checkExpression();
                         if (_.isUndefined($scope.handleItemUpdate)) {
                             $scope.ngModel = n;
                         } else {
@@ -46,12 +75,20 @@ angular.module('registryApp.cliche')
 
                 $scope.$watch('view.model.$expr', function (n, o) {
                     if (n !== o) {
+                        checkExpression();
                         $scope.handleItemUpdate({index: $scope.index, value: $scope.view.model});
                     }
                 });
 
+                $scope.$watch('selfType', function (n, o) { if (n !== o) { checkExpression(); } });
+
+                $scope.$watch('selfItemType', function (n, o) { if (n !== o) { checkExpression(); } });
+
                 $scope.$watch('ngModel', function (n, o) {
-                    if (n !== o) { $scope.view.model = n; }
+                    if (n !== o) {
+                        checkExpression();
+                        $scope.view.model = n;
+                    }
                 });
 
                 /**

@@ -1,8 +1,12 @@
 <div class="expression-wrap">
 
-    <div class="input-group">
+    <div class="input-group" ng-class="{error: view.exprError}">
+
+        <i class="fa fa-warning error" ng-if="view.exprError" title="{{ view.exprError }}"></i>
+
         <input ng-if="view.model.$expr" type="text" class="form-control" ng-model="view.model.$expr" readonly>
         <input ng-if="!view.model.$expr" type="{{ view.type }}" class="form-control" ng-model="view.model" placeholder="{{ view.placeholder }}" ng-readonly="onlyExpr">
+
         <span class="input-group-btn">
             <a href
                class="btn btn-expression"

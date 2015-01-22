@@ -17,6 +17,7 @@ var mapDefinition = {
         outputs: {type: 'object', required: true},
         adapter: {type: 'object'},
         script: {type: 'string'},
+        files: {type: 'array'},
         '@type': {type: 'string'}
     },
     softwareDescription: {

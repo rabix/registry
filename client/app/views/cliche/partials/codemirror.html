@@ -2,16 +2,20 @@
 
     <div class="codemirror-editor"></div>
 
-    <pre ng-if="!view.error" class="result">{{ view.result || 'Hit "execute" to see the result of your expression' }}</pre>
+    <div ng-if="!view.error" class="result">{{ view.defaultResult ? 'Hit "execute" to see the result of your expression' : (view.result || 'Empty result') }}</div>
 
-    <pre ng-if="view.error" class="result error"><strong>Type:</strong> {{ view.error.name }}<br/><strong>Message:</strong> {{ view.error.message }}</pre>
+    <div ng-if="view.error" class="result error">
+        <p ng-if="view.firstTry">There is an error in your expression. Please confirm if you want to load it.</p>
+        <strong>Type:</strong> {{ view.error.name }}<br/>
+        <strong>Message:</strong> {{ view.error.message }}
+    </div>
 
     <div class="main-actions">
         <button class="btn btn-warning" ng-click="execute()">Execute</button>
-        <button class="btn btn-primary" ng-click="load()">Load</button>
         <div class="pull-right">
-            <button class="btn btn-danger" ng-click="clear()">Clear</button>
             <button class="btn btn-default" ng-click="cancel()">Cancel</button>
+            <button class="btn btn-danger" ng-click="clear()">Clear</button>
+            <button class="btn btn-primary" ng-click="load()">{{ view.firstTry ? 'Confirm' : 'Load' }}</button>
         </div>
     </div>
 

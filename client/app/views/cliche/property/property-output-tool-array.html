@@ -15,7 +15,10 @@
         <div class="col-md-4 box-col">
             <strong class="key">Value:</strong>
             <div class="value">
-                <div class="value">{{ prop.adapter.value.$expr}}</div>
+                <div class="value">
+                    <i class="fa fa-warning error" ng-if="view.canHaveExpr.value.error" title="{{ view.canHaveExpr.value.error }}"></i>
+                    {{ prop.adapter.value.$expr}}
+                </div>
                 <i ng-if="!prop.adapter.value">Not defined</i>
             </div>
         </div>
@@ -23,7 +26,10 @@
 
         <div class="col-md-4 box-col">
             <strong class="key">Glob:</strong>
-            <div class="value">{{ prop.adapter.glob.$expr ? prop.adapter.glob.$expr : prop.adapter.glob }}</div>
+            <div class="value">
+                <i class="fa fa-warning error" ng-if="view.canHaveExpr.glob.error" title="{{ view.canHaveExpr.glob.error }}"></i>
+                {{ prop.adapter.glob.$expr ? prop.adapter.glob.$expr : prop.adapter.glob }}
+            </div>
             <i ng-if="!prop.adapter.glob">Not defined</i>
         </div>
         <!-- END Glob -->
@@ -41,7 +47,10 @@
 
         <div class="col-md-4 box-col">
             <strong class="key">Metadata:</strong>
-            <div class="value">{{ view.metadata }}</div>
+            <div class="value">
+                <i class="fa fa-warning error" ng-if="view.canHaveExpr.metadata.error" title="{{ view.canHaveExpr.metadata.error }}"></i>
+                {{ view.metadata }}
+            </div>
             <i ng-if="!view.metadata">Not defined</i>
         </div>
         <!-- END Metadata -->
@@ -52,7 +61,10 @@
                 <span ng-if="prop.adapter.secondaryFiles.length > 0">{{ prop.adapter.secondaryFiles.join(', ') }}</span>
                 <i ng-if="!prop.adapter.secondaryFiles.length">Not defined</i>
             </div>
-            <div ng-if="prop.adapter.secondaryFiles.$expr" class="value">{{ prop.adapter.secondaryFiles.$expr }}</div>
+            <div ng-if="prop.adapter.secondaryFiles.$expr" class="value">
+                <i class="fa fa-warning error" ng-if="view.canHaveExpr.secondaryFiles.error" title="{{ view.canHaveExpr.secondaryFiles.error }}"></i>
+                {{ prop.adapter.secondaryFiles.$expr }}
+            </div>
         </div>
         <!-- END Secondary Files -->
 

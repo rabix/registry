@@ -15,6 +15,8 @@ angular.module('registryApp.cliche')
         $scope.view.result = '';
         $scope.view.error = '';
 
+        $scope.view.defaultResult = true;
+
         var timeoutId = $timeout(function () {
 
             mirror = CodeMirror($element[0].querySelector('.codemirror-editor'), {
@@ -31,20 +33,29 @@ angular.module('registryApp.cliche')
          */
         $scope.execute = function () {
 
+            $scope.view.defaultResult = false;
+
             var code = mirror.getValue();
 
-            SandBox.evaluate(code, {$self: $scope.arg})
-                .then(function (result) {
+            try {
+                var self = $scope.arg ? {$self: JSON.parse($scope.arg)} : {};
 
-                    $scope.view.result = result;
-                    $scope.view.error = '';
+                SandBox.evaluate(code, self)
+                    .then(function (result) {
 
-                }, function (error) {
+                        $scope.view.result = result;
+                        $scope.view.error = '';
 
-                    $scope.view.result = '';
-                    $scope.view.error = error;
+                    }, function (error) {
 
-                });
+                        $scope.view.result = '';
+                        $scope.view.error = error;
+
+                    });
+            } catch (e) {
+                $scope.view.error = e;
+            }
+
         };
 
         /**
@@ -54,17 +65,32 @@ angular.module('registryApp.cliche')
 
             var code = mirror.getValue();
 
-            SandBox.evaluate(code, {$self: $scope.arg})
-                .then(function () {
+            try {
+                var self = $scope.arg ? {$self: JSON.parse($scope.arg)} : {};
 
-                    $scope.handleLoad({expr: code});
+                SandBox.evaluate(code, self)
+                    .then(function () {
 
-                }, function (error) {
+                        $scope.handleLoad({expr: code});
 
-                    $scope.view.result = '';
-                    $scope.view.error = error;
+                    }, function (error) {
 
-                });
+                        if (!$scope.view.firstTry) {
+
+                            $scope.view.firstTry = true;
+
+                            $scope.view.result = '';
+                            $scope.view.error = error;
+
+                        } else {
+                            $scope.handleLoad({expr: code});
+                        }
+
+                    });
+            } catch (e) {
+                $scope.view.error = e;
+            }
+
         };
 
         /**

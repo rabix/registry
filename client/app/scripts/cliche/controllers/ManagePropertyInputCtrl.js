@@ -21,6 +21,9 @@ angular.module('registryApp.cliche')
 
         $scope.view.disabled = ($scope.view.property.items && $scope.view.property.items.type) === 'object';
         $scope.view.isEnum = _.isArray($scope.view.property.enum);
+        $scope.view.adapter = !_.isUndefined($scope.view.property.adapter);
+
+        var cacheAdapter = {};
 
         /**
          * Check if input has adapter section and if not add it
@@ -127,6 +130,20 @@ angular.module('registryApp.cliche')
                 $scope.view.property.adapter.value = value;
             } else {
                 delete $scope.view.property.adapter.value;
+            }
+
+        };
+
+        /**
+         * Toggle adapter definition
+         */
+        $scope.toggleAdapter = function () {
+
+            if ($scope.view.adapter) {
+                $scope.view.property.adapter = cacheAdapter;
+            } else {
+                cacheAdapter = angular.copy($scope.view.property.adapter);
+                delete $scope.view.property.adapter;
             }
 
         };

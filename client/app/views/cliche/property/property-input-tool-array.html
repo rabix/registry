@@ -32,7 +32,10 @@
         <div class="col-md-3 box-col">
             <strong class="key">Value:</strong>
             <div class="value">
-                <div ng-if="prop.items.type !== 'object'" class="value">{{ prop.adapter.value.$expr }}</div>
+                <div ng-if="prop.items.type !== 'object'" class="value">
+                    <i class="fa fa-warning error" ng-if="view.exprError" title="{{ view.exprError }}"></i>
+                    {{ prop.adapter.value.$expr }}
+                </div>
                 <i ng-if="prop.items.type === 'object'">none</i>
                 <i ng-if="prop.items.type !== 'object' && !prop.adapter.value">Not defined</i>
             </div>

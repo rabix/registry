@@ -20,10 +20,8 @@
 
     <div ng-if="!view.loading" class="content content-mix flex-box-column">
 
-        <section ng-show="view.tab === 'preview'" class="tab preview">
-            <div class="col flex-box-column flex-one content-col">
-                <div class="pipeline-wrap flex-box-column flex-one" pipeline="{}" preview-node="::view.previewNode"></div>
-            </div>
+        <section ng-show="view.tab === 'preview'" class="tab preview flex-box-column flex-one">
+            <div class="pipeline-wrap flex-box-column flex-one" pipeline="{}" preview-node="::view.previewNode"></div>
         </section>
 
         <section ng-show="view.tab === 'info'" class="tab info">
