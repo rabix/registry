@@ -38,9 +38,9 @@ angular.module('registryApp.cliche')
             var code = mirror.getValue();
 
             try {
-                var self = JSON.parse($scope.arg);
+                var self = $scope.arg ? {$self: JSON.parse($scope.arg)} : {};
 
-                SandBox.evaluate(code, {$self: self})
+                SandBox.evaluate(code, self)
                     .then(function (result) {
 
                         $scope.view.result = result;
@@ -66,9 +66,9 @@ angular.module('registryApp.cliche')
             var code = mirror.getValue();
 
             try {
-                var self = JSON.parse($scope.arg);
+                var self = $scope.arg ? {$self: JSON.parse($scope.arg)} : {};
 
-                SandBox.evaluate(code, {$self: self})
+                SandBox.evaluate(code, self)
                     .then(function () {
 
                         $scope.handleLoad({expr: code});
