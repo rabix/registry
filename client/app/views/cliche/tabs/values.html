@@ -8,21 +8,30 @@
                     <label class="control-label">Allocated Resources</label>
                     <div class="input-property-body">
                         <div class="col-md-6">
-                            <label class="control-label">CPU</label>
-                            <input type="{{ view.toolForm.requirements.resources.cpu.$expr ? 'text' : 'number' }}"
-                                   class="form-control" ng-model="view.jobForm.allocatedResources.cpu"
-                                   ng-readonly="view.toolForm.requirements.resources.cpu.$expr"
-                                   min="{{ view.toolForm.requirements.resources.cpu.$expr ? 0 : view.toolForm.requirements.resources.cpu }}">
+                            <div class="form-group" ng-class="{'has-error': forms.jobForm.arCpu.$invalid}">
+                                <label class="control-label">CPU</label>
+                                <input type="{{ view.toolForm.requirements.resources.cpu.$expr ? 'text' : 'number' }}"
+                                       class="form-control"
+                                       name="arCpu"
+                                       ng-model="view.jobForm.allocatedResources.cpu"
+                                       ng-readonly="view.toolForm.requirements.resources.cpu.$expr"
+                                       min="{{ view.toolForm.requirements.resources.cpu.$expr ? 0 : view.toolForm.requirements.resources.cpu }}">
+                            </div>
                         </div>
                         <div class="col-md-6">
-                            <label class="control-label">Memory</label>
-                            <input type="{{ view.toolForm.requirements.resources.mem.$expr ? 'text' : 'number' }}"
-                                   class="form-control" ng-model="view.jobForm.allocatedResources.mem"
-                                   ng-readonly="view.toolForm.requirements.resources.mem.$expr"
-                                   min="{{ view.toolForm.requirements.resources.mem.$expr ? 0 : view.toolForm.requirements.resources.mem }}">
+                            <div class="form-group" ng-class="{'has-error': forms.jobForm.arMem.$invalid}">
+                                <label class="control-label">Memory</label>
+                                <input type="{{ view.toolForm.requirements.resources.mem.$expr ? 'text' : 'number' }}"
+                                       class="form-control"
+                                       name="arMem"
+                                       ng-model="view.jobForm.allocatedResources.mem"
+                                       ng-readonly="view.toolForm.requirements.resources.mem.$expr"
+                                       min="{{ view.toolForm.requirements.resources.mem.$expr ? 0 : view.toolForm.requirements.resources.mem }}">
+                            </div>
                         </div>
                     </div>
                 </div>
+
             </div>
 
             <h4>Inputs</h4>
