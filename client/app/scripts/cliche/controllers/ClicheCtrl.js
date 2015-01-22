@@ -410,6 +410,16 @@ angular.module('registryApp.cliche')
         };
 
         /**
+         * Add file to file list
+         */
+        $scope.addFile = function () {
+
+            if (_.isUndefined($scope.view.toolForm.files)) { $scope.view.toolForm.files = []; }
+
+            $scope.view.toolForm.files.push({name: '', $expr: ''});
+        };
+
+        /**
          * Remove item from the baseCmd
          *
          * @param {integer} index
@@ -423,6 +433,16 @@ angular.module('registryApp.cliche')
         };
 
         /**
+         * Remove item from the files
+         *
+         * @param {integer} index
+         * @returns {boolean}
+         */
+        $scope.removeFile = function (index) {
+            $scope.view.toolForm.files.splice(index, 1);
+        };
+
+        /**
          * Update baseCmd item if expression defined
          *
          * @param {integer} index
@@ -430,6 +450,16 @@ angular.module('registryApp.cliche')
          */
         $scope.updateBaseCmd = function (index, value) {
             $scope.view.toolForm.adapter.baseCmd[index] = value;
+        };
+
+        /**
+         * Update file item if expression defined
+         *
+         * @param {integer} index
+         * @param {*} value
+         */
+        $scope.updateFile = function (index, value) {
+            $scope.view.toolForm.files[index].$expr = value;
         };
 
         /**
