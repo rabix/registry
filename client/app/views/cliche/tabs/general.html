@@ -61,7 +61,7 @@
         <div class="enum-list-wrap">
             <a href ng-click="addFile()" class="btn btn-default add-enum-item"><i class="fa fa-plus"></i></a>
             <div class="enum-list-container">
-                <ul class="enum-list" ng-class="{wide: view.toolForm.files.length === 1}">
+                <ul class="enum-list">
                     <li ng-repeat="file in view.toolForm.files track by $index">
                         <div class="enum-field form-group form-group-file">
 
@@ -73,7 +73,7 @@
                             </div>
 
                         </div>
-                        <a href ng-hide="view.toolForm.files.length === 1" class="fa fa-remove remove-btn" ng-click="removeFile($index)"></a>
+                        <a href class="fa fa-remove remove-btn" ng-click="removeFile($index)"></a>
                     </li>
                 </ul>
                 <p ng-if="!view.toolForm.files || view.toolForm.files.length === 0" class="alert alert-info">Click + on the left to add files</p>
