@@ -58,11 +58,6 @@ angular.module('registryApp.common')
                 number: 332.1234242,
                 boolean: false,
                 array: {
-//                    file: ['text-file.txt', 'output.sam'],
-//                    directory: ['one-dir', 'other-dir', 'one-another-dir_with_underscore'],
-//                    string: ['small', 'string', 'that', 'becomes-huge'],
-//                    integer: [1, 2, 42, 404, 1000],
-//                    number: [4.3, 23.2133, 3, 2.4441, 111.31]
                     file: 'i-am-file.txt',
                     directory: 'dir-me-dir-me-a-man_after_midnight',
                     string: 'test',
