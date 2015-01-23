@@ -7,7 +7,7 @@
 'use strict';
 
 angular.module('registryApp.cliche')
-    .controller('ManagePropertyInputCtrl', ['$scope', '$modalInstance', 'Data', 'options', function ($scope, $modalInstance, Data, options) {
+    .controller('ManagePropertyInputCtrl', ['$scope', '$modalInstance', 'Data', 'Helper', 'options', function ($scope, $modalInstance, Data, Helper, options) {
 
         $scope.view = {};
         $scope.view.property = angular.copy(options.property);
@@ -21,7 +21,6 @@ angular.module('registryApp.cliche')
 
         $scope.view.disabled = ($scope.view.property.items && $scope.view.property.items.type) === 'object';
         $scope.view.isEnum = _.isArray($scope.view.property.enum);
-        $scope.view.adapter = !_.isUndefined($scope.view.property.adapter);
 
         var cacheAdapter = {};
 
@@ -31,10 +30,17 @@ angular.module('registryApp.cliche')
         var checkInputAdapter = function() {
 
             if (_.isUndefined($scope.view.property.adapter) && options.toolType === 'tool') {
-                $scope.view.property.adapter = {};
+                $scope.view.property.adapter = {separator: ' '};
             }
 
         };
+
+        if ($scope.view.mode === 'add') {
+            $scope.view.adapter = true;
+            checkInputAdapter();
+        } else {
+            $scope.view.adapter = !_.isUndefined($scope.view.property.adapter);
+        }
 
         /**
          * Save property changes
@@ -53,6 +59,19 @@ angular.module('registryApp.cliche')
             if ($scope.view.mode === 'edit') {
                 $modalInstance.close({prop: $scope.view.property, required: $scope.view.required});
             } else {
+
+                if (options.toolType === 'tool') {
+
+                    if (!_.isArray(options.inputs)) {
+                        options.inputs[$scope.view.name] = Helper.getDefaultInputValue(
+                            $scope.view.name,
+                            $scope.view.property.enum,
+                            $scope.view.property.type,
+                            ($scope.view.property.items ? $scope.view.property.items.type : null)
+                        );
+                    }
+                }
+
                 Data.addProperty('input', $scope.view.name, $scope.view.property, options.properties)
                     .then(function() {
                         $modalInstance.close({name: $scope.view.name, required: $scope.view.required});

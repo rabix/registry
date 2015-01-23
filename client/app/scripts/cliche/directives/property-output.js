@@ -67,6 +67,23 @@ angular.module('registryApp.cliche')
                     var errors = [];
                     var itemType = ($scope.prop.items && $scope.prop.items.type) ? $scope.prop.items.type : null;
 
+                    var evaluate = function (expr, self) {
+
+                        var deferred = $q.defer();
+
+                        SandBox.evaluate(expr, self)
+                            .then(function () {
+                                deferred.resolve();
+                            }, function (error) {
+                                // TODO: should use deferred.notify() but it doesn't work for some reason
+                                //deferred.notify(error.name + ':' + error.message);
+                                errors.push(error.name + ':' + error.message);
+                                deferred.reject(errors);
+                            });
+
+                        return deferred.promise;
+                    };
+
                     if ($scope.prop.adapter) {
                         _.each($scope.view.canHaveExpr, function (conf, name) {
                             if ($scope.prop.adapter[name]) {
@@ -76,21 +93,8 @@ angular.module('registryApp.cliche')
                                 if (name === 'metadata') {
 
                                     _.each($scope.prop.adapter.metadata, function(v, k) {
-
                                         if (k !== '__inherit__' && v.$expr) {
-
-                                            var deferred = $q.defer();
-
-                                            SandBox.evaluate(v.$expr, self)
-                                                .then(function () {
-                                                    deferred.resolve();
-                                                }, function (error) {
-                                                    // TODO: should use deferred.notify() but it doesn't work for some reason
-                                                    errors.push(error.name + ':' + error.message);
-                                                    deferred.reject(errors);
-                                                });
-
-                                            promises.push(deferred.promise);
+                                            promises.push(evaluate(v.$expr, self));
                                         }
                                     });
 

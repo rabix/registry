@@ -73,9 +73,42 @@ angular.module('registryApp.common')
 
             output = map[type];
 
-            if (itemType) {
-                output = output[itemType];
-            }
+            if (itemType) { output = output[itemType]; }
+
+            return output;
+
+        };
+
+        /**
+         * Get default input value when creating new input
+         *
+         * @param {string} name
+         * @param {array} enumArr
+         * @param {string} type
+         * @param {string} itemType
+         * @returns {*}
+         */
+        var getDefaultInputValue = function (name, enumArr, type, itemType) {
+
+            var output;
+            var map = {
+                file: {path: name},
+                string: enumArr ? enumArr[0] : name,
+                integer: 0,
+                number: 0,
+                boolean: false,
+                array: {
+                    file: [{path: name}],
+                    string: [name],
+                    integer: [0],
+                    number: [0],
+                    object: {}
+                }
+            };
+
+            output = map[type];
+
+            if (itemType) { output = output[itemType]; }
 
             return output;
 
@@ -84,7 +117,8 @@ angular.module('registryApp.common')
         return {
             isValidName: isValidName,
             getDomain: getDomain,
-            getTestData: getTestData
+            getTestData: getTestData,
+            getDefaultInputValue: getDefaultInputValue
         };
 
     }]);

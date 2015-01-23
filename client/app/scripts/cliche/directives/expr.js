@@ -26,7 +26,7 @@ angular.module('registryApp.cliche')
             controller: ['$scope', '$modal', 'SandBox', 'Helper', function ($scope, $modal, SandBox, Helper) {
 
                 $scope.view = {};
-                $scope.view.model = $scope.ngModel;
+                $scope.view.model = angular.copy($scope.ngModel);
                 $scope.view.placeholder = $scope.placeholder || 'Enter value';
                 $scope.view.type = $scope.type || 'string';
 
@@ -65,31 +65,24 @@ angular.module('registryApp.cliche')
                 $scope.$watch('view.model', function (n, o) {
                     if (n !== o) {
                         checkExpression();
-                        if (_.isUndefined($scope.handleItemUpdate)) {
-                            $scope.ngModel = n;
-                        } else {
+                        if (!_.isUndefined($scope.handleItemUpdate)) {
                             $scope.handleItemUpdate({index: $scope.index, value: n});
                         }
                     }
-                });
+                }, true);
 
                 $scope.$watch('view.model.$expr', function (n, o) {
                     if (n !== o) {
                         checkExpression();
-                        $scope.handleItemUpdate({index: $scope.index, value: $scope.view.model});
+                        if (!_.isUndefined($scope.handleItemUpdate)) {
+                            $scope.handleItemUpdate({index: $scope.index, value: $scope.view.model});
+                        }
                     }
                 });
 
                 $scope.$watch('selfType', function (n, o) { if (n !== o) { checkExpression(); } });
 
                 $scope.$watch('selfItemType', function (n, o) { if (n !== o) { checkExpression(); } });
-
-                $scope.$watch('ngModel', function (n, o) {
-                    if (n !== o) {
-                        checkExpression();
-                        $scope.view.model = n;
-                    }
-                });
 
                 /**
                  * Edit custom expression for input value evaluation

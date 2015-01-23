@@ -17,9 +17,10 @@ angular.module('registryApp.cliche')
                 toolType: '@',
                 properties: '=',
                 req: '=',
+                inputs: '=?',
                 handler: '&'
             },
-            controller: ['$scope', '$modal', function ($scope, $modal) {
+            controller: ['$scope', '$modal', 'Data', function ($scope, $modal, Data) {
 
                 var isOpen = false;
 
@@ -50,7 +51,8 @@ angular.module('registryApp.cliche')
                                 return {
                                     type: $scope.type,
                                     toolType: $scope.toolType,
-                                    properties: $scope.properties
+                                    properties: $scope.properties,
+                                    inputs: $scope.inputs
                                 };
                             }
                         }
@@ -62,6 +64,10 @@ angular.module('registryApp.cliche')
                         if (result.required) { $scope.req.push(result.name); }
 
                         if (typeof $scope.handler === 'function') { $scope.handler(); }
+
+                        if ($scope.toolType === 'tool') {
+                            Data.generateCommand();
+                        }
 
                     }, function() {
                         isOpen = false;
