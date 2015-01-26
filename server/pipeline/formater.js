@@ -21,7 +21,7 @@ var formater = {
         exposed = exposed || false;
         values = values || false;
 
-        var json = _.cloneDeep(j);
+        var json = _.clone(j);
 
         // reset schema
         this.packedSchema = null;
@@ -78,7 +78,7 @@ var formater = {
 
     toPipelineSchema: function (j) {
 
-        var json = _.cloneDeep(j);
+        var json = _.clone(j);
 
         // reset schema
         this.packedSchema = null;
@@ -558,7 +558,7 @@ var formater = {
         model[internalType].properties = {};
         model[internalType].properties[schema.id] = schema;
 
-        model[internalType].properties[schema.id].name = schema.name || schema.id;
+        model[internalType].properties[schema.id].name = schema.id;
         model[internalType].properties[schema.id].id = schema.id;
 
         model.id = id;

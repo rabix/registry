@@ -25,7 +25,7 @@ var config = {
             path: '/data/storage/rabix-registry/builds'
         },
         port: 3000,
-        db: 'mongodb://localhost/server-development',
+        db: 'mongodb://localhost/server-staging',
         clientPath: '../../client/app',
         github: {
             clientId: 'bffb0517d8c629f2b2db',

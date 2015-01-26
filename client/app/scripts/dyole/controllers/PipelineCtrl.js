@@ -149,13 +149,13 @@ angular.module('registryApp.dyole')
             $scope.pipeline.json = Pipeline.getJSON();
 
             Workflow.getURL($scope.pipeline).then(function (url) {
-
                 $modal.open({
                     template: $templateCache.get('views/cliche/partials/job-url-response.html'),
                     controller: ['$scope', '$modalInstance', 'data', function($scope, $modalInstance, data) {
 
                         $scope.view = {};
-                        $scope.view.trace = data.trace;
+                        $scope.view.data = data;
+//                        $scope.view.trace = data.trace;
 
                         /**
                          * Close the modal window

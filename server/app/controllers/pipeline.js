@@ -91,13 +91,15 @@ router.post('/workflow/format', function (req, res) {
 router.post('/workflow/format/upload', function (req, res) {
     var p = req.body.pipeline;
 
-    var folder, pipeline = formater.toRabixSchema(p.json);
+    var folder, pipeline = p.json;
 
     if (req.user) {
         folder = 'users/' + req.user.login + '/pipelines/' + p.name;
     } else {
         folder = 'others/pipelines';
     }
+
+    p.name = p.name || 'sample';
 
     var timeStamp = Date.now().toString();
 
@@ -640,25 +642,31 @@ router.get('/workflow-revisions/:id', function (req, res, next) {
     PipelineRevision.findById(req.params.id).populate('pipeline').exec(function(err, pipeline) {
         if (err) { return next(err); }
 
-        Repo.populate(pipeline, 'pipeline.repo', function (err, p) {
+        if (!pipeline) {
+            res.status(404).json({message: 'Workflow not found'});
+        } else {
 
-            User.populate(p, {
-                path: 'pipeline.user',
-                select:  '_id email username'
-            }, function (err, pipe) {
+            Repo.populate(pipeline, 'pipeline.repo', function (err, p) {
 
-                var repo_public = p.pipeline.repo.is_public;
+                User.populate(p, {
+                    path: 'pipeline.user',
+                    select:  '_id email username'
+                }, function (err, pipe) {
 
-                pipe.json  = JSON.parse(pipe.json);
+                    var repo_public = p.pipeline.repo.is_public;
 
-                if (repo_public || (req.user && req.user.id === pipe.pipeline.user._id.toString() )) {
-                    res.json({data: pipe});
-                } else {
-                    res.status(401).json({message: 'Unauthorized, repository that this workflow belongs to is not public'});
-                }
+                    pipe.json  = JSON.parse(pipe.json);
+
+                    if (repo_public || (req.user && req.user.id === pipe.pipeline.user._id.toString() )) {
+                        res.json({data: pipe});
+                    } else {
+                        res.status(401).json({message: 'Unauthorized, repository that this workflow belongs to is not public'});
+                    }
+                });
+
             });
 
-        });
+        }
     });
 
 });
@@ -869,9 +877,10 @@ router.post('/workflow/validate', function (req, res, next) {
         console.log('Caught error: ' , e);
         errors.errors.push(e);
     }
-//    var errors = {errors: [], paramErrors: []};
 
-    if (errors.errors.length === 0 && errors.paramErrors.length === 0) {
+//    errors = {errors: [], paramErrors: []};
+
+    if (errors.errors.length === 0) {
         res.json({json: formated});
     } else {
         res.status(400).json(errors);

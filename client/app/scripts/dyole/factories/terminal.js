@@ -368,7 +368,7 @@ angular.module('registryApp.dyole')
             _getConnectionCoordsDiff: function (e) {
                 var diff = {},
                     ctm = this.terminal.node.getScreenCTM(),
-                    translation, pt;
+                    translation;
 
                 translation = this._getElTranslation();
 

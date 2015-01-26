@@ -138,6 +138,9 @@
   &:hover {
     text-decoration: none !important;
   }
+
+  width: 100%;
+  @extend %ellipsis;
 }
 
 /* Remove button for the box */
