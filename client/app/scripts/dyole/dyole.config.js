@@ -14,8 +14,6 @@ angular.module('registryApp.dyole', [])
                 y: 0,
                 zoom: 1
             },
-            description: '',
-            name: '',
             nodes: {}
         },
         nodes: [],
