@@ -120,7 +120,7 @@ angular.module('registryApp.app')
         var getRevisions = function(skip, searchTerm, appId) {
 
             var isSearch = !(_.isUndefined(searchTerm) || _.isEmpty(searchTerm));
-            var params = {skip: skip};
+            var params = {skip: skip || 0};
 
             if (isSearch) {
                 params.q = searchTerm;

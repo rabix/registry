@@ -1,0 +1,123 @@
+{
+    "name": "local-tool-and-job",
+    "fixtures": {
+        "tool": {
+            "name": "tool for tpl",
+            "schema": "https://github.com/common-workflow-language/common-workflow-language/blob/draft-1/specification/tool-description.md",
+            "description": "",
+            "documentAuthor": "milica.kadic.87@gmail.com",
+            "requirements": {
+                "environment": {
+                    "container": {
+                        "type": "docker",
+                        "uri": "",
+                        "imageId": ""
+                    }
+                },
+                "resources": {
+                    "cpu": 0,
+                    "mem": 5000,
+                    "ports": [],
+                    "diskSpace": 0,
+                    "network": false
+                }
+            },
+            "inputs": {
+                "type": "object",
+                "required": [],
+                "properties": {
+                    "string-not-enum": {
+                        "adapter": {
+                            "separator": " "
+                        },
+                        "type": "string"
+                    },
+                    "regular-arr": {
+                        "type": "array",
+                        "adapter": {
+                            "separator": " ",
+                            "prefix": "",
+                            "order": 0,
+                            "itemSeparator": ","
+                        },
+                        "items": {
+                            "type": "string",
+                            "required": []
+                        }
+                    },
+                    "rec-arr": {
+                        "type": "array",
+                        "adapter": {
+                            "separator": " ",
+                            "prefix": "",
+                            "order": 0,
+                            "itemSeparator": " "
+                        },
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "string": {
+                                    "type": "string",
+                                    "adapter": {
+                                        "separator": " "
+                                    }
+                                },
+                                "int": {
+                                    "type": "string",
+                                    "adapter": {
+                                        "separator": " "
+                                    }
+                                }
+                            },
+                            "required": []
+                        }
+                    },
+                    "string": {
+                        "type": "string",
+                        "adapter": {
+                            "separator": " "
+                        }
+                    },
+                    "int": {
+                        "type": "integer",
+                        "adapter": {
+                            "separator": " ",
+                            "prefix": "",
+                            "order": 0
+                        }
+                    }
+                }
+            },
+            "outputs": {
+                "type": "object",
+                "required": [],
+                "properties": {}
+            },
+            "adapter": {
+                "baseCmd": [
+                    ""
+                ],
+                "stdout": "",
+                "args": []
+            },
+            "@type": "CommandLine"
+        },
+        "job": {
+            "inputs": {
+                "regular-arr": [
+                    "regular-arr"
+                ],
+                "rec-arr": [],
+                "string": "string",
+                "int": "int",
+                "string-not-enum": "string-not-enum"
+            },
+            "allocatedResources": {
+                "cpu": 0,
+                "ports": [],
+                "diskSpace": 0,
+                "network": false
+            }
+        }
+    }
+}
