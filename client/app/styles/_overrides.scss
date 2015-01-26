@@ -526,6 +526,8 @@ ul {
     padding: 15px;
     font-family: monospace;
     border: 1px solid $orange;
+    word-break: break-all;
+    word-wrap: break-word;
 
     &.error {
       color: #ff0000;

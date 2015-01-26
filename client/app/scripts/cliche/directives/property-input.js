@@ -35,6 +35,12 @@ angular.module('registryApp.cliche')
 
                 $scope.view.exprError = '';
 
+                if ($scope.prop.items && $scope.prop.items.type === 'object') {
+                    if (_.isUndefined($scope.prop.items.properties)) {
+                        $scope.prop.items.properties = {};
+                    }
+                }
+
                 /**
                  * Check if expression is valid
                  */

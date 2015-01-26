@@ -242,10 +242,12 @@ router.post('/jobs', filters.authenticated, function (req, res, next) {
         if (err) { return next(err); }
 
         if (count > 0) {
-            res.status(400).json({message: 'The "' + name + '" task already exists, please choose another name!'});
+            res.status(400).json({message: 'The "' + j.name + '" task already exists, please choose another name!'});
         } else {
 
             var job = new Job();
+
+            console.log(j);
 
             job.name = j.name;
             job.type = j.type;

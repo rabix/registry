@@ -57,6 +57,23 @@ angular.module('registryApp')
         }
 
         /**
+         * Remove empty values (only first level, non recursion and non-array like elements)
+         * Note: If you see empty values in array REMOVE THEM BY HAND JUST LIKE YOU ADDED THEM
+         *
+         * @param {object} json
+         */
+        var removeEmpty = function (json) {
+
+            _.each(json, function (obj, key) {
+                if ((typeof obj === 'string' || typeof obj === 'object') && _.isEmpty(obj)) {
+                    delete json[key];
+                }
+
+            });
+
+        };
+
+        /**
          * Pick app from the list
          */
         $scope.pickApp = function() {
@@ -141,6 +158,8 @@ angular.module('registryApp')
             }
 
             $scope.view.saving = true;
+
+            removeEmpty($scope.view.job.json.inputs);
 
             var job = {
                 name: $scope.view.job.name,
@@ -236,6 +255,8 @@ angular.module('registryApp')
             modalInstance.result.then(function(data) {
 
                 $scope.view.saving = true;
+
+                removeEmpty($scope.view.job.json.inputs);
 
                 var job = {
                     name: $scope.view.job.name,
