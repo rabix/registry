@@ -102,7 +102,7 @@ module.exports = function (app, config) {
 //        });
 
         console.error('Caught error: ', err);
-        res.status(err.status || 500).json({error: err.message || 'Request parse error'});
+        res.status(err.status || 500).json({error: err.body, message: err.message || 'Request parse error'});
 
     });
 
