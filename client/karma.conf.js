@@ -2,6 +2,7 @@
 // http://karma-runner.github.io/0.10/config/configuration-file.html
 
 module.exports = function (config) {
+
     config.set({
         plugins: [
 //            'karma-chrome-launcher',
@@ -32,19 +33,19 @@ module.exports = function (config) {
             'app/bower_components/angular-sanitize/angular-sanitize.js',
             'app/bower_components/angular-animate/angular-animate.js',
             'app/bower_components/angular-route/angular-route.js',
-            
+
             'app/bower_components/angular-bootstrap/ui-bootstrap-tpls.js',
             'app/bower_components/lodash/dist/lodash.js',
             'app/bower_components/ng-prettyjson/src/ng-prettyjson.js',
-            
+
             'app/bower_components/localforage/dist/localforage.js',
             'app/bower_components/angular-localForage/dist/angular-localForage.js',
-            
+
             'app/bower_components/zeroclipboard/dist/ZeroClipboard.js',
-            
+
             'app/bower_components/marked/lib/marked.js',
             'app/bower_components/angular-marked/angular-marked.js',
-            
+
             'app/bower_components/codemirror/lib/codemirror.js',
             'app/bower_components/codemirror/mode/javascript/javascript.js',
 
