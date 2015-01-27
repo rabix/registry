@@ -864,20 +864,18 @@ router.get('/workflow/repositories/:type', function (req, res, next) {
  */
 router.post('/workflow/validate', function (req, res, next) {
     var json = req.body.json || req.body;
-    
+
     if (typeof json === 'undefined') { res.status(400).json({error: 'Undefined json to validate'}); return false;}
-    if (typeof json === 'string') { json = JSON.parse(json); }
-
-    var errors = {},
-        formated = formater.toPipelineSchema(json);
-
-    try {
-        errors = validator.validate(formated);
-    } catch (e) {
-        console.log('Caught error: ' , e);
-        errors.errors.push(e);
+    if (typeof json === 'string') {
+        json = JSON.parse(json);
     }
 
+    var errors = {},
+        formated;
+
+    formated = formater.toPipelineSchema(json);
+
+    errors = validator.validate(formated);
 //    errors = {errors: [], paramErrors: []};
 
     if (errors.errors.length === 0) {
