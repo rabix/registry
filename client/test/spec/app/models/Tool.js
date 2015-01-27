@@ -11,7 +11,10 @@ describe('Model: Tool', function () {
 
     var store = {
         tools: _.find(__FIXTURES__, {name: 'tools'}).fixtures,
-        tool: _.find(__FIXTURES__, {name: 'tool'}).fixtures
+        revisions: _.find(__FIXTURES__, {name: 'tool-revisions'}).fixtures,
+        revision: _.find(__FIXTURES__, {name: 'tool-revision'}).fixtures,
+        tool: _.find(__FIXTURES__, {name: 'tool'}).fixtures,
+        groupedTools: _.find(__FIXTURES__, {name: 'grouped-tools'}).fixtures
     };
 
     beforeEach(module('registryApp'));
@@ -26,9 +29,14 @@ describe('Model: Tool', function () {
     beforeEach(function () {
 
         apiHandlers.tools = $httpBackend.when('GET', /\/api\/apps\?/).respond(store.tools);
+        apiHandlers.revisions = $httpBackend.when('GET', /\/api\/revisions\?/).respond(store.revisions);
+        apiHandlers.groupedTools = $httpBackend.when('GET', /\/api\/tool\/repositories\/(my|other)/).respond(store.groupedTools);
         apiHandlers.toolGet = $httpBackend.when('GET', /\/api\/apps\//).respond(store.tool);
+        apiHandlers.toolDelete = $httpBackend.when('DELETE', /\/api\/apps\//).respond({message: 'Tool successfully deleted'});
         apiHandlers.toolPost = $httpBackend.when('POST', /\/api\/apps\/(create|fork)/).respond({message: 'success'});
         apiHandlers.toolPut = $httpBackend.when('POST', /\/api\/revisions/).respond({message: 'success'});
+        apiHandlers.revisionGet = $httpBackend.when('GET', /\/api\/revisions\//).respond(store.revision);
+        apiHandlers.revisionDelete = $httpBackend.when('DELETE', /\/api\/revisions\//).respond({message: 'Revision successfully deleted'});
         apiHandlers.validate = $httpBackend.when('POST', /\/api\/validate/).respond({message: 'success'});
 
     });
@@ -170,6 +178,111 @@ describe('Model: Tool', function () {
         model.validateJson({});
 
         $httpBackend.expectPOST(apiBase + '/validate');
+
+        $httpBackend.flush();
+
+    });
+
+    describe('when getting tool revisions', function () {
+
+        afterEach(function () {
+            $httpBackend.flush();
+        });
+
+        it('should filter by default params if none provided', function () {
+
+            model.getRevisions();
+
+            $httpBackend.expectGET(apiBase + '/revisions?skip=0');
+        });
+
+        it('should filter by search term if provided', function () {
+
+            model.getRevisions(0, 'test');
+
+            $httpBackend.expectGET(apiBase + '/revisions?q=test&skip=0');
+        });
+
+        it('should filter by parent tool', function () {
+
+            var appId = '54b9334086b3c977657736cd';
+
+            model.getRevisions(10, null, appId);
+
+            $httpBackend.expectGET(apiBase + '/revisions?field_app_id=' + appId + '&skip=10');
+        });
+
+        it('should filter by parent tool which are filtered by search term', function () {
+
+            var appId = '54b9334086b3c977657736cd';
+
+            model.getRevisions(15, 'test', appId);
+
+            $httpBackend.expectGET(apiBase + '/revisions?field_app_id=' + appId + '&q=test&skip=15');
+        });
+
+    });
+
+    it('should fetch tool revision', function () {
+
+        var id = '54bd09c986b3c977657736ef';
+
+        model.getRevision(id);
+
+        $httpBackend.expectGET(apiBase + '/revisions/' + id);
+
+        $httpBackend.flush();
+
+    });
+
+    describe('when getting tool grouped by repos', function () {
+
+        afterEach(function () {
+            $httpBackend.flush();
+        });
+
+        it('should filter tools and scripts from mine repo', function () {
+
+            model.getGroupedTools('my');
+
+            $httpBackend.expectGET(apiBase + '/tool/repositories/my');
+        });
+
+        it('should filter tools and scripts from others repo', function () {
+
+            model.getGroupedTools('other');
+
+            $httpBackend.expectGET(apiBase + '/tool/repositories/other');
+        });
+
+        it('should filter tools and scripts from others repo by search term', function () {
+
+            model.getGroupedTools('other', 'test');
+
+            $httpBackend.expectGET(apiBase + '/tool/repositories/other?q=test');
+        });
+
+    });
+
+    it('should delete tool by id', function () {
+
+        var id = '54b9334086b3c977657736cd';
+
+        model.deleteTool(id);
+
+        $httpBackend.expectDELETE(apiBase + '/apps/' + id);
+
+        $httpBackend.flush();
+
+    });
+
+    it('should delete tool revision by id', function () {
+
+        var id = '54bd09c986b3c977657736ef';
+
+        model.deleteRevision(id);
+
+        $httpBackend.expectDELETE(apiBase + '/revisions/' + id);
 
         $httpBackend.flush();
 

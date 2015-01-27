@@ -20,7 +20,8 @@ angular.module('registryApp.cliche')
 
         $scope.view.tab = 'general';
         $scope.view.saving = false;
-        $scope.view.app = {};
+        $scope.view.app = null;
+        $scope.view.user = null;
 
         /* cliche mode: new or edit */
         $scope.view.mode = $routeParams.id ? 'edit' : 'new';
@@ -45,7 +46,6 @@ angular.module('registryApp.cliche')
         $scope.view.perPage = 10;
 
         $scope.view.classes = ['page', 'cliche'];
-        $scope.view.user = null;
 
         Loading.setClasses($scope.view.classes);
 
@@ -61,13 +61,9 @@ angular.module('registryApp.cliche')
 
         $scope.view.loading = true;
 
-        Repo.getRepos(0, '', true).then(function (repos) {
-            $scope.view.userRepos = repos.list;
-        });
-
         $scope.view.pages = {values: []};
-        $scope.view.page = {inputs: 1, outputs: 1, values: 1};
-        $scope.view.total = {inputs: 0, outputs: 0, values: 0};
+        $scope.view.page = {values: 1};
+        $scope.view.total = {values: 0};
 
         $scope.view.fakeRequired = [];
 
@@ -108,6 +104,10 @@ angular.module('registryApp.cliche')
             Data.generateCommand();
         };
 
+        Repo.getRepos(0, '', true).then(function (repos) {
+            $scope.view.userRepos = repos.list;
+        });
+
         Data.checkStructure().then(function() {
 
             var q = [];
@@ -117,6 +117,7 @@ angular.module('registryApp.cliche')
             } else {
                 q.push(Data.fetchLocalToolAndJob());
             }
+
             q.push(User.getUser());
 
             $q.all(q).then(function (result) {

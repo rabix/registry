@@ -1,0 +1,263 @@
+{
+    "name": "repos",
+    "fixtures": {
+        "list": [
+            {
+                "git": false,
+                "secret": "cb39fd7d-e07f-4a6b-bad3-78f71241417c",
+                "user": "54bfb6bc769d661722c3cf70",
+                "created_by": "nesicarh",
+                "owner": "nesicarh",
+                "description": "Utilities for variant calling and manipulating VCFs and BCFs.",
+                "name": "bcftools",
+                "_id": "54c63ee35d2d43793bcbce04",
+                "__v": 0,
+                "is_public": true
+            },
+            {
+                "git": false,
+                "secret": "b24ae14b-ef65-4799-840d-0663642aafd2",
+                "user": "546cc84b4bef598b37122cc4",
+                "created_by": "flipio",
+                "owner": "flipio",
+                "description": "filip production",
+                "name": "production",
+                "_id": "54c6165c8a214f1658077b25",
+                "__v": 0,
+                "is_public": true
+            },
+            {
+                "__v": 0,
+                "_id": "54c0ffa0769d661722c3cfe0",
+                "created_by": "nesicarh",
+                "description": "Toolkit for handling BAM files.",
+                "git": false,
+                "name": "bamtools",
+                "owner": "nesicarh",
+                "secret": "33747682-df38-49c1-a9a0-3156c093994d",
+                "user": "54bfb6bc769d661722c3cf70",
+                "is_public": true
+            },
+            {
+                "git": false,
+                "secret": "501b5080-742f-4a41-962a-c9c819eaae19",
+                "user": "54bfb6bc769d661722c3cf70",
+                "created_by": "nesicarh",
+                "owner": "nesicarh",
+                "description": "Breakdancer tool.",
+                "name": "Breakdancer",
+                "_id": "54bfb6d0769d661722c3cf71",
+                "__v": 0,
+                "is_public": true
+            },
+            {
+                "__v": 0,
+                "_id": "54bfaa3f769d661722c3cf67",
+                "created_by": "mladenj",
+                "git": false,
+                "name": "bedtools",
+                "owner": "mladenj",
+                "secret": "dc27ef32-9850-4a8d-ae48-34232f1b0991",
+                "user": "54bd1b9286b3c977657736f3",
+                "is_public": true
+            },
+            {
+                "__v": 0,
+                "_id": "54be911b769d661722c3cf44",
+                "created_by": "mladenj",
+                "description": "A repository containing fastqc tool.",
+                "git": false,
+                "name": "fastqc",
+                "owner": "mladenj",
+                "secret": "3f065b04-3d03-4a2e-9913-ea3d23a255a4",
+                "user": "54bd1b9286b3c977657736f3",
+                "is_public": true
+            },
+            {
+                "git": false,
+                "secret": "74c9adb2-3e90-4ccb-9df2-5bba03be9003",
+                "user": "549c1fabc94802d836b6fc9c",
+                "created_by": "sbg-oliver",
+                "owner": "sbg-oliver",
+                "name": "strelka",
+                "_id": "54be2cd686b3c97765773736",
+                "__v": 0,
+                "is_public": true
+            },
+            {
+                "git": false,
+                "secret": "394720a8-9008-445a-a3c7-da0649862287",
+                "user": "54b92d2086b3c977657736c3",
+                "created_by": "sarpera",
+                "owner": "sarpera",
+                "name": "sarp",
+                "_id": "54b92d8a86b3c977657736c4",
+                "__v": 0,
+                "is_public": true
+            },
+            {
+                "__v": 0,
+                "_id": "54b9127b9d7038e10b791666",
+                "created_by": "draskomilosevic",
+                "description": "samtools",
+                "git": false,
+                "name": "samtools",
+                "owner": "draskomilosevic",
+                "secret": "e4557b66-b5c3-457d-9661-20cbb74cface",
+                "user": "549c47059f934077618e089b",
+                "is_public": true
+            },
+            {
+                "__v": 0,
+                "_id": "54b7d6399d7038e10b79160c",
+                "created_by": "sbg-oliver",
+                "description": "",
+                "git": false,
+                "name": "snpEff",
+                "owner": "sbg-oliver",
+                "secret": "4f09aa47-f803-4ad4-b8e5-479f43c19aba",
+                "user": "549c1fabc94802d836b6fc9c",
+                "is_public": true
+            },
+            {
+                "git": false,
+                "secret": "1e9705c5-81cf-4583-a881-b3e82742604d",
+                "user": "549064581cb0bb317da9745a",
+                "created_by": "djordjeklisic",
+                "owner": "djordjeklisic",
+                "name": "sbg-snpEff",
+                "_id": "54b794cd9d7038e10b7915dc",
+                "__v": 0,
+                "is_public": true
+            },
+            {
+                "__v": 0,
+                "_id": "54b6a9ee9d7038e10b7915d0",
+                "created_by": "mladenj",
+                "description": "A repository containing samtools wrappers",
+                "git": false,
+                "name": "samtools",
+                "owner": "mladenj",
+                "secret": "c7167865-2807-441b-b6c4-7bae8a9cb4f6",
+                "user": "54bd1b9286b3c977657736f3",
+                "is_public": true
+            },
+            {
+                "git": false,
+                "secret": "d4b869f7-dceb-442c-bfe5-7e24d5a9d578",
+                "user": "5491c10846a096915e1f552f",
+                "created_by": "milica",
+                "owner": "milica",
+                "description": ".",
+                "name": "chimerascan",
+                "_id": "54b691b265453d4d05102e46",
+                "__v": 0,
+                "is_public": true
+            },
+            {
+                "git": false,
+                "secret": "86759173-210f-4ffe-baa2-bed8076ff9ed",
+                "user": "546cc84b4bef598b37122cc4",
+                "created_by": "flipio",
+                "owner": "flipio",
+                "description": "public repo",
+                "name": "public_filip",
+                "_id": "54b66dd5f30ca7795962143f",
+                "__v": 0,
+                "is_public": true
+            },
+            {
+                "__v": 0,
+                "_id": "54b65181f30ca7795962141c",
+                "created_by": "mladenj",
+                "description": "A repository containing vcftools wrappers.",
+                "git": false,
+                "name": "vcftools",
+                "owner": "mladenj",
+                "secret": "65c19598-7a0c-4961-a26b-65e530201c97",
+                "user": "54bd1b9286b3c977657736f3",
+                "is_public": true
+            },
+            {
+                "git": false,
+                "secret": "69b52c95-7931-4165-82b8-27e37ac3043f",
+                "user": "549c1fabc94802d836b6fc9c",
+                "created_by": "sbg-oliver",
+                "owner": "sbg-oliver",
+                "name": "sambamba",
+                "_id": "54a12b789f934077618e08b3",
+                "__v": 0,
+                "is_public": true
+            },
+            {
+                "__v": 0,
+                "_id": "549d930b9f934077618e08a5",
+                "created_by": "tziotas",
+                "description": "",
+                "git": false,
+                "name": "VarScan2",
+                "owner": "tziotas",
+                "secret": "3546bc16-77a7-4444-8fe3-83b8c4654c9c",
+                "user": "549d8a3b9f934077618e08a0",
+                "is_public": true
+            },
+            {
+                "git": false,
+                "secret": "454a3bb7-1e4d-4615-9987-7351db080ae7",
+                "user": "5485a7cefd79e7f979392693",
+                "created_by": "arsenijae",
+                "owner": "arsenijae",
+                "name": "chimerascan",
+                "_id": "549abc7a854bd8c80231a932",
+                "__v": 0,
+                "is_public": true
+            },
+            {
+                "git": false,
+                "secret": "a9231fc0-0674-4e29-a276-795c2564318e",
+                "user": "549064581cb0bb317da9745a",
+                "created_by": "djordjeklisic",
+                "owner": "djordjeklisic",
+                "name": "Picard",
+                "_id": "549064ae1cb0bb317da9745c",
+                "__v": 0,
+                "is_public": true
+            },
+            {
+                "git": false,
+                "secret": "d893373f-a184-4803-9525-03329346d604",
+                "user": "549064581cb0bb317da9745a",
+                "created_by": "djordjeklisic",
+                "owner": "djordjeklisic",
+                "name": "djole",
+                "_id": "549064901cb0bb317da9745b",
+                "__v": 0,
+                "is_public": true
+            },
+            {
+                "git": false,
+                "secret": "73b072e7-76a6-4e77-8555-251fe341580c",
+                "user": "547c7aaafd79e7f979392687",
+                "created_by": "StarvingMarvin",
+                "owner": "StarvingMarvin",
+                "name": "samtools",
+                "_id": "547c7b20fd79e7f979392688",
+                "__v": 0,
+                "is_public": true
+            },
+            {
+                "__v": 0,
+                "_id": "546cc85c4bef598b37122cc5",
+                "created_by": "flipio",
+                "description": "filip testing",
+                "git": false,
+                "name": "filip-test",
+                "owner": "flipio",
+                "secret": "19c61c58-8be5-4067-abc5-c3f91ea325bf",
+                "user": "546cc84b4bef598b37122cc4",
+                "is_public": true
+            }
+        ],
+        "total": 22
+    }
+}

@@ -12,6 +12,11 @@ angular.module('registryApp.dyole')
         $scope.ok = function () {
             var test = data.onEdit($scope.name);
 
+            if ($scope.form.$invalid) {
+                return false;
+            }
+
+
             if (test) {
                 data.onSave.call(data.scope, $scope.view.name);
                 $modalInstance.close();

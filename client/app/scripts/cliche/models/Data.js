@@ -16,7 +16,7 @@ angular.module('registryApp.cliche')
          *
          * @type {number}
          */
-        self.version = 21;
+        self.version = 22;
 
         /**
          * Tool json object
@@ -710,27 +710,19 @@ angular.module('registryApp.cliche')
          */
         self.checkStructure = function() {
 
-            var deferred = $q.defer();
-
-            $localForage.getItem('version')
+            return $localForage.getItem('version')
                 .then(function(version) {
 
                     if (version === self.version) {
-                        deferred.resolve();
                         return false;
-                    }
-
-                    $q.all([
+                    } else {
+                        return $q.all([
                             $localForage.setItem('version', self.version),
                             $localForage.setItem('tool', rawTool),
                             $localForage.setItem('job', rawJob)
-                        ]).then(function() {
-                            deferred.resolve();
-                        });
-
+                        ]);
+                    }
                 });
-
-            return deferred.promise;
 
         };
 

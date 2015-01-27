@@ -15,14 +15,25 @@ angular.module('registryApp.common')
          * @param {string} name
          * @returns {boolean}
          */
-        var isValidName = function (name) {
+        var isValidName = function (name, whiteSpace) {
 
             if (_.isEmpty(name)) { return false; }
 
             var pattern = /[\$\.]/g;
 
+            if (whiteSpace) {
+                pattern = /[\$\.\s]/g;
+            }
+
             return !pattern.test(name);
 
+        };
+
+        var hasWhiteSpace = function (name) {
+
+            if (_.isEmpty(name)) { return false; }
+
+            return /\s/.test(name);
         };
 
         /**

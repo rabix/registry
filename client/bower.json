@@ -16,7 +16,7 @@
     "lodash": "~2.4.1",
     "ng-prettyjson": "~0.1.1",
     "localforage": "~1.0.1",
-    "angular-localForage": "~0.2.10",
+    "angular-localForage": "~1.2.2",
     "fontawesome": "~4.2.0",
     "zeroclipboard": "~2.2.0",
     "codemirror": "~4.6.0",
