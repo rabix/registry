@@ -20,7 +20,7 @@ angular.module('registryApp.cliche')
 
         $scope.view.tab = 'general';
         $scope.view.saving = false;
-        $scope.view.app = null;
+        $scope.view.app = {};
         $scope.view.user = null;
 
         /* cliche mode: new or edit */

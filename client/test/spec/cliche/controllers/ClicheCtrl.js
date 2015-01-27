@@ -145,7 +145,7 @@ describe('Controller: ClicheCtrl', function () {
         expect($scope.view.loading).toBeTruthy();
         expect($scope.view.classes).toEqual(jasmine.any(Array));
 
-        expect($scope.view.app).toBeNull();
+        //expect($scope.view.app).toBeNull();
         expect($scope.view.user).toBeNull();
 
         expect($scope.view.propsExpanded).toEqual(jasmine.any(Object));
@@ -161,6 +161,8 @@ describe('Controller: ClicheCtrl', function () {
 
         expect($scope.view.toolForm).toEqual(jasmine.any(Object));
         expect($scope.view.jobForm).toEqual(jasmine.any(Object));
+
+        expect($scope.view.showConsole).toBeTruthy();
 
         $httpBackend.flush();
 
