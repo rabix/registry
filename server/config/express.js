@@ -79,25 +79,31 @@ module.exports = function (app, config) {
         next(err);
     });
 
-    if (app.get('env') === 'development') {
-        app.use(function (err, req, res) {
-            res.status(err.status || 500);
-            res.render('error', {
-                message: err.message,
-                error: err,
-                title: 'error'
-            });
-        });
-    }
+//    if (app.get('env') === 'development') {
+//        app.use(function (err, req, res) {
+//            res.status(err.status || 500);
+//            res.render('error', {
+//                message: err.message,
+//                error: err,
+//                title: 'error'
+//            });
+//        });
+//    }
 
-    app.use(function (err, req, res) {
-        res.status(err.status || 500);
-        res.render('error', {
-            message: err.message,
-            error: {},
-            title: 'error'
-        });
+    /**
+     * All errors are intercepted here and formated
+     */
+    app.use(function (err, req, res, next) {
+//        res.status(err.status || 500);
+//        res.render('error', {
+//            message: err.message,
+//            error: {},
+//            title: 'error'
+//        });
+
+        console.error('Caught error: ', err);
+        res.status(err.status || 500).json({error: err.message || 'Request parse error'});
+
     });
-
 
 };
