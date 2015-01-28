@@ -146,11 +146,9 @@ describe('Controller: ClicheCtrl', function () {
         $httpBackend.verifyNoOutstandingRequest();
     });
 
-    it('should have prepareForPagination, generateCommand, updateInputs, toggleProperties, switchTab, toggleConsole, import, addBaseCmd, addFile, removeBaseCmd, removeFile, updateBaseCmd, updateFile, updateStdOut, updateStdIn, updateResource, flush, redirect, changeRevision, fork, create, update, loadJsonEditor, deleteApp, toggleMenu, loadMarkdown functions', function() {
+    it('should have generateCommand, toggleProperties, switchTab, toggleConsole, import, addBaseCmd, addFile, removeBaseCmd, removeFile, updateBaseCmd, updateFile, updateStdOut, updateStdIn, updateResource, flush, redirect, changeRevision, fork, create, update, loadJsonEditor, deleteApp, toggleMenu, loadMarkdown functions', function() {
 
-        expect(angular.isFunction($scope.prepareForPagination)).toBe(true);
         expect(angular.isFunction($scope.generateCommand)).toBe(true);
-        expect(angular.isFunction($scope.updateInputs)).toBe(true);
         expect(angular.isFunction($scope.toggleProperties)).toBe(true);
         expect(angular.isFunction($scope.switchTab)).toBe(true);
         expect(angular.isFunction($scope.toggleConsole)).toBe(true);
@@ -196,9 +194,6 @@ describe('Controller: ClicheCtrl', function () {
         expect($scope.view.mode).toEqual('edit');
         expect($scope.view.type).toEqual('tool');
 
-        expect($scope.view.page).toEqual(jasmine.any(Object));
-        expect($scope.view.total).toEqual(jasmine.any(Object));
-
         expect($scope.view.toolForm).toEqual(jasmine.any(Object));
         expect($scope.view.jobForm).toEqual(jasmine.any(Object));
 
@@ -209,20 +204,6 @@ describe('Controller: ClicheCtrl', function () {
         expect($scope.view.loading).toBeFalsy();
 
         expect(Data.generateCommand).toHaveBeenCalled();
-
-    });
-
-    it('should have tabs with prepared pagination objects', function () {
-
-        var tabs = ['values'];
-
-        expect(_.keys($scope.view.page)).toEqual(tabs);
-        expect(_.keys($scope.view.total)).toEqual(tabs);
-
-        expect(_.values($scope.view.page)).toEqual([1]);
-        expect(_.values($scope.view.total)).toEqual([0]);
-
-        $httpBackend.flush();
 
     });
 
@@ -494,18 +475,7 @@ describe('Controller: ClicheCtrl', function () {
 
         $httpBackend.flush();
 
-        var tabs = ['values'];
-
-
         $scope.flush();
-
-        expect(_.keys($scope.view.pages)).toEqual(tabs);
-        expect(_.keys($scope.view.page)).toEqual(tabs);
-        expect(_.keys($scope.view.total)).toEqual(tabs);
-
-        expect(_.values($scope.view.pages)).toEqual([[]]);
-        expect(_.values($scope.view.page)).toEqual([1]);
-        expect(_.values($scope.view.total)).toEqual([0]);
 
         expect(Data.flush).toHaveBeenCalledWith($scope.view.toolForm.name);
 

@@ -96,4 +96,12 @@ describe('Controller: InputFileMoreCtrl', function () {
 
     });
 
+    it('should add meta values in metadata array with unique keys', function () {
+
+        $scope.view.scheme.path = 'test';
+
+        $scope.addMeta();
+
+    });
+
 });
