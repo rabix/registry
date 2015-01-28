@@ -376,18 +376,14 @@ angular.module('registryApp.cliche')
             json = JSON.parse(json);
             var name = $scope.view.toolForm.name;
 
-            if ($scope.view.app.is_script) {
-                delete json.script;
-                delete json.adapter;
-                delete json.requirements;
-            }
-
             if (_.isString(json.adapter.baseCmd)) {
                 json.adapter.baseCmd = [json.adapter.baseCmd];
             }
 
             Data.setTool(json);
             $scope.view.toolForm = Data.tool;
+
+            Data.transformToolJson($scope.view.app.is_script);
 
             if ($scope.view.mode === 'edit') {
                 $scope.view.toolForm.name = name;
@@ -427,9 +423,9 @@ angular.module('registryApp.cliche')
          * @returns {boolean}
          */
         $scope.removeBaseCmd = function (index) {
-            if ($scope.view.toolForm.adapter.baseCmd.length === 1) {
-                return false;
-            }
+
+            if ($scope.view.toolForm.adapter.baseCmd.length === 1) { return false; }
+
             $scope.view.toolForm.adapter.baseCmd.splice(index, 1);
         };
 
@@ -460,6 +456,7 @@ angular.module('registryApp.cliche')
          * @param {*} value
          */
         $scope.updateFile = function (index, value) {
+
             $scope.view.toolForm.files[index].$expr = value;
         };
 
@@ -513,8 +510,8 @@ angular.module('registryApp.cliche')
 
             $scope.view.tab = 'general';
 
-            $scope.view.page = {inputs: 1, outputs: 1, values: 1};
-            $scope.view.total = {inputs: 0, outputs: 0, values: 0};
+            $scope.view.page = {values: 1};
+            $scope.view.total = {values: 0};
             $scope.view.pages = {values: []};
 
             var name = $scope.view.toolForm.name;
@@ -554,6 +551,8 @@ angular.module('registryApp.cliche')
          */
         $scope.changeRevision = function() {
 
+            var deferred = $q.defer();
+
             Tool.getRevisions(0, '', $routeParams.id)
                 .then(function(result) {
 
@@ -580,7 +579,11 @@ angular.module('registryApp.cliche')
                         $location.path('/cliche/' + $routeParams.type + '/' + $routeParams.id + '/' + revisionId);
                     });
 
+                    deferred.resolve(modalInstance);
+
                 });
+
+            return deferred.promise;
 
         };
 
@@ -613,6 +616,8 @@ angular.module('registryApp.cliche')
 
             });
 
+            return modalInstance;
+
         };
 
         /**
@@ -622,9 +627,11 @@ angular.module('registryApp.cliche')
          */
         $scope.create = function() {
 
+            var modalInstance;
+
             if (!Helper.isValidName($scope.view.toolForm.name)) {
 
-                $modal.open({
+                modalInstance = $modal.open({
                     template: $templateCache.get('views/partials/validation.html'),
                     size: 'sm',
                     controller: 'ModalCtrl',
@@ -632,10 +639,10 @@ angular.module('registryApp.cliche')
                     resolve: {data: function () { return {messages: ['You must enter valid name (avoid characters \'$\' and \'.\')']}; }}
                 });
 
-                return false;
+                return modalInstance;
             }
 
-            var modalInstance = $modal.open({
+            modalInstance = $modal.open({
                 controller: 'PickRepoModalCtrl',
                 template: $templateCache.get('views/dyole/pick-repo-name.html'),
                 windowClass: 'modal-confirm',
@@ -670,6 +677,8 @@ angular.module('registryApp.cliche')
                     });
 
             });
+
+            return modalInstance;
         };
 
         /**

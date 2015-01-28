@@ -1,4 +1,6 @@
 {
     "name": "user",
-    "fixtures": {}
+    "fixtures": {
+        "user": {}
+    }
 }

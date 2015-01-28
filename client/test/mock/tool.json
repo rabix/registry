@@ -45,6 +45,18 @@
                                 }
                             },
                             "type": "file"
+                        },
+                        "sam": {
+                            "adapter": {
+                                "secondaryFiles": [],
+                                "metadata": {
+                                    "__inherit__": "reads",
+                                    "file_type": "sam"
+                                },
+                                "glob": "output.sam",
+                                "streamable": true
+                            },
+                            "type": "file"
                         }
                     },
                     "required": [],
@@ -58,20 +70,37 @@
                                 "prefix": ""
                             },
                             "type": "string"
+                        },
+                        "mark_shorter_split_hits_as_secondary": {
+                            "adapter": {
+                                "order": 1,
+                                "prefix": "-M",
+                                "separator": "_"
+                            },
+                            "type": "boolean"
+                        },
+                        "use_soft_clipping_for_supplementary_alignments": {
+                            "adapter": {
+                                "order": 1,
+                                "prefix": "-Y",
+                                "separator": "_"
+                            },
+                            "type": "boolean"
                         }
                     },
                     "required": [
-                        "database_vcf",
-                        "input_vcf"
+                        "database_name"
                     ],
                     "type": "object"
                 },
                 "requirements": {
                     "resources": {
                         "network": false,
-                        "diskSpace": 0,
+                        "diskSpace": 10,
                         "ports": [],
-                        "mem": null,
+                        "mem": {
+                            "$expr": "$job.inputs"
+                        },
                         "cpu": 0
                     },
                     "environment": {
@@ -181,6 +210,22 @@
                                 "prefix": ""
                             },
                             "type": "string"
+                        },
+                        "mark_shorter_split_hits_as_secondary": {
+                            "adapter": {
+                                "order": 1,
+                                "prefix": "-M",
+                                "separator": "_"
+                            },
+                            "type": "boolean"
+                        },
+                        "use_soft_clipping_for_supplementary_alignments": {
+                            "adapter": {
+                                "order": 1,
+                                "prefix": "-Y",
+                                "separator": "_"
+                            },
+                            "type": "boolean"
                         }
                     },
                     "required": [
@@ -194,7 +239,9 @@
                         "network": false,
                         "diskSpace": 0,
                         "ports": [],
-                        "mem": null,
+                        "mem": {
+                            "$expr": "$job.inputs"
+                        },
                         "cpu": 0
                     },
                     "environment": {

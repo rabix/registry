@@ -1,0 +1,80 @@
+{
+    "name": "fastqc",
+    "fixtures": {
+        "data": {
+            "name": "fastqc",
+            "schema": "https://github.com/common-workflow-language/common-workflow-language/blob/draft-1/specification/tool-description.md",
+            "description": "",
+            "documentAuthor": "ogip",
+            "requirements": {
+                "resources": {
+                    "network": false,
+                    "diskSpace": 0,
+                    "ports": [],
+                    "mem": 5000,
+                    "cpu": 0
+                },
+                "environment": {
+                    "container": {
+                        "imageId": "a6a7f5c9fab8",
+                        "uri": "",
+                        "type": "docker"
+                    }
+                }
+            },
+            "inputs": {
+                "type": "object",
+                "required": [
+                    "reference",
+                    "reads"
+                ],
+                "properties": {
+                    "input_file": {
+                        "adapter": {
+                            "order": 99
+                        },
+                        "type": "file"
+                    }
+                }
+            },
+            "outputs": {
+                "type": "object",
+                "required": [
+                    "sam"
+                ],
+                "properties": {
+                    "output_file": {
+                        "type": "file",
+                        "adapter": {
+                            "glob": {
+                                "$expr": "{\n   if (typeof $job.inputs.input_file.path != \"undefined\" && $job.inputs.input_file){\n       filepath = $job.inputs.input_file.path\n   } \n  \n   filename = filepath.substr(0, filepath.lastIndexOf('.'))    \n   \n   \n   filename = filename.split('/').pop();   \n     \n   return filename.concat(\"_fastqc.html\")     \n}"
+                            },
+                            "metadata": {
+                                "__inherit__": "input_vcf_file"
+                            }
+                        }
+                    },
+                    "output_archive": {
+                        "type": "file",
+                        "adapter": {
+                            "glob": {
+                                "$expr": "{\n   if (typeof $job.inputs.input_file.path != \"undefined\" && $job.inputs.input_file){\n       filepath = $job.inputs.input_file.path\n   } \n  \n   filename = filepath.substr(0, filepath.lastIndexOf('.'))    \n   \n   \n   filename = filename.split('/').pop();   \n     \n   return filename.concat(\"_fastqc.zip\")     \n}"
+                            }
+                        }
+                    }
+                }
+            },
+            "adapter": {
+                "args": [],
+                "stdout": "",
+                "baseCmd": [
+                    "fastqc",
+                    "--noextract",
+                    "-o .",
+                    "--quiet"
+                ]
+            },
+            "@type": "CommandLine"
+        }
+    }
+}
