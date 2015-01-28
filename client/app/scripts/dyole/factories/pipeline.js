@@ -476,18 +476,11 @@ angular.module('registryApp.dyole')
                  */
                 _createSystemNode: function (isInput, x, y, terminal) {
                     var model = angular.copy(systemNodeModel),
-                        terminalId, count, terId, terName;
+                        terminalId, terId, terName;
 
                     if (isInput) {
-
-                        count = _.filter(this.nodes, function (n) {
-                            var desc = n.model.softwareDescription;
-                            var name = (desc && desc.name) ? desc.name : n.model.name;
-                            return name.indexOf('input') !== -1 && desc && desc.repo_name === 'system';
-                        }).length;
-
-                        terId = 'input' + '_' + (count + 1);
-                        terName = 'input' + '_' + (count + 1);
+//
+                        terId = terName = this._generateNodeId({name: 'input'});
 
                         model.softwareDescription.name = terName;
                         model.softwareDescription.type = 'input';
@@ -500,15 +493,7 @@ angular.module('registryApp.dyole')
 
                         terminalId = terId;
                     } else {
-
-                        count = _.filter(this.nodes, function (n) {
-                            var desc = n.model.softwareDescription;
-                            var name = (desc && desc.name) ? desc.name : n.model.name;
-                            return name.indexOf('output') !== -1 && desc && desc.repo_name === 'system';
-                        }).length;
-
-                        terId = 'output' + '_' + (count + 1);
-                        terName = 'output' + '_' + (count + 1);
+                        terId = terName = this._generateNodeId({name: 'output'});
 
                         model.name = terName;
                         model.softwareDescription.name = terName;
@@ -1083,9 +1068,7 @@ angular.module('registryApp.dyole')
                     json.relations = this._getConnections();
                     json.nodes = this._getNodes();
 
-                    if (typeof json.display.nodes === 'undefined') {
-                        json.display.nodes = {};
-                    }
+                    json.display.nodes = {};
 
                     _.each(json.nodes, function (node) {
                         json.display.nodes[node.id] = {

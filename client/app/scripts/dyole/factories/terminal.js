@@ -147,7 +147,6 @@ angular.module('registryApp.dyole')
                     available;
 
                 if (_self.mouseoverTerminal) {
-//                console.log(this.mouseoverTerminal);
                     available = this.checkAvailibility(this.mouseoverTerminal.model, this.mouseoverTerminal.parent.model.id);
 
                     if (available.status) {
@@ -155,7 +154,6 @@ angular.module('registryApp.dyole')
 
                         _self.mouseoverTerminal = null;
                     } else {
-//                    Notify.show('Cannot connect terminal: ' + available.error);
                         console.error('Node cannot connect');
                     }
 
@@ -177,8 +175,6 @@ angular.module('registryApp.dyole')
                     var check = _.filter(this.Pipeline.connections, function (connection) {
                         var rel = connection.model;
 
-                        console.log(rel);
-
                         var check = rel.start_node === start_node.id && rel.end_node === end_node.id,
                             portCheck = rel.input_name === input_name && rel.output_name === output_name,
                             reverseCheck, reversePortCheck;
@@ -186,10 +182,8 @@ angular.module('registryApp.dyole')
                         reverseCheck = rel.start_node === end_node.id && rel.end_node === start_node.id;
                         reversePortCheck = rel.input_name === output_name && rel.output_name === input_name;
 
-                        console.log(check, portCheck, reverseCheck, reversePortCheck);
                         return (check && portCheck) || ( reverseCheck && reversePortCheck);
                     });
-
 
                     if (check.length === 0) {
 

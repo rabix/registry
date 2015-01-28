@@ -459,6 +459,15 @@ angular.module('registryApp.dyole')
 
                 borders.drag(this.onMove, this.onMoveStart, this.onMoveEnd,
                     this, this, this);
+                
+                this.label.dblclick(function (e) {
+                    e.preventDefault();
+
+                    if (this.model.softwareDescription && this.model.softwareDescription.repo_name === 'system') {
+                        this._initNameChanging();
+                    }
+
+                }, this);
 
             },
 
@@ -689,7 +698,7 @@ angular.module('registryApp.dyole')
              */
             _initNameChanging: function () {
                 var _self = this;
-                var nodeName = (this.model.softwareDescription && this.model.softwareDescription.name) ? this.model.softwareDescription.name : this.model.name;
+                var nodeName = (this.model.softwareDescription && this.model.softwareDescription.name) ? this.model.id : this.model.name;
 
                 $rootScope.$broadcast('node:label:edit', nodeName, function check(name) {
 
@@ -770,6 +779,7 @@ angular.module('registryApp.dyole')
                     }
 
                     this.model.id = name;
+                    this.model.softwareDescription.name = name;
 
                     this.Pipeline.model.schemas[name].id = this.model.id;
 
@@ -806,7 +816,10 @@ angular.module('registryApp.dyole')
 
                     this.label.attr('text', name);
                     this._destroyButtons();
-                    this._showButtons();
+
+                    if (this.selected) {
+                        this._showButtons();
+                    }
 
                 }
             },
@@ -847,6 +860,8 @@ angular.module('registryApp.dyole')
 
             removeNode: function () {
 
+                var _self = this;
+
                 _.each(this.connections, function (connection) {
                     if (connection) {
                         connection.destroyConnection();
@@ -871,6 +886,10 @@ angular.module('registryApp.dyole')
 
                 delete this.Pipeline.model.schemas[this.model.id];
                 delete this.Pipeline.nodes[this.model.id];
+
+                _.remove(this.Pipeline.nodes, function (n) {
+                    return n.id === _self.model.id;
+                });
 
             },
 

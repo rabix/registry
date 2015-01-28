@@ -474,7 +474,7 @@ router.delete('/apps/:id', filters.authenticated, function (req, res, next) {
             }
 
         } else {
-            res.status(500).json({message: 'Unauthorized'});
+            res.status(401).json({message: 'Unauthorized'});
         }
     });
 
