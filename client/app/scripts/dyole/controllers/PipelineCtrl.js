@@ -80,16 +80,15 @@ angular.module('registryApp.dyole')
                 $scope.pipeline.repo = repoId;
             }
 
-            // dakle kesiram exposed za kasnije
-            var exposed = {};
-            if ($scope.pipeline.json) {
-                exposed = $scope.pipeline.json.exposed;
-            }
-
             $scope.pipeline.json = Pipeline.getJSON();
 
-            // i vracam ga nazad, kontam da treba da se sipa u inputs direktno, mada mozda i ne mora...
-            $scope.pipeline.json.exposed = exposed;
+            if ($scope.pipeline.name) {
+                $scope.pipeline.json.name = $scope.pipeline.name;
+            }
+
+            if ($scope.pipeline.description) {
+                $scope.pipeline.json.description = $scope.pipeline.description;
+            }
 
             Workflow.saveWorkflow($scope.pipeline.pipeline ? $scope.pipeline.pipeline._id : '', $scope.pipeline)
                 .then(function (data) {
