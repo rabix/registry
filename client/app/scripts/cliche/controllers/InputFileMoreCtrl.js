@@ -27,6 +27,7 @@ angular.module('registryApp.cliche')
         $scope.update = function() {
 
             $scope.view.error = '';
+
             $scope.view.form.$setDirty();
 
             if ($scope.view.form.$invalid) {

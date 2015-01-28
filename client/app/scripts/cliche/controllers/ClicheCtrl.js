@@ -688,6 +688,8 @@ angular.module('registryApp.cliche')
          */
         $scope.update = function() {
 
+            var deferred = $q.defer();
+
             $scope.view.saving = true;
 
             Tool.update($scope.view.app._id)
@@ -706,9 +708,14 @@ angular.module('registryApp.cliche')
                         $scope.redirect('/cliche/' + $routeParams.type + '/' + $scope.view.app._id + '/' + result.revision._id);
                     });
 
+                    deferred.resolve(modalInstance);
+
                 }, function () {
                     $scope.view.saving = false;
+                    deferred.reject();
                 });
+
+            return deferred.promise;
 
         };
 
@@ -727,10 +734,12 @@ angular.module('registryApp.cliche')
                 $scope.import(json);
             });
 
+            return modalInstance;
+
         };
 
         /**
-         * Delete app
+         * Delete tool revision
          */
         $scope.deleteApp = function () {
 
@@ -742,15 +751,22 @@ angular.module('registryApp.cliche')
             });
 
             modalInstance.result.then(function () {
+
                 $scope.view.saving = true;
+
                 Tool.deleteRevision($scope.view.revision._id).then(function () {
+
                     $scope.view.saving = false;
+
                     BeforeRedirect.setReload(true);
                     $location.path('/apps');
+
                 }, function() {
                     $scope.view.saving = false;
                 });
             });
+
+            return modalInstance;
 
         };
 
@@ -780,6 +796,8 @@ angular.module('registryApp.cliche')
             modalInstance.result.then(function(result) {
                 $scope.view.toolForm.description = result;
             });
+
+            return modalInstance;
         };
 
 

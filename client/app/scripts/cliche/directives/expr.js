@@ -80,6 +80,13 @@ angular.module('registryApp.cliche')
                     }
                 });
 
+                $scope.$watch('ngModel', function (n, o) {
+                    if (n !== o) {
+                        $scope.view.model = angular.copy(n);
+                        checkExpression();
+                    }
+                });
+
                 $scope.$watch('selfType', function (n, o) { if (n !== o) { checkExpression(); } });
 
                 $scope.$watch('selfItemType', function (n, o) { if (n !== o) { checkExpression(); } });
