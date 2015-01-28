@@ -463,7 +463,7 @@ angular.module('registryApp.dyole')
                 this.label.dblclick(function (e) {
                     e.preventDefault();
 
-                    if (this.model.softwareDescription && this.model.softwareDescription.repo_name === 'system') {
+                    if (this.model.softwareDescription && this.model.softwareDescription.repo_name === 'system' && this.Pipeline.editMode) {
                         this._initNameChanging();
                     }
 
