@@ -6,8 +6,7 @@
                 tool-type="{{ view.type }}"
                 properties="view.toolForm.inputs.properties"
                 req="view.toolForm.inputs.required"
-                inputs="view.jobForm.inputs"
-                handler="updateInputs()">
+                inputs="view.jobForm.inputs">
         </add-property>
     </legend>
 
@@ -19,8 +18,7 @@
             type="{{ view.type }}"
             inputs="view.jobForm.inputs"
             properties="view.toolForm.inputs.properties"
-            req="view.toolForm.inputs.required"
-            handler="updateInputs()">
+            req="view.toolForm.inputs.required">
     </property-input>
 
     <p class="alert alert-info" ng-if="view.toolForm.inputs.properties | isEmpty">There are no inputs at this moment.</p>

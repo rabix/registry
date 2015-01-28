@@ -7,16 +7,17 @@
 'use strict';
 
 angular.module('registryApp.cliche')
-    .controller('JsonEditorCtrl', ['$scope', '$modalInstance', '$timeout', 'options', 'Tool', function($scope, $modalInstance, $timeout, options, Tool) {
+    .controller('JsonEditorCtrl', ['$scope', '$modalInstance', '$timeout', '$document', 'options', 'Tool', function($scope, $modalInstance, $timeout, $document, options, Tool) {
 
         $scope.view = {};
         $scope.view.user = options.user;
 
-        var mirror;
+        //$scope.mirror = null;
 
+        // TODO: make this pretty, use directive which will serve as general purpose codemirror container
         var timeoutId = $timeout(function () {
 
-            mirror = CodeMirror(document.querySelector('.codemirror-editor'), {
+            $scope.mirror = CodeMirror($document[0].querySelector('.codemirror-editor'), {
                 lineNumbers: true,
                 value: '',
                 mode:  {name: 'javascript', json: true},
@@ -28,6 +29,7 @@ angular.module('registryApp.cliche')
 
         /**
          * Check if json is valid
+         *
          * @param str
          * @returns {boolean}
          */
@@ -35,11 +37,11 @@ angular.module('registryApp.cliche')
 
             try {
                 JSON.parse(str);
+                return true;
             } catch (e) {
                 return false;
             }
 
-            return true;
         };
 
         /**
@@ -47,8 +49,9 @@ angular.module('registryApp.cliche')
          */
         $scope.import = function() {
 
-            var json = mirror.getValue();
+            var json = $scope.mirror.getValue();
             $scope.view.error = '';
+
 
             if (!isJsonString(json)) {
                 $scope.view.error = 'You must provide valid json format';

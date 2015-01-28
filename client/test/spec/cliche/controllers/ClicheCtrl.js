@@ -8,10 +8,10 @@ describe('Controller: ClicheCtrl', function () {
     var $location;
     var $httpBackend;
     var $routeParams;
-    var $rootScope;
 
     var Data;
     var BeforeRedirect;
+    var BeforeUnload;
     var $modal;
 
     var mockSidebar = {};
@@ -33,6 +33,21 @@ describe('Controller: ClicheCtrl', function () {
     var toolId = store.tool.data._id;
     var revisionId = 'latest';
 
+    var fakeModalInstance = {
+        result: {
+            then: function(confirmCallback, cancelCallback) {
+                this.confirmCallBack = confirmCallback;
+                this.cancelCallback = cancelCallback;
+            }
+        },
+        close: function( item ) {
+            this.result.confirmCallBack( item );
+        },
+        dismiss: function( type ) {
+            this.result.cancelCallback( type );
+        }
+    };
+
     /**
      * Instantiate controller and inject dependencies
      *
@@ -47,6 +62,7 @@ describe('Controller: ClicheCtrl', function () {
             SandBox: mockSandBox,
             Data: Data,
             BeforeRedirect: BeforeRedirect,
+            BeforeUnload: BeforeUnload,
             $modal: $modal
         });
     }
@@ -70,26 +86,10 @@ describe('Controller: ClicheCtrl', function () {
         obj[method].and.returnValue(deferred.promise);
     };
 
-    var fakeModalInstance = {
-        result: {
-            then: function(confirmCallback, cancelCallback) {
-                this.confirmCallBack = confirmCallback;
-                this.cancelCallback = cancelCallback;
-            }
-        },
-        close: function( item ) {
-            this.result.confirmCallBack( item );
-        },
-        dismiss: function( type ) {
-            this.result.cancelCallback( type );
-        }
-    };
-
     beforeEach(module('registryApp'));
 
-    beforeEach(inject(function ($controller, _$rootScope_, _$q_, _$location_, _$httpBackend_, _$routeParams_, _Data_, _BeforeRedirect_, _$modal_) {
+    beforeEach(inject(function ($controller, $rootScope, _$q_, _$location_, _$httpBackend_, _$routeParams_, _Data_, _BeforeRedirect_, _BeforeUnload_, _$modal_) {
 
-        $rootScope = _$rootScope_;
         $scope = $rootScope.$new();
         $q = _$q_;
         $location = _$location_;
@@ -98,6 +98,7 @@ describe('Controller: ClicheCtrl', function () {
 
         Data = _Data_;
         BeforeRedirect = _BeforeRedirect_;
+        BeforeUnload = _BeforeUnload_;
         $modal = _$modal_;
 
         controllerFactory = $controller;
@@ -121,6 +122,9 @@ describe('Controller: ClicheCtrl', function () {
 
         setMock(BeforeRedirect, 'setReload', true);
 
+        spyOn(BeforeUnload, 'register').and.callThrough();
+        spyOn(BeforeRedirect, 'register').and.callThrough();
+
         spyOn($modal, 'open').and.returnValue(fakeModalInstance);
 
         createController();
@@ -128,9 +132,12 @@ describe('Controller: ClicheCtrl', function () {
         $location.path('/cliche/tool/'+ toolId);
 
         apiHandlers.tool = $httpBackend.when('GET', /\/api\/apps\//).respond(store.tool);
+        apiHandlers.toolPost = $httpBackend.when('POST', /\/api\/apps\/(create|fork)/).respond({message: 'success', app: {_id: toolId}});
+        apiHandlers.toolPut = $httpBackend.when('POST', /\/api\/revisions/).respond({message: 'success', revision: {_id: 'latest'}});
         apiHandlers.repos = $httpBackend.when('GET', /\/api\/repos\?/).respond(store.repos);
         apiHandlers.user = $httpBackend.when('GET', /\/api\/user/).respond(store.user);
         apiHandlers.revisions = $httpBackend.when('GET', /\/api\/revisions/).respond(store.revisions);
+        apiHandlers.revisionDelete = $httpBackend.when('DELETE', /\/api\/revisions\//).respond({message: 'Revision successfully deleted'});
 
     });
 
@@ -139,11 +146,9 @@ describe('Controller: ClicheCtrl', function () {
         $httpBackend.verifyNoOutstandingRequest();
     });
 
-    it('should have prepareForPagination, generateCommand, updateInputs, toggleProperties, switchTab, toggleConsole, import, addBaseCmd, addFile, removeBaseCmd, removeFile, updateBaseCmd, updateFile, updateStdOut, updateStdIn, updateResource, flush, redirect, changeRevision, fork, create, update, loadJsonEditor, deleteApp, toggleMenu, loadMarkdown functions', function() {
+    it('should have generateCommand, toggleProperties, switchTab, toggleConsole, import, addBaseCmd, addFile, removeBaseCmd, removeFile, updateBaseCmd, updateFile, updateStdOut, updateStdIn, updateResource, flush, redirect, changeRevision, fork, create, update, loadJsonEditor, deleteApp, toggleMenu, loadMarkdown functions', function() {
 
-        expect(angular.isFunction($scope.prepareForPagination)).toBe(true);
         expect(angular.isFunction($scope.generateCommand)).toBe(true);
-        expect(angular.isFunction($scope.updateInputs)).toBe(true);
         expect(angular.isFunction($scope.toggleProperties)).toBe(true);
         expect(angular.isFunction($scope.switchTab)).toBe(true);
         expect(angular.isFunction($scope.toggleConsole)).toBe(true);
@@ -189,9 +194,6 @@ describe('Controller: ClicheCtrl', function () {
         expect($scope.view.mode).toEqual('edit');
         expect($scope.view.type).toEqual('tool');
 
-        expect($scope.view.page).toEqual(jasmine.any(Object));
-        expect($scope.view.total).toEqual(jasmine.any(Object));
-
         expect($scope.view.toolForm).toEqual(jasmine.any(Object));
         expect($scope.view.jobForm).toEqual(jasmine.any(Object));
 
@@ -202,20 +204,6 @@ describe('Controller: ClicheCtrl', function () {
         expect($scope.view.loading).toBeFalsy();
 
         expect(Data.generateCommand).toHaveBeenCalled();
-
-    });
-
-    it('should have tabs with prepared pagination objects', function () {
-
-        var tabs = ['values'];
-
-        expect(_.keys($scope.view.page)).toEqual(tabs);
-        expect(_.keys($scope.view.total)).toEqual(tabs);
-
-        expect(_.values($scope.view.page)).toEqual([1]);
-        expect(_.values($scope.view.total)).toEqual([0]);
-
-        $httpBackend.flush();
 
     });
 
@@ -239,6 +227,15 @@ describe('Controller: ClicheCtrl', function () {
         expect(mockSidebar.setActive).toHaveBeenCalledWith($routeParams.type + ' editor');
 
         $httpBackend.flush();
+
+    });
+
+    it('should register both BeforeRedirect and BeforeUnload services', function () {
+
+        $httpBackend.flush();
+
+        expect(BeforeUnload.register).toHaveBeenCalled();
+        expect(BeforeRedirect.register).toHaveBeenCalled();
 
     });
 
@@ -478,18 +475,7 @@ describe('Controller: ClicheCtrl', function () {
 
         $httpBackend.flush();
 
-        var tabs = ['values'];
-
-
         $scope.flush();
-
-        expect(_.keys($scope.view.pages)).toEqual(tabs);
-        expect(_.keys($scope.view.page)).toEqual(tabs);
-        expect(_.keys($scope.view.total)).toEqual(tabs);
-
-        expect(_.values($scope.view.pages)).toEqual([[]]);
-        expect(_.values($scope.view.page)).toEqual([1]);
-        expect(_.values($scope.view.total)).toEqual([0]);
 
         expect(Data.flush).toHaveBeenCalledWith($scope.view.toolForm.name);
 
@@ -525,6 +511,170 @@ describe('Controller: ClicheCtrl', function () {
         $httpBackend.flush();
 
         expect($modal.open).toHaveBeenCalled();
+
+    });
+
+    it('should prompt the user to choose new name and repo when forking tool', function () {
+
+        $httpBackend.flush();
+
+        var modalInstance = $scope.fork();
+
+        expect($modal.open).toHaveBeenCalled();
+
+        modalInstance.close({name: 'test', repoId: '54c63ee35d2d43793bcbce04'});
+
+        $httpBackend.expectPOST(apiBase + '/apps/fork');
+        $httpBackend.flush();
+
+    });
+
+    it('should prompt the user to choose repo when creating tool and should validate name before creating it', function () {
+
+        var modalInstance;
+
+        $httpBackend.flush();
+
+        // try to save with name that contains $
+        $scope.view.toolForm.name = 'invalid$name';
+
+        modalInstance = $scope.create();
+
+        expect($modal.open).toHaveBeenCalled();
+
+        modalInstance.close();
+
+        expect($scope.view.saving).not.toBeTruthy();
+
+        // try to save with name that contains .
+        $scope.view.toolForm.name = 'invalid.name.with.';
+
+        modalInstance = $scope.create();
+
+        expect($modal.open).toHaveBeenCalled();
+
+        modalInstance.close();
+
+        expect($scope.view.saving).not.toBeTruthy();
+
+        // try to save with name that contains . and $
+        $scope.view.toolForm.name = 'invalid$name.with.and$';
+
+        modalInstance = $scope.create();
+
+        expect($modal.open).toHaveBeenCalled();
+
+        modalInstance.close();
+
+        expect($scope.view.saving).not.toBeTruthy();
+
+        // try to save with valid name
+        $scope.view.toolForm.name = 'valid-name';
+
+        modalInstance = $scope.create();
+
+        expect($modal.open).toHaveBeenCalled();
+
+        modalInstance.close({});
+
+        expect($scope.view.saving).toBeTruthy();
+
+        $httpBackend.expectPOST(apiBase + '/apps/create');
+        $httpBackend.flush();
+
+        expect($scope.view.saving).toBeFalsy();
+
+    });
+
+    it('should prompt user with confirmation dialog when tool is updated', function () {
+
+        $httpBackend.flush();
+
+        $scope.update()
+            .then(function (modalInstance) {
+
+                modalInstance.close();
+
+                expect($location.path()).toEqual('/cliche/tool/' + toolId + '/latest');
+
+            });
+
+        expect($scope.view.saving).toBeTruthy();
+
+        $httpBackend.expectPOST(apiBase + '/revisions');
+        $httpBackend.flush();
+
+        expect($scope.view.saving).toBeFalsy();
+
+        expect($modal.open).toHaveBeenCalled();
+
+    });
+
+    it('should load json editor and import new structure when confirmed', function () {
+
+        spyOn($scope, 'import').and.callThrough();
+
+        $httpBackend.flush();
+
+        var json = JSON.stringify(store.fastqc.data);
+        var modalInstance = $scope.loadJsonEditor();
+
+        expect($modal.open).toHaveBeenCalled();
+
+        modalInstance.close(json);
+
+        expect($scope.import).toHaveBeenCalledWith(json);
+
+    });
+
+    it('should prompt user with confirmation dialog when trying to delete tool revision', function () {
+
+        $httpBackend.flush();
+
+        var modalInstance = $scope.deleteApp();
+
+        expect($modal.open).toHaveBeenCalled();
+
+        modalInstance.close();
+
+        expect($scope.view.saving).toBeTruthy();
+
+        $httpBackend.expectDELETE(apiBase + '/revisions/' + $scope.view.revision._id);
+        $httpBackend.flush();
+
+        expect($scope.view.saving).toBeFalsy();
+        expect(BeforeRedirect.setReload).toHaveBeenCalledWith(true);
+
+
+    });
+
+    it('should toggle menu visibility from the header', function () {
+
+        $httpBackend.flush();
+
+        $scope.toggleMenu();
+
+        expect($scope.view.isMenuOpen).toBeTruthy();
+
+        $scope.toggleMenu();
+
+        expect($scope.view.isMenuOpen).toBeFalsy();
+
+    });
+
+    it('should load markdown modal and apply new description when confirmed', function () {
+
+        var newDescription = 'some description ~~lalala~~ **blablabla**';
+
+        $httpBackend.flush();
+
+        var modalInstance = $scope.loadMarkdown();
+
+        expect($modal.open).toHaveBeenCalled();
+
+        modalInstance.close(newDescription);
+
+        expect($scope.view.toolForm.description).toEqual(newDescription);
 
     });
 
