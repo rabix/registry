@@ -113,7 +113,7 @@ router.get('/workflow/:revision', function (req, res, next) {
 
         if (app) {
             var json = _.isString(app.json) ? JSON.parse(app.json) : app.json;
-            res.json(json);var p = db.pi    
+            res.json(json);
         } else {
             res.status(404).json({message: 'This workflow doesn\'t exist'});
         }
