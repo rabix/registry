@@ -40,21 +40,23 @@
 
         <div class="section bottom flex-box-column flex-one">
 
-            <div class="input-container">
+            <div class="content content-ten">
+                <div class="input-container">
 
-                <input-field
-                        ng-repeat="(key, property) in view.toolForm.inputs.properties"
-                        ng-model="view.jobForm.inputs[key]"
-                        class="input-field"
-                        key="{{ key }}"
-                        prop="property"
-                        index="{{ $index }}"
-                        form="form.jobForm">
-                </input-field>
+                    <input-field
+                            ng-repeat="(key, property) in view.toolForm.inputs.properties"
+                            ng-model="view.jobForm.inputs[key]"
+                            class="input-field"
+                            key="{{ key }}"
+                            prop="property"
+                            index="{{ $index }}"
+                            form="form.jobForm">
+                    </input-field>
 
+                </div>
+
+                <p class="alert alert-info" ng-if="view.toolForm.inputs.properties | isEmpty">There are no values to be set at this moment.</p>
             </div>
-
-            <p class="alert alert-info" ng-if="view.toolForm.inputs.properties | isEmpty">There are no values to be set at this moment.</p>
 
         </div>
         <!-- # .section -->

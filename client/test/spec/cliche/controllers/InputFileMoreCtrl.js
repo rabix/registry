@@ -49,8 +49,6 @@ describe('Controller: InputFileMoreCtrl', function () {
 
         $compile($templateCache.get('views/cliche/partials/input-file-more.html'))($scope);
 
-        //$scope.$apply();
-
     });
 
     it('should have update, addMeta, removeMeta, ok and cancel functions', function () {
@@ -96,11 +94,82 @@ describe('Controller: InputFileMoreCtrl', function () {
 
     });
 
-    it('should add meta values in metadata array with unique keys', function () {
+    describe('when adding new meta values', function () {
 
-        $scope.view.scheme.path = 'test';
+        it('should add new key if key is unique', function () {
 
-        $scope.addMeta();
+            expect(_.size($scope.view.scheme.metadata)).toBe(0);
+
+            $scope.view.newMeta.key = 'meta1';
+            $scope.view.newMeta.value = 'some value';
+
+            $scope.$digest();
+
+            $scope.addMeta();
+
+            expect($scope.view.newMeta.error).toBeFalsy();
+            expect(_.size($scope.view.scheme.metadata)).toBe(1);
+
+        });
+
+        it('should fail adding if key exists', function () {
+
+            $scope.view.scheme.metadata = {meta1: 'some value'};
+
+            // try with same key
+            $scope.view.newMeta.key = 'meta1';
+            $scope.view.newMeta.value = 'some value';
+
+            $scope.$digest();
+
+            $scope.addMeta();
+
+            expect($scope.view.newMeta.error).toBeTruthy();
+            expect(_.size($scope.view.scheme.metadata)).toBe(1);
+
+            // try with non-existing key
+            $scope.view.newMeta.key = 'meta2';
+
+            $scope.$digest();
+
+            $scope.addMeta();
+
+            expect($scope.view.newMeta.error).toBeFalsy();
+            expect(_.size($scope.view.scheme.metadata)).toBe(2);
+
+        });
+
+    });
+
+    it('should remove value from metadata', function () {
+
+        $scope.view.scheme.metadata = {
+            meta1: 'some value',
+            meta2: 'some value',
+            meta3: 'some value'
+        };
+
+        $scope.$digest();
+
+        $scope.removeMeta('meta2');
+
+        expect($scope.view.scheme.metadata.meta2).toBeUndefined();
+
+    });
+
+    it('should close modal when confirming that the metadata is ok', function () {
+
+        $scope.ok();
+
+        expect($modalInstance.close).toHaveBeenCalled();
+
+    });
+
+    it('should close modal when canceling metadata edit', function () {
+
+        $scope.cancel();
+
+        expect($modalInstance.dismiss).toHaveBeenCalledWith('cancel');
 
     });
 
