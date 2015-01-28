@@ -40,7 +40,7 @@ angular.module('registryApp')
             restrict: 'E',
             template: $templateCache.get('views/partials/sidebar.html'),
             scope: {},
-            controller: ['$scope', 'User', 'Sidebar', function ($scope, User, Sidebar) {
+            controller: ['$scope', '$rootScope', 'User', 'Sidebar', function ($scope, $rootScope, User, Sidebar) {
 
                 $scope.view = {};
                 $scope.view.loading = true;
@@ -54,20 +54,11 @@ angular.module('registryApp')
                     {name: 'repos', link: 'repos', desc: 'Repositories', icon: 'code-fork'},
                     {name: 'workflow editor', link: 'workflow/0/new', desc: 'Workflow Editor', icon: 'terminal'},
                     {name: 'tool editor', link: 'cliche/tool', desc: 'Tool Editor', icon: 'terminal'},
-                    {name: 'script editor', link: 'cliche/script', desc: 'Script Editor', icon: 'terminal'}
+                    {name: 'script editor', link: 'cliche/script', desc: 'Script Editor', icon: 'terminal'},
+                    {name: 'settings',link: 'settings',  desc: 'Settings', icon: 'gear', permission: 'user'}
                 ];
 
                 $scope.SidebarService = Sidebar;
-
-                User.getUser().then(function(result) {
-                    $scope.view.user = result.user;
-                    $scope.view.loading = false;
-
-                    if (!_.isEmpty(result.user)) {
-                        $scope.view.navigation.push({name: 'settings',link: 'settings',  desc: 'Settings', icon: 'gear'});
-                    }
-
-                });
 
                 $scope.$watch('SidebarService.active', function (n, o) {
                     if (n !== o) {
@@ -82,6 +73,21 @@ angular.module('registryApp')
                     $scope.view.open = !$scope.view.open;
                     Sidebar.toggleOpen();
                 };
+
+                var routeChangeOff = $rootScope.$on("$locationChangeStart", function(event, next, current) {
+                    getUser();
+                });
+
+                var getUser = function () {
+                    User.getUser().then(function(result) {
+                        $scope.view.user = result.user;
+                        $scope.view.loading = false;
+                    });
+                };
+
+                $scope.$on('$destroy', function () {
+                    routeChangeOff();
+                });
 
             }],
             link: function () {}
