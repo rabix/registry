@@ -13,7 +13,7 @@ var logPath = path.normalize(config.logging.path);
 var debugLog = logPath + '/rabix-debug.log';
 var exceptionLog = logPath + '/rabix-exceptions.log';
 
-var timeFormatFn = function() {
+var timeFormatFn = function () {
     return Date.now();
 };
 
@@ -24,11 +24,10 @@ var logger = new (winston.Logger)({
             dirname: config.logging.path,
             timestamp: timeFormatFn
         }),
-//        new (winston.transports.Console)({ json: false, timestamp: true }),
         new winston.transports.File({ filename: debugLog, json: false })
     ],
     exceptionHandlers: [
-        new(winston.transports.DailyRotateFile)({
+        new (winston.transports.DailyRotateFile)({
             filename: exceptionLog,
             dirname: config.logging.path,
             timestamp: timeFormatFn
@@ -38,5 +37,14 @@ var logger = new (winston.Logger)({
     ],
     exitOnError: false
 });
+
+if (config.env && config.env !== 'production') {
+    logger.add(winston.transports.Console, {
+        json: false,
+        timestamp: true,
+        prettyPrint: true,
+        colorize: true
+    });
+}
 
 module.exports = logger;

@@ -985,8 +985,8 @@ angular.module('registryApp.dyole')
 
                     rawCoords = rawCoords || false;
 
-                    var x = ( clientX - canvas.left ) / zoom  - this.pipelineWrap.getTranslation().x,
-                        y = ( clientY - canvas.top  ) / zoom - this.pipelineWrap.getTranslation().y;
+                    var x = ( clientX - canvas.left )  - this.pipelineWrap.getTranslation().x,
+                        y = ( clientY - canvas.top  ) - this.pipelineWrap.getTranslation().y;
 
                     if (rawCoords) {
                         x = clientX - this.pipelineWrap.getTranslation().x;
@@ -994,8 +994,8 @@ angular.module('registryApp.dyole')
                     }
 
 
-                    model.x = x;
-                    model.y = y;
+                    model.x = x / zoom;
+                    model.y = y / zoom;
 
                     var _id = model.id || this._generateNodeId(model);
 
