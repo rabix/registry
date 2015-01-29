@@ -49,9 +49,11 @@ module.exports = function (app, config) {
      * Stream logs through winston logger
      */
     app.use(logger({
-        'format': 'dev',
+        format: 'dev',
         'stream': {
-            write: function(str) { console.log(str); winston.info(str); }
+            write: function(str) {
+                winston.info(str);
+            }
         }
     }));
 
@@ -94,16 +96,9 @@ module.exports = function (app, config) {
      * All errors are intercepted here and formated
      */
     app.use(function (err, req, res, next) {
-//        res.status(err.status || 500);
-//        res.render('error', {
-//            message: err.message,
-//            error: {},
-//            title: 'error'
-//        });
-
-        console.error('Caught error: ', err);
+        console.error('Caught err: ',err);
+        winston.error({route: req.url || req.originalRoute, status: err.status || 500,error: err.body, message: err.message || 'Request parse error'});
         res.status(err.status || 500).json({error: err.body, message: err.message || 'Request parse error'});
-
     });
 
 };

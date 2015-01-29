@@ -16,6 +16,7 @@ try {
 
 var config = {
     development: {
+        env: env,
         root: rootPath,
         app: {
             name: 'Rabix',
@@ -47,6 +48,7 @@ var config = {
     },
 
     test: {
+        env: env,
         root: rootPath,
         app: {
             name: 'Rabix Tests'
@@ -78,6 +80,7 @@ var config = {
     },
 
     staging: {
+        env: env,
         root: rootPath,
         app: {
             name: 'Rabix',
@@ -109,6 +112,7 @@ var config = {
     },
 
     production: {
+
         root: rootPath,
         app: {
             name: 'server',
