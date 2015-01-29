@@ -5,7 +5,7 @@
 'use strict';
 
 angular.module('registryApp.dyole')
-    .factory('node', ['$rootScope', 'terminal', function ($rootScope, Terminal) {
+    .factory('node', ['$rootScope', 'terminal', 'Const', function ($rootScope, Terminal, Const) {
 
         var Node = function (options) {
             var _self = this;
@@ -858,6 +858,26 @@ angular.module('registryApp.dyole')
                 this.selected = false;
             },
 
+            _removeValues: function () {
+                var id = this.model.id;
+
+                _.forEach(this.Pipeline.values, function (val, nodeId, obj) {
+                    if (nodeId === id) {
+                        obj[nodeId] = null;
+                        delete obj[nodeId];
+                    }
+                });
+
+                _.forEach(this.Pipeline.exposed, function (val, ni, obj) {
+                    var nodeId = ni.split(Const.exposedSeparator)[0];
+                    console.log(nodeId, ni);
+                    if (nodeId === id) {
+                        obj[ni] = null;
+                        delete obj[ni];
+                    }
+                });
+            },
+
             removeNode: function () {
 
                 var _self = this;
@@ -881,6 +901,8 @@ angular.module('registryApp.dyole')
                 if (typeof this.glow !== 'undefined') {
                     this.glow.remove();
                 }
+
+                this._removeValues();
 
                 this.destroy();
 
