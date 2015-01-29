@@ -1,0 +1,163 @@
+{
+    "name": "tool-inputs",
+    "fixtures": {
+        "CommandLineTool": {
+            "input-string": {
+                "type": "string",
+                "adapter": {
+                    "order": 1,
+                    "prefix": "--str",
+                    "separator": " "
+                }
+            },
+            "input-string-enum": {
+                "enum": ["opt1", "opt2"],
+                "adapter": {
+                    "prefix": "--string-enum",
+                    "order": 1,
+                    "separator": "="
+                },
+                "type": "string"
+            },
+            "input-integer": {
+                "type": "integer"
+            },
+            "input-number": {
+                "type": "number",
+                "adapter": {
+                    "separator": "=",
+                    "prefix": "--num",
+                    "order": 0
+                }
+            },
+            "input-file": {
+                "type": "file",
+                "adapter": {
+                    "separator": " ",
+                    "prefix": "--file",
+                    "order": 6,
+                    "streamable": true
+                }
+            },
+            "input-boolean": {
+                "type": "boolean",
+                "adapter": {
+                    "separator": " ",
+                    "prefix": "--bool",
+                    "order": 0
+                }
+            },
+            "input-array-string": {
+                "type": "array",
+                "adapter": {
+                    "separator": " ",
+                    "prefix": "--ias",
+                    "order": 0,
+                    "itemSeparator": ";"
+                },
+                "minItems": 1,
+                "maxItems": 3,
+                "items": {
+                    "type": "string",
+                    "required": []
+                }
+            },
+            "input-array-file": {
+                "type": "array",
+                "adapter": {
+                    "separator": " ",
+                    "prefix": "",
+                    "order": 0,
+                    "itemSeparator": ",",
+                    "streamable": false
+                },
+                "items": {
+                    "type": "file",
+                    "required": []
+                }
+            },
+            "input-array-obj": {
+                "type": "array",
+                "adapter": {
+                    "separator": " ",
+                    "prefix": "",
+                    "order": 1,
+                    "itemSeparator": " "
+                },
+                "minItems": 1,
+                "maxItems": 3,
+                "items": {
+                    "type": "object",
+                    "required": [],
+                    "properties": {
+                        "input-string": {
+                            "type": "string"
+                        },
+                        "input-int": {
+                            "type": "integer",
+                            "adapter": {
+                                "separator": "=",
+                                "prefix": "--int-inner",
+                                "order": 0
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "Script": {
+            "input-string": {
+                "type": "string"
+            },
+            "input-string-enum": {
+                "enum": ["opt1", "opt2"],
+                "type": "string"
+            },
+            "input-integer": {
+                "type": "integer"
+            },
+            "input-number": {
+                "type": "number"
+            },
+            "input-file": {
+                "type": "file"
+            },
+            "input-boolean": {
+                "type": "boolean"
+            },
+            "input-array-string": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 3,
+                "items": {
+                    "type": "string",
+                    "required": []
+                }
+            },
+            "input-array-file": {
+                "type": "array",
+                "items": {
+                    "type": "file",
+                    "required": []
+                }
+            },
+            "input-array-obj": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 3,
+                "items": {
+                    "type": "object",
+                    "required": [],
+                    "properties": {
+                        "input-string": {
+                            "type": "string"
+                        },
+                        "input-int": {
+                            "type": "integer"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

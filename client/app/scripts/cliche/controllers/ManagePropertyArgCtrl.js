@@ -55,13 +55,6 @@ angular.module('registryApp.cliche')
         };
 
         /**
-         * Close modal
-         */
-        $scope.ok = function () {
-            $modalInstance.close();
-        };
-
-        /**
          * Dismiss modal
          */
         $scope.cancel = function () {

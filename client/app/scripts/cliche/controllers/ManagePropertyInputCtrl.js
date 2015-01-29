@@ -36,8 +36,17 @@ angular.module('registryApp.cliche')
         };
 
         if ($scope.view.mode === 'add') {
-            $scope.view.adapter = true;
-            checkInputAdapter();
+
+            if (options.toolType === 'tool') {
+                $scope.view.adapter = true;
+                if (_.isUndefined($scope.view.property.adapter)) {
+                    $scope.view.property.adapter = {separator: ' '};
+                }
+            } else {
+                $scope.view.adapter = false;
+                delete $scope.view.property.adapter;
+            }
+
         } else {
             $scope.view.adapter = !_.isUndefined($scope.view.property.adapter);
         }
@@ -165,13 +174,6 @@ angular.module('registryApp.cliche')
                 delete $scope.view.property.adapter;
             }
 
-        };
-
-        /**
-         * Close modal
-         */
-        $scope.ok = function () {
-            $modalInstance.close();
         };
 
         /**

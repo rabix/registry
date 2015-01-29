@@ -147,13 +147,13 @@
 
         <div class="row">
             <div class="col-md-12">
-                <label class="control-label">Secondary Files</label>
+                <label class="control-label">Secondary Files <small>(enter expression for secondary files or click + to enumerate them)</small></label>
                 <div ng-if="view.isSecondaryFilesExpr" class="enum-list-wrap">
                     <a href ng-click="toggleToList()" class="btn btn-default add-enum-item"><i class="fa fa-plus"></i></a>
                     <div class="enum-list-container">
                         <ul class="enum-list wide">
                             <li>
-                                <expr ng-model="view.property.adapter.secondaryFiles" only-expr="true" handle-item-update="updateSecondaryFilesValue(value)" placeholder="Enter expression for secondary files or click + to enumerate them"></expr>
+                                <expr ng-model="view.property.adapter.secondaryFiles" only-expr="true" handle-item-update="updateSecondaryFilesValue(value)"></expr>
                             </li>
                         </ul>
                     </div>

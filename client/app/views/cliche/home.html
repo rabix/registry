@@ -79,7 +79,7 @@
         <div ng-if="!view.app.is_script" ng-show="view.tab === 'adapter'" class="tab adapter flex-box-column flex-one">
             <ng-include class="include flex-box-column flex-one" src="'views/cliche/tabs/adapter.html'"></ng-include>
         </div>
-        <div ng-if="!view.app.is_script" ng-show="view.tab === 'values'" class="tab values flex-box-column flex-one">
+        <div ng-if="view.tab === 'values' && !view.app.is_script" class="tab values flex-box-column flex-one">
             <ng-include class="include flex-box-column flex-one" src="'views/cliche/tabs/values.html'"></ng-include>
         </div>
 

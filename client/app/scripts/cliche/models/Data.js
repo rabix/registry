@@ -167,41 +167,41 @@ angular.module('registryApp.cliche')
                         root: {
                             type: 'string'
                         },
-                        adapter: {prefix: '', separator: ' ', order: 0, value: undefined, streamable: false}
+                        adapter: {prefix: '', separator: ' ', order: 0, value: null, streamable: false}
                     },
                     string: {
                         root: {
                             type: 'string',
                             enum: null
                         },
-                        adapter: {prefix: '', separator: ' ', order: 0, value: undefined}
+                        adapter: {prefix: '', separator: ' ', order: 0, value: null}
                     },
                     integer: {
                         root: {
                             type: 'string'
                         },
-                        adapter: {prefix: '', separator: ' ', order: 0, value: undefined}
+                        adapter: {prefix: '', separator: ' ', order: 0, value: null}
                     },
                     number: {
                         root: {
                             type: 'string'
                         },
-                        adapter: {prefix: '', separator: ' ', order: 0, value: undefined}
+                        adapter: {prefix: '', separator: ' ', order: 0, value: null}
                     },
                     array: {
                         root: {
                             type: 'string',
-                            minItems: undefined,
-                            maxItems: undefined,
+                            minItems: null,
+                            maxItems: null,
                             items: {type: 'string'}
                         },
-                        adapter: {prefix: '', separator: ' ', order: 0, value: undefined, itemSeparator: ','}
+                        adapter: {prefix: '', separator: ' ', order: 0, value: null, itemSeparator: ','}
                     },
                     boolean: {
                         root: {
                             type: 'string'
                         },
-                        adapter: {prefix: '', separator: ' ', order: 0, value: undefined}
+                        adapter: {prefix: '', separator: ' ', order: 0, value: null}
                     },
                     object: {
                         root: {
@@ -227,8 +227,8 @@ angular.module('registryApp.cliche')
                     array: {
                         root: {
                             type: 'string',
-                            minItems: undefined,
-                            maxItems: undefined,
+                            minItems: null,
+                            maxItems: null,
                             items: {type: 'file'}
                         },
                         adapter: {glob: '', streamable: false, metadata: {}, secondaryFiles: []}

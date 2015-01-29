@@ -123,6 +123,8 @@ describe('Controller: JsonEditorCtrl', function () {
 
     it('should cancel timeout when scope is destroyed', function () {
 
+        $timeout.flush();
+
         $scope.$broadcast('$destroy');
 
         expect($timeout.cancel).toHaveBeenCalled();

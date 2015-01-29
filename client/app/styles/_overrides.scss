@@ -115,6 +115,12 @@
   }
 }
 
+.control-label {
+  small {
+    font-weight: normal;
+  }
+}
+
 /* Form override */
 form,
 .form {
