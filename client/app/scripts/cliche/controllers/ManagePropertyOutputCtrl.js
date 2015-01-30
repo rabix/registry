@@ -22,7 +22,6 @@ angular.module('registryApp.cliche')
             }
         }
 
-        $scope.view.disabled = ($scope.view.property.items && $scope.view.property.items.type) === 'object';
         $scope.view.newMeta = {key: '', value: ''};
 
         $scope.view.inputs = [];
@@ -184,13 +183,6 @@ angular.module('registryApp.cliche')
          */
         $scope.updateGlobValue = function (value) {
             $scope.view.property.adapter.glob = value;
-        };
-
-        /**
-         * Close modal
-         */
-        $scope.ok = function () {
-            $modalInstance.close();
         };
 
         /**

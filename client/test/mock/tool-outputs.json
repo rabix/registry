@@ -1,0 +1,95 @@
+{
+    "name": "tool-outputs",
+    "fixtures": {
+        "CommandLineTool": {
+            "output-file": {
+                "type": "file",
+                "adapter": {
+                    "metadata": {
+                        "meta1": "val1",
+                        "meta2": "val2",
+                        "__inherit__": "input-file"
+                    },
+                    "glob": "*.txt",
+                    "streamable": true,
+                    "secondaryFiles": [
+                        "file1",
+                        "file2"
+                    ]
+                }
+            },
+            "output-directory": {
+                "type": "directory",
+                "adapter": {
+                    "metadata": {
+                        "__inherit__": "input-file"
+                    },
+                    "glob": "",
+                    "secondaryFiles": {
+                        "$expr": "'test'"
+                    },
+                    "value": {
+                        "$expr": "var test = 'test';\ntest"
+                    }
+                }
+            },
+            "output-array-file": {
+                "type": "array",
+                "adapter": {
+                    "metadata": {
+                        "test": "test"
+                    },
+                    "glob": "*.txt",
+                    "streamable": true
+                },
+                "minItems": 1,
+                "maxItems": 2,
+                "items": {
+                    "type": "file"
+                }
+            },
+            "output-array-directory": {
+                "type": "array",
+                "adapter": {
+                    "metadata": {
+                        "test": "test",
+                        "__inherit__": "input-file"
+                    },
+                    "glob": "",
+                    "streamable": false,
+                    "secondaryFiles": [
+                        "test"
+                    ],
+                    "value": {
+                        "$expr": "'test'"
+                    }
+                },
+                "items": {
+                    "type": "directory"
+                }
+            }
+        },
+        "Scripts": {
+            "output-file": {
+                "type": "file"
+            },
+            "output-directory": {
+                "type": "directory"
+            },
+            "output-array-file": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 2,
+                "items": {
+                    "type": "file"
+                }
+            },
+            "output-array-directory": {
+                "type": "array",
+                "items": {
+                    "type": "directory"
+                }
+            }
+        }
+    }
+}

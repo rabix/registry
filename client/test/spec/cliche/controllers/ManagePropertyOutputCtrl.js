@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Controller: ManagePropertyInputCtrl', function () {
+describe('Controller: ManagePropertyOutputCtrl', function () {
 
     var controllerFactory;
     var $scope;
@@ -9,26 +9,25 @@ describe('Controller: ManagePropertyInputCtrl', function () {
     var $compile;
 
     var tpl = {
-        cmd: 'views/cliche/partials/manage-property-tool-input.html',
-        script: 'views/cliche/partials/manage-property-script-input.html'
+        cmd: 'views/cliche/partials/manage-property-tool-output.html',
+        script: 'views/cliche/partials/manage-property-script-output.html'
     };
 
     var Data;
 
+    var outputs = _.find(__FIXTURES__, {name: 'tool-outputs'}).fixtures;
     var inputs = _.find(__FIXTURES__, {name: 'tool-inputs'}).fixtures;
 
     var cmdOpts = {
-        type: 'input',
+        type: 'output',
         toolType: 'tool',
-        properties: inputs.CommandLineTool,
-        inputs: {}
+        properties: outputs.CommandLineTool
     };
 
     var scriptOpts = {
-        type: 'input',
+        type: 'output',
         toolType: 'script',
-        properties: inputs.Script,
-        inputs: {}
+        properties: outputs.Script
     };
 
     /**
@@ -38,7 +37,10 @@ describe('Controller: ManagePropertyInputCtrl', function () {
      */
     function createController(options) {
 
-        return controllerFactory('ManagePropertyInputCtrl', {
+        Data.tool.inputs = {};
+        Data.tool.inputs.properties = inputs.CommandLineTool;
+
+        return controllerFactory('ManagePropertyOutputCtrl', {
             $scope: $scope,
             $modalInstance: $modalInstance,
             Data: Data,
@@ -74,7 +76,7 @@ describe('Controller: ManagePropertyInputCtrl', function () {
 
     var attachEditBehavior = function(type, options, toolType) {
 
-        describe('when editing ' + type + ' (' + toolType + ') tool input', function() {
+        describe('when editing ' + type + ' (' + toolType + ') tool output', function() {
 
             beforeEach(function () {
                 createController(options);
@@ -85,24 +87,13 @@ describe('Controller: ManagePropertyInputCtrl', function () {
                 expect($scope.view.mode).toEqual('edit');
             });
 
-            it('should have some fields disabled if "object" item type', function() {
-
-                if (options.property.items && options.property.items.type === 'object') {
-                    expect($scope.view.disabled).toBeTruthy();
-                } else {
-                    expect($scope.view.disabled).toBeFalsy();
-                }
-
-            });
-
-            it('should save changes for the input', function() {
+            it('should save changes for the output', function() {
 
                 var total = _.size(options.properties);
 
                 if ($scope.view.adapter) {
-                    $scope.view.property.adapter.prefix = '--some-prefix';
-                    $scope.view.property.adapter.separator = ' ';
-                    $scope.view.property.adapter.order = 5;
+                    $scope.view.property.adapter.secondaryFiles = ['file.txt'];
+                    $scope.view.property.adapter.glob = '*';
                 }
 
                 expect(_.size(options.properties)).toBe(total);
@@ -121,7 +112,7 @@ describe('Controller: ManagePropertyInputCtrl', function () {
 
     var attachAddBehavior = function(type, options, toolType) {
 
-        describe('when adding ' + type + ' (' + toolType + ') tool input', function() {
+        describe('when adding ' + type + ' (' + toolType + ') tool output', function() {
 
             beforeEach(function () {
                 createController(options);
@@ -133,22 +124,12 @@ describe('Controller: ManagePropertyInputCtrl', function () {
                 expect($scope.view.mode).toEqual('add');
 
                 if (toolType === 'cmd') {
-                    expect($scope.view.adapter).toBeTruthy();
                     expect($scope.view.property.adapter).toBeDefined();
-                } else {
-                    expect($scope.view.adapter).toBeFalsy();
-                    expect($scope.view.property.adapter).toBeUndefined();
                 }
 
             });
 
-            it('should have separator, item separator, prefix and value fields enabled for any type when initiated', function() {
-
-                expect($scope.view.disabled).toBeFalsy();
-
-            });
-
-            it('should save changes for the input', function() {
+            it('should save changes for the output', function() {
 
                 var total = _.size(options.properties);
 
@@ -156,9 +137,8 @@ describe('Controller: ManagePropertyInputCtrl', function () {
                 $scope.view.name = '';
 
                 if ($scope.view.adapter) {
-                    $scope.view.property.adapter.prefix = '--some-prefix';
-                    $scope.view.property.adapter.separator = ' ';
-                    $scope.view.property.adapter.order = 5;
+                    $scope.view.property.adapter.secondaryFiles = ['file.txt'];
+                    $scope.view.property.adapter.glob = '*';
                 }
 
                 expect(_.size(options.properties)).toBe(total);
@@ -214,7 +194,7 @@ describe('Controller: ManagePropertyInputCtrl', function () {
 
     var attachCommonBehaviour = function(toolType) {
 
-        describe('when adding or editing tool (' + toolType + ') input', function() {
+        describe('when adding or editing tool (' + toolType + ') output', function() {
 
             beforeEach(function () {
                 createController(cmdOpts);
@@ -241,26 +221,25 @@ describe('Controller: ManagePropertyInputCtrl', function () {
                 expect(newProperty.maxItems).toBeDefined();
                 expect(newProperty.items).toBeDefined();
 
-                $scope.view.property.items.type = 'object';
+            });
 
-                $scope.$digest();
+            it('should toggle secondaryFiles structure', function() {
 
-                expect(newProperty.items.properties).toBeUndefined();
-                expect($scope.view.property.items.properties).toBeDefined();
+                $scope.toggleToList();
+
+                expect($scope.view.property.adapter.secondaryFiles).toEqual(jasmine.any(Array));
+                expect($scope.view.property.adapter.secondaryFiles.length).toBe(1);
+                expect($scope.view.isSecondaryFilesExpr).toBeFalsy();
 
             });
 
-            it('should toggle enum array', function() {
+            it('should update secondaryFiles value', function() {
 
-                $scope.view.isEnum = true;
-                $scope.toggleEnum();
+                var value = {$expr: '"test"'};
 
-                expect($scope.view.property.enum.length).toBe(1);
+                $scope.updateSecondaryFilesValue(value);
 
-                $scope.view.isEnum = false;
-                $scope.toggleEnum();
-
-                expect($scope.view.property.enum).toBeUndefined();
+                expect($scope.view.property.adapter.secondaryFiles).toEqual(value);
 
             });
 
@@ -280,17 +259,102 @@ describe('Controller: ManagePropertyInputCtrl', function () {
 
             });
 
-            it('should toggle adapter visibility', function() {
+            it('should update glob value', function() {
 
-                $scope.view.adapter = false;
-                $scope.toggleAdapter();
+                var value = {$expr: '"test"'};
 
-                expect($scope.view.property.adapter).toBeUndefined();
+                $scope.updateGlobValue(value);
 
-                $scope.view.adapter = true;
-                $scope.toggleAdapter();
+                expect($scope.view.property.adapter.glob).toEqual(value);
 
-                expect($scope.view.property.adapter).toBeDefined();
+            });
+
+            describe('when adding new meta values', function () {
+
+                it('should add new key if key is unique', function () {
+
+                    expect(_.size($scope.view.property.adapter.metadata)).toBe(0);
+
+                    $scope.view.newMeta.key = 'meta1';
+                    $scope.view.newMeta.value = 'some value';
+
+                    $scope.$digest();
+
+                    $scope.addMeta();
+
+                    expect($scope.view.newMeta.error).toBeFalsy();
+                    expect(_.size($scope.view.property.adapter.metadata)).toBe(1);
+
+                });
+
+                it('should fail adding if key exists', function () {
+
+                    $scope.view.property.adapter.metadata = {meta1: 'some value'};
+
+                    // try with same key
+                    $scope.view.newMeta.key = 'meta1';
+                    $scope.view.newMeta.value = 'some value';
+
+                    $scope.$digest();
+
+                    $scope.addMeta();
+
+                    expect($scope.view.newMeta.error).toBeTruthy();
+                    expect(_.size($scope.view.property.adapter.metadata)).toBe(1);
+
+                    // try with non-existing key
+                    $scope.view.newMeta.key = 'meta2';
+
+                    $scope.$digest();
+
+                    $scope.addMeta();
+
+                    expect($scope.view.newMeta.error).toBeFalsy();
+                    expect(_.size($scope.view.property.adapter.metadata)).toBe(2);
+
+                });
+
+            });
+
+            it('should remove value from metadata', function () {
+
+                $scope.view.property.adapter.metadata = {
+                    meta1: 'some value',
+                    meta2: 'some value',
+                    meta3: 'some value'
+                };
+
+                $scope.$digest();
+
+                $scope.removeMeta('meta2');
+
+                expect($scope.view.property.adapter.metadata.meta2).toBeUndefined();
+
+            });
+
+            it('should update new meta value', function() {
+
+                var value = {$expr: '"test"'};
+
+                $scope.updateNewMeta(value);
+
+                expect($scope.view.newMeta.value).toEqual(value);
+
+            });
+
+            it('should update existing meta value', function() {
+
+                $scope.view.property.adapter.metadata = {
+                    meta1: 'some value',
+                    meta2: 'some value',
+                    meta3: 'some value'
+                };
+
+                var value = {$expr: '"test"'};
+
+                $scope.updateMetaValue('meta2', value);
+
+                expect($scope.view.property.adapter.metadata.meta2).toEqual(value);
 
             });
 
@@ -298,7 +362,7 @@ describe('Controller: ManagePropertyInputCtrl', function () {
 
     };
 
-    it('should not add input with existing name', function() {
+    it('should not add output with existing name', function() {
 
         createController(cmdOpts);
         $compile($templateCache.get(tpl.cmd))($scope);
@@ -306,7 +370,7 @@ describe('Controller: ManagePropertyInputCtrl', function () {
         var total = _.size(cmdOpts.properties);
 
         // try with existing name
-        $scope.view.name = _.keys(inputs.CommandLineTool)[0];
+        $scope.view.name = _.keys(outputs.CommandLineTool)[0];
 
         expect(_.size(cmdOpts.properties)).toBe(total);
 
@@ -324,19 +388,24 @@ describe('Controller: ManagePropertyInputCtrl', function () {
 
     });
 
-    describe('when adding or editing whatever input', function() {
+    describe('when adding or editing whatever output', function() {
 
         beforeEach(function () {
             createController(cmdOpts);
             $compile($templateCache.get(tpl.cmd))($scope);
         });
 
-        it('should have save, toggleEnum, updateTransform, toggleAdapter and cancel functions', function () {
+        it('should have save, toggleToList, updateSecondaryFilesValue, updateTransform, addMeta, removeMeta, updateNewMeta, updateMetaValue, updateGlobValue and cancel functions', function () {
 
             expect(angular.isFunction($scope.save)).toBe(true);
-            expect(angular.isFunction($scope.toggleEnum)).toBe(true);
+            expect(angular.isFunction($scope.toggleToList)).toBe(true);
+            expect(angular.isFunction($scope.updateSecondaryFilesValue)).toBe(true);
             expect(angular.isFunction($scope.updateTransform)).toBe(true);
-            expect(angular.isFunction($scope.toggleAdapter)).toBe(true);
+            expect(angular.isFunction($scope.addMeta)).toBe(true);
+            expect(angular.isFunction($scope.removeMeta)).toBe(true);
+            expect(angular.isFunction($scope.updateNewMeta)).toBe(true);
+            expect(angular.isFunction($scope.updateMetaValue)).toBe(true);
+            expect(angular.isFunction($scope.updateGlobValue)).toBe(true);
             expect(angular.isFunction($scope.cancel)).toBe(true);
 
         });
@@ -346,11 +415,12 @@ describe('Controller: ManagePropertyInputCtrl', function () {
             expect($scope.view).toEqual(jasmine.any(Object));
 
             expect($scope.view.property).toEqual(jasmine.any(Object));
+            expect($scope.view.inputs).toEqual(jasmine.any(Array));
             expect($scope.view.name).toBeUndefined();
 
         });
 
-        it('should close modal when canceling input edit', function () {
+        it('should close modal when canceling output edit', function () {
 
             $scope.cancel();
 
@@ -360,7 +430,7 @@ describe('Controller: ManagePropertyInputCtrl', function () {
 
     });
 
-    _.each(inputs.CommandLineTool, function(prop, name) {
+    _.each(outputs.CommandLineTool, function(prop, name) {
         attachEditBehavior(prop.type, _.extend({
             name: name,
             required: false,
@@ -368,7 +438,7 @@ describe('Controller: ManagePropertyInputCtrl', function () {
         }, cmdOpts), 'cmd');
     });
 
-    _.each(inputs.Script, function(prop, name) {
+    _.each(outputs.Script, function(prop, name) {
         attachEditBehavior(prop.type, _.extend({
             name: name,
             required: false,
@@ -376,18 +446,15 @@ describe('Controller: ManagePropertyInputCtrl', function () {
         }, scriptOpts), 'script');
     });
 
-    _.each(inputs.CommandLineTool, function(prop) {
+    _.each(outputs.CommandLineTool, function(prop) {
         attachAddBehavior(prop.type, cmdOpts, 'cmd');
     });
 
-    _.each(inputs.Script, function(prop) {
+    _.each(outputs.Script, function(prop) {
         attachAddBehavior(prop.type, scriptOpts, 'script');
     });
 
     attachCommonBehaviour('cmd');
     attachCommonBehaviour('script');
-
-
-
 
 });
