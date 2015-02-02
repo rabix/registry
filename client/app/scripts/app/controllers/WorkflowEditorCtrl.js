@@ -4,9 +4,11 @@
 'use strict';
 
 angular.module('registryApp.app')
-    .controller('WorkflowEditorCtrl', ['$scope', '$rootScope', '$q', '$routeParams', '$modal', '$templateCache', '$location', 'Sidebar', 'Loading', 'Tool', 'Workflow', 'User', 'Repo', 'BeforeRedirect', 'Helper', function ($scope, $rootScope, $q, $routeParams, $modal, $templateCache, $location, Sidebar, Loading, Tool, Workflow, User, Repo, BeforeRedirect, Helper) {
+    .controller('WorkflowEditorCtrl', ['$scope', '$rootScope', '$q', '$routeParams', '$modal', '$templateCache', '$location', 'Sidebar', 'Loading', 'Tool', 'Workflow', 'User', 'Repo', 'BeforeRedirect', 'Helper', 'PipelineService', function ($scope, $rootScope, $q, $routeParams, $modal, $templateCache, $location, Sidebar, Loading, Tool, Workflow, User, Repo, BeforeRedirect, Helper, PipelineService) {
 
         Sidebar.setActive('workflow editor');
+
+        var PipelineInstance = null;
 
         $scope.view = {};
 
@@ -61,10 +63,23 @@ angular.module('registryApp.app')
 
         $scope.view.appRevisions = {};
 
+        /**
+         * Set controller id for pipeline Service to use it
+         *
+         * @type {string}
+         */
+        $scope.view.id = 'workflowEditorCtrl';
+
         $scope.$watch('Loading.classes', function (n, o) {
             if (n !== o) {
                 $scope.view.classes = n;
             }
+        });
+
+        PipelineService.register($scope.view.id, function () {
+            PipelineInstance = PipelineService.getInstance($scope.view.id);
+
+            console.log('Pipeline Instance cached', PipelineInstance);
         });
 
         $q.all([
@@ -108,7 +123,6 @@ angular.module('registryApp.app')
             
             mergeToolsWorkflows('otherRepositories', tools, scripts, workflows);
 
-            console.log($scope.view.appRevisions);
         };
 
         var formatApps = function (apps) {
@@ -258,7 +272,8 @@ angular.module('registryApp.app')
 
             } else if (mode === 'edit') {
                 BeforeRedirect.setReload(true);
-                $scope.$broadcast('save', null);
+//                $scope.$broadcast('save', null);
+                PipelineInstance.save(null);
             } else {
                 modalInstance = $modal.open({
                     controller: 'PickRepoModalCtrl',
@@ -277,7 +292,8 @@ angular.module('registryApp.app')
                         BeforeRedirect.setReload(true);
                         $scope.view.saving = true;
                         $scope.view.loading = true;
-                        $scope.$broadcast('save', data.repoId);
+//                        $scope.$broadcast('save', data.repoId);
+                        PipelineInstance.save(data.repoId);
 
                     } else {
 
@@ -302,7 +318,8 @@ angular.module('registryApp.app')
         $scope.toggleSidebar = function() {
 
             $scope.view.showSidebar = !$scope.view.showSidebar;
-            $rootScope.$broadcast('sidebar:toggle', $scope.view.showSidebar);
+//            $rootScope.$broadcast('sidebar:toggle', $scope.view.showSidebar);
+            PipelineInstance.adjustSize();
 
         };
 
@@ -362,17 +379,10 @@ angular.module('registryApp.app')
 
         });
 
-        $scope.$on('$destroy', function () {
-            onNodeSelectOff();
-            onNodeDeselectOff();
-
-            onBeforeRedirectOff();
-            onBeforeRedirectOff = undefined;
-
-        });
-
         $scope.workflowToJSON = function () {
-            $scope.$broadcast('pipeline:format');
+//            $scope.$broadcast('pipeline:format');
+            var p = PipelineInstance.format();
+            $scope.formatPipeline(p);
         };
 
         $scope.fork = function () {
@@ -386,7 +396,8 @@ angular.module('registryApp.app')
             modalInstance.result.then(function (data) {
                 if (data.repoId) {
                     BeforeRedirect.setReload(true);
-                    $scope.$broadcast('pipeline:fork', data.repoId, data.name);
+//                    $scope.$broadcast('pipeline:fork', data.repoId, data.name);
+                    PipelineInstance.fork(data.repoId, data.name);
                 } else {
                     $modal.open({
                         template: $templateCache.get('views/partials/validation.html'),
@@ -396,7 +407,7 @@ angular.module('registryApp.app')
                         resolve: {data: function () { return {messages: ['You must pick repo name']}; }}
                     });
 
-                }
+                }a
             });
 
         };
@@ -426,7 +437,8 @@ angular.module('registryApp.app')
             });
 
             modal.result.then(function () {
-                $scope.$broadcast('pipeline:get:url');
+//                $scope.$broadcast('pipeline:get:url');
+                PipelineInstance.getUrl();
             });
 
         };
@@ -483,5 +495,15 @@ angular.module('registryApp.app')
 
         };
 
+        $scope.$on('$destroy', function () {
+            onNodeSelectOff();
+            onNodeDeselectOff();
+
+            onBeforeRedirectOff();
+            onBeforeRedirectOff = undefined;
+
+            PipelineService.removeInstance($scope.view.id);
+
+        });
 
     }]);

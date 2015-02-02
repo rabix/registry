@@ -53,7 +53,7 @@
     <div ng-if="!view.loading" class="content content-tbl flex-box-row">
 
         <div class="col flex-box-column flex-one content-col">
-            <div class="pipeline-wrap flex-box-column flex-one" pipeline="view.workflow" edit-mode="true" pipeline-change-fn="onWorkflowChange(value)" handle-pipeline-json="formatPipeline(pipeline)"></div>
+            <div class="pipeline-wrap flex-box-column flex-one" pipeline="view.workflow" edit-mode="true" controller-id="view.id" pipeline-change-fn="onWorkflowChange(value)"></div>
         </div>
 
         <div class="col flex-box-column flex-auto sidebar-col" ng-class="{closed: !view.showSidebar}">
