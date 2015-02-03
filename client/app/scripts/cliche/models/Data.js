@@ -40,70 +40,6 @@ angular.module('registryApp.cliche')
         self.command = '';
 
         /**
-         * Fetch tool object from storage
-         *
-         * @returns {*}
-         */
-        self.fetchTool = function() {
-
-            var deferred = $q.defer();
-
-            $localForage.getItem('tool').then(function(tool) {
-                if (_.isNull(tool) || _.isEmpty(tool)) {
-                    $http({method: 'GET', url: 'data/tool.json'})
-                        .success(function(data) {
-
-                            self.tool = data.tool;
-                            deferred.resolve(data.tool);
-
-                            $localForage.setItem('tool', data.tool);
-                        })
-                        .error(function() {
-                            deferred.reject('JSON file could not be fetched');
-                        });
-                } else {
-                    self.tool = tool;
-                    deferred.resolve(tool);
-                }
-            });
-
-            return deferred.promise;
-
-        };
-
-        /**
-         * Fetch job object from storage
-         *
-         * @returns {*}
-         */
-        self.fetchJob = function() {
-
-            var deferred = $q.defer();
-
-            $localForage.getItem('job').then(function(job) {
-                if (_.isNull(job) || _.isEmpty(job)) {
-                    $http({method: 'GET', url: 'data/job.json'})
-                        .success(function(data) {
-
-                            self.job = data.job;
-                            deferred.resolve(data.job);
-
-                            $localForage.setItem('job', data.job);
-                        })
-                        .error(function() {
-                            deferred.reject('JSON file could not be fetched');
-                        });
-                } else {
-                    self.job = job;
-                    deferred.resolve(job);
-                }
-            });
-
-            return deferred.promise;
-
-        };
-
-        /**
          * Fetch tool and job from local db if exist
          *
          * @returns {*}
@@ -246,19 +182,10 @@ angular.module('registryApp.cliche')
          */
         self.save = function() {
 
-            var deferred = $q.defer();
-
-            $q.all([
+            return $q.all([
                 $localForage.setItem('tool', self.tool),
                 $localForage.setItem('job', self.job)
-            ]).then(
-                function () {
-                    deferred.resolve();
-                }, function () {
-                    deferred.reject();
-                });
-
-            return deferred.promise;
+            ]);
         };
 
         /**
@@ -367,26 +294,6 @@ angular.module('registryApp.cliche')
         };
 
         /**
-         * Parse prefix for the input value
-         *
-         * @param {string} prefix
-         * @returns {string} output
-         */
-        self.parsePrefix = function(prefix) {
-
-            var output = '';
-
-            if (_.isUndefined(prefix)) {
-                output = '';
-            } else {
-                output = prefix;
-            }
-
-            return output;
-
-        };
-
-        /**
          * Parse item separator for the input value
          *
          * @param itemSeparator
@@ -479,7 +386,7 @@ angular.module('registryApp.cliche')
                 if (!_.isUndefined(inputs[key]) && property.adapter) {
 
                     var deferred = $q.defer();
-                    var prefix = self.parsePrefix(property.adapter.prefix);
+                    var prefix = property.adapter.prefix || '';
                     var separator = self.parseSeparator(prefix, property.adapter.separator);
                     var itemSeparator = self.parseItemSeparator(property.adapter.itemSeparator);
 
@@ -611,7 +518,7 @@ angular.module('registryApp.cliche')
                     _.each(self.tool.adapter.args, function(arg, key) {
 
                         var deferred = $q.defer();
-                        var prefix = self.parsePrefix(arg.prefix);
+                        var prefix = arg.prefix || '';
                         var argObj = angular.copy(arg);
                         delete argObj.value;
 

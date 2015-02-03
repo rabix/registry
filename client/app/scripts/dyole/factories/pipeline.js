@@ -73,6 +73,8 @@ angular.module('registryApp.dyole')
                 this._attachEvents();
                 this._generateNodes();
                 this._generateConnections();
+                
+                this._drawScrollbars();
             };
 
             Pipeline.prototype = {
@@ -658,8 +660,6 @@ angular.module('registryApp.dyole')
                         vBar.remove();
                         this.verticalBar = null;
                     }
-
-                    //                surface.createRect({x: canvasBox.l, y: canvasBox.t, width: canvasBox.r - canvasBox.r, height: canvasBox.b - canvasBox.t }).setStroke('red');
 
                     if (canvasBox.l < 0 || canvasBox.r > surfaceWidth) {
 

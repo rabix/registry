@@ -7,7 +7,110 @@
 'use strict';
 
 angular.module('registryApp.cliche')
-    .directive('argument', ['$templateCache', '$modal', '$compile', 'Data', 'SandBox', function ($templateCache, $modal, $compile, Data, SandBox) {
+    .controller('ArgumentCtrl', ['$scope', '$templateCache', '$modal', 'SandBox', 'Data', function ($scope, $templateCache, $modal, SandBox, Data) {
+
+        $scope.view = {};
+        $scope.view.tpl = 'views/cliche/property/property-argument.html';
+
+        $scope.view.exprError = '';
+
+        /**
+         * Check if expression is valid
+         */
+        var checkExpression = function () {
+
+            if ($scope.prop.value && $scope.prop.value.$expr) {
+
+                SandBox.evaluate($scope.prop.value.$expr, {})
+                    .then(function () {
+                        $scope.view.exprError = '';
+                    }, function (error) {
+                        $scope.view.exprError = error.name + ':' + error.message;
+                    });
+            } else {
+                $scope.view.exprError = '';
+            }
+
+        };
+
+        /* init check of the expression if defined */
+        checkExpression();
+
+        /**
+         * Toggle argument box visibility
+         */
+        $scope.toggle = function() {
+            $scope.active = !$scope.active;
+        };
+
+        /**
+         * Remove particular property
+         */
+        $scope.remove = function() {
+
+            var modalInstance = $modal.open({
+                template: $templateCache.get('views/partials/confirm-delete.html'),
+                controller: 'ModalCtrl',
+                windowClass: 'modal-confirm',
+                resolve: {data: function () { return {}; }}
+            });
+
+            modalInstance.result.then(function () {
+                Data.deleteProperty('arg', $scope.name, $scope.properties);
+                Data.generateCommand();
+            });
+        };
+
+        /**
+         * Edit property
+         */
+        $scope.edit = function() {
+
+            var modalInstance = $modal.open({
+                template: $templateCache.get('views/cliche/partials/manage-property-arg.html'),
+                controller: 'ManagePropertyArgCtrl',
+                windowClass: 'modal-prop',
+                size: 'lg',
+                resolve: {
+                    options: function () {
+                        return {
+                            type: 'arg',
+                            name: $scope.name,
+                            property: $scope.prop,
+                            properties: $scope.properties
+                        };
+                    }
+                }
+            });
+
+            modalInstance.result.then(function(result) {
+
+                _.each(result.prop, function(value, key) {
+                    $scope.prop[key] = value;
+                });
+
+                checkExpression();
+                Data.generateCommand();
+            });
+
+            return modalInstance;
+
+        };
+
+        /**
+         * Handle actions initiated from the property header
+         *
+         * @param action
+         */
+        $scope.handleAction = function(action) {
+
+            if (typeof $scope[action] === 'function') {
+                $scope[action]();
+            }
+        };
+
+    }])
+    .directive('argument', [function () {
 
         return {
             restrict: 'E',
@@ -18,107 +121,7 @@ angular.module('registryApp.cliche')
                 active: '=',
                 properties: '='
             },
-            controller: ['$scope', function ($scope) {
-
-                $scope.view = {};
-                $scope.view.tpl = 'views/cliche/property/property-argument.html';
-
-                $scope.view.exprError = '';
-
-                /**
-                 * Check if expression is valid
-                 */
-                var checkExpression = function () {
-
-                    if ($scope.prop.value && $scope.prop.value.$expr) {
-
-                        SandBox.evaluate($scope.prop.value.$expr, {})
-                            .then(function () {
-                                $scope.view.exprError = '';
-                            }, function (error) {
-                                $scope.view.exprError = error.name + ':' + error.message;
-                            });
-                    } else {
-                        $scope.view.exprError = '';
-                    }
-
-                };
-
-                /* init check of the expression if defined */
-                checkExpression();
-
-                /**
-                 * Toggle argument box visibility
-                 */
-                $scope.toggle = function() {
-                    $scope.active = !$scope.active;
-                };
-
-                /**
-                 * Remove particular property
-                 */
-                $scope.remove = function() {
-
-                    var modalInstance = $modal.open({
-                        template: $templateCache.get('views/partials/confirm-delete.html'),
-                        controller: 'ModalCtrl',
-                        windowClass: 'modal-confirm',
-                        resolve: {data: function () { return {}; }}
-                    });
-
-                    modalInstance.result.then(function () {
-                        Data.deleteProperty('arg', $scope.name, $scope.properties);
-                        Data.generateCommand();
-                    });
-                };
-
-                /**
-                 * Edit property
-                 */
-                $scope.edit = function() {
-
-                    var modalInstance = $modal.open({
-                        template: $templateCache.get('views/cliche/partials/manage-property-arg.html'),
-                        controller: 'ManagePropertyArgCtrl',
-                        windowClass: 'modal-prop',
-                        size: 'lg',
-                        resolve: {
-                            options: function () {
-                                return {
-                                    type: 'arg',
-                                    name: $scope.name,
-                                    property: $scope.prop,
-                                    properties: $scope.properties
-                                };
-                            }
-                        }
-                    });
-
-                    modalInstance.result.then(function(result) {
-
-                        _.each(result.prop, function(value, key) {
-                            $scope.prop[key] = value;
-                        });
-
-                        checkExpression();
-                        Data.generateCommand();
-                    });
-
-                };
-
-                /**
-                 * Handle actions initiated from the property header
-                 *
-                 * @param action
-                 */
-                $scope.handleAction = function(action) {
-
-                    if (typeof $scope[action] === 'function') {
-                        $scope[action]();
-                    }
-                };
-
-            }],
+            controller: 'ArgumentCtrl',
             link: function() {}
         };
     }]);

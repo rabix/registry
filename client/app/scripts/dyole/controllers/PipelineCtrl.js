@@ -350,8 +350,6 @@ angular.module('registryApp.dyole')
         if ($scope.controllerId) {
 
             var methods = {
-                onNodeLabelEdit: onNodeLabelEdit,
-                onNodeInfo: onNodeInfo,
                 flush: $scope.flush,
                 dropNode: $scope.dropNode,
                 save: save,
