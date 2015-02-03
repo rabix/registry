@@ -407,7 +407,7 @@ angular.module('registryApp.app')
                         resolve: {data: function () { return {messages: ['You must pick repo name']}; }}
                     });
 
-                }a
+                }
             });
 
         };
