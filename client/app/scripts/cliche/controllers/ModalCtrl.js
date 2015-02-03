@@ -11,10 +11,16 @@ angular.module('registryApp.cliche')
 
         $scope.data = data;
 
+        /**
+         * Close modal
+         */
         $scope.ok = function () {
             $modalInstance.close();
         };
 
+        /**
+         * Dismiss modal
+         */
         $scope.cancel = function () {
             $modalInstance.dismiss('cancel');
         };

@@ -25,6 +25,7 @@ angular.module('registryApp.cliche')
         $scope.view.newMeta = {key: '', value: ''};
 
         $scope.view.inputs = [];
+
         _.each(Data.tool.inputs.properties, function (value, key) {
             if (value.type === 'file' || (value.items && value.items.type === 'file')) {
                 $scope.view.inputs.push(key);
