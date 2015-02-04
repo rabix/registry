@@ -129,9 +129,7 @@ angular.module('registryApp.dyole')
 
         var format = function () {
 
-            return {
-                pipeline: Pipeline.getJSON()
-            };
+            return Pipeline.getJSON();
 
         };
 

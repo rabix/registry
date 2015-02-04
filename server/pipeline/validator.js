@@ -3,6 +3,10 @@
 var _ = require('lodash');
 var Sort = require('./top-sort');
 
+var Consts = {
+    exposedSeparator: '$'
+};
+
 var validator = {
 
     errors: [],
@@ -17,7 +21,6 @@ var validator = {
         this._duplicateRelations(json);
         this._cyclicGraph(json);
         this._requiredInputs(json);
-        this._requiredParams(json);
 
         return {
             errors: _.uniq(this.errors),
@@ -73,6 +76,12 @@ var validator = {
         });
     },
 
+    /**
+     * Check for cyclic graph
+     *
+     * @param json
+     * @private
+     */
     _cyclicGraph: function (json) {
 
         var _self = this,
@@ -89,10 +98,16 @@ var validator = {
 
     },
 
+    /**
+     * Go through schemas and check if there are required inputs that are not set or exposed
+     *
+     * @param json
+     * @private
+     */
     _requiredInputs: function (json) {
         var _self = this,
-            nodes = json.nodes;
-        
+            schemas = json.schemas;
+
         var checkConnected = function (nodeId, inputName) {
             var filter = _.filter(json.relations, function (rel) {
                 return rel.end_node === nodeId && rel.input_name === inputName;
@@ -101,42 +116,33 @@ var validator = {
             return filter.length === 0;
         };
 
-        _.forEach(nodes, function (node) {
-            // only inputs should be validated since outputs
-            node = node.json || node;
-            var inputs = node.inputs.properties;
+        _.forEach(schemas, function (schema) {
+            var inputs = schema.inputs;
 
-            _.forEach(inputs, function (input) {
-                if ((input.type === 'file' || input.items && input.items.type === 'file') && input.required === true) {
-                    if (checkConnected(node.id, input.name)) {
-                        _self.errors.push('There is required input file: "' + input.name + '" that is not set on node: ' + node.id);
+            _.forEach(inputs.required, function (input) {
+                var inProp = inputs.properties[input];
+
+                if (inProp && inProp.type === 'file' || (inProp.items && inProp.items.type === 'file')) {
+                    if (checkConnected(schema.id, input)) {
+                        _self.errors.push('There is required input file: "' + input + '" that is not set on node: ' + schema.id);
                     }
-                } else if (input.required === true) {
-                    _self.paramErrors.push('There is required input: "' + input.name + '" that is not set on node: ' + node.id);
+                } else {
+                    _self._checkInputSet(json, schema, input);
                 }
             });
         });
     },
 
-    /**
-     * Go through schemas and check if there are required parametars that are not set or exposed
-     *
-     * @param json
-     * @private
-     */
-    _requiredParams: function (json) {
-        var _self = this,
-            schemas = json.schemas;
+    _checkReqFileConnected: function (json, schema, inputId) {
+        var nodeId = schema.id;
 
-        _.forEach(schemas, function (schema) {
-            var inputs = schema.inputs;
-
-            _.forEach(inputs.required, function (input) {
-                if (inputs.properties[input]) {
-                    _self._checkInputSet(json, schema, input);
-                }
-            });
+        var exists = _.filter(json.relations, function (rel) {
+           return rel.end_node === nodeId && rel.input_name === inputId;
         });
+
+        if (exists.length === 0) {
+            this.paramErrors.push('There is required input: ' + inputId + ' in app: ' + schema.id + ' ;that has no value (not connected)');
+        }
     },
 
     _checkInputSet: function (json, schema, input) {
@@ -145,7 +151,7 @@ var validator = {
         exists = json.values[schema.id] && json.values[schema.id][input];
 
         if (!exists) {
-            exists = json.exposed[schema.id+'$'+input];
+            exists = json.exposed[schema.id+ Consts.exposedSeparator + input];
 
             if (!exists) {
                 this.paramErrors.push('There is required input: ' + input + ' in app: ' + schema.id + ' ;that has no value and is not exposed');

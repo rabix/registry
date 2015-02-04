@@ -41,7 +41,7 @@ var Sort = {
             node.afters.forEach(function (afterID) {
                 if (ancestors.indexOf(afterID) >= 0) { // if already in ancestors, a closed chain exists.
 //                    throw new Error('closed chain : ' + afterID + ' is in ' + id);
-                    errors.push('closed chain : ' + afterID + ' is in ' + id);
+                    errors.push('Closed chain : ' + afterID + ' is in ' + id);
                     return false;
                 }
 
