@@ -878,9 +878,5 @@ router.post('/workflow/validate', function (req, res, next) {
     errors = validator.validate(formated);
 //    errors = {errors: [], paramErrors: []};
 
-    if (errors.errors.length === 0) {
-        res.json({json: formated, errors: errors});
-    } else {
-        res.status(400).json(errors);
-    }
+    res.json({json: json, errors: errors});
 });

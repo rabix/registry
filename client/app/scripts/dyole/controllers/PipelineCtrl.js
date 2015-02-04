@@ -322,6 +322,10 @@ angular.module('registryApp.dyole')
             }
 
         });
+
+        var validate = function () {
+            return Workflow.validateJson(Pipeline.getJSON());
+        };
         
         $scope.pipelineActions = {
             //TODO: Add disabling buttons logic
@@ -354,6 +358,7 @@ angular.module('registryApp.dyole')
                 getUrl: getUrl,
                 fork: fork,
                 format: format,
+                validate: validate,
                 adjustSize: adjustSize
             };
 

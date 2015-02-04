@@ -494,6 +494,20 @@ angular.module('registryApp.app')
             });
 
         };
+        
+        $scope.validateWorkflowJSON = function () {
+
+            PipelineInstance.validate().then(function (workflow) {
+                $modal.open({
+                    template: $templateCache.get('views/dyole/json-modal.html'),
+                    controller: 'ModalJSONCtrl',
+                    resolve: {data: function () {
+                        return {json: workflow.errors, url: false};
+                    }}
+                });
+            });
+
+        };
 
         $scope.$on('$destroy', function () {
             onNodeSelectOff();
