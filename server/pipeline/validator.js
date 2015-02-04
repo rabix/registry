@@ -122,12 +122,14 @@ var validator = {
             _.forEach(inputs.required, function (input) {
                 var inProp = inputs.properties[input];
 
-                if (inProp && inProp.type === 'file' || (inProp.items && inProp.items.type === 'file')) {
-                    if (checkConnected(schema.id, input)) {
-                        _self.errors.push('There is required input file: "' + input + '" that is not set on node: ' + schema.id);
+                if (inProp) {
+                    if (inProp.type === 'file' || (inProp.items && inProp.items.type === 'file')) {
+                        if (checkConnected(schema.id, input)) {
+                            _self.errors.push('There is required input file: "' + input + '" that is not set on node: ' + schema.id);
+                        }
+                    } else {
+                        _self._checkInputSet(json, schema, input);
                     }
-                } else {
-                    _self._checkInputSet(json, schema, input);
                 }
             });
         });
