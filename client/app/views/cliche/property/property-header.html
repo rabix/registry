@@ -1,18 +1,15 @@
-<div class="property-box-header-inner {{ type }}" ng-click="toggle()">
+<div class="property-box-header-inner {{ type }}" ng-click="triggerAction('toggle')">
 
     <div class="property-box-actions pull-right">
-        <a href ng-click="edit($event)" title="Edit"><i class="fa fa-pencil-square"></i></a>
-        <a href ng-click="remove($event)" title="Delete"><i class="fa fa-times"></i></a>
+        <a href ng-click="triggerAction('edit', $event)" title="Edit"><i class="fa fa-pencil"></i></a>
+        <a href ng-click="triggerAction('remove', $event)" title="Delete"><i class="fa fa-times"></i></a>
     </div>
 
     <div class="property-box-short-info">
-        <span class="order" tooltip="order">{{ view.order }}</span>
+        <span class="order" tooltip="position">{{ view.position }}</span>
         <strong class="name" tooltip="name">{{ name }}</strong>
         <i ng-if="type !== 'arg'" class="type" tooltip="type">{{ type }} {{ itemType ? ' (' + itemType + ')' : '' }}</i>
         <span ng-if="isRequired" class="required" tooltip="required">*</span>
-        <span ng-if="type !== 'arg'" class="property-box-actions">
-            <a href ng-click="editName($event)" title="Edit Name"><i class="fa fa-pencil"></i></a>
-        </span>
     </div>
 
 </div>

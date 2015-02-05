@@ -2,10 +2,10 @@
  * Created by filip on 23.9.14..
  */
 
-"use strict";
+'use strict';
 
-angular.module('registryApp.cliche')
-    .factory('SandBox', ['$q', 'Data', function ($q, Data) {
+angular.module('registryApp.common')
+    .factory('SandBox', ['$q', 'Cliche', function ($q, Cliche) {
 
         var Sandbox;
 
@@ -27,9 +27,10 @@ angular.module('registryApp.cliche')
                 Sandbox = new JSandbox();
 
                 var deferred = $q.defer();
+                var job = Cliche.getJob();
 
-                if (typeof input === 'object' && Data.job) {
-                    input.$job = Data.job;
+                if (typeof input === 'object' && job) {
+                    input.$job = job;
                 }
 
                 // trim whitespace from beggining and end of code string

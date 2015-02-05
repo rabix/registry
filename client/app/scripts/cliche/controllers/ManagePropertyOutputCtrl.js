@@ -7,11 +7,10 @@
 'use strict';
 
 angular.module('registryApp.cliche')
-    .controller('ManagePropertyOutputCtrl', ['$scope', '$modalInstance', 'Data', 'options', function ($scope, $modalInstance, Data, options) {
+    .controller('ManagePropertyOutputCtrl', ['$scope', '$modalInstance', 'Cliche', 'options', function ($scope, $modalInstance, Cliche, options) {
 
         $scope.view = {};
         $scope.view.property = angular.copy(options.property);
-        $scope.view.name = options.name;
         $scope.view.required = options.required;
         $scope.view.mode = _.isUndefined($scope.view.property) ? 'add' : 'edit';
 
@@ -24,13 +23,9 @@ angular.module('registryApp.cliche')
 
         $scope.view.newMeta = {key: '', value: ''};
 
-        $scope.view.inputs = [];
-
-        _.each(Data.tool.inputs.properties, function (value, key) {
-            if (value.type === 'file' || (value.items && value.items.type === 'file')) {
-                $scope.view.inputs.push(key);
-            }
-        });
+        $scope.view.inputs = _.pluck(_.filter(Cliche.getTool().inputs, function(prop) {
+            return prop.type === 'file' || (prop.items && prop.items.type === 'file');
+        }), '@id');
 
         if (options.toolType === 'tool') {
 
@@ -65,7 +60,7 @@ angular.module('registryApp.cliche')
         /* watch for the type change in order to adjust the property structure */
         $scope.$watch('view.property.type', function(n, o) {
             if (n !== o) {
-                Data.transformProperty($scope.view.property, 'output', n);
+                Cliche.transformProperty($scope.view.property, 'output', n);
             }
         });
 
@@ -86,9 +81,9 @@ angular.module('registryApp.cliche')
             if ($scope.view.mode === 'edit') {
                 $modalInstance.close({prop: $scope.view.property, required: $scope.view.required});
             } else {
-                Data.addProperty('output', $scope.view.name, $scope.view.property, options.properties)
+                Cliche.addProperty('output', $scope.view.property, options.properties)
                     .then(function() {
-                        $modalInstance.close({name: $scope.view.name, required: $scope.view.required});
+                        $modalInstance.close({required: $scope.view.required});
                     }, function(error) {
                         $scope.view.error = error;
                     });

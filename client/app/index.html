@@ -152,6 +152,8 @@
 
     <script src="scripts/common/controllers/MarkdownCtrl.js"></script>
     <script src="scripts/common/controllers/ModalCtrl.js"></script>
+    <script src="scripts/common/controllers/JsonEditorCtrl.js"></script>
+    <script src="scripts/common/controllers/ExpressionCtrl.js"></script>
 
     <script src="scripts/common/directives/copy.js"></script>
     <script src="scripts/common/directives/loading.js"></script>
@@ -159,10 +161,13 @@
     <script src="scripts/common/directives/json-preview.js"></script>
     <script src="scripts/common/directives/error.js"></script>
     <script src="scripts/common/directives/is-valid-name.js"></script>
+    <script src="scripts/common/directives/expr.js"></script>
+    <script src="scripts/common/directives/codemirror.js"></script>
 
     <script src="scripts/common/services/BeforeUnload.js"></script>
     <script src="scripts/common/services/BeforeRedirect.js"></script>
     <script src="scripts/common/services/Helper.js"></script>
+    <script src="scripts/common/services/SandBox.js"></script>
 
     <!-- endbuild -->
 
@@ -186,42 +191,36 @@
     <!-- build:js({.tmp,app}) scripts/cliche.js -->
     <script src="scripts/cliche/cliche.config.js"></script>
 
-    <script src="scripts/cliche/constants/tool.js"></script>
-    <script src="scripts/cliche/constants/job.js"></script>
+    <script src="scripts/cliche/constants/schemas.js"></script>
 
     <script src="scripts/cliche/controllers/ClicheCtrl.js"></script>
-    <script src="scripts/cliche/controllers/ModalCtrl.js"></script>
-    <script src="scripts/cliche/controllers/ExpressionCtrl.js"></script>
-    <script src="scripts/cliche/controllers/JsonEditorCtrl.js"></script>
-    <script src="scripts/cliche/controllers/InputFileMoreCtrl.js"></script>
+    <!--<script src="scripts/cliche/controllers/ModalCtrl.js"></script>-->
+    <!--<script src="scripts/cliche/controllers/InputFileMoreCtrl.js"></script>-->
     <script src="scripts/cliche/controllers/ManagePropertyArgCtrl.js"></script>
     <script src="scripts/cliche/controllers/ManagePropertyInputCtrl.js"></script>
     <script src="scripts/cliche/controllers/ManagePropertyOutputCtrl.js"></script>
-    <script src="scripts/cliche/controllers/ManagePropertyInputNameCtrl.js"></script>
-    <script src="scripts/cliche/controllers/ManagePropertyOutputNameCtrl.js"></script>
+    <!--<script src="scripts/cliche/controllers/ManagePropertyInputNameCtrl.js"></script>-->
+    <!--<script src="scripts/cliche/controllers/ManagePropertyOutputNameCtrl.js"></script>-->
 
     <script src="scripts/cliche/directives/property-input.js"></script>
     <script src="scripts/cliche/directives/property-output.js"></script>
+    <script src="scripts/cliche/directives/property-arg.js"></script>
     <script src="scripts/cliche/directives/enum.js"></script>
-    <script src="scripts/cliche/directives/input-field.js"></script>
-    <script src="scripts/cliche/directives/argument.js"></script>
+    <!--<script src="scripts/cliche/directives/input-field.js"></script>-->
     <script src="scripts/cliche/directives/add-property.js"></script>
-    <script src="scripts/cliche/directives/zclip.js"></script>
-    <script src="scripts/cliche/directives/codemirror.js"></script>
-    <script src="scripts/cliche/directives/expr.js"></script>
+    <!--<script src="scripts/cliche/directives/zclip.js"></script>-->
     <script src="scripts/cliche/directives/key-changer.js"></script>
     <script src="scripts/cliche/directives/separator.js"></script>
     <script src="scripts/cliche/directives/separator-info.js"></script>
     <script src="scripts/cliche/directives/property-header.js"></script>
     <script src="scripts/cliche/directives/property-header-script.js"></script>
 
-    <script src="scripts/cliche/filters/contains.js"></script>
-    <script src="scripts/cliche/filters/size.js"></script>
+    <!--<script src="scripts/cliche/filters/contains.js"></script>-->
+    <!--<script src="scripts/cliche/filters/size.js"></script>-->
 
-    <script src="scripts/cliche/models/Data.js"></script>
+    <script src="scripts/cliche/services/Cliche.js"></script>
 
     <script src="scripts/cliche/services/RecursionHelper.js"></script>
-    <script src="scripts/cliche/services/JSandbox.js"></script>
     <script src="scripts/cliche/services/Separator.js"></script>
     <!-- endbuild -->
 

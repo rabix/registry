@@ -1,40 +1,37 @@
 <div property-header-script
      class="property-box-header script"
-     name="{{ name }}"
-     type="{{ prop.type }}"
+     name="{{ prop[key] }}"
+     type="array"
      mode="input"
-     item-type="{{ prop.items.type }}"
+     item-type="{{ view.items.type }}"
      is-required="view.required"
-     min-items="prop.minItems"
-     max-items="prop.maxItems"
      handle="handleAction(action)">
 </div>
 
-<div class="property-box-body" ng-if="prop.type === 'array' && prop.items.type === 'object'">
+<div class="property-box-body" ng-if="view.items.type === 'record'">
 
     <div class="row">
         <div class="col-md-12">
+
             <legend class="legend-small nb">
                 Properties
                 <add-property
                         type="input"
                         tool-type="script"
-                        properties="prop.items.properties"
-                        req="prop.items.required">
+                        properties="view.items.fields">
                 </add-property>
             </legend>
+
             <property-input
-                    ng-repeat="(key, property) in prop.items.properties"
+                    ng-repeat="property in view.items.fields track by $index"
                     ng-model="property"
-                    active="view.active[key]"
-                    name="{{ key }}"
                     type="{{ type }}"
-                    inputs="inputs[name]"
-                    properties="prop.items.properties"
-                    req="prop.items.required"
+                    inputs="inputs[prop[key]]"
+                    properties="view.items.fields"
                     handler="handler()">
             </property-input>
-            <p class="alert alert-info" ng-if="prop.items.properties | isEmpty">There are no properties at this moment.</p>
+
+            <p class="alert alert-info" ng-if="view.items.fields.length === 0">There are no properties at this moment.</p>
         </div>
     </div>
 

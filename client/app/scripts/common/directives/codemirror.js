@@ -6,7 +6,7 @@
 
 'use strict';
 
-angular.module('registryApp.cliche')
+angular.module('registryApp.common')
     .controller('CodeMirrorCtrl', ['$scope', '$element', '$timeout', 'SandBox', function ($scope, $element, $timeout, SandBox) {
 
         var mirror;
@@ -119,7 +119,7 @@ angular.module('registryApp.cliche')
     .directive('codemirror', ['$templateCache', function ($templateCache) {
         return {
             restrict: 'E',
-            template: $templateCache.get('views/cliche/partials/codemirror.html'),
+            template: $templateCache.get('views/partials/codemirror.html'),
             scope: {
                 code: '=',
                 arg: '=',

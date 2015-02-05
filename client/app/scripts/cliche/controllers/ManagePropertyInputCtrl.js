@@ -7,20 +7,27 @@
 'use strict';
 
 angular.module('registryApp.cliche')
-    .controller('ManagePropertyInputCtrl', ['$scope', '$modalInstance', 'Data', 'Helper', 'options', function ($scope, $modalInstance, Data, Helper, options) {
+    .controller('ManagePropertyInputCtrl', ['$scope', '$modalInstance', 'Cliche', 'Helper', 'options', function ($scope, $modalInstance, Cliche, Helper, options) {
+
+        var key = options.key || 'name';
 
         $scope.view = {};
+        $scope.view.key = key;
         $scope.view.property = angular.copy(options.property);
-        $scope.view.name = options.name;
-        $scope.view.required = options.required;
         $scope.view.mode = _.isUndefined($scope.view.property) ? 'add' : 'edit';
 
-        if (_.isUndefined($scope.view.property)) {
-            $scope.view.property = {type: 'string'};
-        }
+        if (_.isUndefined($scope.view.property)) { $scope.view.property = {type: 'string'}; }
 
-        $scope.view.disabled = ($scope.view.property.items && $scope.view.property.items.type) === 'object';
-        $scope.view.isEnum = _.isArray($scope.view.property.enum);
+        $scope.view.required = Cliche.isRequired($scope.view.property.type);
+        $scope.view.type = Cliche.parseType($scope.view.property.type);
+        $scope.view.items = Cliche.getItemsRef(key, $scope.view.type, $scope.view.property);
+
+        var tmp = Cliche.parseEnum($scope.view.property.type);
+
+        $scope.view.enumName = tmp.name;
+        $scope.view.symbols = tmp.symbols;
+
+        $scope.view.disabled = ($scope.view.items && $scope.view.items.type) === 'record';
 
         var cacheAdapter = {};
 
@@ -65,25 +72,36 @@ angular.module('registryApp.cliche')
                 return false;
             }
 
+            var inner = {
+                key: key,
+                required: $scope.view.required,
+                type: $scope.view.type,
+                enumName: $scope.view.enumName,
+                symbols: $scope.view.symbols,
+                items: $scope.view.items
+            };
+
+            $scope.view.property = Cliche.formatProperty(inner, $scope.view.property);
+
             if ($scope.view.mode === 'edit') {
-                $modalInstance.close({prop: $scope.view.property, required: $scope.view.required});
+                $modalInstance.close({prop: $scope.view.property});
             } else {
 
                 if (options.toolType === 'tool') {
 
                     if (!_.isArray(options.inputs)) {
-                        options.inputs[$scope.view.name] = Helper.getDefaultInputValue(
-                            $scope.view.name,
-                            $scope.view.property.enum,
-                            $scope.view.property.type,
-                            ($scope.view.property.items ? $scope.view.property.items.type : null)
+                        options.inputs[$scope.view.property[key]] = Helper.getDefaultInputValue(
+                            $scope.view.property[key],
+                            $scope.view.symbols,
+                            $scope.view.type,
+                            ($scope.view.items ? $scope.view.items.type : null)
                         );
                     }
                 }
 
-                Data.addProperty('input', $scope.view.name, $scope.view.property, options.properties)
+                Cliche.addProperty('input', $scope.view.property, options.properties)
                     .then(function() {
-                        $modalInstance.close({name: $scope.view.name, required: $scope.view.required});
+                        $modalInstance.close();
                     }, function(error) {
                         $scope.view.error = error;
                     });
@@ -92,22 +110,21 @@ angular.module('registryApp.cliche')
         };
 
         /* watch for the type change in order to adjust the property structure */
-        $scope.$watch('view.property.type', function(n, o) {
+        $scope.$watch('view.type', function(n, o) {
             if (n !== o) {
-
-                Data.transformProperty($scope.view.property, 'input', n);
-
-                if (_.isUndefined($scope.view.property.enum)) {
-                    $scope.view.isEnum = false;
+                if (n === 'array') {
+                    if (!$scope.view.items) { $scope.view.items = {}; }
+                    $scope.view.items.type = 'string';
+                } else {
+                    delete $scope.view.items;
                 }
-
             }
         });
 
         /* watch for the items type change in order to adjust the property structure */
-        $scope.$watch('view.property.items.type', function(n, o) {
+        $scope.$watch('view.items.type', function(n, o) {
             if (n !== o) {
-                if (n === 'object') {
+                if (n === 'record') {
                     $scope.view.disabled = true;
 
                     if ($scope.view.mode === 'edit') {
@@ -116,34 +133,23 @@ angular.module('registryApp.cliche')
 
                     checkInputAdapter();
 
-                    if (_.isUndefined($scope.view.property.items.properties)) {
-                        $scope.view.property.items.properties = {};
+                    if (_.isUndefined($scope.view.items.fields)) {
+                        $scope.view.items.fields = [];
                         if (options.toolType === 'tool') {
                             $scope.view.property.adapter.prefix = '';
-                            $scope.view.property.adapter.itemSeparator = undefined;
                             $scope.view.property.adapter.separator = ' ';
-                            $scope.view.property.adapter.value = undefined;
+                            delete $scope.view.property.adapter.itemSeparator;
+                            delete $scope.view.property.adapter.argValue;
                         }
                     }
                 } else {
                     $scope.view.disabled = false;
-                    if (!_.isUndefined($scope.view.property.items)) {
-                        delete $scope.view.property.items.properties;
+                    if (!_.isUndefined($scope.view.items)) {
+                        delete $scope.view.items.fields;
                     }
                 }
             }
         });
-
-        /**
-         * Toggle enum flag
-         */
-        $scope.toggleEnum = function() {
-            if ($scope.view.isEnum) {
-                $scope.view.property.enum = [''];
-            } else {
-                delete $scope.view.property.enum;
-            }
-        };
 
         /**
          * Update transform value with expression
@@ -155,9 +161,9 @@ angular.module('registryApp.cliche')
             checkInputAdapter();
 
             if (_.isObject(value)) {
-                $scope.view.property.adapter.value = value;
+                $scope.view.property.adapter.argValue = value;
             } else {
-                delete $scope.view.property.adapter.value;
+                delete $scope.view.property.adapter.argValue;
             }
 
         };

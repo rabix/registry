@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('registryApp.app')
-    .factory('Tool', ['Api', 'Data', function (Api, Data) {
+    .factory('Tool', ['Api', function (Api) {
 
         /**
          * Get list of tools
@@ -64,12 +64,15 @@ angular.module('registryApp.app')
         /**
          * Create new tool
          *
-         * @param data
+         * @param repoId
+         * @param isScript
+         * @param tool
+         * @param job
          * @returns {*}
          */
-        var create = function(data) {
+        var create = function(repoId, isScript, tool, job) {
 
-            return Api.apps.add({id: 'create'}, {tool: Data.tool, job: Data.job, repo_id: data.repoId, is_script: data.is_script}).$promise;
+            return Api.apps.add({id: 'create'}, {tool: tool, job: job, repo_id: repoId, is_script: isScript}).$promise;
 
         };
 
@@ -81,7 +84,7 @@ angular.module('registryApp.app')
          */
         var fork = function(data) {
 
-            return Api.apps.add({id: 'fork'}, {tool: Data.tool, job: Data.job, repo_id: data.repoId, name: data.name, is_script: data.is_script}).$promise;
+//            return Api.apps.add({id: 'fork'}, {tool: Data.tool, job: Data.job, repo_id: data.repoId, name: data.name, is_script: data.is_script}).$promise;
 
         };
 
@@ -93,7 +96,7 @@ angular.module('registryApp.app')
          */
         var update = function(appId) {
 
-            return Api.revisions.add({}, {tool: Data.tool, job: Data.job, app_id: appId}).$promise;
+//            return Api.revisions.add({}, {tool: Data.tool, job: Data.job, app_id: appId}).$promise;
 
         };
 

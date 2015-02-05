@@ -1,0 +1,17 @@
+<div class="enum-list-wrap">
+
+    <a href ng-click="addItem()" class="btn btn-default add-enum-item" ng-class="{disabled: ((max && view.list.length >= max) || isDisabled)}"><i class="fa fa-plus"></i></a>
+
+    <div class="enum-list-container">
+        <ul class="enum-list" ng-class="{wide: min && view.list.length <= min}">
+            <li ng-repeat="item in view.list track by $index">
+
+                <ng-include src="view.tplPath"></ng-include>
+
+                <a href ng-hide="min && view.list.length <= min" class="fa fa-remove remove-btn" ng-click="removeItem($index)"></a>
+            </li>
+        </ul>
+        <p ng-if="!view.list || view.list.length === 0 || isDisabled" class="alert alert-info" title="Click + on the left to add some elements">Click + on the left to add some elements</p>
+    </div>
+
+</div>

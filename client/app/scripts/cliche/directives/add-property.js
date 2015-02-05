@@ -7,11 +7,9 @@
 'use strict';
 
 angular.module('registryApp.cliche')
-    .controller('AddPropertyCtrl', ['$scope', '$modal', '$templateCache', 'Data', function ($scope, $modal, $templateCache, Data) {
+    .controller('AddPropertyCtrl', ['$scope', '$modal', '$templateCache', 'Cliche', function ($scope, $modal, $templateCache, Cliche) {
 
         var isOpen = false;
-
-        $scope.req = $scope.req || [];
 
         /**
          * Show the modal for adding property items
@@ -29,14 +27,14 @@ angular.module('registryApp.cliche')
             var tplName = $scope.toolType ? $scope.toolType + '-' + $scope.type : $scope.type;
 
             var modalInstance = $modal.open({
-                template: $templateCache.get('views/cliche/partials/manage-property-' + tplName + '.html'),
+                template: $templateCache.get('views/cliche/manage/' + tplName + '.html'),
                 controller: 'ManageProperty' + $scope.type.charAt(0).toUpperCase() + $scope.type.slice(1) + 'Ctrl',
                 windowClass: 'modal-prop',
                 size: 'lg',
                 resolve: {
                     options: function () {
                         return {
-                            type: $scope.type,
+                            key: $scope.key,
                             toolType: $scope.toolType,
                             properties: $scope.properties,
                             inputs: $scope.inputs
@@ -45,15 +43,13 @@ angular.module('registryApp.cliche')
                 }
             });
 
-            modalInstance.result.then(function(result) {
+            modalInstance.result.then(function() {
                 isOpen = false;
-
-                if (result.required) { $scope.req.push(result.name); }
 
                 if (typeof $scope.handler === 'function') { $scope.handler(); }
 
                 if ($scope.toolType === 'tool') {
-                    Data.generateCommand();
+                    Cliche.generateCommand();
                 }
 
             }, function() {
@@ -71,9 +67,9 @@ angular.module('registryApp.cliche')
             template: '<a href ng-click="addItem($event)" class="btn btn-default"><i class="fa fa-plus"></i></a>',
             scope: {
                 type: '@',
+                key: '@',
                 toolType: '@',
                 properties: '=',
-                req: '=',
                 inputs: '=?',
                 handler: '&'
             },

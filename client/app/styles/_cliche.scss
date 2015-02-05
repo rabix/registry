@@ -1,17 +1,20 @@
 .page {
   &.cliche {
-    & > .content {
-      & > .form {
-        width: 100%;
-      }
 
-      .section.top {
-        padding: 10px 10px 0 10px;
-        border-bottom: 1px solid #ddd;
-      }
+    .master-form {
+      & > .content {
+        & > .form {
+          width: 100%;
+        }
 
-      .row {
-        margin: 0 !important;
+        .section.top {
+          padding: 10px 10px 0 10px;
+          border-bottom: 1px solid #ddd;
+        }
+
+        .row {
+          margin: 0 !important;
+        }
       }
     }
 
@@ -202,7 +205,7 @@
       }
 
       .property-box-short-info {
-        padding: 0px 10px 0px 25px;
+        padding: 10px 10px 10px 25px;
         margin-right: 60px;
         .order {
           background-color: $orange;

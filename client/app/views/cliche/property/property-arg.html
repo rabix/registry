@@ -1,0 +1,41 @@
+<div property-header
+     class="property-box-header"
+     name="arg{{ index }}"
+     order="prop.order"
+     type="arg"
+     handle="handleAction(action)">
+</div>
+
+<div class="property-box-body">
+
+    <div class="row">
+
+        <div class="col-md-4 box-col">
+            <strong class="key">Value:</strong>
+            <div class="value">
+                <div class="value">
+                    <i class="fa fa-warning error" ng-if="view.exprError" title="{{ view.exprError }}"></i>
+                    {{ prop.value.$expr ? prop.value.$expr : prop.value }}
+                </div>
+                <i ng-if="!prop.value">Not defined</i>
+            </div>
+        </div>
+
+        <div class="col-md-4 box-col">
+            <strong class="key">Prefix:</strong>
+            <div class="value">
+                <span>{{ prop.prefix }}</span>
+                <i ng-if="!prop.prefix">Not defined</i>
+            </div>
+        </div>
+
+        <div class="col-md-4 box-col">
+            <strong class="key">Separator:</strong>
+            <div class="value">
+                <separator-info type="item" model="prop.separator"></separator-info>
+            </div>
+        </div>
+
+    </div>
+
+</div>

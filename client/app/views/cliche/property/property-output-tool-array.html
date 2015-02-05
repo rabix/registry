@@ -1,9 +1,9 @@
 <div property-header
      class="property-box-header tool"
-     name="{{ name }}"
-     order="prop.adapter.order"
-     type="{{ prop.type }}"
-     item-type="{{ prop.items.type }}"
+     name="{{ prop[key] }}"
+     position="prop.adapter.position"
+     type="array"
+     item-type="{{ view.items.type }}"
      is-required="view.required"
      handle="handleAction(action)">
 </div>
@@ -68,33 +68,11 @@
         </div>
         <!-- END Secondary Files -->
 
-        <div ng-if="prop.items.type === 'file'" class="col-md-4 box-col">
+        <div ng-if="view.items.type === 'file'" class="col-md-4 box-col">
             <strong class="key">Streamable:</strong>
             <div class="value">{{ prop.adapter.streamable ? 'Yes' : 'No' }}</div>
         </div>
         <!-- END Streamable -->
-    </div>
-
-    <div class="row">
-
-        <div class="col-md-4 box-col">
-            <strong class="key">Min:</strong>
-            <div class="value">
-                <span>{{ prop.minItems }}</span>
-                <i ng-if="!prop.minItems">Not defined</i>
-            </div>
-        </div>
-        <!-- END Min -->
-
-        <div class="col-md-4 box-col">
-            <strong class="key">Max:</strong>
-            <div class="value">
-                <span>{{ prop.maxItems }}</span>
-                <i ng-if="!prop.maxItems">Not defined</i>
-            </div>
-        </div>
-        <!-- END Max -->
-
     </div>
 
 </div>

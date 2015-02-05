@@ -1,11 +1,11 @@
 <div property-header
      class="property-box-header tool"
-     name="{{ name }}"
-     order="prop.adapter.order"
+     name="{{ prop[key] }}"
+     position="prop.adapter.position"
      adapter="prop.adapter"
-     type="{{ prop.type }}"
+     type="array"
      mode="input"
-     item-type="{{ prop.items.type }}"
+     item-type="{{ view.items.type }}"
      is-required="view.required"
      handle="handleAction(action)">
 </div>
@@ -13,12 +13,12 @@
 <div class="property-box-body">
 
     <div class="row">
-        <div class="col-md-2 box-col">
+        <div class="col-md-3 box-col">
             <strong class="key">Prefix:</strong>
             <div class="value">
-                <span ng-if="prop.items.type !== 'object'">{{ prop.adapter.prefix }}</span>
-                <i class="none" ng-if="prop.items.type === 'object'">none</i>
-                <i ng-if="!prop.adapter.prefix && prop.items.type !== 'object'">Not defined</i>
+                <span ng-if="view.items.type !== 'record'">{{ prop.adapter.prefix }}</span>
+                <i class="none" ng-if="view.items.type === 'record'">none</i>
+                <i ng-if="!prop.adapter.prefix && view.items.type !== 'record'">Not defined</i>
             </div>
         </div>
 
@@ -29,76 +29,50 @@
             </div>
         </div>
 
-        <div class="col-md-3 box-col">
-            <strong class="key">Value:</strong>
-            <div class="value">
-                <div ng-if="prop.items.type !== 'object'" class="value">
-                    <i class="fa fa-warning error" ng-if="view.exprError" title="{{ view.exprError }}"></i>
-                    {{ prop.adapter.value.$expr }}
-                </div>
-                <i ng-if="prop.items.type === 'object'">none</i>
-                <i ng-if="prop.items.type !== 'object' && !prop.adapter.value">Not defined</i>
-            </div>
-        </div>
-
-    </div>
-
-    <div class="row">
-
         <div class="col-md-2 box-col">
-            <strong class="key">Min:</strong>
-            <div class="value">
-                <span>{{ prop.minItems }}</span>
-                <i ng-if="!prop.minItems">Not defined</i>
-            </div>
-        </div>
-
-        <div class="col-md-2 box-col">
-            <strong class="key">Max:</strong>
-            <div class="value">
-                <span>{{ prop.maxItems }}</span>
-                <i ng-if="!prop.maxItems">Not defined</i>
-            </div>
-        </div>
-
-        <div class="col-md-5 box-col">
             <strong class="key">Item Separator:</strong>
             <div class="value">
                 <separator-info type="list" model="prop.adapter.itemSeparator"></separator-info>
             </div>
         </div>
 
-        <div ng-if="prop.items.type === 'file'" class="col-md-3 box-col">
-            <strong class="key">Streamable:</strong>
-            <div class="value">{{ prop.adapter.streamable ? 'Yes' : 'No' }}</div>
+        <div class="col-md-4 box-col">
+            <strong class="key">Value:</strong>
+            <div class="value">
+                <div ng-if="view.items.type !== 'record'" class="value">
+                    <i class="fa fa-warning error" ng-if="view.exprError" title="{{ view.exprError }}"></i>
+                    {{ prop.adapter.argValue.value }}
+                </div>
+                <i ng-if="view.items.type === 'record'">none</i>
+                <i ng-if="view.items.type !== 'record' && !prop.adapter.argValue">Not defined</i>
+            </div>
         </div>
 
     </div>
 
-    <div class="row" ng-if="prop.type === 'array' && prop.items.type === 'object'">
+    <div class="row" ng-if="view.items.type === 'record'">
         <div class="col-md-12">
-            <legend class="legend-small toggle" ng-class="{active: view.propsExpanded}" ng-click="toggleProperties()">
+
+            <legend class="legend-small">
                 Properties
                 <add-property
                         type="input"
                         tool-type="tool"
-                        properties="prop.items.properties"
-                        inputs="inputs[name]"
-                        req="prop.items.required">
+                        properties="view.items.fields"
+                        inputs="inputs[prop[key]]">
                 </add-property>
             </legend>
+
             <property-input
-                    ng-repeat="(key, property) in prop.items.properties"
+                    ng-repeat="property in view.items.fields track by $index"
                     ng-model="property"
-                    active="view.active[key]"
-                    name="{{ key }}"
                     type="{{ type }}"
-                    inputs="inputs[name]"
-                    properties="prop.items.properties"
-                    req="prop.items.required"
+                    inputs="inputs[prop[key]]"
+                    properties="view.items.fields"
                     handler="handler()">
             </property-input>
-            <p class="alert alert-info" ng-if="prop.items.properties | isEmpty">There are no properties at this moment.</p>
+
+            <p class="alert alert-info" ng-if="view.items.fields.length === 0">There are no properties at this moment.</p>
         </div>
     </div>
 

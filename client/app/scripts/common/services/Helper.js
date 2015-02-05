@@ -65,15 +65,15 @@ angular.module('registryApp.common')
                 file: 'i-am-file.txt',
                 directory: 'dir-me-dir-me-a-man_after_midnight',
                 string: 'test',
-                integer: 42,
-                number: 332.1234242,
+                int: 42,
+                float: 332.1234242,
                 boolean: false,
                 array: {
                     file: 'i-am-file.txt',
                     directory: 'dir-me-dir-me-a-man_after_midnight',
                     string: 'test',
-                    integer: 42,
-                    number: 332.1234242
+                    int: 42,
+                    float: 332.1234242
                 }
             };
 
@@ -89,26 +89,27 @@ angular.module('registryApp.common')
          * Get default input value when creating new input
          *
          * @param {string} name
-         * @param {array} enumArr
+         * @param {array} symbols
          * @param {string} type
          * @param {string} itemType
          * @returns {*}
          */
-        var getDefaultInputValue = function (name, enumArr, type, itemType) {
+        var getDefaultInputValue = function (name, symbols, type, itemType) {
 
             var output;
             var map = {
                 file: {path: name},
-                string: enumArr ? enumArr[0] : name,
-                integer: 0,
-                number: 0,
+                'enum': symbols ? symbols[0] : name,
+                string: name,
+                int: 0,
+                float: 0,
                 boolean: false,
                 array: {
                     file: [{path: name}],
                     string: [name],
-                    integer: [0],
-                    number: [0],
-                    object: {}
+                    int: [0],
+                    float: [0],
+                    record: {}
                 }
             };
 
@@ -120,11 +121,32 @@ angular.module('registryApp.common')
 
         };
 
+        /**
+         * Stop propagation
+         *
+         * @param e
+         */
+        var stopPropagation = function(e) {
+
+            if (_.isUndefined(e)) {
+                return false;
+            }
+
+            if (typeof e.stopPropagation === 'function') {
+                e.stopPropagation();
+            }
+            if (typeof e.cancelBubble !== 'undefined') {
+                e.cancelBubble = true;
+            }
+
+        };
+
         return {
             isValidName: isValidName,
             getDomain: getDomain,
             getTestData: getTestData,
-            getDefaultInputValue: getDefaultInputValue
+            getDefaultInputValue: getDefaultInputValue,
+            stopPropagation: stopPropagation
         };
 
     }]);

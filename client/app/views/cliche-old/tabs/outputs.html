@@ -1,0 +1,25 @@
+<div class="content content-ten">
+    <legend class="legend-small" ng-class="{active: view.propsExpanded.outputs, toggle: view.type === 'tool', nb: view.type === 'script'}" ng-click="toggleProperties('outputs')">
+        Properties
+        <add-property
+                type="output"
+                tool-type="{{ view.type }}"
+                properties="view.toolForm.outputs.properties"
+                req="view.toolForm.outputs.required">
+        </add-property>
+    </legend>
+
+    <property-output
+            ng-repeat="(key, property) in view.toolForm.outputs.properties"
+            ng-model="property"
+            active="view.active.outputs[key]"
+            name="{{ key }}"
+            type="{{ view.type }}"
+            properties="view.toolForm.outputs.properties"
+            req="view.toolForm.outputs.required">
+    </property-output>
+
+    <p class="alert alert-info" ng-if="view.toolForm.outputs.properties | isEmpty">There are no outputs at this moment.</p>
+</div>
+
+

@@ -1,0 +1,41 @@
+<div property-header-script
+     class="property-box-header script"
+     name="{{ name }}"
+     type="{{ prop.type }}"
+     mode="input"
+     item-type="{{ prop.items.type }}"
+     is-required="view.required"
+     min-items="prop.minItems"
+     max-items="prop.maxItems"
+     handle="handleAction(action)">
+</div>
+
+<div class="property-box-body" ng-if="prop.type === 'array' && prop.items.type === 'object'">
+
+    <div class="row">
+        <div class="col-md-12">
+            <legend class="legend-small nb">
+                Properties
+                <add-property
+                        type="input"
+                        tool-type="script"
+                        properties="prop.items.properties"
+                        req="prop.items.required">
+                </add-property>
+            </legend>
+            <property-input
+                    ng-repeat="(key, property) in prop.items.properties"
+                    ng-model="property"
+                    active="view.active[key]"
+                    name="{{ key }}"
+                    type="{{ type }}"
+                    inputs="inputs[name]"
+                    properties="prop.items.properties"
+                    req="prop.items.required"
+                    handler="handler()">
+            </property-input>
+            <p class="alert alert-info" ng-if="prop.items.properties | isEmpty">There are no properties at this moment.</p>
+        </div>
+    </div>
+
+</div>

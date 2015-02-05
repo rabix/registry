@@ -16,65 +16,25 @@ angular.module('registryApp.cliche')
                 mode: '@',
                 itemType: '@',
                 isRequired: '=',
-                minItems: '=',
-                maxItems: '=',
                 enum: '=',
                 handle: '&'
             },
-            controller: ['$scope', function ($scope) {
+            controller: ['$scope', 'Helper', function ($scope, Helper) {
 
                 $scope.view = {};
 
                 /**
-                 * Stop propagation
+                 * Trigger handler for particular action
                  *
+                 * @param action
                  * @param e
                  */
-                var stopPropagation = function(e) {
+                $scope.triggerAction = function(action, e) {
 
-                    if (typeof e.stopPropagation === 'function') {
-                        e.stopPropagation();
-                    }
-                    if (typeof e.cancelBubble !== 'undefined') {
-                        e.cancelBubble = true;
-                    }
+                    Helper.stopPropagation(e);
 
-                };
+                    $scope.handle({action: action});
 
-                /**
-                 * Trigger edit handler
-                 *
-                 * @param e
-                 */
-                $scope.edit = function(e) {
-
-                    stopPropagation(e);
-
-                    $scope.handle({action: 'edit'});
-                };
-
-                /**
-                 * Trigger edit name handler
-                 *
-                 * @param e
-                 */
-                $scope.editName = function(e) {
-
-                    stopPropagation(e);
-
-                    $scope.handle({action: 'editName'});
-                };
-
-                /**
-                 * Trigger remove handler
-                 *
-                 * @param e
-                 */
-                $scope.remove = function(e) {
-
-                    stopPropagation(e);
-
-                    $scope.handle({action: 'remove'});
                 };
 
             }],

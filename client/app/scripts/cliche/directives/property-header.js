@@ -11,7 +11,7 @@ angular.module('registryApp.cliche')
         return {
             template: $templateCache.get('views/cliche/property/property-header.html'),
             scope: {
-                order: '=',
+                position: '=',
                 name: '@',
                 type: '@',
                 mode: '@',
@@ -20,76 +20,29 @@ angular.module('registryApp.cliche')
                 handle: '&',
                 adapter: '=?'
             },
-            controller: ['$scope', function ($scope) {
+            controller: ['$scope', 'Helper', function ($scope, Helper) {
 
                 $scope.view = {};
-                $scope.view.order = $scope.order || 0;
+                $scope.view.position = $scope.position || 0;
 
-                /* watch for order to change */
-                $scope.$watch('order', function(n, o) {
+                /* watch for position to change */
+                $scope.$watch('position', function(n, o) {
                     if (n !== o) {
-                        $scope.view.order = n || 0;
+                        $scope.view.position = n || 0;
                     }
                 });
 
                 /**
-                 * Stop propagation
+                 * Trigger handler for particular action
                  *
+                 * @param action
                  * @param e
                  */
-                var stopPropagation = function(e) {
+                $scope.triggerAction = function(action, e) {
 
-                    if (typeof e.stopPropagation === 'function') {
-                        e.stopPropagation();
-                    }
-                    if (typeof e.cancelBubble !== 'undefined') {
-                        e.cancelBubble = true;
-                    }
+                    Helper.stopPropagation(e);
 
-                };
-
-                /**
-                 * Trigger edit handler
-                 *
-                 * @param e
-                 */
-                $scope.edit = function(e) {
-
-                    stopPropagation(e);
-
-                    $scope.handle({action: 'edit'});
-                };
-
-                /**
-                 * Trigger edit name handler
-                 *
-                 * @param e
-                 */
-                $scope.editName = function(e) {
-
-                    stopPropagation(e);
-
-                    $scope.handle({action: 'editName'});
-                };
-
-                /**
-                 * Trigger remove handler
-                 *
-                 * @param e
-                 */
-                $scope.remove = function(e) {
-
-                    stopPropagation(e);
-
-                    $scope.handle({action: 'remove'});
-                };
-
-                /**
-                 * Trigger toggle handler
-                 */
-                $scope.toggle = function() {
-
-                    $scope.handle({action: 'toggle'});
+                    $scope.handle({action: action});
 
                 };
 

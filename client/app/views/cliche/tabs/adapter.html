@@ -1,54 +1,58 @@
 <div class="content content-ten">
+
     <div class="form-group">
         <label class="control-label">Base Cmd</label>
 
         <div class="enum-list-wrap">
             <a href ng-click="addBaseCmd()" class="btn btn-default add-enum-item"><i class="fa fa-plus"></i></a>
             <div class="enum-list-container">
-                <ul class="enum-list" ng-class="{wide: view.toolForm.adapter.baseCmd.length === 1}">
-                    <li ng-repeat="baseCmd in view.toolForm.adapter.baseCmd track by $index">
+                <ul class="enum-list" ng-class="{wide: view.tool.cliAdapter.baseCmd.length === 1}">
+                    <li ng-repeat="baseCmd in view.tool.cliAdapter.baseCmd track by $index">
                         <div class="enum-field form-group form-group-file">
-                            <expr ng-model="baseCmd" index="{{ $index }}" handle-item-update="updateBaseCmd(index, value)"></expr>
+                            <expr ng-model="baseCmd" index="{{ $index }}" handle-item-update="updateCliAdapter(value, index, 'baseCmd')"></expr>
                         </div>
-                        <a href ng-hide="view.toolForm.adapter.baseCmd.length === 1" class="fa fa-remove remove-btn" ng-click="removeBaseCmd($index)"></a>
+                        <a href ng-hide="view.tool.cliAdapter.baseCmd.length === 1" class="fa fa-remove remove-btn" ng-click="removeBaseCmd($index)"></a>
                     </li>
                 </ul>
             </div>
         </div>
 
     </div>
+    <!-- # Base Cmd-->
 
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
-                <label class="control-label">Stdin</label>
-                <expr ng-model="view.toolForm.adapter.stdin" handle-item-update="updateStdIn(value)"></expr>
+                <label class="control-label">StdIn</label>
+                <expr ng-model="view.tool.cliAdapter.stdin" handle-item-update="updateCliAdapter(value, null, 'stdin')"></expr>
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-group">
-                <label class="control-label">Stdout</label>
-                <expr ng-model="view.toolForm.adapter.stdout" handle-item-update="updateStdOut(value)"></expr>
+                <label class="control-label">StdOut</label>
+                <expr ng-model="view.tool.cliAdapter.stdout" handle-item-update="updateCliAdapter(value, null, 'stdout')"></expr>
             </div>
         </div>
     </div>
+    <!-- # StdIn and StdOut-->
 
-    <legend class="legend-small toggle" ng-class="{active: view.propsExpanded.args}" ng-click="toggleProperties('args')">
+    <legend class="legend-small">
         Arguments
         <add-property
                 type="arg"
                 handler="generateCommand()"
-                req="view.fakeRequired"
-                properties="view.toolForm.adapter.args">
+                properties="view.tool.cliAdapter.argAdapters">
         </add-property>
     </legend>
-    <argument
-            ng-repeat="(key, argument) in view.toolForm.adapter.args track by $index"
-            ng-model="argument"
-            active="view.active.args[key]"
-            name="{{ key }}"
-            properties="view.toolForm.adapter.args">
-    </argument>
 
-    <p class="alert alert-info" ng-if="view.toolForm.adapter.args | isEmpty">There are no arguments at this moment.</p>
+    <property-arg
+            ng-repeat="arg in view.tool.cliAdapter.argAdapters track by $index"
+            ng-model="arg"
+            active="view.active.args[$index]"
+            index="{{ $index }}"
+            properties="view.tool.cliAdapter.argAdapters">
+    </property-arg>
+
+    <p class="alert alert-info" ng-if="view.tool.cliAdapter.argAdapters | isEmpty">There are no arguments at this moment.</p>
+
 </div>

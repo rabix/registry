@@ -7,18 +7,17 @@ var _ = require('lodash');
 
 var mapDefinition = {
     root: {
-        schema: {type: 'string'},
-        name: {type: 'string', required: true},
+        '@type': {type: 'string'},
+        '@context': {type: 'string'},
+        label: {type: 'string', required: true},
         description: {type: 'string'},
-        documentAuthor: {type: 'string', required: true},
-        softwareRelease: {type: 'object'},
+        owner: {type: 'array', required: true},
         requirements: {type: 'object'},
-        inputs: {type: 'object', required: true},
-        outputs: {type: 'object', required: true},
-        adapter: {type: 'object'},
+        inputs: {type: 'array', required: true},
+        outputs: {type: 'array', required: true},
+        cliAdapter: {type: 'object'},
         script: {type: 'string'},
-        files: {type: 'array'},
-        '@type': {type: 'string'}
+        files: {type: 'array'}
     },
     softwareDescription: {
         repo_owner: {type: 'string', required: true},

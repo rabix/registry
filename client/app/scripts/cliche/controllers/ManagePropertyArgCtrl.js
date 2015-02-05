@@ -7,11 +7,10 @@
 'use strict';
 
 angular.module('registryApp.cliche')
-    .controller('ManagePropertyArgCtrl', ['$scope', '$modalInstance', 'Data', 'options', function ($scope, $modalInstance, Data, options) {
+    .controller('ManagePropertyArgCtrl', ['$scope', '$modalInstance', 'Cliche', 'options', function ($scope, $modalInstance, Cliche, options) {
 
         $scope.view = {};
         $scope.view.property = angular.copy(options.property);
-        $scope.view.name = options.name;
         $scope.view.mode = _.isUndefined($scope.view.property) ? 'add' : 'edit';
 
         if (_.isUndefined($scope.view.property)) {
@@ -35,9 +34,9 @@ angular.module('registryApp.cliche')
             if ($scope.view.mode === 'edit') {
                 $modalInstance.close({prop: $scope.view.property});
             } else {
-                Data.addProperty('arg', $scope.view.name, $scope.view.property, options.properties)
+                Cliche.addProperty('arg', $scope.view.property, options.properties)
                     .then(function() {
-                        $modalInstance.close({name: $scope.view.name});
+                        $modalInstance.close();
                     }, function(error) {
                         $scope.view.error = error;
                     });

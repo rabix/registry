@@ -6,13 +6,15 @@
 
 'use strict';
 
-angular.module('registryApp.cliche')
+angular.module('registryApp.common')
     .controller('ExpressionCtrl', ['$scope', '$modalInstance', 'options', function ($scope, $modalInstance, options) {
 
         $scope.view = {};
 
         $scope.view.expr = options.expr || '';
         $scope.view.self = options.self;
+
+        $scope.view.exampleText = 'example: "string" or 100 or [1, 2, 3] or {"key": "value"}';
 
         /**
          * On modal confirm set the appropriate expression and close the modal

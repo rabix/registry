@@ -1,27 +1,25 @@
 <div class="content content-ten">
-    <legend class="legend-small" ng-class="{active: view.propsExpanded.inputs, toggle: view.type === 'tool', nb: view.type === 'script'}" ng-click="toggleProperties('inputs')">
+
+    <legend class="legend-small" ng-class="{nb: view.type === 'script'}">
         Properties
         <add-property
                 type="input"
+                key="@id"
                 tool-type="{{ view.type }}"
-                properties="view.toolForm.inputs.properties"
-                req="view.toolForm.inputs.required"
-                inputs="view.jobForm.inputs">
+                properties="view.tool.inputs"
+                inputs="view.job.inputs">
         </add-property>
     </legend>
 
     <property-input
-            ng-repeat="(key, property) in view.toolForm.inputs.properties"
+            ng-repeat="property in view.tool.inputs track by $index"
             ng-model="property"
-            active="view.active.inputs[key]"
-            name="{{ key }}"
+            key="@id"
             type="{{ view.type }}"
-            inputs="view.jobForm.inputs"
-            properties="view.toolForm.inputs.properties"
-            req="view.toolForm.inputs.required">
+            inputs="view.job.inputs"
+            properties="view.tool.inputs">
     </property-input>
 
-    <p class="alert alert-info" ng-if="view.toolForm.inputs.properties | isEmpty">There are no inputs at this moment.</p>
+    <p class="alert alert-info" ng-if="view.tool.inputs.length === 0">There are no inputs at this moment.</p>
+
 </div>
-
-

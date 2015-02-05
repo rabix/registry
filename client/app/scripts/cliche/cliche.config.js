@@ -1,7 +1,7 @@
 /**
  * Author: Milica Kadic
- * Date: 10/14/14
- * Time: 2:18 PM
+ * Date: 2/3/15
+ * Time: 2:57 PM
  */
 
 'use strict';
@@ -11,11 +11,11 @@ angular.module('registryApp.cliche', [])
 
         $routeProvider
             .when('/cliche/:type', {
-                templateUrl: 'views/cliche/home.html',
+                templateUrl: 'views/cliche/cliche-new.html',
                 controller: 'ClicheCtrl'
             })
             .when('/cliche/:type/:id/:revision', {
-                templateUrl: 'views/cliche/home.html',
+                templateUrl: 'views/cliche/cliche-edit.html',
                 controller: 'ClicheCtrl'
             });
 

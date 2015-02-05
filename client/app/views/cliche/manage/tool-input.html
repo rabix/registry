@@ -1,0 +1,133 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="cancel()"><span>&times;</span><span class="sr-only">Close</span></button>
+    <h4 class="modal-title">
+        <span>{{ (view.mode === 'edit') ? 'Edit' : 'Add' }} Input Property</span>
+        <label class="checkbox inline">
+            <input type="checkbox" ng-model="view.required"> required
+        </label>
+    </h4>
+</div>
+<div class="modal-body">
+
+    <form ng-submit="save()" name="view.form" novalidate>
+
+        <p ng-if="view.error" class="alert alert-danger">{{ view.error }}</p>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group" ng-class="{'has-error': (view.form.name.$invalid && view.form.$dirty)}">
+                    <label class="control-label" for="name">ID</label>
+                    <input type="text" class="form-control" id="name" name="name" ng-model="view.property[view.key]" ng-readonly="view.mode === 'edit'" is-valid-name required>
+                    <span class="help-block">Characters such as . and $ are forbidden</span>
+                </div>
+            </div>
+            <!-- END Name -->
+
+            <div class="col-md-4">
+                <div class="form-group" ng-class="{'has-error': (view.form.type.$invalid && view.form.$dirty)}">
+                    <label class="control-label" for="type">Type</label>
+                    <select class="form-control" id="type" name="type" ng-model="view.type" required>
+                        <option value="file">file</option>
+                        <option value="string">string</option>
+                        <option value="enum">enum</option>
+                        <option value="int">int</option>
+                        <option value="float">float</option>
+                        <option value="array">array</option>
+                        <option value="boolean">boolean</option>
+                    </select>
+                </div>
+            </div>
+            <!-- END Type -->
+
+            <div class="col-md-4" ng-if="view.type === 'array'">
+                <div class="form-group">
+                    <label class="control-label" for="item-type" class="control-label">Item Type</label>
+
+                    <select class="form-control" id="item-type" name="itemType" ng-model="view.items.type">
+                        <option value="string">string</option>
+                        <option value="int">int</option>
+                        <option value="float">float</option>
+                        <option value="file">file</option>
+                        <option value="record">record</option>
+                    </select>
+                </div>
+            </div>
+            <!-- END Item Type -->
+
+            <div class="col-md-4" ng-if="view.type === 'enum'">
+                <div class="form-group" ng-class="{'has-error': (view.form.enumName.$invalid && view.form.$dirty)}">
+                    <label class="control-label" for="name">Enum Name</label>
+                    <input type="text" class="form-control" id="enumName" name="enumName" ng-model="view.enumName" required>
+                </div>
+            </div>
+            <!-- END Name -->
+
+        </div>
+
+        <div class="row" ng-if="view.type === 'enum'">
+            <div class="col-md-12">
+                <enum ng-model="view.symbols" type="'string'" min="1" is-required="true"></enum>
+            </div>
+        </div>
+
+        <legend class="legend-small">
+            <label class="checkbox inline">
+                <input type="checkbox" ng-model="view.adapter" ng-change="toggleAdapter()"> Adapter
+                <small>(include in command line)</small>
+            </label>
+        </legend>
+
+        <div ng-if="view.property.adapter" class="row">
+
+            <div class="col-md-2">
+                <div class="form-group" ng-class="{'has-error': (view.form.position.$invalid && view.form.$dirty)}">
+                    <label class="control-label" for="position">Position</label>
+                    <input type="number" class="form-control" id="position" name="position" ng-model="view.property.adapter.position">
+                </div>
+            </div>
+            <!-- END Position -->
+
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label class="control-label" for="prefix">Prefix</label>
+                    <input type="text" class="form-control" id="prefix" name="prefix" ng-model="view.property.adapter.prefix" ng-disabled="view.disabled">
+                </div>
+            </div>
+            <!-- END Prefix -->
+
+            <div class="col-md-2">
+                <div class="form-group" ng-class="{'has-error': (view.form.separator.$invalid && view.form.$dirty)}">
+                    <label class="control-label">Separator</label>
+                    <separator type="item" model="view.property.adapter.separator" is-disabled="view.disabled"></separator>
+                </div>
+            </div>
+            <!-- END Separator -->
+
+            <div ng-if="view.type === 'array'" class="col-md-2">
+                <div class="form-group">
+                    <label class="control-label">Item Separator</label>
+                    <separator type="list" model="view.property.adapter.itemSeparator" is-disabled="view.disabled"></separator>
+                </div>
+            </div>
+            <!-- END Item Separator -->
+
+            <div class="col-md-2" ng-if="!view.disabled && view.items.type !== 'record'">
+                <div class="form-group">
+                    <label class="control-label">Value</label>
+                    <expr ng-model="view.property.adapter.argValue" handle-item-update="updateTransform(value)" only-expr="true" self="true" self-type="view.type" self-item-type="view.items.type" placeholder="value"></expr>
+                </div>
+            </div>
+            <!-- END Transform -->
+
+        </div>
+
+        <p ng-if="!view.property.adapter" class="alert alert-info">Adapter is not active and input won't be displayed in the console</p>
+
+        <div class="form-group main-actions">
+            <a href class="btn btn-warning" ng-click="cancel()">Cancel</a>
+            <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+
+    </form>
+
+</div>
