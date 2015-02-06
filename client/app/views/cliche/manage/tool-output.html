@@ -2,7 +2,9 @@
     <button type="button" class="close" ng-click="cancel()"><span>&times;</span><span class="sr-only">Close</span></button>
     <h4 class="modal-title">
         <span>{{ (view.mode === 'edit') ? 'Edit' : 'Add' }} Output Property</span>
-        <label class="checkbox inline"><input type="checkbox" ng-model="view.required"> required</label>
+        <label class="checkbox inline">
+            <input type="checkbox" ng-model="view.required"> required
+        </label>
     </h4>
 </div>
 <div class="modal-body">
@@ -14,34 +16,30 @@
         <div class="row">
             <div class="col-md-3">
                 <div class="form-group" ng-class="{'has-error': (view.form.name.$invalid && view.form.$dirty)}">
-                    <label class="control-label" for="name">ID</label>
-                    <input type="text" class="form-control" id="name" name="name" ng-model="view.property[view.key]" ng-readonly="view.mode === 'edit'" is-valid-name required>
+                    <label class="control-label" for="name">{{ view.key === '@id' ? 'ID' : 'Name' }}</label>
+                    <input type="text" class="form-control" id="name" name="name" ng-model="view.name" is-valid-name required>
                     <span class="help-block">Characters such as . and $ are forbidden</span>
                 </div>
             </div>
             <!-- END Name -->
 
-            <div class="col-md-2">
+            <div class="col-md-3">
                 <div class="form-group" ng-class="{'has-error': (view.form.type.$invalid && view.form.$dirty)}">
                     <label class="control-label" for="type">Type</label>
-                    <select class="form-control" id="type" name="type" ng-model="view.property.type" required>
-                        <option value="file">file</option>
-                        <option value="directory">directory</option>
-                        <option value="array">array</option>
-                    </select>
+                    <select class="form-control" id="type" name="type" ng-model="view.type" ng-options="option for option in view.types" required></select>
                 </div>
             </div>
             <!-- END Type-->
 
-            <div class="col-md-2">
-                <div class="form-group" title="Value">
-                    <label class="control-label">Value</label>
-                    <expr ng-model="view.property.adapter.value" handle-item-update="updateTransform(value)" only-expr="true" self="true" self-type="view.property.type" self-item-type="view.property.items.type" placeholder="value"></expr>
+            <div class="col-md-3" ng-if="view.type === 'array'">
+                <div class="form-group">
+                    <label class="control-label" for="item-type" class="control-label">Item Type</label>
+                    <select class="form-control" id="item-type" name="itemType" ng-model="view.items.type" ng-options="option for option in view.itemTypes"></select>
                 </div>
             </div>
-            <!-- END Transform -->
+            <!-- END Item Type -->
 
-            <div class="col-md-2">
+            <div class="col-md-3">
                 <div class="form-group">
                     <label class="control-label">Glob</label>
                     <expr ng-model="view.property.adapter.glob" handle-item-update="updateGlobValue(value)" placeholder="value"></expr>
@@ -49,119 +47,7 @@
             </div>
             <!-- END Glob -->
 
-            <div class="col-md-2" ng-if="view.property.type === 'file' || view.property.items.type === 'file'">
-                <div class="form-group">
-                    <label class="control-label empty-label">&nbsp;</label>
-                    <div class="checkbox">
-                        <label><input type="checkbox" ng-model="view.property.adapter.streamable"> Streamable</label>
-                    </div>
-                </div>
-            </div>
         </div>
-
-        <div class="row" ng-if="view.property.type === 'array'">
-
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label for="item-min" class="control-label">Min</label>
-                    <input type="number" class="form-control" id="item-min" name="itemMin" ng-model="view.property.minItems" min="0">
-                </div>
-            </div>
-            <!-- END Min -->
-
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label for="item-max" class="control-label">Max</label>
-                    <input type="number" class="form-control" id="item-max" name="itemMax" ng-model="view.property.maxItems" min="0">
-                </div>
-            </div>
-            <!-- END Max -->
-
-            <div class="col-md-3">
-                <div class="form-group">
-                    <label for="item-type" class="control-label">Item Type</label>
-
-                    <select class="form-control" id="item-type" name="itemType" ng-model="view.property.items.type">
-                        <option value>-- choose --</option>
-                        <option value="file">file</option>
-                        <option value="directory">directory</option>
-                    </select>
-                </div>
-            </div>
-            <!-- END Item Type -->
-
-        </div>
-
-        <div class="meta-list">
-
-            <div class="row">
-                <div class="col-md-12">
-
-                    <label class="control-label">Metadata</label>
-
-                    <div class="form-group meta-group" ng-class="{'has-error': view.newMeta.error}">
-                        <div class="input-group">
-                            <div class="col-md-6 no-padding">
-                                <input type="text" class="form-control" ng-model="view.newMeta.key" placeholder="key" />
-                            </div>
-                            <div class="col-md-6 no-padding">
-                                <expr ng-model="view.newMeta.value" handle-item-update="updateNewMeta(value)" placeholder="value" self="true" self-type="view.property.type" self-item-type="view.property.items.type"></expr>
-                            </div>
-                            <span class="input-group-btn">
-                                <a href ng-click="addMeta()" class="btn btn-primary"><i class="fa fa-plus"></i></a>
-                            </span>
-                        </div>
-                    </div>
-
-                    <div ng-repeat="(metaKey, metaValue) in view.property.adapter.metadata" class="form-group meta-group">
-                        <div ng-if="metaKey !== '__inherit__'" class="input-group">
-                            <div class="col-md-6 no-padding">
-                                <key-changer key="metaKey" items="view.property.adapter.metadata"></key-changer>
-                            </div>
-                            <div class="col-md-6 no-padding">
-                                <expr ng-model="metaValue" index="{{ metaKey }}" handle-item-update="updateMetaValue(index, value)" placeholder="value" self="true" self-type="view.property.type" self-item-type="view.property.items.type"></expr>
-                            </div>
-                            <span class="input-group-btn">
-                                <a href ng-click="removeMeta(metaKey)" class="btn btn-default"><i class="fa fa-remove"></i></a>
-                            </span>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-        <!-- END Meta-->
-
-        <div class="row">
-            <div class="col-md-12">
-
-                <div class="form-group">
-                    <label for="property-meta-inherit-{{ view.uniqueId }}" class="control-label inline">Inherit From Input</label>
-                    <select class="form-control inline" id="property-meta-inherit-{{ view.uniqueId }}" name="{{ name }}-meta-inherit" ng-model="view.property.adapter.metadata.__inherit__" ng-options="value for value in view.inputs">
-                        <option value>-- none --</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-        <!-- END meta data-->
-
-        <div class="row">
-            <div class="col-md-12">
-                <label class="control-label">Secondary Files <small>(enter expression for secondary files or click + to enumerate them)</small></label>
-                <div ng-if="view.isSecondaryFilesExpr" class="enum-list-wrap">
-                    <a href ng-click="toggleToList()" class="btn btn-default add-enum-item"><i class="fa fa-plus"></i></a>
-                    <div class="enum-list-container">
-                        <ul class="enum-list wide">
-                            <li>
-                                <expr ng-model="view.property.adapter.secondaryFiles" only-expr="true" handle-item-update="updateSecondaryFilesValue(value)"></expr>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <enum ng-if="!view.isSecondaryFilesExpr" ng-model="view.property.adapter.secondaryFiles" type="'string'"></enum>
-            </div>
-        </div>
-        <!-- END index files -->
 
         <div class="form-group main-actions">
             <a href class="btn btn-warning" ng-click="cancel()">Cancel</a>

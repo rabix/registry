@@ -11,26 +11,30 @@ angular.module('registryApp.cliche')
         return {
             template: $templateCache.get('views/cliche/property/property-header.html'),
             scope: {
-                position: '=',
+                position: '=?',
                 name: '@',
                 type: '@',
+                toolType: '@',
                 mode: '@',
                 itemType: '@',
                 isRequired: '=',
-                handle: '&',
-                adapter: '=?'
+                adapter: '=?',
+                symbols: '=',
+                handle: '&'
             },
             controller: ['$scope', 'Helper', function ($scope, Helper) {
 
                 $scope.view = {};
-                $scope.view.position = $scope.position || 0;
 
-                /* watch for position to change */
-                $scope.$watch('position', function(n, o) {
-                    if (n !== o) {
-                        $scope.view.position = n || 0;
-                    }
-                });
+                if ($scope.toolType === 'tool') {
+
+                    $scope.view.position = $scope.position || 0;
+
+                    /* watch for position to change */
+                    $scope.$watch('position', function(n, o) {
+                        if (n !== o) { $scope.view.position = n || 0; }
+                    });
+                }
 
                 /**
                  * Trigger handler for particular action
@@ -39,6 +43,8 @@ angular.module('registryApp.cliche')
                  * @param e
                  */
                 $scope.triggerAction = function(action, e) {
+
+                    if ($scope.toolType === 'script' && action === 'toggle') { return false; }
 
                     Helper.stopPropagation(e);
 

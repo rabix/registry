@@ -207,7 +207,7 @@
       .property-box-short-info {
         padding: 10px 10px 10px 25px;
         margin-right: 60px;
-        .order {
+        .position {
           background-color: $orange;
           color: #fff;
           padding: 0 5px;
@@ -215,6 +215,12 @@
         .required {
           color: #cc0000;
         }
+        //.info-block {
+        //  display: inline-block;
+        //  vertical-align: middle;
+        //  margin-right: 10px;
+        //}
+        .position,
         .info-block {
           display: inline-block;
           vertical-align: middle;
@@ -325,7 +331,8 @@
 
 /* Input property box regular */
 .input-property {
-  & > .form-group {
+  //& > .form-group {
+  .form-group {
     margin: 0 0 10px 0;
     border: 1px solid #ddd;
 
@@ -342,7 +349,8 @@
       }
     }
 
-    & > .control-label {
+    //& > .control-label {
+    .control-label {
       padding: 5px 10px;
       margin: 0;
       position: relative;
@@ -372,7 +380,8 @@
       }
     }
 
-    & > .input-property-body {
+    //& > .input-property-body {
+    .input-property-body {
       padding: 10px;
       background-color: #f9f9f9;
       overflow: auto;

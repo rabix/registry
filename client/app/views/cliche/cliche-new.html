@@ -66,6 +66,9 @@
                 <ng-include class="include flex-box-column flex-one" src="'views/cliche/tabs/adapter.html'"></ng-include>
             </div>
 
+            <div ng-if="!view.tool.transform && view.tab === 'test'" class="tab test flex-box-column flex-one">
+                <ng-include class="include flex-box-column flex-one" src="'views/cliche/tabs/test.html'"></ng-include>
+            </div>
         </div>
 
     </ng-form>

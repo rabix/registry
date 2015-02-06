@@ -48,9 +48,7 @@
     <property-arg
             ng-repeat="arg in view.tool.cliAdapter.argAdapters track by $index"
             ng-model="arg"
-            active="view.active.args[$index]"
-            index="{{ $index }}"
-            properties="view.tool.cliAdapter.argAdapters">
+            index="{{ $index }}">
     </property-arg>
 
     <p class="alert alert-info" ng-if="view.tool.cliAdapter.argAdapters | isEmpty">There are no arguments at this moment.</p>

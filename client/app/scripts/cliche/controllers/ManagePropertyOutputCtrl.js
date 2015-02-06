@@ -9,60 +9,22 @@
 angular.module('registryApp.cliche')
     .controller('ManagePropertyOutputCtrl', ['$scope', '$modalInstance', 'Cliche', 'options', function ($scope, $modalInstance, Cliche, options) {
 
+        var key = options.key || 'name';
+        var idObj = {n: '', o: ''};
+
         $scope.view = {};
-        $scope.view.property = angular.copy(options.property);
-        $scope.view.required = options.required;
-        $scope.view.mode = _.isUndefined($scope.view.property) ? 'add' : 'edit';
+        $scope.view.key = key;
+        $scope.view.mode = options.mode;
+        $scope.view.property = Cliche.getSchema('output', options.property, options.toolType);
+        $scope.view.name = Cliche.parseName(key, options.property);
+        $scope.view.required = Cliche.isRequired($scope.view.property.type);
+        $scope.view.type = Cliche.parseType($scope.view.property.type);
+        $scope.view.items = Cliche.getItemsRef(key, $scope.view.type, $scope.view.property);
 
-        if (_.isUndefined($scope.view.property)) {
-            $scope.view.property = {type: 'file'};
-            if (options.toolType === 'tool') {
-                $scope.view.property.adapter = {metadata: {}};
-            }
-        }
+        $scope.view.types = Cliche.getTypes('output');
+        $scope.view.itemTypes = Cliche.getTypes('outputItem');
 
-        $scope.view.newMeta = {key: '', value: ''};
-
-        $scope.view.inputs = _.pluck(_.filter(Cliche.getTool().inputs, function(prop) {
-            return prop.type === 'file' || (prop.items && prop.items.type === 'file');
-        }), '@id');
-
-        if (options.toolType === 'tool') {
-
-            if (_.isUndefined($scope.view.property.adapter)) {
-                $scope.view.property.adapter = {};
-            }
-
-            if (_.isArray($scope.view.property.adapter.secondaryFiles) && $scope.view.property.adapter.secondaryFiles.length === 0) {
-                delete $scope.view.property.adapter.secondaryFiles;
-                $scope.view.isSecondaryFilesExpr = true;
-            } else if (!_.isArray($scope.view.property.adapter.secondaryFiles)) {
-                $scope.view.isSecondaryFilesExpr = true;
-            }
-
-            /* watch for inherit property change */
-            $scope.$watch('view.property.adapter.metadata.__inherit__', function(n, o) {
-                if (n !== o) {
-                    if (_.isEmpty(n)) {
-                        delete $scope.view.property.adapter.metadata.__inherit__;
-                    }
-                }
-            });
-
-            $scope.$watch('view.property.adapter.secondaryFiles.length', function(n, o) {
-                if (n !== o && n === 0) {
-                    delete $scope.view.property.adapter.secondaryFiles;
-                    $scope.view.isSecondaryFilesExpr = true;
-                }
-            });
-        }
-
-        /* watch for the type change in order to adjust the property structure */
-        $scope.$watch('view.property.type', function(n, o) {
-            if (n !== o) {
-                Cliche.transformProperty($scope.view.property, 'output', n);
-            }
-        });
+        idObj.o = $scope.view.name;
 
         /**
          * Save property changes
@@ -74,103 +36,41 @@ angular.module('registryApp.cliche')
             $scope.view.error = '';
             $scope.view.form.$setDirty();
 
-            if ($scope.view.form.$invalid) {
-                return false;
+            if ($scope.view.form.$invalid) { return false; }
+
+            var inner = {
+                key: key,
+                name: $scope.view.name,
+                required: $scope.view.required,
+                type: $scope.view.type,
+                items: $scope.view.items
+            };
+
+            var formatted = Cliche.formatProperty(inner, $scope.view.property);
+
+            idObj.n = $scope.view.name;
+
+            Cliche.manageProperty(options.mode, formatted, options.properties, idObj)
+                .then(function() {
+                    $modalInstance.close({prop: formatted});
+                }, function(error) {
+                    $scope.view.error = error;
+                });
+
+        };
+
+        /* watch for the type change in order to adjust the property structure */
+        $scope.$watch('view.type', function(n, o) {
+            if (n !== o) {
+                if (n === 'array') {
+                    if (!$scope.view.items) { $scope.view.items = {}; }
+                    $scope.view.items.type = 'file';
+                } else {
+                    delete $scope.view.items;
+                }
             }
+        });
 
-            if ($scope.view.mode === 'edit') {
-                $modalInstance.close({prop: $scope.view.property, required: $scope.view.required});
-            } else {
-                Cliche.addProperty('output', $scope.view.property, options.properties)
-                    .then(function() {
-                        $modalInstance.close({required: $scope.view.required});
-                    }, function(error) {
-                        $scope.view.error = error;
-                    });
-            }
-
-        };
-
-        /**
-         * Toggle secondary files into array
-         */
-        $scope.toggleToList = function() {
-            $scope.view.property.adapter.secondaryFiles = [];
-            $scope.view.property.adapter.secondaryFiles.push('');
-            $scope.view.isSecondaryFilesExpr = false;
-        };
-
-        /**
-         * Update secondary files value
-         *
-         * @param value
-         */
-        $scope.updateSecondaryFilesValue = function(value) {
-            $scope.view.property.adapter.secondaryFiles = value;
-        };
-
-        /**
-         * Update transform value with expression
-         *
-         * @param value
-         */
-        $scope.updateTransform = function (value) {
-
-            if (_.isObject(value)) {
-                $scope.view.property.adapter.value = value;
-            } else {
-                delete $scope.view.property.adapter.value;
-            }
-        };
-
-        /**
-         * Add meta data to the output
-         */
-        $scope.addMeta = function () {
-
-            $scope.view.newMeta.error = false;
-
-            if (!$scope.view.property.adapter.metadata) {
-                $scope.view.property.adapter.metadata = {};
-            }
-
-            if (!_.isUndefined($scope.view.property.adapter.metadata[$scope.view.newMeta.key]) || $scope.view.newMeta.key === '') {
-                $scope.view.newMeta.error = true;
-                return false;
-            }
-
-            $scope.view.property.adapter.metadata[$scope.view.newMeta.key] = $scope.view.newMeta.value;
-            $scope.view.newMeta = {key: '', value: ''};
-
-        };
-
-        /**
-         * Remove meta data from the output
-         *
-         * @param {integer} index
-         * @returns {boolean}
-         */
-        $scope.removeMeta = function (index) {
-            delete $scope.view.property.adapter.metadata[index];
-        };
-
-        /**
-         * Update new meta value with expression or literal
-         *
-         * @param value
-         */
-        $scope.updateNewMeta = function (value) {
-            $scope.view.newMeta.value = value;
-        };
-
-        /**
-         * Update existing meta value with expression or literal
-         *
-         * @param value
-         */
-        $scope.updateMetaValue = function (index, value) {
-            $scope.view.property.adapter.metadata[index] = value;
-        };
 
         /**
          * Update existing glob value with expression or literal

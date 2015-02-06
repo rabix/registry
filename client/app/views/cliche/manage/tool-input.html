@@ -16,8 +16,8 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="form-group" ng-class="{'has-error': (view.form.name.$invalid && view.form.$dirty)}">
-                    <label class="control-label" for="name">ID</label>
-                    <input type="text" class="form-control" id="name" name="name" ng-model="view.property[view.key]" ng-readonly="view.mode === 'edit'" is-valid-name required>
+                    <label class="control-label" for="name">{{ view.key === '@id' ? 'ID' : 'Name' }}</label>
+                    <input type="text" class="form-control" id="name" name="name" ng-model="view.name" is-valid-name required>
                     <span class="help-block">Characters such as . and $ are forbidden</span>
                 </div>
             </div>
@@ -26,15 +26,7 @@
             <div class="col-md-4">
                 <div class="form-group" ng-class="{'has-error': (view.form.type.$invalid && view.form.$dirty)}">
                     <label class="control-label" for="type">Type</label>
-                    <select class="form-control" id="type" name="type" ng-model="view.type" required>
-                        <option value="file">file</option>
-                        <option value="string">string</option>
-                        <option value="enum">enum</option>
-                        <option value="int">int</option>
-                        <option value="float">float</option>
-                        <option value="array">array</option>
-                        <option value="boolean">boolean</option>
-                    </select>
+                    <select class="form-control" id="type" name="type" ng-model="view.type" ng-options="option for option in view.types" required></select>
                 </div>
             </div>
             <!-- END Type -->
@@ -42,14 +34,7 @@
             <div class="col-md-4" ng-if="view.type === 'array'">
                 <div class="form-group">
                     <label class="control-label" for="item-type" class="control-label">Item Type</label>
-
-                    <select class="form-control" id="item-type" name="itemType" ng-model="view.items.type">
-                        <option value="string">string</option>
-                        <option value="int">int</option>
-                        <option value="float">float</option>
-                        <option value="file">file</option>
-                        <option value="record">record</option>
-                    </select>
+                    <select class="form-control" id="item-type" name="itemType" ng-model="view.items.type" ng-options="option for option in view.itemTypes"></select>
                 </div>
             </div>
             <!-- END Item Type -->

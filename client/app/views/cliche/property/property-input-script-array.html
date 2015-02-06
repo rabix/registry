@@ -1,7 +1,8 @@
-<div property-header-script
+<div property-header
      class="property-box-header script"
-     name="{{ prop[key] }}"
+     name="{{ view.name }}"
      type="array"
+     tool-type="script"
      mode="input"
      item-type="{{ view.items.type }}"
      is-required="view.required"
@@ -23,10 +24,10 @@
             </legend>
 
             <property-input
-                    ng-repeat="property in view.items.fields track by $index"
+                    ng-repeat="property in view.items.fields track by property.name"
                     ng-model="property"
                     type="{{ type }}"
-                    inputs="inputs[prop[key]]"
+                    inputs="inputs[view.name]"
                     properties="view.items.fields"
                     handler="handler()">
             </property-input>
