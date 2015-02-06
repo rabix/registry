@@ -10,53 +10,30 @@ angular.module('registryApp.cliche')
     .controller('ManagePropertyInputCtrl', ['$scope', '$modalInstance', 'Cliche', 'Helper', 'options', function ($scope, $modalInstance, Cliche, Helper, options) {
 
         var key = options.key || 'name';
+        var idObj = {n: '', o: ''};
+        var cacheAdapter = {};
 
         $scope.view = {};
         $scope.view.key = key;
-        $scope.view.property = angular.copy(options.property);
-        $scope.view.mode = _.isUndefined($scope.view.property) ? 'add' : 'edit';
-
-        if (_.isUndefined($scope.view.property)) { $scope.view.property = {type: 'string'}; }
-
+        $scope.view.mode = options.mode;
+        $scope.view.property = Cliche.getSchema('input', options.property, options.toolType);
+        $scope.view.name = Cliche.parseName(key, options.property);
         $scope.view.required = Cliche.isRequired($scope.view.property.type);
         $scope.view.type = Cliche.parseType($scope.view.property.type);
         $scope.view.items = Cliche.getItemsRef(key, $scope.view.type, $scope.view.property);
 
-        var tmp = Cliche.parseEnum($scope.view.property.type);
+        $scope.view.types = Cliche.getTypes('input');
+        $scope.view.itemTypes = Cliche.getTypes('inputItem');
 
-        $scope.view.enumName = tmp.name;
-        $scope.view.symbols = tmp.symbols;
+        var enumObj = Cliche.parseEnum($scope.view.property.type);
+
+        $scope.view.enumName = enumObj.name;
+        $scope.view.symbols = enumObj.symbols;
 
         $scope.view.disabled = ($scope.view.items && $scope.view.items.type) === 'record';
+        $scope.view.adapter = !_.isUndefined($scope.view.property.adapter);
 
-        var cacheAdapter = {};
-
-        /**
-         * Check if input has adapter section and if not add it
-         */
-        var checkInputAdapter = function() {
-
-            if (_.isUndefined($scope.view.property.adapter) && options.toolType === 'tool') {
-                $scope.view.property.adapter = {separator: ' '};
-            }
-
-        };
-
-        if ($scope.view.mode === 'add') {
-
-            if (options.toolType === 'tool') {
-                $scope.view.adapter = true;
-                if (_.isUndefined($scope.view.property.adapter)) {
-                    $scope.view.property.adapter = {separator: ' '};
-                }
-            } else {
-                $scope.view.adapter = false;
-                delete $scope.view.property.adapter;
-            }
-
-        } else {
-            $scope.view.adapter = !_.isUndefined($scope.view.property.adapter);
-        }
+        idObj.o = $scope.view.name;
 
         /**
          * Save property changes
@@ -68,12 +45,11 @@ angular.module('registryApp.cliche')
             $scope.view.error = '';
             $scope.view.form.$setDirty();
 
-            if ($scope.view.form.$invalid) {
-                return false;
-            }
+            if ($scope.view.form.$invalid) { return false; }
 
             var inner = {
                 key: key,
+                name: $scope.view.name,
                 required: $scope.view.required,
                 type: $scope.view.type,
                 enumName: $scope.view.enumName,
@@ -81,31 +57,29 @@ angular.module('registryApp.cliche')
                 items: $scope.view.items
             };
 
-            $scope.view.property = Cliche.formatProperty(inner, $scope.view.property);
+            var formatted = Cliche.formatProperty(inner, $scope.view.property);
 
-            if ($scope.view.mode === 'edit') {
-                $modalInstance.close({prop: $scope.view.property});
-            } else {
+            idObj.n = $scope.view.name;
 
-                if (options.toolType === 'tool') {
+            Cliche.manageProperty(options.mode, formatted, options.properties, idObj)
+                .then(function() {
 
-                    if (!_.isArray(options.inputs)) {
-                        options.inputs[$scope.view.property[key]] = Helper.getDefaultInputValue(
-                            $scope.view.property[key],
+                    var prePopulateInputs = options.mode === 'add' && options.toolType === 'tool' && options.inputs && !_.isArray(options.inputs);
+
+                    if (prePopulateInputs) {
+                        options.inputs[$scope.view.name] = Helper.getDefaultInputValue(
+                            $scope.view.name,
                             $scope.view.symbols,
                             $scope.view.type,
                             ($scope.view.items ? $scope.view.items.type : null)
                         );
                     }
-                }
 
-                Cliche.addProperty('input', $scope.view.property, options.properties)
-                    .then(function() {
-                        $modalInstance.close();
-                    }, function(error) {
-                        $scope.view.error = error;
-                    });
-            }
+                    $modalInstance.close({prop: formatted});
+                }, function(error) {
+                    $scope.view.error = error;
+                });
+
 
         };
 
@@ -127,15 +101,13 @@ angular.module('registryApp.cliche')
                 if (n === 'record') {
                     $scope.view.disabled = true;
 
-                    if ($scope.view.mode === 'edit') {
-                        options.inputs[$scope.name] = [];
-                    }
-
-                    checkInputAdapter();
+                    if (options.mode === 'edit') { options.inputs[$scope.view.name] = []; }
 
                     if (_.isUndefined($scope.view.items.fields)) {
+
                         $scope.view.items.fields = [];
-                        if (options.toolType === 'tool') {
+
+                        if ($scope.view.adapter) {
                             $scope.view.property.adapter.prefix = '';
                             $scope.view.property.adapter.separator = ' ';
                             delete $scope.view.property.adapter.itemSeparator;
@@ -157,8 +129,6 @@ angular.module('registryApp.cliche')
          * @param value
          */
         $scope.updateTransform = function (value) {
-
-            checkInputAdapter();
 
             if (_.isObject(value)) {
                 $scope.view.property.adapter.argValue = value;

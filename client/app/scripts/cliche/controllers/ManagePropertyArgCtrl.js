@@ -11,7 +11,7 @@ angular.module('registryApp.cliche')
 
         $scope.view = {};
         $scope.view.property = angular.copy(options.property);
-        $scope.view.mode = _.isUndefined($scope.view.property) ? 'add' : 'edit';
+        $scope.view.mode = options.mode;
 
         if (_.isUndefined($scope.view.property)) {
             $scope.view.property = {separator: ' '};
@@ -27,20 +27,14 @@ angular.module('registryApp.cliche')
             $scope.view.error = '';
             $scope.view.form.$setDirty();
 
-            if ($scope.view.form.$invalid) {
-                return false;
-            }
+            if ($scope.view.form.$invalid) { return false; }
 
-            if ($scope.view.mode === 'edit') {
-                $modalInstance.close({prop: $scope.view.property});
-            } else {
-                Cliche.addProperty('arg', $scope.view.property, options.properties)
-                    .then(function() {
-                        $modalInstance.close();
-                    }, function(error) {
-                        $scope.view.error = error;
-                    });
-            }
+            Cliche.manageArg(options.mode, $scope.view.property)
+                .then(function() {
+                    $modalInstance.close({prop: $scope.view.property});
+                }, function(error) {
+                    $scope.view.error = error;
+                });
 
         };
 
@@ -50,7 +44,7 @@ angular.module('registryApp.cliche')
          * @param {*} value
          */
         $scope.updateArgument = function (value) {
-            $scope.view.property.value = value;
+            $scope.view.property.argValue = value;
         };
 
         /**

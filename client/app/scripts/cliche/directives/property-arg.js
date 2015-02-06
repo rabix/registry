@@ -10,18 +10,17 @@ angular.module('registryApp.cliche')
     .controller('PropertyArgCtrl', ['$scope', '$templateCache', '$modal', 'SandBox', 'Cliche', function ($scope, $templateCache, $modal, SandBox, Cliche) {
 
         $scope.view = {};
-        $scope.view.tpl = 'views/cliche/property/property-arg.html';
-
         $scope.view.exprError = '';
+        $scope.view.tpl = 'views/cliche/property/property-arg.html';
 
         /**
          * Check if expression is valid
          */
         var checkExpression = function () {
 
-            if ($scope.prop.value && $scope.prop.value.$expr) {
+            if ($scope.prop.argValue && $scope.prop.argValue.value) {
 
-                SandBox.evaluate($scope.prop.value.$expr, {})
+                SandBox.evaluate($scope.prop.argValue.value, {})
                     .then(function () {
                         $scope.view.exprError = '';
                     }, function (error) {
@@ -56,7 +55,7 @@ angular.module('registryApp.cliche')
             });
 
             modalInstance.result.then(function () {
-                Cliche.deleteProperty('arg', $scope.index, $scope.properties);
+                Cliche.deleteArg($scope.index);
                 Cliche.generateCommand();
             });
         };
@@ -75,8 +74,8 @@ angular.module('registryApp.cliche')
                     options: function () {
                         return {
                             type: 'arg',
-                            property: $scope.prop,
-                            properties: $scope.properties
+                            mode: 'edit',
+                            property: $scope.prop
                         };
                     }
                 }
@@ -103,9 +102,7 @@ angular.module('registryApp.cliche')
          */
         $scope.handleAction = function(action) {
 
-            if (typeof $scope[action] === 'function') {
-                $scope[action]();
-            }
+            if (typeof $scope[action] === 'function') { $scope[action](); }
         };
 
     }])
@@ -116,9 +113,7 @@ angular.module('registryApp.cliche')
             template: '<div class="property-box" ng-class="{active: active}"><ng-include class="include" src="view.tpl"></ng-include></div>',
             scope: {
                 prop: '=ngModel',
-                index: '@',
-                active: '=',
-                properties: '='
+                index: '@'
             },
             controller: 'PropertyArgCtrl',
             link: function() {}

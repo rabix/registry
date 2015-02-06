@@ -34,6 +34,7 @@ angular.module('registryApp.cliche')
                 resolve: {
                     options: function () {
                         return {
+                            mode: 'add',
                             key: $scope.key,
                             toolType: $scope.toolType,
                             properties: $scope.properties,

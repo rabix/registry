@@ -11,10 +11,9 @@
     </legend>
 
     <property-output
-            ng-repeat="property in view.tool.outputs track by $index"
+            ng-repeat="property in view.tool.outputs track by property['@id']"
             ng-model="property"
             key="@id"
-            active="view.active.outputs[property['@id']]"
             type="{{ view.type }}"
             properties="view.tool.outputs">
     </property-output>

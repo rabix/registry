@@ -12,7 +12,7 @@
     </legend>
 
     <property-input
-            ng-repeat="property in view.tool.inputs track by $index"
+            ng-repeat="property in view.tool.inputs track by property['@id']"
             ng-model="property"
             key="@id"
             type="{{ view.type }}"

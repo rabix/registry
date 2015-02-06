@@ -1,8 +1,10 @@
 <div property-header
-     class="property-box-header"
+     class="property-box-header tool"
      name="arg{{ index }}"
-     order="prop.order"
+     position="prop.position"
      type="arg"
+     mode="arg"
+     tool-type="tool"
      handle="handleAction(action)">
 </div>
 
@@ -15,9 +17,9 @@
             <div class="value">
                 <div class="value">
                     <i class="fa fa-warning error" ng-if="view.exprError" title="{{ view.exprError }}"></i>
-                    {{ prop.value.$expr ? prop.value.$expr : prop.value }}
+                    {{ prop.argValue.value ? prop.argValue.value : prop.argValue }}
                 </div>
-                <i ng-if="!prop.value">Not defined</i>
+                <i ng-if="!prop.argValue">Not defined</i>
             </div>
         </div>
 
