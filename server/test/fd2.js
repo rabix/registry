@@ -35,4 +35,8 @@ _.forEach(p.schemas, function (schema, id) {
 
 });
 
+_.forEach(r.steps, function (step) {
+    suit.checkObjKeyVal(step);
+});
+console.log(r);
 console.log('**** Finished conversion test *****');

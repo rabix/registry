@@ -4,14 +4,14 @@
     "description": "Outputs file contents as string.",
     "inputs": [
         {
-            "id": "#file1",
+            "@id": "#file1",
             "schema": {"type": "File"},
             "depth": 0
         }
     ],
     "outputs": [
         {
-            "id": "#result",
+            "@id": "#result",
             "schema": {"type": "string"},
             "depth": 0
         }

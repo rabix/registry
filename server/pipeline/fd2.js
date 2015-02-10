@@ -28,7 +28,7 @@ function resolveApp(name) {
 
 var RabixModel = {
     '@type': 'Workflow',
-    '@context': "https://raw.githubusercontent.com/common-workflow-language/common-workflow-language/draft2/specification/context.json",
+    '@context': 'https://raw.githubusercontent.com/common-workflow-language/common-workflow-language/draft2/specification/context.json',
     'steps': [],
     'dataLinks': []
 };
@@ -64,27 +64,70 @@ var _formater = {
 
     createSteps: function (schemas, relations) {
 
+        var _self = this,
+            steps = [];
+
         _.forEach(relations, function (rel) {
 
-            var end_node = rel.end_node,
+
+            var schema = schemas[rel.end_node],
+                id = rel.end_node,
                 step = {
-                    '@id': rel.end_node,
-                    app: schemas[rel.end_node]
+                    '@id': id,
+                    app: schema.ref,
+                    inputs: [],
+                    outputs: []
                 };
 
+            if (!_self._checkSystem(schema)) {
 
+                _.forEach(schema.inputs, function (input) {
+                    step.inputs.push({
+                        '@id': id + '/' + input['@id'].slice(1, input['@id'].length)
+                    });
+                });
 
+                _.forEach(schema.outputs, function (output) {
+                    step.outputs.push({
+                        '@id': id + '/' + output['@id'].slice(1, output['@id'].length)
+                    });
+                });
+
+                steps.push(step);
+
+            }
+
+        });
+
+        return steps;
+    },
+
+    createWorkflowInOut: function (workflow, schemas) {
+        var _self = this;
+
+        workflow.inputs = [];
+        workflow.outputs = [];
+
+        _.forEach(schemas, function (schema) {
+            var node = schema.schema,
+                type;
+
+            if (_self._checkSystem(schema)) {
+                type = schema.softwareDescription.type;
+                delete node.name;
+                workflow[type+'s'].push(node);
+            }
         });
 
     },
 
-    createInOut: function (schemas, workflow) {
+    createInOutNodes: function (schemas, workflow) {
 
         var _self = this,
             system = {};
 
         if (!_.isArray(workflow.inputs)) {
-            workflow.inputs = [].push(workflow.inputs);
+            workflow.inputs = new Array(workflow.inputs);
         }
 
         _.forEach(workflow.inputs, function (input) {
@@ -148,11 +191,12 @@ var _formater = {
         var schemas = {};
 
         _.forEach(steps, function (step) {
-            var stepId = step['@id'];
+            var stepId = step['@id'], ref;
 
-            //TODO: Resolve schema if it is url and not object
             if (typeof step.app === 'string') {
+                ref = step.app;
                 step.app = resolveApp(step.app);
+                step.app.ref = ref;
             }
 
             step.app['@id'] = stepId;
@@ -174,6 +218,8 @@ var _formater = {
 
         schema.id = id;
 
+        schema.name = schema.name || id;
+
         var model = {
             'name': schema.name || 'System app',
             'softwareDescription': {
@@ -182,7 +228,6 @@ var _formater = {
                 'type': type,
                 'name': schema.name
             },
-            'documentAuthor': null,
             'inputs': {
                 type: 'object'
             },
@@ -230,7 +275,7 @@ var _helper = {
     },
 
     _findMiddleY: function (display) {
-        var nodes = display.nodes, m = 200, min = 0, max = 200;
+        var nodes = display.nodes, min = 0, max = 400;
 
         _.forEach(nodes, function (dis) {
 
@@ -346,6 +391,9 @@ var _helper = {
 
     fixDisplay: function (display, nodes) {
 
+        this.sysCoords.x = 0;
+        this.sysCoords.y = 0;
+
         if (!display) {
             display = this._createDisplay();
         }
@@ -362,11 +410,8 @@ var _helper = {
             };
         }
 
-        this._fixSystemNodesCoords(display, nodes);
         this.generateNodesCoords(display, nodes);
-
-        this.sysCoords.x = 0;
-        this.sysCoords.y = 0;
+        this._fixSystemNodesCoords(display, nodes);
 
         return display;
     }
@@ -379,6 +424,9 @@ var fd2 = {
             model = _.clone(RabixModel, true);
 
         model.dataLinks = _formater.toRabixRelations(json.relations);
+        model.steps = _formater.createSteps(json.schemas, json.relations);
+
+        _formater.createWorkflowInOut(model, json.schemas, json.relations);
 
         return model;
     },
@@ -391,7 +439,7 @@ var fd2 = {
         schemas = _formater.createSchemasFromSteps(json.steps);
 
         //extend schemas with inputs and outputs
-        schemas = _formater.createInOut(schemas, json);
+        schemas = _formater.createInOutNodes(schemas, json);
 
         nodes = _.toArray(schemas);
 
