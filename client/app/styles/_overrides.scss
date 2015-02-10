@@ -74,26 +74,20 @@
   }
 }
 
-/* Nav pills override */
-.nav-pills {
+/* Nav tabs override */
+.nav-tabs {
   &.nav-page {
-    margin: 0 10px;
-    display: inline-block;
-    vertical-align: middle;
+    border-bottom: 2px solid $orange;
+    @extend .flex-auto;
     li {
       a {
-        padding: 6px 12px;
-        border: 1px solid transparent;
-        font-size: 14px;
+        padding: 5px 15px;
       }
       &.active {
         a,
         a:focus,
         a:hover {
-          color: #555;
-          background-color: #fff;
-          border: 1px solid #ddd;
-          cursor: pointer;
+          border-top: none;
         }
       }
     }

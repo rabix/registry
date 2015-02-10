@@ -30,7 +30,7 @@ module.exports = function (app) {
 
 /**
  * Get all Tools
- *
+ *z
  * @apiName GetTools
  * @api {GET} /api/apps Get all Tools
  * @apiGroup Repos
@@ -301,7 +301,7 @@ router.post('/apps/:action', filters.authenticated, function (req, res, next) {
         return false;
     }
 
-    var name = (req.params.action === 'fork') ? data.name : data.tool.name;
+    var name = (req.params.action === 'fork') ? data.name : data.tool.label;
 
     App.count({name: name}).exec(function(err, count) {
         if (err) { return next(err); }
@@ -310,18 +310,16 @@ router.post('/apps/:action', filters.authenticated, function (req, res, next) {
             res.status(400).json({message: 'The "'+name+'" tool already exists, please choose another name!'});
         } else {
 
-            data.tool['@type'] = data.is_script ? 'Script' : 'CommandLine';
-
             var app = new App();
 
+            data.tool['@id'] = req.protocol + '://' + req.headers.host + '/tool/' + app._id;
+
             app.name = name;
-            data.tool.name = name;
+            data.tool.label = name;
             app.description = data.tool.description;
-            app.script = data.tool.script;
             app.author = req.user.login;
-            app.json = JSON.stringify(data.tool);
             app.links = {json: ''};
-            app.is_script = data.is_script;
+            app.is_script = data.tool.transform;
 
             Repo.findById(data.repo_id).populate('user').exec(function (err, repo) {
 
@@ -332,7 +330,7 @@ router.post('/apps/:action', filters.authenticated, function (req, res, next) {
 
                     app.repo = repo._id;
 
-                    app.json.documentAuthor = app.author;
+                    app.json = JSON.stringify(data.tool);
 
                     var folder = 'users/' + req.user.login + '/apps/' + repo.owner + '-' + repo.name;
 
@@ -348,11 +346,12 @@ router.post('/apps/:action', filters.authenticated, function (req, res, next) {
 
                                         var revision = new Revision();
 
+                                        data.tool['@id'] = req.protocol + '://' + req.headers.host + '/tool-revision/' + revision._id;
+
                                         revision.name = app.name;
                                         revision.description = app.description;
-                                        revision.script = app.script;
                                         revision.author = app.author;
-                                        revision.json = app.json;
+                                        revision.json = JSON.stringify(data.tool);
                                         revision.job = JSON.stringify(data.job);
                                         revision.app_id = app._id;
 

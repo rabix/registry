@@ -52,9 +52,16 @@
           padding: 0;
           overflow: hidden;
         }
-        .zclip {
+        .copy-btn {
           display: none;
         }
+      }
+
+      .copy-btn {
+        position: absolute;
+        bottom: 5px;
+        right: 5px;
+        z-index: 100;
       }
     }
 
@@ -64,18 +71,6 @@
         padding-right: 10px;
       }
     }
-  }
-}
-
-/* ZeroClipboard box */
-.zclip {
-  .btn {
-    position: absolute;
-    bottom: 5px;
-    left: 5px;
-  }
-  p {
-    @extend %trace-box;
   }
 }
 

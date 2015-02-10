@@ -13,11 +13,11 @@ angular.module('registryApp.cliche')
 
         $scope.key = $scope.key || 'name';
 
-        $scope.view.name = Cliche.parseName($scope.key, $scope.prop);
+        $scope.view.name = Cliche.parseName($scope.prop);
         $scope.view.property = Cliche.getSchema('input', $scope.prop, $scope.type, true);
         $scope.view.type = Cliche.parseType($scope.view.property.type);
         $scope.view.required = Cliche.isRequired($scope.view.property.type);
-        $scope.view.items = Cliche.getItemsRef($scope.key, $scope.view.type, $scope.view.property);
+        $scope.view.items = Cliche.getItemsRef($scope.view.type, $scope.view.property);
 
         $scope.view.tpl = 'views/cliche/inputs/input-' + $scope.view.type  + '.html';
 
@@ -85,27 +85,28 @@ angular.module('registryApp.cliche')
 
         };
 
-        var inputScheme = $scope.model;
+        //var inputScheme = $scope.model;
+        var inputScheme;
 
         /* type FILE */
-        if ($scope.view.property.type === 'file') {
+        if ($scope.view.type === 'file') {
 
             inputScheme = getFileScheme($scope.model);
 
-            /* type OBJECT */
-        } else if($scope.view.property.type === 'object') {
+            /* type RECORD */
+        } else if($scope.view.type === 'record') {
 
             inputScheme = getObjectScheme($scope.model);
 
             /* type ARRAY */
-        } else if($scope.view.property.type === 'array') {
+        } else if($scope.view.type === 'array') {
 
             inputScheme = [];
 
             $scope.view.items = $scope.view.items || {type: 'string'};
 
             switch($scope.view.items.type) {
-            case 'object':
+            case 'record':
                 _.each($scope.model, function(value) {
                     var innerScheme = getObjectScheme(value);
                     delete innerScheme.path;
@@ -128,7 +129,11 @@ angular.module('registryApp.cliche')
             inputScheme = getDefaultScheme($scope.model);
         }
 
-        $scope.model = inputScheme;
+        $scope.view.model = inputScheme;
+
+        $scope.$watch('view.model', function(n, o) {
+            if (n !== o) { $scope.model = n; }
+        });
 
         /**
          * Open modal to enter more parameters for the input file
@@ -139,11 +144,11 @@ angular.module('registryApp.cliche')
                 template: $templateCache.get('views/cliche/partials/input-file-more.html'),
                 controller: 'InputFileMoreCtrl',
                 windowClass: 'modal-prop',
-                resolve: {data: function () {return {scheme: $scope.model, key: $scope.view.name};}}
+                resolve: {data: function () {return {schema: $scope.view.model, key: $scope.view.name};}}
             });
 
-            modalInstance.result.then(function (scheme) {
-                $scope.model = angular.copy(scheme);
+            modalInstance.result.then(function (schema) {
+                $scope.view.model = angular.copy(schema);
             });
 
         };
@@ -165,10 +170,9 @@ angular.module('registryApp.cliche')
         };
 
     }])
-    .directive('inputField', ['$templateCache', '$compile', 'RecursionHelper', function ($templateCache, $compile, RecursionHelper) {
+    .directive('inputField', ['RecursionHelper', function (RecursionHelper) {
         return {
             restrict: 'E',
-            //template: '<ng-form name="inputForm" class="input-property"></ng-form>',
             template: '<ng-form name="inputForm" class="input-property"><ng-include class="include" src="view.tpl"></ng-include></ng-form>',
             scope: {
                 model: '=ngModel',
@@ -183,17 +187,7 @@ angular.module('registryApp.cliche')
             },
             controller: 'InputFieldCtrl',
             compile: function(element) {
-                return RecursionHelper.compile(element, function(scope, iElement) {
-
-//                    var template = $templateCache.get('views/cliche/inputs/input-' + scope.prop.type  + '.html');
-//
-//                    var $frm = angular.element(iElement[0].querySelector('.input-property'));
-//
-//                    $frm.append(template);
-//
-//                    $compile($frm.contents())(scope);
-
-                });
+                return RecursionHelper.compile(element, function() {});
             }
         };
     }]);

@@ -30,11 +30,11 @@ angular.module('registryApp.cliche')
             },
             {
                 '@type': 'CpuRequirement',
-                value: 0
+                value: 500
             },
             {
                 '@type': 'MemRequirement',
-                value: 0
+                value: 1000
             }
         ],
         inputs: [],

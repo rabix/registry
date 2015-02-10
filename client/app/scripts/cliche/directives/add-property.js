@@ -7,9 +7,7 @@
 'use strict';
 
 angular.module('registryApp.cliche')
-    .controller('AddPropertyCtrl', ['$scope', '$modal', '$templateCache', 'Cliche', function ($scope, $modal, $templateCache, Cliche) {
-
-        var isOpen = false;
+    .controller('AddPropertyCtrl', ['$scope', '$modal', '$templateCache', 'Cliche', 'Helper', function ($scope, $modal, $templateCache, Cliche, Helper) {
 
         /**
          * Show the modal for adding property items
@@ -19,10 +17,6 @@ angular.module('registryApp.cliche')
         $scope.addItem = function(e) {
 
             e.stopPropagation();
-
-            if (isOpen) { return false; }
-
-            isOpen = true;
 
             var tplName = $scope.toolType ? $scope.toolType + '-' + $scope.type : $scope.type;
 
@@ -37,15 +31,26 @@ angular.module('registryApp.cliche')
                             mode: 'add',
                             key: $scope.key,
                             toolType: $scope.toolType,
-                            properties: $scope.properties,
-                            inputs: $scope.inputs
+                            properties: $scope.properties
                         };
                     }
                 }
             });
 
-            modalInstance.result.then(function() {
-                isOpen = false;
+            modalInstance.result.then(function(result) {
+
+                /* set default value for the input, but only for the first level */
+                if ($scope.type === 'input' && $scope.inputs) {
+
+                    var name = result.prop['@id'].slice(1);
+                    var schema = result.prop.schema;
+                    var typeObj = schema.type;
+                    var enumObj = Cliche.parseEnum(typeObj);
+                    var type = Cliche.parseType(typeObj);
+                    var itemType = (schema.items ? schema.items.type : null);
+
+                    $scope.inputs[name] = Helper.getDefaultInputValue(name, enumObj.symbols, type, itemType);
+                }
 
                 if (typeof $scope.handler === 'function') { $scope.handler(); }
 
@@ -53,8 +58,6 @@ angular.module('registryApp.cliche')
                     Cliche.generateCommand();
                 }
 
-            }, function() {
-                isOpen = false;
             });
 
             return modalInstance;

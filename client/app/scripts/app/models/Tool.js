@@ -65,26 +65,28 @@ angular.module('registryApp.app')
          * Create new tool
          *
          * @param repoId
-         * @param isScript
          * @param tool
          * @param job
          * @returns {*}
          */
-        var create = function(repoId, isScript, tool, job) {
+        var create = function(repoId, tool, job) {
 
-            return Api.apps.add({id: 'create'}, {tool: tool, job: job, repo_id: repoId, is_script: isScript}).$promise;
+            return Api.apps.add({id: 'create'}, {tool: tool, job: job, repo_id: repoId}).$promise;
 
         };
 
         /**
          * Fork the current tool
          *
-         * @param data
+         * @param repoId
+         * @param name
+         * @param tool
+         * @param job
          * @returns {*}
          */
-        var fork = function(data) {
+        var fork = function(repoId, name, tool, job) {
 
-//            return Api.apps.add({id: 'fork'}, {tool: Data.tool, job: Data.job, repo_id: data.repoId, name: data.name, is_script: data.is_script}).$promise;
+            return Api.apps.add({id: 'fork'}, {tool: tool, job: job, repo_id: repoId, name: name}).$promise;
 
         };
 
@@ -94,9 +96,9 @@ angular.module('registryApp.app')
          * @param appId
          * @returns {*}
          */
-        var update = function(appId) {
+        var update = function(appId, tool, job) {
 
-//            return Api.revisions.add({}, {tool: Data.tool, job: Data.job, app_id: appId}).$promise;
+            return Api.revisions.add({}, {tool: tool, job: job, app_id: appId}).$promise;
 
         };
 

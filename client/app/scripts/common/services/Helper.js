@@ -37,6 +37,20 @@ angular.module('registryApp.common')
         };
 
         /**
+         * Check if value is integer
+         *
+         * @param {integer} int
+         * @returns {boolean}
+         */
+        var isValidInt = function(int) {
+
+            int = int || 0;
+
+            return int === parseInt(int, 10);
+
+        };
+
+        /**
          * Get current domain with appropriate protocol and port
          *
          * @returns {string}
@@ -109,7 +123,7 @@ angular.module('registryApp.common')
                     string: [name],
                     int: [0],
                     float: [0],
-                    record: {}
+                    record: []
                 }
             };
 
@@ -143,6 +157,7 @@ angular.module('registryApp.common')
 
         return {
             isValidName: isValidName,
+            isValidInt: isValidInt,
             getDomain: getDomain,
             getTestData: getTestData,
             getDefaultInputValue: getDefaultInputValue,

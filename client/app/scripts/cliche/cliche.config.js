@@ -11,11 +11,11 @@ angular.module('registryApp.cliche', [])
 
         $routeProvider
             .when('/cliche/:type', {
-                templateUrl: 'views/cliche/cliche-new.html',
+                templateUrl: 'views/cliche/cliche.html',
                 controller: 'ClicheCtrl'
             })
             .when('/cliche/:type/:id/:revision', {
-                templateUrl: 'views/cliche/cliche-edit.html',
+                templateUrl: 'views/cliche/cliche.html',
                 controller: 'ClicheCtrl'
             });
 

@@ -24,10 +24,10 @@ angular.module('registryApp.cliche')
         var parseStructure = function() {
 
             $scope.view.property = Cliche.getSchema('output', $scope.prop, $scope.type, true);
-            $scope.view.name = Cliche.parseName($scope.key, $scope.prop);
+            $scope.view.name = Cliche.parseName($scope.prop);
             $scope.view.type = Cliche.parseType($scope.view.property.type);
             $scope.view.required = Cliche.isRequired($scope.view.property.type);
-            $scope.view.items = Cliche.getItemsRef($scope.key, $scope.view.type, $scope.view.property);
+            $scope.view.items = Cliche.getItemsRef($scope.view.type, $scope.view.property);
 
             var tplType = Cliche.getTplType($scope.view.type);
 

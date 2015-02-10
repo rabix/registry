@@ -76,13 +76,12 @@ angular.module('registryApp.common')
                 /* init check of the expression if defined */
                 checkExpression();
 
-                // TODO: need to watch it if changed from outside, just maybe
-//                $scope.$watch('ngModel', function (n, o) {
-//                    if (n !== o) {
-//                        $scope.view.model = angular.copy(n);
-//                        checkExpression();
-//                    }
-//                });
+                $scope.$watch('ngModel', function (n, o) {
+                    if (n !== o) {
+                        determineStructure();
+                        checkExpression();
+                    }
+                });
 
                 /**
                  * Trigger the update on the outside

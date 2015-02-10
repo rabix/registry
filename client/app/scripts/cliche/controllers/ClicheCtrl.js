@@ -6,17 +6,33 @@
 'use strict';
 
 angular.module('registryApp.cliche')
-    .controller('ClicheCtrl', ['$scope', '$q', '$routeParams', '$modal', '$templateCache', 'User', 'Cliche', 'Sidebar', 'Loading', 'SandBox', function($scope, $q, $routeParams, $modal, $templateCache, User, Cliche, Sidebar, Loading, SandBox) {
+    .controller('ClicheCtrl', ['$scope', '$q', '$routeParams', '$modal', '$templateCache', '$location', 'User', 'Repo', 'Tool', 'Cliche', 'Sidebar', 'Loading', 'SandBox', 'BeforeUnload', 'BeforeRedirect', function($scope, $q, $routeParams, $modal, $templateCache, $location, User, Repo, Tool, Cliche, Sidebar, Loading, SandBox, BeforeUnload, BeforeRedirect) {
 
         $scope.Loading = Loading;
 
         Sidebar.setActive($routeParams.type + ' editor');
 
+        var cliAdapterWatchers = [],
+            jobWatcher,
+            onBeforeUnloadOff = BeforeUnload.register(function() { return 'Please save your changes before leaving.'; }),
+            onBeforeRedirectOff = BeforeRedirect.register(function () { return Cliche.save($scope.view.mode); }),
+            reqMap = {CpuRequirement: 'cpu', MemRequirement: 'mem'};
+
         $scope.view = {};
         $scope.form = {};
 
+        /* form holders, for validation only */
         $scope.form.tool = {};
         $scope.form.job = {};
+
+        /* tool schema holder and job json for testing */
+        $scope.view.tool = {};
+        $scope.view.job = {};
+
+        /* actual tool app from db */
+        $scope.view.app = {is_script: $routeParams.type === 'script'};
+        /* actual tool app revision from db */
+        $scope.view.revision = {};
 
         /* loading flag */
         $scope.view.loading = true;
@@ -25,21 +41,37 @@ angular.module('registryApp.cliche')
         $scope.view.mode = $routeParams.id ? 'edit' : 'new';
 
         /* menu visibility flag */
-        $scope.view.isMenuOpen = false;
+        $scope.view.isMenuVisible = false;
 
-        /* current tab */
+        /* console visibility flag */
+        $scope.view.isConsoleVisible = false;
+
+        /* current tab - available: general, inputs, outputs, adapter, test */
         $scope.view.tab = 'general';
 
         /* tool type: tool or script */
         $scope.view.type = $routeParams.type;
 
-        $scope.view.tool = {};
-        $scope.view.job = {};
-
         /* page classes */
         $scope.view.classes = ['page', 'cliche'];
 
+        /* command line generator error */
+        $scope.view.cmdError = '';
+
+        /* generating command flag */
+        $scope.view.generatingCommand = false;
+
+        /* list of user repos */
+        $scope.view.repos = [];
+
+        /* current user */
+        $scope.view.user = null;
+
         Loading.setClasses($scope.view.classes);
+
+        Cliche.subscribe(function(cmd) {
+            $scope.view.command = cmd;
+        });
 
         $scope.$watch('Loading.classes', function(n, o) {
             if (n !== o) { $scope.view.classes = n; }
@@ -49,21 +81,37 @@ angular.module('registryApp.cliche')
             .then(function() {
 
                 $q.all([
+                        ($routeParams.id ? Tool.getTool($routeParams.id, $routeParams.revision) : Cliche.fetchLocalToolAndJob($routeParams.type)),
                         User.getUser(),
-                        Cliche.fetchLocalToolAndJob($routeParams.type)
+                        Repo.getRepos(0, '', true)
                     ])
                     .then(function(result) {
 
                         $scope.view.loading = false;
 
-                        $scope.view.user = result[0].user;
+                        if ($routeParams.id) {
+                            $scope.view.app = result[0].data;
+                            $scope.view.revision = result[0].revision;
+
+                            Cliche.setTool($scope.view.revision.json);
+                            Cliche.setJob($scope.view.revision.job ? JSON.parse($scope.view.revision.job) : null);
+                        }
+
+                        $scope.view.user = result[1].user;
+                        $scope.view.repos = result[2].list;
 
                         setUpCliche();
+                        prepareRequirements();
+
+                        $scope.toggleConsole();
 
                     });
 
             });
 
+        /**
+         * Set up cliche form
+         */
         var setUpCliche = function() {
 
             $scope.view.command = '';
@@ -71,9 +119,149 @@ angular.module('registryApp.cliche')
             $scope.view.tool = Cliche.getTool();
             $scope.view.job = Cliche.getJob();
 
-            if ($scope.view.user) {
+            if ($scope.view.user && $scope.view.mode === 'new') {
                 $scope.view.tool.owner = [$scope.view.user.email];
             }
+        };
+
+        /**
+         * Output error message if something was wrong with expressions evaluation
+         */
+        var outputError = function () {
+
+            $scope.view.generatingCommand = false;
+            $scope.view.command = '';
+            $scope.view.cmdError = 'There are some errors in some of your expressions';
+
+        };
+
+        /**
+         * Output command generated from the form
+         *
+         * @param {string} command
+         */
+        var outputCommand = function (command) {
+
+            $scope.view.generatingCommand = false;
+            $scope.view.command = command;
+            $scope.view.cmdError = '';
+
+        };
+
+        /**
+         * Turn on cliAdapter deep watch when console visible
+         */
+        var turnOnCliAdapterDeepWatch = function() {
+
+            if ($routeParams.type === 'tool') {
+
+                $scope.view.generatingCommand = true;
+                Cliche.generateCommand()
+                    .then(outputCommand, outputError);
+
+                var watch = [
+                    'view.tool.cliAdapter.baseCmd',
+                    'view.tool.cliAdapter.stdout',
+                    'view.tool.cliAdapter.stdin'
+                ];
+
+                _.each(watch, function(arg) {
+                    var watcher = $scope.$watch(arg, function(n, o) {
+                        if (n !== o) {
+                            $scope.view.generatingCommand = true;
+                            Cliche.generateCommand()
+                                .then(outputCommand, outputError);
+                        }
+                    }, true);
+                    cliAdapterWatchers.push(watcher);
+                });
+            }
+
+        };
+
+        /**
+         * Turn off cliAdapter deep watch when console tab is hidden
+         */
+        var turnOffCliAdapterDeepWatch = function() {
+
+            _.each(cliAdapterWatchers, function(watcher) {
+                if (_.isFunction(watcher)) { watcher.call(); }
+            });
+
+            cliAdapterWatchers = [];
+        };
+
+        /**
+         * Split requirements in separate objects in order to use them directly
+         */
+        var prepareRequirements = function() {
+
+            $scope.view.reqDockerCnt = _.find($scope.view.tool.requirements, {'@type': 'DockerCnt'});
+            $scope.view.reqCpuRequirement = _.find($scope.view.tool.requirements, {'@type': 'CpuRequirement'});
+            $scope.view.reqMemRequirement = _.find($scope.view.tool.requirements, {'@type': 'MemRequirement'});
+
+        };
+
+        /**
+         * Check if there are expressions applied on cpu and mem requirements and evaluate
+         * them in order to refresh result for the allocated resources
+         */
+        var checkRequirements = function () {
+
+            var req;
+
+            _.each(reqMap, function (key, reqName) {
+                req = $scope.view['req' + reqName];
+                if (req.value && _.isObject(req.value) && _.contains(req.value.value, '$job')) {
+                    SandBox.evaluate(req.value.value, {})
+                        .then(function (result) {
+                            $scope.view.job.allocatedResources[key] = result;
+                        });
+                }
+            });
+        };
+
+        /**
+         * Watch the job's inputs in order to evaluate
+         * expression which include $job as context
+         */
+        var turnOnJobDeepWatch = function() {
+
+            if ($routeParams.type === 'tool') {
+
+                checkRequirements();
+
+                if ($scope.view.isConsoleVisible) {
+                    $scope.view.generatingCommand = true;
+                    Cliche.generateCommand()
+                        .then(outputCommand, outputError);
+                }
+
+                jobWatcher = $scope.$watch('view.job.inputs', function(n, o) {
+                    if (n !== o) {
+                        checkRequirements();
+                        if ($scope.view.isConsoleVisible) {
+                            $scope.view.generatingCommand = true;
+                            Cliche.generateCommand()
+                                .then(outputCommand, outputError);
+                        }
+                    }
+                }, true);
+
+            }
+
+        };
+
+        /**
+         * Unwatch job's inputs
+         */
+        var turnOffJobDeepWatch = function() {
+
+            if (_.isFunction(jobWatcher)) {
+                jobWatcher.call();
+                jobWatcher = null;
+            }
+
         };
 
         /**
@@ -111,13 +299,19 @@ angular.module('registryApp.cliche')
             Cliche.setJob(null, preserve);
             $scope.view.job = Cliche.getJob();
 
-        };
-
-        var watchTheJob = function() {
+            prepareRequirements();
 
         };
 
-        var unWatchTheJob = function() {
+        /**
+         * Redirect to the other page
+         *
+         * @param url
+         */
+        var redirectTo = function(url) {
+
+            BeforeRedirect.setReload(true);
+            $location.path(url);
 
         };
 
@@ -129,9 +323,9 @@ angular.module('registryApp.cliche')
             $scope.view.tab = tab;
 
             if (tab === 'test') {
-                //watchTheJob();
+                turnOnJobDeepWatch();
             } else {
-                //unWatchTheJob();
+                turnOffJobDeepWatch();
             }
 
         };
@@ -155,6 +349,7 @@ angular.module('registryApp.cliche')
                     $scope.view.loading = false;
 
                     setUpCliche();
+                    prepareRequirements();
 
                 });
 
@@ -195,7 +390,6 @@ angular.module('registryApp.cliche')
 
             modalInstance.result.then(function(result) {
                 $scope.view.tool.description = result;
-                console.log(Cliche.getTool());
             });
 
             return modalInstance;
@@ -208,8 +402,30 @@ angular.module('registryApp.cliche')
          */
         $scope.toggleMenu = function() {
 
-            $scope.view.isMenuOpen = !$scope.view.isMenuOpen;
+            $scope.view.isMenuVisible = !$scope.view.isMenuVisible;
 
+        };
+
+        /**
+         * Toggle console visibility
+         */
+        $scope.toggleConsole = function() {
+
+            $scope.view.isConsoleVisible = !$scope.view.isConsoleVisible;
+
+            if ($scope.view.isConsoleVisible) {
+                turnOnCliAdapterDeepWatch();
+            } else {
+                turnOffCliAdapterDeepWatch();
+            }
+
+        };
+
+        /**
+         * Initiate command generating
+         */
+        $scope.generateCommand = function() {
+            Cliche.generateCommand();
         };
 
         /**
@@ -220,7 +436,7 @@ angular.module('registryApp.cliche')
          */
         $scope.updateResource = function (transform, key) {
 
-            var req = _.find($scope.view.tool.requirements, {'@type': key});
+            var req = $scope.view['req' + key];
 
             req.value = transform;
 
@@ -228,12 +444,12 @@ angular.module('registryApp.cliche')
 
                 SandBox.evaluate(transform.value, {})
                     .then(function (result) {
-                        $scope.view.job.allocatedResources[key] = result;
+                        $scope.view.job.allocatedResources[reqMap[key]] = result;
                     });
 
             } else {
-                if ($scope.view.job.allocatedResources[key] < transform) {
-                    $scope.view.job.allocatedResources[key] = transform;
+                if ($scope.view.job.allocatedResources[reqMap[key]] < transform) {
+                    $scope.view.job.allocatedResources[reqMap[key]] = transform;
                 }
             }
 
@@ -276,5 +492,227 @@ angular.module('registryApp.cliche')
 
             $scope.view.tool.cliAdapter.baseCmd.splice(index, 1);
         };
+
+        /**
+         * Create new tool and default revision
+         *
+         * @returns {boolean}
+         */
+        $scope.createTool = function() {
+
+            var modalInstance;
+
+            if ($scope.form.tool.label.$invalid) {
+                modalInstance = $modal.open({
+                    template: $templateCache.get('views/partials/validation.html'),
+                    size: 'sm',
+                    controller: 'ModalCtrl',
+                    windowClass: 'modal-validation',
+                    resolve: {data: function () { return {messages: ['You must enter valid name (avoid characters \'$\' and \'.\')']}; }}
+                });
+
+                return modalInstance;
+            }
+
+            modalInstance = $modal.open({
+                controller: 'PickRepoModalCtrl',
+                template: $templateCache.get('views/repo/pick-repo-name.html'),
+                windowClass: 'modal-confirm',
+                resolve: {data: function () { return {repos: $scope.view.repos, type: 'save'};}}
+
+            });
+
+            modalInstance.result.then(function(data) {
+
+                $scope.view.loading = true;
+
+                var repoId = data.repoId,
+                    tool = Cliche.getTool(),
+                    job = Cliche.getJob();
+
+                Tool.create(repoId, tool, job)
+                    .then(function(result) {
+
+                        $scope.view.loading = false;
+
+                        var modalInstance = $modal.open({
+                            template: $templateCache.get('views/cliche/partials/app-save-response.html'),
+                            controller: 'ModalCtrl',
+                            backdrop: 'static',
+                            resolve: { data: function () { return { trace: result }; }}
+                        });
+
+                        modalInstance.result.then(function() {
+                            redirectTo('/cliche/' + $routeParams.type + '/' + result.app._id + '/latest');
+                        });
+
+                    }, function () {
+                        $scope.view.loading = false;
+                    });
+            });
+
+        };
+
+        /**
+         * Update current tool
+         *
+         * @returns {boolean}
+         */
+        $scope.updateTool = function() {
+
+            var deferred = $q.defer();
+
+            $scope.view.loading = true;
+
+            var appId = $scope.view.app._id,
+                tool = Cliche.getTool(),
+                job = Cliche.getJob();
+
+            Tool.update(appId, tool, job)
+                .then(function(result) {
+
+                    $scope.view.loading = false;
+
+                    var modalInstance = $modal.open({
+                        template: $templateCache.get('views/cliche/partials/app-save-response.html'),
+                        controller: 'ModalCtrl',
+                        backdrop: 'static',
+                        resolve: { data: function () { return { trace: result }; }}
+                    });
+
+                    modalInstance.result.then(function() {
+                        redirectTo('/cliche/' + $routeParams.type + '/' + $scope.view.app._id + '/' + result.revision._id);
+                    });
+
+                    deferred.resolve(modalInstance);
+
+                }, function () {
+                    $scope.view.loading = false;
+                    deferred.reject();
+                });
+
+            return deferred.promise;
+
+        };
+
+        /**
+         * Fork the current tool
+         */
+        $scope.forkTool = function () {
+
+            var modalInstance = $modal.open({
+                controller: 'PickRepoModalCtrl',
+                template: $templateCache.get('views/repo/pick-repo-name.html'),
+                windowClass: 'modal-confirm',
+                resolve: {data: function () { return {repos: $scope.view.repos, type: 'save', pickName: true};}}
+
+            });
+
+            modalInstance.result.then(function(data) {
+
+                $scope.view.loading = true;
+
+                var repoId = data.repoId,
+                    name = data.name,
+                    tool = Cliche.getTool(),
+                    job = Cliche.getJob();
+
+                Tool.fork(repoId, name, tool, job).then(function (result) {
+
+                    $scope.view.loading = false;
+
+                    redirectTo('/cliche/' + $routeParams.type + '/' + result.app._id + '/latest');
+
+                }, function() {
+                    $scope.view.loading = false;
+                });
+
+            });
+
+            return modalInstance;
+
+        };
+
+        /**
+         * Delete tool revision
+         */
+        $scope.deleteRevision = function () {
+
+            var modalInstance = $modal.open({
+                template: $templateCache.get('views/partials/confirm-delete.html'),
+                controller: 'ModalCtrl',
+                windowClass: 'modal-confirm',
+                resolve: {data: function () { return {}; }}
+            });
+
+            modalInstance.result.then(function () {
+
+                $scope.view.loading = true;
+
+                Tool.deleteRevision($scope.view.revision._id).then(function () {
+
+                    $scope.view.loading = false;
+
+                    redirectTo('/apps');
+
+                }, function() {
+                    $scope.view.loading = false;
+                });
+            });
+
+            return modalInstance;
+
+        };
+
+        /**
+         * Switch to another revision of the app
+         */
+        $scope.changeRevision = function() {
+
+            var deferred = $q.defer();
+
+            Tool.getRevisions(0, '', $routeParams.id)
+                .then(function(result) {
+
+                    var modalInstance = $modal.open({
+                        template: $templateCache.get('views/cliche/partials/revisions.html'),
+                        controller: ['$scope', '$modalInstance', 'data', function ($scope, $modalInstance, data) {
+
+                            $scope.view = data;
+
+                            $scope.cancel = function () {
+                                $modalInstance.dismiss('cancel');
+                            };
+
+                            $scope.choose = function(id) {
+                                $modalInstance.close(id);
+                            };
+
+                        }],
+                        size: 'sm',
+                        windowClass: 'modal-revisions',
+                        resolve: {data: function () {return {revisions: result.list, app: $scope.view.app, current: $scope.view.revision};}}
+                    });
+
+                    modalInstance.result.then(function (revisionId) {
+                        $location.path('/cliche/' + $routeParams.type + '/' + $routeParams.id + '/' + revisionId);
+                    });
+
+                    deferred.resolve(modalInstance);
+
+                });
+
+            return deferred.promise;
+
+        };
+
+        $scope.$on('$destroy', function() {
+
+            onBeforeUnloadOff();
+            onBeforeUnloadOff = undefined;
+
+            onBeforeRedirectOff();
+            onBeforeRedirectOff = undefined;
+        });
 
     }]);

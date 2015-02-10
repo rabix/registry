@@ -1,6 +1,6 @@
 <div class="content content-ten">
 
-    <div ng-if="view.tool.transform" class="section">
+    <div ng-if="view.type === 'script'" class="section">
         <legend class="legend-small">Script</legend>
 
         <div class="form-group">
@@ -8,12 +8,57 @@
         </div>
     </div>
 
-    <div ng-if="view.tool.requirements" class="section">
-        <legend class="legend-small">Requirements</legend>
+    <div ng-if="view.type === 'tool'" class="section">
 
-        <div class="row no-margin" ng-repeat="req in view.tool.requirements">
-            <ng-include src="'views/cliche/requirements/' + req['@type'] + '.html'"></ng-include>
+        <legend class="legend-small">Environment</legend>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="imgId" class="control-label">Img Id</label>
+                    <input type="text" class="form-control" id="imgId" name="imgId" ng-model="view.reqDockerCnt.imgId">
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="imgRepo" class="control-label">Img Repo</label>
+                    <input type="text" class="form-control" id="imgRepo" name="imgRepo" ng-model="view.reqDockerCnt.imgRepo">
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label for="imgTag" class="control-label">Img Tag</label>
+                    <input type="text" class="form-control" id="imgTag" name="imgTag" ng-model="view.reqDockerCnt.imgTag">
+                </div>
+            </div>
         </div>
+
+    </div>
+
+    <div ng-if="view.type === 'tool'" class="section">
+
+        <legend class="legend-small">Resources</legend>
+
+        <div class="row">
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">CPU</label>
+                    <expr ng-model="view.reqCpuRequirement.value" type="number" handle-item-update="updateResource(value, 'CpuRequirement')"></expr>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Mem</label>
+                    <expr ng-model="view.reqMemRequirement.value" type="number" handle-item-update="updateResource(value, 'MemRequirement')"></expr>
+                </div>
+            </div>
+
+        </div>
+
     </div>
 
 </div>

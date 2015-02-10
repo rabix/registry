@@ -262,7 +262,7 @@ angular.module('registryApp.app')
             } else {
                 modalInstance = $modal.open({
                     controller: 'PickRepoModalCtrl',
-                    template: $templateCache.get('views/dyole/pick-repo-name.html'),
+                    template: $templateCache.get('views/repo/pick-repo-name.html'),
                     windowClass: 'modal-confirm',
                     resolve: {data: function () { return {repos: $scope.view.userRepos, type: 'save'};}}
                 });
@@ -307,6 +307,8 @@ angular.module('registryApp.app')
         };
 
         $scope.onExpose = function (appName, key) {
+
+            key = key.slice(1);
 
             if (!_.isUndefined($scope.view.values[appName]) && !_.isUndefined($scope.view.values[appName][key])) {
                 delete $scope.view.values[appName][key];
@@ -379,7 +381,7 @@ angular.module('registryApp.app')
 
             var modalInstance = $modal.open({
                 controller: 'PickRepoModalCtrl',
-                template: $templateCache.get('views/dyole/pick-repo-name.html'),
+                template: $templateCache.get('views/repo/pick-repo-name.html'),
                 resolve: { data: function () { return { repos: $scope.view.userRepos, pickName: true, type: 'fork', message: 'Are you sure you want to fork this workflow?'}; }}
             });
 

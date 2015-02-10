@@ -11,23 +11,23 @@
                         <div class="col-md-6">
                             <div class="form-group" ng-class="{'has-error': form.job.arCpu.$invalid}">
                                 <label class="control-label">CPU</label>
-                                <input type="{{ view.tool.requirements.resources.cpu.$expr ? 'text' : 'number' }}"
+                                <input type="{{ view.reqCpuRequirement.value.value ? 'text' : 'number' }}"
                                        class="form-control"
                                        name="arCpu"
                                        ng-model="view.job.allocatedResources.cpu"
-                                       ng-readonly="view.tool.requirements.resources.cpu.$expr"
-                                       min="{{ view.tool.requirements.resources.cpu.$expr ? 0 : view.tool.requirements.resources.cpu }}">
+                                       ng-readonly="view.reqCpuRequirement.value.value"
+                                       min="{{ view.reqCpuRequirement.value.value ? 0 : view.reqCpuRequirement.value }}">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group" ng-class="{'has-error': form.job.arMem.$invalid}">
                                 <label class="control-label">Memory</label>
-                                <input type="{{ view.tool.requirements.resources.mem.$expr ? 'text' : 'number' }}"
+                                <input type="{{ view.reqMemRequirement.value.value ? 'text' : 'number' }}"
                                        class="form-control"
                                        name="arMem"
                                        ng-model="view.job.allocatedResources.mem"
-                                       ng-readonly="view.tool.requirements.resources.mem.$expr"
-                                       min="{{ view.tool.requirements.resources.mem.$expr ? 0 : view.tool.requirements.resources.mem }}">
+                                       ng-readonly="view.reqMemRequirement.value.value"
+                                       min="{{ view.reqMemRequirement.value.value ? 0 : view.reqMemRequirement.value }}">
                             </div>
                         </div>
                     </div>
@@ -46,7 +46,7 @@
 
                     <input-field
                             ng-repeat="property in view.tool.inputs track by property['@id']"
-                            ng-model="view.job.inputs[$index]"
+                            ng-model="view.job.inputs[property['@id'].slice(1)]"
                             class="input-field"
                             key="@id"
                             prop="property"

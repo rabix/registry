@@ -5,14 +5,14 @@
  */
 'use strict';
 angular.module('registryApp.cliche')
-    .factory('Cliche', ['$q', '$localForage', 'rawTool', 'rawJob', 'rawTransform', function($q, $localForage, rawTool, rawJob, rawTransform) {
+    .factory('Cliche', ['$q', '$localForage', '$injector', 'rawTool', 'rawJob', 'rawTransform', function($q, $localForage, $injector, rawTool, rawJob, rawTransform) {
 
         /**
          * Version of the storage
          *
          * @type {number}
          */
-        var version = 0;
+        var version = 1;
 
         /**
          * Tool json object
@@ -33,88 +33,14 @@ angular.module('registryApp.cliche')
          *
          * @type {string}
          */
-        var command = '';
+        var consoleCMD = '';
 
         /**
-         * Get scheme for the input and output
+         * Command generator callback
          *
-         * @type {object}
+         * @type {*|Function}
          */
-//        var getMap = function() {
-//
-//            var map = {
-//                input: {
-//                    file: {
-//                        root: {
-//                            type: 'string'
-//                        },
-//                        adapter: {prefix: '', separator: ' ', position: 0, argValue: null}
-//                    },
-//                    string: {
-//                        root: {
-//                            type: 'string',
-//                            enum: null
-//                        },
-//                        adapter: {prefix: '', separator: ' ', position: 0, argValue: null}
-//                    },
-//                    integer: {
-//                        root: {
-//                            type: 'string'
-//                        },
-//                        adapter: {prefix: '', separator: ' ', position: 0, argValue: null}
-//                    },
-//                    number: {
-//                        root: {
-//                            type: 'string'
-//                        },
-//                        adapter: {prefix: '', separator: ' ', position: 0, argValue: null}
-//                    },
-//                    array: {
-//                        root: {
-//                            type: 'string',
-//                            items: {type: 'string'}
-//                        },
-//                        adapter: {prefix: '', separator: ' ', position: 0, argValue: null, itemSeparator: ','}
-//                    },
-//                    boolean: {
-//                        root: {
-//                            type: 'string'
-//                        },
-//                        adapter: {prefix: '', separator: ' ', position: 0, argValue: null}
-//                    },
-//                    object: {
-//                        root: {
-//                            type: 'string',
-//                            properties: []
-//                        },
-//                        adapter: {prefix: '', separator: ' ', position: 0}
-//                    }
-//                },
-//                output: {
-//                    file: {
-//                        root: {
-//                            type: 'string'
-//                        },
-//                        adapter: {glob: '', metadata: {}, secondaryFiles: []}
-//                    },
-//                    directory: {
-//                        root: {
-//                            type: 'string'
-//                        },
-//                        adapter: {glob: '', metadata: {}, secondaryFiles: []}
-//                    },
-//                    array: {
-//                        root: {
-//                            type: 'string',
-//                            items: {type: 'file'}
-//                        },
-//                        adapter: {glob: '', metadata: {}, secondaryFiles: []}
-//                    }
-//                }
-//            };
-//
-//            return map;
-//        };
+        var consoleCMDCallback;
 
         /**
          * Get available types for inputs and outputs
@@ -170,11 +96,14 @@ angular.module('registryApp.cliche')
 
             if (type === 'script') {
 
+                transformed['@type'] = 'Script';
                 transformed.transform = getTransformSchema();
                 delete transformed.cliAdapter;
                 delete transformed.requirements;
 
             } else {
+
+                transformed['@type'] = 'CommandLine';
 
                 delete transformed.transform;
 
@@ -299,7 +228,7 @@ angular.module('registryApp.cliche')
          */
         var flush = function(preserve, type, label) {
 
-            command = '';
+            consoleCMD = '';
 
             var tool = transformToolJson(type, rawTool);
             tool.label = label;
@@ -330,10 +259,10 @@ angular.module('registryApp.cliche')
          */
         var checkIfIdExists = function(prop, properties) {
 
-            var exists;
-            var idName;
-            var ids;
-            var deferred = $q.defer();
+            var exists,
+                idName,
+                ids,
+                deferred = $q.defer();
 
             if (prop['@id']) {
 
@@ -517,17 +446,16 @@ angular.module('registryApp.cliche')
         /**
          * Parse property name
          *
-         * @param {string} key
          * @param {Object} property
          * @returns {*}
          */
-        var parseName = function(key, property) {
+        var parseName = function(property) {
 
             if (_.isUndefined(property)) {
                 return '';
             }
 
-            if (key === '@id') {
+            if (property['@id']) {
                 return property['@id'] ? property['@id'].slice(1) : '';
             } else {
                 return property.name;
@@ -535,7 +463,409 @@ angular.module('registryApp.cliche')
 
         };
 
+        /**
+         * Parse separator for the input value
+         *
+         * @param {string} prefix
+         * @param {string} separator
+         * @returns {string} output
+         */
+        var parseSeparator = function(prefix, separator) {
+
+            var output = '';
+
+            if (_.isUndefined(separator) || separator === ' ') {
+                output = (prefix === '') ? '' : ' ';
+            } else {
+                output = (prefix === '') ? '' : separator;
+            }
+
+            return output;
+
+        };
+
+        /**
+         * Parse item separator for the input value
+         *
+         * @param itemSeparator
+         * @returns {string}
+         */
+        var parseItemSeparator = function(itemSeparator) {
+
+            var output = '';
+
+            if (_.isUndefined(itemSeparator) || itemSeparator === ' ') {
+                output = ' ';
+            } else {
+                output = itemSeparator;
+            }
+
+            return output;
+
+        };
+
+        /**
+         * Recursive method for parsing object input values
+         *
+         * @param {object} properties
+         * @param {object} inputs
+         * @returns {string} output
+         */
+        var parseObjectInput = function(properties, inputs) {
+
+            var command = [];
+
+            return prepareProperties(properties, inputs)
+                .then(function (props) {
+
+                    props = _.sortBy(props, 'position');
+
+                    /* generate command */
+                    _.each(props, function(prop) {
+                        command.push(prop.prefix + prop.separator + prop.val);
+                    });
+
+                    return command.join(' ');
+
+                }, function (error) { return $q.reject(error); });
+
+        };
+
+        /**
+         * Apply the transformation function (this is just the mock)
+         *
+         * @param transform
+         * @param value
+         * @returns {*}
+         */
+        var applyTransform = function(transform, value, self) {
+
+            var deferred = $q.defer(),
+                SandBox = $injector.get('SandBox'),
+                expr = (transform && transform.value) ? transform.value : null,
+                selfInput = self ? {$self: value} : {};
+
+            if (expr) {
+
+                SandBox.evaluate(expr, selfInput)
+                    .then(function (result) {
+                        deferred.resolve(result);
+                    }, function (error) {
+                        deferred.reject(error);
+                    });
+
+            } else {
+                deferred.resolve(value);
+            }
+
+            return deferred.promise;
+        };
+
+        /**
+         * Parse input value of the array type
+         *
+         * @param {object} property
+         * @param {object} input
+         * @param {string} prefix
+         * @param {string} separator
+         * @param {string} itemSeparator
+         * @returns {string}
+         */
+        var parseArrayInput = function(property, input, prefix, separator, itemSeparator) {
+
+            var promises = [],
+                joiner = ' ',
+                schema = getSchema('input', property, 'tool'),
+                type = parseType(schema.type),
+                items = getItemsRef(type, schema);
+
+            if (items && items.type !== 'record') {
+                joiner = _.isNull(itemSeparator) ? (' ' + prefix + separator) : itemSeparator;
+            }
+
+            var evaluate = function (val) {
+
+                var deferred = $q.defer();
+
+                if (items && items.type === 'record') {
+                    parseObjectInput(items.fields, val)
+                        .then(function (result) {
+                            deferred.resolve(result);
+                        }, function (error) {
+                            deferred.reject(error);
+                        });
+                } else {
+                    applyTransform(schema.adapter.argValue, (_.isObject(val) ? val.path : val), true)
+                        .then(function (result) {
+                            deferred.resolve(result);
+                        }, function (error) {
+                            deferred.reject(error);
+                        });
+                }
+
+                return deferred.promise;
+
+            };
+
+            _.each(input, function(val) {
+                promises.push(evaluate(val));
+            });
+
+            return $q.all(promises)
+                .then(function (result) {
+                    return result.join(joiner);
+                }, function (error) {
+                    return $q.reject(error);
+                });
+
+        };
+
+        /**
+         * Prepare properties for the command line generating
+         *
+         * @param {object} properties
+         * @param {object} inputs
+         * @returns {Promise} props
+         */
+        var prepareProperties = function(properties, inputs) {
+
+            var promises = [],
+                keys = _.keys(inputs),
+                defined = _.filter(properties, function(property) {
+
+                    var key = parseName(property),
+                        schema = getSchema('input', property, 'tool');
+
+                    return _.contains(keys, key) && schema.adapter;
+                });
+
+            /* go through properties */
+            _.each(defined, function(property) {
+
+                var deferred = $q.defer(),
+                    key = parseName(property),
+                    schema = getSchema('input', property, 'tool'),
+                    type = parseType(schema.type),
+                    items = getItemsRef(type, schema),
+                    prefix = schema.adapter.prefix || '',
+                    separator = parseSeparator(prefix, schema.adapter.separator),
+                    itemSeparator = parseItemSeparator(schema.adapter.itemSeparator),
+
+                    prop = _.extend({
+                        key: key,
+                        type: type,
+                        val: '',
+                        position: schema.adapter.position,
+                        prefix: prefix,
+                        separator: separator,
+                    }, schema.adapter);
+
+                switch (type) {
+                case 'array':
+                    /* if input is ARRAY */
+                    parseArrayInput(property, inputs[key], prefix, separator, itemSeparator)
+                        .then(function (result) {
+                            prop.val = result;
+                            deferred.resolve(prop);
+                        }, function (error) {
+                            deferred.reject(error);
+                        });
+                    break;
+                case 'file':
+                    /* if input is FILE */
+                    applyTransform(schema.adapter.argValue, inputs[key].path, true)
+                        .then(function (result) {
+                            prop.val = result;
+                            deferred.resolve(prop);
+                        }, function (error) {
+                            deferred.reject(error);
+                        });
+                    break;
+                case 'record':
+                    /* if input is RECORD */
+                    parseObjectInput(items.fields, inputs[key])
+                        .then(function (result) {
+                            prop.val = result;
+                            deferred.resolve(prop);
+                        }, function (error) {
+                            deferred.reject(error);
+                        });
+                    break;
+                case 'boolean':
+                    /* if input is BOOLEAN */
+                    if (schema.adapter.argValue) {
+                        //TODO: this is hack, if bool type has expression defined then it works in the same way as (for example) string input type
+                        prop.type = 'string';
+                        applyTransform(schema.adapter.argValue, inputs[key], true)
+                            .then(function (result) {
+                                prop.val = result;
+                                deferred.resolve(prop);
+                            }, function (error) {
+                                deferred.reject(error);
+                            });
+                    } else {
+                        prop.val = '';
+                        deferred.resolve(prop);
+                        if (inputs[key]) {
+                            promises.push(deferred.promise);
+                        }
+                    }
+                    break;
+                default:
+                    /* if input is anything else (STRING, ENUM, INT, FLOAT) */
+                    applyTransform(schema.adapter.argValue, inputs[key], true)
+                        .then(function (result) {
+                            prop.val = result;
+                            deferred.resolve(prop);
+                        }, function (error) {
+                            deferred.reject(error);
+                        });
+
+                    break;
+                }
+
+                if (prop.type !== 'boolean') {
+                    promises.push(deferred.promise);
+                }
+
+            });
+
+            return $q.all(promises);
+
+        };
+
+        /**
+         * Generate the command
+         *
+         * @return {string} output
+         */
         var generateCommand = function() {
+
+            if (!toolJSON.cliAdapter) { return false; }
+
+            return prepareProperties(toolJSON.inputs, jobJSON.inputs)
+                /* go through arguments and concat then with inputs */
+                .then(function (props) {
+
+                    var argsPromises = [];
+
+                    _.each(toolJSON.cliAdapter.argAdapters, function(arg, key) {
+
+                        var deferred = $q.defer(),
+                            prefix = arg.prefix || '',
+                            prop = _.merge({key: 'arg' + key, position: arg.position, prefix: prefix, val: ''}, arg);
+
+                        applyTransform(arg.argValue, arg.argValue)
+                            .then(function (result) {
+                                prop.val = result;
+                                deferred.resolve(prop);
+                            }, function (error) {
+                                deferred.reject(error);
+                            });
+
+                        argsPromises.push(deferred.promise);
+                    });
+
+                    return $q.all(argsPromises)
+                        .then(function (args) {
+                            return _.sortBy(props.concat(args), 'position');
+                        }, function (error) { return $q.reject(error); });
+
+                })
+                /* generate command from arguments and inputs and apply transforms on baseCmd */
+                .then(function (joined) {
+
+                    var command = [],
+                        baseCmdPromises = [];
+
+                    _.each(joined, function(arg) {
+
+                        var separator = parseSeparator(arg.prefix, arg.separator),
+                            value = _.isUndefined(arg.val) ? '' : arg.val,
+                            cmd;
+
+                        if (!(arg.type && arg.type !== 'boolean' && (arg.val === '' || _.isNull(arg.val) || _.isUndefined(arg.val)))) {
+                            cmd = arg.prefix + separator + value;
+
+                            if (!_.isEmpty(cmd)) {
+                                command.push(cmd);
+                            }
+                        }
+
+                    });
+
+                    _.each(toolJSON.cliAdapter.baseCmd, function (baseCmd) {
+
+                        var deferred = $q.defer();
+
+                        applyTransform(baseCmd, baseCmd)
+                            .then(function (result) {
+                                deferred.resolve(result);
+                            }, function (error) {
+                                deferred.reject(error);
+                            });
+
+                        baseCmdPromises.push(deferred.promise);
+                    });
+
+                    return $q.all(baseCmdPromises)
+                        .then(function (cmds) {
+                            return {command: command, baseCmd: cmds.join(' ')};
+                        }, function (error) { return $q.reject(error); });
+
+                })
+                /* apply transforms on stdin/stdout */
+                .then(function (res) {
+                    return $q.all([
+                            applyTransform(toolJSON.cliAdapter.stdin, toolJSON.cliAdapter.stdin),
+                            applyTransform(toolJSON.cliAdapter.stdout, toolJSON.cliAdapter.stdout)
+                        ]).then(function(result) {
+                            return {command: res.command, baseCmd: res.baseCmd, stdin: result[0], stdout: result[1]};
+                        }, function (error) { return $q.reject(error); });
+                })
+                /* generate final command */
+                .then(function (result) {
+
+                    consoleCMD = result.baseCmd + ' ' + result.command.join(' ');
+
+                    if (result.stdin) {
+                        consoleCMD += ' < ' + result.stdin;
+                    }
+
+                    if (result.stdout) {
+                        consoleCMD += ' > ' + result.stdout;
+                    }
+
+                    if (_.isFunction(consoleCMDCallback)) {
+                        consoleCMDCallback(consoleCMD);
+                    }
+
+                    return consoleCMD;
+
+                })
+                .catch(function (error) { return $q.reject(error); });
+
+        };
+
+        /**
+         * Get currently generated command
+         *
+         * @returns {string}
+         */
+        var getCommand = function() {
+
+            return consoleCMD;
+
+        };
+
+        /**
+         * Subscribe on command generating
+         *
+         * @param f
+         */
+        var subscribe = function(f) {
+
+            consoleCMDCallback = f;
 
         };
 
@@ -547,7 +877,7 @@ angular.module('registryApp.cliche')
          */
         var isRequired = function(type) {
 
-            return _.isArray(type) && type.length > 1 && type[0] === 'null';
+            return !(_.isArray(type) && type.length > 1 && type[0] === 'null');
 
         };
 
@@ -560,9 +890,9 @@ angular.module('registryApp.cliche')
          */
         var formatProperty = function(inner, property) {
 
-            var type;
-            var formatted = {};
-            var tmp = angular.copy(property);
+            var type,
+                formatted = {},
+                tmp = angular.copy(property);
 
             /**
              * Strip obsolete params for record array item
@@ -620,9 +950,9 @@ angular.module('registryApp.cliche')
 
             /* format structure for required property */
             if (inner.required) {
-                tmp.type = ['null', type];
-            } else {
                 tmp.type = type;
+            } else {
+                tmp.type = ['null', type];
             }
 
             /* schema for the first level */
@@ -685,20 +1015,14 @@ angular.module('registryApp.cliche')
         /**
          * Get reference for items
          *
-         * @param {string} key - available '@id' and 'name'
          * @param {string} type
-         * @param {Object} property
+         * @param {Object} schema
          * @returns {*}
          */
-        var getItemsRef = function(key, type, property) {
+        var getItemsRef = function(type, schema) {
 
             if (type === 'array') {
-
-                if (key === '@id') {
-                    return property.items;
-                } else {
-                    return property.type.items;
-                }
+                return schema.items || schema.type.items;
             } else {
                 return null;
             }
@@ -722,13 +1046,34 @@ angular.module('registryApp.cliche')
             };
 
             if (_.isEmpty(property)) {
-                return (toolType === 'tool') ? {type: defaultTypes[type], adapter: {}} : {type: defaultTypes[type]};
+                return (toolType === 'tool') ? {type: ['null', defaultTypes[type]], adapter: {}} : {type: ['null', defaultTypes[type]]};
             }
 
             if (_.isUndefined(property.schema)) {
                 return ref ? property : angular.copy(property);
             } else {
                 return ref ? property.schema : angular.copy(property.schema);
+            }
+
+        };
+
+        /**
+         * Save tool locally
+         *
+         * @param mode
+         * @returns {*}
+         */
+        var save = function(mode) {
+
+            if (mode === 'new') {
+                return $q.all([
+                    $localForage.setItem('tool', toolJSON),
+                    $localForage.setItem('job', jobJSON)
+                ]);
+            } else {
+                var d = $q.defer();
+                d.resolve();
+                return d.promise;
             }
 
         };
@@ -742,8 +1087,8 @@ angular.module('registryApp.cliche')
             getJob: getJob,
             flush: flush,
             getTransformSchema: getTransformSchema,
-            deleteProperty: deleteProperty,
             generateCommand: generateCommand,
+            getCommand: getCommand,
             isRequired: isRequired,
             parseType: parseType,
             parseEnum: parseEnum,
@@ -756,8 +1101,11 @@ angular.module('registryApp.cliche')
             getSchema: getSchema,
             checkIfIdExists: checkIfIdExists,
             manageProperty: manageProperty,
+            deleteProperty: deleteProperty,
             manageArg: manageArg,
-            deleteArg: deleteArg
+            deleteArg: deleteArg,
+            save: save,
+            subscribe: subscribe
         };
 
     }]);

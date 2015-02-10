@@ -18,11 +18,6 @@
                 <label class="checkbox inline" ng-show="view.user">
                     <input type="checkbox" ng-model="view.mine" ng-change="toggleMyApps()" /> mine
                 </label>
-                <div class="nav nav-pills nav-page">
-                    <li ng-class="{active: view.tab === 'tools'}"><a href ng-click="switchTab('tools')">Tools</a></li>
-                    <li ng-class="{active: view.tab === 'scripts'}"><a href ng-click="switchTab('scripts')">Scripts</a></li>
-                    <li ng-class="{active: view.tab === 'workflows'}"><a href ng-click="switchTab('workflows')">Workflows</a></li>
-                </div>
 
                 <a ng-href="#/cliche/tool" ng-if="view.tab === 'tools'" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> New Tool</a>
                 <a ng-href="#/cliche/script" ng-if="view.tab === 'scripts'" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> New Script</a>
@@ -32,6 +27,12 @@
         </div>
     </div>
     <!-- # .filters -->
+
+    <div class="nav nav-tabs nav-page">
+        <li ng-class="{active: view.tab === 'tools'}"><a href ng-click="switchTab('tools')">Tools</a></li>
+        <li ng-class="{active: view.tab === 'scripts'}"><a href ng-click="switchTab('scripts')">Scripts</a></li>
+        <li ng-class="{active: view.tab === 'workflows'}"><a href ng-click="switchTab('workflows')">Workflows</a></li>
+    </div>
 
     <div ng-show="!view.loading" class="content content-tbl flex-box-column">
 

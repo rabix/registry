@@ -556,7 +556,7 @@ angular.module('registryApp.cliche')
 
             var modalInstance = $modal.open({
                 controller: 'PickRepoModalCtrl',
-                template: $templateCache.get('views/dyole/pick-repo-name.html'),
+                template: $templateCache.get('views/repo/pick-repo-name.html'),
                 windowClass: 'modal-confirm',
                 resolve: {data: function () { return {repos: $scope.view.userRepos, type: 'save', pickName: true};}}
 
@@ -606,7 +606,7 @@ angular.module('registryApp.cliche')
 
             modalInstance = $modal.open({
                 controller: 'PickRepoModalCtrl',
-                template: $templateCache.get('views/dyole/pick-repo-name.html'),
+                template: $templateCache.get('views/repo/pick-repo-name.html'),
                 windowClass: 'modal-confirm',
                 resolve: {data: function () { return {repos: $scope.view.userRepos, type: 'save'};}}
 

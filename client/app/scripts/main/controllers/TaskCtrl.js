@@ -48,9 +48,7 @@ angular.module('registryApp')
                     $scope.view.app = result.data.json.app;
                     $scope.view.type = result.data.type;
 
-                    $scope.view.required = $scope.view.app.inputs.required;
-
-                    $scope.view.properties = $scope.view.app.inputs.properties;
+                    $scope.view.properties = $scope.view.app.inputs;
 
                     $scope.view.loading = false;
                 });
@@ -94,12 +92,10 @@ angular.module('registryApp')
                 $scope.view.app = result.app.json;
                 $scope.view.type = result.type;
 
-                $scope.view.required = $scope.view.app.inputs.required;
-
                 $scope.view.job.json.app = angular.copy($scope.view.app);
                 $scope.view.job.json.app['@type'] = result.type;
 
-                $scope.view.properties = $scope.view.app.inputs.properties;
+                $scope.view.properties = $scope.view.app.inputs;
 
             });
 
@@ -136,7 +132,6 @@ angular.module('registryApp')
         $scope.update = function () {
 
             var isEmptyName = _.isEmpty($scope.view.job.name);
-            //var isFormInvalid = $scope.form.jobForm.$invalid;
             var validationMsg = getValidationMessage();
 
             if (isEmptyName || validationMsg) {
@@ -158,6 +153,7 @@ angular.module('registryApp')
             }
 
             $scope.view.saving = true;
+            $scope.view.loading = true;
 
             removeEmpty($scope.view.job.json.inputs);
 
@@ -166,27 +162,30 @@ angular.module('registryApp')
                 json: $scope.view.job.json
             };
 
-            Job.updateJob($routeParams.id, job).then(function (result) {
+            Job.updateJob($routeParams.id, job)
+                .then(function (result) {
 
-                var modalInstance = $modal.open({
-                    template: $templateCache.get('views/cliche/partials/job-url-response.html'),
-                    controller: 'ModalCtrl',
-                    resolve: { data: function () { return { trace: result }; }}
-                });
+                    var modalInstance = $modal.open({
+                        template: $templateCache.get('views/partials/job-url-response.html'),
+                        controller: 'ModalCtrl',
+                        resolve: { data: function () { return { trace: result }; }}
+                    });
 
-                BeforeRedirect.setReload(true);
+                    BeforeRedirect.setReload(true);
 
-                modalInstance.result.then(function () {
-                    $route.reload();
+                    modalInstance.result.then(function () {
+                        $route.reload();
+                    }, function () {
+                        $route.reload();
+                    });
+
+                    $scope.view.saving = false;
+                    $scope.view.loading = false;
+
                 }, function () {
-                    $route.reload();
+                    $scope.view.saving = false;
+                    $scope.view.loading = false;
                 });
-
-                $scope.view.saving = false;
-
-            }, function () {
-                $scope.view.saving = false;
-            });
         };
 
         /**
@@ -246,7 +245,7 @@ angular.module('registryApp')
 
             var modalInstance = $modal.open({
                 controller: 'PickRepoModalCtrl',
-                template: $templateCache.get('views/dyole/pick-repo-name.html'),
+                template: $templateCache.get('views/repo/pick-repo-name.html'),
                 windowClass: 'modal-confirm',
                 resolve: {data: function () { return {repos: $scope.view.userRepos, type: 'save'};}}
 
@@ -255,6 +254,7 @@ angular.module('registryApp')
             modalInstance.result.then(function(data) {
 
                 $scope.view.saving = true;
+                $scope.view.loading = true;
 
                 removeEmpty($scope.view.job.json.inputs);
 
@@ -269,7 +269,7 @@ angular.module('registryApp')
                 Job.createJob(job).then(function (result) {
 
                     var modalInstance = $modal.open({
-                        template: $templateCache.get('views/cliche/partials/job-url-response.html'),
+                        template: $templateCache.get('views/partials/job-url-response.html'),
                         controller: 'ModalCtrl',
                         resolve: { data: function () { return { trace: result }; }}
                     });
@@ -285,6 +285,7 @@ angular.module('registryApp')
 
                 }, function () {
                     $scope.view.saving = false;
+                    $scope.view.loading = false;
                 });
             });
 

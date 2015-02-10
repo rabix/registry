@@ -7,7 +7,7 @@
 'use strict';
 
 angular.module('registryApp.cliche')
-    .controller('ManagePropertyInputCtrl', ['$scope', '$modalInstance', 'Cliche', 'Helper', 'options', function ($scope, $modalInstance, Cliche, Helper, options) {
+    .controller('ManagePropertyInputCtrl', ['$scope', '$modalInstance', 'Cliche', 'options', function ($scope, $modalInstance, Cliche, options) {
 
         var key = options.key || 'name';
         var idObj = {n: '', o: ''};
@@ -17,10 +17,10 @@ angular.module('registryApp.cliche')
         $scope.view.key = key;
         $scope.view.mode = options.mode;
         $scope.view.property = Cliche.getSchema('input', options.property, options.toolType);
-        $scope.view.name = Cliche.parseName(key, options.property);
+        $scope.view.name = Cliche.parseName(options.property);
         $scope.view.required = Cliche.isRequired($scope.view.property.type);
         $scope.view.type = Cliche.parseType($scope.view.property.type);
-        $scope.view.items = Cliche.getItemsRef(key, $scope.view.type, $scope.view.property);
+        $scope.view.items = Cliche.getItemsRef($scope.view.type, $scope.view.property);
 
         $scope.view.types = Cliche.getTypes('input');
         $scope.view.itemTypes = Cliche.getTypes('inputItem');
@@ -63,18 +63,6 @@ angular.module('registryApp.cliche')
 
             Cliche.manageProperty(options.mode, formatted, options.properties, idObj)
                 .then(function() {
-
-                    var prePopulateInputs = options.mode === 'add' && options.toolType === 'tool' && options.inputs && !_.isArray(options.inputs);
-
-                    if (prePopulateInputs) {
-                        options.inputs[$scope.view.name] = Helper.getDefaultInputValue(
-                            $scope.view.name,
-                            $scope.view.symbols,
-                            $scope.view.type,
-                            ($scope.view.items ? $scope.view.items.type : null)
-                        );
-                    }
-
                     $modalInstance.close({prop: formatted});
                 }, function(error) {
                     $scope.view.error = error;
@@ -100,8 +88,6 @@ angular.module('registryApp.cliche')
             if (n !== o) {
                 if (n === 'record') {
                     $scope.view.disabled = true;
-
-                    if (options.mode === 'edit') { options.inputs[$scope.view.name] = []; }
 
                     if (_.isUndefined($scope.view.items.fields)) {
 

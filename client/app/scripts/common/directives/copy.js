@@ -52,6 +52,11 @@ angular.module('registryApp.common')
                         scope.$apply();
                     });
 
+                    clip.on('error', function() {
+                        console.log('error');
+                        ZeroClipboard.destroy();
+                    });
+
                 });
 
                 clip.on('error', function(e) {

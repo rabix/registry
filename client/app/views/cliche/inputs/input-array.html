@@ -1,0 +1,26 @@
+<div class="form-group"
+     ng-hide="ignoreFiles && view.items.type === 'file'"
+     ng-class="{required: view.required, 'has-error': view.required && view.model.length === 0 && !isDisabled}">
+
+    <div class="control-label">
+        <div ng-if="exposed && view.items.type !== 'file'" class="checkbox">
+            <label><input type="checkbox" ng-model="view.expose" ng-change="exposeParams()"> expose</label>
+        </div>
+        <span class="input-key" title="{{ view.name }}">
+            <span class="input-key-inner">{{ view.name }}</span>
+        </span>
+    </div>
+
+    <div class="input-property-body">
+        <enum
+             ng-model="view.model"
+             type="view.items.type"
+             properties="view.items.fields"
+             is-required="view.required"
+             exposible="{{ view.exposible }}"
+             form="form"
+             is-disabled="isDisabled">
+        </enum>
+    </div>
+
+</div>

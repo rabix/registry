@@ -171,14 +171,13 @@ router.post('/revisions', filters.authenticated, function (req, res, next) {
 
             Revision.findOne({app_id: data.app_id}).sort({_id: 'desc'}).exec(function(err, r) {
 
-                data.tool['@type'] = app.is_script ? 'Script' : 'CommandLine';
-
                 var revision = new Revision();
+
+                data.tool['@id'] = req.protocol + '://' + req.headers.host + '/tool-revision/' + revision._id;
 
                 revision.name = app.name;
                 revision.description = data.tool.description;
-                revision.script = data.tool.script;
-                revision.author = data.tool.documentAuthor;
+                revision.author = req.user.login;
                 revision.json = JSON.stringify(data.tool);
                 revision.job = JSON.stringify(data.job);
                 revision.app_id = data.app_id;
@@ -191,8 +190,6 @@ router.post('/revisions', filters.authenticated, function (req, res, next) {
 
                     app.json = revision.json;
                     app.description = revision.description;
-                    app.script = revision.script;
-                    app.author = revision.author;
 
                     app.save(function(err) {
                         if (err) { return next(err); }

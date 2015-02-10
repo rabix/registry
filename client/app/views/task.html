@@ -42,17 +42,15 @@
             <div class="content content-ten">
 
                 <input-field
-                        ng-repeat="(key, property) in view.properties"
-                        ng-model="view.job.json.inputs[key]"
+                        ng-repeat="property in view.properties track by property['@id']"
+                        ng-model="view.job.json.inputs[property['@id'].slice(1)]"
                         class="input-field"
-                        key="{{ key }}"
+                        key="@id"
                         prop="property"
-                        index="{{ $index }}"
-                        form="form.jobForm"
-                        req="view.required">
+                        form="form.jobForm">
                 </input-field>
 
-                <p class="alert alert-info" ng-if="(view.properties | isEmpty)">There are no values to be set at this moment.</p>
+                <p class="alert alert-info" ng-if="view.properties.length === 0">There are no values to be set at this moment.</p>
             </div>
 
         </ng-form>

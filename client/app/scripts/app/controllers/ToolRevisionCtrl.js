@@ -16,7 +16,6 @@ angular.module('registryApp.app')
 
         $scope.view.domain = Helper.getDomain();
 
-
         $scope.view.classes = ['page', 'revision'];
         Loading.setClasses($scope.view.classes);
 
@@ -32,6 +31,8 @@ angular.module('registryApp.app')
                     $scope.view.repo = result.app.repo;
                     $scope.view.author = result.app.user;
                     $scope.view.app = result.app;
+
+                    $scope.view.docker = _.find($scope.view.revision.json.requirements, {'@type': 'DockerCnt'});
 
                     $scope.view.loading = false;
                 });
