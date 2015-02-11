@@ -955,6 +955,9 @@ angular.module('registryApp.cliche')
                 tmp.type = ['null', type];
             }
 
+            /* preserve adapter section if forced */
+            if (tmp.adapter && _.isEmpty(tmp.adapter)) { tmp.adapter = {prefix: ''}; }
+
             /* schema for the first level */
             if (inner.key === '@id') {
 
