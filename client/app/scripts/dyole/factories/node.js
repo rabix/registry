@@ -29,26 +29,20 @@ angular.module('registryApp.dyole')
             this.dragged = false;
 
             this.selected = false;
-            
-            _.forEach(this.model.inputs.required, function (inp) {
-                if (_self.model.inputs.properties[inp]) {
-                    _self.model.inputs.properties[inp].required = true;
-                }
-            });
 
-            this.inputRefs = _.toArray(this.model.inputs.properties);
+            this.inputRefs = this.model.inputs;
 
             this.inputRefs.sort(function (a, b) {
-                if (a.name < b.name) return 1;
-                if (b.name < a.name) return -1;
+                if (a['@id'] < b['@id']) { return 1; }
+                if (b['@id'] < a['@id']) { return -1; }
                 return 0;
             });
 
-            this.outputRefs = _.toArray(this.model.outputs.properties);
+            this.outputRefs = this.model.outputs;
 
             this.outputRefs.sort(function (a, b) {
-                if (a.name < b.name) return 1;
-                if (b.name < a.name) return -1;
+                if (a['@id'] < b['@id']) { return 1; }
+                if (b['@id'] < a['@id']) { return -1; }
                 return 0;
             });
 
@@ -169,7 +163,7 @@ angular.module('registryApp.dyole')
                 borders = canvas.group();
                 borders.push(outerBorder).push(innerBorder);
 
-                label = canvas.text(0, radius + labelOffset, ((model.softwareDescription && model.softwareDescription.name) ? model.softwareDescription.name : model.name || model.id));
+                label = canvas.text(0, radius + labelOffset, ((model.softwareDescription && model.softwareDescription.name) ? model.softwareDescription.name : model.label || model['@id']));
 
                 label.attr({
                     'font-size': 14
@@ -237,11 +231,36 @@ angular.module('registryApp.dyole')
                 var inputs = [],
                     filter = ['file', 'directory'];
 
+                function checkType(schema, type) {
+
+                    return filter.indexOf(type) !== -1 || (type === 'array' && filter.indexOf(schema.items.type) !== -1);
+
+                }
+
                 _.each(this.inputRefs, function (input) {
-                    if (typeof input.type !== 'undefined') {
-                        if (filter.indexOf(input.type) !== -1 || (input.type === 'array' && filter.indexOf(input.items.type) !== -1)) {
-                            inputs.push(input);
+                    var schema = input.schema;
+
+                    if (typeof schema.type !== 'undefined' || ( typeof schema.type === 'object' && !_.isArray(schema.type))) {
+
+                        if (!_.isArray(schema.type)) {
+                            // if schema is not array that means that input is required and is string
+
+                            if (checkType(schema, schema.type)) {
+                                input.required = true;
+                                inputs.push(input);
+                            }
+
+                        } else {
+                            // this means input is not required and type is array where first element is null
+                            // thats why we take second element since that is it's real type
+                            var type = schema.type[1];
+
+                            if (checkType(schema, type)) {
+                                inputs.push(input);
+                            }
+
                         }
+
                     }
                 });
 

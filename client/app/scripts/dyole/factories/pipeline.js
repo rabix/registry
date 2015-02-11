@@ -478,42 +478,29 @@ angular.module('registryApp.dyole')
                  */
                 _createSystemNode: function (isInput, x, y, terminal) {
                     var model = angular.copy(systemNodeModel),
-                        terminalId, terId, terName;
+                        terminalId, terId,
+                        internalType = isInput ? 'outputs' : 'inputs',
+                        type = isInput ? 'input' : 'output';
 
-                    if (isInput) {
-//
-                        terId = terName = this._generateNodeId({name: 'input'});
+                    terId  = this._generateNodeId({label: type});
 
-                        model.softwareDescription.name = terName;
-                        model.softwareDescription.type = 'input';
-                        model.outputs.properties = {};
-                        model.outputs.properties[terId] = {
-                            'name': terName,
-                            'id': terId,
-                            'type': 'file'
-                        };
+                    model.label = terId;
+                    model.softwareDescription.label = terId;
+                    model.softwareDescription.type = type;
+                    model[internalType].push({
+                        'label': terId,
+                        'id': terId,
+                        '@id': terId,
+                        'schema': {
+                            'type': [null, 'file']
+                        }
+                    });
 
-                        terminalId = terId;
-                    } else {
-                        terId = terName = this._generateNodeId({name: 'output'});
-
-                        model.name = terName;
-                        model.softwareDescription.name = terName;
-                        model.softwareDescription.type = 'output';
-                        model.inputs.properties = {};
-                        model.inputs.properties[terId] = {
-                            'name': terName,
-                            'id': terId,
-                            'type': 'file'
-                        };
-
-                        terminalId = terId;
-
-                    }
+                    terminalId = terId;
 
                     var _id = model.id || this._generateNodeId(model);
 
-                    model.id = _id;
+                    model.id = model['@id'] = _id;
 
                     this.addNode(model, x, y, true);
                     this._connectSystemNode(terminal, _id, isInput, terminalId);
@@ -528,7 +515,7 @@ angular.module('registryApp.dyole')
                  * @private
                  */
                 _generateNodeId: function (model) {
-                    var _id, check = true, name = (model.softwareDescription && model.softwareDescription.name) ? model.softwareDescription.name : model.name,
+                    var _id, check = true, name = (model.softwareDescription && model.softwareDescription.label) ? model.softwareDescription.label : model.label,
                         n = 0;
 
                     while (check) {

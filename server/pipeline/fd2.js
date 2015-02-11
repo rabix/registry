@@ -109,13 +109,16 @@ var _formater = {
         workflow.outputs = [];
 
         _.forEach(schemas, function (schema) {
-            var node = schema.schema,
-                type;
+            var node, type;
 
             if (_self._checkSystem(schema)) {
+                var internalType;
                 type = schema.softwareDescription.type;
-                delete node.name;
-                workflow[type+'s'].push(node);
+                delete schema.softwareDescription;
+
+                internalType = type === 'input' ? 'outputs' : 'inputs';
+
+                workflow[type+'s'].push(schema[internalType][0]);
             }
         });
 
@@ -221,27 +224,19 @@ var _formater = {
         schema.name = schema.name || id;
 
         var model = {
-            'name': schema.name || 'System app',
+            '@id': id,
+            'label': schema.name || 'System app',
             'softwareDescription': {
                 'repo_owner': 'rabix',
                 'repo_name': 'system',
                 'type': type,
-                'name': schema.name
+                'name': schema.label || schema.name
             },
-            'inputs': {
-                type: 'object'
-            },
-            'outputs': {
-                type: 'object'
-            },
-            schema: schema
+            'inputs': [],
+            'outputs': []
         };
 
-        model[internalType].properties = {};
-        model[internalType].properties[schema.id] = schema;
-
-        model[internalType].properties[schema.id].name = schema.id;
-        model[internalType].properties[schema.id].id = schema.id;
+        model[internalType].push(schema);
 
         model.id = id;
 

@@ -7,6 +7,7 @@ angular.module('registryApp.dyole')
     .factory('terminal', [function () {
 
         var Terminal = function (options) {
+
             this.parent = options.parent;
             this.model = options.model;
             this.canvas = options.canvas;
@@ -224,7 +225,7 @@ angular.module('registryApp.dyole')
                     stroke: this.constraints.stroke
                 });
 
-                label = canvas.text(0, 0, model.name + ' ' + required);
+                label = canvas.text(0, 0, model['@id'] + ' ' + required);
 
                 label.attr({
                     'font-size': '12px'
