@@ -16,6 +16,7 @@
 
             <div class="actions pull-right">
 
+                <button class="btn btn-default" ng-click="validateWorkflowJSON()" ng-disabled="view.saving" ><i class="fa fa-check"></i> Validate</button>
                 <button class="btn btn-default" ng-click="workflowToJSON()" ng-disabled="view.saving" ><i class="fa fa-code"></i> JSON</button>
 
                 <button ng-if="view.user" ng-click="save()" class="btn btn-default" ng-disabled="view.saving">
@@ -53,7 +54,7 @@
     <div ng-if="!view.loading" class="content content-tbl flex-box-row">
 
         <div class="col flex-box-column flex-one content-col">
-            <div class="pipeline-wrap flex-box-column flex-one" pipeline="view.workflow" edit-mode="true" pipeline-change-fn="onWorkflowChange(value)" handle-pipeline-json="formatPipeline(pipeline)"></div>
+            <div class="pipeline-wrap flex-box-column flex-one" pipeline="view.workflow" edit-mode="true" controller-id="view.id" pipeline-change-fn="onWorkflowChange(value)"></div>
         </div>
 
         <div class="col flex-box-column flex-auto sidebar-col" ng-class="{closed: !view.showSidebar}">
