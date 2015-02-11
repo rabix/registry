@@ -97,11 +97,11 @@ angular.module('registryApp.cliche')
                 template: $templateCache.get('views/cliche/partials/input-file-more.html'),
                 controller: 'InputFileMoreCtrl',
                 windowClass: 'modal-prop',
-                resolve: {data: function () {return {scheme: $scope.view.list[index].value, key: 'item ' + index};}}
+                resolve: {data: function () {return {schema: $scope.view.list[index].value, key: 'item ' + index};}}
             });
 
-            modalInstance.result.then(function (scheme) {
-                $scope.view.list[index].value = angular.copy(scheme);
+            modalInstance.result.then(function (schema) {
+                $scope.view.list[index].value = angular.copy(schema);
             });
 
         };

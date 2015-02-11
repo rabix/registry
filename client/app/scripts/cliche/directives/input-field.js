@@ -33,6 +33,8 @@ angular.module('registryApp.cliche')
 
         $scope.view.exposible = !_.isUndefined($scope.exposed);
 
+        $scope.view.ignore = $scope.ignoreFiles === 'true' && ($scope.view.type === 'file' || ($scope.view.items && $scope.view.items.type === 'file'));
+
         /**
          * Get default input scheme
          *
@@ -173,7 +175,7 @@ angular.module('registryApp.cliche')
     .directive('inputField', ['RecursionHelper', function (RecursionHelper) {
         return {
             restrict: 'E',
-            template: '<ng-form name="inputForm" class="input-property"><ng-include class="include" src="view.tpl"></ng-include></ng-form>',
+            template: '<ng-form name="inputForm" class="input-property" ng-if="!view.ignore"><ng-include class="include" src="view.tpl"></ng-include></ng-form>',
             scope: {
                 model: '=ngModel',
                 prop: '=',

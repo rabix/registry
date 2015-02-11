@@ -47,6 +47,17 @@ angular.module('registryApp.cliche')
 
             if ($scope.view.form.$invalid) { return false; }
 
+            /* special case, if enum type we need to check if enum name already exists */
+            if ($scope.view.type === 'enum') {
+
+                enumObj.newName = $scope.view.enumName;
+
+                if (Cliche.checkIfEnumNameExists(options.mode, enumObj)) {
+                    $scope.view.error = 'Choose another enum name, "' + $scope.view.enumName + '" already exists';
+                    return false;
+                }
+            }
+
             var inner = {
                 key: key,
                 name: $scope.view.name,

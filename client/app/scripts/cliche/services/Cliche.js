@@ -262,6 +262,7 @@ angular.module('registryApp.cliche')
             var exists,
                 idName,
                 ids,
+                compare,
                 deferred = $q.defer();
 
             if (prop['@id']) {
@@ -271,23 +272,83 @@ angular.module('registryApp.cliche')
                     _.pluck(toolJSON.inputs, '@id'),
                     _.pluck(toolJSON.outputs, '@id')
                 ];
-
                 ids = _.reduce(ids, function(fl, a) { return fl.concat(a); }, []);
 
                 idName = 'id';
-                exists = _.contains(ids, prop['@id']);
+                compare = prop['@id'];
+                exists = _.contains(ids, compare);
             } else {
                 idName = 'name';
-                exists = _.find(properties, {'name': prop.name});
+                compare = prop.name;
+                exists = _.find(properties, {'name': compare});
             }
 
             if (exists) {
-                deferred.reject('Choose another ' + idName + ', the one already exists');
+                deferred.reject('Choose another ' + idName + ', "' + compare + '" already exists');
             } else {
                 deferred.resolve();
             }
 
             return deferred.promise;
+
+        };
+
+        /**
+         * Check if enum name already exists in entire tool object
+         *
+         * @param {string} mode
+         * @param {object} nameObj
+         * @returns {*}
+         */
+        var checkIfEnumNameExists = function(mode, nameObj) {
+
+            /**
+             * Recursive method which compares enum names
+             *
+             * @param {string} name
+             * @param {array} inputs
+             * @param {boolean} isFirstLevel
+             * @returns {boolean}
+             */
+            var checkInner = function(name, inputs, isFirstLevel) {
+
+                var exists = false;
+
+                _.each(inputs, function(input) {
+
+                    input = isFirstLevel ? input.schema : input;
+
+                    var type = parseType(input.type);
+
+                    if (type === 'enum') {
+                        var enumObj = parseEnum(input.type);
+                        if (enumObj.name === name) {
+                            exists = true;
+                            return false;
+                        }
+                    } else if (type === 'array' && input.items && input.items.type === 'record') {
+                        exists = checkInner(name, input.items.fields);
+                        if (exists) {
+                            return false;
+                        }
+                    }
+                });
+
+                return exists;
+
+            };
+
+            if (mode === 'edit') {
+
+                if (nameObj.name !== nameObj.newName) {
+                    return checkInner(nameObj.newName, toolJSON.inputs, true);
+                } else {
+                    return false;
+                }
+
+            } else if (mode === 'add') {
+                return checkInner(nameObj.newName, toolJSON.inputs, true);
+            }
 
         };
 
@@ -955,6 +1016,9 @@ angular.module('registryApp.cliche')
                 tmp.type = ['null', type];
             }
 
+            /* preserve adapter section if forced */
+            if (tmp.adapter && _.isEmpty(tmp.adapter)) { tmp.adapter = {prefix: ''}; }
+
             /* schema for the first level */
             if (inner.key === '@id') {
 
@@ -1022,7 +1086,7 @@ angular.module('registryApp.cliche')
         var getItemsRef = function(type, schema) {
 
             if (type === 'array') {
-                return schema.items || schema.type.items;
+                return schema.items || (schema.type.items || schema.type[1].items);
             } else {
                 return null;
             }
@@ -1099,7 +1163,7 @@ angular.module('registryApp.cliche')
             getItemsRef: getItemsRef,
             getTypes: getTypes,
             getSchema: getSchema,
-            checkIfIdExists: checkIfIdExists,
+            checkIfEnumNameExists: checkIfEnumNameExists,
             manageProperty: manageProperty,
             deleteProperty: deleteProperty,
             manageArg: manageArg,
