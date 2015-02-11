@@ -6,6 +6,8 @@ angular.module('registryApp')
         $scope.data = data;
         $scope.view = {};
 
+        $scope.view.url = typeof data.url === 'undefined' ? true : data.url;
+
         $scope.view.saving = false;
         $scope.view.json = data.json;
 

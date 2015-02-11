@@ -6,7 +6,7 @@
 'use strict';
 
 angular.module('registryApp.dyole')
-    .controller('PipelineCtrl', ['$scope', '$rootScope', '$routeParams', '$element', '$location', '$window', '$timeout', '$injector', 'pipeline', 'Tool', 'rawPipeline', 'Workflow', '$modal', '$templateCache', function ($scope, $rootScope, $routeParams, $element, $location, $window, $timeout, $injector, pipeline, Tool, rawPipeline, Workflow, $modal, $templateCache) {
+    .controller('PipelineCtrl', ['$scope', '$rootScope', '$routeParams', '$element', '$location', '$window', '$timeout', '$injector', 'pipeline', 'Tool', 'rawPipeline', 'Workflow', '$modal', '$templateCache', 'PipelineService', function ($scope, $rootScope, $routeParams, $element, $location, $window, $timeout, $injector, pipeline, Tool, rawPipeline, Workflow, $modal, $templateCache, PipelineService) {
 
         var Pipeline;
         var selector = '.pipeline';
@@ -71,11 +71,7 @@ angular.module('registryApp.dyole')
             }
         });
 
-        /**
-         * Save pipeline
-         */
-        $scope.$on('save', function (e, repoId) {
-
+        var save = function (repoId) {
             if (repoId) {
                 $scope.pipeline.repo = repoId;
             }
@@ -106,10 +102,9 @@ angular.module('registryApp.dyole')
                     $scope.$parent.view.saving = false;
                     $scope.$parent.view.loading = false;
                 });
+        };
 
-        });
-        
-        $scope.$on('pipeline:fork', function (e, repoId, name) {
+        var fork = function (repoId, name) {
             $scope.pipeline.json = Pipeline.getJSON();
 
             $scope.pipeline.repo = repoId;
@@ -121,7 +116,7 @@ angular.module('registryApp.dyole')
             Workflow.fork($scope.pipeline).then(function (pipeline) {
                 $location.path('/workflow/' + pipeline.id + '/edit');
             });
-        });
+        };
 
         /**
          * Save pipeline locally
@@ -132,17 +127,13 @@ angular.module('registryApp.dyole')
             }
         });
 
-        $scope.$on('pipeline:format', function () {
+        var format = function () {
 
-            $scope.handlePipelineJson({pipeline: Pipeline.getJSON()});
+            return Pipeline.getJSON();
 
-//            Workflow.format(Pipeline.getJSON()).then(function (pipeline) {
-//                console.log(pipeline);
-//                $scope.handlePipelineJson({pipeline: pipeline.json});
-//            });
-        });
+        };
 
-        $scope.$on('pipeline:get:url', function () {
+        var getUrl = function () {
             $scope.$parent.view.saving = true;
 
             $scope.pipeline.json = Pipeline.getJSON();
@@ -172,7 +163,7 @@ angular.module('registryApp.dyole')
             }, function () {
                 $scope.$parent.view.saving = false;
             });
-        });
+        };
 
         /**
          * Drop node on the canvas
@@ -239,7 +230,7 @@ angular.module('registryApp.dyole')
         /**
          * Track sidebar toggle in order to adjust canvas size
          */
-        var onSidebarToggleOff = $rootScope.$on('sidebar:toggle', function () {
+        var adjustSize = function () {
 
             cancelTimeout();
 
@@ -247,7 +238,7 @@ angular.module('registryApp.dyole')
                 Pipeline.adjustSize();
             }, 300);
 
-        });
+        };
 
         /**
          * Track pipeline change
@@ -321,7 +312,6 @@ angular.module('registryApp.dyole')
             angular.element($window).off('resize', lazyChangeWidth);
 
             cancelTimeout();
-            onSidebarToggleOff();
             onPipelineChangeOff();
             onNodeInfoOff();
             onNodeLabelEditOff();
@@ -332,6 +322,10 @@ angular.module('registryApp.dyole')
             }
 
         });
+
+        var validate = function () {
+            return Workflow.validateJson(Pipeline.getJSON());
+        };
         
         $scope.pipelineActions = {
             //TODO: Add disabling buttons logic
@@ -352,7 +346,24 @@ angular.module('registryApp.dyole')
             }
         };
 
+        /**
+         * If scope controller is set, expose pipeline methods to service
+         */
+        if ($scope.controllerId) {
 
+            var methods = {
+                flush: $scope.flush,
+                dropNode: $scope.dropNode,
+                save: save,
+                getUrl: getUrl,
+                fork: fork,
+                format: format,
+                validate: validate,
+                adjustSize: adjustSize
+            };
 
+            PipelineService.setInstance($scope.controllerId, methods);
+
+        }
 
     }]);
