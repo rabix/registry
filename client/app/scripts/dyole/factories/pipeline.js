@@ -5,7 +5,7 @@
 'use strict';
 
 angular.module('registryApp.dyole')
-    .factory('pipeline', ['event', 'node', 'connection', '$rootScope', 'systemNodeModel', 'Formater', 'Const', function (Event, Node, Connection, $rootScope, systemNodeModel, Formater, Const) {
+    .factory('pipeline', ['event', 'node', 'connection', '$rootScope', 'systemNodeModel', 'FormaterD2', 'Const', function (Event, Node, Connection, $rootScope, systemNodeModel, Formater, Const) {
 
             /**
              * Pipeline constructor
@@ -533,6 +533,10 @@ angular.module('registryApp.dyole')
                         _id = name;
                     } else {
                         _id = name + '_' + n;
+                    }
+
+                    if (_id.charAt(0) !== '#') {
+                        _id = '#' + _id;
                     }
 
                     return _id;

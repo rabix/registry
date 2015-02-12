@@ -16,7 +16,7 @@ angular.module('registryApp.dyole')
             this.Pipeline = options.pipeline;
 
             this.pipelineWrap = options.pipelineWrap;
-            this.id = this.model.id;
+            this.id = this.model['@id'] || this.model.id;
 
             this.el = null;
 

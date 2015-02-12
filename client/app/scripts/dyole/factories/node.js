@@ -22,6 +22,8 @@ angular.module('registryApp.dyole')
             this.inputs = [];
             this.outputs = [];
 
+            this.id = this.model['@id'] || this.model.id;
+
             // map of connections connected to current node
             this.connections = {};
 
