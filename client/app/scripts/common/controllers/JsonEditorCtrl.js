@@ -7,7 +7,7 @@
 'use strict';
 
 angular.module('registryApp.common')
-    .controller('JsonEditorCtrl', ['$scope', '$modalInstance', '$timeout', '$document', 'options', 'Tool', function($scope, $modalInstance, $timeout, $document, options, Tool) {
+    .controller('JsonEditorCtrl', ['$scope', '$rootScope', '$modalInstance', '$timeout', '$document', 'options', 'Validator', function($scope, $rootScope, $modalInstance, $timeout, $document, options, Validator) {
 
         $scope.view = {};
         $scope.view.user = options.user;
@@ -60,17 +60,17 @@ angular.module('registryApp.common')
 
             $scope.view.validating = true;
 
-            Tool.validateJson(json)
-                .then(function () {
+            Validator.validate(JSON.parse(json))
+                .then(function() {
 
                     $scope.view.validating = false;
 
                     $modalInstance.close(json);
 
-                }, function () {
+                }, function(trace) {
                     $scope.view.validating = false;
+                    $rootScope.$broadcast('httpError', {json: trace});
                 });
-
 
         };
 

@@ -39,7 +39,7 @@ angular.module('registryApp')
         return {
             restrict: 'E',
             template: $templateCache.get('views/partials/sidebar.html'),
-            scope: {},
+
             controller: ['$scope', '$rootScope', 'User', 'Sidebar', function ($scope, $rootScope, User, Sidebar) {
 
                 $scope.view = {};
@@ -74,7 +74,7 @@ angular.module('registryApp')
                     Sidebar.toggleOpen();
                 };
 
-                var routeChangeOff = $rootScope.$on("$locationChangeStart", function(event, next, current) {
+                var routeChangeOff = $rootScope.$on('$locationChangeStart', function(event, next, current) {
                     getUser();
                 });
 

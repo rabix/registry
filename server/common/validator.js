@@ -7,73 +7,36 @@ var _ = require('lodash');
 
 var mapDefinition = {
     root: {
+        '@id': {type: 'string'},
         '@type': {type: 'string'},
         '@context': {type: 'string'},
         label: {type: 'string', required: true},
         description: {type: 'string'},
         owner: {type: 'array', required: true},
-        requirements: {type: 'object'},
-        inputs: {type: 'array', required: true},
-        outputs: {type: 'array', required: true},
+        contributor: {type: 'array'},
+        requirements: {type: 'array'},
+        inputs: {type: 'object_custom', name: 'inputs', required: true},
+        outputs: {type: 'object_custom', name: 'outputs', required: true},
         cliAdapter: {type: 'object'},
-        script: {type: 'string'},
-        files: {type: 'array'}
+        transform: {type: 'string'}
     },
-    softwareDescription: {
-        repo_owner: {type: 'string', required: true},
-        repo_name: {type: 'string', required: true},
-        name: {type: 'string', required: true},
-        description: {type: 'string'},
-        appVersion: {type: 'string'}
-    },
-    requirements: {
-        environment: {type: 'object', required: true},
-        resources: {type: 'object', required: true},
-        platformFeatures: {type: 'array'}
-    },
-    environment: {
-        container: {type: 'object', required: true}
-    },
-    container: {
-        type: {type: 'string', required: true},
-        uri: {type: 'string'},
-        imageId: {type: 'string'}
-    },
-    resources: {
-        cpu: {type: ['number', 'object']},
-        mem: {type: ['number', 'object']},
-        diskSpace: {type: 'number'},
-        network: {type: 'boolean'},
-        ports: {type: 'array'}
-    },
-    inputs: {
-        type: {type: 'string', required: true},
-        required: {type: 'array'},
-        properties: {type: 'object_custom', name: 'inputs', required: true}
-    },
-    outputs: {
-        type: {type: 'string', required: true},
-        required: {type: 'array'},
-        properties: {type: 'object_custom', name: 'outputs', required: true}
-    },
-    adapter: {
-        baseCmd: {type: 'array', required: true},
+    //inputs: {type: 'object_custom', name: 'inputs', required: true},
+    //outputs: {type: 'object_custom', name: 'outputs', required: true},
+    cliAdapter: {
+        baseCmd: {type: ['string', 'array'], required: true},
         stdin: {type: ['string', 'object']},
         stdout: {type: ['string', 'object']},
-        args: {type: 'object_custom', name: 'adapter', required: true},
-        environment: {type: 'object'}
+        argAdapters: {type: 'object_custom', name: 'adapter', required: true}
     },
     properties: {
         inputs: {
             root: {
-                //required: {type: 'boolean'},
                 type: {type: 'string', required: true},
                 adapter: {type: 'object'}
             },
             adapter: {
-                stdin: {type: 'boolean'},
-                order: {type: 'number'},
-                value: {type: 'object'},
+                position: {type: 'number'},
+                argValue: {type: 'object'},
                 separator: {type: 'string'},
                 prefix: {type: 'string'}
             },
@@ -81,22 +44,21 @@ var mapDefinition = {
             types: {
                 file: {
                     root: {},
-                    adapter: {
-                        streamable: {type: 'boolean'},
-                        secondaryFiles: {type: 'array'}
-                    }
-                },
-                string: {
-                    root: {
-                        enum: {type: 'array'}
-                    },
                     adapter: {}
                 },
-                integer: {
+                string: {
                     root: {},
                     adapter: {}
                 },
-                number: {
+                'enum': {
+                    root: {},
+                    adapter: {}
+                },
+                int: {
+                    root: {},
+                    adapter: {}
+                },
+                float: {
                     root: {},
                     adapter: {}
                 },
@@ -106,65 +68,58 @@ var mapDefinition = {
                 },
                 array: {
                     root: {
-                        minItems: {type: 'number'},
-                        maxItems: {type: 'number'},
                         items: {type: 'object', required: true}
                     },
                     adapter: {
-                        itemSeparator: {type: ['string', 'object']}, // separator can be null which is type of object
-                        value: {type: 'object'},
-                        streamable: {type: 'boolean'}
+                        itemSeparator: {type: ['string', 'object']} // separator can be null which is type of object
                     },
                     items: {
                         type: {type: 'string', required: true},
-                        properties: {type: 'object_custom', required: true}
+                        fields: {type: 'object_custom'}
                     }
                 }
             }
         },
         outputs: {
             root: {
-                //required: {type: 'boolean'},
-                type: {type: 'string', required: true},
+                '@id': {type: 'string', required: true},
+                depth: {type: 'number', required: true},
+                schema: {type: 'object', required: true}
+            },
+            schema: {
+                type: {type: ['string', 'array', 'object'], required: true},
                 adapter: {type: 'object'}
             },
             adapter: {
-                stdout: {type: 'boolean'},
-                glob: {type: ['object', 'string']},
-                value: {type: 'object'},
-                secondaryFiles: {type: ['array', 'object']},
-                metadata: {type: 'object'}
-            },
-            types: {
-                file: {
-                    root: {},
-                    adapter: {
-                        streamable: {type: 'boolean'}
-                    }
-                },
-                directory: {
-                    root: {},
-                    adapter: {}
-                },
-                array: {
-                    root: {
-                        minItems: {type: 'number'},
-                        maxItems: {type: 'number'},
-                        items: {type: 'object', required: true}
-                    },
-                    adapter: {
-                        streamable: {type: 'boolean'}
-                    },
-                    items: {
-                        type: {type: 'string', required: true}
-                    }
-                }
+                glob: {type: ['object', 'string']}
             }
+//            root: {
+//                type: {type: 'string', required: true},
+//                adapter: {type: 'object'}
+//            },
+//            adapter: {
+//                glob: {type: ['object', 'string']}
+//            },
+//            types: {
+//                file: {
+//                    root: {},
+//                    adapter: {}
+//                },
+//                array: {
+//                    root: {
+//                        items: {type: 'object', required: true}
+//                    },
+//                    adapter: {},
+//                    items: {
+//                        type: {type: 'string', required: true}
+//                    }
+//                }
+//            }
         },
         adapter: {
-            args: {
-                order: {type: 'number'},
-                value: {type: ['string', 'number', 'object'], required: true},
+            argAdapters: {
+                position: {type: 'number'},
+                argValue: {type: ['string', 'number', 'object'], required: true},
                 separator: {type: 'string'},
                 prefix: {type: 'string'}
             }
@@ -277,7 +232,7 @@ var validator = function() {
 
                     if (attr.type === 'object' && isRecursive) {
 
-                        validateInputs(prop[key].properties, propName);
+                        validateInputs(prop[key].fields, propName);
 
                     } else if (!isValidType(prop[key], attr.type)) {
 
@@ -307,13 +262,13 @@ var validator = function() {
             }
         });
 
-        _.each(adapter.args, function (arg, index) {
+        _.each(adapter.argAdapters, function (arg, index) {
 
             prefix = 'adapter:arg[' + index + ']';
 
-            setObsolete(prefix, arg, map.args);
+            setObsolete(prefix, arg, map.argAdapters);
 
-            setRequiredAndInvalid(prefix, map.args, arg);
+            setRequiredAndInvalid(prefix, map.argAdapters, arg);
         });
 
     };
@@ -321,30 +276,40 @@ var validator = function() {
     /**
      * Validate output nodes
      *
-     * @param {Object} props
+     * @param {Object} json
      */
-    var validateOutputs = function (props) {
+    var validateOutputs = function (json) {
 
         var map = mapDefinition.properties.outputs;
         var prefixRoot;
+        var prefixSchema;
         var prefixAdapter;
 
-        _.each(props, function (prop, propName) {
+        var schema, adapter;
 
-            prefixRoot = 'outputs:' + propName;
-            prefixAdapter = 'outputs:' + propName + ':adapter';
+        _.each(json.outputs, function (prop) {
+
+            prefixRoot = 'outputs:' + prop['@id'];
+            prefixSchema = 'outputs:' + prop['@id'] + ':schema';
+            prefixAdapter = 'outputs:' + prop['@id'] + ':schema:adapter';
+
+            schema = prop.schema;
+            adapter = schema ? schema.adapter : null;
 
             setRequiredAndInvalid(prefixRoot, map.root, prop);
-            setRequiredAndInvalid(prefixAdapter, map.adapter, prop.adapter);
+            setRequiredAndInvalid(prefixSchema, map.schema, schema);
+            setRequiredAndInvalid(prefixAdapter, map.adapter, adapter);
 
-            if (!_.isUndefined(prop.type)) {
-
-                setObsolete(prefixRoot, prop, [map.root, map.types[prop.type].root]);
-                setObsolete(prefixAdapter, prop.adapter, [map.adapter, map.types[prop.type].adapter]);
-
-                setRequiredAndInvalid(prefixRoot, map.types[prop.type].root, prop);
-                setRequiredAndInvalid(prefixAdapter, map.types[prop.type].adapter, prop.adapter);
-            }
+//            if (!_.isUndefined(prop.type)) {
+//
+//                setObsolete(prefixRoot, prop, [map.root, map.types[prop.type].root]);
+//                setObsolete(prefixSchema, prop.schema, [map.schema, map.types[prop.type].schema]);
+//                setObsolete(prefixAdapter, prop.schema.adapter, [map.schema.adapter, map.types[prop.type].schema.adapter]);
+//
+//                setRequiredAndInvalid(prefixRoot, map.types[prop.type].root, prop);
+//                setRequiredAndInvalid(prefixSchema, map.types[prop.type].schema, prop.schema);
+//                setRequiredAndInvalid(prefixAdapter, map.types[prop.type].schema.adapter, prop.schema.adapter);
+//            }
         });
     };
 
@@ -384,7 +349,7 @@ var validator = function() {
     return {
 
         /**
-         * Validate app's json
+         * Validate tools's json
          *
          * @param {Object} json
          * @param {Object} map
@@ -408,10 +373,10 @@ var validator = function() {
 
                 if (attr.type === 'object_custom') {
                     if (attr.name === 'inputs') {
-                        validateInputs(json.properties);
+                        //validateInputs(json.inputs);
                     }
                     if (attr.name === 'outputs') {
-                        validateOutputs(json.properties);
+                        validateOutputs(json);
                     }
                     if (attr.name === 'adapter') {
                         validateAdapter(json);
@@ -448,8 +413,8 @@ var validator = function() {
                 output.required = _.cloneDeep(required);
             }
 
-            //return output;
-            return {};
+            return output;
+//            return {};
         }
     };
 }();
