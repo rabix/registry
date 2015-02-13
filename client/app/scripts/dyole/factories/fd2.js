@@ -1,19 +1,15 @@
 /**
- * Created by filip on 2/6/15.
+ * Created by filip on 2/12/15.
  */
 
 'use strict';
 
-var _ = require('lodash');
-var fs = require('fs');
-
-var baseUrl = '../test/mocks/';
 
 function resolveApp(name) {
     var json;
 
     try {
-        json = fs.readFileSync(baseUrl + name);
+//        json = fs.readFileSync(baseUrl + name);
     } catch(e) {
         console.log('Cannot read file to resolve app: ' + name, e);
     }
@@ -173,7 +169,7 @@ var _formater = {
 
                 var input, schema,
                     node = schemas[dest[0]];
-                
+
                 input = _.filter(node.inputs, function (i) {
                     return i['@id'] === '#'+dest[1];
                 });
@@ -524,4 +520,9 @@ var fd2 = {
     }
 };
 
-module.exports = fd2;
+
+angular.module('registryApp.dyole')
+    .factory('FormaterD2', ['Const', function (Const) {
+
+    return fd2;
+}]);

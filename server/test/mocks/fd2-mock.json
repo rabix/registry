@@ -3,7 +3,8 @@
     "@context": "https://raw.githubusercontent.com/common-workflow-language/common-workflow-language/draft2/specification/context.json",
     "inputs": [
         {"@id": "#files", "depth": 1, "schema": {"type": "array", "items": "File"}},
-        {"@id": "#pattern", "depth": 0, "schema": {"type": "string"}}
+        {"@id": "#pattern", "depth": 0, "schema": {"type": "string"}},
+        {"@id": "#expo", "depth": 0, "schema": {"type": "string"}}
     ],
     "outputs": [{"@id": "#result", "depth": 0, "schema": {"type": "int"}}],
     "steps": [
@@ -51,6 +52,7 @@
         {"source": "#wc/output", "destination": "#to_string/file1"},
         {"source": "#to_string/result", "destination": "#str-to-int/str"},
         {"source": "#str-to-int/int", "destination": "#sum/arr"},
-        {"source": "#sum/sum", "destination": "#result"}
+        {"source": "#sum/sum", "destination": "#result"},
+        {"source": "#expo", "destination": "#grep/pattern"}
     ]
 }

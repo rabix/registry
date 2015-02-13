@@ -140,11 +140,11 @@ angular.module('registryApp.dyole')
 
             Workflow.getURL($scope.pipeline).then(function (url) {
                 $modal.open({
-                    template: $templateCache.get('views/cliche/partials/job-url-response.html'),
+                    template: $templateCache.get('views/partials/job-url-response.html'),
                     controller: ['$scope', '$modalInstance', 'data', function($scope, $modalInstance, data) {
 
                         $scope.view = {};
-                        $scope.view.data = data;
+                        $scope.data = data;
 //                        $scope.view.trace = data.trace;
 
                         /**
@@ -155,7 +155,7 @@ angular.module('registryApp.dyole')
                         };
 
                     }],
-                    resolve: { data: function () { return {message: 'Pipeline link:', trace: url}; }}
+                    resolve: { data: function () { return {trace: {message: 'Pipeline link:', url:  url.url}}; }}
                 });
 
                 $scope.$parent.view.saving = false;

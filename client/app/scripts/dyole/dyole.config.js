@@ -21,17 +21,13 @@ angular.module('registryApp.dyole', [])
         schemas: {}
     })
     .constant('systemNodeModel', {
-        'name': 'System app',
+        '@id': '',
+        'label': 'System app',
         'softwareDescription': {
             'repo_owner': 'rabix',
             'repo_name': 'system',
             'type': ''
         },
-        'documentAuthor': null,
-        'inputs': {
-            type: 'object'
-        },
-        'outputs': {
-            type: 'object'
-        }
+        'inputs': [],
+        'outputs': []
     });
