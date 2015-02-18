@@ -1,6 +1,6 @@
-"use strict";
+'use strict';
 
-angular.module('registryApp')
+angular.module('registryApp.task')
     .service('Job', ['Api', function (Api) {
 
         var self = {};

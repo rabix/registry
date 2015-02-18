@@ -104,57 +104,47 @@
     <script src="scripts/main/controllers/BuildsCtrl.js"></script>
     <script src="scripts/main/controllers/BuildCtrl.js"></script>
     <script src="scripts/main/controllers/SettingsCtrl.js"></script>
-    <script src="scripts/main/controllers/TasksCtrl.js"></script>
-    <script src="scripts/main/controllers/TaskCtrl.js"></script>
-
     <script src="scripts/main/directives/sidebar.js"></script>
     <script src="scripts/main/directives/drag.js"></script>
     <script src="scripts/main/directives/drop.js"></script>
     <script src="scripts/main/directives/preload.js"></script>
-
     <script src="scripts/main/filters/is-empty.js"></script>
     <script src="scripts/main/filters/encode.js"></script>
     <script src="scripts/main/filters/trim.js"></script>
     <script src="scripts/main/filters/repo.js"></script>
     <script src="scripts/main/filters/is-integer.js"></script>
-
-    <script src="scripts/main/services/Api.js"></script>
     <script src="scripts/main/services/HTTPInterceptor.js"></script>
-
     <script src="scripts/main/models/User.js"></script>
-    <script src="scripts/main/models/Job.js"></script>
     <script src="scripts/main/models/Build.js"></script>
 
     <script src="scripts/app/app.config.js"></script>
-
     <script src="scripts/app/controllers/AppsCtrl.js"></script>
     <script src="scripts/app/controllers/ToolCtrl.js"></script>
     <script src="scripts/app/controllers/ToolRevisionCtrl.js"></script>
     <script src="scripts/app/controllers/WorkflowViewCtrl.js"></script>
     <script src="scripts/app/controllers/WorkflowEditorCtrl.js"></script>
-    <script src="scripts/app/controllers/PickAppCtrl.js"></script>
-
     <script src="scripts/app/models/Tool.js"></script>
     <script src="scripts/app/models/Workflow.js"></script>
 
     <script src="scripts/repo/repo.config.js"></script>
-
     <script src="scripts/repo/controllers/ReposCtrl.js"></script>
     <script src="scripts/repo/controllers/RepoCtrl.js"></script>
     <script src="scripts/repo/controllers/AddYourGitHubRepoCtrl.js"></script>
     <script src="scripts/repo/controllers/RepoInstructionsCtrl.js"></script>
     <script src="scripts/repo/controllers/PickRepoModalCtrl.js"></script>
     <script src="scripts/repo/controllers/ManageRepoCtrl.js"></script>
-
     <script src="scripts/repo/models/Repo.js"></script>
 
-    <script src="scripts/common/common.config.js"></script>
+    <script src="scripts/task/task.config.js"></script>
+    <script src="scripts/task/controllers/PickAppCtrl.js"></script>
+    <script src="scripts/task/controllers/TasksCtrl.js"></script>
+    <script src="scripts/task/controllers/TaskCtrl.js"></script>
+    <script src="scripts/task/models/Job.js"></script>
 
+    <script src="scripts/common/common.config.js"></script>
     <script src="scripts/common/controllers/MarkdownCtrl.js"></script>
     <script src="scripts/common/controllers/ModalCtrl.js"></script>
-    <script src="scripts/common/controllers/JsonEditorCtrl.js"></script>
     <script src="scripts/common/controllers/ExpressionCtrl.js"></script>
-
     <script src="scripts/common/directives/copy.js"></script>
     <script src="scripts/common/directives/loading.js"></script>
     <script src="scripts/common/directives/paginator.js"></script>
@@ -164,11 +154,11 @@
     <script src="scripts/common/directives/is-valid-int.js"></script>
     <script src="scripts/common/directives/expr.js"></script>
     <script src="scripts/common/directives/codemirror.js"></script>
-
     <script src="scripts/common/services/BeforeUnload.js"></script>
     <script src="scripts/common/services/BeforeRedirect.js"></script>
     <script src="scripts/common/services/Helper.js"></script>
     <script src="scripts/common/services/SandBox.js"></script>
+    <script src="scripts/common/services/Api.js"></script>
 
     <!-- endbuild -->
 
@@ -178,9 +168,7 @@
     <script src="scripts/dyole/controllers/PipelineCtrl.js"></script>
     <script src="scripts/dyole/controllers/NodeEditCtrl.js"></script>
     <script src="scripts/dyole/controllers/DyoleJsonEditorCtrl.js"></script>
-
     <script src="scripts/dyole/directives/pipeline.js"></script>
-
     <script src="scripts/dyole/factories/pipeline.js"></script>
     <script src="scripts/dyole/factories/event.js"></script>
     <script src="scripts/dyole/factories/node.js"></script>
@@ -188,21 +176,18 @@
     <script src="scripts/dyole/factories/terminal.js"></script>
     <script src="scripts/dyole/factories/formater.js"></script>
     <script src="scripts/dyole/factories/fd2.js"></script>
-
     <script src="scripts/dyole/services/PipelineService.js"></script>
     <!-- endbuild -->
 
     <!-- build:js({.tmp,app}) scripts/cliche.js -->
     <script src="scripts/cliche/cliche.config.js"></script>
-
     <script src="scripts/cliche/constants/schemas.js"></script>
-
     <script src="scripts/cliche/controllers/ClicheCtrl.js"></script>
     <script src="scripts/cliche/controllers/InputFileMoreCtrl.js"></script>
     <script src="scripts/cliche/controllers/ManagePropertyArgCtrl.js"></script>
     <script src="scripts/cliche/controllers/ManagePropertyInputCtrl.js"></script>
     <script src="scripts/cliche/controllers/ManagePropertyOutputCtrl.js"></script>
-
+    <script src="scripts/cliche/controllers/JsonEditorCtrl.js"></script>
     <script src="scripts/cliche/directives/property-input.js"></script>
     <script src="scripts/cliche/directives/property-output.js"></script>
     <script src="scripts/cliche/directives/property-arg.js"></script>
@@ -213,10 +198,8 @@
     <script src="scripts/cliche/directives/separator.js"></script>
     <script src="scripts/cliche/directives/separator-info.js"></script>
     <script src="scripts/cliche/directives/property-header.js"></script>
-
     <script src="scripts/cliche/filters/contains.js"></script>
     <script src="scripts/cliche/filters/size.js"></script>
-
     <script src="scripts/cliche/services/Cliche.js"></script>
     <script src="scripts/cliche/services/RecursionHelper.js"></script>
     <script src="scripts/cliche/services/Separator.js"></script>

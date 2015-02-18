@@ -5,7 +5,7 @@
  */
 'use strict';
 
-angular.module('registryApp.app')
+angular.module('registryApp.task')
     .controller('PickAppCtrl', ['$scope', '$q', '$modalInstance', 'Tool', 'Workflow', function ($scope, $q, $modalInstance, Tool, Workflow) {
 
         $scope.view = {};

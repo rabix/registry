@@ -361,7 +361,7 @@ angular.module('registryApp.cliche')
         $scope.loadJsonEditor = function() {
 
             var modalInstance = $modal.open({
-                template: $templateCache.get('views/partials/json-editor.html'),
+                template: $templateCache.get('views/cliche/partials/json-editor.html'),
                 controller: 'JsonEditorCtrl',
                 resolve: { options: function () { return {user: $scope.view.user}; }}
             });

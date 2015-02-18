@@ -56,7 +56,8 @@ module.exports = function (grunt) {
                     '<%= yeoman.app %>/views/{,*/}*.html',
                     '<%= yeoman.app %>/views/cliche/{,*/}*.html',
                     '<%= yeoman.app %>/views/app/{,*/}*.html',
-                    '<%= yeoman.app %>/views/repo/{,*/}*.html'
+                    '<%= yeoman.app %>/views/repo/{,*/}*.html',
+                    '<%= yeoman.app %>/views/task/{,*/}*.html'
                 ],
                 tasks: ['ngtemplates:app']
             }
@@ -424,7 +425,8 @@ module.exports = function (grunt) {
                     'views/{,*/}*.html',
                     'views/cliche/{,*/}*.html',
                     'views/app/{,*/}*.html',
-                    'views/repo/{,*/}*.html'
+                    'views/repo/{,*/}*.html',
+                    'views/task/{,*/}*.html'
                 ],
                 dest: '<%= yeoman.app %>/scripts/template.js',
                 options: {

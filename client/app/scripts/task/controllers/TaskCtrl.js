@@ -5,7 +5,7 @@
  */
 'use strict';
 
-angular.module('registryApp')
+angular.module('registryApp.task')
     .controller('TaskCtrl', ['$scope', '$q', '$modal', '$templateCache', '$location', '$route', '$routeParams', 'Sidebar', 'Loading', 'Job', 'User', 'Repo', 'Workflow', 'BeforeUnload', 'BeforeRedirect', function ($scope, $q, $modal, $templateCache, $location, $route, $routeParams, Sidebar, Loading, Job, User, Repo, Workflow, BeforeUnload, BeforeRedirect) {
 
         Sidebar.setActive('task tpls');
@@ -78,7 +78,7 @@ angular.module('registryApp')
         $scope.pickApp = function() {
 
             var modalInstance = $modal.open({
-                template: $templateCache.get('views/app/partials/pick-app.html'),
+                template: $templateCache.get('views/task/partials/pick-app.html'),
                 controller: 'PickAppCtrl',
                 windowClass: 'modal-pick',
                 backdrop: 'static',

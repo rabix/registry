@@ -5,7 +5,7 @@
  */
 'use strict';
 
-angular.module('registryApp')
+angular.module('registryApp.task')
     .controller('TasksCtrl', ['$scope', '$q', 'Sidebar', 'Loading', 'Job', 'User', function ($scope, $q, Sidebar, Loading, Job, User) {
 
         Sidebar.setActive('task tpls');

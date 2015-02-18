@@ -6,7 +6,7 @@
 
 'use strict';
 
-angular.module('registryApp.common')
+angular.module('registryApp.cliche')
     .controller('JsonEditorCtrl', ['$scope', '$rootScope', '$modalInstance', '$timeout', '$document', 'options', 'Validator', function($scope, $rootScope, $modalInstance, $timeout, $document, options, Validator) {
 
         $scope.view = {};
