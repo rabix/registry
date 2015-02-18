@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('registryApp.app')
-    .factory('Tool', ['Api', function (Api) {
+    .factory('Tool', ['$q', 'Api', 'Validator', function ($q, Api, Validator) {
 
         /**
          * Get list of tools
@@ -71,7 +71,12 @@ angular.module('registryApp.app')
          */
         var create = function(repoId, tool, job) {
 
-            return Api.apps.add({id: 'create'}, {tool: tool, job: job, repo_id: repoId}).$promise;
+            return Validator.validate(tool)
+                .then(function() {
+                    return Api.apps.add({id: 'create'}, {tool: tool, job: job, repo_id: repoId}).$promise;
+                }, function(trace) {
+                    return $q.reject(trace);
+                });
 
         };
 
@@ -86,7 +91,12 @@ angular.module('registryApp.app')
          */
         var fork = function(repoId, name, tool, job) {
 
-            return Api.apps.add({id: 'fork'}, {tool: tool, job: job, repo_id: repoId, name: name}).$promise;
+            return Validator.validate(tool)
+                .then(function() {
+                    return Api.apps.add({id: 'fork'}, {tool: tool, job: job, repo_id: repoId, name: name}).$promise;
+                }, function(trace) {
+                    return $q.reject(trace);
+                });
 
         };
 
@@ -98,19 +108,12 @@ angular.module('registryApp.app')
          */
         var update = function(appId, tool, job) {
 
-            return Api.revisions.add({}, {tool: tool, job: job, app_id: appId}).$promise;
-
-        };
-
-        /**
-         * Validate json format on the server side
-         *
-         * @param json
-         * @returns {Object} $promise
-         */
-        var validateJson = function (json) {
-
-            return Api.validate.post({}, json).$promise;
+            return Validator.validate(tool)
+                .then(function() {
+                    return Api.revisions.add({}, {tool: tool, job: job, app_id: appId}).$promise;
+                }, function(trace) {
+                    return $q.reject(trace);
+                });
 
         };
 
@@ -193,7 +196,6 @@ angular.module('registryApp.app')
             create: create,
             fork: fork,
             update: update,
-            validateJson: validateJson,
             getRevisions: getRevisions,
             getRevision: getRevision,
             getGroupedTools: getGroupedTools,

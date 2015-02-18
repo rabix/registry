@@ -17,10 +17,6 @@ angular.module('registryApp')
             'delete': {method: 'DELETE'}
         });
 
-        self.validate = $resource(apiUrl + '/validate', {}, {
-            post: {method: 'POST'}
-        });
-
         self.pipelines = $resource(apiUrl + '/workflows/:id', {id: '@id'}, {
             add: {method: 'POST'},
             update: {method: 'PUT'},
