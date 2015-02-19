@@ -491,8 +491,9 @@ angular.module('registryApp.dyole')
                         'label': terId,
                         'id': terId,
                         '@id': terId,
+                        'depth': 0,
                         'schema': {
-                            'type': [null, 'file']
+                            'type': 'file'
                         }
                     });
 
@@ -518,6 +519,10 @@ angular.module('registryApp.dyole')
                     var _id, check = true, name = (model.softwareDescription && model.softwareDescription.label) ? model.softwareDescription.label : model.label,
                         n = 0;
 
+                    if (name.charAt(0) !== '#') {
+                        name = '#' + name;
+                    }
+
                     while (check) {
 
                         if (n === 0) {
@@ -533,10 +538,6 @@ angular.module('registryApp.dyole')
                         _id = name;
                     } else {
                         _id = name + '_' + n;
-                    }
-
-                    if (_id.charAt(0) !== '#') {
-                        _id = '#' + _id;
                     }
 
                     return _id;

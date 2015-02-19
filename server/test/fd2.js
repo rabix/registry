@@ -8,7 +8,13 @@ var _ = require('lodash');
 
 var suit = require('./pipeline-suit');
 var fd2 = require('../pipeline/fd2');
-var mock = JSON.parse(fs.readFileSync('mocks/fd2-mock.json').toString());
+var jsonPath = process.argv[2] || 'mocks/fd2-mock.json';
+
+try {
+    var mock = JSON.parse(fs.readFileSync(jsonPath).toString());
+} catch(e) {
+    throw Error('Cannot open mock json: ' + jsonPath, e);
+}
 
 console.log('**** Starting conversion test *****');
 
@@ -21,6 +27,10 @@ suit.checkObjKeyVal(p);
 suit.checkObjKeyVal(p.schemas);
 suit.checkObjKeyVal(p.display);
 suit.checkObjKeyVal(p.display.nodes);
+
+_.forEach(p.relations, function (rel) {
+   suit.checkObjKeyVal(rel);
+});
 
 suit.ok(r['@type'], '@type must be specified');
 suit.ok(r['@context'], '@context must be specified');
@@ -38,6 +48,5 @@ _.forEach(p.schemas, function (schema, id) {
 _.forEach(r.steps, function (step) {
     suit.checkObjKeyVal(step);
 });
-console.log(r.dataLinks);
-//console.log(p.relations);
+
 console.log('**** Finished conversion test *****');

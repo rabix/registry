@@ -1,16 +1,33 @@
 /**
- * Created by filip on 2/12/15.
+ * Created by filip on 2/6/15.
+ *
+ * Formatter Module
+ * - Used for rabix workflow schema transformation
  */
 
 'use strict';
 
+//TODO: needs to be removed, used for sharing code between angular and node
+var fs;
+if (typeof require !== 'undefined') {
+    var _ = require('lodash');
+    fs = require('fs');
+} else {
+    fs = {};
+}
+
+var Const = {
+    exposedSeparator: '$'
+};
+
+var baseUrl = '../test/mocks/';
 
 function resolveApp(name) {
     var json;
 
     try {
-//        json = fs.readFileSync(baseUrl + name);
-    } catch(e) {
+        json = fs.readFileSync(baseUrl + name);
+    } catch (e) {
         console.log('Cannot read file to resolve app: ' + name, e);
     }
 
@@ -22,17 +39,89 @@ function resolveApp(name) {
     }
 }
 
+/**
+ * Bare Rabix schema model
+ *
+ * @type {{@type: string, @context: string, steps: Array, dataLinks: Array}}
+ */
 var RabixModel = {
     '@type': 'Workflow',
     '@context': 'https://raw.githubusercontent.com/common-workflow-language/common-workflow-language/draft2/specification/context.json',
     'steps': [],
-    'dataLinks': []
+    'dataLinks': [],
+    'inputs': [],
+    'outputs': []
 };
 
-var _formater = {
+/**
+ * Common used stuff
+ *
+ * @type {{fileFilter: string[], _fileTypeCheck: _fileTypeCheck, checkTypeFile: checkTypeFile}}
+ * @private
+ */
+var _common = {
 
-    toRabixRelations: function (relations) {
-        var dataLinks = [];
+    fileFilter: ['file', 'File', 'directory', 'Directory'],
+
+    _fileTypeCheck: function (schema, type) {
+
+        var filter = this.fileFilter;
+
+        return filter.indexOf(type) !== -1 || (type === 'array' && filter.indexOf(schema.items.type) !== -1);
+    },
+
+    checkTypeFile: function (schema) {
+
+        if (typeof schema.type !== 'undefined' || ( typeof schema.type === 'object' && !_.isArray(schema.type))) {
+
+            if (!_.isArray(schema.type)) {
+                if (!this._fileTypeCheck(schema, schema.type)) {
+                    return true;
+                }
+            } else {
+                // this means input is not required and type is array where first element is null
+                // thats why we take second element since that is it's real type
+                if (!this._fileTypeCheck(schema, schema.type[1])) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    },
+
+    checkSystem: function (node_schema) {
+
+        return node_schema.softwareDescription && node_schema.softwareDescription.repo_name === 'system';
+    }
+
+};
+
+/**
+ * Main formatter
+ *
+ * @type {{toRabixRelations: toRabixRelations, createSteps: createSteps, createWorkflowInOut: createWorkflowInOut, _checkStepExists: _checkStepExists, createInOutNodes: createInOutNodes, toPipelineRelations: toPipelineRelations, createSchemasFromSteps: createSchemasFromSteps, _generateIOSchema: _generateIOSchema}}
+ * @private
+ */
+var _formatter = {
+
+    /**
+     * ---------------------
+     * Rabix Schema Creation
+     * ---------------------
+     */
+
+    /**
+     * Create data links from relations
+     *
+     * @param relations
+     * @param exposed
+     * @param workflow
+     * @returns {Array}
+     */
+    toRabixRelations: function (relations, exposed, workflow) {
+        var _self = this,
+            dataLinks = [];
 
         _.forEach(relations, function (rel) {
             var dataLink = {
@@ -55,9 +144,54 @@ var _formater = {
             dataLinks.push(dataLink);
         });
 
+        _.forEach(exposed, function (schema, ids) {
+
+            var dataLink = {
+                source: '',
+                destination: ''
+            };
+
+            var input_id = ids.split(Const.exposedSeparator)[1];
+
+            dataLink.destination = ids.replace(Const.exposedSeparator, '/');
+
+            _self._createWorkflowInput(input_id, schema, workflow);
+
+            dataLink.source = input_id;
+
+            dataLinks.push(dataLink);
+
+        });
+
         return dataLinks;
     },
 
+    _createWorkflowInput: function (id, schema, workflow) {
+
+        var model = {
+            '@id': id
+        };
+
+        model = _.extend(model, schema);
+
+        if (model.name) {
+            delete model.name;
+        }
+
+        if (model.id) {
+            delete model.id;
+        }
+
+        workflow.inputs.push(model);
+    },
+
+    /**
+     * Create Rabix Steps from node schemas
+     *
+     * @param schemas
+     * @param relations
+     * @returns {Array}
+     */
     createSteps: function (schemas, relations) {
 
         var _self = this,
@@ -78,7 +212,7 @@ var _formater = {
                 delete schema.ref;
             }
 
-            if (!_self._checkSystem(schema)) {
+            if (!_common.checkSystem(schema)) {
 
                 _.forEach(schema.inputs, function (input) {
                     step.inputs.push({
@@ -92,7 +226,9 @@ var _formater = {
                     });
                 });
 
-                steps.push(step);
+                if (!_self._checkStepExists(steps, id)) {
+                    steps.push(step);
+                }
 
             }
 
@@ -101,28 +237,60 @@ var _formater = {
         return steps;
     },
 
+    /**
+     * Create Workflow inputs and outputs
+     *
+     * @param workflow
+     * @param schemas
+     */
     createWorkflowInOut: function (workflow, schemas) {
-        var _self = this;
-
-        workflow.inputs = [];
-        workflow.outputs = [];
 
         _.forEach(schemas, function (schema) {
             var type;
 
-            if (_self._checkSystem(schema)) {
+            if (_common.checkSystem(schema)) {
                 var internalType;
                 type = schema.softwareDescription.type;
                 delete schema.softwareDescription;
 
+                _.forEach(schema.inputs, function (inp) {
+                    delete inp.label;
+                    delete inp.id;
+                });
+
+                _.forEach(schema.outputs, function (out) {
+                    delete out.label;
+                    delete out.id;
+                });
+
                 internalType = type === 'input' ? 'outputs' : 'inputs';
 
-                workflow[type+'s'].push(schema[internalType][0]);
+                workflow[type + 's'].push(schema[internalType][0]);
             }
         });
 
     },
 
+    /**
+     * Check if step allready exists
+     *
+     * @param steps
+     * @param id
+     * @private
+     */
+    _checkStepExists: function (steps, id) {
+        var exists = _.find(steps, function (step) {
+            return step['@id'] === id;
+        });
+
+        return typeof exists !== 'undefined';
+    },
+
+    /**
+     * ---------------------
+     * Pipeline Schema Creation
+     * ---------------------
+     */
     createInOutNodes: function (schemas, workflow) {
 
         var _self = this,
@@ -154,45 +322,23 @@ var _formater = {
 
     toPipelineRelations: function (schemas, dataLinks, exposed, workflow) {
 
-        var relations = [],
-            filter = ['file', 'File', 'directory', 'Directory'];
+        var relations = [];
 
-        function checkTypeFile(schema, type) {
-
-            return filter.indexOf(type) !== -1 || (type === 'array' && filter.indexOf(schema.items.type) !== -1);
-
-        }
-
-        function checkExposing(src, dest) {
+        function checkTypeFile(src, dest) {
 
             if (dest.length === 2) {
 
                 var input, schema,
                     node = schemas[dest[0]];
 
-                input = _.filter(node.inputs, function (i) {
-                    return i['@id'] === '#'+dest[1];
+                input = _.find(node.inputs, function (i) {
+                    return i['@id'] === dest[1];
                 });
 
-                if (input.length === 1) {
-                    input = input[0];
+                if (typeof input !== 'undefined') {
                     schema = input.schema;
 
-                    if (typeof schema.type !== 'undefined' || ( typeof schema.type === 'object' && !_.isArray(schema.type))) {
-
-                        if (!_.isArray(schema.type)) {
-                            if (!checkTypeFile(schema, schema.type)) {
-                                return true;
-                            }
-                        } else {
-                            // this means input is not required and type is array where first element is null
-                            // thats why we take second element since that is it's real type
-                            if (!checkTypeFile(schema, schema.type[1])) {
-                                return true;
-                            }
-                        }
-                    }
-
+                    return _common.checkTypeFile(schema);
                 }
 
             }
@@ -212,7 +358,7 @@ var _formater = {
                     type: 'connection'
                 };
 
-            if (!checkExposing(src, dest)){
+            if (!checkTypeFile(src, dest)) {
 
                 if (src.length === 1) {
                     relation.output_name = relation.start_node = src[0];
@@ -234,12 +380,12 @@ var _formater = {
                 if (src.length === 1) {
                     src = src[0];
 
-                    var ex = _.filter(workflow.inputs, function (i) {
+                    var ex = _.find(workflow.inputs, function (i) {
                         return i['@id'] === src;
                     });
 
-                    if (ex.length === 1) {
-                        exposed[dest] = ex[0];
+                    if (typeof ex !== 'undefined') {
+                        exposed[dest[0]+ Const.exposedSeparator + dest[1]] = ex;
                     } else {
                         console.error('Param exposed but not set in workflow inputs');
                     }
@@ -275,11 +421,6 @@ var _formater = {
         return schemas;
     },
 
-    _checkSystem: function (node_schema) {
-
-        return node_schema.softwareDescription && node_schema.softwareDescription.repo_name === 'system';
-    },
-
     _generateIOSchema: function (type, schema, id) {
 
         var internalType = type === 'input' ? 'outputs' : 'inputs';
@@ -310,6 +451,12 @@ var _formater = {
 
 };
 
+/**
+ * Helper for creating missing display property when importing json thats not generated by registrys workflow editor
+ *
+ * @type {{sysCoords: {x: number, y: number}, const: {gap: number}, _findMax: _findMax, _findMiddleY: _findMiddleY, _createDisplay: _createDisplay, _generateSystemNodeCoords: _generateSystemNodeCoords, _generateNodeCoords: _generateNodeCoords, generateNodesCoords: generateNodesCoords, _fixSystemNodesCoords: _fixSystemNodesCoords, fixDisplay: fixDisplay}}
+ * @private
+ */
 var _helper = {
 
     sysCoords: {
@@ -321,7 +468,7 @@ var _helper = {
         gap: 100
     },
 
-    _findMax: function(display) {
+    _findMax: function (display) {
 
         var nodes = display.nodes, m = 200;
 
@@ -370,7 +517,7 @@ var _helper = {
             y = 100,
             isInput;
 
-        if (!_formater._checkSystem(node)) {
+        if (!_common.checkSystem(node)) {
             return false;
         }
 
@@ -397,7 +544,7 @@ var _helper = {
             y: 0
         };
 
-        if (_formater._checkSystem(node)) {
+        if (_common.checkSystem(node)) {
             return;
         }
 
@@ -407,7 +554,7 @@ var _helper = {
         return coords;
     },
 
-    generateNodesCoords: function (display, nodes) {
+    _generateNodesCoords: function (display, nodes) {
         var _self = this;
 
         _.forEach(nodes, function (node) {
@@ -437,7 +584,7 @@ var _helper = {
                 dis = display.nodes[nodeId],
                 coords;
 
-            if (_formater._checkSystem(node)) {
+            if (_common.checkSystem(node)) {
                 if (!dis || (!dis.x || dis.y)) {
 
                     coords = _self._generateSystemNodeCoords(node, display);
@@ -470,23 +617,28 @@ var _helper = {
             };
         }
 
-        this.generateNodesCoords(display, nodes);
+        this._generateNodesCoords(display, nodes);
         this._fixSystemNodesCoords(display, nodes);
 
         return display;
     }
 };
 
+/**
+ * Public exposed formatter methods
+ *
+ * @type {{toRabixSchema: toRabixSchema, toPipelineSchema: toPipelineSchema}}
+ */
 var fd2 = {
 
     toRabixSchema: function (p) {
         var json = _.clone(p, true),
             model = _.clone(RabixModel, true);
 
-        model.dataLinks = _formater.toRabixRelations(json.relations);
-        model.steps = _formater.createSteps(json.schemas, json.relations);
+        model.dataLinks = _formatter.toRabixRelations(json.relations, json.exposed, model);
+        model.steps = _formatter.createSteps(json.schemas, json.relations, json.values);
 
-        _formater.createWorkflowInOut(model, json.schemas, json.relations);
+        _formatter.createWorkflowInOut(model, json.schemas, json.relations);
 
         return model;
     },
@@ -497,16 +649,16 @@ var fd2 = {
             exposed = {},
             values = {};
 
-        schemas = _formater.createSchemasFromSteps(json.steps);
+        schemas = _formatter.createSchemasFromSteps(json.steps, values);
 
         //extend schemas with inputs and outputs
-        schemas = _formater.createInOutNodes(schemas, json, values);
+        schemas = _formatter.createInOutNodes(schemas, json, values);
 
         nodes = _.toArray(schemas);
 
         display = _helper.fixDisplay(json.display, nodes);
 
-        relations = _formater.toPipelineRelations(schemas, json.dataLinks, exposed, json);
+        relations = _formatter.toPipelineRelations(schemas, json.dataLinks, exposed, json);
 
 
         return {
@@ -520,9 +672,16 @@ var fd2 = {
     }
 };
 
+//TODO: needs to be removed, used for sharing code between angular and node
+if (typeof module !== 'undefined' && module.exports) {
 
-angular.module('registryApp.dyole')
-    .factory('FormaterD2', ['Const', function (Const) {
+    module.exports = fd2;
 
-    return fd2;
-}]);
+} else if (typeof angular !== 'undefined') {
+    angular.module('registryApp.dyole')
+        .factory('FormaterD2', ['Const', function (Cons) {
+            Const = Cons;
+
+            return fd2;
+        }]);
+}

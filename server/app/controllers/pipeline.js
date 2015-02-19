@@ -12,7 +12,7 @@ var Repo = mongoose.model('Repo');
 var User = mongoose.model('User');
 
 var filters = require('../../common/route-filters');
-var formater = require('../../pipeline/formater');
+var formater = require('../../pipeline/fd2');
 var validator = require('../../pipeline/validator');
 var Amazon = require('../../aws/aws').Amazon;
 
