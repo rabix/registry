@@ -381,6 +381,13 @@
       background-color: #f9f9f9;
       overflow: auto;
 
+      .checkbox {
+        label {
+          @extend %ellipsis;
+          width: 100%;
+        }
+      }
+
       &.split {
         & > .form-control {
           display: inline-block;
