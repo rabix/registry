@@ -1,11 +1,11 @@
 <div ng-class="view.classes" loading="view.loading">
     <div class="heading">
-        <a ng-href="#/tasks" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
+        <a ui-sref="tasks" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
         <h1>
             <div class="form-group job-name">
                 <input type="text" placeholder="Task Template Name" name="jobName" ng-model="view.job.name" class="form-control" required />
             </div>
-            <a class="url" ng-if="view.job.url" href="{{ ::view.job.url }}" target="_blank">url</a>
+            <a class="url" ng-if="view.job.url" ng-href="{{ ::view.job.url }}" target="_blank">url</a>
 
             <div class="actions pull-right">
 

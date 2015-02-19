@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('registryApp.app')
-    .controller('AppsCtrl', ['$scope', '$q', '$location', 'Tool', 'Workflow', 'Sidebar', 'Api', 'Loading', 'User',function ($scope, $q, $location, Tool, Workflow, Sidebar, Api, Loading, User) {
+    .controller('AppsCtrl', ['$scope', '$q', 'Tool', 'Workflow', 'Sidebar', 'Api', 'Loading', 'User',function ($scope, $q, Tool, Workflow, Sidebar, Api, Loading, User) {
 
         Sidebar.setActive('apps');
 
@@ -9,7 +9,7 @@ angular.module('registryApp.app')
         $scope.view.loading = true;
 
         $scope.view.searchTerm = '';
-        $scope.view.tab = $location.hash() || 'tools';
+        $scope.view.tab = 'tools';
 
         $scope.view.tools = [];
         $scope.view.scripts = [];
@@ -104,8 +104,6 @@ angular.module('registryApp.app')
         $scope.switchTab = function(tab) {
 
             $scope.view.tab = tab;
-
-            $location.hash(tab);
 
         };
 

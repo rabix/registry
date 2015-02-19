@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('registryApp.repo')
-    .controller('RepoInstructionsCtrl', ['$scope', '$routeParams', 'Repo', 'Sidebar', 'Loading', function ($scope, $routeParams, Repo, Sidebar, Loading) {
+    .controller('RepoInstructionsCtrl', ['$scope', '$stateParams', 'Repo', 'Sidebar', 'Loading', function ($scope, $stateParams, Repo, Sidebar, Loading) {
 
         Sidebar.setActive('repos');
 
@@ -17,7 +17,7 @@ angular.module('registryApp.repo')
             if (n !== o) { $scope.view.classes = n; }
         });
 
-        Repo.getRepo($routeParams.id).then(function (result) {
+        Repo.getRepo($stateParams.id).then(function (result) {
 
             $scope.view.repo = result.data;
             $scope.view.loading = false;

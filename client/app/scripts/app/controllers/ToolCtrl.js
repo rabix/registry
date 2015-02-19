@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('registryApp.app')
-    .controller('ToolCtrl', ['$scope', '$routeParams', '$q', '$injector', '$location', 'Tool', 'User', 'Job', 'Sidebar', 'Loading', 'Helper', function ($scope, $routeParams, $q, $injector, $location, Tool, User, Job, Sidebar, Loading, Helper) {
+    .controller('ToolCtrl', ['$scope', '$stateParams', '$q', '$injector', '$state', 'Tool', 'User', 'Job', 'Sidebar', 'Loading', 'Helper', function ($scope, $stateParams, $q, $injector, $state, Tool, User, Job, Sidebar, Loading, Helper) {
 
         Sidebar.setActive('apps');
 
@@ -23,7 +23,7 @@ angular.module('registryApp.app')
         $scope.view.revisions = [];
         $scope.view.jobs = [];
 
-        $scope.view.tab = $routeParams.tab || 'preview';
+        $scope.view.tab = $stateParams.tab || 'preview';
         $scope.view.isJsonVisible = false;
 
         $scope.view.domain = Helper.getDomain();
@@ -38,8 +38,8 @@ angular.module('registryApp.app')
 
         $q.all([
                 User.getUser(),
-                Tool.getTool($routeParams.id, 'latest'),
-                Tool.getRevisions(0, '', $routeParams.id)
+                Tool.getTool($stateParams.id, 'latest'),
+                Tool.getRevisions(0, '', $stateParams.id)
             ]).then(function(result) {
 
                 $scope.view.user = result[0].user;
@@ -53,7 +53,7 @@ angular.module('registryApp.app')
 
                 $scope.view.atType = $scope.view.tool.is_script ? 'Script' : 'CommandLine';
 
-                Job.getJobs(0, '', $scope.view.atType, $routeParams.id).then(jobsLoaded);
+                Job.getJobs(0, '', $scope.view.atType, $stateParams.id).then(jobsLoaded);
 
                 $scope.view.previewNode = $scope.view.tool;
 
@@ -83,7 +83,7 @@ angular.module('registryApp.app')
 
             $scope.view.loading = true;
 
-            Tool.getRevisions(offset, '', $routeParams.id).then(revisionsLoaded);
+            Tool.getRevisions(offset, '', $stateParams.id).then(revisionsLoaded);
         };
 
         /**
@@ -109,7 +109,7 @@ angular.module('registryApp.app')
 
             $scope.view.loading = true;
 
-            Job.getJobs(offset, '', $scope.view.atType, $routeParams.id).then(jobsLoaded);
+            Job.getJobs(offset, '', $scope.view.atType, $stateParams.id).then(jobsLoaded);
         };
 
         /**
@@ -130,7 +130,7 @@ angular.module('registryApp.app')
             modalInstance.result.then(function () {
                 Tool.deleteTool($scope.view.tool._id)
                     .then(function () {
-                        $location.path('/apps');
+                        $state.go('apps');
                     });
             });
 

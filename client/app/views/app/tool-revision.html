@@ -1,14 +1,14 @@
 <div ng-class="view.classes" loading="view.loading">
 
     <div class="heading">
-        <a ng-href="#/tool/{{ ::view.revision.app_id }}/revisions" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
+        <a ui-sref="tool({id: view.revision.app_id, tab: 'revisions'})" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
         <h1>
             <span>
                 {{ ::view.revision.name }}
                 <span class="tool-repo">({{ ::view.repo.owner }}/{{ ::view.repo.name }})</span>
                 <span class="version"><i class="fa fa-tag"></i> v{{ ::view.revision.version }}</span>
             </span>
-            <a ng-href="#/cliche/{{ view.app.is_script ? 'script' : 'tool' }}/{{ ::view.revision.app_id }}/{{ ::view.revision._id }}" class="btn btn-primary pull-right"><i class="fa fa-pencil"></i> Edit</a>
+            <a ui-sref="cliche-edit({type: (view.app.is_script ? 'script' : 'tool'), id: view.revision.app_id, revision: view.revision._id})" class="btn btn-primary pull-right"><i class="fa fa-pencil"></i> Edit</a>
         </h1>
     </div>
     <!-- # .heading -->
@@ -27,8 +27,8 @@
                         <section class="col-md-6">
                             <h5>Author</h5>
                             <p><strong>Name:</strong> {{ ::view.author.github.name }} </p>
-                            <p><strong>Username:</strong> <a href="http://github.com/{{ ::view.author.github.login }}" target="_blank">{{ ::view.author.github.login }}</a> </p>
-                            <p><strong>Repo:</strong> <a ng-href="#/repo/{{ ::view.repo._id }}">{{ ::view.repo.owner }}/{{ ::view.repo.name }}</a></p>
+                            <p><strong>Username:</strong> <a ng-href="http://github.com/{{ ::view.author.github.login }}" target="_blank">{{ ::view.author.github.login }}</a> </p>
+                            <p><strong>Repo:</strong> <a ui-sref="repo({id: view.repo._id})">{{ ::view.repo.owner }}/{{ ::view.repo.name }}</a></p>
                         </section>
 
                         <section class="col-md-6">
@@ -62,7 +62,7 @@
 
         <div class="snippet">
             <p>Use this command to run app</p>
-            <pre>$ rabix "<a href="/tool-revision/{{ ::view.revision._id }}" target="_blank">{{ view.domain }}/tool-revision/{{ ::view.revision._id }}</a>"</pre>
+            <pre>$ rabix "<a ng-href="/tool-revision/{{ ::view.revision._id }}" target="_blank">{{ view.domain }}/tool-revision/{{ ::view.revision._id }}</a>"</pre>
         </div>
 
         <div class="snippet">

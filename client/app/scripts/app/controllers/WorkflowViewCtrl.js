@@ -4,7 +4,7 @@
 'use strict';
 
 angular.module('registryApp.app')
-    .controller('WorkflowViewCtrl', ['$scope', '$q', '$location', '$routeParams', 'Sidebar', 'Loading', 'Workflow', 'User', 'Job', '$modal', '$templateCache', 'Helper', function ($scope, $q, $location, $routeParams, Sidebar, Loading, Workflow, User, Job, $modal, $templateCache, Helper) {
+    .controller('WorkflowViewCtrl', ['$scope', '$q', '$state', '$stateParams', 'Sidebar', 'Loading', 'Workflow', 'User', 'Job', '$modal', '$templateCache', 'Helper', function ($scope, $q, $state, $stateParams, Sidebar, Loading, Workflow, User, Job, $modal, $templateCache, Helper) {
 
         Sidebar.setActive('apps');
 
@@ -40,7 +40,7 @@ angular.module('registryApp.app')
             if (n !== o) { $scope.view.classes = n; }
         });
 
-        Workflow.getRevision($routeParams.id).then(function (result) {
+        Workflow.getRevision($stateParams.id).then(function (result) {
             $scope.view.workflow = result.data;
 
             $q.all([
@@ -121,7 +121,7 @@ angular.module('registryApp.app')
 
             $scope.view.loading = true;
 
-            Job.getJobs(offset, '', 'Workflow', $routeParams.id).then(jobsLoaded);
+            Job.getJobs(offset, '', 'Workflow', $stateParams.id).then(jobsLoaded);
         };
 
         /**
@@ -145,7 +145,7 @@ angular.module('registryApp.app')
                         return rev._id === id;
                     });
 
-                    $location.path('/workflow/' + data.latest);
+                    $state.go('workflow-view', {id: data.latest});
 
                 });
             });
@@ -169,7 +169,7 @@ angular.module('registryApp.app')
 
             modalInstance.result.then(function () {
                 Workflow.deleteWorkflow(id).then(function () {
-                    $location.path('/apps');
+                    $state.go('apps');
                 });
             });
 

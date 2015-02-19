@@ -6,7 +6,7 @@
 'use strict';
 
 angular.module('registryApp.task')
-    .controller('TaskCtrl', ['$scope', '$q', '$modal', '$templateCache', '$location', '$route', '$routeParams', 'Sidebar', 'Loading', 'Job', 'User', 'Repo', 'Workflow', 'BeforeUnload', 'BeforeRedirect', function ($scope, $q, $modal, $templateCache, $location, $route, $routeParams, Sidebar, Loading, Job, User, Repo, Workflow, BeforeUnload, BeforeRedirect) {
+    .controller('TaskCtrl', ['$scope', '$q', '$modal', '$templateCache', '$state', '$stateParams', 'Sidebar', 'Loading', 'Job', 'User', 'Repo', 'Workflow', 'BeforeUnload', 'BeforeRedirect', function ($scope, $q, $modal, $templateCache, $state, $stateParams, Sidebar, Loading, Job, User, Repo, Workflow, BeforeUnload, BeforeRedirect) {
 
         Sidebar.setActive('task tpls');
 
@@ -15,7 +15,7 @@ angular.module('registryApp.task')
 
         $scope.view.job = {json: {inputs: {}, '@type': 'TaskTemplate'}};
         $scope.view.app = null;
-        $scope.view.mode = $routeParams.id === 'new' ? 'new' : 'edit';
+        $scope.view.mode = $stateParams.id === 'new' ? 'new' : 'edit';
         $scope.view.userRepos = [];
         $scope.view.properties = [];
         $scope.view.ref = null;
@@ -37,11 +37,11 @@ angular.module('registryApp.task')
                 $scope.view.user = result[1].user;
             });
 
-        if ($routeParams.id !== 'new') {
+        if ($stateParams.id !== 'new') {
 
             $scope.view.loading = true;
 
-            Job.getJob($routeParams.id)
+            Job.getJob($stateParams.id)
                 .then(function (result) {
 
                     $scope.view.job = result.data;
@@ -163,7 +163,7 @@ angular.module('registryApp.task')
                 json: $scope.view.job.json
             };
 
-            Job.updateJob($routeParams.id, job)
+            Job.updateJob($stateParams.id, job)
                 .then(function (result) {
 
                     var modalInstance = $modal.open({
@@ -207,7 +207,7 @@ angular.module('registryApp.task')
                 Job.deleteJob($scope.view.job._id)
                     .then(function () {
                         BeforeRedirect.setReload(true);
-                        $location.path('tasks');
+                        $state.go('tasks');
                     });
             });
 
@@ -278,9 +278,9 @@ angular.module('registryApp.task')
                     BeforeRedirect.setReload(true);
 
                     modalInstance.result.then(function () {
-                        $location.path('/task/' + result.id);
+                        $state.go('task', {id: result.id});
                     }, function () {
-                        $location.path('/task/' + result.id);
+                        $state.go('task', {id: result.id});
                     });
 
 

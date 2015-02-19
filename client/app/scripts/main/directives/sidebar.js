@@ -40,7 +40,7 @@ angular.module('registryApp')
             restrict: 'E',
             template: $templateCache.get('views/partials/sidebar.html'),
 
-            controller: ['$scope', '$rootScope', 'User', 'Sidebar', function ($scope, $rootScope, User, Sidebar) {
+            controller: ['$scope', '$rootScope', '$state', 'User', 'Sidebar', function ($scope, $rootScope, $state, User, Sidebar) {
 
                 $scope.view = {};
                 $scope.view.loading = true;
@@ -48,14 +48,14 @@ angular.module('registryApp')
                 $scope.view.open = Sidebar.open;
 
                 $scope.view.navigation = [
-                    {name: 'apps', link: 'apps', desc: 'Apps', icon: 'puzzle-piece'},
-                    {name: 'task tpls', link: 'tasks', desc: 'Task Templates', icon: 'rocket'},
-//                    {name: 'builds', link: 'builds', desc: 'Builds', icon: 'cube'},
-                    {name: 'repos', link: 'repos', desc: 'Repositories', icon: 'code-fork'},
-                    {name: 'workflow editor', link: 'workflow/0/new', desc: 'Workflow Editor', icon: 'terminal'},
-                    {name: 'tool editor', link: 'cliche/tool', desc: 'Tool Editor', icon: 'terminal'},
-                    {name: 'script editor', link: 'cliche/script', desc: 'Script Editor', icon: 'terminal'},
-                    {name: 'settings',link: 'settings',  desc: 'Settings', icon: 'gear', permission: 'user'}
+                    {name: 'apps', state: 'apps', desc: 'Apps', icon: 'puzzle-piece'},
+                    {name: 'task tpls', state: 'tasks', desc: 'Task Templates', icon: 'rocket'},
+//                    {name: 'builds', state: 'builds', desc: 'Builds', icon: 'cube'},
+                    {name: 'repos', state: 'repos', desc: 'Repositories', icon: 'code-fork'},
+                    {name: 'workflow editor', state: 'workflow-editor', params: {id: 0, mode: 'new'}, desc: 'Workflow Editor', icon: 'terminal'},
+                    {name: 'tool editor', state: 'cliche-new', params: {type: 'tool'}, desc: 'Tool Editor', icon: 'terminal'},
+                    {name: 'script editor', state: 'cliche', params: {type: 'script'}, desc: 'Script Editor', icon: 'terminal'},
+                    {name: 'settings', state: 'settings', desc: 'Settings', icon: 'gear', permission: 'user'}
                 ];
 
                 $scope.SidebarService = Sidebar;
@@ -66,6 +66,14 @@ angular.module('registryApp')
                     }
                 });
 
+                $scope.goTo = function(page) {
+
+                    var params = page.params || {};
+
+                    $state.go(page.state, params)
+
+                };
+
                 /**
                  * Toggle sidebar visibility
                  */
@@ -74,7 +82,7 @@ angular.module('registryApp')
                     Sidebar.toggleOpen();
                 };
 
-                var routeChangeOff = $rootScope.$on('$locationChangeStart', function(event, next, current) {
+                var routeChangeOff = $rootScope.$on('$stateChangeStart', function() {
                     getUser();
                 });
 

@@ -6,7 +6,7 @@
 'use strict';
 
 angular.module('registryApp.common')
-    .factory('BeforeRedirect', ['$q', '$rootScope', '$modal', '$templateCache', '$location', function($q, $rootScope, $modal, $templateCache, $location) {
+    .factory('BeforeRedirect', ['$q', '$rootScope', '$modal', '$templateCache', '$state', function($q, $rootScope, $modal, $templateCache, $state) {
 
         var callback;
         var reload = false;
@@ -16,9 +16,10 @@ angular.module('registryApp.common')
          * Track route change in order to prevent loss of changes
          *
          * @param e
-         * @param nextLocation
+         * @param {Object} toState
+         * @param {Object} toParams
          */
-        var onRouteChange = function(e, nextLocation) {
+        var onRouteChange = function(e, toState, toParams) {
 
             if(reload) { return; }
 
@@ -37,10 +38,10 @@ angular.module('registryApp.common')
 
                 if (typeof callback === 'function') {
                     callback().then(function () {
-                        $location.path(nextLocation.split('#\/')[1]);
+                        $state.go(toState.name, toParams);
                     });
                 } else {
-                    $location.path(nextLocation.split('#\/')[1]);
+                    $state.go(toState.name, toParams);
                 }
 
             });
@@ -50,7 +51,7 @@ angular.module('registryApp.common')
         };
 
         /**
-         * Register $locationChangeStart event
+         * Register $stateChangeStart event
          *
          * @param c
          */
@@ -58,7 +59,7 @@ angular.module('registryApp.common')
 
             reload = false;
             callback = c;
-            onRouteChangeOff = $rootScope.$on('$locationChangeStart', onRouteChange);
+            onRouteChangeOff = $rootScope.$on('$stateChangeStart', onRouteChange);
 
             return onRouteChangeOff;
 

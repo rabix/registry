@@ -6,11 +6,11 @@
 'use strict';
 
 angular.module('registryApp.cliche')
-    .controller('ClicheCtrl', ['$scope', '$q', '$routeParams', '$modal', '$templateCache', '$location', '$rootScope', 'User', 'Repo', 'Tool', 'Cliche', 'Sidebar', 'Loading', 'SandBox', 'BeforeUnload', 'BeforeRedirect', function($scope, $q, $routeParams, $modal, $templateCache, $location, $rootScope, User, Repo, Tool, Cliche, Sidebar, Loading, SandBox, BeforeUnload, BeforeRedirect) {
+    .controller('ClicheCtrl', ['$scope', '$q', '$stateParams', '$modal', '$templateCache', '$state', '$rootScope', 'User', 'Repo', 'Tool', 'Cliche', 'Sidebar', 'Loading', 'SandBox', 'BeforeUnload', 'BeforeRedirect', function($scope, $q, $stateParams, $modal, $templateCache, $state, $rootScope, User, Repo, Tool, Cliche, Sidebar, Loading, SandBox, BeforeUnload, BeforeRedirect) {
 
         $scope.Loading = Loading;
 
-        Sidebar.setActive($routeParams.type + ' editor');
+        Sidebar.setActive($stateParams.type + ' editor');
 
         var cliAdapterWatchers = [],
             jobWatcher,
@@ -30,7 +30,7 @@ angular.module('registryApp.cliche')
         $scope.view.job = {};
 
         /* actual tool app from db */
-        $scope.view.app = {is_script: $routeParams.type === 'script'};
+        $scope.view.app = {is_script: $stateParams.type === 'script'};
         /* actual tool app revision from db */
         $scope.view.revision = {};
 
@@ -38,7 +38,7 @@ angular.module('registryApp.cliche')
         $scope.view.loading = true;
 
         /* cliche mode: new or edit */
-        $scope.view.mode = $routeParams.id ? 'edit' : 'new';
+        $scope.view.mode = $stateParams.id ? 'edit' : 'new';
 
         /* menu visibility flag */
         $scope.view.isMenuVisible = false;
@@ -50,7 +50,7 @@ angular.module('registryApp.cliche')
         $scope.view.tab = 'general';
 
         /* tool type: tool or script */
-        $scope.view.type = $routeParams.type;
+        $scope.view.type = $stateParams.type;
 
         /* page classes */
         $scope.view.classes = ['page', 'cliche'];
@@ -81,7 +81,7 @@ angular.module('registryApp.cliche')
             .then(function() {
 
                 $q.all([
-                        ($routeParams.id ? Tool.getTool($routeParams.id, $routeParams.revision) : Cliche.fetchLocalToolAndJob($routeParams.type)),
+                        ($stateParams.id ? Tool.getTool($stateParams.id, $stateParams.revision) : Cliche.fetchLocalToolAndJob($stateParams.type)),
                         User.getUser(),
                         Repo.getRepos(0, '', true)
                     ])
@@ -89,7 +89,7 @@ angular.module('registryApp.cliche')
 
                         $scope.view.loading = false;
 
-                        if ($routeParams.id) {
+                        if ($stateParams.id) {
                             $scope.view.app = result[0].data;
                             $scope.view.revision = result[0].revision;
 
@@ -153,7 +153,7 @@ angular.module('registryApp.cliche')
          */
         var turnOnCliAdapterDeepWatch = function() {
 
-            if ($routeParams.type === 'tool') {
+            if ($stateParams.type === 'tool') {
 
                 $scope.view.generatingCommand = true;
                 Cliche.generateCommand()
@@ -227,7 +227,7 @@ angular.module('registryApp.cliche')
          */
         var turnOnJobDeepWatch = function() {
 
-            if ($routeParams.type === 'tool') {
+            if ($stateParams.type === 'tool') {
 
                 checkRequirements();
 
@@ -281,7 +281,7 @@ angular.module('registryApp.cliche')
                 json.cliAdapter.baseCmd = [json.cliAdapter.baseCmd];
             }
 
-            if ($routeParams.type === 'script') {
+            if ($stateParams.type === 'script') {
 
                 json.transform = Cliche.getTransformSchema();
                 delete json.cliAdapter;
@@ -308,10 +308,12 @@ angular.module('registryApp.cliche')
          *
          * @param url
          */
-        var redirectTo = function(url) {
+        var redirectTo = function(state, params) {
+
+            params = params || {};
 
             BeforeRedirect.setReload(true);
-            $location.path(url);
+            $state.go(state, params);
 
         };
 
@@ -343,7 +345,7 @@ angular.module('registryApp.cliche')
 
             var cachedName = $scope.view.tool.label;
 
-            Cliche.flush(preserve, $routeParams.type, cachedName)
+            Cliche.flush(preserve, $stateParams.type, cachedName)
                 .then(function() {
 
                     $scope.view.loading = false;
@@ -543,7 +545,7 @@ angular.module('registryApp.cliche')
                         });
 
                         modalInstance.result.then(function() {
-                            redirectTo('/cliche/' + $routeParams.type + '/' + result.app._id + '/latest');
+                            redirectTo('cliche-edit', {type: $stateParams.type, id: result.app._id, revision: 'latest'});
                         });
 
                     }, function (error) {
@@ -582,7 +584,7 @@ angular.module('registryApp.cliche')
                     });
 
                     modalInstance.result.then(function() {
-                        redirectTo('/cliche/' + $routeParams.type + '/' + $scope.view.app._id + '/' + result.revision._id);
+                        redirectTo('cliche-edit', {type: $stateParams.type, id: $scope.view.app._id, revision: result.revision._id});
                     });
 
                     deferred.resolve(modalInstance);
@@ -623,7 +625,7 @@ angular.module('registryApp.cliche')
 
                     $scope.view.loading = false;
 
-                    redirectTo('/cliche/' + $routeParams.type + '/' + result.app._id + '/latest');
+                    redirectTo('cliche-edit', {type: $stateParams.type, id: result.app._id, revision: 'latest'});
 
                 }, function(error) {
                     $scope.view.loading = false;
@@ -656,7 +658,7 @@ angular.module('registryApp.cliche')
 
                     $scope.view.loading = false;
 
-                    redirectTo('/apps');
+                    redirectTo('apps');
 
                 }, function() {
                     $scope.view.loading = false;
@@ -674,7 +676,7 @@ angular.module('registryApp.cliche')
 
             var deferred = $q.defer();
 
-            Tool.getRevisions(0, '', $routeParams.id)
+            Tool.getRevisions(0, '', $stateParams.id)
                 .then(function(result) {
 
                     var modalInstance = $modal.open({
@@ -698,7 +700,7 @@ angular.module('registryApp.cliche')
                     });
 
                     modalInstance.result.then(function (revisionId) {
-                        $location.path('/cliche/' + $routeParams.type + '/' + $routeParams.id + '/' + revisionId);
+                        $state.go('cliche-edit', {type: $stateParams.type, id: $stateParams.id, revision: revisionId});
                     });
 
                     deferred.resolve(modalInstance);

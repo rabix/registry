@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('registryApp.repo')
-    .controller('AddYourGitHubRepoCtrl', ['$scope', '$timeout', '$location', '$filter', 'Repo', 'Sidebar', 'Loading', function ($scope, $timeout, $location, $filter, Repo, Sidebar, Loading) {
+    .controller('AddYourGitHubRepoCtrl', ['$scope', '$timeout', '$state', '$filter', 'Repo', 'Sidebar', 'Loading', function ($scope, $timeout, $state, $filter, Repo, Sidebar, Loading) {
 
         Sidebar.setActive('repos');
 
@@ -32,7 +32,7 @@ angular.module('registryApp.repo')
 
             Repo.addGitHubRepo(repo).then(function(result) {
                 repo.adding = false;
-                $location.path('/repo-instructions/' + result.repo._id);
+                $state.go('repo-instructions', {id: result.repo._id});
 
             });
 

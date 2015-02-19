@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('registryApp')
-    .controller('BuildsCtrl', ['$scope', '$routeParams', '$window', 'Build', 'Sidebar', 'Loading', function ($scope, $routeParams, $window, Build, Sidebar, Loading) {
+    .controller('BuildsCtrl', ['$scope', '$stateParams', '$window', 'Build', 'Sidebar', 'Loading', function ($scope, $stateParams, $window, Build, Sidebar, Loading) {
 
         Sidebar.setActive('builds');
 
@@ -10,7 +10,7 @@ angular.module('registryApp')
         $scope.view.total = 0;
         $scope.view.loading = true;
         $scope.view.builds = [];
-        $scope.view.repo = $routeParams.repo;
+        $scope.view.repo = $stateParams.repo;
 
         $scope.view.classes = ['page', 'builds'];
         Loading.setClasses($scope.view.classes);
@@ -33,7 +33,7 @@ angular.module('registryApp')
 
         };
 
-        Build.getBuilds(0, $routeParams.repo).then(buildsLoaded);
+        Build.getBuilds(0, $stateParams.repo).then(buildsLoaded);
 
         /**
          * Get more builds by offset
@@ -44,7 +44,7 @@ angular.module('registryApp')
 
             $scope.view.loading = true;
 
-            Build.getBuilds(offset, $routeParams.repo).then(buildsLoaded);
+            Build.getBuilds(offset, $stateParams.repo).then(buildsLoaded);
         };
 
 
