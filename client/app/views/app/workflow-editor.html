@@ -197,7 +197,7 @@
 
                             <input-field
                                     ng-repeat="property in view.json.inputs track by property['@id']"
-                                    ng-model="view.values[view.json.id][property['@id'].slice(1)]"
+                                    ng-model="view.values[view.json.id][property['@id']]"
                                     class="input-field input-field-sm"
                                     key="@id"
                                     prop="property"

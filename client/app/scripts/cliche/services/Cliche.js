@@ -272,7 +272,9 @@ angular.module('registryApp.cliche')
                     _.pluck(toolJSON.inputs, '@id'),
                     _.pluck(toolJSON.outputs, '@id')
                 ];
+
                 ids = _.reduce(ids, function(fl, a) { return fl.concat(a); }, []);
+
 
                 idName = 'id';
                 compare = prop['@id'];
@@ -423,7 +425,7 @@ angular.module('registryApp.cliche')
 
 
         /**
-         * Delete property from the object
+         * Delete property (input or output) from the object
          *
          * @param {string} key
          * @param {string} index
@@ -716,7 +718,7 @@ angular.module('registryApp.cliche')
                         key: key,
                         type: type,
                         val: '',
-                        position: schema.adapter.position,
+                        position: schema.adapter.position || 0,
                         prefix: prefix,
                         separator: separator,
                     }, schema.adapter);
@@ -742,8 +744,8 @@ angular.module('registryApp.cliche')
                             deferred.reject(error);
                         });
                     break;
-                case 'record':
-                    /* if input is RECORD */
+                    case 'record':
+                    /* if input is RECORD - not in use at this moment, because input type can not be record for now */
                     parseObjectInput(items.fields, inputs[key])
                         .then(function (result) {
                             prop.val = result;

@@ -11,7 +11,6 @@ var Repo = mongoose.model('Repo');
 var Revision = mongoose.model('Revision');
 
 var filters = require('../../common/route-filters');
-var validator = require('../../common/validator');
 var Amazon = require('../../aws/aws').Amazon;
 
 module.exports = function (app) {
@@ -294,13 +293,6 @@ router.post('/apps/:action', filters.authenticated, function (req, res, next) {
 
     var data = req.body;
 
-    var check = validator.validate(data.tool);
-
-    if (!_.isEmpty(check.invalid) || !_.isEmpty(check.obsolete) || !_.isEmpty(check.required)) {
-        res.status(400).json({message: 'There are some errors in your json scheme', json: check});
-        return false;
-    }
-
     var name = (req.params.action === 'fork') ? data.name : data.tool.label;
 
     App.count({name: name}).exec(function(err, count) {
@@ -381,38 +373,6 @@ router.post('/apps/:action', filters.authenticated, function (req, res, next) {
             });
         }
     });
-
-});
-
-/**
- *
- * Validate tool json
- *
- * @apiName ValidateWorkflow
- * @api {POST} /api/validate Validate tool json
- * @apiGroup Tools
- * @apiDescription Validate tool json
- * @apiUse InvalidToolError
- *
- * @apiSuccess {Object} json Successfully passed validation
- * @apiSuccessExample {json} Success-Response:
- *     HTTP/1.1 200 OK
- *     {
- *        {json}
- *     }
- */
-router.post('/validate', function (req, res) {
-
-    var data = req.body;
-
-    var check = validator.validate(data);
-
-    if (!_.isEmpty(check.invalid) || !_.isEmpty(check.obsolete) || !_.isEmpty(check.required)) {
-        res.status(400).json({message: 'There are some errors in your json scheme', json: check});
-        return false;
-    }
-
-    res.json(data);
 
 });
 

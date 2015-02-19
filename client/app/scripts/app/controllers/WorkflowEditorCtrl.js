@@ -323,9 +323,13 @@ angular.module('registryApp.app')
 
         };
 
+        /**
+         * Check if particular property is not exposed anymore and remove it from values schema list
+         *
+         * @param {string} appName
+         * @param {string} key
+         */
         $scope.onExpose = function (appName, key) {
-
-            key = key.slice(1);
 
             if (!_.isUndefined($scope.view.values[appName]) && !_.isUndefined($scope.view.values[appName][key])) {
                 delete $scope.view.values[appName][key];

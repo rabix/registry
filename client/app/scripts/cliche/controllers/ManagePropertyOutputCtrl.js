@@ -78,6 +78,10 @@ angular.module('registryApp.cliche')
          * @param value
          */
         $scope.updateGlobValue = function (value) {
+
+            if (_.isUndefined($scope.view.property.adapter)) {
+                $scope.view.property.adapter = {};
+            }
             $scope.view.property.adapter.glob = value;
         };
 

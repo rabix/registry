@@ -6,7 +6,7 @@
 'use strict';
 
 angular.module('registryApp.cliche')
-    .controller('ClicheCtrl', ['$scope', '$q', '$routeParams', '$modal', '$templateCache', '$location', 'User', 'Repo', 'Tool', 'Cliche', 'Sidebar', 'Loading', 'SandBox', 'BeforeUnload', 'BeforeRedirect', function($scope, $q, $routeParams, $modal, $templateCache, $location, User, Repo, Tool, Cliche, Sidebar, Loading, SandBox, BeforeUnload, BeforeRedirect) {
+    .controller('ClicheCtrl', ['$scope', '$q', '$routeParams', '$modal', '$templateCache', '$location', '$rootScope', 'User', 'Repo', 'Tool', 'Cliche', 'Sidebar', 'Loading', 'SandBox', 'BeforeUnload', 'BeforeRedirect', function($scope, $q, $routeParams, $modal, $templateCache, $location, $rootScope, User, Repo, Tool, Cliche, Sidebar, Loading, SandBox, BeforeUnload, BeforeRedirect) {
 
         $scope.Loading = Loading;
 
@@ -361,7 +361,7 @@ angular.module('registryApp.cliche')
         $scope.loadJsonEditor = function() {
 
             var modalInstance = $modal.open({
-                template: $templateCache.get('views/partials/json-editor.html'),
+                template: $templateCache.get('views/cliche/partials/json-editor.html'),
                 controller: 'JsonEditorCtrl',
                 resolve: { options: function () { return {user: $scope.view.user}; }}
             });
@@ -546,8 +546,9 @@ angular.module('registryApp.cliche')
                             redirectTo('/cliche/' + $routeParams.type + '/' + result.app._id + '/latest');
                         });
 
-                    }, function () {
+                    }, function (error) {
                         $scope.view.loading = false;
+                        $rootScope.$broadcast('httpError', {json: error});
                     });
             });
 
@@ -586,8 +587,9 @@ angular.module('registryApp.cliche')
 
                     deferred.resolve(modalInstance);
 
-                }, function () {
+                }, function (error) {
                     $scope.view.loading = false;
+                    $rootScope.$broadcast('httpError', {json: error});
                     deferred.reject();
                 });
 
@@ -623,8 +625,9 @@ angular.module('registryApp.cliche')
 
                     redirectTo('/cliche/' + $routeParams.type + '/' + result.app._id + '/latest');
 
-                }, function() {
+                }, function(error) {
                     $scope.view.loading = false;
+                    $rootScope.$broadcast('httpError', {json: error});
                 });
 
             });

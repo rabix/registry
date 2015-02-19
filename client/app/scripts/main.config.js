@@ -23,6 +23,7 @@ angular
         'registryApp.cliche',
         'registryApp.dyole',
         'registryApp.repo',
+        'registryApp.task',
         'registryApp.common'
     ])
     .constant('Const', {
@@ -45,14 +46,6 @@ angular
             .when('/settings', {
                 templateUrl: 'views/settings.html',
                 controller: 'SettingsCtrl'
-            })
-            .when('/tasks', {
-                templateUrl: 'views/tasks.html',
-                controller: 'TasksCtrl'
-            })
-            .when('/task/:id', {
-                templateUrl: 'views/task.html',
-                controller: 'TaskCtrl'
             })
             .otherwise({
                 redirectTo: '/'

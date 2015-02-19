@@ -169,6 +169,7 @@ angular.module('registryApp.cliche')
                 $scope.isDisabled = false;
             }
 
+
         };
 
     }])
