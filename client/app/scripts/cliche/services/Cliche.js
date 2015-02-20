@@ -720,7 +720,7 @@ angular.module('registryApp.cliche')
                         val: '',
                         position: schema.adapter.position || 0,
                         prefix: prefix,
-                        separator: separator,
+                        separator: separator
                     }, schema.adapter);
 
                 switch (type) {
