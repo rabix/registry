@@ -54,7 +54,7 @@ angular.module('registryApp')
                     {name: 'repos', state: 'repos', desc: 'Repositories', icon: 'code-fork'},
                     {name: 'workflow editor', state: 'workflow-editor', params: {id: 0, mode: 'new'}, desc: 'Workflow Editor', icon: 'terminal'},
                     {name: 'tool editor', state: 'cliche-new', params: {type: 'tool'}, desc: 'Tool Editor', icon: 'terminal'},
-                    {name: 'script editor', state: 'cliche', params: {type: 'script'}, desc: 'Script Editor', icon: 'terminal'},
+                    {name: 'script editor', state: 'cliche-new', params: {type: 'script'}, desc: 'Script Editor', icon: 'terminal'},
                     {name: 'settings', state: 'settings', desc: 'Settings', icon: 'gear', permission: 'user'}
                 ];
 

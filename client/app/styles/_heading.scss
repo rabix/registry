@@ -145,9 +145,19 @@ h2 {
     }
 
     &.tool-name {
+      max-width: 40%;
       & > span {
-        margin-right: 10px;
+        margin-right: 50px;
+        max-width: 100%;
+        display: block;
+        @extend %ellipsis;
       }
+
+      .revision {
+        float: right;
+        margin-top: 2px;
+      }
+
       .checkbox {
         margin: 0 0 0 20px;
         min-height: initial;

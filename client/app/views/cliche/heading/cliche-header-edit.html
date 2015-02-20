@@ -4,8 +4,8 @@
 
     <h1>
         <div class="form-group tool-name" ng-class="{'has-error': form.tool.label.$invalid}">
-            <span>{{ ::view.app.name }}</span>
             <a href class="version revision" ng-click="changeRevision()"><i class="fa fa-tag"></i> v{{ ::view.revision.version }}</a>
+            <span title="{{ ::view.app.name }}">{{ ::view.app.name }}</span>
         </div>
         <div class="actions pull-right">
 

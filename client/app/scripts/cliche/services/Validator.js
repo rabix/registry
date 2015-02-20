@@ -6,92 +6,7 @@
 'use strict';
 
 angular.module('registryApp.cliche')
-    .factory('Validator', ['$q', function($q) {
-
-        /**
-         * Schema definition
-         *
-         * @type {Object}
-         */
-        var mainDef = {
-            '@id': {type: 'string', required: true},
-            '@type': {type: 'string', required: true},
-            '@context': {type: 'string', required: true},
-            label: {type: 'string', required: true},
-            description: {type: 'string'},
-            owner: {type: 'array', required: true},
-            contributor: {type: 'array'},
-            requirements: {type: 'array', strict: false, def: {
-                '@type': {type: 'string', required: true}
-            }},
-            inputs: {type: 'array', required: true, def: {
-                '@id': {type: 'string', required: true},
-                depth: {type: 'number', required: true},
-                schema: {type: 'object', required: true, def: {
-                    type: {type: ['string', 'array', 'object'], required: true, def: {
-                        type: {type: 'string'},
-                        name: {type: 'string'},
-                        symbols: {type: 'array'}
-                    }},
-                    adapter: {type: 'object', def: {
-                        position: {type: 'number'},
-                        argValue: {type: 'object'},
-                        separator: {type: 'string'},
-                        prefix: {type: 'string'},
-                        itemSeparator: {type: ['string', 'object']}
-                    }},
-                    items: {type: 'object', def: {
-                        type: {type: 'string'},
-                        fields: {type: 'array', rec: true, def: {
-                            name: {type: 'string'},
-                            type: {type: ['string', 'array', 'object'], def: {
-                                type: {type: 'string'},
-                                name: {type: 'string'},
-                                symbols: {type: 'array'},
-                                items: {type: 'object', def: {
-                                    type: {type: 'string'},
-                                    fields: {type: 'array'}
-                                }}
-                            }},
-                            adapter: {type: 'object', def: {
-                                position: {type: 'number'},
-                                argValue: {type: 'object'},
-                                separator: {type: 'string'},
-                                prefix: {type: 'string'},
-                                itemSeparator: {type: ['string', 'object']}
-                            }}
-                        }}
-                    }}
-                }}
-            }},
-            outputs: {type: 'array', required: true, def: {
-                '@id': {type: 'string', required: true},
-                depth: {type: 'number', required: true},
-                schema: {type: 'object', required: true, def: {
-                    type: {type: ['string', 'array', 'object'], required: true},
-                    adapter: {type: 'object', def: {
-                        glob: {type: ['object', 'string']}
-                    }},
-                    items: {type: 'object', def: {
-                        type: {type: 'string'}
-                    }}
-                }}
-            }},
-            cliAdapter: {type: 'object', def: {
-                baseCmd: {type: ['string', 'array'], required: true},
-                stdin: {type: ['string', 'object']},
-                stdout: {type: ['string', 'object']},
-                argAdapters: {type: 'object', required: true, def: {
-                    position: {type: 'number'},
-                    argValue: {type: ['string', 'number', 'object'], required: true},
-                    separator: {type: 'string'},
-                    prefix: {type: 'string'}
-                }}
-            }},
-            transform: {type: 'string'}
-
-        };
-
+    .factory('Validator', ['$q', '$injector', function($q, $injector) {
 
         /**
          * Trace object which contains info about required, invalid and obsolete values
@@ -298,18 +213,20 @@ angular.module('registryApp.cliche')
          * Init validation
          *
          * @param json
-         * @returns {{}}
+         * @param type
+         * @returns {Object}
          */
-        var init = function(json) {
+        var init = function(json, type) {
 
             var deferred = $q.defer();
+            var def = $injector.get(type + 'Definition');
 
             prepare();
 
             validate({
                 json: json,
                 parent: 'root',
-                def: mainDef
+                def: def
             });
 
             if (_.isEmpty(trace.obsolete) && _.isEmpty(trace.required) && _.isEmpty(trace.invalid)) {

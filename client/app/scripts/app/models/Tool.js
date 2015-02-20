@@ -67,11 +67,12 @@ angular.module('registryApp.app')
          * @param repoId
          * @param tool
          * @param job
+         * @param type
          * @returns {*}
          */
-        var create = function(repoId, tool, job) {
+        var create = function(repoId, tool, job, type) {
 
-            return Validator.validate(tool)
+            return Validator.validate(tool, type)
                 .then(function() {
                     return Api.apps.add({id: 'create'}, {tool: tool, job: job, repo_id: repoId}).$promise;
                 }, function(trace) {
@@ -87,11 +88,12 @@ angular.module('registryApp.app')
          * @param name
          * @param tool
          * @param job
+         * @param type
          * @returns {*}
          */
-        var fork = function(repoId, name, tool, job) {
+        var fork = function(repoId, name, tool, job, type) {
 
-            return Validator.validate(tool)
+            return Validator.validate(tool, type)
                 .then(function() {
                     return Api.apps.add({id: 'fork'}, {tool: tool, job: job, repo_id: repoId, name: name}).$promise;
                 }, function(trace) {
@@ -104,11 +106,14 @@ angular.module('registryApp.app')
          * Update the tool - create new revision
          *
          * @param appId
+         * @param tool
+         * @param job
+         * @param type
          * @returns {*}
          */
-        var update = function(appId, tool, job) {
+        var update = function(appId, tool, job, type) {
 
-            return Validator.validate(tool)
+            return Validator.validate(tool, type)
                 .then(function() {
                     return Api.revisions.add({}, {tool: tool, job: job, app_id: appId}).$promise;
                 }, function(trace) {

@@ -365,7 +365,7 @@ angular.module('registryApp.cliche')
             var modalInstance = $modal.open({
                 template: $templateCache.get('views/cliche/partials/json-editor.html'),
                 controller: 'JsonEditorCtrl',
-                resolve: { options: function () { return {user: $scope.view.user}; }}
+                resolve: { options: function () { return {user: $scope.view.user, type: $stateParams.type}; }}
             });
 
             modalInstance.result.then(function (json) {
@@ -532,7 +532,7 @@ angular.module('registryApp.cliche')
                     tool = Cliche.getTool(),
                     job = Cliche.getJob();
 
-                Tool.create(repoId, tool, job)
+                Tool.create(repoId, tool, job, $stateParams.type)
                     .then(function(result) {
 
                         $scope.view.loading = false;
@@ -571,7 +571,7 @@ angular.module('registryApp.cliche')
                 tool = Cliche.getTool(),
                 job = Cliche.getJob();
 
-            Tool.update(appId, tool, job)
+            Tool.update(appId, tool, job, $stateParams.type)
                 .then(function(result) {
 
                     $scope.view.loading = false;
@@ -621,7 +621,7 @@ angular.module('registryApp.cliche')
                     tool = Cliche.getTool(),
                     job = Cliche.getJob();
 
-                Tool.fork(repoId, name, tool, job).then(function (result) {
+                Tool.fork(repoId, name, tool, job, $stateParams.type).then(function (result) {
 
                     $scope.view.loading = false;
 
