@@ -21,6 +21,10 @@ console.log('**** Starting conversion test *****');
 var p = fd2.toPipelineSchema(mock);
 var r = fd2.toRabixSchema(p);
 
+fs.writeFile('temp/pipeline.json', JSON.stringify(p, null, 4), function (err, f) {
+    if (err) console.log(err);
+});
+
 //suit.compareObj(r.dataLinks, mock.dataLinks, 'DataLink transformation fail');
 
 suit.checkObjKeyVal(p);

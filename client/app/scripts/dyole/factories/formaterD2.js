@@ -238,6 +238,40 @@ var _formatter = {
     },
 
     /**
+     * Add values to step inputs if values set
+     *
+     * @param steps
+     * @param values
+     */
+    addValuesToSteps: function (steps, values) {
+
+        _.forEach(values, function (inputs, stepId) {
+            if (typeof stepId !== 'undefined') {
+
+                var step = _.find(steps, function (s) {
+                    return s['@id'] === stepId;
+                });
+
+                if (typeof step !== 'undefined') {
+                    _.forEach(inputs, function (val, input_id) {
+
+                        var inp = _.find(step.inputs, function (i) {
+                            return i['@id'] === step['@id'] + '/' + input_id.slice(1);
+                        });
+
+                        if (typeof inp !== 'undefined') {
+                            inp.value = val;
+                        } else {
+                            console.error('Invalid input id to attach values to', input_id);
+                        }
+                    });
+                }
+            }
+        });
+
+    },
+
+    /**
      * Create Workflow inputs and outputs
      *
      * @param workflow
@@ -401,7 +435,7 @@ var _formatter = {
 
     },
 
-    createSchemasFromSteps: function (steps) {
+    createSchemasFromSteps: function (steps, values) {
         var schemas = {};
 
         _.forEach(steps, function (step) {
@@ -416,6 +450,17 @@ var _formatter = {
             step.app['@id'] = stepId;
 
             schemas[stepId] = step.app;
+
+            // Check if values are set on step inputs
+            // and attach them to values object
+            _.forEach(step.inputs, function (input) {
+                if (input.value) {
+                    var input_id = '#' + input['@id'].split('/')[1],
+                        obj = values[stepId] = {};
+
+                    obj[input_id] = input.value;
+                }
+            });
         });
 
         return schemas;
@@ -601,7 +646,7 @@ var _helper = {
         this.sysCoords.x = 0;
         this.sysCoords.y = 0;
 
-        if (!display) {
+        if (typeof display === 'undefined') {
             display = this._createDisplay();
         }
 
@@ -636,7 +681,9 @@ var fd2 = {
             model = _.clone(RabixModel, true);
 
         model.dataLinks = _formatter.toRabixRelations(json.relations, json.exposed, model);
-        model.steps = _formatter.createSteps(json.schemas, json.relations, json.values);
+        model.steps = _formatter.createSteps(json.schemas, json.relations);
+
+        _formatter.addValuesToSteps(model.steps, json.values);
 
         _formatter.createWorkflowInOut(model, json.schemas, json.relations);
 

@@ -1,0 +1,357 @@
+{
+    "exposed": {
+        "#draft2$#nesto": {
+            "@id": "#nesto",
+            "depth": 0,
+            "schema": {
+                "type": "int"
+            },
+            "id": "#nesto",
+            "name": "#nesto"
+        }
+    },
+    "values": {
+        "#draft2": {
+            "#nesto": 100
+        }
+    },
+    "display": {
+        "nodes": {
+            "#draft2": {
+                "x": 300,
+                "y": 200
+            },
+            "#input": {
+                "x": 100,
+                "y": 100
+            },
+            "#nesto": {
+                "x": 100,
+                "y": 200
+            },
+            "#output": {
+                "x": 400,
+                "y": 300
+            }
+        },
+        "canvas": {
+            "x": 0,
+            "y": 0,
+            "zoom": 1
+        }
+    },
+    "nodes": [
+        {
+            "cliAdapter": {
+                "argAdapters": [],
+                "stdout": "",
+                "stdin": "",
+                "baseCmd": [
+                    ""
+                ]
+            },
+            "outputs": [
+                {
+                    "schema": {
+                        "type": [
+                            "null",
+                            "file"
+                        ]
+                    },
+                    "depth": 0,
+                    "@id": "#bam"
+                }
+            ],
+            "inputs": [
+                {
+                    "schema": {
+                        "type": [
+                            "null",
+                            "array"
+                        ],
+                        "items": {
+                            "type": "file"
+                        }
+                    },
+                    "depth": 1,
+                    "@id": "#reads"
+                },
+                {
+                    "schema": {
+                        "type": "file"
+                    },
+                    "depth": 0,
+                    "@id": "#refs"
+                },
+                {
+                    "schema": {
+                        "type": [
+                            "null",
+                            "int"
+                        ]
+                    },
+                    "depth": 0,
+                    "@id": "#nesto"
+                }
+            ],
+            "requirements": [
+                {
+                    "imgId": "asdasds",
+                    "imgTag": "ewqe13223123",
+                    "imgRepo": "dsadasdasd",
+                    "@type": "DockerCnt"
+                },
+                {
+                    "value": 500,
+                    "@type": "CpuRequirement"
+                },
+                {
+                    "value": 1000,
+                    "@type": "MemRequirement"
+                }
+            ],
+            "contributor": [],
+            "owner": [],
+            "description": "",
+            "label": "draft2",
+            "@context": "https://github.com/common-workflow-language/common-workflow-language/blob/draft-1/specification/tool-description.md",
+            "@type": "CommandLine",
+            "@id": "#draft2"
+        },
+        {
+            "@id": "#input",
+            "label": "#input",
+            "softwareDescription": {
+                "repo_owner": "rabix",
+                "repo_name": "system",
+                "type": "input",
+                "name": "#input"
+            },
+            "inputs": [],
+            "outputs": [
+                {
+                    "@id": "#input",
+                    "depth": 0,
+                    "schema": {
+                        "type": "file"
+                    },
+                    "id": "#input",
+                    "name": "#input"
+                }
+            ],
+            "id": "#input"
+        },
+        {
+            "@id": "#nesto",
+            "label": "#nesto",
+            "softwareDescription": {
+                "repo_owner": "rabix",
+                "repo_name": "system",
+                "type": "input",
+                "name": "#nesto"
+            },
+            "inputs": [],
+            "outputs": [
+                {
+                    "@id": "#nesto",
+                    "depth": 0,
+                    "schema": {
+                        "type": "int"
+                    },
+                    "id": "#nesto",
+                    "name": "#nesto"
+                }
+            ],
+            "id": "#nesto"
+        },
+        {
+            "@id": "#output",
+            "label": "#output",
+            "softwareDescription": {
+                "repo_owner": "rabix",
+                "repo_name": "system",
+                "type": "output",
+                "name": "#output"
+            },
+            "inputs": [
+                {
+                    "@id": "#output",
+                    "depth": 0,
+                    "schema": {
+                        "type": "file"
+                    },
+                    "id": "#output",
+                    "name": "#output"
+                }
+            ],
+            "outputs": [],
+            "id": "#output"
+        }
+    ],
+    "schemas": {
+        "#draft2": {
+            "cliAdapter": {
+                "argAdapters": [],
+                "stdout": "",
+                "stdin": "",
+                "baseCmd": [
+                    ""
+                ]
+            },
+            "outputs": [
+                {
+                    "schema": {
+                        "type": [
+                            "null",
+                            "file"
+                        ]
+                    },
+                    "depth": 0,
+                    "@id": "#bam"
+                }
+            ],
+            "inputs": [
+                {
+                    "schema": {
+                        "type": [
+                            "null",
+                            "array"
+                        ],
+                        "items": {
+                            "type": "file"
+                        }
+                    },
+                    "depth": 1,
+                    "@id": "#reads"
+                },
+                {
+                    "schema": {
+                        "type": "file"
+                    },
+                    "depth": 0,
+                    "@id": "#refs"
+                },
+                {
+                    "schema": {
+                        "type": [
+                            "null",
+                            "int"
+                        ]
+                    },
+                    "depth": 0,
+                    "@id": "#nesto"
+                }
+            ],
+            "requirements": [
+                {
+                    "imgId": "asdasds",
+                    "imgTag": "ewqe13223123",
+                    "imgRepo": "dsadasdasd",
+                    "@type": "DockerCnt"
+                },
+                {
+                    "value": 500,
+                    "@type": "CpuRequirement"
+                },
+                {
+                    "value": 1000,
+                    "@type": "MemRequirement"
+                }
+            ],
+            "contributor": [],
+            "owner": [],
+            "description": "",
+            "label": "draft2",
+            "@context": "https://github.com/common-workflow-language/common-workflow-language/blob/draft-1/specification/tool-description.md",
+            "@type": "CommandLine",
+            "@id": "#draft2"
+        },
+        "#input": {
+            "@id": "#input",
+            "label": "#input",
+            "softwareDescription": {
+                "repo_owner": "rabix",
+                "repo_name": "system",
+                "type": "input",
+                "name": "#input"
+            },
+            "inputs": [],
+            "outputs": [
+                {
+                    "@id": "#input",
+                    "depth": 0,
+                    "schema": {
+                        "type": "file"
+                    },
+                    "id": "#input",
+                    "name": "#input"
+                }
+            ],
+            "id": "#input"
+        },
+        "#nesto": {
+            "@id": "#nesto",
+            "label": "#nesto",
+            "softwareDescription": {
+                "repo_owner": "rabix",
+                "repo_name": "system",
+                "type": "input",
+                "name": "#nesto"
+            },
+            "inputs": [],
+            "outputs": [
+                {
+                    "@id": "#nesto",
+                    "depth": 0,
+                    "schema": {
+                        "type": "int"
+                    },
+                    "id": "#nesto",
+                    "name": "#nesto"
+                }
+            ],
+            "id": "#nesto"
+        },
+        "#output": {
+            "@id": "#output",
+            "label": "#output",
+            "softwareDescription": {
+                "repo_owner": "rabix",
+                "repo_name": "system",
+                "type": "output",
+                "name": "#output"
+            },
+            "inputs": [
+                {
+                    "@id": "#output",
+                    "depth": 0,
+                    "schema": {
+                        "type": "file"
+                    },
+                    "id": "#output",
+                    "name": "#output"
+                }
+            ],
+            "outputs": [],
+            "id": "#output"
+        }
+    },
+    "relations": [
+        {
+            "input_name": "#refs",
+            "start_node": "#input",
+            "output_name": "#input",
+            "end_node": "#draft2",
+            "id": "129181",
+            "type": "connection"
+        },
+        {
+            "input_name": "#output",
+            "start_node": "#draft2",
+            "output_name": "#bam",
+            "end_node": "#output",
+            "id": "154452",
+            "type": "connection"
+        }
+    ]
+}

@@ -143,7 +143,7 @@ var _formatter = {
 
             dataLinks.push(dataLink);
         });
-        
+
         _.forEach(exposed, function (schema, ids) {
 
             var dataLink = {
@@ -646,7 +646,7 @@ var _helper = {
         this.sysCoords.x = 0;
         this.sysCoords.y = 0;
 
-        if (!display) {
+        if (typeof display === 'undefined') {
             display = this._createDisplay();
         }
 

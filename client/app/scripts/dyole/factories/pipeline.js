@@ -398,12 +398,12 @@ angular.module('registryApp.dyole')
 
                     _.each(this.model.nodes, function (nodeModel) {
 
+                        var nodeId = nodeModel['@id'] || nodeModel.id;
                         // schema is not merged because nodes is a copy of schema with modified inputs and outputs for displaying on canvas
                         // schema is only used for tool execution
-                        var model = _.extend(nodeModel, _self.model.display.nodes[
-                            nodeModel.id]);
+                        var model = _.extend(nodeModel, _self.model.display.nodes[nodeId]);
 
-                        _self.nodes[nodeModel.id] = Node.getInstance({
+                        _self.nodes[nodeId] = Node.getInstance({
                             pipeline: _self,
                             model: model,
                             canvas: _self.canvas,
