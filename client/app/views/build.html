@@ -1,7 +1,7 @@
 <div ng-class="view.classes" loading="view.loading">
 
     <div class="heading no-margin">
-        <a ng-href="#/builds" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
+        <a ui-sref="builds" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
         <h1>
             <span tooltip="Build #{{ ::view.build._id }}" tooltip-popup-delay="1000">Build #{{ ::view.build._id }}</span>
             <span class="label label-status pull-right" ng-class="{'label-success': view.build.status === 'success', 'label-info': view.build.status === 'running', 'label-danger': view.build.status === 'failure', 'label-warning': view.build.status === 'pending'}">
@@ -19,7 +19,7 @@
             <div class="panel panel-warning">
                 <div class="panel-heading"><h4 class="panel-title">Info</h4></div>
                 <div class="panel-body">
-                    <p><strong>Repo/User:</strong> <a ng-href="#/builds?repo={{ ::view.build.repoId._id }}">{{ ::view.build.repoId.owner }}/{{ ::view.build.repoId.name }}</a></p>
+                    <p><strong>Repo/User:</strong> <a ui-sref="builds({repo: view.build.repoId._id})">{{ ::view.build.repoId.owner }}/{{ ::view.build.repoId.name }}</a></p>
                     <p><strong>Date:</strong> {{ ::view.build.head_commit.timestamp | date:'short' }}</p>
                     <p><strong>Author:</strong> {{ ::view.build.head_commit.author.name }}</p>
                     <p><strong>Committer:</strong> {{ ::view.build.head_commit.committer.name }}</p>
@@ -33,7 +33,7 @@
 
             <section>
                 <h4>Commit URL</h4>
-                <p><a href="{{ ::view.build.head_commit.url }}" target="_blank">{{ ::view.build.head_commit.url }}</a></p>
+                <p><a ng-href="{{ ::view.build.head_commit.url }}" target="_blank">{{ ::view.build.head_commit.url }}</a></p>
             </section>
 
         </div>

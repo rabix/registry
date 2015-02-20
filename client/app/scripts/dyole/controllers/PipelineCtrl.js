@@ -6,14 +6,14 @@
 'use strict';
 
 angular.module('registryApp.dyole')
-    .controller('PipelineCtrl', ['$scope', '$rootScope', '$routeParams', '$element', '$location', '$window', '$timeout', '$injector', 'pipeline', 'Tool', 'rawPipeline', 'Workflow', '$modal', '$templateCache', 'PipelineService', function ($scope, $rootScope, $routeParams, $element, $location, $window, $timeout, $injector, pipeline, Tool, rawPipeline, Workflow, $modal, $templateCache, PipelineService) {
+    .controller('PipelineCtrl', ['$scope', '$rootScope', '$stateParams', '$element', '$state', '$window', '$timeout', '$injector', 'pipeline', 'Tool', 'rawPipeline', 'Workflow', '$modal', '$templateCache', 'PipelineService', function ($scope, $rootScope, $stateParams, $element, $state, $window, $timeout, $injector, pipeline, Tool, rawPipeline, Workflow, $modal, $templateCache, PipelineService) {
 
         var Pipeline;
         var selector = '.pipeline';
         var timeoutId;
 
         $scope.view = {};
-        $scope.view.canFlush = _.contains(['new', 'edit'], $routeParams.mode);
+        $scope.view.canFlush = _.contains(['new', 'edit'], $stateParams.mode);
 
         /* show usage hints to user flag */
         $scope.view.explanation = false;
@@ -36,7 +36,7 @@ angular.module('registryApp.dyole')
 
         };
 
-        if ($routeParams.mode === 'new') {
+        if ($stateParams.mode === 'new') {
 //            Workflow.getLocal()
 //                .then(function (json) {
 //                    initPipeline(json);
@@ -91,9 +91,9 @@ angular.module('registryApp.dyole')
 
                     if (data.id) {
                         if (repoId) {
-                            $location.path('/workflow/' + data.id);
+                            $state.go('workflow-view', {id: data.id});
                         } else {
-                            $location.path('/workflow/' + data.id + '/edit');
+                            $state.go('workflow-editor', {id: data.id, mode: 'edit'});
                         }
                     } else {
                         $scope.pipelineChangeFn({value: false});
@@ -114,7 +114,7 @@ angular.module('registryApp.dyole')
             }
 
             Workflow.fork($scope.pipeline).then(function (pipeline) {
-                $location.path('/workflow/' + pipeline.id + '/edit');
+                $state.go('workflow-editor', {id: pipeline.id, mode: 'edit'});
             });
         };
 

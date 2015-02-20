@@ -19,9 +19,9 @@
                     <input type="checkbox" ng-model="view.mine" ng-change="toggleMyApps()" /> mine
                 </label>
 
-                <a ng-href="#/cliche/tool" ng-if="view.tab === 'tools'" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> New Tool</a>
-                <a ng-href="#/cliche/script" ng-if="view.tab === 'scripts'" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> New Script</a>
-                <a ng-href="#/workflow/0/new" ng-if="view.tab === 'workflows'" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> New Workflow</a>
+                <a ui-sref="cliche-new({type: 'tool'})" ng-if="view.tab === 'tools'" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> New Tool</a>
+                <a ui-sref="cliche-new({type: 'script'})" ng-if="view.tab === 'scripts'" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> New Script</a>
+                <a ui-sref="workflow-editor({id: 0, mode: 'new'})" ng-if="view.tab === 'workflows'" class="btn btn-primary pull-right"><i class="fa fa-plus"></i> New Workflow</a>
             </div>
 
         </div>

@@ -1,7 +1,7 @@
 <div ng-class="view.classes" loading="view.loading">
 
     <div class="heading">
-        <a ng-href="#/repos" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
+        <a ui-sref="repos" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
         <h1>
             {{ ::view.repo.owner }}/{{ ::view.repo.name }}
             <span class="created-by">({{ ::view.repo.created_by }})</span>
@@ -44,7 +44,7 @@
                         </thead>
                         <tbody>
                             <tr ng-repeat="app in view.tools">
-                                <td><a ng-href="#/tool/{{ ::app._id }}/preview" class="inline">{{ ::app.name }}</a></td>
+                                <td><a ui-sref="tool({id: app._id, tab: 'preview'})" class="inline">{{ ::app.name }}</a></td>
                                 <td><p tooltip="{{ ::app.description }}" tooltip-popup-delay="1000">{{ ::app.description }}</p></td>
                             </tr>
                             <tr class="empty" ng-if="view.tools.length === 0">
@@ -71,7 +71,7 @@
                         </thead>
                         <tbody>
                             <tr ng-repeat="app in view.scripts">
-                                <td><a ng-href="#/tool/{{ ::app._id }}/preview" class="inline">{{ ::app.name }}</a></td>
+                                <td><a ui-sref="tool({id: app._id, tab: 'preview'})" class="inline">{{ ::app.name }}</a></td>
                                 <td><p tooltip="{{ ::app.description }}" tooltip-popup-delay="1000">{{ ::app.description }}</p></td>
                             </tr>
                             <tr class="empty" ng-if="view.scripts.length === 0">
@@ -98,7 +98,7 @@
                         </thead>
                         <tbody>
                             <tr ng-repeat="workflow in view.workflows">
-                                <td><a ng-href="#/workflow/{{ ::workflow.latest._id }}">{{ ::workflow.name }}</a></td>
+                                <td><a ui-sref="workflow-view({id: workflow.latest._id})">{{ ::workflow.name }}</a></td>
                                 <td><p tooltip="{{ ::workflow.description }}" tooltip-popup-delay="1000">{{ ::workflow.description }}</p></td>
                             </tr>
                             <tr class="empty" ng-if="view.workflows.length === 0">
@@ -133,7 +133,7 @@
                             <td>{{ ::task.author }}</td>
                             <td><a ng-href="{{ ::task.url }}" class="job-link" target="_blank">{{ ::task.url }}</a></td>
                             <td class="right">
-                                <a ng-href="#/task/{{ task._id }}" ng-if="view.user.id === task.user._id" class="btn btn-default" tooltip="Edit Task Template"><i class="fa fa-pencil"></i></a>
+                                <a ui-sref="task({id: task._id})" ng-if="view.user.id === task.user._id" class="btn btn-default" tooltip="Edit Task Template"><i class="fa fa-pencil"></i></a>
                             </td>
                         </tr>
                         <tr class="empty" ng-if="view.tasks.length === 0">
@@ -171,13 +171,13 @@
                                     </span>
                                 </td>
                                 <td class="field-id">
-                                    <a ng-href="#/build/{{ ::build._id }}" tooltip="{{ ::build._id }}" tooltip-popup-delay="1000">#{{ ::build._id }}</a>
+                                    <a ui-sref="build({id: build._id})" tooltip="{{ ::build._id }}" tooltip-popup-delay="1000">#{{ ::build._id }}</a>
                                 </td>
                                 <td class="field-message">
                                     <p tooltip="{{ ::build.head_commit.message }}" tooltip-popup-delay="1000">{{ ::build.head_commit.message }}</p>
                                 </td>
                                 <td class="field-commit">
-                                    <a href="{{ ::build.head_commit.url }}" target="_blank" tooltip="{{ ::build.head_commit.id }}" tooltip-popup-delay="1000">{{ ::build.head_commit.id }}</a>
+                                    <a ng-href="{{ ::build.head_commit.url }}" target="_blank" tooltip="{{ ::build.head_commit.id }}" tooltip-popup-delay="1000">{{ ::build.head_commit.id }}</a>
                                 </td>
                                 <td class="field-committer">{{ ::build.head_commit.committer.name }}</td>
                                 <td class="field-date">{{ ::build.head_commit.timestamp | date:'short' }}</td>

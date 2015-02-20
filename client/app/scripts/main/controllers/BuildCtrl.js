@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('registryApp')
-    .controller('BuildCtrl', ['$scope', '$routeParams', '$interval', '$document', '$timeout', 'Build', 'Sidebar', 'Loading', function ($scope, $routeParams, $interval, $document, $timeout, Build, Sidebar, Loading) {
+    .controller('BuildCtrl', ['$scope', '$stateParams', '$interval', '$document', '$timeout', 'Build', 'Sidebar', 'Loading', function ($scope, $stateParams, $interval, $document, $timeout, Build, Sidebar, Loading) {
 
         var logIntervalId;
         var scrollTimeoutId;
@@ -21,7 +21,7 @@ angular.module('registryApp')
         });
 
         /* get the build details */
-        Build.getBuild($routeParams.id).then(function(result) {
+        Build.getBuild($stateParams.id).then(function(result) {
             var build = result.data;
             $scope.view.build = result.data;
 
@@ -37,12 +37,12 @@ angular.module('registryApp')
                 $scope.view.loading = false;
 
                 logIntervalId = $interval(function() {
-                    Build.getLog($routeParams.id, $scope.view.contentLength).then(logLoaded);
+                    Build.getLog($stateParams.id, $scope.view.contentLength).then(logLoaded);
                 }, 2000);
 
             } else {
                 /* other than that take the log for the current build */
-                Build.getLog($routeParams.id, 0).then(function(res) {
+                Build.getLog($stateParams.id, 0).then(function(res) {
                     var result = res.content;
                     $scope.view.loading = false;
                     $scope.view.log = $scope.view.log.concat(result.content.split('\n'));

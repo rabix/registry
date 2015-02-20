@@ -7,27 +7,31 @@
 'use strict';
 
 angular.module('registryApp.app', [])
-    .config(['$routeProvider', function($routeProvider) {
+    .config(['$stateProvider', function($stateProvider) {
 
-        $routeProvider
-            .when('/apps', {
+        $stateProvider
+            .state('apps', {
+                url: '/apps',
                 templateUrl: 'views/app/apps.html',
-                controller: 'AppsCtrl',
-                reloadOnSearch: false
+                controller: 'AppsCtrl'
             })
-            .when('/tool/:id/:tab', {
+            .state('tool', {
+                url: '/tool/:id/:tab',
                 templateUrl: 'views/app/tool.html',
                 controller: 'ToolCtrl'
             })
-            .when('/tool-revision/:id', {
+            .state('tool-revision', {
+                url: '/tool-revision/:id',
                 templateUrl: 'views/app/tool-revision.html',
                 controller: 'ToolRevisionCtrl'
             })
-            .when('/workflow/:id', {
+            .state('workflow-view', {
+                url: '/workflow/:id',
                 templateUrl: 'views/app/workflow-view.html',
                 controller: 'WorkflowViewCtrl'
             })
-            .when('/workflow/:id/:mode', {
+            .state('workflow-editor', {
+                url: '/workflow/:id/:mode',
                 templateUrl: 'views/app/workflow-editor.html',
                 controller: 'WorkflowEditorCtrl'
             });

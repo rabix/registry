@@ -1,28 +1,28 @@
 <div ng-class="view.classes" loading="view.loading">
 
     <div class="heading">
-        <a ng-href="#/apps#workflows" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
+        <a ui-sref="apps" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
         <h1>
             <span>
                 {{ ::view.workflow.pipeline.name }}
                 <span class="pipeline-repo">
-                    (<a href="#/repo/{{ ::view.workflow.pipeline.repo._id }}">{{ ::view.workflow.pipeline.repo.owner }}/{{ ::view.workflow.pipeline.repo.name }}</a>)
+                    (<a ui-sref="repo({id: view.workflow.pipeline.repo._id})">{{ ::view.workflow.pipeline.repo.owner }}/{{ ::view.workflow.pipeline.repo.name }}</a>)
                 </span>
             </span>
 
             <div class="actions pull-right">
-                <a href="" ng-if="view.showDelete" ng-click="deleteWorkflow()" class="btn btn-danger" tooltip="Delete workflow" tooltip-placement="bottom"><i class="fa fa-trash"></i> Delete</a>
-                <a ng-href="#/workflow/{{ ::view.workflow._id }}/edit" class="btn btn-primary"><i class="fa fa-pencil"></i> Edit</a>
+                <a href ng-if="view.showDelete" ng-click="deleteWorkflow()" class="btn btn-danger" tooltip="Delete workflow" tooltip-placement="bottom"><i class="fa fa-trash"></i> Delete</a>
+                <a ui-sref="workflow-editor({id: view.workflow._id, mode: 'edit'})" class="btn btn-primary"><i class="fa fa-pencil"></i> Edit</a>
             </div>
         </h1>
     </div>
     <!-- # .heading -->
 
     <div ng-if="view.revisions.length > 0" class="nav nav-tabs nav-page">
-        <li ng-class="{active: view.tab === 'info'}"><a href="" ng-click="switchTab('info')">Preview</a></li>
-        <li ng-class="{active: view.tab === 'description'}"><a href="" ng-click="switchTab('description')">Info</a></li>
-        <li ng-class="{active: view.tab === 'revisions'}"><a href="" ng-click="switchTab('revisions')">Revisions</a></li>
-        <li ng-class="{active: view.tab === 'tasks'}"><a href="" ng-click="switchTab('tasks')">Task Templates</a></li>
+        <li ng-class="{active: view.tab === 'info'}"><a href ng-click="switchTab('info')">Preview</a></li>
+        <li ng-class="{active: view.tab === 'description'}"><a href ng-click="switchTab('description')">Info</a></li>
+        <li ng-class="{active: view.tab === 'revisions'}"><a href ng-click="switchTab('revisions')">Revisions</a></li>
+        <li ng-class="{active: view.tab === 'tasks'}"><a href ng-click="switchTab('tasks')">Task Templates</a></li>
     </div>
 
     <div class="content content-mix flex-box-column">
@@ -45,13 +45,13 @@
 
                             <section class="col-md-6">
                                 <h5>Author</h5>
-                                <p><strong>Username:</strong> <a href="http://github.com/{{ ::view.workflow.pipeline.user.username }}" target="_blank">{{ ::view.workflow.pipeline.user.username }}</a> </p>
+                                <p><strong>Username:</strong> <a ng-href="http://github.com/{{ ::view.workflow.pipeline.user.username }}" target="_blank">{{ ::view.workflow.pipeline.user.username }}</a> </p>
                                 <!--<p><strong>Name:</strong> {{ ::view.workflow.pipeline.user.name }} </p>-->
                             </section>
 
                             <section class="col-md-6">
                                 <h5>Workflow Details</h5>
-                                <p><strong>Repo:</strong> <a ng-href="#/repo/{{ ::view.workflow.pipeline.repo.id }}">{{ ::view.workflow.pipeline.repo.owner }}/{{ ::view.workflow.pipeline.repo.name }}</a></p>
+                                <p><strong>Repo:</strong> <a ui-sref="repo({id: view.workflow.pipeline.repo._id})">{{ ::view.workflow.pipeline.repo.owner }}/{{ ::view.workflow.pipeline.repo.name }}</a></p>
                             </section>
                         </div>
                     </div>
@@ -60,7 +60,7 @@
 
             <div class="snippet">
                 <p>Use this command to run workflow</p>
-                <pre>$ rabix "<a href="/workflow/{{ ::view.workflow._id }}" target="_blank">{{ view.domain }}/workflow/{{ ::view.workflow._id }}</a>"</pre>
+                <pre>$ rabix "<a ng-href="/workflow/{{ ::view.workflow._id }}" target="_blank">{{ view.domain }}/workflow/{{ ::view.workflow._id }}</a>"</pre>
             </div>
 
 
@@ -87,9 +87,9 @@
                         <td><p tooltip="{{ ::revision.description }}" tooltip-popup-delay="1000">{{ ::revision.description || 'This workflow doesn\'t have a description' }}</p></td>
 
                         <td class="right">
-                            <a class="btn btn-sm btn-default" tooltip="View Revision" ng-href="#/workflow/{{ ::revision._id }}"><i class="fa fa-eye"></i></a>
-                            <a class="btn btn-sm btn-default" tooltip="Edit Revision" ng-href="#/workflow/{{ ::revision._id }}/edit"><i class="fa fa-pencil"></i></a>
-                            <a ng-if="view.user.id === view.workflow.user._id && view.revisions.length > 1" class="btn btn-sm btn-default" href="" tooltip="Delete Revision" ng-click="deleteRevision(revision._id)"><i class="fa fa-trash"></i></a>
+                            <a class="btn btn-sm btn-default" tooltip="View Revision" ui-sref="workflow-view({id: revision._id})"><i class="fa fa-eye"></i></a>
+                            <a class="btn btn-sm btn-default" tooltip="Edit Revision" ui-sref="workflow-editor({id: revision._id, mode: 'edit'})"><i class="fa fa-pencil"></i></a>
+                            <a href ng-if="view.user.id === view.workflow.user._id && view.revisions.length > 1" class="btn btn-sm btn-default" tooltip="Delete Revision" ng-click="deleteRevision(revision._id)"><i class="fa fa-trash"></i></a>
                         </td>
 
                     </tr>
@@ -121,11 +121,11 @@
                     <tbody>
                     <tr ng-repeat="job in view.jobs">
                         <td>{{ ::job.name }}</td>
-                        <td><a ng-href="#/repo/{{ ::job.repo._id }}">{{ ::job.repo.owner }}/{{ ::job.repo.name }}</a></td>
+                        <td><a ui-sref="repo({id: job.repo._id})">{{ ::job.repo.owner }}/{{ ::job.repo.name }}</a></td>
                         <td>{{ ::job.author }}</td>
                         <td><a ng-href="{{ ::job.url }}" class="job-link" target="_blank">{{ ::job.url }}</a></td>
                         <td class="right">
-                            <a ng-href="#/task/{{ job._id }}" ng-if="view.user.id === job.user" class="btn btn-default" tooltip="Edit Task Template"><i class="fa fa-pencil"></i></a>
+                            <a ui-sref="task({id: job._id})" ng-if="view.user.id === job.user" class="btn btn-default" tooltip="Edit Task Template"><i class="fa fa-pencil"></i></a>
                         </td>
                     </tr>
                     <tr class="empty" ng-if="view.jobs.length === 0">

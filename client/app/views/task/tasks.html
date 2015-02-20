@@ -15,7 +15,7 @@
             </div>
             <div class="col-md-8">
                 <div class="actions pull-right" ng-if="view.user">
-                    <a ng-href="#/task/new" class="btn btn-primary"><i class="fa fa-plus"></i> New Task Template</a>
+                    <a ui-sref="task({id: 'new'})" class="btn btn-primary"><i class="fa fa-plus"></i> New Task Template</a>
                 </div>
             </div>
         </div>
@@ -38,11 +38,11 @@
                 <tr ng-repeat="job in view.jobs">
                     <td>{{ ::job.name }}</td>
                     <td><span class="label label-primary">{{ ::job.type }}</span></td>
-                    <td><a ng-href="#/repo/{{ ::job.repo._id }}">{{ ::job.repo.owner }}/{{ ::job.repo.name }}</a></td>
+                    <td><a ui-sref="repo({id: job.repo._id})">{{ ::job.repo.owner }}/{{ ::job.repo.name }}</a></td>
                     <td>{{ ::job.author }}</td>
                     <td><a ng-href="{{ ::job.url }}" class="job-link" target="_blank">{{ ::job.url }}</a></td>
                     <td class="right">
-                        <a ng-href="#/task/{{ job._id }}" ng-if="view.user.id === job.user" class="btn btn-default" tooltip="Edit Task Template"><i class="fa fa-pencil"></i></a>
+                        <a ui-sref="task({id: job._id})" ng-if="view.user.id === job.user" class="btn btn-default" tooltip="Edit Task Template"><i class="fa fa-pencil"></i></a>
                     </td>
                 </tr>
                 <tr class="empty" ng-if="view.jobs.length === 0">

@@ -25,16 +25,16 @@
                         </span>
                     </td>
                     <td class="field-id">
-                        <a ng-href="#/build/{{ ::build.head_commit.id }}" tooltip="{{ ::build.head_commit.id }}" tooltip-popup-delay="1000">#{{ ::build.head_commit.id }}</a>
+                        <a ui-sref="build({id: build.head_commit.id})" tooltip="{{ ::build.head_commit.id }}" tooltip-popup-delay="1000">#{{ ::build.head_commit.id }}</a>
                     </td>
                     <td class="field-repo">
-                        <a ng-href="#/repo/{{ ::build.repoId._id }}">{{ ::build.repoId.owner }}/{{ ::build.repoId.name }}</a>
+                        <a ui-sref="repo({id: build.repoId._id})">{{ ::build.repoId.owner }}/{{ ::build.repoId.name }}</a>
                     </td>
                     <td class="field-message">
                         <p tooltip="{{ ::build.head_commit.message }}" tooltip-popup-delay="1000">{{ ::build.head_commit.message }}</p>
                     </td>
                     <td class="field-commit">
-                        <a href="{{ ::build.head_commit.url }}" target="_blank" tooltip="{{ ::build.head_commit.id }}" tooltip-popup-delay="1000">{{ ::build.head_commit.id }}</a>
+                        <a ng-href="{{ ::build.head_commit.url }}" target="_blank" tooltip="{{ ::build.head_commit.id }}" tooltip-popup-delay="1000">{{ ::build.head_commit.id }}</a>
                     </td>
                     <td class="field-committer">{{ ::build.head_commit.committer.name }}</td>
                     <td class="field-date">{{ ::build.head_commit.timestamp | date:'short' }}</td>

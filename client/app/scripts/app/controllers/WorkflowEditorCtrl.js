@@ -4,7 +4,7 @@
 'use strict';
 
 angular.module('registryApp.app')
-    .controller('WorkflowEditorCtrl', ['$scope', '$rootScope', '$q', '$routeParams', '$modal', '$templateCache', '$location', 'Sidebar', 'Loading', 'Tool', 'Workflow', 'User', 'Repo', 'BeforeRedirect', 'Helper', 'PipelineService', function ($scope, $rootScope, $q, $routeParams, $modal, $templateCache, $location, Sidebar, Loading, Tool, Workflow, User, Repo, BeforeRedirect, Helper, PipelineService) {
+    .controller('WorkflowEditorCtrl', ['$scope', '$rootScope', '$q', '$stateParams', '$modal', '$templateCache', 'Sidebar', 'Loading', 'Tool', 'Workflow', 'User', 'Repo', 'BeforeRedirect', 'Helper', 'PipelineService', function ($scope, $rootScope, $q, $stateParams, $modal, $templateCache, Sidebar, Loading, Tool, Workflow, User, Repo, BeforeRedirect, Helper, PipelineService) {
 
         Sidebar.setActive('workflow editor');
 
@@ -13,7 +13,7 @@ angular.module('registryApp.app')
         $scope.view = {};
 
         /* workflow mode: new or edit */
-        $scope.view.mode = $routeParams.mode;
+        $scope.view.mode = $stateParams.mode;
 
         /* loading state of the page */
         $scope.view.loading = true;
@@ -90,8 +90,8 @@ angular.module('registryApp.app')
                 $scope.view.userRepos = result[1].list;
             });
 
-        if ($routeParams.mode === 'edit') {
-            Workflow.getRevision($routeParams.id)
+        if ($stateParams.mode === 'edit') {
+            Workflow.getRevision($stateParams.id)
                 .then(function (result) {
                     $scope.view.workflow = result.data;
                 });
@@ -339,6 +339,9 @@ angular.module('registryApp.app')
                 delete $scope.view.values[appName];
             }
 
+            console.log($scope.view.exposed);
+            console.log($scope.view.values);
+
         };
 
         /**
@@ -375,7 +378,7 @@ angular.module('registryApp.app')
 
             var deferred = $q.defer();
 
-            if ($routeParams.mode === 'new') {
+            if ($stateParams.mode === 'new') {
                 $scope.$broadcast('save-local', true);
             }
 

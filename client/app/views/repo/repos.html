@@ -16,7 +16,7 @@
             <div class="col-md-8">
                 <div class="actions pull-right" ng-if="view.user">
                     <a href ng-click="manageRepoModal()" class="btn btn-primary"><i class="fa fa-plus"></i> New Repo</a>
-                    <!--<a ng-href="#/add-your-github-repo" class="btn btn-default"><i class="fa fa-github"></i> Add Your GitHub Repo</a>-->
+                    <!--<a ui-sref="add-your-github-repo" class="btn btn-default"><i class="fa fa-github"></i> Add Your GitHub Repo</a>-->
                 </div>
             </div>
         </div>
@@ -37,7 +37,7 @@
             <tbody>
                 <tr ng-repeat="repo in view.repos">
                     <td class="field-id">
-                        <a ng-href="#/repo/{{ ::repo._id }}">{{ ::repo.owner }}/{{ ::repo.name }}</a>
+                        <a ui-sref="repo({id: repo._id})">{{ ::repo.owner }}/{{ ::repo.name }}</a>
                     </td>
                     <td class="field-created-by">{{ ::repo.created_by }}</td>
                     <td class="field-desc"><p>{{ ::repo.description }}</p></td>

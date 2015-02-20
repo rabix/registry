@@ -7,22 +7,26 @@
 'use strict';
 
 angular.module('registryApp.repo', [])
-    .config(['$routeProvider', function($routeProvider) {
+    .config(['$stateProvider', function($stateProvider) {
 
-        $routeProvider
-            .when('/repos', {
+        $stateProvider
+            .state('repos', {
+                url: '/repos',
                 templateUrl: 'views/repo/repos.html',
                 controller: 'ReposCtrl'
             })
-            .when('/repo/:id', {
+            .state('repo', {
+                url: '/repo/:id',
                 templateUrl: 'views/repo/repo.html',
                 controller: 'RepoCtrl'
             })
-            .when('/add-your-github-repo', {
+            .state('add-your-github-repo', {
+                url: '/add-your-github-repo',
                 templateUrl: 'views/repo/add-your-github-repo.html',
                 controller: 'AddYourGitHubRepoCtrl'
             })
-            .when('/repo-instructions/:id', {
+            .state('repo-instructions', {
+                url: '/repo-instructions/:id',
                 templateUrl: 'views/repo/repo-instructions.html',
                 controller: 'RepoInstructionsCtrl'
             });

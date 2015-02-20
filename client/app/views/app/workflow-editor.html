@@ -1,8 +1,8 @@
 <div ng-class="view.classes" loading="view.loading">
 
     <div class="heading">
-        <a ng-if="view.mode === 'new'" ng-href="#/apps" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
-        <a ng-if="view.mode === 'edit'" ng-href="#/workflow/{{ ::view.workflow._id }}" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
+        <a ng-if="view.mode === 'new'" ui-sref="apps" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
+        <a ng-if="view.mode === 'edit'" ui-sref="workflow-view({id: view.workflow._id})" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
         <h1>
             <div class="form-group workflow-name">
                 <span class="pipeline-repo" ng-show="view.workflow.pipeline.repo">({{ ::view.workflow.pipeline.repo.owner }}/{{ ::view.workflow.pipeline.repo.name }}) </span>

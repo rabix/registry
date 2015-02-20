@@ -60,7 +60,7 @@ angular.module('registryApp.cliche')
 
             $scope.view.validating = true;
 
-            Validator.validate(JSON.parse(json))
+            Validator.validate(JSON.parse(json), options.type)
                 .then(function() {
 
                     $scope.view.validating = false;

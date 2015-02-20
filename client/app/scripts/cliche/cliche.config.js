@@ -7,19 +7,19 @@
 'use strict';
 
 angular.module('registryApp.cliche', [])
-    .config(['$routeProvider', '$localForageProvider', function ($routeProvider, $localForageProvider) {
+    .config(['$stateProvider', '$localForageProvider', function ($stateProvider, $localForageProvider) {
 
-        $routeProvider
-            .when('/cliche/:type', {
+        $stateProvider
+            .state('cliche-new', {
+                url: '/cliche/:type',
                 templateUrl: 'views/cliche/cliche.html',
                 controller: 'ClicheCtrl'
             })
-            .when('/cliche/:type/:id/:revision', {
+            .state('cliche-edit', {
+                url: '/cliche/:type/:id/:revision',
                 templateUrl: 'views/cliche/cliche.html',
                 controller: 'ClicheCtrl'
             });
-
-        ZeroClipboard.config({swfPath: 'bower_components/zeroclipboard/dist/ZeroClipboard.swf'});
 
         $localForageProvider.config({
             name: 'registryApp',

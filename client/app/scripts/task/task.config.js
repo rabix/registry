@@ -7,14 +7,16 @@
 'use strict';
 
 angular.module('registryApp.task', [])
-    .config(['$routeProvider', function($routeProvider) {
+    .config(['$stateProvider', function($stateProvider) {
 
-        $routeProvider
-            .when('/tasks', {
+        $stateProvider
+            .state('tasks', {
+                url: '/tasks',
                 templateUrl: 'views/task/tasks.html',
                 controller: 'TasksCtrl'
             })
-            .when('/task/:id', {
+            .state('task', {
+                url: '/task/:id',
                 templateUrl: 'views/task/task.html',
                 controller: 'TaskCtrl'
             });

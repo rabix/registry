@@ -13,9 +13,9 @@ angular
         'ngAnimate',
         'ngCookies',
         'ngResource',
-        'ngRoute',
         'ngSanitize',
         'ui.bootstrap',
+        'ui.router',
         'ngPrettyJson',
         'LocalForageModule',
         'hc.marked',
@@ -29,27 +29,32 @@ angular
     .constant('Const', {
         exposedSeparator: '$'
     })
-    .config(['$routeProvider', '$httpProvider', '$localForageProvider', function ($routeProvider, $httpProvider, $localForageProvider) {
-        $routeProvider
-            .when('/', {
+    .config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$localForageProvider', function ($stateProvider, $urlRouterProvider, $httpProvider, $localForageProvider) {
+        $stateProvider
+            .state('home', {
+                url: '/',
                 templateUrl: 'views/home.html',
                 controller: 'HomeCtrl'
             })
-            .when('/builds', {
+            .state('builds', {
+                url: '/builds',
                 templateUrl: 'views/builds.html',
                 controller: 'BuildsCtrl'
             })
-            .when('/build/:id', {
+            .state('build', {
+                url: '/build/:id',
                 templateUrl: 'views/build.html',
                 controller: 'BuildCtrl'
             })
-            .when('/settings', {
+            .state('settings', {
+                url: '/settings',
                 templateUrl: 'views/settings.html',
                 controller: 'SettingsCtrl'
-            })
-            .otherwise({
-                redirectTo: '/'
             });
+
+        ZeroClipboard.config({swfPath: 'bower_components/zeroclipboard/dist/ZeroClipboard.swf'});
+
+        $urlRouterProvider.otherwise('/');
 
         $httpProvider.interceptors.push('HTTPInterceptor');
 
