@@ -52,6 +52,8 @@ angular
                 controller: 'SettingsCtrl'
             });
 
+        ZeroClipboard.config({swfPath: 'bower_components/zeroclipboard/dist/ZeroClipboard.swf'});
+
         $urlRouterProvider.otherwise('/');
 
         $httpProvider.interceptors.push('HTTPInterceptor');

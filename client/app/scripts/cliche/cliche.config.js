@@ -21,8 +21,6 @@ angular.module('registryApp.cliche', [])
                 controller: 'ClicheCtrl'
             });
 
-        ZeroClipboard.config({swfPath: 'bower_components/zeroclipboard/dist/ZeroClipboard.swf'});
-
         $localForageProvider.config({
             name: 'registryApp',
             version: 1.0,
