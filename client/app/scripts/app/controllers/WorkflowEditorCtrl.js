@@ -490,7 +490,7 @@ angular.module('registryApp.app')
         $scope.loadJsonImport = function() {
 
             var modalInstance = $modal.open({
-                template: $templateCache.get('views/partials/json-editor.html'),
+                template: $templateCache.get('views/cliche/partials/json-editor.html'),
                 controller: 'DyoleJsonEditorCtrl',
                 resolve: { options: function () { return {user: $scope.view.user}; }}
             });

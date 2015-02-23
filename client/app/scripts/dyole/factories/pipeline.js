@@ -993,6 +993,8 @@ angular.module('registryApp.dyole')
 
                     model.id = _id;
 
+                    console.log('Added node: ', _id);
+
                     this.model.schemas[model.id] = rawModel;
 
                     this.Event.trigger('node:add', model);
@@ -1063,13 +1065,16 @@ angular.module('registryApp.dyole')
                     json.display.nodes = {};
 
                     _.each(json.nodes, function (node) {
-                        json.display.nodes[node.id] = {
+                        var nodeId = node.id || node['@id'];
+
+                        json.display.nodes[nodeId] = {
                             x: node.x,
                             y: node.y
                         };
 
                         delete node.x;
                         delete node.y;
+                        delete node.id;
                     });
 
                     json.display.canvas.x = this.getEl().getTranslation().x;

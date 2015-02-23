@@ -492,6 +492,36 @@ var _formatter = {
         model.id = id;
 
         return model;
+    },
+
+    createNodeIds: function (nodes) {
+        var filter = ['https://', 'http://'];
+
+        function checkUrl(id) {
+            var r = false;
+            
+            _.forEach(filter, function (f) {
+                if ( _.contains(id,f) ) {
+                    r = true;
+                }
+            });
+
+            return r;
+        }
+
+        _.forEach(nodes, function (node) {
+            var _id = node['@id'];
+
+            if (!_id || checkUrl(_id)) {
+                _id = node.label;
+            }
+
+            node.id = _id;
+
+            console.log('Node: %s; Node id: %s', node.label, node.id);
+        });
+
+        return nodes;
     }
 
 };
@@ -642,16 +672,19 @@ var _helper = {
     },
 
     fixDisplay: function (display, nodes) {
+        var flag = false;
 
         this.sysCoords.x = 0;
         this.sysCoords.y = 0;
 
         if (typeof display === 'undefined') {
             display = this._createDisplay();
+            flag = true;
         }
 
         if (!display.nodes) {
             display.nodes = {};
+            flag = true;
         }
 
         if (!display.canvas) {
@@ -662,8 +695,10 @@ var _helper = {
             };
         }
 
-        this._generateNodesCoords(display, nodes);
-        this._fixSystemNodesCoords(display, nodes);
+        if (flag) {
+            this._generateNodesCoords(display, nodes);
+            this._fixSystemNodesCoords(display, nodes);
+        }
 
         return display;
     }
@@ -680,6 +715,7 @@ var fd2 = {
         var json = _.clone(p, true),
             model = _.clone(RabixModel, true);
 
+        model.display = json.display;
         model.dataLinks = _formatter.toRabixRelations(json.relations, json.exposed, model);
         model.steps = _formatter.createSteps(json.schemas, json.relations);
 
@@ -701,7 +737,10 @@ var fd2 = {
         //extend schemas with inputs and outputs
         schemas = _formatter.createInOutNodes(schemas, json, values);
 
-        nodes = _.toArray(schemas);
+        //clone schmeas to create nodes to manipulate on them
+        nodes = _.toArray(_.clone(schemas, true));
+
+        _formatter.createNodeIds(nodes);
 
         display = _helper.fixDisplay(json.display, nodes);
 
