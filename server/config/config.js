@@ -35,7 +35,7 @@ var config = {
             scope: 'repo:status,read:org,read:repo_hook,write:repo_hook,admin:repo_hook,user'
         },
         logging: {
-            path: '/Users/milica/rabix-registry',
+            path: '/data/log/rabix-registry',
             builds: '/data/log/rabix-registry/builds'
         },
         amazon: {
