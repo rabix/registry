@@ -30,7 +30,7 @@ Installing SASS [Guide](http://sass-lang.com/install)
 
 	npm install -g bower grunt-cli
 
-- `bower` installs and manages many client-side dependencies (e.g. jQuery)
+- `bower` installs and manages many client-side dependencies
 - `grunt-cli` used to execute grunt tasks defined in the project
 
 ### 3. Setting up repository
@@ -51,7 +51,7 @@ Installing SASS [Guide](http://sass-lang.com/install)
     grunt serve
 
 
-### 4. Create log files
+### 4. Create folders for log files
 
 Create folders /data/rabix-registry/
 
