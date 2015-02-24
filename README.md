@@ -19,12 +19,12 @@ This guides assumes you have installed the following tools successfully:
 Use nave (or similar) to manage your Node.js installations. You should always try
 to use the latest stable version of Node.js.
 
-(Mac OSx) Installing Homebrew [Guide](http://brew.sh/)
-Installing Node [Guide](http://nodejs.org/download/)
-Installing Git [Guide](http://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
-Installing Ruby [Guide](https://www.ruby-lang.org/en/documentation/installation/)
-Installing Compass [Guide](http://compass-style.org/install/)
-Installing SASS [Guide](http://sass-lang.com/install)
+- (Mac OSx) Installing Homebrew [Guide](http://brew.sh/)
+- Installing Node [Guide](http://nodejs.org/download/)
+- Installing Git [Guide](http://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+- Installing Ruby [Guide](https://www.ruby-lang.org/en/documentation/installation/)
+- Installing Compass [Guide](http://compass-style.org/install/)
+- sInstalling SASS [Guide](http://sass-lang.com/install)
 
 ### 2. Install development tools
 

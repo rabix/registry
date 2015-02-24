@@ -516,7 +516,7 @@ angular.module('registryApp.dyole')
                  * @private
                  */
                 _generateNodeId: function (model) {
-                    var _id, check = true, name = (model.softwareDescription && model.softwareDescription.label) ? model.softwareDescription.label : model.label,
+                    var _id, check = true, name = (model.softwareDescription && model.softwareDescription.label) ? model.softwareDescription.label : model.label || model.name,
                         n = 0;
 
                     if (name.charAt(0) !== '#') {
