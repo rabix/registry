@@ -1,7 +1,7 @@
 # Rabix Registry
 
 ## Instructions
-### 1. Install Node.js
+### 1. Install Requirements
 
 Skip this section if you have a node environment setup.
 
