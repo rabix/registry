@@ -47,6 +47,7 @@ Installing SASS [Guide](http://sass-lang.com/install)
     cd ../client
     npm install
     bower install
+    # prepares angular templates, compiles styles and sets up watchers for client development
     grunt serve
 
 
@@ -57,7 +58,7 @@ Create folders /data/rabix-registry/
     mkdir -p /data/rabix-registry
     sudo chown <your username>:<your usergroup> -R /data
 
-### 5. Client Build
+### 5. Client Production Build
 
 Grunt is used as the task runner. To do production build of your code run:
 
