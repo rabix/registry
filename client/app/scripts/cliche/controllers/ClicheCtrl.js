@@ -550,7 +550,7 @@ angular.module('registryApp.cliche')
 
                     }, function (error) {
                         $scope.view.loading = false;
-                        $rootScope.$broadcast('httpError', {json: error});
+                        $rootScope.$broadcast('httpError', {message: error});
                     });
             });
 
@@ -591,7 +591,7 @@ angular.module('registryApp.cliche')
 
                 }, function (error) {
                     $scope.view.loading = false;
-                    $rootScope.$broadcast('httpError', {json: error});
+                    $rootScope.$broadcast('httpError', {message: error});
                     deferred.reject();
                 });
 

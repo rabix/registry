@@ -46,7 +46,7 @@ angular.module('registryApp.cliche')
                 items: $scope.view.items
             };
 
-            var formatted = Cliche.formatProperty(inner, $scope.view.property);
+            var formatted = Cliche.formatProperty(inner, $scope.view.property, 'output');
 
             idObj.n = $scope.view.name;
 
