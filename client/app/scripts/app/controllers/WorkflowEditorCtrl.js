@@ -446,7 +446,6 @@ angular.module('registryApp.app')
             });
 
             modal.result.then(function () {
-//                $scope.$broadcast('pipeline:get:url');
                 PipelineInstance.getUrl();
             });
 
