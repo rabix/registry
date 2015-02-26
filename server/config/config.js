@@ -93,8 +93,8 @@ var config = {
         db: 'mongodb://localhost/server-draft2',
         clientPath: '../../client/dist',
         github: {
-            clientId: 'b62763ecddeb47ab5f42',
-            clientSecret: '796a4c862a99f747ed319ee5472f58929fc21ae9',
+            clientId: '9d2c7bbd5a2c2f828925',
+            clientSecret: '7580eb6627d214380ceebc38cebba158a149c24c',
             callbackURL: 'https://www.rabix.org:2222/auth/github/callback',
             scope: 'repo:status,read:org,read:repo_hook,write:repo_hook,admin:repo_hook,user'
         },
