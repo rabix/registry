@@ -789,6 +789,7 @@ angular.module('registryApp.dyole')
                         old = _.find(this.Pipeline.model.schemas[this.model.id].inputs, function (inp) {
                             return inp.id === ter.model.id;
                         });
+
                         oldId = ter.model.id;
 
                         old.label = name;

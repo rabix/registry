@@ -47,38 +47,6 @@ var config = {
         mail: conf.mail
     },
 
-    test: {
-        env: env,
-        root: rootPath,
-        app: {
-            name: 'Rabix Tests'
-        },
-        builds: {
-            path: '/data/storage/rabix-registry/builds'
-        },
-        port: 3000,
-        db: 'mongodb://localhost/server-test',
-        clientPath: '../../client/app',
-        github: {
-            clientId: 'bffb0517d8c629f2b2db',
-            clientSecret: '3697d0796cb2ed6443495399a963eed96d47bea5',
-            callbackURL: 'http://localhost:3000/auth/github/callback',
-            scope: 'repo:status,read:org,read:repo_hook,write:repo_hook,admin:repo_hook,user'
-        },
-        amazon: {
-            path: '/data/config/rabix/amazon.json'
-        },
-        logging: {
-            path: rootPath + '/logs',
-            builds: '/data/log/rabix-registry/builds'
-        },
-        tmpDir: {
-            path: rootPath + '/tmp'
-        },
-        mail: conf.mail
-
-    },
-
     staging: {
         env: env,
         root: rootPath,
@@ -110,6 +78,39 @@ var config = {
         },
         mail: conf.mail
     },
+
+    draft2: {
+        env: env,
+        root: rootPath,
+        app: {
+            name: 'Rabix',
+            githubName: 'Rabix-staging'
+        },
+        builds: {
+            path: '/data/storage/rabix-registry/builds'
+        },
+        port: 2000,
+        db: 'mongodb://localhost/server-draft2',
+        clientPath: '../../client/dist',
+        github: {
+            clientId: 'b62763ecddeb47ab5f42',
+            clientSecret: '796a4c862a99f747ed319ee5472f58929fc21ae9',
+            callbackURL: 'https://www.rabix.org:2222/auth/github/callback',
+            scope: 'repo:status,read:org,read:repo_hook,write:repo_hook,admin:repo_hook,user'
+        },
+        logging: {
+            path: '/data/log/draft2/rabix-registry',
+            builds: '/data/log/draft2/rabix-registry/builds'
+        },
+        amazon: {
+            path: '/data/config/rabix-registry/amazon.json'
+        },
+        tmpDir: {
+            path: rootPath + '/tmp'
+        },
+        mail: conf.mail
+    },
+
 
     production: {
 
