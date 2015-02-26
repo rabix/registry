@@ -744,64 +744,81 @@ angular.module('registryApp.dyole')
                     name = this.Pipeline._generateNodeId({name: name});
 
 
-                    this.model.name = name;
+                    this.model.label = name;
                     this.Pipeline.model.schemas[this.model.id].name = name;
 
                     //TODO: Refactor this to use one function
                     if (isInput) {
                         ter = this.outputs[0];
 
-                        old = this.Pipeline.model.schemas[this.model.id].outputs.properties[ter.model.id];
+                        old = _.find(this.Pipeline.model.schemas[this.model.id].outputs, function (inp) {
+                            return inp.id === ter.model.id;
+                        });
+
                         oldId = ter.model.id;
 
-                        old.name = name;
+                        old.label = name;
                         old.id = name;
+                        old['@id'] = name;
 
-                        this.model.outputs.properties[name] = old;
+                        this.model.outputs.push(old);
 
-                        delete this.model.outputs.properties[ter.model.id];
+                        _.remove(this.model.outputs, function (inp) {
+                            return inp.id === ter.model.id;
+                        });
 
                         this.Pipeline.model.schemas[name] = this.Pipeline.model.schemas[oldId];
 
-                        this.Pipeline.model.schemas[name].outputs.properties[name] = old;
+                        this.Pipeline.model.schemas[name].outputs.pop();
+                        this.Pipeline.model.schemas[name].outputs.push(old);
 
-                        delete this.Pipeline.model.schemas[name].outputs.properties[oldId];
+                        _.remove(this.Pipeline.model.schemas[name].outputs, function (inp) {
+                            return inp.id === oldId;
+                        });
 
-                        ter.model.name = ter.model.id = name;
+                        ter.model.label = ter.model.id = ter.model['@id'] = name;
 
                         ter.changeTerminalName(name);
 
-                        this.model.outputs.properties[ter.model.id] = ter.model;
+                        this.model.outputs[0] = ter.model;
 
                     } else {
 
                         ter = this.inputs[0];
 
-                        old = this.Pipeline.model.schemas[this.model.id].inputs.properties[ter.model.id];
+                        old = _.find(this.Pipeline.model.schemas[this.model.id].inputs, function (inp) {
+                            return inp.id === ter.model.id;
+                        });
                         oldId = ter.model.id;
 
-                        old.name = name;
+                        old.label = name;
                         old.id = name;
+                        old['@id'] = name;
 
-                        this.model.inputs.properties[name] = old;
+                        this.model.inputs.push(old);
 
-                        delete this.model.inputs.properties[ter.model.id];
+                        _.remove(this.model.inputs, function (inp) {
+                            return inp.id === ter.model.id;
+                        });
 
                         this.Pipeline.model.schemas[name] = this.Pipeline.model.schemas[oldId];
 
-                        this.Pipeline.model.schemas[name].inputs.properties[name] = old;
+                        this.Pipeline.model.schemas[name].inputs.pop();
+                        this.Pipeline.model.schemas[name].inputs.push(old);
 
-                        delete this.Pipeline.model.schemas[name].inputs.properties[oldId];
+                        _.remove(this.Pipeline.model.schemas[name].inputs, function (inp) {
+                            return inp.id === oldId;
+                        });
 
-                        ter.model.name = ter.model.id = name;
+                        ter.model.label = ter.model.id = ter.model['@id'] = name;
 
                         ter.changeTerminalName(name);
 
-                        this.model.inputs.properties[ter.model.id] = ter.model;
+                        this.model.inputs[0] = ter.model;
 
                     }
 
-                    this.model.id = name;
+                    this.model.id = this.model['@id'] = name;
                     this.model.softwareDescription.name = name;
 
                     this.Pipeline.model.schemas[name].id = this.model.id;
@@ -818,13 +835,13 @@ angular.module('registryApp.dyole')
                     // Delete unwanted props from schema
                     // when id changes it picks up whole model with x and y coordinates which we dont wont
                     if (isInput) {
-                        delete this.Pipeline.model.schemas[this.model.id].outputs.properties[this.model.id].x;
-                        delete this.Pipeline.model.schemas[this.model.id].outputs.properties[this.model.id].y;
-                        delete this.Pipeline.model.schemas[this.model.id].outputs.properties[this.model.id].input;
+                        delete this.Pipeline.model.schemas[this.model.id].outputs[0].x;
+                        delete this.Pipeline.model.schemas[this.model.id].outputs[0].y;
+                        delete this.Pipeline.model.schemas[this.model.id].outputs[0].input;
                     } else {
-                        delete this.Pipeline.model.schemas[this.model.id].inputs.properties[this.model.id].x;
-                        delete this.Pipeline.model.schemas[this.model.id].inputs.properties[this.model.id].y;
-                        delete this.Pipeline.model.schemas[this.model.id].inputs.properties[this.model.id].input;
+                        delete this.Pipeline.model.schemas[this.model.id].inputs[0].x;
+                        delete this.Pipeline.model.schemas[this.model.id].inputs[0].y;
+                        delete this.Pipeline.model.schemas[this.model.id].inputs[0].input;
                     }
 
                     _.each(this.connections, function (c) {
