@@ -1,6 +1,10 @@
 #!/bin/sh
 
-DIR=/data/app/staging/registry
+if [ -n "$1" ]; then
+    DIR="$1"
+else
+    DIR=/data/app/staging/registry
+fi
 
 echo " ******* Starting build.. ******* "
 
