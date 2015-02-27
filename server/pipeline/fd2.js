@@ -75,15 +75,11 @@ var _common = {
         if (typeof schema.type !== 'undefined' || ( typeof schema.type === 'object' && !_.isArray(schema.type))) {
 
             if (!_.isArray(schema.type)) {
-                if (!this._fileTypeCheck(schema, schema.type)) {
-                    return true;
-                }
+                return this._fileTypeCheck(schema, schema.type);
             } else {
                 // this means input is not required and type is array where first element is null
                 // thats why we take second element since that is it's real type
-                if (!this._fileTypeCheck(schema, schema.type[1])) {
-                    return true;
-                }
+                return this._fileTypeCheck(schema, schema.type[1]);
             }
         }
 
@@ -151,9 +147,8 @@ var _formatter = {
                 destination: ''
             };
 
-            var input_id = ids.split(Const.exposedSeparator)[1];
-
-            dataLink.destination = ids.replace(Const.exposedSeparator, '/');
+            var input_id = '#' + ids.split(Const.exposedSeparator)[1];
+            dataLink.destination = ids.replace(Const.exposedSeparator, '/#');
 
             _self._createWorkflowInput(input_id, schema, workflow);
 
@@ -337,7 +332,9 @@ var _formatter = {
         _.forEach(workflow.inputs, function (input) {
             var id = input['@id'];
 
-            system[id] = _self._generateIOSchema('input', input, id);
+            if (_common.checkTypeFile(input.schema)) {
+                system[id] = _self._generateIOSchema('input', input, id);
+            }
         });
 
         if (!_.isArray(workflow.outputs)) {
@@ -347,7 +344,9 @@ var _formatter = {
         _.forEach(workflow.outputs, function (output) {
             var id = output['@id'];
 
-            system[id] = _self._generateIOSchema('output', output, id);
+            if (_common.checkTypeFile(output.schema)) {
+                system[id] = _self._generateIOSchema('output', output, id);
+            }
         });
 
         return _.assign(schemas, system);
@@ -360,21 +359,21 @@ var _formatter = {
 
         function checkTypeFile(src, dest) {
 
-            if (dest.length === 2) {
+            var input, schema,
+                node_id = dest[0],
+                input_id = dest.length === 1 ? dest[0] : dest[1],
+                node = schemas[node_id];
 
-                var input, schema,
-                    node = schemas[dest[0]];
+            input = _.find(node.inputs, function (i) {
+                return i['@id'] === input_id;
+            });
 
-                input = _.find(node.inputs, function (i) {
-                    return i['@id'] === dest[1];
-                });
+            if (typeof input !== 'undefined') {
+                schema = input.schema;
 
-                if (typeof input !== 'undefined') {
-                    schema = input.schema;
-
-                    return _common.checkTypeFile(schema);
-                }
-
+                return _common.checkTypeFile(schema);
+            } else {
+                console.log('Input %s not found on node %s', input_id, node_id);
             }
 
             return false;
@@ -392,7 +391,7 @@ var _formatter = {
                     type: 'connection'
                 };
 
-            if (!checkTypeFile(src, dest)) {
+            if (checkTypeFile(src, dest)) {
 
                 if (src.length === 1) {
                     relation.output_name = relation.start_node = src[0];
@@ -419,7 +418,8 @@ var _formatter = {
                     });
 
                     if (typeof ex !== 'undefined') {
-                        exposed[dest[0]+ Const.exposedSeparator + dest[1]] = ex;
+                        //remove # with slice in front of input id (cliche form builder required)
+                        exposed[dest[0]+ Const.exposedSeparator + dest[1].slice(1,dest[1].length)] = ex;
                     } else {
                         console.error('Param exposed but not set in workflow inputs');
                     }
@@ -737,6 +737,7 @@ var fd2 = {
         //extend schemas with inputs and outputs
         schemas = _formatter.createInOutNodes(schemas, json, values);
 
+        //clone schemas to create nodes to manipulate on them
         nodes = _.toArray(_.clone(schemas, true));
 
         _formatter.createNodeIds(nodes);
