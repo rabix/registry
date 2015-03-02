@@ -757,7 +757,7 @@ angular.module('registryApp.dyole')
 
                         oldId = ter.model.id;
 
-                        old.label = name;
+                        old.label = old.name  = name;
                         old.id = name;
                         old['@id'] = name;
 
@@ -792,7 +792,7 @@ angular.module('registryApp.dyole')
 
                         oldId = ter.model.id;
 
-                        old.label = name;
+                        old.label = old.name = name;
                         old.id = name;
                         old['@id'] = name;
 

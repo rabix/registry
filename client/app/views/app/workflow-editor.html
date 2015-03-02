@@ -165,7 +165,7 @@
                                                     </div>
                                                 </a>
 
-                                                <div ng-show="view.appRevisions[workflow._id].toggled" ng-repeat="revision in workflow.revisions" class="revisions-list nested" ng-show="view.appRevisions[workflow._id].toggled">
+                                                <div ng-show="view.appRevisions[workflow._id].toggled" ng-repeat="revision in workflow.revisions | orderBy:'-version':false" class="revisions-list nested" ng-show="view.appRevisions[workflow._id].toggled">
                                                     <a href drag="revision">
                                                         <i class="fa fa-puzzle-piece"></i>
                                                         {{ ::workflow.name }} <small>(revision {{ ::revision.version }} )</small>
