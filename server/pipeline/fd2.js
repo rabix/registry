@@ -284,11 +284,13 @@ var _formatter = {
 
                 _.forEach(schema.inputs, function (inp) {
                     delete inp.label;
+                    delete inp.name;
                     delete inp.id;
                 });
 
                 _.forEach(schema.outputs, function (out) {
                     delete out.label;
+                    delete out.name;
                     delete out.id;
                 });
 
@@ -472,16 +474,16 @@ var _formatter = {
 
         schema.id = id;
 
-        schema.name = schema.name || id;
+        schema.label = schema.label || id;
 
         var model = {
             '@id': id,
-            'label': schema.name || 'System app',
+            'label': schema.label || 'Rabix System app',
             'softwareDescription': {
                 'repo_owner': 'rabix',
                 'repo_name': 'system',
                 'type': type,
-                'name': schema.label || schema.name
+                'name': schema.label
             },
             'inputs': [],
             'outputs': []
