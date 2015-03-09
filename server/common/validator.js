@@ -442,9 +442,9 @@ var validator = function() {
             if (!_.isEmpty(invalid)) {
                 output.invalid = _.cloneDeep(invalid);
             }
-            if (!_.isEmpty(obsolete)) {
-                output.obsolete = _.cloneDeep(obsolete);
-            }
+//            if (!_.isEmpty(obsolete)) {
+//                output.obsolete = _.cloneDeep(obsolete);
+//            }
             if (!_.isEmpty(required)) {
                 output.required = _.cloneDeep(required);
             }
