@@ -15,10 +15,12 @@ angular.module('registryApp.cliche')
         $scope.view = {};
         $scope.view.key = key;
         $scope.view.mode = options.mode;
-        $scope.view.property = Cliche.getSchema('output', options.property, options.toolType);
+        $scope.view.property = options.property || {};
+        $scope.view.property.schema = Cliche.getSchema('output', options.property, options.toolType);
+        $scope.view.property.adapter = Cliche.getAdapter(options.property);
         $scope.view.name = Cliche.parseName(options.property);
         $scope.view.required = Cliche.isRequired($scope.view.property.schema);
-        $scope.view.type = Cliche.parseType($scope.view.property.type);
+        $scope.view.type = Cliche.parseType($scope.view.property.schema);
         $scope.view.items = Cliche.getItemsRef($scope.view.type, $scope.view.property.schema);
 
         $scope.view.types = Cliche.getTypes('output');
