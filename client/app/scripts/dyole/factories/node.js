@@ -245,7 +245,7 @@ angular.module('registryApp.dyole')
 
                     if (typeof schema === 'string') {
                         if (checkType({}, schema)) {
-                            input.required = true;
+                            input.required = input.schema.length === 1;
                             inputs.push(input);
                         }
                     } else if ( typeof schema.type === 'object' && !_.isArray(schema.type)) {
