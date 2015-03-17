@@ -44,10 +44,10 @@ angular.module('registryApp.cliche')
 
                     var name = result.prop['@id'].slice(1);
                     var schema = result.prop.schema;
-                    var typeObj = schema.type;
+                    var typeObj = schema[0] === 'null' ? schema[1] : schema[0]; //in case property is not required
                     var enumObj = Cliche.parseEnum(typeObj);
                     var type = Cliche.parseType(typeObj);
-                    var itemType = (schema.items ? schema.items.type : null);
+                    var itemType = (typeObj.items ? typeObj.items.type : null);
 
                     $scope.inputs[name] = Helper.getDefaultInputValue(name, enumObj.symbols, type, itemType);
                 }

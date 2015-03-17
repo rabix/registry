@@ -22,16 +22,17 @@ angular.module('registryApp.cliche')
          * - load appropriate template
          */
         var parseStructure = function() {
-
             var enumObj, tplType;
 
-            $scope.view.property = Cliche.getSchema('input', $scope.prop, $scope.type, true);
+            $scope.view.property = $scope.prop;
+            $scope.view.schema = Cliche.getSchema('input', $scope.prop, $scope.type, true);
             $scope.view.name = Cliche.parseName($scope.prop);
-            $scope.view.type = Cliche.parseType($scope.view.property.type);
-            $scope.view.required = Cliche.isRequired($scope.view.property.type);
-            $scope.view.items = Cliche.getItemsRef($scope.view.type, $scope.view.property);
+            $scope.view.required = Cliche.isRequired($scope.view.schema);
+            $scope.view.type = Cliche.parseType($scope.view.schema);
+            $scope.view.items = Cliche.getItemsRef($scope.view.type, $scope.view.schema);
+            $scope.view.adapter = Cliche.getAdapter($scope.prop);
 
-            enumObj = Cliche.parseEnum($scope.view.property.type);
+            enumObj = Cliche.parseEnum($scope.view.schema);
 
             $scope.view.enumName = enumObj.name;
             $scope.view.symbols = enumObj.symbols;

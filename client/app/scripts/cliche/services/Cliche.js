@@ -455,23 +455,21 @@ angular.module('registryApp.cliche')
         /**
          * Extract type literal
          *
-         * @param {*} type
-         * @returns {*}
+         * @param {*} schema
+         * @returns {string} type
          */
-        var parseType = function(type) {
+        var parseType = function(schema) {
 
-            var parse = function(t) {
-                return (t && t.type) ? t.type : t;
-            };
+            if (_.isString(schema)) {
+                return schema;
 
-            if (_.isString(type)) {
-                return type;
-            } else if (_.isArray(type)) {
-                return parse(type[1]);
-            } else {
-                return parse(type);
+            } else if ( _.isArray(schema)) {
+                var tmp = schema[1] || schema[0];
+                return _.isObject(tmp) ? tmp.type : tmp;
+
+            } else if (_.isObject(schema)) {
+                return schema.type;
             }
-
         };
 
         /**
@@ -482,7 +480,7 @@ angular.module('registryApp.cliche')
          */
         var parseTypeObj = function(type) {
 
-            return _.isArray(type) ? type[1] : type;
+            return _.isArray(type) ? type[1] || type[0] : type;
 
         };
 
@@ -638,8 +636,8 @@ angular.module('registryApp.cliche')
 
             var promises = [],
                 joiner = ' ',
-                schema = getSchema('input', property, 'tool'),
-                type = parseType(schema.type),
+                schema = getSchema('input', property, 'tool', false),
+                type = parseType(schema),
                 items = getItemsRef(type, schema);
 
             if (items && items.type !== 'record') {
@@ -658,7 +656,7 @@ angular.module('registryApp.cliche')
                             deferred.reject(error);
                         });
                 } else {
-                    applyTransform(schema.adapter.argValue, (_.isObject(val) ? val.path : val), true)
+                    applyTransform(property.adapter.argValue, (_.isObject(val) ? val.path : val), true)
                         .then(function (result) {
                             deferred.resolve(result);
                         }, function (error) {
@@ -696,10 +694,9 @@ angular.module('registryApp.cliche')
                 keys = _.keys(inputs),
                 defined = _.filter(properties, function(property) {
 
-                    var key = parseName(property),
-                        schema = getSchema('input', property, 'tool');
+                    var key = parseName(property);
 
-                    return _.contains(keys, key) && schema.adapter;
+                    return _.contains(keys, key) && property.adapter;
                 });
 
             /* go through properties */
@@ -708,20 +705,20 @@ angular.module('registryApp.cliche')
                 var deferred = $q.defer(),
                     key = parseName(property),
                     schema = getSchema('input', property, 'tool'),
-                    type = parseType(schema.type),
+                    type = parseType(schema),
                     items = getItemsRef(type, schema),
-                    prefix = schema.adapter.prefix || '',
-                    separator = parseSeparator(prefix, schema.adapter.separator),
-                    itemSeparator = parseItemSeparator(schema.adapter.itemSeparator),
+                    prefix = property.adapter.prefix || '',
+                    separator = parseSeparator(prefix, property.adapter.separator),
+                    itemSeparator = parseItemSeparator(property.adapter.itemSeparator),
 
                     prop = _.extend({
                         key: key,
                         type: type,
                         val: '',
-                        position: schema.adapter.position || 0,
+                        position: property.adapter.position || 0,
                         prefix: prefix,
                         separator: separator
-                    }, schema.adapter);
+                    }, property.adapter);
 
                 switch (type) {
                 case 'array':
@@ -736,7 +733,7 @@ angular.module('registryApp.cliche')
                     break;
                 case 'file':
                     /* if input is FILE */
-                    applyTransform(schema.adapter.argValue, inputs[key].path, true)
+                    applyTransform(property.adapter.argValue, inputs[key].path, true)
                         .then(function (result) {
                             prop.val = result;
                             deferred.resolve(prop);
@@ -756,10 +753,10 @@ angular.module('registryApp.cliche')
                     break;
                 case 'boolean':
                     /* if input is BOOLEAN */
-                    if (schema.adapter.argValue) {
+                    if (property.adapter.argValue) {
                         //TODO: this is hack, if bool type has expression defined then it works in the same way as (for example) string input type
                         prop.type = 'string';
-                        applyTransform(schema.adapter.argValue, inputs[key], true)
+                        applyTransform(property.adapter.argValue, inputs[key], true)
                             .then(function (result) {
                                 prop.val = result;
                                 deferred.resolve(prop);
@@ -776,7 +773,7 @@ angular.module('registryApp.cliche')
                     break;
                 default:
                     /* if input is anything else (STRING, ENUM, INT, FLOAT) */
-                    applyTransform(schema.adapter.argValue, inputs[key], true)
+                    applyTransform(property.adapter.argValue, inputs[key], true)
                         .then(function (result) {
                             prop.val = result;
                             deferred.resolve(prop);
@@ -935,12 +932,12 @@ angular.module('registryApp.cliche')
         /**
          * Check if property is required
          *
-         * @param type
+         * @param schema {array}
          * @returns {Boolean}
          */
-        var isRequired = function(type) {
+        var isRequired = function(schema) {
 
-            return !(_.isArray(type) && type.length > 1 && type[0] === 'null');
+            return !(schema.length > 1 && schema[0] === 'null');
 
         };
 
@@ -978,17 +975,8 @@ angular.module('registryApp.cliche')
 
             };
 
-            /* if first level and array */
-            if (inner.key === '@id' && inner.type === 'array') {
-
-                type = 'array';
-                tmp.items = inner.items;
-
-                stripParams(tmp, tmp.items.type);
-
-
-            /* if not first level and array */
-            } else if (inner.key === 'name' && inner.type === 'array') {
+            /* if any level and array */
+            if (inner.type === 'array') {
 
                 type = {
                     type: 'array',
@@ -1011,14 +999,6 @@ angular.module('registryApp.cliche')
                 type = inner.type;
             }
 
-            /* format structure for required property */
-            if (inner.required) {
-                tmp.type = type;
-            } else {
-                tmp.type = ['null', type];
-            }
-
-
             /* preserve adapter section if forced */
             if (propertyType && propertyType !== 'output') {
                 if (tmp.adapter && _.isEmpty(tmp.adapter)) { tmp.adapter = {prefix: ''}; }
@@ -1028,13 +1008,23 @@ angular.module('registryApp.cliche')
 
             /* schema for the first level */
             if (inner.key === '@id') {
-
+                /* format structure for required property */
+                tmp.schema = inner.required ? [type] : ['null', type];
+                formatted = tmp;
                 formatted['@id'] = '#' + inner.name;
-                formatted.depth = inner.type === 'array' ? 1 : 0;
-                formatted.schema = tmp;
 
-            /* schema for every other level */
+                //@todo: actually calculate depth instead of hardcoding it
+                formatted.depth = inner.type === 'array' ? 1 : 0;
+
+            /*
+            *  schema for every other level
+            *  under the key "type"
+            */
             } else {
+                /* format structure for required property */
+                tmp.type = inner.required ? [type] : ['null', type];
+                /* remove schema which was automatically appended to property */
+                delete tmp.schema;
                 formatted = tmp;
                 formatted.name = inner.name;
             }
@@ -1087,13 +1077,14 @@ angular.module('registryApp.cliche')
          * Get reference for items
          *
          * @param {string} type
-         * @param {Object} schema
+         * @param {Array} schema
          * @returns {*}
          */
         var getItemsRef = function(type, schema) {
 
             if (type === 'array') {
-                return schema.items || (schema.type.items || schema.type[1].items);
+                var arr = schema[1] || schema[0];
+                return arr.items;
             } else {
                 return null;
             }
@@ -1117,15 +1108,30 @@ angular.module('registryApp.cliche')
             };
 
             if (_.isEmpty(property)) {
-                return (toolType === 'tool') ? {type: ['null', defaultTypes[type]], adapter: {}} : {type: ['null', defaultTypes[type]]};
+                return (toolType === 'tool') ? ['null', defaultTypes[type]] : ['null', defaultTypes[type]];
             }
 
-            if (_.isUndefined(property.schema)) {
+            if (_.isUndefined(property.schema) && _.isUndefined(property.type)) {
+                /*
+                in case of second level inputs where structure is
+                {
+                    type: {*},
+                    name: {string}
+                    adapters: {object}
+                }
+                 */
                 return ref ? property : angular.copy(property);
             } else {
-                return ref ? property.schema : angular.copy(property.schema);
+                return ref ? (property.schema || property.type) : (angular.copy(property.schema || property.type));
+            }
+        };
+
+        var getAdapter = function (property, ref) {
+            if (_.isEmpty(property)) {
+                return {};
             }
 
+            return ref ? property.adapter : angular.copy(property.adapter);
         };
 
         /**
@@ -1170,6 +1176,7 @@ angular.module('registryApp.cliche')
             getItemsRef: getItemsRef,
             getTypes: getTypes,
             getSchema: getSchema,
+            getAdapter: getAdapter,
             checkIfEnumNameExists: checkIfEnumNameExists,
             manageProperty: manageProperty,
             deleteProperty: deleteProperty,

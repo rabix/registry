@@ -229,11 +229,17 @@ angular.module('registryApp.cliche')
                 def: def
             });
 
-            if (_.isEmpty(trace.obsolete) && _.isEmpty(trace.required) && _.isEmpty(trace.invalid)) {
+            if (_.isEmpty(trace.required) && _.isEmpty(trace.invalid)) {
                 deferred.resolve();
             } else {
                 deferred.reject(trace);
             }
+            //
+            //if (_.isEmpty(trace.obsolete) && _.isEmpty(trace.required) && _.isEmpty(trace.invalid)) {
+            //    deferred.resolve();
+            //} else {
+            //    deferred.reject(trace);
+            //}
 
             return deferred.promise;
 

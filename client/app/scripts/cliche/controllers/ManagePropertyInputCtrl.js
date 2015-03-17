@@ -16,16 +16,18 @@ angular.module('registryApp.cliche')
         $scope.view = {};
         $scope.view.key = key;
         $scope.view.mode = options.mode;
-        $scope.view.property = Cliche.getSchema('input', options.property, options.toolType);
+        $scope.view.property = options.property || {};
+        $scope.view.property.schema =  Cliche.getSchema('input', options.property, options.toolType, false);
+        $scope.view.property.adapter = Cliche.getAdapter(options.property);
         $scope.view.name = Cliche.parseName(options.property);
-        $scope.view.required = Cliche.isRequired($scope.view.property.type);
-        $scope.view.type = Cliche.parseType($scope.view.property.type);
-        $scope.view.items = Cliche.getItemsRef($scope.view.type, $scope.view.property);
+        $scope.view.required = Cliche.isRequired($scope.view.property.schema);
+        $scope.view.type = Cliche.parseType($scope.view.property.schema);
+        $scope.view.items = Cliche.getItemsRef($scope.view.type, $scope.view.property.schema);
 
         $scope.view.types = Cliche.getTypes('input');
         $scope.view.itemTypes = Cliche.getTypes('inputItem');
 
-        var enumObj = Cliche.parseEnum($scope.view.property.type);
+        var enumObj = Cliche.parseEnum($scope.view.property.schema);
 
         $scope.view.enumName = enumObj.name;
         $scope.view.symbols = enumObj.symbols;

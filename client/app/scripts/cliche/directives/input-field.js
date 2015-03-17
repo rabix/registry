@@ -14,16 +14,18 @@ angular.module('registryApp.cliche')
         $scope.key = $scope.key || 'name';
 
         $scope.view.name = Cliche.parseName($scope.prop);
-        $scope.view.property = Cliche.getSchema('input', $scope.prop, $scope.type, true);
-        $scope.view.type = Cliche.parseType($scope.view.property.type);
-        $scope.view.required = Cliche.isRequired($scope.view.property.type);
-        $scope.view.items = Cliche.getItemsRef($scope.view.type, $scope.view.property);
+        $scope.view.property = $scope.prop || {};
+        $scope.view.property.schema = Cliche.getSchema('input', $scope.prop, $scope.type, true);
+        $scope.view.property.adapter = Cliche.getAdapter($scope.prop);
+        $scope.view.type = Cliche.parseType($scope.view.property.schema);
+        $scope.view.required = Cliche.isRequired($scope.view.property.schema);
+        $scope.view.items = Cliche.getItemsRef($scope.view.type, $scope.view.property.schema);
 
         $scope.view.tpl = 'views/cliche/inputs/input-' + $scope.view.type  + '.html';
 
         var keyName = $scope.appName + Const.exposedSeparator + $scope.view.name;
 
-        var enumObj = Cliche.parseEnum($scope.view.property.type);
+        var enumObj = Cliche.parseEnum($scope.view.property.schema);
 
         $scope.view.enumName = enumObj.name;
         $scope.view.symbols = enumObj.symbols;
@@ -95,12 +97,12 @@ angular.module('registryApp.cliche')
 
             inputScheme = getFileScheme($scope.model);
 
-            /* type RECORD */
+        /* type RECORD */
         } else if($scope.view.type === 'record') {
 
             inputScheme = getObjectScheme($scope.model);
 
-            /* type ARRAY */
+        /* type ARRAY */
         } else if($scope.view.type === 'array') {
 
             inputScheme = [];
