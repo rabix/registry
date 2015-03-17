@@ -669,14 +669,10 @@ angular.module('registryApp.cliche')
             };
 
             if(_.isArray(input)) {
-                console.log('input is array');
-                
                 _.each(input, function(val) {
                     promises.push(evaluate(val));
                 });
             } else if (_.isString(input)) {
-                console.log('input is string');
-                
                 promises.push(input);
             }
 
