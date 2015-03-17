@@ -104,7 +104,6 @@ angular.module('registryApp.cliche')
 
         /* type ARRAY */
         } else if($scope.view.type === 'array') {
-
             inputScheme = [];
 
             $scope.view.items = $scope.view.items || {type: 'string'};
@@ -123,9 +122,14 @@ angular.module('registryApp.cliche')
                 });
                 break;
             default:
-                _.each($scope.model, function(value) {
-                    inputScheme.push(getDefaultScheme(value));
-                });
+                //Type checking to avoid an array of characters
+                if (_.isArray($scope.model)) {
+                    _.each($scope.model, function(value) {
+                        inputScheme.push(getDefaultScheme(value));
+                    });
+                } else if (_.isString($scope.model)) {
+                    inputScheme.push(getDefaultScheme($scope.model));
+                }
                 break;
             }
             /* type STRING, NUMBER, INTEGER, BOOLEAN */

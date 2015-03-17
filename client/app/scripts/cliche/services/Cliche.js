@@ -668,9 +668,18 @@ angular.module('registryApp.cliche')
 
             };
 
-            _.each(input, function(val) {
-                promises.push(evaluate(val));
-            });
+            if(_.isArray(input)) {
+                console.log('input is array');
+                
+                _.each(input, function(val) {
+                    promises.push(evaluate(val));
+                });
+            } else if (_.isString(input)) {
+                console.log('input is string');
+                
+                promises.push(input);
+            }
+
 
             return $q.all(promises)
                 .then(function (result) {
@@ -741,7 +750,7 @@ angular.module('registryApp.cliche')
                             deferred.reject(error);
                         });
                     break;
-                    case 'record':
+                case 'record':
                     /* if input is RECORD - not in use at this moment, because input type can not be record for now */
                     parseObjectInput(items.fields, inputs[key])
                         .then(function (result) {
