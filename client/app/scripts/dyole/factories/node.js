@@ -241,9 +241,14 @@ angular.module('registryApp.dyole')
                 }
 
                 _.each(this.inputRefs, function (input) {
-                    var schema = input.schema;
+                    var schema = input.schema[1] || input.schema[0];
 
-                    if (typeof schema.type !== 'undefined' || ( typeof schema.type === 'object' && !_.isArray(schema.type))) {
+                    if (typeof schema === 'string') {
+                        if (checkType({}, schema)) {
+                            input.required = true;
+                            inputs.push(input);
+                        }
+                    } else if ( typeof schema.type === 'object' && !_.isArray(schema.type)) {
 
                         if (!_.isArray(schema.type)) {
                             // if schema is not array that means that input is required and is string
