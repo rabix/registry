@@ -464,6 +464,7 @@ angular.module('registryApp.cliche')
          * @param key
          */
         $scope.updateCliAdapter = function (value, index, key) {
+            value = angular.copy(value);
 
             if (index) {
                 $scope.view.tool.cliAdapter[key][index] = value;
