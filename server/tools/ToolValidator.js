@@ -11,7 +11,9 @@ var ScriptSchema = require('./ScriptSchema');
 
 validator.addSchema('tool', ToolSchema);
 validator.addSchema('script', ScriptSchema);
-
+validator.addFormat('validateId', function (id) {
+   return typeof id === 'string' && id.charAt(0) === '#';
+});
 
 module.exports =  {
     validateTool: function (json) {
