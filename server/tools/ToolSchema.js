@@ -5,11 +5,13 @@
 'use strict';
 
 var Schema = {
+    $schema: 'http://json-schema.org/schema#',
     type: 'object',
     definitions: {
         adapter: {},
         schemaDef: {
             type: 'array',
+            minLength: 1,
             items: {
                 oneOf: [
                     {
@@ -34,30 +36,72 @@ var Schema = {
                                 enum: ['array']
                             },
                             items: {
-                                type: 'object',
-                                properties: {
-                                    type: {
-                                        type: 'string'
+                                oneOf: [
+                                    {
+                                        type: 'object',
+                                        properties: {
+                                            type: {
+                                                type: 'string',
+                                                enum: ['string', 'boolean', 'file', 'float', 'int']
+                                            }
+                                        },
+                                        required: ['type']
+                                    },
+                                    {
+                                        type: 'object',
+                                        properties: {
+                                            type: {
+                                                type: 'string',
+                                                enum: ['record']
+                                            },
+                                            fields: {
+                                                $ref: '#/definitions/fieldsDef'
+                                            }
+                                        },
+                                        required: ['type', 'fields']
                                     }
-                                }
-                            },
-                            required: ['type', 'items']
-                        }
+
+                                ]
+
+                            }
+                        },
+                        required: ['type', 'items']
                     },
                     {
-                        type: 'object',
-                        properties: {
-                            type: {
-                                type: 'string',
-                                enum: ['record']
-                            },
-                            fields: {
-                                $ref: '#/definitions/schemaDef'
-                            },
-                            required: ['type', 'fields']
-                        }
+                        $ref: '#/definitions/recordDef'
                     }
                 ]
+            }
+        },
+        recordDef: {
+            type: 'object',
+            properties: {
+                type: {
+                    type: 'string',
+                    enum: ['record']
+                },
+                fields: {
+                    $ref: '#/definitions/fieldsDef'
+                }
+            },
+            required: ['type', 'fields']
+        },
+        fieldsDef: {
+            type: 'array',
+            items: {
+                type: 'object',
+                properties: {
+                    type: {
+                        $ref: '#/definitions/schemaDef'
+                    },
+                    name: {
+                        type: 'string'
+                    },
+                    adapter: {
+                        type: 'object'
+                    }
+                },
+                required: ['type', 'name']
             }
         }
     },
