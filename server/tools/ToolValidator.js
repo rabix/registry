@@ -3,8 +3,14 @@
  */
 
 'use strict';
+//var ZSchema = require("z-schema");
+//var options = {};
 
-var validator = require('jjv')();
+
+//var validator = new ZSchema(options);
+//var validator = require('jjv')();
+var validator = require('tv4').tv4;
+var q = require('q');
 
 var ToolSchema = require('./ToolSchema');
 var ScriptSchema = require('./ScriptSchema');
@@ -12,7 +18,7 @@ var ScriptSchema = require('./ScriptSchema');
 validator.addSchema('tool', ToolSchema);
 validator.addSchema('script', ScriptSchema);
 validator.addFormat('validateId', function (id) {
-   return typeof id === 'string' && id.charAt(0) === '#';
+    return typeof id === 'string' && id.charAt(0) === '#';
 });
 
 module.exports =  {
@@ -32,10 +38,22 @@ module.exports =  {
      * @returns {*}
      */
     validate: function (type, json) {
+
         if (!type) {
             throw Error('No type to validate');
         }
 
-        return validator.validate(type, json);
+        var defer = q.defer();
+
+//        var schema = type === 'tool' ? ToolSchema : ScriptSchema;
+
+//        validator.validate(json, schema, function (err, valid) {
+//            defer.resolve({valid: valid, err: err});
+//        });
+        var err = validator.validateResult(json, type, true);
+
+        defer.resolve({err: err});
+
+        return defer.promise;
     }
 };

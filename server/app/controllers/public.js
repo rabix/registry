@@ -127,8 +127,9 @@ router.post('/tools/validate', function (req, res, next) {
     var type = req.body.type || 'tool',
         json = req.body.json;
 
-    var errors = ToolValidator.validate(type, json);
+    var errors = ToolValidator.validate(type, json).then(function (errors) {
+        res.json({errors: errors});
+    });
 
-    res.json({errors: errors});
 
 });

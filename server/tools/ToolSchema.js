@@ -15,20 +15,6 @@ var Schema = {
             items: {
                 oneOf: [
                     {
-                        type: 'string',
-                        enum: ['string', 'boolean', 'file', 'float', 'int', 'null']
-                    },
-                    {
-                        type: 'object',
-                        properties: {
-                            type: {
-                                type: 'string',
-                                enum: ['string', 'boolean', 'file', 'float', 'int']
-                            }
-                        },
-                        required: ['type']
-                    },
-                    {
                         type: 'object',
                         properties: {
                             type: {
@@ -67,6 +53,21 @@ var Schema = {
                         },
                         required: ['type', 'items']
                     },
+                    {
+                        type: 'string',
+                        enum: ['string', 'boolean', 'file', 'float', 'int', 'null']
+                    },
+                    {
+                        type: 'object',
+                        properties: {
+                            type: {
+                                type: 'string',
+                                enum: ['string', 'boolean', 'file', 'float', 'int', 'null']
+                            }
+                        },
+                        required: ['type']
+                    },
+
                     {
                         $ref: '#/definitions/recordDef'
                     }
