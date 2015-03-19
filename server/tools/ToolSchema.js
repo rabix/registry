@@ -266,10 +266,18 @@ var Schema = {
             items: {
                 type: 'object',
                 properties: {
+                    '@id': {
+                        type: 'string',
+                        format: 'validateId'
+                    },
+                    depth: {
+                        type: 'number'
+                    },
                     schema: {
                         $ref: '#/definitions/schemaDef'
                     }
-                }
+                },
+                required: ['schema', '@id', 'depth']
             }
         },
         cliAdapter: {
