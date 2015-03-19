@@ -157,25 +157,61 @@ var Schema = {
         requirements: {
             type: 'array',
             items: {
-                type: 'object',
-                properties: {
-                    '@type': {
-                        type: 'string'
+                anyOf: [
+                    { // validation for Docker Container requirement
+                        type: 'object',
+                        properties: {
+                            '@type': {
+                                type: 'string',
+                                enum: ['DockerCnt']
+                            },
+                            imgRepo: {
+                                type: 'string'
+                            },
+                            imgTag: {
+                                type: 'string'
+                            },
+                            imgId: {
+                                type: 'string'
+                            }
+                        },
+                        required: ['@type']
                     },
-                    imgRepo: {
-                        type: 'string'
+                    { // validation for CPU and Mem requirements
+                        type: 'object',
+                        properties: {
+                            '@type': {
+                                type: 'string',
+                                enum: ['CpuRequirement', 'MemRequirement']
+                            },
+                            value: {
+                                type: ['number', 'object'],
+                                properties: {
+                                    '@type': {
+                                        type: 'string'
+                                    },
+                                    lang: {
+                                        type: 'string'
+                                    },
+                                    value: {
+                                        type: ['string', 'number']
+                                    }
+                                },
+                                required: ['@type', 'lang', 'value']
+                            }
+                        },
+                        required: ['@type', 'value']
                     },
-                    imgTag: {
-                        type: 'string'
-                    },
-                    imgId: {
-                        type: 'string'
-                    },
-                    value: {
-                        type: 'number'
+                    { //Some other (unknown) requirement
+                        type: 'object',
+                        properties: {
+                            '@type': {
+                                type: 'string'
+                            },
+                            required: ['@type']
+                        }
                     }
-                },
-                required: ['@type']
+                ]
             }
         },
         inputs: {
