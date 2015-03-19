@@ -951,6 +951,7 @@ angular.module('registryApp.cliche')
          *
          * @param {object} inner
          * @param {object} property
+         * @param {string} propertyType - 'input' || 'output'
          * @returns {object}
          */
         var formatProperty = function(inner, property, propertyType) {
@@ -1004,12 +1005,8 @@ angular.module('registryApp.cliche')
                 type = inner.type;
             }
 
-            /* preserve adapter section if forced */
-            if (propertyType && propertyType !== 'output') {
-                if (tmp.adapter && _.isEmpty(tmp.adapter)) { tmp.adapter = {prefix: ''}; }
-            } else {
-                if (tmp.adapter && _.isEmpty(tmp.adapter)) { tmp.adapter = {glob: ''}; }
-            }
+            /* remove adapter property if no adapter is set */
+            if (tmp.adapter && _.isEmpty(tmp.adapter)) { delete tmp.adapter; }
 
             /* schema for the first level */
             if (inner.key === '@id') {
