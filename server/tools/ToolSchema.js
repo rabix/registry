@@ -158,7 +158,8 @@ var Schema = {
             type: 'string'
         },
         '@type': {
-            type: 'string'
+            type: 'string',
+            enum: ['CommandLine']
         },
         '@context': {
             type: 'string'
