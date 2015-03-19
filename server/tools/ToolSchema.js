@@ -97,7 +97,39 @@ var Schema = {
             }
         },
         adapterDef: {
-
+            type: 'object',
+            properties: {
+                position: {
+                    type: 'number'
+                },
+                argValue: {
+                    oneOf: [
+                        {
+                            type: ['string', 'number']
+                        },
+                        {
+                            type: 'object',
+                            properties: {
+                                '@type': {
+                                    type: 'string'
+                                },
+                                lang: {
+                                    type: 'string'
+                                },
+                                value: {
+                                    type: 'string'
+                                }
+                            }
+                        }
+                    ]
+                },
+                separator: {
+                    type: 'string'
+                },
+                prefix: {
+                    type: 'string'
+                }
+            }
         }
     },
     properties: {
@@ -142,7 +174,8 @@ var Schema = {
                     value: {
                         type: 'number'
                     }
-                }
+                },
+                required: ['@type']
             }
         },
         inputs: {
@@ -151,7 +184,7 @@ var Schema = {
                 type: 'object',
                 properties: {
                     schema: {
-                        '$ref': '#/definitions/schemaDef'
+                        $ref: '#/definitions/schemaDef'
                     },
                     '@id': {
                         type: 'string',
@@ -162,6 +195,9 @@ var Schema = {
                     },
                     name: {
                         type: 'string'
+                    },
+                    adapter: {
+                        $ref: '#/definitions/adapterDef'
                     }
                 },
                 required: ['schema', '@id', 'depth']
@@ -179,7 +215,25 @@ var Schema = {
             }
         },
         cliAdapter: {
-            type: 'object'
+            type: 'object',
+            properties: {
+                baseCmd: {
+                    type: ['string', 'array']
+                },
+                stdIn: {
+                    type: ['string', 'object']
+                },
+                stdOut: {
+                    type: ['string', 'object']
+                },
+                argAdapters: {
+                    type: 'array',
+                    items: {
+                        $ref: '#/definitions/adapterDef'
+                    }
+                }
+            },
+            required: ['baseCmd', 'argAdapters']
         }
     },
     required: ['@id', '@type', '@context', 'label', 'owner', 'inputs', 'outputs']
