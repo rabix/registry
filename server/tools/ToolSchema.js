@@ -14,12 +14,6 @@ var Schema = {
             items: {
                 oneOf: [
                     {
-                        $ref: '#/definitions/arrayDef'
-                    },
-                    {
-                        $ref: '#/definitions/stringTypeDef'
-                    },
-                    {
                         type: 'object',
                         properties: {
                             type: {
@@ -28,7 +22,15 @@ var Schema = {
                         },
                         required: ['type']
                     },
-
+                    {
+                        $ref: '#/definitions/enumDef'
+                    },
+                    {
+                        $ref: '#/definitions/arrayDef'
+                    },
+                    {
+                        $ref: '#/definitions/stringTypeDef'
+                    },
                     {
                         $ref: '#/definitions/recordDef'
                     }
@@ -38,6 +40,25 @@ var Schema = {
         stringTypeDef: {
             type: 'string',
             enum: ['string', 'boolean', 'file', 'float', 'int', 'null']
+        },
+        enumDef: {
+            type: 'object',
+            properties: {
+                type: {
+                    type: 'string',
+                    enum: ['enum']
+                },
+                name: {
+                    type: 'string'
+                },
+                symbols: {
+                    type: 'array',
+                    items: {
+                        type: 'string'
+                    }
+                }
+            },
+            required: ['type', 'name', 'symbols']
         },
         arrayDef: {
             type: 'object',
