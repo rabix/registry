@@ -8,61 +8,22 @@ var Schema = {
     $schema: 'http://json-schema.org/schema#',
     type: 'object',
     definitions: {
-        adapter: {},
         schemaDef: {
             type: 'array',
-            minLength: 1,
+            minItems: 1,
             items: {
                 oneOf: [
                     {
-                        type: 'object',
-                        properties: {
-                            type: {
-                                type: 'string',
-                                enum: ['array']
-                            },
-                            items: {
-                                oneOf: [
-                                    {
-                                        type: 'object',
-                                        properties: {
-                                            type: {
-                                                type: 'string',
-                                                enum: ['string', 'boolean', 'file', 'float', 'int']
-                                            }
-                                        },
-                                        required: ['type']
-                                    },
-                                    {
-                                        type: 'object',
-                                        properties: {
-                                            type: {
-                                                type: 'string',
-                                                enum: ['record']
-                                            },
-                                            fields: {
-                                                $ref: '#/definitions/fieldsDef'
-                                            }
-                                        },
-                                        required: ['type', 'fields']
-                                    }
-
-                                ]
-
-                            }
-                        },
-                        required: ['type', 'items']
+                        $ref: '#/definitions/arrayDef'
                     },
                     {
-                        type: 'string',
-                        enum: ['string', 'boolean', 'file', 'float', 'int', 'null']
+                        $ref: '#/definitions/stringTypeDef'
                     },
                     {
                         type: 'object',
                         properties: {
                             type: {
-                                type: 'string',
-                                enum: ['string', 'boolean', 'file', 'float', 'int', 'null']
+                                $ref: '#/definitions/stringTypeDef'
                             }
                         },
                         required: ['type']
@@ -73,6 +34,36 @@ var Schema = {
                     }
                 ]
             }
+        },
+        stringTypeDef: {
+            type: 'string',
+            enum: ['string', 'boolean', 'file', 'float', 'int', 'null']
+        },
+        arrayDef: {
+            type: 'object',
+            properties: {
+                type: {
+                    type: 'string',
+                    enum: ['array']
+                },
+                items: {
+                    oneOf: [
+                        {
+                            type: 'object',
+                            properties: {
+                                type: {
+                                    $ref: '#/definitions/stringTypeDef'
+                                }
+                            },
+                            required: ['type']
+                        },
+                        {
+                            $ref: '#/definitions/recordDef'
+                        }
+                    ]
+                }
+            },
+            required: ['type', 'items']
         },
         recordDef: {
             type: 'object',
@@ -104,6 +95,9 @@ var Schema = {
                 },
                 required: ['type', 'name']
             }
+        },
+        adapterDef: {
+
         }
     },
     properties: {
