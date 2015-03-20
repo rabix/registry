@@ -7,7 +7,7 @@
 'use strict';
 
 angular.module('registryApp.cliche')
-    .controller('JsonEditorCtrl', ['$scope', '$rootScope', '$modalInstance', '$timeout', '$document', 'options', 'Validator', function($scope, $rootScope, $modalInstance, $timeout, $document, options, Validator) {
+    .controller('JsonEditorCtrl', ['$scope', '$rootScope', '$modalInstance', '$timeout', '$document', 'options', 'SchemaValidator', function($scope, $rootScope, $modalInstance, $timeout, $document, options, SchemaValidator) {
 
         $scope.view = {};
         $scope.view.user = options.user;
@@ -60,7 +60,7 @@ angular.module('registryApp.cliche')
 
             $scope.view.validating = true;
 
-            Validator.validate(JSON.parse(json), options.type)
+            SchemaValidator.validate(options.type, JSON.parse(json))
                 .then(function() {
 
                     $scope.view.validating = false;
@@ -69,7 +69,7 @@ angular.module('registryApp.cliche')
 
                 }, function(trace) {
                     $scope.view.validating = false;
-                    $rootScope.$broadcast('httpError', {json: trace});
+                    $rootScope.$broadcast('httpError', {message: trace});
                 });
 
         };

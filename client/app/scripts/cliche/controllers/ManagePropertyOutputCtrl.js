@@ -17,7 +17,12 @@ angular.module('registryApp.cliche')
         $scope.view.mode = options.mode;
         $scope.view.property = options.property || {};
         $scope.view.property.schema = Cliche.getSchema('output', options.property, options.toolType);
-        $scope.view.property.adapter = Cliche.getAdapter(options.property);
+
+        // only add adapter if one has been defined
+        if (options.property && options.property.adapter) {
+            $scope.view.property.adapter = Cliche.getAdapter(options.property);
+        }
+
         $scope.view.name = Cliche.parseName(options.property);
         $scope.view.required = Cliche.isRequired($scope.view.property.schema);
         $scope.view.type = Cliche.parseType($scope.view.property.schema);

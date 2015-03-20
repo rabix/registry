@@ -307,5 +307,5 @@ if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
     module.exports = Schema;
 } else if (typeof angular !== 'undefined') {
     angular.module('registryApp.cliche')
-        .constant('toolSchemaDefs', Schema);
+        .constant('scriptSchemaDefs', Schema);
 }

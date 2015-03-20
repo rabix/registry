@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('registryApp.app')
-    .factory('Tool', ['$q', 'Api', 'Validator', function ($q, Api, Validator) {
+    .factory('Tool', ['$q', 'Api', 'SchemaValidator', function ($q, Api, SchemaValidator) {
 
         /**
          * Get list of tools
@@ -72,7 +72,7 @@ angular.module('registryApp.app')
          */
         var create = function(repoId, tool, job, type) {
 
-            return Validator.validate(tool, type)
+            return SchemaValidator.validate(type, _.clone(tool, true))
                 .then(function() {
                     return Api.apps.add({id: 'create'}, {tool: tool, job: job, repo_id: repoId}).$promise;
                 }, function(trace) {
@@ -93,7 +93,7 @@ angular.module('registryApp.app')
          */
         var fork = function(repoId, name, tool, job, type) {
 
-            return Validator.validate(tool, type)
+            return SchemaValidator.validate(type, tool)
                 .then(function() {
                     return Api.apps.add({id: 'fork'}, {tool: tool, job: job, repo_id: repoId, name: name}).$promise;
                 }, function(trace) {
@@ -113,7 +113,7 @@ angular.module('registryApp.app')
          */
         var update = function(appId, tool, job, type) {
 
-            return Validator.validate(tool, type)
+            return SchemaValidator.validate(type, tool)
                 .then(function() {
                     return Api.revisions.add({}, {tool: tool, job: job, app_id: appId}).$promise;
                 }, function(trace) {
