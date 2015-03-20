@@ -12,8 +12,8 @@
 var validator = require('tv4').tv4;
 var q = require('q');
 
-var ToolSchema = require('./ToolSchema');
-var ScriptSchema = require('./ScriptSchema');
+var ToolSchema = require('../../client/app/scripts/cliche/constants/ToolSchema');
+var ScriptSchema = require('../../client/app/scripts/cliche/constants/ScriptSchema');
 
 validator.addSchema('tool', ToolSchema);
 validator.addSchema('script', ScriptSchema);

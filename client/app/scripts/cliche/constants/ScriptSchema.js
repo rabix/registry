@@ -159,7 +159,7 @@ var Schema = {
         },
         '@type': {
             type: 'string',
-            enum: ['CommandLine']
+            enum: ['Script']
         },
         '@context': {
             type: 'string'
@@ -280,30 +280,16 @@ var Schema = {
                 required: ['schema', '@id', 'depth']
             }
         },
-        cliAdapter: {
-            type: 'object',
-            properties: {
-                baseCmd: {
-                    type: ['string', 'array']
-                },
-                stdIn: {
-                    type: ['string', 'object']
-                },
-                stdOut: {
-                    type: ['string', 'object']
-                },
-                argAdapters: {
-                    type: 'array',
-                    items: {
-                        $ref: '#/definitions/adapterDef'
-                    }
-                }
-            },
-            required: ['baseCmd', 'argAdapters']
+        transform: {
+            type: 'object'
         }
     },
     required: ['@id', '@type', '@context', 'label', 'owner', 'inputs', 'outputs']
 };
+
+/**
+ * Shared code with node
+ */
 
 if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
     module.exports = Schema;
