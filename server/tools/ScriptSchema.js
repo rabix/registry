@@ -281,7 +281,19 @@ var Schema = {
             }
         },
         transform: {
-            type: 'object'
+            type: 'object',
+            properties: {
+                '@type': {
+                    type: 'string'
+                },
+                lang: {
+                    type: 'string'
+                },
+                value: {
+                    type: 'string'
+                }
+            },
+            required: ['@type', 'lang', 'value']
         }
     },
     required: ['@id', '@type', '@context', 'label', 'owner', 'inputs', 'outputs']
