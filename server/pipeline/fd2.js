@@ -331,7 +331,7 @@ var _formatter = {
 
             var input, schema,
                 node_id = dest[0],
-                input_id = dest.length === 1 ? dest[0] : dest[1],
+                input_id = dest.length === 1 ? dest[0] : '#' + dest[1],
                 node = schemas[node_id];
 
             input = _.find(node.inputs, function (i) {
@@ -366,14 +366,14 @@ var _formatter = {
                 if (src.length === 1) {
                     relation.output_name = relation.start_node = src[0];
                 } else {
-                    relation.output_name = src[1];
+                    relation.output_name = '#' + src[1];
                     relation.start_node = src[0];
                 }
 
                 if (dest.length === 1) {
                     relation.input_name = relation.end_node = dest[0];
                 } else {
-                    relation.input_name = dest[1];
+                    relation.input_name = '#' + dest[1];
                     relation.end_node = dest[0];
                 }
 
