@@ -39,6 +39,47 @@
             </div>
             <!-- END Item Type -->
 
+
+            <div class="meta-list clearfix">
+                <div class="col-md-12">
+                    <label class="control-label">Meta</label>
+
+                    <div class="form-group meta-group" ng-class="{'has-error': view.newMeta.error}">
+                        <div class="input-group">
+                            <div class="col-xs-6 no-padding">
+                                <input type="text" class="form-control" ng-model="view.newMeta.key" placeholder="key" />
+                            </div>
+                            <div class="col-xs-6 no-padding">
+                                <expr ng-model="view.newMeta.value" handle-item-update="updateNewMeta(value)" placeholder="value" self="true"></expr>
+                            </div>
+                        <span class="input-group-btn">
+                            <a href ng-click="addMeta()" class="btn btn-primary"><i class="fa fa-plus"></i></a>
+                        </span>
+                        </div>
+                    </div>
+
+                    <div ng-repeat="(metaKey, metaValue) in view.property.adapter.metadata" class="form-group meta-group">
+                        <div ng-if="metaKey !== '__inherit__'" class="input-group">
+                            <div class="col-xs-6 no-padding">
+                                <key-changer key="metaKey" items="view.property.adapter.metadata"></key-changer>
+                            </div>
+                            <div class="col-xs-6 no-padding">
+                                <expr ng-model="metaValue" index="{{ metaKey }}" handle-item-update="updateMetaValue(index, value)" placeholder="value" self="true"></expr>
+                            </div>
+                        <span class="input-group-btn">
+                            <a href ng-click="removeMeta(metaKey)" class="btn btn-default"><i class="fa fa-remove"></i></a>
+                        </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <label class="control-label">Secondary Files <small>(enter expression for secondary files or click + to enumerate them)</small></label>
+                <enum ng-if="!view.isSecondaryFilesExpr" ng-model="view.property.adapter.secondaryFiles" type="'string'"></enum>
+            </div>
+            <!-- END meta data-->
+
         </div>
 
         <div class="form-group main-actions">
