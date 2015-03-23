@@ -1005,8 +1005,23 @@ angular.module('registryApp.cliche')
                 type = inner.type;
             }
 
+            /* check if output adapter has empty fields and remove */
+            if (propertyType === 'output' && tmp.adapter) {
+
+                if (tmp.adapter.metadata && _.isEmpty(tmp.adapter.metadata)) {
+                    delete tmp.adapter.metadata;
+                }
+
+                if (tmp.secondaryFiles && _.isEmpty(tmp.secondaryFiles)) {
+                    delete tmp.adapter.secondaryFiles;
+                }
+            }
+
+
             /* remove adapter property if no adapter is set */
-            if (tmp.adapter && _.isEmpty(tmp.adapter)) { delete tmp.adapter; }
+            if (tmp.adapter && _.isEmpty(tmp.adapter)) {
+                delete tmp.adapter;
+            }
 
             /* schema for the first level */
             if (inner.key === '@id') {
@@ -1170,6 +1185,7 @@ angular.module('registryApp.cliche')
             getCommand: getCommand,
             isRequired: isRequired,
             parseType: parseType,
+            parseTypeObj: parseTypeObj,
             parseEnum: parseEnum,
             parseName: parseName,
             formatProperty: formatProperty,

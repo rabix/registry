@@ -16,7 +16,7 @@ angular.module('registryApp.cliche')
         $scope.view.key = key;
         $scope.view.mode = options.mode;
         $scope.view.property = options.property || {};
-        $scope.view.property.schema = Cliche.getSchema('output', options.property, options.toolType);
+        $scope.view.property.schema = Cliche.getSchema('output', options.property, options.toolType, false);
 
         // only add adapter if one has been defined
         if (options.property && options.property.adapter) {
@@ -32,6 +32,78 @@ angular.module('registryApp.cliche')
         $scope.view.itemTypes = Cliche.getTypes('outputItem');
 
         idObj.o = $scope.view.name;
+
+        // shows expression style input rather than regular input
+        // for secondary files (not currently using)
+        $scope.view.isSecondaryFilesExpr = false;
+
+        // create list of input ids to inherit metadata from (not currently using)
+        //$scope.view.inputs = _.pluck(_.filter(Cliche.getTool().inputs, function(prop) {
+        //    var type = Cliche.parseType(prop.schema),
+        //        typeObj = Cliche.parseTypeObj(prop.schema);
+        //    return type === 'file' || (typeObj.items && typeObj.items.type === 'file');
+        //}), '@id');
+
+        /**
+         * Toggle secondary files into array (not currently using)
+         */
+        //$scope.toggleToList = function() {
+        //    $scope.view.property.adapter.secondaryFiles = [];
+        //    $scope.view.property.adapter.secondaryFiles.push('');
+        //    $scope.view.isSecondaryFilesExpr = false;
+        //};
+
+        /**
+         * Add meta data to the output
+         */
+        $scope.addMeta = function () {
+
+            $scope.view.newMeta.error = false;
+            $scope.view.property.adapter = $scope.view.property.adapter || {};
+
+            if (!$scope.view.property.adapter.metadata) {
+                $scope.view.property.adapter.metadata = {};
+            }
+
+            if (!_.isUndefined($scope.view.property.adapter.metadata[$scope.view.newMeta.key]) || $scope.view.newMeta.key === '') {
+                $scope.view.newMeta.error = true;
+                return false;
+            }
+
+            $scope.view.property.adapter.metadata[$scope.view.newMeta.key] = $scope.view.newMeta.value;
+            $scope.view.newMeta = {key: '', value: ''};
+
+        };
+
+        /**
+         * Remove meta data from the output
+         *
+         * @param {integer} index
+         * @returns {boolean}
+         */
+        $scope.removeMeta = function (index) {
+            delete $scope.view.property.adapter.metadata[index];
+        };
+
+        /**
+         * Update new meta value with expression or literal
+         *
+         * @param value
+         */
+
+        $scope.updateNewMeta = function (value) {
+            $scope.view.newMeta.value = value;
+        };
+
+        /**
+         * Update existing meta value with expression or literal
+         *
+         * @param index
+         * @param value
+         */
+        $scope.updateMetaValue = function (index, value) {
+            $scope.view.property.adapter.metadata[index] = value;
+        };
 
         /**
          * Save property changes
