@@ -53,6 +53,8 @@ angular.module('registryApp.cliche')
         //    $scope.view.isSecondaryFilesExpr = false;
         //};
 
+        $scope.view.newMeta = {key: '', value: ''};
+
         /**
          * Add meta data to the output
          */
