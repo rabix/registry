@@ -59,39 +59,7 @@ var RabixModel = {
  * @type {{fileFilter: string[], _fileTypeCheck: _fileTypeCheck, checkTypeFile: checkTypeFile}}
  * @private
  */
-var _common = {
-
-    fileFilter: ['file', 'File', 'directory', 'Directory'],
-
-    _fileTypeCheck: function (schema, type) {
-
-        var filter = this.fileFilter;
-
-        return filter.indexOf(type) !== -1 || (type === 'array' && filter.indexOf(schema.items.type) !== -1);
-    },
-
-    checkTypeFile: function (schema) {
-
-        if (typeof schema.type !== 'undefined' || ( typeof schema.type === 'object' && !_.isArray(schema.type))) {
-
-            if (!_.isArray(schema.type)) {
-                return this._fileTypeCheck(schema, schema.type);
-            } else {
-                // this means input is not required and type is array where first element is null
-                // thats why we take second element since that is it's real type
-                return this._fileTypeCheck(schema, schema.type[1]);
-            }
-        }
-
-        return false;
-    },
-
-    checkSystem: function (node_schema) {
-
-        return node_schema.softwareDescription && node_schema.softwareDescription.repo_name === 'system';
-    }
-
-};
+var _common = {};
 
 /**
  * Main formatter
@@ -128,13 +96,13 @@ var _formatter = {
             if (rel.input_name === rel.end_node) {
                 dataLink.destination = rel.end_node;
             } else {
-                dataLink.destination = rel.end_node + '/' + rel.input_name;
+                dataLink.destination = rel.end_node + '/' + rel.input_name.slice(1);
             }
 
             if (rel.output_name === rel.start_node) {
                 dataLink.source = rel.start_node;
             } else {
-                dataLink.source = rel.start_node + '/' + rel.output_name;
+                dataLink.source = rel.start_node + '/' + rel.output_name.slice(1);
             }
 
             dataLinks.push(dataLink);
@@ -334,7 +302,7 @@ var _formatter = {
         _.forEach(workflow.inputs, function (input) {
             var id = input['@id'];
 
-            if (_common.checkTypeFile(input.schema)) {
+            if (_common.checkTypeFile(input.schema[1] || input.schema[0])) {
                 system[id] = _self._generateIOSchema('input', input, id);
             }
         });
@@ -346,7 +314,7 @@ var _formatter = {
         _.forEach(workflow.outputs, function (output) {
             var id = output['@id'];
 
-            if (_common.checkTypeFile(output.schema)) {
+            if (_common.checkTypeFile(output.schema[1] || output.schema[0])) {
                 system[id] = _self._generateIOSchema('output', output, id);
             }
         });
@@ -371,7 +339,7 @@ var _formatter = {
             });
 
             if (typeof input !== 'undefined') {
-                schema = input.schema;
+                schema = input.schema[1] || input.schema[0];
 
                 return _common.checkTypeFile(schema);
             } else {
@@ -762,13 +730,15 @@ var fd2 = {
 
 //TODO: needs to be removed, used for sharing code between angular and node
 if (typeof module !== 'undefined' && module.exports) {
+    _common = require('./common');
 
     module.exports = fd2;
 
 } else if (typeof angular !== 'undefined') {
     angular.module('registryApp.dyole')
-        .factory('FormaterD2', ['Const', function (Cons) {
+        .factory('FormaterD2', ['Const', 'common', function (Cons, Common) {
             Const = Cons;
+            _common = Common;
 
             return fd2;
         }]);
