@@ -175,6 +175,10 @@ var _formatter = {
                 delete schema.ref;
             }
 
+            if (schema.id) {
+                delete schema.id;
+            }
+
             if (!_common.checkSystem(schema)) {
 
                 _.forEach(schema.inputs, function (input) {
@@ -417,7 +421,7 @@ var _formatter = {
                 step.app.ref = ref;
             }
 
-            step.app['@id'] = stepId;
+            step.app.id = stepId;
 
             schemas[stepId] = step.app;
 
@@ -710,7 +714,7 @@ var fd2 = {
         //clone schemas to create nodes to manipulate on them
         nodes = _.toArray(_.clone(schemas, true));
 
-        _formatter.createNodeIds(nodes);
+//        _formatter.createNodeIds(nodes);
 
         display = _helper.fixDisplay(json.display, nodes);
 

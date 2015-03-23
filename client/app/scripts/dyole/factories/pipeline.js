@@ -398,7 +398,7 @@ angular.module('registryApp.dyole')
 
                     _.each(this.model.nodes, function (nodeModel) {
 
-                        var nodeId = nodeModel['@id'] || nodeModel.id;
+                        var nodeId = nodeModel.id || nodeModel['@id'];
                         // schema is not merged because nodes is a copy of schema with modified inputs and outputs for displaying on canvas
                         // schema is only used for tool execution
                         var model = _.extend(nodeModel, _self.model.display.nodes[nodeId]);
