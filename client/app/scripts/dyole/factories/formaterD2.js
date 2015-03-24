@@ -116,7 +116,7 @@ var _formatter = {
             };
 
             var input_id = '#' + ids.split(Const.exposedSeparator)[1];
-            dataLink.destination = ids.replace(Const.exposedSeparator, '/#');
+            dataLink.destination = ids.replace(Const.exposedSeparator, '/');
 
             _self._createWorkflowInput(input_id, schema, workflow);
 
@@ -393,7 +393,7 @@ var _formatter = {
 
                     if (typeof ex !== 'undefined') {
                         //remove # with slice in front of input id (cliche form builder required)
-                        exposed[dest[0]+ Const.exposedSeparator + dest[1].slice(1,dest[1].length)] = ex;
+                        exposed[dest[0]+ Const.exposedSeparator + dest[1]] = ex;
                     } else {
                         console.error('Param exposed but not set in workflow inputs');
                     }
