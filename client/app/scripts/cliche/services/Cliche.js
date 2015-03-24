@@ -1005,22 +1005,21 @@ angular.module('registryApp.cliche')
                 type = inner.type;
             }
 
-            /* check if output adapter has empty fields and remove */
-            if (propertyType === 'output' && tmp.adapter) {
+            /* check if adapter has empty fields and remove them */
+            /* and remove remove adapter property if no adapter is set */
+            if (tmp.adapter) {
+                _(tmp.adapter).keys().forEach(function (key) {
 
-                if (tmp.adapter.metadata && _.isEmpty(tmp.adapter.metadata)) {
-                    delete tmp.adapter.metadata;
+                    // _.isEmpty returns true for number values, which we don't want
+                    // if there is a number value, then the prop is not empty
+                    if (_.isEmpty(tmp.adapter[key]) && !_.isNumber(tmp.adapter[key])) {
+                        delete tmp.adapter[key];
+                    }
+                });
+
+                if (_.isEmpty(tmp.adapter)) {
+                    delete tmp.adapter;
                 }
-
-                if (tmp.secondaryFiles && _.isEmpty(tmp.secondaryFiles)) {
-                    delete tmp.adapter.secondaryFiles;
-                }
-            }
-
-
-            /* remove adapter property if no adapter is set */
-            if (tmp.adapter && _.isEmpty(tmp.adapter)) {
-                delete tmp.adapter;
             }
 
             /* schema for the first level */

@@ -45,7 +45,7 @@
                 <div class="input-container">
 
                     <input-field
-                            ng-repeat="property in view.tool.inputs track by property['@id']"
+                            ng-repeat="property in view.tool.inputs | orderBy:sortByPosition track by property['@id']"
                             ng-model="view.job.inputs[property['@id'].slice(1)]"
                             class="input-field"
                             key="@id"

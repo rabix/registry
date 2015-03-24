@@ -411,6 +411,18 @@ angular.module('registryApp.cliche')
             return modalInstance;
         };
 
+        /**
+         * Sorts inputs/args by position
+         * @param item
+         * @returns {*}
+         */
+        $scope.sortByPosition = function(item) {
+
+            var position = item.adapter && item.adapter.position ? item.adapter.position : 0; //input
+            position = item.position ? item.position : position; //args
+
+            return position;
+        };
 
 
         /**
