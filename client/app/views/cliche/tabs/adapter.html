@@ -46,7 +46,7 @@
     </legend>
 
     <property-arg
-            ng-repeat="arg in view.tool.cliAdapter.argAdapters track by $index"
+            ng-repeat="arg in view.tool.cliAdapter.argAdapters | orderBy:sortByPosition track by $index"
             ng-model="arg"
             index="{{ $index }}">
     </property-arg>
