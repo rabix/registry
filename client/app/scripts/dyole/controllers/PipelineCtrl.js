@@ -251,16 +251,28 @@ angular.module('registryApp.dyole')
          * Set fresh canvas
          */
         $scope.flush = function() {
-
             if (!$scope.view.canFlush) { return false; }
 
-            Workflow.flush();
+            var modalInstance = $modal.open({
+                controller: 'ModalCtrl',
+                template: $templateCache.get('views/partials/confirm-delete.html'),
+                resolve: { data: function () {
+                    return {
+                        message: 'Are you sure you want to delete this workflow?'
+                    }; }}
+            });
 
-            if (angular.isDefined(Pipeline)) {
-                Pipeline.destroy();
-                Pipeline = null;
-                initPipeline({});
-            }
+            modalInstance.result.then(function () {
+                Workflow.flush();
+
+                if (angular.isDefined(Pipeline)) {
+                    Pipeline.destroy();
+                    Pipeline = null;
+                    initPipeline({});
+                }
+            }, function () {
+                return false;
+            });
 
         };
 

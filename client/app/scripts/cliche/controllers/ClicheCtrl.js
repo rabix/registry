@@ -337,23 +337,37 @@ angular.module('registryApp.cliche')
          */
         $scope.flush = function() {
 
-            var preserve = $scope.view.mode === 'new';
+            var modalInstance = $modal.open({
+                controller: 'ModalCtrl',
+                template: $templateCache.get('views/partials/confirm-delete.html'),
+                resolve: { data: function () {
+                    return {
+                        message: 'Are you sure you want to delete this ' + $scope.view.type + '?'
+                    }; }}
+            });
 
-            $scope.view.loading = true;
+            modalInstance.result.then(function () {
+                var preserve = $scope.view.mode === 'new';
 
-            $scope.view.tab = 'general';
+                $scope.view.loading = true;
 
-            var cachedName = $scope.view.tool.label;
+                $scope.view.tab = 'general';
 
-            Cliche.flush(preserve, $stateParams.type, cachedName)
-                .then(function() {
+                var cachedName = $scope.view.tool.label;
 
-                    $scope.view.loading = false;
+                Cliche.flush(preserve, $stateParams.type, cachedName)
+                    .then(function() {
 
-                    setUpCliche();
-                    prepareRequirements();
+                        $scope.view.loading = false;
 
-                });
+                        setUpCliche();
+                        prepareRequirements();
+
+                    });
+
+            }, function () {
+                return false;
+            });
 
         };
 
