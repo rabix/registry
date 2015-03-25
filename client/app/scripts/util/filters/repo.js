@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('registryApp')
+angular.module('registryApp.util')
     .filter('repo', [function() {
         return function(owner, name) {
 

@@ -6,7 +6,7 @@
 
 'use strict';
 
-angular.module('registryApp.repo', [])
+angular.module('registryApp.repo', ['registryApp.common', 'ngResource'])
     .config(['$stateProvider', function($stateProvider) {
 
         $stateProvider

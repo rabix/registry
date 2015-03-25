@@ -6,11 +6,10 @@
 'use strict';
 
 angular.module('registryApp.cliche')
-    .controller('ClicheCtrl', ['$scope', '$q', '$stateParams', '$modal', '$templateCache', '$state', '$rootScope', 'User', 'Repo', 'Tool', 'Cliche', 'Sidebar', 'Loading', 'SandBox', 'BeforeUnload', 'BeforeRedirect', function($scope, $q, $stateParams, $modal, $templateCache, $state, $rootScope, User, Repo, Tool, Cliche, Sidebar, Loading, SandBox, BeforeUnload, BeforeRedirect) {
-
+    .controller('ClicheCtrl', ['$scope', '$q', '$stateParams', '$modal', '$templateCache', '$state', '$rootScope', 'Repo', 'Tool', 'Cliche', 'Loading', 'SandBox', 'BeforeUnload', 'BeforeRedirect', function($scope, $q, $stateParams, $modal, $templateCache, $state, $rootScope, Repo, Tool, Cliche, Loading, SandBox, BeforeUnload, BeforeRedirect) {
         $scope.Loading = Loading;
 
-        Sidebar.setActive($stateParams.type + ' editor');
+        //Sidebar.setActive($stateParams.type + ' editor');
 
         var cliAdapterWatchers = [],
             jobWatcher,
@@ -82,8 +81,8 @@ angular.module('registryApp.cliche')
 
                 $q.all([
                         ($stateParams.id ? Tool.getTool($stateParams.id, $stateParams.revision) : Cliche.fetchLocalToolAndJob($stateParams.type)),
-                        User.getUser(),
-                        Repo.getRepos(0, '', true)
+                        //User.getUser(),
+                        //Repo.getRepos(0, '', true)
                     ])
                     .then(function(result) {
 
@@ -97,8 +96,8 @@ angular.module('registryApp.cliche')
                             Cliche.setJob($scope.view.revision.job ? JSON.parse($scope.view.revision.job) : null);
                         }
 
-                        $scope.view.user = result[1].user;
-                        $scope.view.repos = result[2].list;
+                        //$scope.view.user = result[1].user;
+                        //$scope.view.repos = result[2].list;
 
                         setUpCliche();
                         prepareRequirements();

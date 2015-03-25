@@ -59,7 +59,7 @@ module.exports = function (grunt) {
                     '<%= yeoman.app %>/views/repo/{,*/}*.html',
                     '<%= yeoman.app %>/views/task/{,*/}*.html'
                 ],
-                tasks: ['ngtemplates:app']
+                tasks: ['ngtemplates:app', 'ngtemplates:integrate']
             }
         },
 
@@ -436,6 +436,25 @@ module.exports = function (grunt) {
                         collapseBooleanAttributes: true
                     }
                 }
+            },
+
+            integrate: {
+                cwd: '<%= yeoman.app %>',
+                src: [
+                    'views/{,*/}*.html',
+                    'views/cliche/{,*/}*.html',
+                    'views/app/{,*/}*.html',
+                    'views/repo/{,*/}*.html',
+                    'views/task/{,*/}*.html'
+                ],
+                dest: '<%= yeoman.app %>/rabixApp/scripts/template.js',
+                options: {
+                    module: 'rabixApp',
+                    htmlmin: {
+                        collapseWhitespace: true,
+                        collapseBooleanAttributes: true
+                    }
+                }
             }
         }
 
@@ -456,6 +475,24 @@ module.exports = function (grunt) {
 //            'configureProxies:livereload',
 //            'connect:livereload',
             'ngtemplates:app',
+            'watch'
+        ]);
+    });
+
+    grunt.registerTask('integrate', 'Compiles editors as separate apps', function (target) {
+        if (target === 'dyole') {
+            grunt.log.write('dyole coming soon');
+            return;
+        }
+
+        grunt.task.run([
+            'clean:server',
+            //'wiredep',
+            'concurrent:server',
+            'autoprefixer',
+//            'configureProxies:livereload',
+//            'connect:livereload',
+            'ngtemplates:integrate',
             'watch'
         ]);
     });

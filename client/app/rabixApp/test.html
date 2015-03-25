@@ -1,0 +1,224 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta charset="utf-8">
+
+    <title>Rabix</title>
+
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+
+    <link rel="shortcut icon" href="/images/favicon.ico">
+
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,400,700' rel='stylesheet' type='text/css'>
+
+    <!-- build:css({.tmp,app}) styles/styles.css -->
+    <link rel="stylesheet" href="../bower_components/fontawesome/css/font-awesome.css">
+    <link rel="stylesheet" href="../bower_components/codemirror/lib/codemirror.css">
+    <link rel="stylesheet" href="../bower_components/codemirror/theme/mbo.css">
+    <link rel="stylesheet" href="../bower_components/github-markdown-css/github-markdown.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <!-- endbuild -->
+
+    <link rel="jsandbox" href="../vendor/jsandbox/src/jsandbox-worker.js"/>
+
+</head>
+<body ng-app="rabixApp">
+<!--[if lt IE 7]>
+<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+<![endif]-->
+
+<!-- Add your site or application content here -->
+<div class="container-fluid" ng-controller="ToolEditorCtrl">
+
+
+    <div class="main" ui-view></div>
+</div>
+
+<!--<error></error>-->
+<!--<preload></preload>-->
+
+<!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
+<script>
+    (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function () {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date();
+        a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', 'UA-XXXXX-X');
+    ga('send', 'pageview');
+</script>
+
+<!--[if lt IE 9]>
+<script src="../bower_components/es5-shim/es5-shim.js"></script>
+<script src="../bower_components/json3/lib/json3.min.js"></script>
+<![endif]-->
+
+<!-- build:js({.tmp,app}) scripts/vendor.js -->
+<script src="../vendor/jsandbox/src/jsandbox.js"></script>
+<script src="../vendor/raphael/raphael.js"></script>
+<script src="../vendor/raphael/raphael.button.js"></script>
+<script src="../vendor/raphael/raphael.curve.js"></script>
+<script src="../vendor/raphael/raphael.group.js"></script>
+
+<script src="../bower_components/jquery/dist/jquery.js"></script>
+
+<script src="../bower_components/angular/angular.js"></script>
+<script src="../bower_components/angular-resource/angular-resource.js"></script>
+<script src="../bower_components/angular-cookies/angular-cookies.js"></script>
+<script src="../bower_components/angular-sanitize/angular-sanitize.js"></script>
+<script src="../bower_components/angular-animate/angular-animate.js"></script>
+<script src="../bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+
+<script src="../bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+<script src="../bower_components/lodash/dist/lodash.js"></script>
+<script src="../bower_components/ng-prettyjson/dist/ng-prettyjson.min.js"></script>
+
+<script src="../bower_components/localforage/dist/localforage.js"></script>
+<script src="../bower_components/angular-localForage/dist/angular-localForage.js"></script>
+
+<script src="../bower_components/zeroclipboard/dist/ZeroClipboard.js"></script>
+
+<script src="../bower_components/marked/lib/marked.js"></script>
+<script src="../bower_components/angular-marked/angular-marked.js"></script>
+<script src="../bower_components/tv4/tv4.js"></script>
+<!-- endbuild -->
+
+<!-- build:js scripts/codemirror.js -->
+<script src="../bower_components/codemirror/lib/codemirror.js"></script>
+<script src="../bower_components/codemirror/mode/javascript/javascript.js"></script>
+<!-- endbuild -->
+
+<script src="rabixApp.js"></script>
+
+<!-- build:js({.tmp,app}) scripts/scripts.js -->
+<!--<script src="../scripts/main.config.js"></script>-->
+<script src="scripts/template.js"></script>
+
+<!--<script src="../scripts/main/controllers/MasterCtrl.js"></script>-->
+<!--<script src="../scripts/main/controllers/HomeCtrl.js"></script>-->
+<!--<script src="../scripts/main/controllers/ModalJSONCtrl.js"></script>-->
+<!--<script src="../scripts/main/controllers/BuildsCtrl.js"></script>-->
+<!--<script src="../scripts/main/controllers/BuildCtrl.js"></script>-->
+<!--<script src="../scripts/main/controllers/SettingsCtrl.js"></script>-->
+<!--<script src="../scripts/main/directives/sidebar.js"></script>-->
+<!--<script src="../scripts/main/directives/drag.js"></script>-->
+<!--<script src="../scripts/main/directives/drop.js"></script>-->
+<!--<script src="../scripts/main/directives/preload.js"></script>-->
+<!--<script src="../scripts/main/services/HTTPInterceptor.js"></script>-->
+<!--<script src="../scripts/main/models/User.js"></script>-->
+<!--<script src="../scripts/main/models/Build.js"></script>-->
+
+<script src="../scripts/util/util.config.js"></script>
+<script src="../scripts/util/filters/is-empty.js"></script>
+<script src="../scripts/util/filters/encode.js"></script>
+<script src="../scripts/util/filters/trim.js"></script>
+<script src="../scripts/util/filters/repo.js"></script>
+<script src="../scripts/util/filters/is-integer.js"></script>
+
+<script src="../scripts/app/app.config.js"></script>
+<script src="../scripts/app/controllers/AppsCtrl.js"></script>
+<script src="../scripts/app/controllers/ToolCtrl.js"></script>
+<script src="../scripts/app/controllers/ToolRevisionCtrl.js"></script>
+<script src="../scripts/app/controllers/WorkflowViewCtrl.js"></script>
+<script src="../scripts/app/controllers/WorkflowEditorCtrl.js"></script>
+<script src="../scripts/app/models/Tool.js"></script>
+<script src="../scripts/app/models/Workflow.js"></script>
+
+<script src="../scripts/repo/repo.config.js"></script>
+<script src="../scripts/repo/controllers/ReposCtrl.js"></script>
+<script src="../scripts/repo/controllers/RepoCtrl.js"></script>
+<script src="../scripts/repo/controllers/AddYourGitHubRepoCtrl.js"></script>
+<script src="../scripts/repo/controllers/RepoInstructionsCtrl.js"></script>
+<script src="../scripts/repo/controllers/PickRepoModalCtrl.js"></script>
+<script src="../scripts/repo/controllers/ManageRepoCtrl.js"></script>
+<script src="../scripts/repo/models/Repo.js"></script>
+
+<!--<script src="../scripts/task/task.config.js"></script>-->
+<!--<script src="../scripts/task/controllers/PickAppCtrl.js"></script>-->
+<!--<script src="../scripts/task/controllers/TasksCtrl.js"></script>-->
+<!--<script src="../scripts/task/controllers/TaskCtrl.js"></script>-->
+<!--<script src="../scripts/task/models/Job.js"></script>-->
+
+<script src="../scripts/common/common.config.js"></script>
+<script src="../scripts/common/controllers/MarkdownCtrl.js"></script>
+<script src="../scripts/common/controllers/ModalCtrl.js"></script>
+<script src="../scripts/common/controllers/ExpressionCtrl.js"></script>
+<script src="../scripts/common/directives/copy.js"></script>
+<script src="../scripts/common/directives/loading.js"></script>
+<script src="../scripts/common/directives/paginator.js"></script>
+<script src="../scripts/common/directives/json-preview.js"></script>
+<script src="../scripts/common/directives/error.js"></script>
+<script src="../scripts/common/directives/is-valid-name.js"></script>
+<script src="../scripts/common/directives/is-valid-int.js"></script>
+<script src="../scripts/common/directives/expr.js"></script>
+<script src="../scripts/common/directives/codemirror.js"></script>
+<script src="../scripts/common/services/BeforeUnload.js"></script>
+<script src="../scripts/common/services/BeforeRedirect.js"></script>
+<script src="../scripts/common/services/Helper.js"></script>
+<script src="../scripts/common/services/SandBox.js"></script>
+<script src="../scripts/common/services/Api.js"></script>
+
+<!-- endbuild -->
+
+<!-- build:js({.tmp,app}) scripts/dyole.js -->
+<!--<script src="../scripts/dyole/dyole.config.js"></script>-->
+
+<!--<script src="../scripts/dyole/constants/Schemas.js"></script>-->
+
+<!--<script src="../scripts/dyole/controllers/PipelineCtrl.js"></script>-->
+<!--<script src="../scripts/dyole/controllers/NodeEditCtrl.js"></script>-->
+<!--<script src="../scripts/dyole/controllers/DyoleJsonEditorCtrl.js"></script>-->
+<!--<script src="../scripts/dyole/directives/pipeline.js"></script>-->
+<!--<script src="../scripts/dyole/factories/pipeline.js"></script>-->
+<!--<script src="../scripts/dyole/factories/event.js"></script>-->
+<!--<script src="../scripts/dyole/factories/node.js"></script>-->
+<!--<script src="../scripts/dyole/factories/connection.js"></script>-->
+<!--<script src="../scripts/dyole/factories/terminal.js"></script>-->
+<!--<script src="../scripts/dyole/factories/formater.js"></script>-->
+<!--<script src="../scripts/dyole/factories/formaterD2.js"></script>-->
+<!--<script src="../scripts/dyole/factories/common.js"></script>-->
+
+<!--<script src="../scripts/dyole/services/PipelineService.js"></script>-->
+<!-- endbuild -->
+
+<!-- build:js({.tmp,app}) scripts/cliche.js -->
+<script src="../scripts/cliche/cliche.config.js"></script>
+<script src="../scripts/cliche/constants/schemas.js"></script>
+<script src="../scripts/cliche/constants/ScriptSchema.js"></script>
+<script src="../scripts/cliche/constants/ToolSchema.js"></script>
+<script src="../scripts/cliche/constants/schema-definitions.js"></script>
+<script src="../scripts/cliche/controllers/ClicheCtrl.js"></script>
+<script src="../scripts/cliche/controllers/InputFileMoreCtrl.js"></script>
+<script src="../scripts/cliche/controllers/ManagePropertyArgCtrl.js"></script>
+<script src="../scripts/cliche/controllers/ManagePropertyInputCtrl.js"></script>
+<script src="../scripts/cliche/controllers/ManagePropertyOutputCtrl.js"></script>
+<script src="../scripts/cliche/controllers/JsonEditorCtrl.js"></script>
+<script src="../scripts/cliche/directives/property-input.js"></script>
+<script src="../scripts/cliche/directives/property-output.js"></script>
+<script src="../scripts/cliche/directives/property-arg.js"></script>
+<script src="../scripts/cliche/directives/enum.js"></script>
+<script src="../scripts/cliche/directives/input-field.js"></script>
+<script src="../scripts/cliche/directives/add-property.js"></script>
+<script src="../scripts/cliche/directives/key-changer.js"></script>
+<script src="../scripts/cliche/directives/separator.js"></script>
+<script src="../scripts/cliche/directives/separator-info.js"></script>
+<script src="../scripts/cliche/directives/property-header.js"></script>
+<script src="../scripts/cliche/filters/contains.js"></script>
+<script src="../scripts/cliche/filters/size.js"></script>
+<script src="../scripts/cliche/services/Cliche.js"></script>
+<script src="../scripts/cliche/services/RecursionHelper.js"></script>
+<script src="../scripts/cliche/services/Separator.js"></script>
+<script src="../scripts/cliche/services/Validator.js"></script>
+<script src="../scripts/cliche/services/schema-validator.js"></script>
+<!-- endbuild -->
+
+</body>
+</html>

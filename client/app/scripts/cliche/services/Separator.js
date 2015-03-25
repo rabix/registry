@@ -7,7 +7,7 @@
 'use strict';
 
 
-angular.module('registryApp')
+angular.module('registryApp.cliche')
     .factory('Separator', [function() {
 
         var map = {
