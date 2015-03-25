@@ -11,7 +11,7 @@
  'use strict';
 
 angular.module('rabixApp')
-    .service('User', function(){
+    .service('User', ['$q', function($q){
 
     var Mock = {
         '__v' : 0,
@@ -30,12 +30,14 @@ angular.module('rabixApp')
         'username' : 'filip-sbg'
     };
 
-    var Service = {
-        get: function () {
-            return Mock;
+    return {
+        getUser: function () {
+            var deferred = $q.defer();
+
+            deferred.resolve({user: Mock});
+            
+            return deferred.promise;
         }
     };
-
-    return Service;
-});
+}]);
 
