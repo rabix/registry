@@ -6,11 +6,12 @@
 'use strict';
 
 angular.module('registryApp.cliche')
-    .controller('ClicheCtrl', ['$scope', '$q', '$stateParams', '$modal', '$templateCache', '$state', '$rootScope', 'Repo', 'Tool', 'Cliche', 'Loading', 'SandBox', 'BeforeUnload', 'BeforeRedirect', function($scope, $q, $stateParams, $modal, $templateCache, $state, $rootScope, Repo, Tool, Cliche, Loading, SandBox, BeforeUnload, BeforeRedirect) {
+    .controller('ClicheCtrl', ['$scope', '$q', '$stateParams', '$modal', '$templateCache', '$state', '$rootScope', 'Repo', 'Tool', 'Cliche', 'Loading', 'SandBox', 'BeforeUnload', 'BeforeRedirect', 'Api', function($scope, $q, $stateParams, $modal, $templateCache, $state, $rootScope, Repo, Tool, Cliche, Loading, SandBox, BeforeUnload, BeforeRedirect, Api) {
         $scope.Loading = Loading;
 
         //Sidebar.setActive($stateParams.type + ' editor');
 
+        console.log(Api.test());
         var cliAdapterWatchers = [],
             jobWatcher,
             onBeforeUnloadOff = BeforeUnload.register(function() { return 'Please save your changes before leaving.'; }),
