@@ -25,8 +25,7 @@ angular.module('rabixApp')
             'url' : 'https://api.github.com/users/filip-sbg',
             'gravatar_id' : '',
             'avatar_url' : 'https://avatars.githubusercontent.com/u/8544164?v=3',
-            'login' : 'filip-sbg',
-            'accessToken' : 'e66e50935ea04f3f5ff2195f4e11e86d024727d0'
+            'login' : 'filip-sbg'
         },
         'username' : 'filip-sbg'
     };
