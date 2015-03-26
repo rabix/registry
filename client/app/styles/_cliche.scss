@@ -12,6 +12,10 @@
           border-bottom: 1px solid #ddd;
         }
 
+        .section {
+          margin-bottom: 30px;
+        }
+
         .row {
           margin: 0 !important;
         }
@@ -65,10 +69,18 @@
       }
     }
 
+
+
+    .row-margin {
+      @extend .clearfix;
+      margin-right: -$custom-gutter;
+      margin-left: -$custom-gutter;
+    }
+
     @for $num from 1 through 12 {
       .col-md-#{$num} {
-        padding-left: 10px;
-        padding-right: 10px;
+        padding-left: $custom-gutter;
+        padding-right: $custom-gutter;
       }
     }
   }
@@ -231,9 +243,10 @@
         a:not(.btn) {
           color: #555;
           font-size: 17px;
+          line-height: 15px;
           display: inline-block;
           vertical-align: middle;
-          padding: 7.5px 10px;
+          padding: 12px 10px;
 
           &:last-child {
             margin-left: -5px;
@@ -277,7 +290,7 @@
 
       .legend-small {
         font-size: 14px;
-        margin-top: 10px;
+        margin: 10px 0 20px;
       }
     }
   }

@@ -8,57 +8,48 @@
         </div>
     </div>
 
-    <div ng-if="view.type === 'tool'" class="section">
+    <div ng-if="view.type === 'tool'">
+        <legend class="legend-small">Tool</legend>
 
-        <legend class="legend-small">Environment</legend>
-
-        <div class="row">
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label for="imgId" class="control-label">Img Id</label>
-                    <input type="text" class="form-control" id="imgId" name="imgId" ng-model="view.reqDockerCnt.imgId">
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label for="imgRepo" class="control-label">Img Repo</label>
-                    <input type="text" class="form-control" id="imgRepo" name="imgRepo" ng-model="view.reqDockerCnt.imgRepo">
-                </div>
-            </div>
-
-            <div class="col-md-4">
-                <div class="form-group">
-                    <label for="imgTag" class="control-label">Img Tag</label>
-                    <input type="text" class="form-control" id="imgTag" name="imgTag" ng-model="view.reqDockerCnt.imgTag">
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-    <div ng-if="view.type === 'tool'" class="section">
-
-        <legend class="legend-small">Resources</legend>
-
-        <div class="row">
+        <form class="row-margin section">
 
             <div class="col-md-6">
                 <div class="form-group">
-                    <label class="control-label">CPU</label>
-                    <expr ng-model="view.reqCpuRequirement.value" type="number" handle-item-update="updateResource(value, 'CpuRequirement')"></expr>
+                    <label for="label" class="control-label">Label</label>
+                    <input class="form-control" id="label" name="label" type="text"/>
+                </div>
+
+                <div class="form-group">
+                    <label for="toolkit" class="control-label">Toolkit</label>
+                    <input class="form-control" id="toolkit" type="text"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label" for="toolkit-version">Toolkit Version</label>
+                    <input class="form-control" id="toolkit-version" type="text"/>
+                </div>
+
+                <div class="form-group">
+                    <label for="homepage" class="control-label">Homepage</label>
+                    <input class="form-control" id="homepage" type="text"/>
+                </div>
+
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    <textarea class="form-control" name="category" id="category" cols="30" rows="4"></textarea>
                 </div>
             </div>
 
             <div class="col-md-6">
-                <div class="form-group">
-                    <label class="control-label">Mem</label>
-                    <expr ng-model="view.reqMemRequirement.value" type="number" handle-item-update="updateResource(value, 'MemRequirement')"></expr>
-                </div>
+                <label for="description" class="control-label">Description</label>
+                <textarea name="description" id="description" cols="30" rows="15" class="form-control"></textarea>
             </div>
 
-        </div>
+        </form>
+
+
 
     </div>
+
 
 </div>

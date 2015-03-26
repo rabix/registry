@@ -115,6 +115,13 @@
   }
 }
 
+/* Input group override */
+.input-group {
+  .form-control {
+    height: 33px;
+  }
+}
+
 /* Form override */
 form,
 .form {
@@ -366,7 +373,7 @@ label {
 legend {
   &.legend-small {
     font-size: 16px;
-    margin-bottom: 5px;
+//    margin-bottom: 5px;
     font-weight: normal;
 
     &.nb {
