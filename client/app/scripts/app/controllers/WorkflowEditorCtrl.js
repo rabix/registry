@@ -223,6 +223,47 @@ angular.module('registryApp.app')
             $scope.view.groups[group] = !$scope.view.groups[group];
         };
 
+        var toggleState = true;
+
+        var toggleAll = function () {
+
+            _.forEach($scope.view.repoTypes.myRepositories, function (obj, repo) {
+                $scope.view.repoGroups[repo] = toggleState;
+            });
+
+            _.forEach($scope.view.repoTypes.otherRepositories, function (obj, repo) {
+                $scope.view.repoGroups[repo] = toggleState;
+            });
+
+            $scope.view.groups.myRepositories = toggleState;
+            $scope.view.groups.otherRepositories = toggleState;
+
+            toggleState = !toggleState;
+
+        };
+
+        $scope.resetSearch = function () {
+            console.log('Reset search');
+            $scope.view.searchTerm = '';
+            toggleState = false;
+            toggleAll();
+        };
+
+        $scope.$watch('view.searchTerm', function (newVal,oldVal) {
+
+            if (oldVal !== newVal) {
+
+                if (newVal === '') {
+                    console.log($scope.view.searchTerm);
+                    $scope.resetSearch();
+                } else {
+                    toggleState = true;
+                    toggleAll();
+                }
+            }
+
+        });
+
         /**
          * Toggle repo list visibility
          *
