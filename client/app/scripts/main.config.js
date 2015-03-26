@@ -19,6 +19,7 @@ angular
         'ngPrettyJson',
         'LocalForageModule',
         'hc.marked',
+        'ngTagsInput',
         'registryApp.app',
         'registryApp.cliche',
         'registryApp.dyole',

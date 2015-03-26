@@ -67,6 +67,9 @@ angular.module('registryApp.cliche')
         /* current user */
         $scope.view.user = null;
 
+        /* categories */
+        $scope.view.categories = [];
+
         Loading.setClasses($scope.view.classes);
 
         Cliche.subscribe(function(cmd) {
@@ -422,6 +425,13 @@ angular.module('registryApp.cliche')
             position = item.position ? item.position : position; //args
 
             return position;
+        };
+
+        /**
+         * Updates $scope.view.tool.categories
+         */
+        $scope.updateCategories = function() {
+            $scope.view.tool['sbg:category'] = _.pluck($scope.view.categories, 'text');
         };
 
 
