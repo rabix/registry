@@ -580,3 +580,42 @@ ul {
     }
   }
 }
+
+
+/* Input tags override */
+.tag-item {
+  @extend .alert;
+  @extend .alert-info;
+
+  display: inline-block;
+  padding: 2px 5px;
+  margin: 0 4px 4px 0;
+  float: left;
+
+  &:last-of-type {
+    margin-right: 7px;
+  }
+}
+
+.tags {
+  @extend .form-control;
+}
+
+.host div.tags { //to override the above @extend
+  overflow: hidden;
+  word-wrap: break-word;
+  min-height: 50px;
+  height: auto;
+
+  input.input {
+    padding: 2px 0;
+    border: none;
+    float: left;
+
+
+    &:focus, &:active {
+      outline: none;
+    }
+  }
+}
+
