@@ -607,6 +607,18 @@ ul {
   min-height: 50px;
   height: auto;
 
+  .remove-button {
+    &:hover {
+      cursor: pointer;
+      text-decoration: none;
+    }
+  }
+
+  .tags-list {
+    margin: 0;
+    padding: 0;
+  }
+
   input.input {
     padding: 2px 0;
     border: none;
