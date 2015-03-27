@@ -105,6 +105,7 @@ angular.module('registryApp.cliche')
 
                         setUpCliche();
                         prepareRequirements();
+                        setUpCategories();
 
                         $scope.toggleConsole();
 
@@ -303,6 +304,7 @@ angular.module('registryApp.cliche')
             $scope.view.job = Cliche.getJob();
 
             prepareRequirements();
+            setUpCategories();
 
         };
 
@@ -321,6 +323,16 @@ angular.module('registryApp.cliche')
         };
 
         /**
+         * Prepares categories for tagsInput directive
+         */
+        var setUpCategories = function() {
+            $scope.view.categories = _.map($scope.view.tool['sbg:category'], function(cat) {
+
+                return {text: cat};
+            });
+        };
+
+        /**
          * Switch the tab
          * @param tab
          */
@@ -333,6 +345,15 @@ angular.module('registryApp.cliche')
                 turnOffJobDeepWatch();
             }
 
+        };
+
+
+
+        /**
+         * Toggle markdown preview
+         */
+        $scope.togglePreview = function() {
+            $scope.view.preview = !$scope.view.preview;
         };
 
         /**
@@ -365,6 +386,7 @@ angular.module('registryApp.cliche')
 
                         setUpCliche();
                         prepareRequirements();
+                        setUpCategories();
 
                     });
 
