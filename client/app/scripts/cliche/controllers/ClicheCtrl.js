@@ -555,6 +555,31 @@ angular.module('registryApp.cliche')
         };
 
         /**
+         * Splits single base command into multiple
+         *
+         * @param value
+         * @param index
+         */
+        $scope.splitBaseCmd = function (value, index) {
+            value = value.replace(/\s+/g, ' ');
+
+            var baseCmds = value.split(' ');
+            var adapterBaseCmd = $scope.view.tool.cliAdapter.baseCmd;
+
+            if (baseCmds.length > 1) {
+                adapterBaseCmd.splice(index, 1);
+
+                _.forEach(baseCmds, function(cmd) {
+                    adapterBaseCmd.push(cmd);
+                });
+
+                $scope.$apply();
+
+            }
+
+        };
+
+        /**
          * Create new tool and default revision
          *
          * @returns {boolean}
