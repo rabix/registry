@@ -1,0 +1,57 @@
+<div class="content content-ten">
+
+    <div>
+        <legend class="legend-small">Metadata <help-message message="help.cliche.metadata.metadata"></help-message></legend>
+
+
+        <div class="row-margin section form">
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="label" class="control-label">Label</label>
+                    <input class="form-control" ng-model="view.tool.label" id="label" name="label" type="text"/>
+                </div>
+
+                <div class="form-group">
+                    <label for="toolkit" class="control-label">Toolkit</label>
+                    <input class="form-control" ng-model="view.tool['sbg:toolkit']" id="toolkit" type="text"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label" for="toolkit-version">Toolkit Version</label>
+                    <input class="form-control" ng-model="view.tool['sbg:toolkitVersion']" id="toolkit-version" type="text"/>
+                </div>
+
+                <div class="form-group">
+                    <label for="homepage" class="control-label">Homepage</label>
+                    <input class="form-control" ng-model="view.tool['sbg:homepage']"  id="homepage" type="url"/>
+                </div>
+
+                <div class="form-group">
+                    <label for="category" class="third-class">Category</label>
+                    <tags-input id="category" ng-model="view.categories" placeholder="Add a category" on-tag-added="updateCategories($tag)" on-tag-removed="updateCategories($tag)"></tags-input>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <label for="description" class="control-label">Description</label>
+                <div ng-hide="view.preview" class="form-group">
+                    <textarea id="description" class="form-control" ng-model="view.tool.description"  cols="30" rows="15"></textarea>
+                </div>
+
+                <div ng-show="view.preview" class="form-group">
+                    <div class="markdown-body" marked="view.tool.description"></div>
+                </div>
+
+                <div class="form-group">
+                    <a href ng-click="togglePreview()" class="btn btn-default">{{ view.preview ? 'Edit' : 'Preview' }}</a>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+</div>

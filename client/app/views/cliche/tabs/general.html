@@ -1,56 +1,110 @@
 <div class="content content-ten">
+    <div class="row-margin">
+        <div class="col-md-6">
+            <form class="section">
+                <legend class="legend-small">Environment <help-message message="help.cliche.general.environment"></help-message></legend>
 
-    <div>
-        <legend class="legend-small">Metadata</legend>
+                <div class="row">
+                    <div class="form-group">
+                        <label for="imgId" class="control-label">Image Id</label>
+                        <input type="text" class="form-control" id="imgId" name="imgId" ng-model="view.reqDockerCnt.imgId">
+                    </div>
 
-        <div class="row-margin section form">
+                    <div class="form-group">
+                        <label for="imgRepo" class="control-label">Image Repo</label>
+                        <input type="text" class="form-control" id="imgRepo" name="imgRepo" ng-model="view.reqDockerCnt.imgRepo">
+                    </div>
 
-            <div class="col-md-6">
-                <div class="form-group">
-                    <label for="label" class="control-label">Label</label>
-                    <input class="form-control" ng-model="view.tool.label" id="label" name="label" type="text"/>
+                    <div class="form-group">
+                        <label for="imgTag" class="control-label">Image Tag</label>
+                        <input type="text" class="form-control" id="imgTag" name="imgTag" ng-model="view.reqDockerCnt.imgTag">
+                    </div>
                 </div>
+            </form>
 
-                <div class="form-group">
-                    <label for="toolkit" class="control-label">Toolkit</label>
-                    <input class="form-control" ng-model="view.tool['sbg:toolkit']" id="toolkit" type="text"/>
-                </div>
+            <div ng-if="view.type === 'tool'" class="section">
 
-                <div class="form-group">
-                    <label class="control-label" for="toolkit-version">Toolkit Version</label>
-                    <input class="form-control" ng-model="view.tool['sbg:toolkitVersion']" id="toolkit-version" type="text"/>
-                </div>
+                <legend class="legend-small">Resources <help-message message="help.cliche.general.resources"></help-message></legend>
 
-                <div class="form-group">
-                    <label for="homepage" class="control-label">Homepage</label>
-                    <input class="form-control" ng-model="view.tool['sbg:homepage']"  id="homepage" type="url"/>
-                </div>
+                <div class="row-margin">
 
-                <div class="form-group">
-                    <label for="category" class="third-class">Category</label>
-                    <tags-input id="category" ng-model="view.categories" placeholder="Add a category" on-tag-added="updateCategories($tag)" on-tag-removed="updateCategories($tag)"></tags-input>
-                </div>
-            </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">CPU</label>
+                            <expr ng-model="view.reqCpuRequirement.value" type="number" handle-item-update="updateResource(value, 'CpuRequirement')"></expr>
+                        </div>
+                    </div>
 
-            <div class="col-md-6">
-                <label for="description" class="control-label">Description</label>
-                <div ng-hide="view.preview" class="form-group">
-                    <textarea id="description" class="form-control" ng-model="view.tool.description"  cols="30" rows="15"></textarea>
-                </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Memory</label>
+                            <expr ng-model="view.reqMemRequirement.value" type="number" handle-item-update="updateResource(value, 'MemRequirement')"></expr>
+                        </div>
+                    </div>
 
-                <div ng-show="view.preview" class="form-group">
-                    <div class="markdown-body" marked="view.tool.description"></div>
-                </div>
-
-                <div class="form-group">
-                    <a href ng-click="togglePreview()" class="btn btn-default">{{ view.preview ? 'Edit' : 'Preview' }}</a>
                 </div>
 
             </div>
 
         </div>
 
-    </div>
+        <div class="col-md-6">
+            <legend class="legend-small">Command <help-message message="help.cliche.general.command"></help-message></legend>
 
+            <div class="form-group">
+                <label class="control-label">Base Cmd</label>
+
+                <div class="enum-list-wrap">
+                    <a href ng-click="addBaseCmd()" class="btn btn-default add-enum-item"><i class="fa fa-plus"></i></a>
+                    <div class="enum-list-container">
+                        <ul class="enum-list" ng-class="{wide: view.tool.cliAdapter.baseCmd.length === 1}">
+                            <li ng-repeat="baseCmd in view.tool.cliAdapter.baseCmd track by $index">
+                                <div class="enum-field form-group form-group-file">
+                                    <expr ng-model="baseCmd" index="{{ $index }}" handle-item-update="updateCliAdapter(value, index, 'baseCmd')" handle-item-blur="splitBaseCmd(value, index)"></expr>
+                                </div>
+                                <a href ng-hide="view.tool.cliAdapter.baseCmd.length === 1" class="fa fa-remove remove-btn" ng-click="removeBaseCmd($index)"></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+            <!-- # Base Cmd-->
+
+            <div class="row-margin">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">StdIn</label>
+                        <expr ng-model="view.tool.cliAdapter.stdin" handle-item-update="updateCliAdapter(value, null, 'stdin')"></expr>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="control-label">StdOut</label>
+                        <expr ng-model="view.tool.cliAdapter.stdout" handle-item-update="updateCliAdapter(value, null, 'stdout')"></expr>
+                    </div>
+                </div>
+            </div>
+            <!-- # StdIn and StdOut-->
+
+            <legend class="legend-small">
+                Arguments
+                <add-property
+                        type="arg"
+                        handler="generateCommand()"
+                        properties="view.tool.cliAdapter.argAdapters">
+                </add-property>
+                <help-message message="help.cliche.general.argument"></help-message>
+            </legend>
+
+            <property-arg
+                    ng-repeat="arg in view.tool.cliAdapter.argAdapters | orderBy:sortByPosition track by $index"
+                    ng-model="arg"
+                    index="{{ $index }}">
+            </property-arg>
+
+            <p class="alert alert-info" ng-if="view.tool.cliAdapter.argAdapters | isEmpty">There are no arguments at this moment.</p>
+        </div>
+    </div>
 
 </div>

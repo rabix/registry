@@ -6,7 +6,7 @@
 'use strict';
 
 angular.module('registryApp.cliche')
-    .controller('ClicheCtrl', ['$scope', '$q', '$stateParams', '$modal', '$templateCache', '$state', '$rootScope', 'User', 'Repo', 'Tool', 'Cliche', 'Sidebar', 'Loading', 'SandBox', 'BeforeUnload', 'BeforeRedirect', function($scope, $q, $stateParams, $modal, $templateCache, $state, $rootScope, User, Repo, Tool, Cliche, Sidebar, Loading, SandBox, BeforeUnload, BeforeRedirect) {
+    .controller('ClicheCtrl', ['$scope', '$q', '$stateParams', '$modal', '$templateCache', '$state', '$rootScope', 'User', 'Repo', 'Tool', 'Cliche', 'Sidebar', 'Loading', 'SandBox', 'BeforeUnload', 'BeforeRedirect', 'HelpMessages', function($scope, $q, $stateParams, $modal, $templateCache, $state, $rootScope, User, Repo, Tool, Cliche, Sidebar, Loading, SandBox, BeforeUnload, BeforeRedirect, HelpMessages) {
 
         $scope.Loading = Loading;
 
@@ -46,11 +46,11 @@ angular.module('registryApp.cliche')
         /* console visibility flag */
         $scope.view.isConsoleVisible = false;
 
-        /* current tab - available: general, inputs, outputs, adapter, test */
-        $scope.view.tab = 'general';
-
         /* tool type: tool or script */
         $scope.view.type = $stateParams.type;
+
+        /* current tab - available: general, inputs, outputs, metadata, test, script */
+        $scope.view.tab = $scope.view.type === 'script' ? 'script' : 'general';
 
         /* page classes */
         $scope.view.classes = ['page', 'cliche'];
@@ -69,6 +69,10 @@ angular.module('registryApp.cliche')
 
         /* categories */
         $scope.view.categories = [];
+
+        /* help messages */
+        $scope.help = HelpMessages;
+
 
         Loading.setClasses($scope.view.classes);
 
@@ -346,7 +350,6 @@ angular.module('registryApp.cliche')
             }
 
         };
-
 
 
         /**
