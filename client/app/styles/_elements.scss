@@ -274,9 +274,19 @@
     margin: 0;
     text-overflow: ellipsis;
     overflow: hidden;
+
+    &.large {
+      padding: 11px 10px;
+    }
   }
   .add-enum-item {
     float: left;
+
+    &.large {
+      .btn {
+        padding: 11px 12px;
+      }
+    }
   }
   .enum-list-container {
     display: block;
