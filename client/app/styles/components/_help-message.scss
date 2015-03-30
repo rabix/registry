@@ -1,0 +1,56 @@
+$popover-placement: 15px;
+$arrow-placement: $popover-placement - 6px;
+
+.help-message {
+  display: inline-block;
+  position: relative;
+
+  .help-button {
+    font-size: 11px;
+    position: relative;
+    bottom: 4px;
+    left: 2px;
+    cursor: pointer;
+  }
+
+  .help-popup {
+    position: absolute;
+    top: - $popover-placement;
+    left: 23px;
+    z-index: 1060;
+    text-align: left;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ccc;
+    border-radius: $border-radius-large;
+    @include box-shadow(0 5px 10px rgba(0, 0, 0, 0.2));
+
+    &:before {
+      content: '';
+      border-right: 13px solid #bbb;
+      border-top: 13px solid transparent;
+      border-bottom: 13px solid transparent;
+      position: absolute;
+      left: -13px;
+      top: $arrow-placement;
+    }
+
+    &:after {
+      content: '';
+      border-right: 12px solid white;
+      border-top: 12px solid transparent;
+      border-bottom: 12px solid transparent;
+      position: absolute;
+      left: -12px;
+      top: $arrow-placement + 1;
+    }
+
+    .help-container {
+      min-width: 400px;
+      padding: 0 15px;
+      .markdown-body {
+        margin-bottom: 10px;
+      }
+    }
+  }
+}

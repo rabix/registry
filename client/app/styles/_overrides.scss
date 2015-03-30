@@ -630,32 +630,3 @@ ul {
     }
   }
 }
-
-/* Popover overrides */
-.popover {
-  border-color: #ccc;
-}
-
-.popover.right > .arrow,
-.popover.left > .arrow,
-.popover.top > .arrow,
-.popover.bottom > .arrow{
-  border-right-color: #bbb;
-}
-
-help-message {
-  position: relative;
-
-  .popover {
-    top: -13px;
-    left: 12px;
-  }
-}
-
-.help-button {
-  font-size: 11px;
-  position: relative;
-  bottom: 4px;
-  left: 2px;
-  cursor: pointer;
-}
