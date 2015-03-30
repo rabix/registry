@@ -19,7 +19,6 @@ angular.module('registryApp.common')
 
                 scope.showButton = !_.isEmpty(scope.message);
                 scope.showPopup = false;
-                console.log(scope.showPopup);
 
                 function handler () {
                     scope.showPopup = !scope.showPopup;
