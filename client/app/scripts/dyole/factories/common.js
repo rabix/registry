@@ -18,22 +18,28 @@ angular.module('registryApp.dyole')
                 return filter.indexOf(type) !== -1 || (type === 'array' && filter.indexOf(schema.items.type) !== -1);
             },
 
-            checkTypeFile: function (schema) {
-
+            checkTypeFile: function (schema, type) {
+				
+				type = type || {};
+				
                 if (typeof schema === 'string') {
-                    return this._fileTypeCheck({}, schema);
+                    return this._fileTypeCheck(type, schema);
                 }
 
                 if ( typeof schema.type === 'object' && !_.isArray(schema.type)) {
 
                     if (!_.isArray(schema.type)) {
-                        return this._fileTypeCheck(schema, schema.type);
+                        return this.checkTypeFile(schema, schema.type);
                     } else {
                         // this means input is not required and type is array where first element is null
                         // thats why we take second element since that is it's real type
-                        return this._fileTypeCheck(schema, schema.type[1]);
+                        return this.checkTypeFile(schema, schema.type[1]);
                     }
                 }
+
+				if (typeof schema.type === 'string') {
+					return this._fileTypeCheck(schema, schema.type);
+				}
 
                 return false;
             },

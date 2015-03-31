@@ -5,7 +5,7 @@
 'use strict';
 
 angular.module('registryApp.dyole')
-    .factory('node', ['$rootScope', 'terminal', 'Const', function ($rootScope, Terminal, Const) {
+    .factory('node', ['$rootScope', 'terminal', 'Const', 'common', function ($rootScope, Terminal, Const, Common) {
 
         var Node = function (options) {
             var _self = this;
@@ -241,35 +241,12 @@ angular.module('registryApp.dyole')
                 }
 
                 _.each(this.inputRefs, function (input) {
-                    var schema = input.schema[1] || input.schema[0];
+					
+					if (Common.checkTypeFile(input.schema[1] || input.schema[0])) {
+						input.required = input.schema.length === 1;
+						inputs.push(input);	
+					}
 
-                    if (typeof schema === 'string') {
-                        if (checkType({}, schema)) {
-                            input.required = input.schema.length === 1;
-                            inputs.push(input);
-                        }
-                    } else if ( typeof schema.type === 'object' && !_.isArray(schema.type)) {
-
-                        if (!_.isArray(schema.type)) {
-                            // if schema is not array that means that input is required and is string
-
-                            if (checkType(schema, schema.type)) {
-                                input.required = true;
-                                inputs.push(input);
-                            }
-
-                        } else {
-                            // this means input is not required and type is array where first element is null
-                            // thats why we take second element since that is it's real type
-                            var type = schema.type[1];
-
-                            if (checkType(schema, type)) {
-                                inputs.push(input);
-                            }
-
-                        }
-
-                    }
                 });
 
                 return inputs.length === 0 ? this.model.inputs : inputs;
