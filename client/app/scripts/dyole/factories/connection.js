@@ -4,7 +4,7 @@
 'use strict';
 
 angular.module('registryApp.dyole')
-    .factory('connection', ['event', function(Event) {
+    .factory('connection', ['event', 'common', function(Event, Common) {
 
         var Connection = function(options) {
 
@@ -206,12 +206,13 @@ angular.module('registryApp.dyole')
             destroyConnection: function () {
 
                 var inputCheck, outputCheck;
-
+				var startNode = this.Pipeline.nodes[this.model.start_node], 
+					endNode = this.Pipeline.nodes[this.model.end_node];
                 this.connection.remove();
 
-                this.Pipeline.nodes[this.model.start_node].removeConnection(this.model);
-                this.Pipeline.nodes[this.model.end_node].removeConnection(this.model);
-
+				startNode.removeConnection(this.model);
+                endNode.removeConnection(this.model);
+				
                 inputCheck = this.input.removeConnection(this.model.id);
                 outputCheck = this.output.removeConnection(this.model.id);
 
@@ -230,6 +231,15 @@ angular.module('registryApp.dyole')
                     this.output.terminalConnected = false;
                     this.output.setDefaultState();
                 }
+
+
+				if (startNode && Common.checkSystem(startNode.model)) {
+					startNode.removeNode();
+				}
+
+				if (endNode && Common.checkSystem(endNode.model)) {
+					endNode.removeNode();
+				}
 
                 console.log('Connection remove');
                 this.Pipeline.Event.trigger('pipeline:change');

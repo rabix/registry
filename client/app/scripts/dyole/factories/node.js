@@ -904,12 +904,8 @@ angular.module('registryApp.dyole')
             removeNode: function () {
 
                 var _self = this;
-
-                _.each(this.connections, function (connection) {
-                    if (connection) {
-                        connection.destroyConnection();
-                    }
-                });
+				
+				this._destroyButtons();
 
                 _.each(this.inputs, function (t) {
                     t.destroy();
@@ -929,12 +925,21 @@ angular.module('registryApp.dyole')
 
                 this.destroy();
 
+                this.Pipeline.nodes[this.model.id] = null;
+                this.Pipeline.model.schemas[this.model.id] = null;
+				
                 delete this.Pipeline.model.schemas[this.model.id];
                 delete this.Pipeline.nodes[this.model.id];
 
                 _.remove(this.Pipeline.nodes, function (n) {
                     return n.id === _self.model.id;
                 });
+
+				_.each(this.connections, function (connection) {
+					if (connection) {
+						connection.destroyConnection();
+					}
+				});
 
             },
 
