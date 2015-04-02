@@ -21,7 +21,8 @@ angular.module('registryApp.common')
                 selfType: '=?',
                 selfItemType: '=?',
                 onlyExpr: '@',
-                handleItemUpdate: '&'
+                handleItemUpdate: '&',
+                handleItemBlur: '&'
             },
             controller: ['$scope', '$modal', 'SandBox', 'Helper', 'rawTransform', function ($scope, $modal, SandBox, Helper, rawTransform) {
 
@@ -161,6 +162,18 @@ angular.module('registryApp.common')
                 };
 
             }],
-            link: function() {}
+            link: function(scope, element) {
+                var el = angular.element(element);
+
+                el.find('input').on('blur', function() {
+                    if (!_.isUndefined(scope.handleItemBlur) && scope.view.mode === 'literal') {
+                        scope.handleItemBlur({index: scope.index, value: scope.view.literal});
+                    }
+                });
+
+                scope.$on('$destroy', function() {
+                    el.off('blur');
+                });
+            }
         };
     }]);

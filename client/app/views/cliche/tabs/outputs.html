@@ -1,24 +1,31 @@
-<div class="content content-ten">
+<div class="content">
 
-    <legend class="legend-small" ng-class="{nb: view.type === 'script'}">
+    <legend class="legend-small">
         Properties
+        <help-message message="help.cliche.inputs.properties"></help-message>
+    </legend>
+
+    <div class="enum-list-wrap">
         <add-property
                 type="output"
                 key="@id"
                 tool-type="{{ view.type }}"
-                properties="view.tool.outputs">
+                properties="view.tool.outputs"
+                class="add-enum-item large">
         </add-property>
-    </legend>
 
-    <property-output
-            ng-repeat="property in view.tool.outputs track by property['@id']"
-            ng-model="property"
-            key="@id"
-            type="{{ view.type }}"
-            properties="view.tool.outputs">
-    </property-output>
+        <div class="enum-list-container">
+            <property-output
+                    ng-repeat="property in view.tool.outputs track by property['@id']"
+                    ng-model="property"
+                    key="@id"
+                    type="{{ view.type }}"
+                    properties="view.tool.outputs">
+            </property-output>
 
-    <p class="alert alert-info" ng-if="view.tool.outputs.length === 0">There are no outputs at this moment.</p>
+            <p class="alert alert-info large" ng-if="view.tool.outputs.length === 0">There are no outputs at this moment.</p>
+        </div>
+    </div>
 </div>
 
 

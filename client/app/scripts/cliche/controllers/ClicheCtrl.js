@@ -6,7 +6,7 @@
 'use strict';
 
 angular.module('registryApp.cliche')
-    .controller('ClicheCtrl', ['$scope', '$q', '$stateParams', '$modal', '$templateCache', '$state', '$rootScope', 'User', 'Repo', 'Tool', 'Cliche', 'Sidebar', 'Loading', 'SandBox', 'BeforeUnload', 'BeforeRedirect', function($scope, $q, $stateParams, $modal, $templateCache, $state, $rootScope, User, Repo, Tool, Cliche, Sidebar, Loading, SandBox, BeforeUnload, BeforeRedirect) {
+    .controller('ClicheCtrl', ['$scope', '$q', '$stateParams', '$modal', '$templateCache', '$state', '$rootScope', 'User', 'Repo', 'Tool', 'Cliche', 'Sidebar', 'Loading', 'SandBox', 'BeforeUnload', 'BeforeRedirect', 'HelpMessages', function($scope, $q, $stateParams, $modal, $templateCache, $state, $rootScope, User, Repo, Tool, Cliche, Sidebar, Loading, SandBox, BeforeUnload, BeforeRedirect, HelpMessages) {
 
         $scope.Loading = Loading;
 
@@ -46,11 +46,11 @@ angular.module('registryApp.cliche')
         /* console visibility flag */
         $scope.view.isConsoleVisible = false;
 
-        /* current tab - available: general, inputs, outputs, adapter, test */
-        $scope.view.tab = 'general';
-
         /* tool type: tool or script */
         $scope.view.type = $stateParams.type;
+
+        /* current tab - available: general, inputs, outputs, metadata, test, script */
+        $scope.view.tab = $scope.view.type === 'script' ? 'script' : 'general';
 
         /* page classes */
         $scope.view.classes = ['page', 'cliche'];
@@ -66,6 +66,13 @@ angular.module('registryApp.cliche')
 
         /* current user */
         $scope.view.user = null;
+
+        /* categories */
+        $scope.view.categories = [];
+
+        /* help messages */
+        $scope.help = HelpMessages;
+
 
         Loading.setClasses($scope.view.classes);
 
@@ -102,6 +109,7 @@ angular.module('registryApp.cliche')
 
                         setUpCliche();
                         prepareRequirements();
+                        setUpCategories();
 
                         $scope.toggleConsole();
 
@@ -300,6 +308,7 @@ angular.module('registryApp.cliche')
             $scope.view.job = Cliche.getJob();
 
             prepareRequirements();
+            setUpCategories();
 
         };
 
@@ -318,6 +327,16 @@ angular.module('registryApp.cliche')
         };
 
         /**
+         * Prepares categories for tagsInput directive
+         */
+        var setUpCategories = function() {
+            $scope.view.categories = _.map($scope.view.tool['sbg:category'], function(cat) {
+
+                return {text: cat};
+            });
+        };
+
+        /**
          * Switch the tab
          * @param tab
          */
@@ -330,6 +349,14 @@ angular.module('registryApp.cliche')
                 turnOffJobDeepWatch();
             }
 
+        };
+
+
+        /**
+         * Toggle markdown preview
+         */
+        $scope.togglePreview = function() {
+            $scope.view.preview = !$scope.view.preview;
         };
 
         /**
@@ -362,6 +389,7 @@ angular.module('registryApp.cliche')
 
                         setUpCliche();
                         prepareRequirements();
+                        setUpCategories();
 
                     });
 
@@ -422,6 +450,13 @@ angular.module('registryApp.cliche')
             position = item.position ? item.position : position; //args
 
             return position;
+        };
+
+        /**
+         * Updates $scope.view.tool.categories
+         */
+        $scope.updateCategories = function() {
+            $scope.view.tool['sbg:category'] = _.pluck($scope.view.categories, 'text');
         };
 
 
@@ -520,6 +555,31 @@ angular.module('registryApp.cliche')
             if ($scope.view.tool.cliAdapter.baseCmd.length === 1) { return false; }
 
             $scope.view.tool.cliAdapter.baseCmd.splice(index, 1);
+        };
+
+        /**
+         * Splits single base command into multiple
+         *
+         * @param value
+         * @param index
+         */
+        $scope.splitBaseCmd = function (value, index) {
+            value = value.replace(/\s+/g, ' ');
+
+            var baseCmds = value.split(' ');
+            var adapterBaseCmd = $scope.view.tool.cliAdapter.baseCmd;
+
+            if (baseCmds.length > 1) {
+                adapterBaseCmd.splice(index, 1);
+
+                _.forEach(baseCmds, function(cmd) {
+                    adapterBaseCmd.push(cmd);
+                });
+
+                $scope.$apply();
+
+            }
+
         };
 
         /**

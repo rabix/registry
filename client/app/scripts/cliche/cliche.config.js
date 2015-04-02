@@ -6,7 +6,7 @@
 
 'use strict';
 
-angular.module('registryApp.cliche', [])
+angular.module('registryApp.cliche', ['ngTagsInput'])
     .config(['$stateProvider', '$localForageProvider', function ($stateProvider, $localForageProvider) {
 
         $stateProvider

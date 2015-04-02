@@ -6,10 +6,11 @@
 
         <div class="heading sub-heading">
             <ul class="nav nav-tabs nav-tabs-steps regular">
-                <li ng-class="{active: view.tab === 'general'}"><a href ng-click="switchTab('general')">General</a></li>
+                <li ng-show="view.type === 'tool'" ng-class="{active: view.tab === 'general'}"><a href ng-click="switchTab('general')">General</a></li>
+                <li ng-class="{active: view.tab === 'script'}" ng-show="view.type === 'script'"><a href ng-click="switchTab('script')">Script</a></li>
                 <li ng-class="{active: view.tab === 'inputs'}"><a href ng-click="switchTab('inputs')">Inputs</a></li>
                 <li ng-class="{active: view.tab === 'outputs'}"><a href ng-click="switchTab('outputs')">Outputs</a></li>
-                <li ng-show="view.type === 'tool'" ng-class="{active: view.tab === 'adapter'}"><a href ng-click="switchTab('adapter')">Adapter</a></li>
+                <li ng-class="{active: view.tab === 'metadata'}"><a href ng-click="switchTab('metadata')">Metadata</a></li>
                 <li ng-show="view.type === 'tool'" ng-class="{active: view.tab === 'test'}"><a href ng-click="switchTab('test')">Test</a></li>
             </ul>
             <a href class="btn btn-flush btn-flush-cliche" title="Start with clean template" ng-click="flush()"><i class="fa fa-trash"></i></a>
@@ -18,8 +19,8 @@
 
         <div class="content content-tbl flex-box-column">
 
-            <div ng-show="view.tab === 'general'" class="tab general flex-box-column flex-one">
-                <ng-include class="include flex-box-column flex-one" src="'views/cliche/tabs/general.html'"></ng-include>
+            <div ng-show="view.tab === 'metadata'" class="tab general flex-box-column flex-one">
+                <ng-include class="include flex-box-column flex-one" src="'views/cliche/tabs/metadata.html'"></ng-include>
             </div>
 
             <div ng-show="view.tab === 'inputs'" class="tab inputs flex-box-column flex-one">
@@ -30,12 +31,16 @@
                 <ng-include class="include flex-box-column flex-one" src="'views/cliche/tabs/outputs.html'"></ng-include>
             </div>
 
-            <div ng-if="view.type === 'tool'" ng-show="view.tab === 'adapter'" class="tab adapter flex-box-column flex-one">
-                <ng-include class="include flex-box-column flex-one" src="'views/cliche/tabs/adapter.html'"></ng-include>
+            <div ng-if="view.type === 'tool'" ng-show="view.tab === 'general'" class="tab adapter flex-box-column flex-one">
+                <ng-include class="include flex-box-column flex-one" src="'views/cliche/tabs/general.html'"></ng-include>
             </div>
 
             <div ng-if="view.type === 'tool' && view.tab === 'test'" class="tab test flex-box-column flex-one">
                 <ng-include class="include flex-box-column flex-one" src="'views/cliche/tabs/test.html'"></ng-include>
+            </div>
+
+            <div ng-if="view.type === 'script' && view.tab === 'script'" class="tab test flex-box-column flex-one">
+                <ng-include class="include flex-box-column flex-one" src="'views/cliche/tabs/script.html'"></ng-include>
             </div>
         </div>
         <!-- # .content -->

@@ -115,6 +115,13 @@
   }
 }
 
+/* Input group override */
+.input-group {
+  .form-control {
+    height: 33px;
+  }
+}
+
 /* Form override */
 form,
 .form {
@@ -366,7 +373,7 @@ label {
 legend {
   &.legend-small {
     font-size: 16px;
-    margin-bottom: 5px;
+//    margin-bottom: 5px;
     font-weight: normal;
 
     &.nb {
@@ -570,6 +577,56 @@ ul {
       i {
         width: 20px;
       }
+    }
+  }
+}
+
+
+/* Input tags override */
+.tag-item {
+  @extend .alert;
+  @extend .alert-info;
+
+  display: inline-block;
+  padding: 2px 5px;
+  margin: 0 4px 4px 0;
+  float: left;
+
+  &:last-of-type {
+    margin-right: 7px;
+  }
+}
+
+.tags {
+  @extend .form-control;
+}
+
+.host div.tags { //to override the above @extend
+  overflow: hidden;
+  word-wrap: break-word;
+  min-height: 50px;
+  height: auto;
+
+  .remove-button {
+    &:hover {
+      cursor: pointer;
+      text-decoration: none;
+    }
+  }
+
+  .tags-list {
+    margin: 0;
+    padding: 0;
+  }
+
+  input.input {
+    padding: 2px 0;
+    border: none;
+    float: left;
+
+
+    &:focus, &:active {
+      outline: none;
     }
   }
 }

@@ -1,11 +1,11 @@
-<div class="content content-tbl flex-box-column">
+<div class="content flex-box-column">
 
     <ng-form class="form flex-box-column flex-one" name="forms.jobForm" role="form" novalidate>
 
-        <div class="section top flex-auto">
+        <div class="section flex-auto">
             <div class="input-property">
                 <div class="form-group">
-                    <label class="control-label">Allocated Resources</label>
+                    <label class="control-label">Allocated Resources <help-message message="help.cliche.test.allocatedResources"></help-message></label>
 
                     <div class="input-property-body">
                         <div class="col-md-6">
@@ -34,30 +34,28 @@
                 </div>
 
             </div>
-
-            <h4>Inputs</h4>
         </div>
         <!-- # .section -->
 
         <div class="section bottom flex-box-column flex-one">
 
-            <div class="content content-ten">
-                <div class="input-container">
 
-                    <input-field
-                            ng-repeat="property in view.tool.inputs | orderBy:sortByPosition track by property['@id']"
-                            ng-model="view.job.inputs[property['@id'].slice(1)]"
-                            class="input-field"
-                            key="@id"
-                            prop="property"
-                            form="form.job">
-                    </input-field>
+            <legend class="legend-small">Inputs <help-message message="help.cliche.test.inputs"></help-message></legend>
 
-                </div>
+            <div class="input-container">
 
-                <p class="alert alert-info" ng-if="view.tool.inputs.length === 0">There are no values to be set at this moment.</p>
+                <input-field
+                        ng-repeat="property in view.tool.inputs | orderBy:sortByPosition track by property['@id']"
+                        ng-model="view.job.inputs[property['@id'].slice(1)]"
+                        class="input-field"
+                        key="@id"
+                        prop="property"
+                        form="form.job">
+                </input-field>
+
             </div>
 
+            <p class="alert alert-info" ng-if="view.tool.inputs.length === 0">There are no values to be set at this moment.</p>
         </div>
         <!-- # .section -->
 

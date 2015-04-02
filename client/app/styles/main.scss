@@ -26,6 +26,7 @@ body {
 }
 
 @import "common";
+@import "components/components";
 @import "sidebar";
 @import "loader";
 @import "error";
@@ -43,7 +44,7 @@ body {
   .content {
     overflow-x: hidden;
     overflow-y: auto;
-    padding: 20px 10px 0;
+    padding: 20px;
     @extend %scrollbar;
     @extend .flex-one;
 
@@ -55,9 +56,9 @@ body {
       padding-top: 0;
     }
 
-    &.content-ten {
-      padding: 10px;
-    }
+//    &.content-ten {
+//      padding: 20px;
+//    }
   }
   
   /* Home page */
