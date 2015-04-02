@@ -5,7 +5,7 @@
 'use strict';
 
 angular.module('registryApp.dyole')
-    .factory('pipeline', ['event', 'node', 'connection', '$rootScope', 'systemNodeModel', 'FormaterD2', 'Const', function (Event, Node, Connection, $rootScope, systemNodeModel, Formater, Const) {
+    .factory('pipeline', ['event', 'node', 'connection', '$rootScope', 'systemNodeModel', 'FormaterD2', 'Const', 'common', function (Event, Node, Connection, $rootScope, systemNodeModel, Formater, Const, Common) {
 
             /**
              * Pipeline constructor
@@ -166,6 +166,21 @@ angular.module('registryApp.dyole')
 
                         _self.createConnection(model);
 
+                    });
+                    
+                    this.Event.subscribe('connection:destroyed', function (model) {
+                        var endNode = _self.nodes[model.end_node],
+                            startNode = _self.nodes[model.start_node];
+
+                        console.log('connection:destroyed', model);
+
+                        if (startNode && Common.checkSystem(startNode.model)) {
+                            startNode.removeNode();
+                        }
+
+                        if (endNode && Common.checkSystem(endNode.model)) {
+                            endNode.removeNode();
+                        }
                     });
 
                     $canvasArea.mousemove(function (e) {

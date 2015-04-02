@@ -30,6 +30,10 @@ angular.module('registryApp.dyole')
             // dragged flag
             this.dragged = false;
 
+            // destroyed flag
+            // used when deleting node can occure from multiple places
+            this.destroyed = false;
+
             this.selected = false;
 
             this.inputRefs = this.model.inputs;
@@ -904,7 +908,13 @@ angular.module('registryApp.dyole')
             removeNode: function () {
 
                 var _self = this;
-				
+
+                if (this.destroyed) {
+                    return;
+                } else {
+                    this.destroyed = true;
+                }
+
 				this._destroyButtons();
 
 				_.each(this.connections, function (connection) {

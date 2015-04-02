@@ -243,7 +243,6 @@ angular.module('registryApp.app')
         };
 
         $scope.resetSearch = function () {
-            console.log('Reset search');
             $scope.view.searchTerm = '';
             toggleState = false;
             toggleAll();
@@ -254,7 +253,6 @@ angular.module('registryApp.app')
             if (oldVal !== newVal) {
 
                 if (newVal === '') {
-                    console.log($scope.view.searchTerm);
                     $scope.resetSearch();
                 } else {
                     toggleState = true;
