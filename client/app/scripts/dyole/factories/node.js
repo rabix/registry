@@ -907,6 +907,12 @@ angular.module('registryApp.dyole')
 				
 				this._destroyButtons();
 
+				_.each(this.connections, function (connection) {
+					if (connection) {
+						connection.destroyConnection(_self.id);
+					}
+				});
+				
                 _.each(this.inputs, function (t) {
                     t.destroy();
                 });
@@ -915,7 +921,7 @@ angular.module('registryApp.dyole')
                     t.destroy();
                 });
 
-                this.connections = {};
+				this.connections = {};
 
                 if (typeof this.glow !== 'undefined') {
                     this.glow.remove();
@@ -930,16 +936,10 @@ angular.module('registryApp.dyole')
 				
                 delete this.Pipeline.model.schemas[this.model.id];
                 delete this.Pipeline.nodes[this.model.id];
-
+				
                 _.remove(this.Pipeline.nodes, function (n) {
                     return n.id === _self.model.id;
                 });
-
-				_.each(this.connections, function (connection) {
-					if (connection) {
-						connection.destroyConnection();
-					}
-				});
 
             },
 

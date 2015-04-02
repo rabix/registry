@@ -203,11 +203,22 @@ angular.module('registryApp.dyole')
                 output.terminals[input.model.id] = this.model.id;
             },
 
-            destroyConnection: function () {
+            destroyConnection: function (node_id) {
 
-                var inputCheck, outputCheck;
-				var startNode = this.Pipeline.nodes[this.model.start_node], 
+				var inputCheck, outputCheck;
+				var startNode = this.Pipeline.nodes[this.model.start_node],
 					endNode = this.Pipeline.nodes[this.model.end_node];
+
+				if (startNode && Common.checkSystem(startNode.model) && node_id !== startNode.id) {
+					startNode.removeNode(true);
+					return;
+				}
+
+				if (endNode && Common.checkSystem(endNode.model) && node_id !== endNode.id) {
+					endNode.removeNode(true);
+					return;
+				}
+
                 this.connection.remove();
 
 				startNode.removeConnection(this.model);
@@ -231,15 +242,6 @@ angular.module('registryApp.dyole')
                     this.output.terminalConnected = false;
                     this.output.setDefaultState();
                 }
-
-
-				if (startNode && Common.checkSystem(startNode.model)) {
-					startNode.removeNode();
-				}
-
-				if (endNode && Common.checkSystem(endNode.model)) {
-					endNode.removeNode();
-				}
 
                 console.log('Connection remove');
                 this.Pipeline.Event.trigger('pipeline:change');
