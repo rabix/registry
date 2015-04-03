@@ -685,15 +685,15 @@ var _helper = {
  */
 var fd2 = {
 
-    toRabixSchema: function (p) {
+    toRabixSchema: function (p, exposed, values) {
         var json = _.clone(p, true),
             model = _.clone(RabixModel, true);
 
         model.display = json.display;
-        model.dataLinks = _formatter.toRabixRelations(json.relations, json.exposed, model);
+        model.dataLinks = _formatter.toRabixRelations(json.relations, exposed, model);
         model.steps = _formatter.createSteps(json.schemas, json.relations);
 
-        _formatter.addValuesToSteps(model.steps, json.values);
+        _formatter.addValuesToSteps(model.steps, values);
 
         _formatter.createWorkflowInOut(model, json.schemas, json.relations);
 

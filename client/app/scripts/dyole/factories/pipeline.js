@@ -940,16 +940,15 @@ angular.module('registryApp.dyole')
 
                     this.$parent.find('svg').remove();
 
-                    _.each(this.connections, function (connection) {
-                        connection.destroy();
-                    });
-
                     _.each(this.nodes, function (node) {
                         node.destroy();
                     });
 
-                    this.nodes = null;
+                    _.each(this.connections, function (connection) {
+                        connection.destroy();
+                    });
 
+                    this.nodes = null;
 
                     _.each(events, function (event) {
                         _self.Event.unsubscribe(event);

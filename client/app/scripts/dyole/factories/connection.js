@@ -203,7 +203,7 @@ angular.module('registryApp.dyole')
                 output.terminals[input.model.id] = this.model.id;
             },
 
-            destroyConnection: function () {
+            destroyConnection: function (pipelineDestroy) {
 
 				var inputCheck, outputCheck;
 				var startNode = this.Pipeline.nodes[this.model.start_node],
@@ -234,13 +234,16 @@ angular.module('registryApp.dyole')
                 }
 
                 this.Pipeline.Event.trigger('pipeline:change');
-                this.Pipeline.Event.trigger('connection:destroyed', this.model);
+
+                if (!pipelineDestroy) {
+                    this.Pipeline.Event.trigger('connection:destroyed', this.model);
+                }
             },
 
             destroy: function () {
                 var _self = this;
 
-                this.destroyConnection();
+                this.destroyConnection(true);
 
                 _.each(this.events, function (ev) {
                     _self.Pipeline.Event.unsubscribe(ev.event, ev.handler);
