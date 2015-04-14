@@ -2,16 +2,16 @@
     <div class="row-margin">
         <div class="col-md-6">
             <form class="section">
-                <legend class="legend-small">Environment <help-message message="help.cliche.general.environment"></help-message></legend>
+                <legend class="legend-small">Docker Container <help-message message="help.cliche.general.environment"></help-message></legend>
 
                 <div class="row">
                     <div class="form-group">
-                        <label for="imgId" class="control-label">Image Id</label>
+                        <label for="imgId" class="control-label">Image ID</label>
                         <input type="text" class="form-control" id="imgId" name="imgId" ng-model="view.reqDockerCnt.imgId">
                     </div>
 
                     <div class="form-group">
-                        <label for="imgRepo" class="control-label">Image Repo</label>
+                        <label for="imgRepo" class="control-label">Image Repository</label>
                         <input type="text" class="form-control" id="imgRepo" name="imgRepo" ng-model="view.reqDockerCnt.imgRepo">
                     </div>
 
@@ -37,7 +37,7 @@
 
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="control-label">Memory</label>
+                            <label class="control-label">Memory (MB)</label>
                             <expr ng-model="view.reqMemRequirement.value" type="number" handle-item-update="updateResource(value, 'MemRequirement')"></expr>
                         </div>
                     </div>
@@ -53,7 +53,7 @@
                 <legend class="legend-small">Command <help-message message="help.cliche.general.command"></help-message></legend>
 
                 <div class="form-group">
-                    <label class="control-label">Base Cmd</label>
+                    <label class="control-label">Base Command</label>
 
                     <div class="enum-list-wrap">
                         <a href ng-click="addBaseCmd()" class="btn btn-default add-enum-item"><i class="fa fa-plus"></i></a>
@@ -75,13 +75,13 @@
                 <div class="row-margin">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="control-label">StdIn</label>
+                            <label class="control-label">Stdin</label>
                             <expr ng-model="view.tool.cliAdapter.stdin" handle-item-update="updateCliAdapter(value, null, 'stdin')"></expr>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label class="control-label">StdOut</label>
+                            <label class="control-label">Stdout</label>
                             <expr ng-model="view.tool.cliAdapter.stdout" handle-item-update="updateCliAdapter(value, null, 'stdout')"></expr>
                         </div>
                     </div>
@@ -111,7 +111,7 @@
                                 index="{{ $index }}">
                         </property-arg>
 
-                        <p class="alert alert-info large" ng-if="view.tool.cliAdapter.argAdapters | isEmpty">There are no arguments at this moment.</p>
+                        <p class="alert alert-info large" ng-if="view.tool.cliAdapter.argAdapters | isEmpty">Click the plus button to add command line binding.</p>
 
                     </div>
                 </div>

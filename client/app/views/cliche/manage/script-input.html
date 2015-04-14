@@ -1,7 +1,7 @@
 <div class="modal-header">
     <button type="button" class="close" ng-click="cancel()"><span>&times;</span><span class="sr-only">Close</span></button>
     <h4 class="modal-title">
-        <span>{{ (view.mode === 'edit') ? 'Edit' : 'Add' }} Input Property</span>
+        <span>{{ (view.mode === 'edit') ? 'Edit' : 'Add' }} Property</span>
         <label class="checkbox inline">
             <input type="checkbox" ng-model="view.required"> required
         </label>
@@ -18,7 +18,7 @@
                 <div class="form-group" ng-class="{'has-error': (view.form.name.$invalid && view.form.$dirty)}">
                     <label class="control-label" for="name">{{ view.key === '@id' ? 'ID' : 'Name' }}</label>
                     <input type="text" class="form-control" id="name" name="name" ng-model="view.name" is-valid-name required>
-                    <span class="help-block">Characters such as . and $ are forbidden</span>
+                    <span class="help-block">Allowed characters are alphanumerics, _, and -</span>
                 </div>
             </div>
             <!-- END Name -->

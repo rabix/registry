@@ -55,24 +55,32 @@
         <div class="col-md-12">
 
             <legend class="legend-small">
-                Properties
+                Fields
+            </legend>
+
+            <div class="enum-list-wrap">
                 <add-property
                         type="input"
                         tool-type="tool"
-                        properties="view.items.fields">
+                        properties="view.items.fields"
+                        class="add-enum-item large">
                 </add-property>
-            </legend>
 
-            <property-input
-                    ng-repeat="property in view.items.fields track by property.name"
-                    ng-model="property"
-                    type="{{ type }}"
-                    inputs="inputs[view.name]"
-                    properties="view.items.fields"
-                    handler="handler()">
-            </property-input>
+                <div class="enum-list-container">
+                    <property-input
+                            ng-repeat="property in view.items.fields track by property.name"
+                            ng-model="property"
+                            type="{{ type }}"
+                            inputs="inputs[view.name]"
+                            properties="view.items.fields"
+                            handler="handler()">
+                    </property-input>
 
-            <p class="alert alert-info" ng-if="view.items.fields.length === 0">There are no properties at this moment.</p>
+                    <p class="alert alert-info large" ng-if="view.items.fields.length === 0">Click the plus button to define a field.</p>
+                </div>
+
+            </div>
+
         </div>
     </div>
 

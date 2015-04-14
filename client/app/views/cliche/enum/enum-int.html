@@ -2,7 +2,7 @@
 
     <div class="enum-field form-group form-group-file" ng-class="{'has-error': (inputForm.enumNumber.$invalid && !isDisabled)}">
 
-        <input type="number" class="form-control" name="enumNumber" ng-model="item.value" is-valid-int placeholder="Enter Value" ng-required="isRequired" ng-disabled="isDisabled">
+        <input type="number" class="form-control" name="enumNumber" ng-model="item.value" is-valid-int placeholder="Enter value" ng-required="isRequired" ng-disabled="isDisabled">
 
         <span ng-if="inputForm.enumNumber.$invalid && !isDisabled" class="help-block">Please provide correct value</span>
 

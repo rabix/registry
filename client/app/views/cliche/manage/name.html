@@ -13,7 +13,7 @@
         <div class="form-group" ng-class="{'has-error': (view.form.name.$invalid && view.form.$dirty)}">
             <label class="control-label" for="name">Name</label>
             <input type="text" class="form-control" id="name" name="name" ng-model="view.name" is-valid-name required>
-            <span class="help-block">Characters such as . and $ are forbidden</span>
+            <span class="help-block">Allowed characters are alphanumerics, _, and -</span>
         </div>
 
         <div class="form-group main-actions">
