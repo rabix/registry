@@ -56,6 +56,41 @@
         </div>
 
         <legend class="legend-small">
+            <label>
+                Metadata
+            </label>
+        </legend>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group" ng-class="{'has-error': (view.form.label.$invalid && view.form.$dirty)}">
+                    <label class="control-label" for="label">Label</label>
+                    <input type="text" class="form-control" id="label" name="label" ng-model="view.label">
+                </div>
+            </div>
+            <!-- END Label -->
+
+
+            <div class="col-md-4">
+                <div class="form-group" ng-class="{'has-error': (view.form.description.$invalid && view.form.$dirty)}">
+                    <label class="control-label" for="description">Description</label>
+                    <input type="text" class="form-control" id="description" name="description" ng-model="view.description">
+                </div>
+            </div>
+            <!-- END Description -->
+
+
+            <div class="col-md-4">
+                <div class="form-group" ng-class="{'has-error': (view.form.category.$invalid && view.form.$dirty)}">
+                    <label class="control-label" for="category">Category</label>
+                    <input type="text" class="form-control" id="category" name="category" ng-model="view.category">
+                </div>
+            </div>
+            <!-- END Category -->
+        </div>
+
+
+        <legend class="legend-small">
             <label class="checkbox inline">
                 <input type="checkbox" ng-model="view.adapter" ng-change="toggleAdapter()"> Input Binding
                 <small>(include in command line)</small>

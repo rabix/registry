@@ -40,6 +40,10 @@ angular.module('registryApp.cliche')
         $scope.view.disabled = ($scope.view.items && $scope.view.items.type) === 'record';
         $scope.view.adapter = !_.isUndefined($scope.view.property.adapter);
 
+        $scope.view.description = $scope.view.property.description || '';
+        $scope.view.label = $scope.view.property.label || '';
+        $scope.view.category = $scope.view.property['sbg:category'] || '';
+
         idObj.o = $scope.view.name;
 
         /**
@@ -72,7 +76,10 @@ angular.module('registryApp.cliche')
                 type: $scope.view.type,
                 enumName: $scope.view.enumName,
                 symbols: $scope.view.symbols,
-                items: $scope.view.items
+                items: $scope.view.items,
+                label: $scope.view.label,
+                description: $scope.view.description,
+                category: $scope.view.category
             };
 
             var formatted = Cliche.formatProperty(inner, $scope.view.property, 'input');

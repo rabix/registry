@@ -1045,6 +1045,15 @@ angular.module('registryApp.cliche')
                 formatted.name = inner.name;
             }
 
+            /*
+            * add description, label, and sbg:category to input if they exist
+            */
+            if (propertyType === 'input') {
+                if (!_.isUndefined(inner.description)){ formatted.description = inner.description; }
+                if (!_.isUndefined(inner.label)){ formatted.label = inner.label; }
+                if (!_.isUndefined(inner.category)){ formatted['sbg:category'] = inner.category; }
+            }
+
             return formatted;
 
         };
