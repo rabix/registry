@@ -11,6 +11,7 @@ angular.module('registryApp.common')
     .factory('BeforeUnload', [function() {
 
         var callback;
+        var prompt;
 
         /**
          * Attach event listener
@@ -60,22 +61,34 @@ angular.module('registryApp.common')
 
             if (typeof callback === 'function') { message = callback(); }
 
-            (event || window.event).returnValue = message;
+            if (typeof prompt === 'function') {
+                prompt = prompt();
+            } else if (_.isUndefined(prompt)) {
+                // always prompt if shouldPrompt is not a function or boolean
+                prompt = true;
+            }
 
-            return message;
+            if (prompt) {
+                (event || window.event).returnValue = message;
+
+                return message;
+            }
         };
 
         /**
          * Register beforeunload event
          *
          * @param c
+         * @param shouldPrompt {Function | boolean}
          * @returns {Function}
          */
-        var register = function(c) {
+        var register = function(c, shouldPrompt) {
 
             attachEvent('beforeunload', onBeforeUnloadHandler);
 
             callback = c;
+
+            prompt = shouldPrompt;
 
             return function(c) {
 

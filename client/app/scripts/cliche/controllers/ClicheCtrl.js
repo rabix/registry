@@ -14,8 +14,15 @@ angular.module('registryApp.cliche')
 
         var cliAdapterWatchers = [],
             jobWatcher,
-            onBeforeUnloadOff = BeforeUnload.register(function() { return 'Please save your changes before leaving.'; }),
-            onBeforeRedirectOff = BeforeRedirect.register(function () { return Cliche.save($scope.view.mode); }),
+            //onBeforeUnloadOff = BeforeUnload.register(function() { return 'Please save your changes before leaving.'; }),
+            onBeforeUnloadOff = BeforeUnload.register(
+                function () { return 'Please save your changes before leaving.'; },
+                function () { return $scope.form.tool.$dirty; }
+            ),
+            onBeforeRedirectOff = BeforeRedirect.register(
+                function () { return Cliche.save($scope.view.mode); },
+                function () { return $scope.form.tool.$dirty; }
+            ),
             reqMap = {CpuRequirement: 'cpu', MemRequirement: 'mem'};
 
         $scope.view = {};
@@ -322,6 +329,7 @@ angular.module('registryApp.cliche')
             params = params || {};
 
             BeforeRedirect.setReload(true);
+            BeforeRedirect.setPrompt(false);
             $state.go(state, params);
 
         };

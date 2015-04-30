@@ -410,6 +410,12 @@ angular.module('registryApp.app')
 
         };
 
+        var prompt = false;
+
+        $scope.$on('pipeline:change', function() {
+            prompt = true;
+        });
+
         var onNodeSelectOff = $rootScope.$on('node:select', onNodeSelect);
         var onNodeDeselectOff = $rootScope.$on('node:deselect', onNodeDeselect);
 
@@ -425,6 +431,8 @@ angular.module('registryApp.app')
 
             return deferred.promise;
 
+        }, function () {
+            return prompt;
         });
 
         $scope.workflowToJSON = function () {

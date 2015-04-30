@@ -10,6 +10,7 @@ angular.module('registryApp.common')
 
         var callback;
         var reload = false;
+        var prompt = true;
         var onRouteChangeOff;
 
         /**
@@ -21,7 +22,14 @@ angular.module('registryApp.common')
          */
         var onRouteChange = function(e, toState, toParams) {
 
-            if(reload) { return; }
+            if (typeof prompt === 'function') {
+                prompt = prompt();
+            } else if (_.isUndefined(prompt)) {
+                // always prompt if shouldPrompt is not a function or boolean
+                prompt = true;
+            }
+
+            if(!prompt || reload && !prompt) { return; }
 
             var modalInstance = $modal.open({
                 template: $templateCache.get('views/partials/confirm-leave.html'),
@@ -53,9 +61,12 @@ angular.module('registryApp.common')
         /**
          * Register $stateChangeStart event
          *
+         * @param shouldPrompt
          * @param c
          */
-        var register = function (c) {
+        var register = function (c, shouldPrompt) {
+
+            prompt = shouldPrompt;
 
             reload = false;
             callback = c;
@@ -76,9 +87,18 @@ angular.module('registryApp.common')
 
         };
 
+        /**
+         * Set prompt value
+         * @param value
+         */
+        var setPrompt = function (value) {
+            prompt = value;
+        };
+
         return {
             register: register,
-            setReload: setReload
+            setReload: setReload,
+            setPrompt: setPrompt
         };
 
     }]);
