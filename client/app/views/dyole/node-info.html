@@ -4,5 +4,11 @@
 </div>
 <div class="modal-body">
     <p><strong>Author:</strong> {{ ::data.documentAuthor || 'N/A' }}</p>
-    <p><strong>Description:</strong> {{ ::data.softwareDescription.description || 'N/A' }}</p>
+    <div>
+        <strong>Description{{ ::data.softwareDescription.description.length ? '' : ':'}}</strong>
+        <span ng-if="!data.softwareDescription.description.length">N/A</span>
+        <div class="form-group" ng-class="{ 'format': data.softwareDescription.description.length}">
+            <div class="markdown-body" marked="data.softwareDescription.description"></div>
+        </div>
+    </div>
 </div>

@@ -1,0 +1,32 @@
+/** anything related to styling modals **/
+
+.modal-node {
+  li .checkbox {
+    margin: 0;
+  }
+
+  .form-group {
+    margin-bottom: 0;
+    &.format {
+      margin-bottom: 15px;
+      .markdown-body {
+        padding: 15px;
+        border-top: 1px solid #eee;
+      }
+    }
+  }
+}
+
+.input-connections {
+  float: left;
+  margin-top: 5px;
+
+  ul {
+    padding-left: 15px;
+
+    .connection {
+      padding-bottom: 3px;
+      cursor: pointer;
+    }
+  }
+}

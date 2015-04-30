@@ -1,0 +1,27 @@
+<div class="modal-header">
+    <h4 class="modal-title">
+        <a href="{{::data['@id']}}" target="_blank">
+            {{ data.label || data.name || data.softwareDescription.name }}
+        </a>
+    </h4>
+</div>
+
+<div class="modal-body">
+    <p>
+        <strong>Author:</strong>
+        <span> {{ ::data['sbg:createdBy'] }} </span>
+    </p>
+    <p>
+        <strong>Description{{ ::data.model.description.length ? '' : ':'}}</strong>
+    </p>
+    <div class="form-group" ng-class="{ 'format': data.model.description.length}">
+        <div class="markdown-body" marked="data.model.description"></div>
+    </div>
+
+
+</div>
+
+<div class="modal-footer">
+    <button class="btn btn-default" ng-click="cancel()">Close</button>
+    <button class="btn btn-primary" type="submit" ng-click="ok()">Save</button>
+</div>

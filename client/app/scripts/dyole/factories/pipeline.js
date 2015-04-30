@@ -502,7 +502,13 @@ angular.module('registryApp.dyole')
 
                     terId  = this._generateNodeId({label: type});
 
+                    var descriptions = {
+                        input: '###*Input*' + '\n' + 'Downloads input files to local cluster for further processing.',
+                        output: '###*Output*' + '\n' + 'Uploads resulting files from processing cluster to user storage.'
+                    };
+
                     model.label = terId;
+                    model.description = descriptions[type];
                     model.softwareDescription.label = terId;
                     model.softwareDescription.type = type;
                     model[internalType].push({
@@ -513,6 +519,9 @@ angular.module('registryApp.dyole')
 //                        'schema': ['null', 'file']
 						'schema': terminal.model.schema
                     });
+
+                    console.log(model);
+
 
                     terminalId = terId;
 

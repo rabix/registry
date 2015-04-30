@@ -283,17 +283,18 @@ angular.module('registryApp.dyole')
          *
          * @param e
          * @param model
+         * @param schema
          */
-        var onNodeInfo = function(e, model) {
+        var onNodeInfo = function(e, model, schema) {
 
             var $modal = $injector.get('$modal');
             var $templateCache = $injector.get('$templateCache');
 
             $modal.open({
-                template: $templateCache.get('views/dyole/node-info.html'),
+                template: $templateCache.get('views/dyole/'+ ( schema ? 'io-' : '') +'node-info.html'),
                 controller: 'ModalCtrl',
                 windowClass: 'modal-node',
-                resolve: {data: function () { return model; }}
+                resolve: {data: function () { return {model: model, schema: schema};}}
             });
 
         };

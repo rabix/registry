@@ -6,17 +6,19 @@
 
     <form ng-submit="ok()" name="form" class="form">
         <div class="form-group" ng-class="{'has-error': form.name.$invalid}">
-            <label class="control-label">Name</label>
-            <input name="name" is-valid-name="true" class="form-control" type="text" ng-model="view.name"/>
+            <label class="control-label" for="node_name">Name</label>
+            <input name="name" id="node_name" is-valid-name="true" class="form-control" type="text" ng-model="view.name"/>
             <span class="help-block">Allowed characters are alphanumerics, _, and -</span>
         </div>
-        <div class="form-group">
-            <button class="btn btn-primary" type="submit">Save</button>
-            <a href class="btn btn-default" ng-click="cancel()">Cancel</a>
-        </div>
-
     </form>
 
     <div class="alert alert-danger" ng-if="view.error">{{view.error}}</div>
 
+</div>
+
+<div class="modal-footer">
+    <div class="form-group">
+        <button class="btn btn-primary" type="submit">Save</button>
+        <a href class="btn btn-default" ng-click="cancel()">Cancel</a>
+    </div>
 </div>

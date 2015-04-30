@@ -697,7 +697,13 @@ angular.module('registryApp.dyole')
              * @private
              */
             _showInfo: function () {
-                $rootScope.$broadcast('node:info', this.model);
+                var schema = false;
+
+                if (Common.checkSystem(this.model)) {
+                    schema = this.model.inputs[0] || this.model.outputs[0];
+                }
+
+                $rootScope.$broadcast('node:info', this.model, schema);
             },
 
             /**
