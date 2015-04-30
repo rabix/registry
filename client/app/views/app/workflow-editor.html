@@ -140,7 +140,7 @@
                                         <li ng-repeat="app in filterdTools = (apps.tools | filter:view.searchTerm)">
 
                                             <a href drag="app.latest">
-                                                <span class="pointer pull-left" ng-if="app.revisions.length !== 0"  ng-click="toggleAppRevisions(app._id)">
+                                                <span class="pointer pull-left toggle-revisions" ng-if="app.revisions.length !== 0"  ng-click="toggleAppRevisions(app._id)">
                                                     <i class="fa" ng-class="{'fa-minus-square':view.appRevisions[app._id].toggled, 'fa-plus-square': !view.appRevisions[app._id].toggled}"></i>
                                                 </span>
                                                 <i class="fa fa-puzzle-piece"></i>
@@ -172,7 +172,7 @@
                                         <li ng-repeat="app in filterdScripts = (apps.scripts | filter:view.searchTerm)">
 
                                             <a href drag="app.latest">
-                                                <span class="pointer pull-left" ng-if="app.revisions.length !== 0"
+                                                <span class="pointer pull-left toggle-revisions" ng-if="app.revisions.length !== 0"
                                                       ng-click="toggleAppRevisions(app._id)"><i class="fa"
                                                                                                 ng-class="{'fa-minus-square':view.appRevisions[app._id].toggled, 'fa-plus-square': !view.appRevisions[app._id].toggled}"></i></span>
                                                 <i class="fa fa-puzzle-piece"></i>

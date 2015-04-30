@@ -41,6 +41,10 @@ angular.module('registryApp')
                  * @param e
                  */
                 function handleMouseDown (e) {
+                    if ($(e.target).parent().hasClass('toggle-revisions') || $(e.target).hasClass('toggle-revisions')) {
+                        return;
+                    }
+
                     e.preventDefault();
                     e.stopPropagation();
 
