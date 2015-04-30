@@ -358,7 +358,7 @@ angular.module('registryApp.app')
 
             $scope.view.showSidebar = !$scope.view.showSidebar;
 //            $rootScope.$broadcast('sidebar:toggle', $scope.view.showSidebar);
-            PipelineInstance.adjustSize();
+            PipelineInstance.adjustSize($scope.view.showSidebar);
 
         };
 

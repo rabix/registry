@@ -6,6 +6,8 @@
 
 angular.module('registryApp.dyole')
     .factory('pipeline', ['event', 'node', 'connection', '$rootScope', 'systemNodeModel', 'FormaterD2', 'Const', 'common', function (Event, Node, Connection, $rootScope, systemNodeModel, Formater, Const, Common) {
+            /** Temporary hack!! **/
+            var initWidth;
 
             /**
              * Pipeline constructor
@@ -264,6 +266,7 @@ angular.module('registryApp.dyole')
 
                     this.canvas = new Raphael(this.$parent[0], width, height);
                     this.pipelineWrap = this.canvas.group();
+                    initWidth = width;
 
                     this._initCanvasPosition();
                     this._initRect(this.canvas, width, height);
@@ -1016,9 +1019,17 @@ angular.module('registryApp.dyole')
                 /**
                  * Adjust canvas dimensions to fit the parent
                  */
-                adjustSize: function () {
+                adjustSize: function (showSidebar) {
+                    var width;
 
-                    var width = this.$parent[0].offsetWidth - 10;
+                    if(_.isUndefined(showSidebar)) {
+                        width = this.$parent[0].offsetWidth - 10;
+                    } else if (showSidebar) {
+                        width = initWidth;
+                    } else {
+                        width = initWidth + 315;
+                    }
+
                     var height = this.$parent[0].offsetHeight || this.$parent[0].parentNode.offsetHeight;
 
                     if (height > 0) { height -= 10; }

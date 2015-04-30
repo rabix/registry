@@ -230,12 +230,12 @@ angular.module('registryApp.dyole')
         /**
          * Track sidebar toggle in order to adjust canvas size
          */
-        var adjustSize = function () {
+        var adjustSize = function (showSidebar) {
 
             cancelTimeout();
 
             timeoutId = $timeout(function () {
-                Pipeline.adjustSize();
+                Pipeline.adjustSize(showSidebar);
             }, 300);
 
         };
