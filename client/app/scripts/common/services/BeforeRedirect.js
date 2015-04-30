@@ -29,7 +29,7 @@ angular.module('registryApp.common')
                 prompt = true;
             }
 
-            if(!prompt || reload && !prompt) { return; }
+            if(!prompt || reload) { return; }
 
             var modalInstance = $modal.open({
                 template: $templateCache.get('views/partials/confirm-leave.html'),
