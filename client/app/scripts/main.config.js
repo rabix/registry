@@ -19,6 +19,7 @@ angular
         'ngPrettyJson',
         'LocalForageModule',
         'hc.marked',
+        'ui-notification',
         'registryApp.app',
         'registryApp.cliche',
         'registryApp.dyole',

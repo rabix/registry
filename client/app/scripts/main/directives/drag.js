@@ -6,51 +6,114 @@
 'use strict';
 
 angular.module('registryApp')
-    .directive('drag', [function () {
+    .directive('drag', ['$rootScope', 'Notification', function ($rootScope, Notification) {
         return {
             scope: {
                 drag: '='
             },
             link: function(scope, element) {
-
-                var el = element[0];
-
-                /**
-                 * Callback when start dragging the element
-                 *
-                 * @param {Object} e
-                 * @param {Object} e.dataTransfer
-                 * @param {Object} e.dataTransfer.setData
-                 * @param {Object} e.dataTransfer.setDragImage
-                 * @returns {boolean}
-                 */
-                var handleDragStart = function(e) {
-                    var data = JSON.stringify(scope.drag);
-                    e.dataTransfer.effectAllowed = 'move';
-                    e.dataTransfer.setData('Text', data);
-                    e.dataTransfer.setDragImage(angular.element('<img src="images/app-icon.png" width="70">')[0], 35, 35);
-
-                    this.classList.add('drag');
-
-                };
+                var mousedown = false,
+                    $elem = $(element),
+                    $body = $('body'),
+                    $svg = $('.pipeline'),
+                    images = {},
+                    preloadImgBase = '/images/',
+                    image, $img;
 
                 /**
-                 * Callback when stop dragging the element
+                 * Creates a new image node with src
+                 * @param src
+                 * @returns {NodeImage}
+                 * @constructor
                  */
-                var handleDragEnd = function() {
+                function NodeImage(src){
+                    this.img = new Image();
+                    this.img.src = src;
+                    return this;
+                }
 
-                    this.classList.remove('drag');
+                // preload each image
+                images.tool = new NodeImage(preloadImgBase + 'tool-node.png');
+                images.workflow = new NodeImage(preloadImgBase + 'workflow-node.png');
 
-                };
+                /**
+                 * Creates image element and starts "drag" operation
+                 * @param e
+                 */
+                function handleMouseDown (e) {
+                    e.preventDefault();
+                    e.stopPropagation();
 
-                el.addEventListener('dragstart', handleDragStart, false);
-                el.addEventListener('dragend', handleDragEnd, false);
+                    if (e.which === 1 ) {
+                        var type = scope.drag.pipeline ? 'workflow' : 'tool';
+
+                        image = images[type].img;
+                        $img = $('<img/>').attr('src', image.src).width(96).height(96);
+                        $img.css({
+                            position: 'absolute',
+                            'z-index': 100,
+                            top: e.clientY - $img.height() / 2 + $(window).scrollTop(),
+                            left: e.clientX - $img.width() / 2
+                        });
+                        $img.appendTo('body');
+                        mousedown = true;
+
+                        $elem.addClass('drag');
+
+                    }
+                }
+
+                /**
+                 * Moves image element with cursor move
+                 * @param e
+                 */
+                function handleMouseMove (e) {
+                    if (mousedown && $img) {
+                        $img.css({
+                            top: e.clientY - $img.height() / 2 + $(window).scrollTop(),
+                            left: e.clientX - $img.width() / 2
+                        });
+                    }
+                }
+
+                /**
+                 * Handles "drop" operation, verifies condition for adding node to workflow
+                 * @param e
+                 */
+                function handleMouseUp (e) {
+                    if (mousedown) {
+                        mousedown = false;
+                        $img.remove();
+                        $img = null;
+
+                        var rect = $svg[0].getBoundingClientRect(),
+                            x, y;
+
+                        x = e.clientX;
+                        y = e.clientY;
+
+                        if (x > rect.left && y > rect.top && x < rect.right && y < rect.bottom) {
+                            $rootScope.$broadcast('node:dropped', {e: e, app: scope.drag});
+                        } else {
+                            // Notify user
+                            Notification.error({message: 'Node can only be dropped on canvas', delay: 2000});
+                        }
+
+                        $elem.removeClass('drag');
+                    }
+                }
+
+
+                $elem.on('mousedown', handleMouseDown);
+                $body.on('mousemove', handleMouseMove);
+                $body.on('mouseup', handleMouseUp);
+
 
                 scope.$on('$destroy', function() {
-                    el.removeEventListener('dragstart', handleDragStart);
-                    el.removeEventListener('dragend', handleDragEnd);
+                    $elem.off('mousedown', handleMouseDown);
+                    $body.off('mousemove', handleMouseMove);
+                    $body.off('mouseup', handleMouseUp);
                 });
-
             }
         };
     }]);

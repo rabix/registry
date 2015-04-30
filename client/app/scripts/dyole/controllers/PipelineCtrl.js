@@ -171,24 +171,23 @@ angular.module('registryApp.dyole')
          * @param {MouseEvent} e
          * @param {String} app object
          */
-        $scope.dropNode = function(e, app) {
+        var dropNode = function(e, app) {
 
-            app = JSON.parse(app);
-            var formated = app;
+            var formatted = app;
 
             $scope.view.loading = true;
             $scope.view.explanation = false;
 
             if (app.pipeline) {
 
-                formated.json = JSON.parse(formated.json);
+                formatted.json = JSON.parse(formatted.json);
 
                 $scope.view.loading = false;
 
-                formated.json.type = 'workflow';
-                formated.json.name = app.name;
+                formatted.json.type = 'workflow';
+                formatted.json.name = app.name;
 
-                Pipeline.addNode(formated, e.clientX, e.clientY);
+                Pipeline.addNode(formatted, e.clientX, e.clientY);
 
             } else {
                 Tool.getRevision(app._id).then(function(result) {
@@ -200,9 +199,12 @@ angular.module('registryApp.dyole')
 
                 });
             }
-
-
         };
+
+        var onNodeDroppedOff = $rootScope.$on('node:dropped', function (e, data) {
+            dropNode(data.e, data.app);
+        });
+
 
         /**
          * Cancel timeout
@@ -327,6 +329,7 @@ angular.module('registryApp.dyole')
             onPipelineChangeOff();
             onNodeInfoOff();
             onNodeLabelEditOff();
+            onNodeDroppedOff();
 
             if (angular.isDefined(Pipeline)) {
                 Pipeline.destroy();
@@ -365,7 +368,7 @@ angular.module('registryApp.dyole')
 
             var methods = {
                 flush: $scope.flush,
-                dropNode: $scope.dropNode,
+                dropNode: dropNode,
                 save: save,
                 getUrl: getUrl,
                 fork: fork,
