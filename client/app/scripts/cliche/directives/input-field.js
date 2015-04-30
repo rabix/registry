@@ -21,7 +21,7 @@ angular.module('registryApp.cliche')
         $scope.view.required = Cliche.isRequired($scope.view.property.schema);
         $scope.view.items = Cliche.getItemsRef($scope.view.type, $scope.view.property.schema);
 
-        $scope.view.tpl = 'views/cliche/inputs/input-' + $scope.view.type  + '.html';
+        $scope.view.tpl = 'views/cliche/inputs/input-' + $scope.view.type.toLowerCase()  + '.html';
 
         var keyName = $scope.appName + Const.exposedSeparator + $scope.view.name;
 

@@ -49,8 +49,7 @@
             <div ng-click="toggleConsole()" class="heading">Resulting command line <i ng-class="{'fa-chevron-down': view.isConsoleVisible, 'fa-chevron-right': !view.isConsoleVisible}" class="fa pull-right"></i></div>
             <copy data="{{ view.command }}"></copy>
             {{ view.cmdErrors.length }}
-            <pre class="console-trace" ng-class="{wait: view.generatingCommand, error: view.cmdError}">{{ view.command || view.cmdError }}</pre>
-        </div>
+            <pre class="console-trace" ng-class="{wait: view.generatingCommand, error: view.cmdError && !view.command }">{{ view.command || view.cmdError }}</pre>        </div>
         <!-- # .console -->
 
     </ng-form>
