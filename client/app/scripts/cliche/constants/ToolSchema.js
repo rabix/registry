@@ -39,7 +39,7 @@ var Schema = {
         },
         stringTypeDef: {
             type: 'string',
-            enum: ['string', 'boolean', 'file', 'float', 'int', 'null']
+            enum: ['string', 'boolean', 'file', 'float', 'int', 'null', 'File']
         },
         enumDef: {
             type: 'object',
