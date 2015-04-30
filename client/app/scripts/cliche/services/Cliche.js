@@ -1087,7 +1087,7 @@ angular.module('registryApp.cliche')
          * @returns {*}
          */
         var getTplType = function(type) {
-
+            type = type.toLowerCase();
             var general = ['file', 'string', 'int', 'float', 'boolean'];
 
             if (_.contains(general, type)) {
