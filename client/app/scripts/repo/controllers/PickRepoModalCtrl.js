@@ -4,7 +4,7 @@
 'use strict';
 
 angular.module('registryApp.repo')
-    .controller('PickRepoModalCtrl', ['$scope', '$modalInstance', 'data', function ($scope, $modalInstance, data) {
+    .controller('PickRepoModalCtrl', ['$scope', '$modalInstance', 'data', 'HotkeyRegistry', function ($scope, $modalInstance, data, HotkeyRegistry) {
 
         $scope.view = {};
         $scope.view.repos = data.repos;
@@ -33,5 +33,11 @@ angular.module('registryApp.repo')
         $scope.cancel = function () {
             $modalInstance.dismiss('cancel');
         };
+
+        var unloadHotkeys = HotkeyRegistry.loadHotkeys({name: 'confirm', callback: $scope.ok, preventDefault: true, allowIn: ['SELECT']});
+
+        $scope.$on('$destroy', function () {
+            unloadHotkeys();
+        });
 
     }]);

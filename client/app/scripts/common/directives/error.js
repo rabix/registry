@@ -10,6 +10,7 @@ angular.module('registryApp.common')
                 scope.errors = [];
 
                 scope.$on('httpError', function (obj, message) {
+                    if(typeof message.message !== 'string') { return; }
 
                     var messages = _.pluck(scope.errors, 'message');
 

@@ -815,7 +815,7 @@ angular.module('registryApp.cliche')
         };
 
         var unloadHotkeys = HotkeyRegistry.loadHotkeys([
-            {name: 'save', callback: $scope.updateTool, preventDefault: true},
+            {name: 'save', callback: $scope.view.mode === 'edit' ? $scope.updateTool : $scope.createTool, preventDefault: true},
             {name: 'undo', callback: $scope.undoAction, preventDefault: true, allowIn: ['INPUT', 'SELECT', 'TEXTAREA']},
             {name: 'redo', callback: $scope.redoAction, preventDefault: true, allowIn: ['INPUT', 'SELECT', 'TEXTAREA']}
         ]);
