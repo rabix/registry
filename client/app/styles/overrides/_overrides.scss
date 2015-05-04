@@ -13,7 +13,7 @@
       a:hover {
         color: #555;
         background-color: $gray;
-        background-image: url(../images/bg.png);
+        background-image: url(../../images/bg.png);
         border-bottom-color: $gray;
         cursor: pointer;
       }
@@ -292,7 +292,7 @@ form,
 .table {
   thead {
     tr {
-      background-image: url(../images/bg.png);
+      background-image: url(../../images/bg.png);
       border-left: 1px solid #ddd;
       border-right: 1px solid #ddd;
       th {
@@ -630,3 +630,5 @@ ul {
     }
   }
 }
+
+@import "tag-overrides";
