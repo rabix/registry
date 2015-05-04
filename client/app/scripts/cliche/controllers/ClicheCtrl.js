@@ -6,7 +6,7 @@
 'use strict';
 
 angular.module('registryApp.cliche')
-    .controller('ClicheCtrl', ['$scope', '$q', '$stateParams', '$modal', '$templateCache', '$state', '$rootScope', 'User', 'Repo', 'Tool', 'Cliche', 'Sidebar', 'Loading', 'SandBox', 'BeforeUnload', 'BeforeRedirect', 'HelpMessages', function($scope, $q, $stateParams, $modal, $templateCache, $state, $rootScope, User, Repo, Tool, Cliche, Sidebar, Loading, SandBox, BeforeUnload, BeforeRedirect, HelpMessages) {
+    .controller('ClicheCtrl', ['$scope', '$q', '$stateParams', '$modal', '$templateCache', '$state', '$rootScope', 'User', 'Repo', 'Tool', 'Cliche', 'Sidebar', 'Loading', 'SandBox', 'BeforeUnload', 'BeforeRedirect', 'HelpMessages', 'HotkeyRegistry', function($scope, $q, $stateParams, $modal, $templateCache, $state, $rootScope, User, Repo, Tool, Cliche, Sidebar, Loading, SandBox, BeforeUnload, BeforeRedirect, HelpMessages, HotkeyRegistry) {
 
         $scope.Loading = Loading;
 
@@ -806,7 +806,23 @@ angular.module('registryApp.cliche')
 
         };
 
+        $scope.undoAction = function () {
+            // undo action;
+        };
+
+        $scope.redoAction = function () {
+            //redo action
+        };
+
+        var unloadHotkeys = HotkeyRegistry.loadHotkeys([
+            {name: 'save', callback: $scope.updateTool, preventDefault: true},
+            {name: 'undo', callback: $scope.undoAction, preventDefault: true, allowIn: ['INPUT', 'SELECT', 'TEXTAREA']},
+            {name: 'redo', callback: $scope.redoAction, preventDefault: true, allowIn: ['INPUT', 'SELECT', 'TEXTAREA']}
+        ]);
+
         $scope.$on('$destroy', function() {
+
+            unloadHotkeys();
 
             onBeforeUnloadOff();
             onBeforeUnloadOff = undefined;

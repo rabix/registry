@@ -1,12 +1,12 @@
 'use strict';
 
 angular.module('registryApp.common')
-    .controller('ModalCtrl', ['$scope', '$modalInstance', 'data', function ($scope, $modalInstance, data) {
+    .controller('ModalCtrl', ['$scope', '$modalInstance', 'data', 'HotkeyRegistry', function ($scope, $modalInstance, data, HotkeyRegistry) {
 
         $scope.data = data;
         $scope.view = {};
 
-        $scope.view.message = data.message ? data.message : "Are you sure you want to delete this item?";
+        $scope.view.message = data.message ? data.message : 'Are you sure you want to delete this item?';
 
         /**
          * Close the modal
@@ -21,5 +21,11 @@ angular.module('registryApp.common')
         $scope.cancel = function () {
             $modalInstance.dismiss('cancel');
         };
+
+        var unloadHotkeys = HotkeyRegistry.loadHotkeys({name: 'confirm', callback: $scope.ok, preventDefault: true});
+
+        $scope.$on('$destroy', function () {
+            unloadHotkeys();
+        });
 
     }]);

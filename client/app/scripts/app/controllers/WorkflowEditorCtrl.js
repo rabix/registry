@@ -4,7 +4,7 @@
 'use strict';
 
 angular.module('registryApp.app')
-    .controller('WorkflowEditorCtrl', ['$scope', '$rootScope', '$q', '$stateParams', '$modal', '$templateCache', 'Sidebar', 'Loading', 'Tool', 'Workflow', 'User', 'Repo', 'BeforeRedirect', 'Helper', 'PipelineService', 'Notification', function ($scope, $rootScope, $q, $stateParams, $modal, $templateCache, Sidebar, Loading, Tool, Workflow, User, Repo, BeforeRedirect, Helper, PipelineService, Notification) {
+    .controller('WorkflowEditorCtrl', ['$scope', '$rootScope', '$q', '$stateParams', '$modal', '$templateCache', 'Sidebar', 'Loading', 'Tool', 'Workflow', 'User', 'Repo', 'BeforeRedirect', 'Helper', 'PipelineService', 'Notification', 'HotkeyRegistry', function ($scope, $rootScope, $q, $stateParams, $modal, $templateCache, Sidebar, Loading, Tool, Workflow, User, Repo, BeforeRedirect, Helper, PipelineService, Notification, HotkeyRegistry) {
 
         Sidebar.setActive('workflow editor');
 
@@ -586,12 +586,30 @@ angular.module('registryApp.app')
 
         };
 
+        $scope.undoAction = function () {
+            // undo action;
+        };
+
+        $scope.redoAction = function () {
+            //redo action
+        };
+
+        var unloadHotkeys = HotkeyRegistry.loadHotkeys([
+            {name: 'save', callback: $scope.save, preventDefault: true},
+            //{name: 'run', callback: $scope.runWorkflow, preventDefault: true},
+            {name: 'undo', callback: $scope.undoAction, preventDefault: true},
+            {name: 'redo', callback: $scope.redoAction, preventDefault: true}
+        ]);
+
+
         $scope.$on('$destroy', function () {
             onNodeSelectOff();
             onNodeDeselectOff();
 
             onBeforeRedirectOff();
             onBeforeRedirectOff = undefined;
+
+            unloadHotkeys();
 
             PipelineService.removeInstance($scope.view.id);
 

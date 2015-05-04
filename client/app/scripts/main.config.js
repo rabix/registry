@@ -20,6 +20,7 @@ angular
         'LocalForageModule',
         'hc.marked',
         'ui-notification',
+        'cfp.hotkeys',
         'registryApp.app',
         'registryApp.cliche',
         'registryApp.dyole',
