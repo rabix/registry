@@ -4,7 +4,7 @@
 'use strict';
 
 angular.module('registryApp.app')
-    .controller('WorkflowEditorCtrl', ['$scope', '$rootScope', '$q', '$stateParams', '$modal', '$templateCache', 'Sidebar', 'Loading', 'Tool', 'Workflow', 'User', 'Repo', 'BeforeRedirect', 'Helper', 'PipelineService', function ($scope, $rootScope, $q, $stateParams, $modal, $templateCache, Sidebar, Loading, Tool, Workflow, User, Repo, BeforeRedirect, Helper, PipelineService) {
+    .controller('WorkflowEditorCtrl', ['$scope', '$rootScope', '$q', '$stateParams', '$modal', '$templateCache', 'Sidebar', 'Loading', 'Tool', 'Workflow', 'User', 'Repo', 'BeforeRedirect', 'Helper', 'PipelineService', 'Notification', function ($scope, $rootScope, $q, $stateParams, $modal, $templateCache, Sidebar, Loading, Tool, Workflow, User, Repo, BeforeRedirect, Helper, PipelineService, Notification) {
 
         Sidebar.setActive('workflow editor');
 
@@ -279,9 +279,9 @@ angular.module('registryApp.app')
          */
         $scope.onWorkflowChange = function (value) {
 
-            $scope.view.isChanged = value;
+            $scope.view.isChanged = value.value;
 
-            if (!value) {
+            if (!value.value) {
                 $scope.view.saving = false;
                 $scope.view.loading = false;
 
@@ -289,12 +289,20 @@ angular.module('registryApp.app')
                 $scope.view.json = {};
             }
 
+            if (!$scope.$$phase) {
+                $scope.$apply();
+            }
         };
 
         /**
          * Initiate workflow save
          */
         $scope.save = function () {
+            if (!$scope.view.isChanged) {
+                Notification.error('Pipeline not updated: Graph has no changes.');
+                return;
+            }
+
             var modalInstance, mode = $scope.view.mode;
 
             if (!Helper.isValidName($scope.view.workflow.name) && mode === 'new') {
@@ -378,11 +386,12 @@ angular.module('registryApp.app')
                 delete $scope.view.values[appName];
             }
 
-            console.log($scope.view.exposed);
-            console.log($scope.view.values);
+            $scope.onWorkflowChange({value: true, isDisplay: false});
 
         };
 
+        // think about this when implementing multi select of nodes
+        var deepNodeWatch;
         /**
          * Track node select
          */
@@ -395,6 +404,13 @@ angular.module('registryApp.app')
 
             $scope.view.required = $scope.view.json.inputs.required;
 
+            deepNodeWatch = $scope.$watch('view.values', function (n, o) {
+                if (n !== o) {
+                    $scope.onWorkflowChange({value: true, isDisplay: false});
+                }
+            } , true);
+
+            $scope.switchTab('params');
             $scope.$digest();
 
         };
@@ -406,6 +422,12 @@ angular.module('registryApp.app')
 
             $scope.view.json = {};
 
+            if (typeof deepNodeWatch === 'function') {
+                // turn off deep watch for node model
+                deepNodeWatch();
+            }
+
+            $scope.switchTab('apps');
             $scope.$digest();
 
         };

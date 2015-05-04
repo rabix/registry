@@ -107,8 +107,8 @@ angular.module('registryApp.dyole')
                     /**
                      * @param type {string}
                      */
-                    this.Event.subscribe('pipeline:change', function () {
-                        $rootScope.$broadcast('pipeline:change', true);
+                    this.Event.subscribe('pipeline:change', function (isDisplay) {
+                        $rootScope.$broadcast('pipeline:change', !!isDisplay);
                     });
 
                     this.Event.subscribe('node:add', function (model) {
@@ -360,7 +360,6 @@ angular.module('registryApp.dyole')
 
                             _self.rect.dragged = true;
                             _self._drawScrollbars();
-                            _self.Event.trigger('pipeline:change');
 
                         }
 
@@ -388,6 +387,9 @@ angular.module('registryApp.dyole')
                             x: 0,
                             y: 0
                         };
+
+                        _self.Event.trigger('pipeline:change', 'display');
+
                     };
 
                     this.rect.drag(move, start, end);

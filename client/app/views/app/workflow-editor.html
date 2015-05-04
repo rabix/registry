@@ -28,7 +28,7 @@
                     class="fa fa-code"></i> JSON
             </button>
 
-            <button ng-if="view.user" ng-click="save()" class="btn btn-default" ng-disabled="view.saving">
+            <button ng-if="view.user" ng-click="save()" class="btn btn-default" ng-disabled="!view.isChanged || view.saving">
                 <i ng-class="{'fa-plus': view.mode === 'new', 'fa-check': view.mode === 'edit'}" class="fa"></i>
                 {{ view.mode === 'new' ? 'Create' : 'Update' }}
             </button>

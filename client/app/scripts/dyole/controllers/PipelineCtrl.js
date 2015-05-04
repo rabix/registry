@@ -6,7 +6,7 @@
 'use strict';
 
 angular.module('registryApp.dyole')
-    .controller('PipelineCtrl', ['$scope', '$rootScope', '$stateParams', '$element', '$state', '$window', '$timeout', '$injector', 'pipeline', 'Tool', 'rawPipeline', 'Workflow', '$modal', '$templateCache', 'PipelineService', function ($scope, $rootScope, $stateParams, $element, $state, $window, $timeout, $injector, pipeline, Tool, rawPipeline, Workflow, $modal, $templateCache, PipelineService) {
+    .controller('PipelineCtrl', ['$scope', '$rootScope', '$stateParams', '$element', '$state', '$window', '$timeout', '$injector', 'pipeline', 'Tool', 'rawPipeline', 'Workflow', '$modal', '$templateCache', 'PipelineService', 'Notification', function ($scope, $rootScope, $stateParams, $element, $state, $window, $timeout, $injector, pipeline, Tool, rawPipeline, Workflow, $modal, $templateCache, PipelineService, Notification) {
 
         var Pipeline;
         var selector = '.pipeline';
@@ -98,6 +98,8 @@ angular.module('registryApp.dyole')
                     } else {
                         $scope.pipelineChangeFn({value: false});
                     }
+
+                    Notification.primary('Pipeline successfully updated.');
                 }, function () {
                     $scope.$parent.view.saving = false;
                     $scope.$parent.view.loading = false;
@@ -245,8 +247,8 @@ angular.module('registryApp.dyole')
         /**
          * Track pipeline change
          */
-        var onPipelineChangeOff = $rootScope.$on('pipeline:change', function () {
-            $scope.pipelineChangeFn({value: true});
+        var onPipelineChangeOff = $rootScope.$on('pipeline:change', function (isDisplay) {
+            $scope.pipelineChangeFn({value: {value: true, isDisplay: isDisplay}});
         });
 
         /**
