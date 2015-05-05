@@ -6,7 +6,7 @@
     <a ng-if="view.mode === 'edit'" ui-sref="workflow-view({id: view.workflow._id})"
        class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
 
-    <h1>
+    <h1 class="main-heading">
         <div class="form-group workflow-name">
             <span class="pipeline-repo" ng-show="view.workflow.pipeline.repo">({{ ::view.workflow.pipeline.repo.owner }}/{{ ::view.workflow.pipeline.repo.name }}) </span>
             <input ng-show="view.mode === 'new'" type="text" placeholder="Workflow Name" ng-model="view.workflow.name"
@@ -20,6 +20,15 @@
         </strong>
 
         <div class="actions pull-right">
+
+            <button class="btn btn-default" title="Undo" ng-click="undoAction()" ng-disabled="!view.canUndo()">
+                <i class="fa fa-undo"></i>
+            </button>
+
+            <button class="btn btn-default redo-btn" title="Redo" ng-click="redoAction()" ng-disabled="!view.canRedo()">
+                <i class="fa fa-undo fa-flip-horizontal"></i>
+            </button>
+
 
             <button class="btn btn-default" ng-click="validateWorkflowJSON()" ng-disabled="view.saving"><i
                     class="fa fa-check"></i> Validate

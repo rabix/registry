@@ -6,7 +6,7 @@
 'use strict';
 
 angular.module('registryApp.cliche')
-    .controller('ClicheCtrl', ['$scope', '$q', '$stateParams', '$modal', '$templateCache', '$state', '$rootScope', 'User', 'Repo', 'Tool', 'Cliche', 'Sidebar', 'Loading', 'SandBox', 'BeforeUnload', 'BeforeRedirect', 'HelpMessages', 'HotkeyRegistry', function($scope, $q, $stateParams, $modal, $templateCache, $state, $rootScope, User, Repo, Tool, Cliche, Sidebar, Loading, SandBox, BeforeUnload, BeforeRedirect, HelpMessages, HotkeyRegistry) {
+    .controller('ClicheCtrl', ['$parse', '$scope', '$q', '$stateParams', '$modal', '$templateCache', '$state', '$rootScope', 'User', 'Repo', 'Tool', 'Cliche', 'Sidebar', 'Loading', 'SandBox', 'BeforeUnload', 'BeforeRedirect', 'HelpMessages', 'HotkeyRegistry', 'Chronicle', 'Notification', function($parse, $scope, $q, $stateParams, $modal, $templateCache, $state, $rootScope, User, Repo, Tool, Cliche, Sidebar, Loading, SandBox, BeforeUnload, BeforeRedirect, HelpMessages, HotkeyRegistry, Chronicle, Notification) {
 
         $scope.Loading = Loading;
 
@@ -580,14 +580,14 @@ angular.module('registryApp.cliche')
             if (baseCmds.length > 1) {
                 adapterBaseCmd.splice(index, 1);
 
-                _.forEach(baseCmds, function(cmd) {
-                    adapterBaseCmd.push(cmd);
+                _.forEach(baseCmds, function(cmd, key) {
+                    adapterBaseCmd.splice(parseInt(index, 10) + key, 0, cmd);
                 });
 
-                $scope.$apply();
-
+                if(!$scope.$$phase) {
+                    $scope.$apply();
+                }
             }
-
         };
 
         /**
@@ -806,12 +806,36 @@ angular.module('registryApp.cliche')
 
         };
 
+        function reInitCliche() {
+            Cliche.setTool($scope.view.tool);
+            setUpCliche();
+            prepareRequirements();
+            setUpCategories();
+            Cliche.generateCommand()
+                .then(outputCommand, outputError);
+        }
+
+        /**
+         * Undo previous action
+         */
         $scope.undoAction = function () {
-            // undo action;
+            if ($scope.view.canUndo()) {
+                $scope.chron.undo();
+                reInitCliche();
+                Notification({message: 'Undoing', delay: 500});
+            } else {
+                Notification.warning({message: 'No more actions to undo. End of history queue.', delay: 1000});
+            }
         };
 
         $scope.redoAction = function () {
-            //redo action
+            if ($scope.view.canRedo()) {
+                $scope.chron.redo();
+                reInitCliche();
+                Notification({message: 'Redoing', delay: 500});
+            } else {
+                Notification.warning({message: 'No more actions to redo', delay: 1000});
+            }
         };
 
         var unloadHotkeys = HotkeyRegistry.loadHotkeys([
@@ -819,6 +843,17 @@ angular.module('registryApp.cliche')
             {name: 'undo', callback: $scope.undoAction, preventDefault: true, allowIn: ['INPUT', 'SELECT', 'TEXTAREA']},
             {name: 'redo', callback: $scope.redoAction, preventDefault: true, allowIn: ['INPUT', 'SELECT', 'TEXTAREA']}
         ]);
+
+        console.log(parsedWatchVar);
+        
+        $scope.chron = Chronicle.record('view.tool', $scope, true);
+
+        $scope.view.canUndo = function () {
+            return $scope.chron ? $scope.chron.currArchivePos > 1 : false;
+        };
+        $scope.view.canRedo = function () {
+            return $scope.chron ? $scope.chron.currArchivePos !== $scope.chron.archive.length - 1 : false;
+        };
 
         $scope.$on('$destroy', function() {
 

@@ -21,6 +21,7 @@ angular
         'hc.marked',
         'ui-notification',
         'cfp.hotkeys',
+        'Chronicle',
         'registryApp.app',
         'registryApp.cliche',
         'registryApp.dyole',

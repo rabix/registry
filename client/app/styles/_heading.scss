@@ -1,8 +1,9 @@
-h1 {
+.main-heading {
   margin: 0;
   padding: 13px 0 13px 90px;
   font-size: 26px;
   font-weight: normal;
+  @extend .clearfix;
 
   &.main-title {
     padding-left: 0;
@@ -60,6 +61,10 @@ h1 {
     & > .fa {
       margin-left: 10px;
       vertical-align: middle;
+    }
+
+    .redo-btn {
+      margin-left: 0;
     }
   }
 
