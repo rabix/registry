@@ -533,6 +533,23 @@ angular.module('registryApp.app')
             return string.charAt(0).toUpperCase() + string.slice(1);
         };
 
+        $scope.editMetadata = function () {
+
+            var modalInstance = $modal.open({
+                template: $templateCache.get('views/dyole/edit-metadata.html'),
+                controller: 'DyoleEditMetadataCtrl',
+                windowClass: 'modal-markdown',
+                size: 'lg',
+                backdrop: 'static',
+                resolve: {data: function () {return {tool: $scope.view.workflow}; } }
+            });
+
+            modalInstance.result.then(function(result) {
+                $scope.view.workflow = result;
+            });
+
+        };
+
         /**
          * Load markdown modal for description edit
          */

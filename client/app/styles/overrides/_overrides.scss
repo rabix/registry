@@ -631,4 +631,14 @@ ul {
   }
 }
 
+.row-margin {
+  @extend .clearfix;
+  margin-right: -$custom-gutter;
+  margin-left: -$custom-gutter;
+}
+
+.modal-markdown .modal-dialog .row-margin {
+  margin: 0;
+}
+
 @import "tag-overrides";

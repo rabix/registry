@@ -843,8 +843,6 @@ angular.module('registryApp.cliche')
             {name: 'undo', callback: $scope.undoAction, preventDefault: true, allowIn: ['INPUT', 'SELECT', 'TEXTAREA']},
             {name: 'redo', callback: $scope.redoAction, preventDefault: true, allowIn: ['INPUT', 'SELECT', 'TEXTAREA']}
         ]);
-
-        console.log(parsedWatchVar);
         
         $scope.chron = Chronicle.record('view.tool', $scope, true);
 

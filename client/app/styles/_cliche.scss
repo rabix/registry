@@ -69,14 +69,6 @@
       }
     }
 
-
-
-    .row-margin {
-      @extend .clearfix;
-      margin-right: -$custom-gutter;
-      margin-left: -$custom-gutter;
-    }
-
     @for $num from 1 through 12 {
       .col-md-#{$num} {
         padding-left: $custom-gutter;
