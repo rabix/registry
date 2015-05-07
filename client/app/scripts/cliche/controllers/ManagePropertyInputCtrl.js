@@ -46,6 +46,9 @@ angular.module('registryApp.cliche')
 
         idObj.o = $scope.view.name;
 
+        $scope.view.stdinUsed = Cliche.getStdinInput();
+
+
         /**
          * Save property changes
          *
@@ -161,6 +164,13 @@ angular.module('registryApp.cliche')
                 delete $scope.view.property.adapter;
             }
 
+        };
+
+        /**
+         * switch standard input
+         */
+        $scope.switchStdin = function (input) {
+            Cliche.switchStdin(input);
         };
 
         /**

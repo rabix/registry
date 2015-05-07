@@ -51,10 +51,10 @@ angular.module('registryApp.cliche')
         var getTypes = function(type) {
 
             var map = {
-                input: ['file', 'string', 'enum', 'int', 'float', 'boolean', 'array'],
-                output: ['file', 'array'],
-                inputItem: ['string', 'int', 'float', 'file', 'record'],
-                outputItem: ['file']
+                input: ['File', 'string', 'enum', 'int', 'float', 'boolean', 'array'],
+                output: ['File', 'array'],
+                inputItem: ['string', 'int', 'float', 'File', 'record'],
+                outputItem: ['File']
             };
 
             return map[type] || [];
@@ -1012,7 +1012,7 @@ angular.module('registryApp.cliche')
 
                     // _.isEmpty returns true for number values, which we don't want
                     // if there is a number value, then the prop is not empty
-                    if (_.isEmpty(tmp.adapter[key]) && !_.isNumber(tmp.adapter[key])) {
+                    if (_.isEmpty(tmp.adapter[key]) && !_.isNumber(tmp.adapter[key]) && !_.isBoolean(tmp.adapter[key])) {
                         delete tmp.adapter[key];
                     }
                 });
@@ -1160,6 +1160,35 @@ angular.module('registryApp.cliche')
         };
 
         /**
+         * checks if any input already has stdin set
+         * @returns {Object|undefined}
+         */
+        var getStdinInput = function () {
+            return _.filter(toolJSON.inputs, function(input) {
+                return input.adapter && input.adapter.stdin;
+            })[0];
+        };
+
+        /**
+         * sets stdin to true for param property
+         * @param property
+         * @returns {Boolean}
+         */
+        var switchStdin = function (property) {
+            if (!property.adapter.stdin) {
+                return false;
+            }
+
+            _.forEach(toolJSON.inputs, function(input) {
+                if (input.adapter) {
+                    delete input.adapter.stdin;
+                }
+            });
+
+            property.adapter.stdin = true;
+        };
+
+        /**
          * Save tool locally
          *
          * @param mode
@@ -1203,6 +1232,8 @@ angular.module('registryApp.cliche')
             getTypes: getTypes,
             getSchema: getSchema,
             getAdapter: getAdapter,
+            getStdinInput: getStdinInput,
+            switchStdin: switchStdin,
             checkIfEnumNameExists: checkIfEnumNameExists,
             manageProperty: manageProperty,
             deleteProperty: deleteProperty,

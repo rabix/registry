@@ -359,6 +359,14 @@ angular.module('registryApp.cliche')
 
         };
 
+        $scope.view.stdinInput = Cliche.getStdinInput();
+        $scope.view.stdinUsed = !!$scope.view.stdinInput;
+
+        $scope.$watch(Cliche.getStdinInput, function(n) {
+            $scope.view.stdinUsed = !!n;
+            $scope.view.stdinInput = n;
+        });
+
 
         /**
          * Toggle markdown preview

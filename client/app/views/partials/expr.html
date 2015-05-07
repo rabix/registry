@@ -6,7 +6,7 @@
 
         <input ng-show="view.mode === 'transform'" type="text" class="form-control" ng-model="view.transform.value" readonly>
 
-        <input ng-show="view.mode === 'literal'" type="{{ view.type }}" class="form-control" ng-model="view.literal" placeholder="{{ view.placeholder }}" ng-readonly="onlyExpr">
+        <input ng-show="view.mode === 'literal'" type="{{ view.type }}" class="form-control" ng-model="view.literal" placeholder="{{ view.placeholder }}" ng-readonly="onlyExpr" ng-disabled="ngDisabled">
 
         <span class="input-group-btn">
             <a href

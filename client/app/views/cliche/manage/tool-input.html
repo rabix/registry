@@ -33,7 +33,7 @@
 
             <div class="col-md-4" ng-if="view.type === 'array'">
                 <div class="form-group">
-                    <label class="control-label" for="item-type" class="control-label">Item Type</label>
+                    <label class="control-label" for="item-type">Item Type</label>
                     <select class="form-control" id="item-type" name="itemType" ng-model="view.items.type" ng-options="option for option in view.itemTypes"></select>
                 </div>
             </div>
@@ -47,6 +47,18 @@
             </div>
             <!-- END Name -->
 
+        </div>
+
+        <div ng-if="view.type === 'File'">
+            <div class="form-group checkbox">
+                <label for="std_in">
+                    <input type="checkbox" id="std_in" ng-model="view.property.adapter.stdin" ng-change="switchStdin(view.property)"/>
+                    Use file as standard input
+                </label>
+                <p class="help-block" ng-if="view.stdinUsed && view.stdinUsed['@id'] !== view.property['@id']">
+                    {{ view.stdinUsed['@id']}} is already being used as standard input!
+                </p>
+            </div>
         </div>
 
         <div class="row" ng-if="view.type === 'enum'">

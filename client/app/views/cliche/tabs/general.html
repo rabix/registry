@@ -76,7 +76,10 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="control-label">Stdin</label>
-                            <expr ng-model="view.tool.cliAdapter.stdin" handle-item-update="updateCliAdapter(value, null, 'stdin')"></expr>
+                            <expr ng-model="view.tool.cliAdapter.stdin" handle-item-update="updateCliAdapter(value, null, 'stdin')" ng-disabled="view.stdinUsed"></expr>
+                            <p class="help-block" ng-if="view.stdinUsed">
+                                {{ view.stdinInput['@id']}} is already being used as standard input.
+                            </p>
                         </div>
                     </div>
                     <div class="col-md-6">

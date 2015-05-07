@@ -14,6 +14,7 @@ angular.module('registryApp.common')
             template: $templateCache.get('views/partials/expr.html'),
             scope: {
                 ngModel: '=',
+                ngDisabled: '=',
                 type: '@',
                 index: '@',
                 placeholder: '@',
