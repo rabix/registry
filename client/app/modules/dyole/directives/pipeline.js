@@ -9,7 +9,7 @@
 angular.module('registryApp.dyole')
     .directive('pipeline', ['$templateCache', function ($templateCache) {
         return {
-            template: $templateCache.get('views/dyole/pipeline.html'),
+            template: $templateCache.get('modules/dyole/views/pipeline.html'),
             controller: 'PipelineCtrl',
             scope: {
                 controllerId: '=',
