@@ -27,7 +27,8 @@ angular
         'registryApp.dyole',
         'registryApp.repo',
         'registryApp.task',
-        'registryApp.common'
+        'registryApp.common',
+        'registryApp.ui'
     ])
     .constant('Const', {
         exposedSeparator: '$'
