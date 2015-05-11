@@ -11,7 +11,7 @@ angular.module('registryApp.cliche')
 
         $scope.view = {};
         $scope.view.exprError = '';
-        $scope.view.tpl = 'views/cliche/property/property-arg.html';
+        $scope.view.tpl = 'modules/cliche/views/property/property-arg.html';
 
         /**
          * Check if expression is valid
@@ -66,7 +66,7 @@ angular.module('registryApp.cliche')
         $scope.edit = function() {
 
             var modalInstance = $modal.open({
-                template: $templateCache.get('views/cliche/manage/arg.html'),
+                template: $templateCache.get('modules/cliche/views/manage/arg.html'),
                 controller: 'ManagePropertyArgCtrl',
                 windowClass: 'modal-prop',
                 size: 'lg',

@@ -12,12 +12,12 @@ angular.module('registryApp.cliche', ['ngTagsInput'])
         $stateProvider
             .state('cliche-new', {
                 url: '/cliche/:type',
-                templateUrl: 'views/cliche/cliche.html',
+                templateUrl: 'modules/cliche/views/cliche.html',
                 controller: 'ClicheCtrl'
             })
             .state('cliche-edit', {
                 url: '/cliche/:type/:id/:revision',
-                templateUrl: 'views/cliche/cliche.html',
+                templateUrl: 'modules/cliche/views/cliche.html',
                 controller: 'ClicheCtrl'
             });
 

@@ -9,7 +9,7 @@
 angular.module('registryApp.cliche')
     .directive('propertyHeader', ['$templateCache', function ($templateCache) {
         return {
-            template: $templateCache.get('views/cliche/property/property-header.html'),
+            template: $templateCache.get('modules/cliche/views/property/property-header.html'),
             scope: {
                 position: '=?',
                 name: '@',

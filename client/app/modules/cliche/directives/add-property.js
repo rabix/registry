@@ -21,7 +21,7 @@ angular.module('registryApp.cliche')
             var tplName = $scope.toolType ? $scope.toolType + '-' + $scope.type : $scope.type;
 
             var modalInstance = $modal.open({
-                template: $templateCache.get('views/cliche/manage/' + tplName + '.html'),
+                template: $templateCache.get('modules/cliche/views/manage/' + tplName + '.html'),
                 controller: 'ManageProperty' + $scope.type.charAt(0).toUpperCase() + $scope.type.slice(1) + 'Ctrl',
                 windowClass: 'modal-prop',
                 size: 'lg',

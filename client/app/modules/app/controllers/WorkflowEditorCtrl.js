@@ -495,7 +495,7 @@ angular.module('registryApp.app')
                 var trace = data;
 
                 $modal.open({
-                    template: $templateCache.get('views/cliche/partials/app-save-response.html'),
+                    template: $templateCache.get('modules/cliche/views/partials/app-save-response.html'),
                     controller: 'ModalCtrl',
                     backdrop: 'static',
                     resolve: { data: function () { return { trace: trace }; }}
@@ -575,7 +575,7 @@ angular.module('registryApp.app')
         $scope.loadJsonImport = function() {
 
             var modalInstance = $modal.open({
-                template: $templateCache.get('views/cliche/partials/json-editor.html'),
+                template: $templateCache.get('modules/cliche/views/partials/json-editor.html'),
                 controller: 'DyoleJsonEditorCtrl',
                 resolve: { options: function () { return {user: $scope.view.user}; }}
             });

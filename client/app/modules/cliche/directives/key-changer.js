@@ -11,7 +11,7 @@ angular.module('registryApp.cliche')
 
         return {
             restrict: 'E',
-            template: $templateCache.get('views/cliche/partials/key-changer.html'),
+            template: $templateCache.get('modules/cliche/views/partials/key-changer.html'),
             scope: {
                 key: '=',
                 items: '='

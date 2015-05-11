@@ -31,7 +31,7 @@ angular.module('registryApp.cliche')
 
             var tplType = Cliche.getTplType($scope.view.type);
 
-            $scope.view.tpl = 'views/cliche/property/property-output-' + $scope.type + '-' + tplType  + '.html';
+            $scope.view.tpl = 'modules/cliche/views/property/property-output-' + $scope.type + '-' + tplType  + '.html';
         };
 
         /* init parse structure */
@@ -72,7 +72,7 @@ angular.module('registryApp.cliche')
         $scope.edit = function() {
 
             var modalInstance = $modal.open({
-                template: $templateCache.get('views/cliche/manage/' + $scope.type + '-output.html'),
+                template: $templateCache.get('modules/cliche/views/manage/' + $scope.type + '-output.html'),
                 controller: 'ManagePropertyOutputCtrl',
                 windowClass: 'modal-prop',
                 size: 'lg',

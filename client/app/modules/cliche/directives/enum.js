@@ -10,7 +10,7 @@ angular.module('registryApp.cliche')
     .controller('EnumCtrl', ['$scope', '$modal', '$templateCache', function ($scope, $modal, $templateCache) {
 
         $scope.view = {};
-        $scope.view.tplPath = 'views/cliche/enum/enum-' + $scope.type  + '.html';
+        $scope.view.tplPath = 'modules/cliche/views/enum/enum-' + $scope.type  + '.html';
 
         /**
          * Get schema for the appropriate enum type
@@ -94,7 +94,7 @@ angular.module('registryApp.cliche')
         $scope.more = function(index) {
 
             var modalInstance = $modal.open({
-                template: $templateCache.get('views/cliche/partials/input-file-more.html'),
+                template: $templateCache.get('modules/cliche/views/partials/input-file-more.html'),
                 controller: 'InputFileMoreCtrl',
                 windowClass: 'modal-prop',
                 resolve: {data: function () {return {schema: $scope.view.list[index].value, key: 'item ' + index};}}
@@ -133,7 +133,7 @@ angular.module('registryApp.cliche')
     .directive('enum', ['$templateCache', function ($templateCache) {
         return {
             restrict: 'E',
-            template: $templateCache.get('views/cliche/partials/enum.html'),
+            template: $templateCache.get('modules/cliche/views/partials/enum.html'),
             scope: {
                 model: '=ngModel',
                 type: '=',

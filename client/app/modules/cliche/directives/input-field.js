@@ -21,7 +21,7 @@ angular.module('registryApp.cliche')
         $scope.view.required = Cliche.isRequired($scope.view.property.schema);
         $scope.view.items = Cliche.getItemsRef($scope.view.type, $scope.view.property.schema);
 
-        $scope.view.tpl = 'views/cliche/inputs/input-' + $scope.view.type.toLowerCase()  + '.html';
+        $scope.view.tpl = 'modules/cliche/views/inputs/input-' + $scope.view.type.toLowerCase()  + '.html';
 
         var keyName = $scope.appName + Const.exposedSeparator + $scope.view.name;
 
@@ -149,7 +149,7 @@ angular.module('registryApp.cliche')
         $scope.more = function() {
 
             var modalInstance = $modal.open({
-                template: $templateCache.get('views/cliche/partials/input-file-more.html'),
+                template: $templateCache.get('modules/cliche/views/partials/input-file-more.html'),
                 controller: 'InputFileMoreCtrl',
                 windowClass: 'modal-prop',
                 resolve: {data: function () {return {schema: $scope.view.model, key: $scope.view.name};}}

@@ -422,13 +422,15 @@ module.exports = function (grunt) {
             app: {
                 cwd: '<%= yeoman.app %>',
                 src: [
+                    'modules/{,*/}*.html',
+                    'modules/cliche/views/{,*/}*.html',
                     'views/{,*/}*.html',
                     'views/cliche/{,*/}*.html',
                     'views/app/{,*/}*.html',
                     'views/repo/{,*/}*.html',
                     'views/task/{,*/}*.html'
                 ],
-                dest: '<%= yeoman.app %>/scripts/template.js',
+                dest: '<%= yeoman.app %>/modules/template.js',
                 options: {
                     module: 'registryApp',
                     htmlmin: {

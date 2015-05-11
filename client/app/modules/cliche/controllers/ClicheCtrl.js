@@ -322,7 +322,8 @@ angular.module('registryApp.cliche')
         /**
          * Redirect to the other page
          *
-         * @param url
+         * @param state
+         * @param param
          */
         var redirectTo = function(state, params) {
 
@@ -413,7 +414,7 @@ angular.module('registryApp.cliche')
         $scope.loadJsonEditor = function() {
 
             var modalInstance = $modal.open({
-                template: $templateCache.get('views/cliche/partials/json-editor.html'),
+                template: $templateCache.get('modules/cliche/views/partials/json-editor.html'),
                 controller: 'JsonEditorCtrl',
                 resolve: { options: function () { return {user: $scope.view.user, type: $stateParams.type}; }}
             });
@@ -633,7 +634,7 @@ angular.module('registryApp.cliche')
                         $scope.view.loading = false;
 
                         var modalInstance = $modal.open({
-                            template: $templateCache.get('views/cliche/partials/app-save-response.html'),
+                            template: $templateCache.get('modules/cliche/views/partials/app-save-response.html'),
                             controller: 'ModalCtrl',
                             backdrop: 'static',
                             resolve: { data: function () { return { trace: result }; }}
@@ -672,7 +673,7 @@ angular.module('registryApp.cliche')
                     $scope.view.loading = false;
 
                     var modalInstance = $modal.open({
-                        template: $templateCache.get('views/cliche/partials/app-save-response.html'),
+                        template: $templateCache.get('modules/cliche/views/partials/app-save-response.html'),
                         controller: 'ModalCtrl',
                         backdrop: 'static',
                         resolve: { data: function () { return { trace: result }; }}
@@ -775,7 +776,7 @@ angular.module('registryApp.cliche')
                 .then(function(result) {
 
                     var modalInstance = $modal.open({
-                        template: $templateCache.get('views/cliche/partials/revisions.html'),
+                        template: $templateCache.get('modules/cliche/views/partials/revisions.html'),
                         controller: ['$scope', '$modalInstance', 'data', function ($scope, $modalInstance, data) {
 
                             $scope.view = data;
