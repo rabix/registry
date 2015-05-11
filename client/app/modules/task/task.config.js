@@ -12,12 +12,12 @@ angular.module('registryApp.task', [])
         $stateProvider
             .state('tasks', {
                 url: '/tasks',
-                templateUrl: 'views/task/tasks.html',
+                templateUrl: 'modules/task/views/tasks.html',
                 controller: 'TasksCtrl'
             })
             .state('task', {
                 url: '/task/:id',
-                templateUrl: 'views/task/task.html',
+                templateUrl: 'modules/task/views/task.html',
                 controller: 'TaskCtrl'
             });
     }]);

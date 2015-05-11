@@ -78,7 +78,7 @@ angular.module('registryApp.task')
         $scope.pickApp = function() {
 
             var modalInstance = $modal.open({
-                template: $templateCache.get('views/task/partials/pick-app.html'),
+                template: $templateCache.get('modules/task/views/partials/pick-app.html'),
                 controller: 'PickAppCtrl',
                 windowClass: 'modal-pick',
                 backdrop: 'static',
