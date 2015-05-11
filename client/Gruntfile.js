@@ -55,7 +55,7 @@ module.exports = function (grunt) {
                 files: [
                     '<%= yeoman.app %>/views/{,*/}*.html',
                     '<%= yeoman.app %>/views/cliche/{,*/}*.html',
-                    '<%= yeoman.app %>/modules/app/views/{,*/}*.html',
+                    '<%= yeoman.app %>/modules/**/*.html',
                     '<%= yeoman.app %>/views/repo/{,*/}*.html',
                     '<%= yeoman.app %>/views/task/{,*/}*.html'
                 ],
@@ -424,7 +424,8 @@ module.exports = function (grunt) {
                 src: [
                     'modules/**/*.html',
                     'views/{,*/}*.html',
-                    'views/cliche/{,*/}*.html',
+                    'modules/cliche/views/{,*/}*.html',
+                    'modules/ui/views/{,*/}*.html',
                     'modules/app/views/{,*/}*.html',
                     'views/repo/{,*/}*.html',
                     'views/task/{,*/}*.html'

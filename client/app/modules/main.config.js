@@ -22,6 +22,8 @@ angular
         'ui-notification',
         'cfp.hotkeys',
         'Chronicle',
+        'ngAria',
+        'ngMaterial',
         'registryApp.app',
         'registryApp.cliche',
         'registryApp.dyole',
