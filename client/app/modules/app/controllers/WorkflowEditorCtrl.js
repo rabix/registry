@@ -507,7 +507,7 @@ angular.module('registryApp.app')
         $scope.formatPipeline = function(workflow) {
 
             var modal = $modal.open({
-                template: $templateCache.get('views/dyole/json-modal.html'),
+                template: $templateCache.get('modules/dyole/views/json-modal.html'),
                 controller: 'ModalJSONCtrl',
                 resolve: {data: function () {
                     return {json: workflow};
@@ -536,7 +536,7 @@ angular.module('registryApp.app')
         $scope.editMetadata = function () {
 
             var modalInstance = $modal.open({
-                template: $templateCache.get('views/dyole/edit-metadata.html'),
+                template: $templateCache.get('modules/dyole/views/edit-metadata.html'),
                 controller: 'DyoleEditMetadataCtrl',
                 windowClass: 'modal-markdown',
                 size: 'lg',
@@ -593,7 +593,7 @@ angular.module('registryApp.app')
 
             PipelineInstance.validate().then(function (workflow) {
                 $modal.open({
-                    template: $templateCache.get('views/dyole/json-modal.html'),
+                    template: $templateCache.get('modules/dyole/views/json-modal.html'),
                     controller: 'ModalJSONCtrl',
                     resolve: {data: function () {
                         return {json: workflow.errors, url: false};

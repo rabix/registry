@@ -293,7 +293,7 @@ angular.module('registryApp.dyole')
             var $templateCache = $injector.get('$templateCache');
 
             $modal.open({
-                template: $templateCache.get('views/dyole/'+ ( schema ? 'io-' : '') +'node-info.html'),
+                template: $templateCache.get('modules/dyole/views/'+ ( schema ? 'io-' : '') +'node-info.html'),
                 controller: 'ModalCtrl',
                 windowClass: 'modal-node',
                 resolve: {data: function () { return {model: model, schema: schema};}}
@@ -307,7 +307,7 @@ angular.module('registryApp.dyole')
             var $templateCache = $injector.get('$templateCache');
 
             $modal.open({
-                template: $templateCache.get('views/dyole/node-label-edit.html'),
+                template: $templateCache.get('modules/dyole/views/node-label-edit.html'),
                 controller: 'NodeEditCtrl',
                 windowClass: 'modal-node',
                 resolve: {data: function () { return {
