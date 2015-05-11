@@ -324,7 +324,7 @@ angular.module('registryApp.app')
             } else {
                 modalInstance = $modal.open({
                     controller: 'PickRepoModalCtrl',
-                    template: $templateCache.get('views/repo/pick-repo-name.html'),
+                    template: $templateCache.get('modules/repo/views/pick-repo-name.html'),
                     windowClass: 'modal-confirm',
                     resolve: {data: function () { return {repos: $scope.view.userRepos, type: 'save'};}}
                 });
@@ -467,7 +467,7 @@ angular.module('registryApp.app')
 
             var modalInstance = $modal.open({
                 controller: 'PickRepoModalCtrl',
-                template: $templateCache.get('views/repo/pick-repo-name.html'),
+                template: $templateCache.get('modules/repo/views/pick-repo-name.html'),
                 resolve: { data: function () { return { repos: $scope.view.userRepos, pickName: true, type: 'fork', message: 'Are you sure you want to fork this workflow?'}; }}
             });
 

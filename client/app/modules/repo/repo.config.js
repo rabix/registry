@@ -12,22 +12,22 @@ angular.module('registryApp.repo', [])
         $stateProvider
             .state('repos', {
                 url: '/repos',
-                templateUrl: 'views/repo/repos.html',
+                templateUrl: 'modules/repo/views/repos.html',
                 controller: 'ReposCtrl'
             })
             .state('repo', {
                 url: '/repo/:id',
-                templateUrl: 'views/repo/repo.html',
+                templateUrl: 'modules/repo/views/repo.html',
                 controller: 'RepoCtrl'
             })
             .state('add-your-github-repo', {
                 url: '/add-your-github-repo',
-                templateUrl: 'views/repo/add-your-github-repo.html',
+                templateUrl: 'modules/repo/views/add-your-github-repo.html',
                 controller: 'AddYourGitHubRepoCtrl'
             })
             .state('repo-instructions', {
                 url: '/repo-instructions/:id',
-                templateUrl: 'views/repo/repo-instructions.html',
+                templateUrl: 'modules/repo/views/repo-instructions.html',
                 controller: 'RepoInstructionsCtrl'
             });
     }]);
