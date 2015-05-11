@@ -132,7 +132,7 @@ angular.module('registryApp.app')
         $scope.deleteRevision = function (id) {
 
             var modalInstance = $modal.open({
-                template: $templateCache.get('views/partials/confirm-delete.html'),
+                template: $templateCache.get('modules/common/views/confirm-delete.html'),
                 controller: 'ModalCtrl',
                 windowClass: 'modal-confirm',
                 resolve: {data: function () { return {message: 'Are you sure you want to delete this revision?'}; }}
@@ -161,7 +161,7 @@ angular.module('registryApp.app')
             var id = $scope.view.workflow.pipeline._id;
 
             var modalInstance = $modal.open({
-                template: $templateCache.get('views/partials/confirm-delete.html'),
+                template: $templateCache.get('modules/common/views/confirm-delete.html'),
                 controller: 'ModalCtrl',
                 windowClass: 'modal-confirm',
                 resolve: {data: function () { return {message: 'Are you sure you want to delete this workflow?'}; }}

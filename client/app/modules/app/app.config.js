@@ -12,27 +12,27 @@ angular.module('registryApp.app', [])
         $stateProvider
             .state('apps', {
                 url: '/apps',
-                templateUrl: 'views/app/apps.html',
+                templateUrl: 'modules/app/views/apps.html',
                 controller: 'AppsCtrl'
             })
             .state('tool', {
                 url: '/tool/:id/:tab',
-                templateUrl: 'views/app/tool.html',
+                templateUrl: 'modules/app/views/tool.html',
                 controller: 'ToolCtrl'
             })
             .state('tool-revision', {
                 url: '/tool-revision/:id',
-                templateUrl: 'views/app/tool-revision.html',
+                templateUrl: 'modules/app/views/tool-revision.html',
                 controller: 'ToolRevisionCtrl'
             })
             .state('workflow-view', {
                 url: '/workflow/:id',
-                templateUrl: 'views/app/workflow-view.html',
+                templateUrl: 'modules/app/views/workflow-view.html',
                 controller: 'WorkflowViewCtrl'
             })
             .state('workflow-editor', {
                 url: '/workflow/:id/:mode',
-                templateUrl: 'views/app/workflow-editor.html',
+                templateUrl: 'modules/app/views/workflow-editor.html',
                 controller: 'WorkflowEditorCtrl'
             });
     }]);

@@ -10,7 +10,7 @@ angular.module('registryApp')
         return {
             restrict: 'E',
             scope: {},
-            template: $templateCache.get('views/partials/preload.html'),
+            template: $templateCache.get('modules/common/views/preload.html'),
             link: function() {}
         };
     }]);

@@ -142,7 +142,7 @@ angular.module('registryApp.dyole')
 
             Workflow.getURL($scope.pipeline).then(function (url) {
                 $modal.open({
-                    template: $templateCache.get('views/partials/job-url-response.html'),
+                    template: $templateCache.get('modules/common/views/job-url-response.html'),
                     controller: ['$scope', '$modalInstance', 'data', function($scope, $modalInstance, data) {
 
                         $scope.view = {};
@@ -259,7 +259,7 @@ angular.module('registryApp.dyole')
 
             var modalInstance = $modal.open({
                 controller: 'ModalCtrl',
-                template: $templateCache.get('views/partials/confirm-delete.html'),
+                template: $templateCache.get('modules/common/views/confirm-delete.html'),
                 resolve: { data: function () {
                     return {
                         message: 'Are you sure you want to delete this workflow?'

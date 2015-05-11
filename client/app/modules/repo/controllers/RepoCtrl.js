@@ -171,7 +171,7 @@ angular.module('registryApp.repo')
         $scope.manageRepoModal = function() {
 
             $modal.open({
-                template: $templateCache.get('views/partials/manage-repo.html'),
+                template: $templateCache.get('modules/common/views/manage-repo.html'),
                 controller: 'ManageRepoCtrl',
                 windowClass: 'modal-add-repo',
                 resolve: {data: function () { return {repo: $scope.view.repo}; }}
@@ -185,7 +185,7 @@ angular.module('registryApp.repo')
         $scope.publish = function() {
 
             var modalInstance = $modal.open({
-                template: $templateCache.get('views/partials/confirm-action.html'),
+                template: $templateCache.get('modules/common/views/confirm-action.html'),
                 controller: 'ModalCtrl',
                 windowClass: 'modal-confirm',
                 resolve: {data: function () { return {message: 'Are you sure you want to publish this repo?'}; }}

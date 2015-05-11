@@ -308,7 +308,7 @@ angular.module('registryApp.app')
             if (!Helper.isValidName($scope.view.workflow.name) && mode === 'new') {
 
                 $modal.open({
-                    template: $templateCache.get('views/partials/validation.html'),
+                    template: $templateCache.get('modules/common/views/validation.html'),
                     size: 'sm',
                     controller: 'ModalCtrl',
                     windowClass: 'modal-validation',
@@ -345,7 +345,7 @@ angular.module('registryApp.app')
                     } else {
 
                         $modal.open({
-                            template: $templateCache.get('views/partials/validation.html'),
+                            template: $templateCache.get('modules/common/views/validation.html'),
                             size: 'sm',
                             controller: 'ModalCtrl',
                             windowClass: 'modal-validation',
@@ -478,7 +478,7 @@ angular.module('registryApp.app')
                     PipelineInstance.fork(data.repoId, data.name);
                 } else {
                     $modal.open({
-                        template: $templateCache.get('views/partials/validation.html'),
+                        template: $templateCache.get('modules/common/views/validation.html'),
                         size: 'sm',
                         controller: 'ModalCtrl',
                         windowClass: 'modal-validation',
@@ -556,7 +556,7 @@ angular.module('registryApp.app')
         $scope.loadMarkdown = function() {
 
             var modalInstance = $modal.open({
-                template: $templateCache.get('views/partials/markdown.html'),
+                template: $templateCache.get('modules/common/views/markdown.html'),
                 controller: 'MarkdownCtrl',
                 windowClass: 'modal-markdown',
                 size: 'lg',

@@ -119,7 +119,7 @@ angular.module('registryApp.common')
     .directive('codemirror', ['$templateCache', function ($templateCache) {
         return {
             restrict: 'E',
-            template: $templateCache.get('views/partials/codemirror.html'),
+            template: $templateCache.get('modules/common/views/codemirror.html'),
             scope: {
                 code: '=',
                 arg: '=',

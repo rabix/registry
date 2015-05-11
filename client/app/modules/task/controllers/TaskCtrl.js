@@ -143,7 +143,7 @@ angular.module('registryApp.task')
                 if (validationMsg) { errors.push(validationMsg); }
 
                 $modal.open({
-                    template: $templateCache.get('views/partials/validation.html'),
+                    template: $templateCache.get('modules/common/views/validation.html'),
                     size: 'sm',
                     controller: 'ModalCtrl',
                     windowClass: 'modal-validation',
@@ -167,7 +167,7 @@ angular.module('registryApp.task')
                 .then(function (result) {
 
                     var modalInstance = $modal.open({
-                        template: $templateCache.get('views/partials/job-url-response.html'),
+                        template: $templateCache.get('modules/common/views/job-url-response.html'),
                         controller: 'ModalCtrl',
                         resolve: { data: function () { return { trace: result }; }}
                     });
@@ -197,7 +197,7 @@ angular.module('registryApp.task')
             if (_.isUndefined($scope.view.job._id)) { return false; }
 
             var modalInstance = $modal.open({
-                template: $templateCache.get('views/partials/confirm-delete.html'),
+                template: $templateCache.get('modules/common/views/confirm-delete.html'),
                 controller: 'ModalCtrl',
                 windowClass: 'modal-confirm',
                 resolve: {data: function () { return {}; }}
@@ -234,7 +234,7 @@ angular.module('registryApp.task')
                 if (validationMsg) { errors.push(validationMsg); }
 
                 $modal.open({
-                    template: $templateCache.get('views/partials/validation.html'),
+                    template: $templateCache.get('modules/common/views/validation.html'),
                     size: 'sm',
                     controller: 'ModalCtrl',
                     windowClass: 'modal-validation',
@@ -270,7 +270,7 @@ angular.module('registryApp.task')
                 Job.createJob(job).then(function (result) {
 
                     var modalInstance = $modal.open({
-                        template: $templateCache.get('views/partials/job-url-response.html'),
+                        template: $templateCache.get('modules/common/views/job-url-response.html'),
                         controller: 'ModalCtrl',
                         resolve: { data: function () { return { trace: result }; }}
                     });

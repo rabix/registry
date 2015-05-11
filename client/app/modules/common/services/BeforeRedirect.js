@@ -32,7 +32,7 @@ angular.module('registryApp.common')
             if(!prompt || reload) { return; }
 
             var modalInstance = $modal.open({
-                template: $templateCache.get('views/partials/confirm-leave.html'),
+                template: $templateCache.get('modules/common/views/confirm-leave.html'),
                 controller: 'ModalCtrl',
                 windowClass: 'modal-confirm',
                 resolve: {data: function () {return {};}}

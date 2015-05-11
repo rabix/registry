@@ -9,7 +9,7 @@ angular.module('registryApp.common')
     .directive('paginator', ['$templateCache', function ($templateCache) {
         return {
             restrict: 'E',
-            template: $templateCache.get('views/partials/paginator.html'),
+            template: $templateCache.get('modules/common/views/paginator.html'),
             scope: {
                 page: '=',
                 perPage: '@',
