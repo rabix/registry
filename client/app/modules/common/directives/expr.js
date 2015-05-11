@@ -11,7 +11,7 @@ angular.module('registryApp.common')
 
         return {
             restrict: 'E',
-            template: $templateCache.get('views/partials/expr.html'),
+            template: $templateCache.get('modules/common/views/expr.html'),
             scope: {
                 ngModel: '=',
                 type: '@',
@@ -124,7 +124,7 @@ angular.module('registryApp.common')
                     var expr = $scope.view.mode === 'transform' ? $scope.view.transform.value : '';
 
                     var modalInstance = $modal.open({
-                        template: $templateCache.get('views/partials/edit-expression.html'),
+                        template: $templateCache.get('modules/common/views/edit-expression.html'),
                         controller: 'ExpressionCtrl',
                         windowClass: 'modal-expression',
                         backdrop: 'static',

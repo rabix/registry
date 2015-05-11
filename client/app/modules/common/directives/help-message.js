@@ -37,7 +37,7 @@ angular.module('registryApp.common')
         return {
             restrict: 'EA',
             replace: true,
-            template: $templateCache.get('views/partials/help-message-popover.html'),
+            template: $templateCache.get('modules/common/views/help-message-popover.html'),
             link: function(scope) {
                 function closeHandler (e) {
                     var target = $(e.target);

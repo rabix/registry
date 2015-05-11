@@ -22,7 +22,7 @@ angular.module('registryApp.common')
                 scope.showJson = function() {
 
                     $modal.open({
-                        template: $templateCache.get('views/partials/json-preview.html'),
+                        template: $templateCache.get('modules/common/views/json-preview.html'),
                         controller: 'ModalCtrl',
                         resolve: {data: function () {
                             return {

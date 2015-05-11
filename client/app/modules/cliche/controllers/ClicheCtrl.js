@@ -375,7 +375,7 @@ angular.module('registryApp.cliche')
 
             var modalInstance = $modal.open({
                 controller: 'ModalCtrl',
-                template: $templateCache.get('views/partials/confirm-delete.html'),
+                template: $templateCache.get('modules/common/views/confirm-delete.html'),
                 resolve: { data: function () {
                     return {
                         message: 'Are you sure you want to delete this ' + $scope.view.type + '?'
@@ -433,7 +433,7 @@ angular.module('registryApp.cliche')
         $scope.loadMarkdown = function() {
 
             var modalInstance = $modal.open({
-                template: $templateCache.get('views/partials/markdown.html'),
+                template: $templateCache.get('modules/common/views/markdown.html'),
                 controller: 'MarkdownCtrl',
                 windowClass: 'modal-markdown',
                 size: 'lg',
@@ -602,7 +602,7 @@ angular.module('registryApp.cliche')
 
             if ($scope.form.tool.label.$invalid) {
                 modalInstance = $modal.open({
-                    template: $templateCache.get('views/partials/validation.html'),
+                    template: $templateCache.get('modules/common/views/validation.html'),
                     size: 'sm',
                     controller: 'ModalCtrl',
                     windowClass: 'modal-validation',
@@ -740,7 +740,7 @@ angular.module('registryApp.cliche')
         $scope.deleteRevision = function () {
 
             var modalInstance = $modal.open({
-                template: $templateCache.get('views/partials/confirm-delete.html'),
+                template: $templateCache.get('modules/common/views/confirm-delete.html'),
                 controller: 'ModalCtrl',
                 windowClass: 'modal-confirm',
                 resolve: {data: function () { return {}; }}

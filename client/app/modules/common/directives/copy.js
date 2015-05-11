@@ -14,7 +14,7 @@ angular.module('registryApp.common')
                 isSmall: '@',
                 showString: '@'
             },
-            template: $templateCache.get('views/partials/copy.html'),
+            template: $templateCache.get('modules/common/views/copy.html'),
             link: function(scope, element) {
 
                 scope.view = {};

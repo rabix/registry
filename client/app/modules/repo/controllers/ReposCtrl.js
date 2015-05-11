@@ -86,7 +86,7 @@ angular.module('registryApp.repo')
             var $templateCache = $injector.get('$templateCache');
 
             var modalInstance = $modal.open({
-                template: $templateCache.get('views/partials/manage-repo.html'),
+                template: $templateCache.get('modules/common/views/manage-repo.html'),
                 controller: 'ManageRepoCtrl',
                 windowClass: 'modal-add-repo',
                 resolve: {data: function () { return {repo: repo}; }}

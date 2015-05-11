@@ -161,7 +161,7 @@ angular.module('registryApp.cliche')
         $scope.remove = function() {
 
             var modalInstance = $modal.open({
-                template: $templateCache.get('views/partials/confirm-delete.html'),
+                template: $templateCache.get('modules/common/views/confirm-delete.html'),
                 controller: 'ModalCtrl',
                 windowClass: 'modal-confirm',
                 resolve: {data: function () { return {}; }}

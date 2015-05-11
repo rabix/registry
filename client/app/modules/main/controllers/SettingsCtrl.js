@@ -35,7 +35,7 @@ angular.module('registryApp')
                 $scope.view.generating = false;
 
                 $modal.open({
-                    template: $templateCache.get('views/partials/confirm-close.html'),
+                    template: $templateCache.get('modules/common/views/confirm-close.html'),
                     controller: 'ModalCtrl',
                     windowClass: 'modal-info',
                     resolve: {data: function () { return {message: 'You successfully generated new token'}; }}
@@ -56,7 +56,7 @@ angular.module('registryApp')
                 $scope.view.revoking = false;
 
                 $modal.open({
-                    template: $templateCache.get('views/partials/confirm-close.html'),
+                    template: $templateCache.get('modules/common/views/confirm-close.html'),
                     controller: 'ModalCtrl',
                     windowClass: 'modal-info',
                     resolve: {data: function () { return {message: 'Your token has been revoked'}; }}
@@ -79,7 +79,7 @@ angular.module('registryApp')
                 var message = _.isEmpty(result.token) ? 'You didn\'t generate token yet' : 'Your current token: ' + result.token;
 
                 $modal.open({
-                    template: $templateCache.get('views/partials/confirm-close.html'),
+                    template: $templateCache.get('modules/common/views/confirm-close.html'),
                     controller: 'ModalCtrl',
                     windowClass: 'modal-info',
                     resolve: {data: function () { return {message: message}; }}
