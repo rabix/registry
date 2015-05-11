@@ -36,22 +36,22 @@ angular
         $stateProvider
             .state('home', {
                 url: '/',
-                templateUrl: 'views/home.html',
+                templateUrl: 'main/views/home.html',
                 controller: 'HomeCtrl'
             })
             .state('builds', {
                 url: '/builds',
-                templateUrl: 'views/builds.html',
+                templateUrl: 'main/views/builds.html',
                 controller: 'BuildsCtrl'
             })
             .state('build', {
                 url: '/build/:id',
-                templateUrl: 'views/build.html',
+                templateUrl: 'main/views/build.html',
                 controller: 'BuildCtrl'
             })
             .state('settings', {
                 url: '/settings',
-                templateUrl: 'views/settings.html',
+                templateUrl: 'main/views/settings.html',
                 controller: 'SettingsCtrl'
             });
 
