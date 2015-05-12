@@ -9,8 +9,8 @@ angular.module('registryApp.ui')
 
         function getTemplate(element, attr) {
             return isAnchor(attr) ?
-                $templateCache.get('modules/ui/button/views/anchor-button.html') :
-                $templateCache.get('modules/ui/button/views/button.html');
+                '<a class="btn " ng-transclude></a>' :
+                '<button class="btn " ng-transclude></button>';
         }
 
         return {
@@ -22,8 +22,10 @@ angular.module('registryApp.ui')
 
                 var intention = attr.intention || 'default';
                 var type = attr.type;
+                var classes = attr.classes || '';
 
                 button.addClass('btn-' + intention);
+                button.addClass(classes);
 
                 if (scope.type) {
                     button.attr('type', type);
