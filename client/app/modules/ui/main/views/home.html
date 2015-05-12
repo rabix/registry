@@ -34,26 +34,20 @@
                                 Input examples
                             </legend>
 
-                            <div class="form-group">
-                                <div class="input-group">
-                                    <input type="text" class="form-control" ng-model="view.searchTerm" placeholder="Search repos" required="" tabindex="0" aria-required="true" aria-invalid="true">
-                                    <span class="input-group-btn">
-                                        <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
-                                    </span>
+                            <rb-input placeholder="Regular input"></rb-input>
 
+                            <rb-input type="number" ng-model="numberInput"></rb-input>
 
-                                </div>
-                                <p class="help-block">
+                            <rb-input type="search" placeholder="Search" has-error="helpHasError">
+                                <label>Search Label</label>
+                                <p class="help-block" ng-show="showHelpBlock" ng-class="{'has-error': helpHasError}">
                                     TODO: optional clear button
                                 </p>
-                            </div>
-
+                            </rb-input>
 
                             <div class="form-group">
-                                <label class="control-label" for="reg_input">
-                                    Regular input
-                                </label>
-                                <input type="text" class="form-control" id="reg_input"/>
+                                <rb-button intention="danger" ng-click="helpHasError = !helpHasError">Has Error</rb-button>
+                                <rb-button intention="primary" ng-click="showHelpBlock = !showHelpBlock">Show help block</rb-button>
                             </div>
 
                             <div>

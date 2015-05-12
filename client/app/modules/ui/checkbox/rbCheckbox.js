@@ -16,7 +16,10 @@ angular.module('registryApp.ui')
             },
             template: '<div class="checkbox rb-checkbox"><label><input type="checkbox" ng-model="ngModel" ng-disabled="ngDisabled"/><ng-transclude></ng-transclude></label></div>',
             transclude: true,
-            link: function () {
+            link: function (scope, element) {
+                element.on('remove', function() {
+                    scope.$destroy();
+                });
             }
         };
     }]);

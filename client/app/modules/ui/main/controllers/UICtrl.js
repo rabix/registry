@@ -12,6 +12,8 @@ angular.module('registryApp.ui')
 
         $scope.checkboxModel = true;
 
+        $scope.numberInput = 300;
+
         $scope.disableCheckbox = function () {
             $scope.disable = !$scope.disable;
         };
