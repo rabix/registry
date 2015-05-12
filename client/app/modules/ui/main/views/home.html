@@ -19,7 +19,7 @@
 
                 <hr/>
 
-                <rb-button ng-click="testClick()" intention="danger" classes="test form-control">Button</rb-button>
+                <rb-button ng-click="testClick()" intention="danger" classes="test">Button</rb-button>
             </div>
         </div>
 
@@ -77,30 +77,16 @@
                                 Checkbox example
                             </legend>
 
+                            <rb-checkbox ng-model="checkboxModel" ng-disabled="disable">
+                                Checkbox 1
+                            </rb-checkbox>
 
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox"> Checbox 1
-                                </label>
-                            </div>
+                            <rb-button ng-click="disableCheckbox()"> disable checkbox </rb-button>
 
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox"> Checbox 2
-                                </label>
-                            </div>
+                            <rb-checkbox ng-model="checkboxModel2">
+                                Checkbox 2
+                            </rb-checkbox>
 
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox"> Checbox 3
-                                </label>
-                            </div>
-
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox"> Checbox 4
-                                </label>
-                            </div>
                         </div>
 
 
