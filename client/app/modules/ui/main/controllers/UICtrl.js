@@ -4,5 +4,7 @@
 
 angular.module('registryApp.ui')
     .controller('UICtrl', ['$scope', function ($scope) {
-
+        $scope.testClick = function () {
+            console.log('click');
+        }
     }]);
