@@ -9,8 +9,8 @@ angular.module('registryApp.ui')
 
         function getTemplate(element, attr) {
             return isAnchor(attr) ?
-                '<a class="btn " ng-transclude></a>' :
-                '<button class="btn " ng-transclude></button>';
+                '<a class="btn rb-button" ng-transclude></a>' :
+                '<button class="btn rb-button" ng-transclude></button>';
         }
 
         return {
@@ -27,5 +27,5 @@ angular.module('registryApp.ui')
                 button.addClass('btn-' + intention);
                 button.addClass(classes);
             }
-        }
+        };
     }]);
