@@ -16,20 +16,16 @@ angular.module('registryApp.ui')
         return {
             restrict: 'EA',
             template: getTemplate,
+            replace: true,
             transclude: true,
             link: function (scope, elem, attr) {
-                var button = elem.children();
+                var button = elem;
 
                 var intention = attr.intention || 'default';
-                var type = attr.type;
                 var classes = attr.classes || '';
 
                 button.addClass('btn-' + intention);
                 button.addClass(classes);
-
-                if (scope.type) {
-                    button.attr('type', type);
-                }
             }
         }
     }]);
