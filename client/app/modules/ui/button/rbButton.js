@@ -18,15 +18,23 @@ angular.module('registryApp.ui')
             template: getTemplate,
             transclude: true,
             scope: {
-                type: '@',
-                class: '@',
-                onClick: '&'
+                // intention: oneOf: ['warning', 'success', 'primary', 'danger', 'default']
+                intention: '@',
+                // type: 'submit' or no value
+                type: '@'
             },
             controller: ['$scope', function ($scope) {
 
             }],
             link: function (scope, elem, attr) {
-                
+                var button = elem.children();
+
+                scope.intention = scope.intention || 'default';
+                button.addClass('btn-' + scope.intention);
+
+                if (scope.type) {
+                    button.attr('type', scope.type);
+                }
             }
         }
     }]);
