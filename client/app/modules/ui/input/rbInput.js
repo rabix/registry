@@ -29,9 +29,7 @@ angular.module('registryApp.ui')
                 }
 
                 label = _.find(clone, {tagName: 'LABEL'});
-                helpBlock = _.find(clone, function(elem) {
-                    return $(elem).hasClass('help-block');
-                });
+                helpBlock = _.find(clone, {tagName: 'P'});
 
                 if (label) {
                     $(label).addClass('control-label');
