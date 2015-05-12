@@ -7,7 +7,7 @@ angular.module('registryApp.ui', [])
         $stateProvider
             .state('ui', {
                 url: '/ui-page',
-                templateUrl: 'modules/ui/views/home.html',
+                templateUrl: 'modules/ui/main/views/home.html',
                 controller: 'UICtrl'
             });
 
