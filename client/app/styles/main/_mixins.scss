@@ -11,10 +11,10 @@
   box-shadow: $arguments;
 }
 
-@mixin box-sizing() {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
+@mixin box-sizing($sizing:border-box) {
+  -moz-box-sizing: $sizing;
+  -webkit-box-sizing: $sizing;
+  box-sizing: $sizing;
 }
 
 @mixin background-clip($arguments) {

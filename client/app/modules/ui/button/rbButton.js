@@ -30,7 +30,7 @@ angular.module('registryApp.ui')
          * @param {boolean=} intention If present, sets button intention oneOf=['danger', 'primary', 'default', 'warning', 'info', 'success'].
          * @param {expression=} ng-disabled En/Disable based on the expression
          * @param {string=} type Button type
-         * @param {string=} classes Space separated additional classes to add to element
+         * @param {string=} class Space separated additional classes to add to element
          * @param {string=} aria-label Adds alternative text to button for accessibility, useful for icon buttons. // TODO: needs implementing
          *
          * @usage
