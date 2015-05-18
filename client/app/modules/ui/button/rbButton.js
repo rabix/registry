@@ -73,10 +73,6 @@ angular.module('registryApp.ui')
 
             // add focus class and remove it
             button
-                .on('remove', function() {
-                    scope.$destroy();
-                    transclusionScope.$destroy();
-                })
                 .on('focus', function() {
                     element.addClass('rb-focused');
                 })
