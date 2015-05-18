@@ -5,22 +5,61 @@
         <div class="panel panel-default">
             <div class="panel-heading">Buttons</div>
             <div class="panel-body">
-                <button class="btn btn-primary">btn-primary</button>
-                <button class="btn btn-success">btn-success</button>
-                <button class="btn btn-danger">btn-danger</button>
-                <button class="btn btn-warning">btn-warning</button>
-                <button class="btn btn-default">btn-default</button>
-                <button class="btn btn-default" ng-disabled="true">btn-disabled</button>
+                <div class="section">
+                    <legend class="legend-small">Button Examples</legend>
 
-                <hr/>
+                    <rb-button intention="primary" >btn-primary</rb-button>
+                    <rb-button intention="success" >btn-success</rb-button>
+                    <rb-button intention="danger" >btn-danger</rb-button>
+                    <rb-button intention="warning" >btn-warning</rb-button>
+                    <rb-button intention="default" >btn-default</rb-button>
+                    <rb-button intention="default" ng-disabled="true">btn-disabled</rb-button>
 
-                <a class="btn btn-default" tooltip="Edit Tool"><i class="fa fa-pencil"></i></a>
+                    <hr/>
 
-                <a href="" class="btn btn-default btn-toggle" tooltip="Toggle Versions (2)" tooltip-placement="left" tooltip-append-to-body="true" ng-click="showRevision = !showRevision" tabindex="0">2 <i class="fa" ng-class="{'fa-chevron-right': !showRevision, 'fa-chevron-down': showRevision}"></i></a>
+                    <a class="btn btn-default" tooltip="Edit Tool"><i class="fa fa-pencil"></i></a>
 
-                <hr/>
+                    <a href="" class="btn btn-default btn-toggle" tooltip="Toggle Versions (2)" tooltip-placement="left"
+                       tooltip-append-to-body="true" ng-click="showRevision = !showRevision" tabindex="0">2 <i class="fa"
+                                                                                                               ng-class="{'fa-chevron-right': !showRevision, 'fa-chevron-down': showRevision}"></i></a>
+                </div>
 
-                <rb-button ng-click="testClick()" intention="danger" classes="test">Button</rb-button>
+
+                <div class="section">
+                    <legend class="legend-small">on-click</legend>
+                    <rb-button ng-click="testClick()" intention="danger" class="test">Button</rb-button>
+                </div>
+
+                <div class="section">
+                    <legend class="legend-small">Dropdown</legend>
+                    <rb-dropdown intention="primary" name="dropdown">
+                        <ul>
+                            <li><a href="#">Action</a></li>
+                            <li><a href="#">Another action</a></li>
+                            <li><a href="#">Something else here</a></li>
+                            <li class="divider"></li>
+                            <li><a href="#">Separated link</a></li>
+                        </ul>
+                    </rb-dropdown>
+
+                    <rb-dropdown intention="primary" type="split" name="'Split dropdown'">
+                        <ul>
+                            <li><a href="#">Action</a></li>
+                            <li><a href="#">Another action</a></li>
+                            <li><a href="#">Something else here</a></li>
+                        </ul>
+                    </rb-dropdown>
+
+                    <rb-dropdown intention="primary" type="split" name="'Disabled'" ng-disabled="true">
+                        <ul>
+                            <li><a href="#">Action</a></li>
+                            <li><a href="#">Another action</a></li>
+                            <li><a href="#">Something else here</a></li>
+                        </ul>
+                    </rb-dropdown>
+
+                </div>
+
             </div>
         </div>
 
@@ -41,14 +80,18 @@
 
                             <rb-input type="search" placeholder="Search" has-error="helpHasError" clear>
                                 <label>Search Label</label>
+
                                 <p ng-show="showHelpBlock" ng-class="{'has-error': helpHasError}">
                                     TODO: optional clear button
                                 </p>
                             </rb-input>
 
                             <div class="form-group">
-                                <rb-button intention="danger" ng-click="helpHasError = !helpHasError">Has Error</rb-button>
-                                <rb-button intention="primary" ng-click="showHelpBlock = !showHelpBlock">Show help block</rb-button>
+                                <rb-button intention="danger" ng-click="helpHasError = !helpHasError">Has Error
+                                </rb-button>
+                                <rb-button intention="primary" ng-click="showHelpBlock = !showHelpBlock">Show help
+                                    block
+                                </rb-button>
                             </div>
 
                             <div>
@@ -61,14 +104,6 @@
 
                         <div class="section">
                             <legend class="legend-small">
-                                TODO: select dropdown
-                            </legend>
-                        </div>
-
-
-
-                        <div class="section">
-                            <legend class="legend-small">
                                 Checkbox example
                             </legend>
 
@@ -76,7 +111,7 @@
                                 Checkbox 1
                             </rb-checkbox>
 
-                            <rb-button ng-click="disableCheckbox()"> disable checkbox </rb-button>
+                            <rb-button ng-click="disableCheckbox()"> disable checkbox</rb-button>
 
                             <rb-checkbox ng-model="checkboxModel2">
                                 Checkbox 2
@@ -104,7 +139,9 @@
                                             index="{{ $index }}">
                                     </property-arg>
 
-                                    <p class="alert alert-info large" ng-if="view.tool.cliAdapter.argAdapters | isEmpty">Click the plus button to add command line binding.</p>
+                                    <p class="alert alert-info large"
+                                       ng-if="view.tool.cliAdapter.argAdapters | isEmpty">Click the plus button to add
+                                        command line binding.</p>
 
                                 </div>
                             </div>

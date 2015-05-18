@@ -61,25 +61,28 @@ angular.module('registryApp.ui')
             var button = element;
 
             var intention = attr.intention || 'default';
-            var classes = attr.classes || '';
 
             button.addClass('btn-' + intention);
-            button.addClass(classes);
 
             // check for disabled prop on click
             element.on('click', function(e){
                 if (attr.disabled === true) {
-                    e.preventDefault();
-                    e.stopImmediatePropagation();
+                    return false;
                 }
             });
 
             // add focus class and remove it
             button
-                .on('focus', function() {
-                    if(scope.mouseActive === false) { element.addClass('rb-focused'); }
+                .on('remove', function() {
+                    scope.$destroy();
+                    transclusionScope.$destroy();
                 })
-                .on('blur', function() { element.removeClass('rb-focused'); });
+                .on('focus', function() {
+                    element.addClass('rb-focused');
+                })
+                .on('blur', function() {
+                    element.removeClass('rb-focused');
+                });
         }
 
         return {

@@ -1,0 +1,10 @@
+<!-- Single button dropdown -->
+<div class="btn-group" dropdown is-open="status.isopen">
+    <rb-button intention="{{ ::view.intention }}" ng-disabled="view.disabled">
+        {{ view.name }}
+    </rb-button>
+    <rb-button class="dropdown-toggle" intention="{{ ::view.intention }}" dropdown-toggle ng-disabled="view.disabled">
+        <span class="caret"></span>
+        <span class="sr-only"></span>
+    </rb-button>
+</div>
