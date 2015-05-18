@@ -54,7 +54,7 @@ angular.module('registryApp.ui')
         function getTemplate(element, attr) {
             return isAnchor(attr) ?
                 '<a class="btn rb-button" ng-transclude></a>' :
-                '<button class="btn rb-button" ng-transclude></button>';
+                '<button type="button" class="btn rb-button" ng-transclude></button>';
         }
 
         function postLink(scope, element, attr, ctrl, transcludeFn) {
