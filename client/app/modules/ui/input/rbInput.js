@@ -21,11 +21,11 @@ angular.module('registryApp.ui')
          *
          * Transcluded content can be: `<label>`, a `<p>`, or both
          *
-         * @param {expression} ng-model Model for the input value
-         * @param {expression|boolean=} ng-disabled En/Disable based on the expression
-         * @param {expression|boolean=} has-error Adds has-error class based on expression
+         * @param {string} ng-model Model for the input value
          * @param {string=} type Input type, any valid text input type
-         * @param {string=} required Specifies if field is required
+         * @param {boolean=} ng-required Specifies if field is required
+         * @param {boolean=} ng-disabled En/Disable based on the expression
+         * @param {boolean=} has-error Adds has-error class based on expression
          * @param {boolean=} clear Clears search field
          * @param {boolean=} no-button Removes search button
          *
@@ -112,6 +112,7 @@ angular.module('registryApp.ui')
             scope: {
                 ngModel: '=',
                 ngDisabled: '=',
+                ngRequired: '=',
                 placeholder: '@',
                 hasError: '='
             },
