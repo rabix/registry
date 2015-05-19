@@ -72,8 +72,6 @@ angular.module('registryApp.ui')
 
             scope.view = {};
             scope.view.name = scope.name || 'Button Dropdown';
-            scope.view.intention = attr.intention || 'default';
-            scope.view.disabled = scope.ngDisabled || scope.disabled || false;
 
             transcludeFn(function (clone, scope) {
 
@@ -106,6 +104,16 @@ angular.module('registryApp.ui')
                 });
         }
 
+        function compile(elem, attr) {
+            var intention = attr.intention || 'default';
+
+            elem.find('rb-button').attr('intention', intention);
+
+            return {
+                post: postLink
+            }
+        }
+
         return {
             restrict: 'E',
             template: getTemplate,
@@ -116,6 +124,6 @@ angular.module('registryApp.ui')
                 ngDisabled: '=?',
                 disabled: '=?'
             },
-            link: postLink
+            compile: compile
         };
 }]);

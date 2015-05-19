@@ -2,7 +2,7 @@
 
 
 angular.module('registryApp.ui')
-    .directive('rbButton', ['$templateCache', function($templateCache) {
+    .directive('rbButton', ['$templateCache', function ($templateCache) {
 
         /**
          * @ngdoc directive
@@ -54,12 +54,8 @@ angular.module('registryApp.ui')
         function postLink(scope, element, attr, ctrl, transcludeFn) {
             var button = element;
 
-            var intention = attr.intention || 'default';
-
-            button.addClass('btn-' + intention);
-
             // check for disabled prop on click
-            element.on('click', function(e){
+            button.on('click', function (e) {
                 if (attr.disabled === true) {
                     return false;
                 }
@@ -67,12 +63,24 @@ angular.module('registryApp.ui')
 
             // add focus class and remove it
             button
-                .on('focus', function() {
+                .on('focus', function () {
                     element.addClass('rb-focused');
                 })
-                .on('blur', function() {
+                .on('blur', function () {
                     element.removeClass('rb-focused');
                 });
+        }
+
+        function preLink(scope, elem, attr) {
+
+            var intention = attr.intention;
+
+            if (typeof intention === 'undefined' || intention === '') {
+                intention = 'default';
+            }
+
+            elem.addClass('btn-' + intention);
+
         }
 
         return {
@@ -80,6 +88,9 @@ angular.module('registryApp.ui')
             template: getTemplate,
             replace: true,
             transclude: true,
-            link: postLink
+            link: {
+                pre: preLink,
+                post: postLink
+            }
         };
     }]);
