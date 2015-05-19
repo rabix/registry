@@ -1,10 +1,5 @@
-/**
- * @ngdoc module
- * @name registryApp.ui
- * @description
- *
- * Rabix Dropdown Button
- */
+'use strict';
+
 angular.module('registryApp.ui')
     .directive('rbDropdown', ['$templateCache', function($templateCache) {
 

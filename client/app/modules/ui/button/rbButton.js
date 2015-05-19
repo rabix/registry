@@ -1,12 +1,6 @@
 'use strict';
 
-/**
- * @ngdoc module
- * @name registryApp.ui
- * @description
- *
- * Rabix Button
- */
+
 angular.module('registryApp.ui')
     .directive('rbButton', ['$templateCache', function($templateCache) {
 
