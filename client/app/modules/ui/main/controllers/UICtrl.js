@@ -17,6 +17,10 @@ angular.module('registryApp.ui')
         $scope.disableCheckbox = function () {
             $scope.disable = !$scope.disable;
         };
+        
+        $scope.test = function () {
+            console.log('work work');  
+        };
 
         $scope.dropdown = 'Dropdown #1';
     }]);

@@ -33,11 +33,11 @@
                     <legend class="legend-small">Dropdown</legend>
                     <rb-dropdown class="separate" intention="primary" name="dropdown">
                         <ul>
-                            <li><a href="#">Action</a></li>
-                            <li><a href="#">Another action</a></li>
-                            <li><a href="#">Something else here</a></li>
+                            <li><a ng-click="test()" href="">Action</a></li>
+                            <li><a href="">Another action</a></li>
+                            <li><a href="">Something else here</a></li>
                             <li class="divider"></li>
-                            <li><a href="#">Separated link</a></li>
+                            <li><a href="">Separated link</a></li>
                         </ul>
                     </rb-dropdown>
 
@@ -77,7 +77,7 @@
 
                             <rb-input type="number" ng-model="numberInput"></rb-input>
 
-                            <rb-input type="search" placeholder="Search" has-error="helpHasError" >
+                            <rb-input type="search" placeholder="Search" has-error="helpHasError" clear>
                                 <label>Search Label</label>
 
                                 <p ng-show="showHelpBlock" ng-class="{'has-error': helpHasError}">
