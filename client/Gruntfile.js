@@ -114,7 +114,7 @@ module.exports = function (grunt) {
                     '<%= yeoman.app %>/bower_components/angular/angular.js',
                     '<%= yeoman.app %>/bower_components/angular-animate/angular-animate.js'
                 ],
-                startPage: '/docs',
+                startPage: '/registry',
                 title: 'My Documentation'
             },
             registry: {
