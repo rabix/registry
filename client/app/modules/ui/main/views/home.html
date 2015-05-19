@@ -72,17 +72,18 @@
                                 Input examples
                             </legend>
 
-                            <rb-input placeholder="Regular input"></rb-input>
+                            <rb-input placeholder="Regular input" ng-model="regularInput"></rb-input>
 
                             <rb-input type="number" ng-model="numberInput"></rb-input>
 
-                            <rb-input type="search" placeholder="Search" has-error="helpHasError" clear>
+                            <rb-input type="search" placeholder="Search" ng-model="searchTerm" no-button has-error="helpHasError" clear="true">
                                 <label>Search Label</label>
 
-                                <p ng-show="showHelpBlock" ng-class="{'has-error': helpHasError}">
+                                <p ng-show="showHelpBlock">
                                     TODO: optional clear button
                                 </p>
                             </rb-input>
+
 
                             <div class="form-group">
                                 <rb-button class="separate" intention="danger" ng-click="helpHasError = !helpHasError">Has Error
@@ -91,6 +92,12 @@
                                     block
                                 </rb-button>
                             </div>
+
+                            <ul class="list-group">
+                                <li class="list-group-item" ng-repeat="item in searchItems | filter: searchTerm">
+                                    {{ item.sound }}
+                                </li>
+                            </ul>
 
                             <div>
                                 <label class="control-label">

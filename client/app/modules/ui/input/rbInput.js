@@ -19,20 +19,21 @@ angular.module('registryApp.ui')
          *
          * Accepts all valid textual input types. No specified input type defaults to 'text'.
          *
-         * Transcluded content can either be a label, a `<p class="help-block">`, or both
+         * Transcluded content can be: `<label>`, a `<p>`, or both
          *
-         * @param {expression=} ng-model Model for the input value
-         * @param {expression=} ng-disabled En/Disable based on the expression
+         * @param {string} ng-model Model for the input value
          * @param {string=} type Input type, any valid text input type
-         * @param {expression=} has-error Adds has-error class based on expression
-         * @param {string=} classes Space separated additional classes to add to element @todo: implement this!
-         * @param {string=} required Specifies if field is required
+         * @param {boolean=} ng-required Specifies if field is required
+         * @param {boolean=} ng-disabled En/Disable based on the expression
+         * @param {boolean=} has-error Adds has-error class based on expression
+         * @param {boolean=} clear Clears search field
+         * @param {boolean=} no-button Removes search button
          *
          * @usage
          *  <rb-input ng-model="model">
          *  </rb-input>
          *
-         *  <rb-input type="search">
+         *  <rb-input type="search" ng-model="model">
          *    <p class="help-block">
          *      Enter search terms
          *    </p>
@@ -41,9 +42,11 @@ angular.module('registryApp.ui')
          *  <rb-input type="number" ng-model="number">
          *  </rb-input>
          *
-         *  <rb-input ng-disabled="true">
-         *    Disabled Button
+         *  <rb-input ng-disabled="true" ng-model="model">
+         *    <label>Disabled Input</label>
          *  </rb-input>
+         *
+         *
          */
 
         function getTemplate (element, attr) {
@@ -57,7 +60,6 @@ angular.module('registryApp.ui')
 
         function postLink (scope, element, attr, ctrl, transcludeFn) {
             var transclusionScope;
-
             transcludeFn(function(clone, scope) {
 
                 var label, helpBlock;
@@ -76,12 +78,26 @@ angular.module('registryApp.ui')
                 }
 
                 if (helpBlock) {
+                    $(helpBlock).addClass('help-block');
                     element.append(helpBlock);
                 }
 
                 transclusionScope = scope;
-
             });
+
+            function clearModel () {
+                scope.ngModel = '';
+                scope.$apply();
+            }
+
+            // add clear button if specified;
+            if (attr.type === 'search' && (attr.clear === '' || attr.clear === 'true')) {
+                var $clearButton = $('<button class="btn btn-default" type="button"><i class="fa fa-ban"></i></button>');
+                element.find('.input-group-btn').prepend($clearButton);
+
+                $clearButton.on('click', clearModel);
+            }
+
 
             element.on('remove', function() {
                 scope.$destroy();
@@ -96,14 +112,21 @@ angular.module('registryApp.ui')
             scope: {
                 ngModel: '=',
                 ngDisabled: '=',
+                ngRequired: '=',
                 placeholder: '@',
                 hasError: '='
             },
             template: getTemplate,
-            compile: function(element, attrs) {
+            compile: function(element, attr) {
 
-                var type = attrs.type || 'text';
+                // append type, default to 'text'
+                var type = attr.type || 'text';
+
                 element.find('input').attr('type', type);
+
+                if (attr.noButton === '' || attr.noButton === 'true') {
+                    element.find('button[type=submit]').remove();
+                }
 
                 return postLink;
 

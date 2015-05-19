@@ -22,5 +22,14 @@ angular.module('registryApp.ui')
             console.log('work work');  
         };
 
+        $scope.searchTerm = '';
+        $scope.searchItems = [
+            {sound: 'meow meow'},
+            {sound: 'woff woff'},
+            {sound: 'Baaa baaaa'},
+            {sound: 'mooo moooo'},
+            {sound: 'quack quack'}
+        ];
+
         $scope.dropdown = 'Dropdown #1';
     }]);
