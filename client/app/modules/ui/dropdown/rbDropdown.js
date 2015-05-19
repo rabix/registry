@@ -15,11 +15,34 @@ angular.module('registryApp.ui')
          *
          * Default button look is 'default'
          *
-         * @param {expression=} name label of dropdown button, can be two way binded, can pass in a string: name="'Some name'"
+         * @param {expression} name label of dropdown button, can be two way binded, can pass in a string: name="'Some name'"
+         * @param {boolean=} intention If present, sets button intention oneOf=['danger', 'primary', 'default', 'warning', 'info', 'success'].
          * @param {expression=} ng-disabled En/Disable based on the expression
+         * @param {string=} type Dropdown type, oneOf: ['split', 'default']. Default value is 'default'
+         * @param {string=} class Space separated additional classes to add to element
          *
          * @usage
-         *  <rb-dropdown>
+         *
+         *  <!-- Simple dropdown, name can be two way binded from parent ctrl -->
+         *  <rb-dropdown intention="primary" name="view.dropdown">
+         *    <ul>
+         *        <li>Item 1</li>
+         *        <li>Item 2</li>
+         *        <li>Item 3</li>
+         *    </ul>
+         *  </rb-dropdown>
+         *
+         *  <!-- Split button dropdown -->
+         *  <rb-dropdown intention="primary" type="split" name="'Split dropdown'">
+         *    <ul>
+         *        <li>Item 1</li>
+         *        <li>Item 2</li>
+         *        <li>Item 3</li>
+         *    </ul>
+         *  </rb-dropdown>
+         *
+         *  <!-- Disabled dropdown -->
+         *  <rb-dropdown intention="primary" type="split" name="'Disabled'" ng-disabled="true">
          *    <ul>
          *        <li>Item 1</li>
          *        <li>Item 2</li>
