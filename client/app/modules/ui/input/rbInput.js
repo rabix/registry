@@ -12,7 +12,7 @@ angular.module('registryApp.ui')
          * @name rbInput
          * @module registryApp.ui
          *
-         * @restrict EA
+         * @restrict E
          *
          * @description
          * `<rb-input>` is a directive for input fields.
@@ -34,7 +34,7 @@ angular.module('registryApp.ui')
          *  </rb-input>
          *
          *  <rb-input type="search" ng-model="model">
-         *    <p class="help-block">
+         *    <p>
          *      Enter search terms
          *    </p>
          *  </rb-input>
@@ -102,6 +102,7 @@ angular.module('registryApp.ui')
             element.on('remove', function() {
                 scope.$destroy();
                 transclusionScope.$destroy();
+                if ($clearButton) { $clearButton.off(clearModel); }
             });
         }
 
