@@ -18,21 +18,23 @@ angular.module('registryApp.ui')
          * Transcluded content can be: `<label>`, `<p>` or both
          *
          * @param {string} ng-model Assignable angular expression to data-bind to
-         * @param {comprehension_expression} expression Comprehension expression for options. See [ngOptions directive docs]{@link https://docs.angularjs.org/api/ng/directive/ngOptions}
+         * @param {comprehension_expression} expression Comprehension expression for options. See {@link https://docs.angularjs.org/api/ng/directive/ngOptions ngOptions directive docs}
          * @param {expression} options object or array for options
          * @param {boolean=} ng-required Specifies if field is required
          * @param {boolean=} ng-disabled En/Disable based on the expression
          * @param {boolean=} has-error Adds has-error class based on expression
          *
          * @usage
-         * <rb-select ng-model="model" expression="item.key as item.value for item in options" options="someOptionsArray">
-         *     <label>
-         *         Label for select
-         *     </label>
-         *     <p>
-         *         Help Block text
-         *     </p>
-         * </rb-select>
+         *  <rb-select ng-model="model"
+         *             expression="item.key as item.value for item in options"
+         *             options="someOptionsArray">
+         *      <label>
+         *          Label for select
+         *      </label>
+         *      <p>
+         *          Help Block text
+         *      </p>
+         *  </rb-select>
          */
 
 
