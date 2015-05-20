@@ -80,7 +80,7 @@
                                 <label>Search Label</label>
 
                                 <p ng-show="showHelpBlock">
-                                    TODO: optional clear button
+                                    Search by sound
                                 </p>
                             </rb-input>
 
@@ -109,7 +109,7 @@
 
                         <div class="section">
                             <legend class="legend-small">
-                                Checkbox example
+                                Checkbox
                             </legend>
 
                             <rb-checkbox ng-model="checkboxModel" ng-disabled="disable">
@@ -122,6 +122,18 @@
                                 Checkbox 2
                             </rb-checkbox>
 
+                        </div>
+
+
+                        <div class="section">
+                            <legend class="legend-small">
+                                Select
+                            </legend>
+
+                            <rb-select expression="item.animal as item.sound for item in options" options="searchItems" ng-model="selectedAnimal" has-error="helpHasError">
+                                <label>{{ selectedAnimal }}</label>
+                                <p>Pick the cat!</p>
+                            </rb-select>
                         </div>
 
 

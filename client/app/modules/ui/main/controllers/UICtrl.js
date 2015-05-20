@@ -24,12 +24,13 @@ angular.module('registryApp.ui')
 
         $scope.searchTerm = '';
         $scope.searchItems = [
-            {sound: 'meow meow'},
-            {sound: 'woff woff'},
-            {sound: 'Baaa baaaa'},
-            {sound: 'mooo moooo'},
-            {sound: 'quack quack'}
+            {sound: 'meow meow', animal: 'cat'},
+            {sound: 'woff woff', animal: 'dog'},
+            {sound: 'Baaa baaaa', animal: 'sheep'},
+            {sound: 'mooo moooo', animal: 'cow'},
+            {sound: 'quack quack', animal: 'duck'}
         ];
+        $scope.selectedAnimal = 'cat';
 
         $scope.dropdown = 'Dropdown #1';
     }]);
