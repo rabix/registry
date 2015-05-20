@@ -1,0 +1,108 @@
+<form class="form row" action="">
+    <div class="col-xs-8">
+        <div class="section">
+            <legend class="legend-small">
+                Input examples
+            </legend>
+
+            <rb-input placeholder="Regular input" ng-model="regularInput"></rb-input>
+
+            <rb-input type="number" ng-model="numberInput"></rb-input>
+
+
+            <div>
+                <label class="control-label">
+                    Expression input
+                </label>
+                <expr></expr>
+            </div>
+        </div>
+
+        <div class="section">
+            <legend class="legend-small">
+                Search
+            </legend>
+
+            <rb-input type="search" placeholder="Search" ng-model="searchTerm" no-button has-error="helpHasError" clear="true">
+                <label>Search Label</label>
+
+                <p ng-show="showHelpBlock">
+                    Search by sound
+                </p>
+            </rb-input>
+
+
+            <div class="form-group">
+                <rb-button class="separate" intention="danger" ng-click="helpHasError = !helpHasError">Has Error
+                </rb-button>
+                <rb-button class="separate" intention="primary" ng-click="showHelpBlock = !showHelpBlock">Show help
+                    block
+                </rb-button>
+            </div>
+
+            <ul class="list-group">
+                <li class="list-group-item" ng-repeat="item in searchItems | filter: searchTerm">
+                    {{ item.sound }}
+                </li>
+            </ul>
+
+        </div>
+
+        <div class="section">
+            <legend class="legend-small">
+                Checkbox
+            </legend>
+
+            <rb-checkbox ng-model="checkboxModel" ng-disabled="disable">
+                Checkbox 1
+            </rb-checkbox>
+
+            <rb-button ng-click="disableCheckbox()"> disable checkbox</rb-button>
+
+            <rb-checkbox ng-model="checkboxModel2">
+                Checkbox 2
+            </rb-checkbox>
+
+        </div>
+
+
+        <div class="section">
+            <legend class="legend-small">
+                Select
+            </legend>
+
+            <rb-select expression="item.animal as item.sound for item in options" options="searchItems" ng-model="selectedAnimal" has-error="helpHasError">
+                <label>{{ selectedAnimal }}</label>
+                <p>Pick the cat!</p>
+            </rb-select>
+        </div>
+
+
+        <div class="section">
+            <legend class="legend-small">
+                Enum List
+                <help-message message="help.cliche.general.argument"></help-message>
+            </legend>
+
+            <div class="enum-list-wrap">
+                <add-property
+                        type="arg"
+                        class="add-enum-item large">
+                </add-property>
+
+                <div class="enum-list-container">
+                    <property-arg
+                            ng-repeat="arg in view.tool.cliAdapter.argAdapters | orderBy:sortByPosition track by $index"
+                            ng-model="arg"
+                            index="{{ $index }}">
+                    </property-arg>
+
+                    <p class="alert alert-info large"
+                       ng-if="view.tool.cliAdapter.argAdapters | isEmpty">Click the plus button to add
+                        command line binding.</p>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

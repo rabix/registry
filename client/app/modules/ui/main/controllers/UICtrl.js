@@ -6,6 +6,14 @@
 
 angular.module('registryApp.ui')
     .controller('UICtrl', ['$scope', function ($scope) {
+        $scope.view = {};
+        $scope.view.activeTab = 'buttons';
+
+        $scope.switchTab = function (tab) {
+            $scope.view.activeTab = tab;
+        };
+
+
         $scope.testClick = function () {
             console.log('click');
         };

@@ -1,185 +1,31 @@
 <div class="page home">
-    <div class="content content-ten">
 
-        <!--Buttons-->
-        <div class="panel panel-default">
-            <div class="panel-heading">Buttons</div>
-            <div class="panel-body">
-                <div class="section">
-                    <legend class="legend-small">Button Examples</legend>
+    <div class="heading sub-heading">
+        <ul class="nav nav-tabs nav-tabs-steps regular">
+            <li ng-class="{active: view.activeTab === 'buttons'}"><a href ng-click="switchTab('buttons')">Buttons</a></li>
+            <li ng-class="{active: view.activeTab === 'forms'}"><a href ng-click="switchTab('forms')">Forms</a></li>
+            <li ng-class="{active: view.activeTab === 'pagination'}"><a href ng-click="switchTab('pagination')">Pagination</a></li>
+            <li ng-class="{active: view.activeTab === 'tables'}"><a href ng-click="switchTab('tables')">Tables</a></li>
+        </ul>
+    </div>
 
-                    <rb-button class="separate" intention="primary" >btn-primary</rb-button>
-                    <rb-button class="separate" intention="success" >btn-success</rb-button>
-                    <rb-button class="separate" intention="danger" >btn-danger</rb-button>
-                    <rb-button class="separate" intention="warning" >btn-warning</rb-button>
-                    <rb-button class="separate" intention="default" >btn-default</rb-button>
-                    <rb-button class="separate" intention="default" ng-disabled="true">btn-disabled</rb-button>
 
-                    <hr/>
+    <div class="content content-tbl flex-box-column">
 
-                    <rb-button class="separate" tooltip="Edit Tool"><i class="fa fa-pencil"></i></rb-button>
-                    <rb-button href="" class="btn-toggle separate" tooltip="Toggle Versions (2)" tooltip-placement="left" tooltip-append-to-body="true" ng-click="showRevision = !showRevision" tabindex="0">
-                        2 <i class="fa" ng-class="{'fa-chevron-right': !showRevision, 'fa-chevron-down': showRevision}"></i>
-                    </rb-button>
-                </div>
-
-                <div class="section">
-                    <legend class="legend-small">on-click</legend>
-                    <rb-button ng-click="testClick()" intention="danger" class="test">Button</rb-button>
-                </div>
-
-                <div class="section">
-                    <legend class="legend-small">Dropdown</legend>
-                    <rb-dropdown class="separate" intention="primary" name="dropdown">
-                        <ul>
-                            <li><a ng-click="test()" href="">Action</a></li>
-                            <li><a href="">Another action</a></li>
-                            <li><a href="">Something else here</a></li>
-                            <li class="divider"></li>
-                            <li><a href="">Separated link</a></li>
-                        </ul>
-                    </rb-dropdown>
-
-                    <rb-dropdown class="separate" intention="primary" type="split" name="'Split dropdown'">
-                        <ul>
-                            <li><a href="#">Action</a></li>
-                            <li><a href="#">Another action</a></li>
-                            <li><a href="#">Something else here</a></li>
-                        </ul>
-                    </rb-dropdown>
-
-                    <rb-dropdown class="separate" intention="primary" type="split" name="'Disabled'" ng-disabled="true">
-                        <ul>
-                            <li><a href="#">Action</a></li>
-                            <li><a href="#">Another action</a></li>
-                            <li><a href="#">Something else here</a></li>
-                        </ul>
-                    </rb-dropdown>
-
-                </div>
-
-            </div>
+        <div ng-if="view.activeTab === 'buttons'" class="content content-ten">
+            <ng-include class="include flex-box-column flex-one" src="'modules/ui/main/views/tabs/buttons.html'"></ng-include>
         </div>
 
-        <!--Form elements-->
-        <div class="panel panel-default">
-            <div class="panel-heading">Forms</div>
-            <div class="panel-body">
-                <form class="form row" action="">
-                    <div class="col-xs-8">
-                        <div class="section">
-                            <legend class="legend-small">
-                                Input examples
-                            </legend>
-
-                            <rb-input placeholder="Regular input" ng-model="regularInput"></rb-input>
-
-                            <rb-input type="number" ng-model="numberInput"></rb-input>
-
-                            <rb-input type="search" placeholder="Search" ng-model="searchTerm" no-button has-error="helpHasError" clear="true">
-                                <label>Search Label</label>
-
-                                <p ng-show="showHelpBlock">
-                                    Search by sound
-                                </p>
-                            </rb-input>
-
-
-                            <div class="form-group">
-                                <rb-button class="separate" intention="danger" ng-click="helpHasError = !helpHasError">Has Error
-                                </rb-button>
-                                <rb-button class="separate" intention="primary" ng-click="showHelpBlock = !showHelpBlock">Show help
-                                    block
-                                </rb-button>
-                            </div>
-
-                            <ul class="list-group">
-                                <li class="list-group-item" ng-repeat="item in searchItems | filter: searchTerm">
-                                    {{ item.sound }}
-                                </li>
-                            </ul>
-
-                            <div>
-                                <label class="control-label">
-                                    Expression input
-                                </label>
-                                <expr></expr>
-                            </div>
-                        </div>
-
-                        <div class="section">
-                            <legend class="legend-small">
-                                Checkbox
-                            </legend>
-
-                            <rb-checkbox ng-model="checkboxModel" ng-disabled="disable">
-                                Checkbox 1
-                            </rb-checkbox>
-
-                            <rb-button ng-click="disableCheckbox()"> disable checkbox</rb-button>
-
-                            <rb-checkbox ng-model="checkboxModel2">
-                                Checkbox 2
-                            </rb-checkbox>
-
-                        </div>
-
-
-                        <div class="section">
-                            <legend class="legend-small">
-                                Select
-                            </legend>
-
-                            <rb-select expression="item.animal as item.sound for item in options" options="searchItems" ng-model="selectedAnimal" has-error="helpHasError">
-                                <label>{{ selectedAnimal }}</label>
-                                <p>Pick the cat!</p>
-                            </rb-select>
-                        </div>
-
-
-                        <div class="section">
-                            <legend class="legend-small">
-                                Enum List
-                                <help-message message="help.cliche.general.argument"></help-message>
-                            </legend>
-
-                            <div class="enum-list-wrap">
-                                <add-property
-                                        type="arg"
-                                        class="add-enum-item large">
-                                </add-property>
-
-                                <div class="enum-list-container">
-                                    <property-arg
-                                            ng-repeat="arg in view.tool.cliAdapter.argAdapters | orderBy:sortByPosition track by $index"
-                                            ng-model="arg"
-                                            index="{{ $index }}">
-                                    </property-arg>
-
-                                    <p class="alert alert-info large"
-                                       ng-if="view.tool.cliAdapter.argAdapters | isEmpty">Click the plus button to add
-                                        command line binding.</p>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-
-            <div class="panel-footer">
-                <button class="btn-default btn">Cancel</button>
-                <button type="submit" class="btn-primary btn">Submit</button>
-            </div>
+        <div ng-if="view.activeTab === 'forms'" class="content content-ten">
+            <ng-include class="include flex-box-column flex-one" src="'modules/ui/main/views/tabs/forms.html'"></ng-include>
         </div>
 
-        <div class="panel panel-default">
-            <div class="panel-heading">Tables</div>
-            <div class="panel-body">
-
-            </div>
+        <div ng-if="view.activeTab === 'pagination'" class="content content-ten">
+            <ng-include class="include flex-box-column flex-one" src="'modules/ui/main/views/tabs/pagination.html'"></ng-include>
         </div>
 
-
+        <div ng-if="view.activeTab === 'tables'" class="content content-ten">
+            <ng-include class="include flex-box-column flex-one" src="'modules/ui/main/views/tabs/tables.html'"></ng-include>
+        </div>
     </div>
 </div>
