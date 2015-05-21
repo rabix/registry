@@ -82,10 +82,10 @@ angular.module('registryApp.cliche')
                 category: $scope.view.category
             };
 
-            var formatted = Cliche.formatProperty(inner, $scope.view.property, 'input');
-
             $scope.view.property.type = $scope.view.property.schema;
             delete $scope.view.property.schema;
+
+            var formatted = Cliche.formatProperty(inner, $scope.view.property, 'input');
 
             idObj.n = $scope.view.name;
 

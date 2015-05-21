@@ -1145,7 +1145,7 @@ angular.module('registryApp.cliche')
 
             var defaultTypes = {
                 input: 'string',
-                output: 'file'
+                output: 'File'
             };
 
             if (_.isEmpty(property)) {
@@ -1163,7 +1163,7 @@ angular.module('registryApp.cliche')
                  */
                 return ref ? property : angular.copy(property);
             } else {
-                return ref ? (property.type) : (angular.copy(property.type));
+                return ref ? (property.type || property.type) : (angular.copy(property.type || property.type));
             }
         };
 
