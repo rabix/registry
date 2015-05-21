@@ -8,7 +8,7 @@
     <div class="enum-list-wrap">
         <add-property
                 type="input"
-                key="@id"
+                key="id"
                 tool-type="{{ view.type }}"
                 properties="view.tool.inputs"
                 inputs="view.job.inputs"
@@ -16,9 +16,9 @@
         </add-property>
         <div class="enum-list-container">
             <property-input
-                    ng-repeat="property in view.tool.inputs | orderBy:sortByPosition track by property['@id']"
+                    ng-repeat="property in view.tool.inputs | orderBy:sortByPosition track by property['id']"
                     ng-model="property"
-                    key="@id"
+                    key="id"
                     type="{{ view.type }}"
                     inputs="view.job.inputs"
                     properties="view.tool.inputs">

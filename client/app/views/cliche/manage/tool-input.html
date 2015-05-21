@@ -16,7 +16,7 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="form-group" ng-class="{'has-error': (view.form.name.$invalid && view.form.$dirty)}">
-                    <label class="control-label" for="name">{{ view.key === '@id' ? 'ID' : 'Name' }}</label>
+                    <label class="control-label" for="name">{{ view.key === 'id' ? 'ID' : 'Name' }}</label>
                     <input type="text" class="form-control" id="name" name="name" ng-model="view.name" is-valid-name required>
                     <span class="help-block">Allowed characters are alphanumerics, _, and -</span>
                 </div>
@@ -97,12 +97,12 @@
             </label>
         </legend>
 
-        <div ng-if="view.property.adapter" class="row">
+        <div ng-if="view.property.inputBinding" class="row">
 
             <div class="col-md-2">
                 <div class="form-group" ng-class="{'has-error': (view.form.position.$invalid && view.form.$dirty)}">
                     <label class="control-label" for="position">Position</label>
-                    <input type="number" class="form-control" id="position" name="position" ng-model="view.property.adapter.position">
+                    <input type="number" class="form-control" id="position" name="position" ng-model="view.property.inputBinding.position">
                 </div>
             </div>
             <!-- END Position -->
@@ -110,7 +110,7 @@
             <div class="col-md-2">
                 <div class="form-group">
                     <label class="control-label" for="prefix">Prefix</label>
-                    <input type="text" class="form-control" id="prefix" name="prefix" ng-model="view.property.adapter.prefix" ng-disabled="view.disabled">
+                    <input type="text" class="form-control" id="prefix" name="prefix" ng-model="view.property.inputBinding.prefix" ng-disabled="view.disabled">
                 </div>
             </div>
             <!-- END Prefix -->
@@ -118,7 +118,7 @@
             <div class="col-md-2">
                 <div class="form-group" ng-class="{'has-error': (view.form.separator.$invalid && view.form.$dirty)}">
                     <label class="control-label">Separator</label>
-                    <separator type="item" model="view.property.adapter.separator" is-disabled="view.disabled"></separator>
+                    <separator type="item" model="view.property.inputBinding.separator" is-disabled="view.disabled"></separator>
                 </div>
             </div>
             <!-- END Separator -->
@@ -126,7 +126,7 @@
             <div ng-if="view.type === 'array'" class="col-md-2">
                 <div class="form-group">
                     <label class="control-label">Item Separator</label>
-                    <separator type="list" model="view.property.adapter.itemSeparator" is-disabled="view.disabled"></separator>
+                    <separator type="list" model="view.property.inputBinding.itemSeparator" is-disabled="view.disabled"></separator>
                 </div>
             </div>
             <!-- END Item Separator -->
@@ -134,14 +134,14 @@
             <div class="col-md-2" ng-if="!view.disabled && view.items.type !== 'record'">
                 <div class="form-group">
                     <label class="control-label">Value</label>
-                    <expr ng-model="view.property.adapter.argValue" handle-item-update="updateTransform(value)" only-expr="true" self="true" self-type="view.type" self-item-type="view.items.type" placeholder="value"></expr>
+                    <expr ng-model="view.property.inputBinding.argValue" handle-item-update="updateTransform(value)" only-expr="true" self="true" self-type="view.type" self-item-type="view.items.type" placeholder="value"></expr>
                 </div>
             </div>
             <!-- END Transform -->
 
         </div>
 
-        <p ng-if="!view.property.adapter" class="alert alert-info">This input will not be added to command line. Check the box above to create command line binding.</p>
+        <p ng-if="!view.property.inputBinding" class="alert alert-info">This input will not be added to command line. Check the box above to create command line binding.</p>
 
         <div class="form-group main-actions">
             <a href class="btn btn-warning" ng-click="cancel()">Cancel</a>

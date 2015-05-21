@@ -44,10 +44,10 @@
             <div class="input-container">
 
                 <input-field
-                        ng-repeat="property in view.tool.inputs | orderBy:sortByPosition track by property['@id']"
-                        ng-model="view.job.inputs[property['@id'].slice(1)]"
+                        ng-repeat="property in view.tool.inputs | orderBy:sortByPosition track by property['id']"
+                        ng-model="view.job.inputs[property['id'].slice(1)]"
                         class="input-field"
-                        key="@id"
+                        key="id"
                         prop="property"
                         form="form.job">
                 </input-field>

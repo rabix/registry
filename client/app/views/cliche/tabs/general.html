@@ -58,12 +58,12 @@
                     <div class="enum-list-wrap">
                         <a href ng-click="addBaseCmd()" class="btn btn-default add-enum-item"><i class="fa fa-plus"></i></a>
                         <div class="enum-list-container">
-                            <ul class="enum-list" ng-class="{wide: view.tool.cliAdapter.baseCmd.length === 1}">
-                                <li ng-repeat="baseCmd in view.tool.cliAdapter.baseCmd track by $index">
+                            <ul class="enum-list" ng-class="{wide: view.tool.baseCommand.length === 1}">
+                                <li ng-repeat="baseCmd in view.tool.baseCommand track by $index">
                                     <div class="enum-field form-group form-group-file">
-                                        <expr ng-model="baseCmd" index="{{ $index }}" handle-item-update="updateCliAdapter(value, index, 'baseCmd')" handle-item-blur="splitBaseCmd(value, index)"></expr>
+                                        <expr ng-model="baseCommand" index="{{ $index }}" handle-item-update="updateCliAdapter(value, index, 'baseCmd')" handle-item-blur="splitBaseCmd(value, index)"></expr>
                                     </div>
-                                    <a href ng-hide="view.tool.cliAdapter.baseCmd.length === 1" class="fa fa-remove remove-btn" ng-click="removeBaseCmd($index)"></a>
+                                    <a href ng-hide="view.tool.baseCommand.length === 1" class="fa fa-remove remove-btn" ng-click="removeBaseCmd($index)"></a>
                                 </li>
                             </ul>
                         </div>
@@ -76,13 +76,13 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="control-label">Stdin</label>
-                            <expr ng-model="view.tool.cliAdapter.stdin" handle-item-update="updateCliAdapter(value, null, 'stdin')"></expr>
+                            <expr ng-model="view.tool.stdin" handle-item-update="updateCliAdapter(value, null, 'stdin')"></expr>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="control-label">Stdout</label>
-                            <expr ng-model="view.tool.cliAdapter.stdout" handle-item-update="updateCliAdapter(value, null, 'stdout')"></expr>
+                            <expr ng-model="view.tool.stdout" handle-item-update="updateCliAdapter(value, null, 'stdout')"></expr>
                         </div>
                     </div>
                 </div>
@@ -100,18 +100,18 @@
                     <add-property
                             type="arg"
                             handler="generateCommand()"
-                            properties="view.tool.cliAdapter.argAdapters"
+                            properties="view.tool.argAdapters"
                             class="add-enum-item large">
                     </add-property>
 
                     <div class="enum-list-container">
                         <property-arg
-                                ng-repeat="arg in view.tool.cliAdapter.argAdapters | orderBy:sortByPosition track by $index"
+                                ng-repeat="arg in view.tool.argAdapters | orderBy:sortByPosition track by $index"
                                 ng-model="arg"
                                 index="{{ $index }}">
                         </property-arg>
 
-                        <p class="alert alert-info large" ng-if="view.tool.cliAdapter.argAdapters | isEmpty">Click the plus button to add command line binding.</p>
+                        <p class="alert alert-info large" ng-if="view.tool.argAdapters | isEmpty">Click the plus button to add command line binding.</p>
 
                     </div>
                 </div>
