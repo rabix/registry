@@ -51,10 +51,10 @@ angular.module('registryApp.cliche')
         var getTypes = function(type) {
 
             var map = {
-                input: ['file', 'string', 'enum', 'int', 'float', 'boolean', 'array'],
-                output: ['file', 'array'],
-                inputItem: ['string', 'int', 'float', 'file', 'record'],
-                outputItem: ['file']
+                input: ['File', 'string', 'enum', 'int', 'float', 'boolean', 'array'],
+                output: ['File', 'array'],
+                inputItem: ['string', 'int', 'float', 'File', 'record'],
+                outputItem: ['File']
             };
 
             return map[type] || [];
@@ -750,7 +750,7 @@ angular.module('registryApp.cliche')
                             deferred.reject(error);
                         });
                     break;
-                case 'file':
+                case 'file' || 'File':
                     /* if input is FILE */
                     applyTransform(property.adapter.argValue, inputs[key].path, true)
                         .then(function (result) {
@@ -1043,7 +1043,7 @@ angular.module('registryApp.cliche')
             /* schema for the first level */
             if (inner.key === 'id') {
                 /* format structure for required property */
-                tmp.schema = inner.required ? [type] : ['null', type];
+                tmp.type = inner.required ? [type] : ['null', type];
                 formatted = tmp;
                 formatted['id'] = '#' + inner.name;
 

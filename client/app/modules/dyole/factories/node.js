@@ -236,7 +236,7 @@ angular.module('registryApp.dyole')
 
             _filterInputs: function () {
                 var inputs = [],
-                    filter = ['file', 'directory'];
+                    filter = ['file', 'File', 'directory'];
 
                 function checkType(schema, type) {
 
