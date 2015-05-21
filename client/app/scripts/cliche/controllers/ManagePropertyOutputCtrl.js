@@ -41,7 +41,7 @@ angular.module('registryApp.cliche')
         //$scope.view.inputs = _.pluck(_.filter(Cliche.getTool().inputs, function(prop) {
         //    var type = Cliche.parseType(prop.schema),
         //        typeObj = Cliche.parseTypeObj(prop.schema);
-        //    return type === 'file' || (typeObj.items && typeObj.items.type === 'file');
+        //    return type === 'File' || (typeObj.items && typeObj.items.type === 'File');
         //}), '@id');
 
         /**
@@ -145,7 +145,7 @@ angular.module('registryApp.cliche')
             if (n !== o) {
                 if (n === 'array') {
                     if (!$scope.view.items) { $scope.view.items = {}; }
-                    $scope.view.items.type = 'file';
+                    $scope.view.items.type = 'File';
                 } else {
                     delete $scope.view.items;
                 }

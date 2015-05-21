@@ -35,7 +35,7 @@ angular.module('registryApp.cliche')
 
         $scope.view.exposible = !_.isUndefined($scope.exposed);
 
-        $scope.view.ignore = $scope.ignoreFiles === 'true' && ($scope.view.type === 'file' || ($scope.view.items && $scope.view.items.type === 'file'));
+        $scope.view.ignore = $scope.ignoreFiles === 'true' && ($scope.view.type === 'File' || ($scope.view.items && $scope.view.items.type === 'File'));
 
         /**
          * Get default input scheme
@@ -93,7 +93,7 @@ angular.module('registryApp.cliche')
         var inputScheme;
 
         /* type FILE */
-        if ($scope.view.type === 'file') {
+        if ($scope.view.type === 'File') {
 
             inputScheme = getFileScheme($scope.model);
 
@@ -116,7 +116,7 @@ angular.module('registryApp.cliche')
                     inputScheme.push(innerScheme);
                 });
                 break;
-            case 'file':
+            case 'file' || 'File':
                 _.each($scope.model, function(value) {
                     inputScheme.push(getFileScheme(value));
                 });
