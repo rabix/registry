@@ -517,7 +517,6 @@ angular.module('registryApp.dyole')
                     model[internalType].push({
                         'label': terId,
                         'id': terId,
-                        '@id': terId,
                         'depth': 0,
 //                        'schema': ['null', 'file']
 						'type': terminal.model.type

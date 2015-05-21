@@ -169,7 +169,7 @@ angular.module('registryApp.dyole')
                 borders = canvas.group();
                 borders.push(outerBorder).push(innerBorder);
 
-                var name = model.label ? model.label : model.name || model['@id'];
+                var name = model.label ? model.label : model.name || model['id'];
                 label = canvas.text(0, radius + labelOffset, ((model.softwareDescription && model.softwareDescription.name) ? model.softwareDescription.name : name));
 
                 label.attr({
