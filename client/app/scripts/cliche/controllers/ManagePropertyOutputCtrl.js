@@ -129,6 +129,9 @@ angular.module('registryApp.cliche')
 
             var formatted = Cliche.formatProperty(inner, $scope.view.property, 'output');
 
+            $scope.view.property.type = $scope.view.property.schema;
+            delete $scope.view.property.schema;
+
             idObj.n = $scope.view.name;
 
             Cliche.manageProperty(options.mode, formatted, options.properties, idObj)

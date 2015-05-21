@@ -1023,18 +1023,20 @@ angular.module('registryApp.cliche')
 
             /* check if adapter has empty fields and remove them */
             /* and remove remove adapter property if no adapter is set */
-            if (tmp.adapter) {
-                _(tmp.adapter).keys().forEach(function (key) {
+            var adapter = propertyType === 'input' ? 'inputBinding' : 'outputBinding';
+
+            if (tmp[adapter]) {
+                _(tmp[adapter]).keys().forEach(function (key) {
 
                     // _.isEmpty returns true for number values, which we don't want
                     // if there is a number value, then the prop is not empty
-                    if (_.isEmpty(tmp.adapter[key]) && !_.isNumber(tmp.adapter[key])) {
-                        delete tmp.adapter[key];
+                    if (_.isEmpty(tmp[adapter][key]) && !_.isNumber(tmp[adapter][key])) {
+                        delete tmp[adapter][key];
                     }
                 });
 
-                if (_.isEmpty(tmp.adapter)) {
-                    delete tmp.adapter;
+                if (_.isEmpty(tmp[adapter])) {
+                    delete tmp[adapter];
                 }
             }
 
