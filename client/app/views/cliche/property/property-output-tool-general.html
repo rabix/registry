@@ -1,7 +1,7 @@
 <div property-header
      class="property-box-header tool"
      name="{{ view.name }}"
-     position="view.property.adapter.position"
+     position="view.property.outputBinding.position"
      type="{{ view.type }}"
      tool-type="tool"
      mode="output"
@@ -17,9 +17,9 @@
             <strong class="key">Glob:</strong>
             <div class="value">
                 <i class="fa fa-warning error" ng-if="view.exprError" title="{{ view.exprError }}"></i>
-                {{ view.property.adapter.glob.value ? view.property.adapter.glob.value : view.property.adapter.glob }}
+                {{ view.property.outputBinding.glob.value ? view.property.outputBinding.glob.value : view.property.outputBinding.glob }}
             </div>
-            <i ng-if="!view.property.adapter.glob">Not defined</i>
+            <i ng-if="!view.property.outputBinding.glob">Not defined</i>
         </div>
         <!-- END Glob -->
 
