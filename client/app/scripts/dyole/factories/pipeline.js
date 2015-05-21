@@ -817,6 +817,17 @@ angular.module('registryApp.dyole')
                 },
 
                 /**
+                 * Get connections from pipeline model
+                 * Used when generating pipeline json
+                 *
+                 * @returns {*}
+                 * @private
+                 */
+                getConnections: function () {
+                    return this._getConnections();
+                },
+
+                /**
                  * Get nodes from pipeline model
                  * Used when generating pipeline json
                  *
