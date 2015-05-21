@@ -8,7 +8,7 @@
     <div class="enum-list-wrap">
         <add-property
                 type="output"
-                key="@id"
+                key="id"
                 tool-type="{{ view.type }}"
                 properties="view.tool.outputs"
                 class="add-enum-item large">
@@ -16,9 +16,9 @@
 
         <div class="enum-list-container">
             <property-output
-                    ng-repeat="property in view.tool.outputs track by property['@id']"
+                    ng-repeat="property in view.tool.outputs track by property['id']"
                     ng-model="property"
-                    key="@id"
+                    key="id"
                     type="{{ view.type }}"
                     properties="view.tool.outputs">
             </property-output>

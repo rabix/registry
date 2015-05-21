@@ -75,7 +75,7 @@
                                             <td><span class="version"><strong><i class="fa fa-tag"></i> v{{ ::revision.version }}</strong></span></td>
                                             <td><p tooltip="{{ ::revision.description }}" tooltip-popup-delay="1000">{{ ::revision.description }}</p></td>
                                             <td class="right">
-                                                <a href ng-click="pick(tool._id, revision, 'CommandLine')" class="btn btn-sm btn-default" tooltip="Pick"><i class="fa fa-check"></i></a>
+                                                <a href ng-click="pick(tool._id, revision, 'CommandLineTool')" class="btn btn-sm btn-default" tooltip="Pick"><i class="fa fa-check"></i></a>
                                             </td>
                                         </tr>
                                         <tr class="empty" ng-if="tool.revisions.length === 0">

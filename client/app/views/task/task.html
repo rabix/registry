@@ -42,10 +42,10 @@
             <div class="content content-ten">
 
                 <input-field
-                        ng-repeat="property in view.properties track by property['@id']"
-                        ng-model="view.job.json.inputs[property['@id'].slice(1)]"
+                        ng-repeat="property in view.properties track by property['id']"
+                        ng-model="view.job.json.inputs[property['id'].slice(1)]"
                         class="input-field"
-                        key="@id"
+                        key="id"
                         prop="property"
                         form="form.jobForm">
                 </input-field>

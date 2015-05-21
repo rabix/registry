@@ -205,7 +205,7 @@ angular.module('registryApp.task')
          *
          * @param {string} id
          * @param {object} app
-         * @param {string} type - available values CommandLine|Script|Workflow
+         * @param {string} type - available values CommandLineTool|ExpressionTool|Workflow
          */
         $scope.pick = function(id, app, type) {
 

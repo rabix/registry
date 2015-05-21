@@ -264,18 +264,17 @@
                         <h3 class="tab-title">{{ ::view.json.name }}</h3>
 
                         <input-field
-                                ng-repeat="property in view.json.inputs track by property['@id']"
-                                ng-model="view.values[view.json.id][property['@id']]"
+                                ng-repeat="property in view.json.inputs track by property['id']"
+                                ng-model="view.values[view.json.id][property['id']]"
                                 class="input-field input-field-sm"
-                                key="@id"
+                                key="id"
                                 prop="property"
                                 form="form.jobForm"
                                 app-name="{{ ::view.json.id }}"
                                 exposed="view.exposed"
                                 ignore-files="true"
-                                handle-expose="onExpose(appName, property['@id'])"
+                                handle-expose="onExpose(appName, property['id'])"
                                 on-un-expose="onUnExpose(appName, property['id'], value)">
-                            >
                         </input-field>
 
                         <!-- For input suggested files -->

@@ -16,7 +16,7 @@
         <div class="row">
             <div class="col-md-3">
                 <div class="form-group" ng-class="{'has-error': (view.form.name.$invalid && view.form.$dirty)}">
-                    <label class="control-label" for="name">{{ view.key === '@id' ? 'ID' : 'Name' }}</label>
+                    <label class="control-label" for="name">{{ view.key === 'id' ? 'ID' : 'Name' }}</label>
                     <input type="text" class="form-control" id="name" name="name" ng-model="view.name" is-valid-name required>
                     <span class="help-block">Allowed characters are alphanumerics, _, and -</span>
                 </div>
@@ -42,7 +42,7 @@
             <div class="col-md-3">
                 <div class="form-group">
                     <label class="control-label">Glob Pattern</label>
-                    <expr ng-model="view.property.adapter.glob" handle-item-update="updateGlobValue(value)" placeholder="value"></expr>
+                    <expr ng-model="view.property.outputBinding.glob" handle-item-update="updateGlobValue(value)" placeholder="value"></expr>
                 </div>
             </div>
             <!-- END Glob -->
@@ -68,10 +68,10 @@
                         </div>
                     </div>
 
-                    <div ng-repeat="(metaKey, metaValue) in view.property.adapter.metadata" class="form-group meta-group">
+                    <div ng-repeat="(metaKey, metaValue) in view.property.outputBinding.metadata" class="form-group meta-group">
                         <div ng-if="metaKey !== '__inherit__'" class="input-group">
                             <div class="col-xs-6 no-padding">
-                                <key-changer key="metaKey" items="view.property.adapter.metadata"></key-changer>
+                                <key-changer key="metaKey" items="view.property.outputBinding.metadata"></key-changer>
                             </div>
                             <div class="col-xs-6 no-padding">
                                 <expr ng-model="metaValue" index="{{ metaKey }}" handle-item-update="updateMetaValue(index, value)" placeholder="value" self="true"></expr>
@@ -89,7 +89,7 @@
             <!--<div class="col-md-12">-->
                 <!--<div class="form-group">-->
                     <!--<label for="property-meta-inherit-{{ view.uniqueId }}" class="control-label inline">Inherit From Input</label>-->
-                    <!--<select class="form-control inline" id="property-meta-inherit-{{ view.uniqueId }}" name="{{ name }}-meta-inherit" ng-model="prop.adapter.meta.__inherit__" ng-options="value for value in view.inputs">-->
+                    <!--<select class="form-control inline" id="property-meta-inherit-{{ view.uniqueId }}" name="{{ name }}-meta-inherit" ng-model="prop.outputBinding.meta.__inherit__" ng-options="value for value in view.inputs">-->
                         <!--<option value>-- none --</option>-->
                     <!--</select>-->
                 <!--</div>-->
@@ -104,12 +104,12 @@
                     <!--<div class="enum-list-container">-->
                         <!--<ul class="enum-list wide">-->
                             <!--<li>-->
-                                <!--<expr ng-model="view.property.adapter.secondaryFiles" only-expr="true" handle-item-update="updateSecondaryFilesValue(value)"></expr>-->
+                                <!--<expr ng-model="view.property.outputBinding.secondaryFiles" only-expr="true" handle-item-update="updateSecondaryFilesValue(value)"></expr>-->
                             <!--</li>-->
                         <!--</ul>-->
                     <!--</div>-->
                 <!--</div>-->
-                <enum ng-if="!view.isSecondaryFilesExpr" ng-model="view.property.adapter.secondaryFiles" type="'string'"></enum>
+                <enum ng-if="!view.isSecondaryFilesExpr" ng-model="view.property.outputBinding.secondaryFiles" type="'string'"></enum>
             </div>
         </div>
         <!-- END meta data-->

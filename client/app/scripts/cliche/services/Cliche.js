@@ -98,7 +98,13 @@ angular.module('registryApp.cliche')
 
                 transformed['class'] = 'ExpressionTool';
                 transformed.transform = getTransformSchema();
-                delete transformed.cliAdapter;
+
+                // ex cli adapter stuff;
+                delete transformed.baseCommand;
+                delete transformed.stdin;
+                delete transformed.stdout;
+                delete transformed.argAdapters;
+                // requirements
                 delete transformed.requirements;
 
             } else {
@@ -107,9 +113,17 @@ angular.module('registryApp.cliche')
 
                 delete transformed.transform;
 
-                if (angular.isUndefined(transformed.cliAdapter)) {
-                    transformed.cliAdapter = angular.copy(rawTool.cliAdapter);
+                if (angular.isUndefined(transformed.baseCommand) ||
+                    angular.isUndefined(transformed.stdin) ||
+                    angular.isUndefined(transformed.stdout) ||
+                    angular.isUndefined(transformed.argAdapters)) {
+
+                    transformed.baseCommand = angular.copy(rawTool.baseCommand);
+                    transformed.stdin = angular.copy(rawTool.stdin);
+                    transformed.stdout = angular.copy(rawTool.stdout);
+                    transformed.argAdapters = angular.copy(rawTool.argAdapters);
                 }
+
                 if (angular.isUndefined(transformed.requirements)) {
                     transformed.requirements = angular.copy(rawTool.requirements);
                 }
@@ -413,7 +427,7 @@ angular.module('registryApp.cliche')
             if (mode === 'edit') {
                 deferred.resolve();
             } else if (mode === 'add') {
-                toolJSON.cliAdapter.argAdapters.push(arg);
+                toolJSON.argAdapters.push(arg);
                 deferred.resolve();
             } else {
                 deferred.reject('Unknown mode "' + mode + '"');
@@ -442,13 +456,13 @@ angular.module('registryApp.cliche')
         };
 
         /**
-         * Delete argument property from cliAdapter
+         * Delete argument property from adapter
          *
          * @param {integer} index
          */
         var deleteArg = function(index) {
 
-            toolJSON.cliAdapter.argAdapters.splice(index, 1);
+            toolJSON.argAdapters.splice(index, 1);
 
         };
 
@@ -1009,18 +1023,20 @@ angular.module('registryApp.cliche')
 
             /* check if adapter has empty fields and remove them */
             /* and remove remove adapter property if no adapter is set */
-            if (tmp.adapter) {
-                _(tmp.adapter).keys().forEach(function (key) {
+            var adapter = propertyType === 'input' ? 'inputBinding' : 'outputBinding';
+
+            if (tmp[adapter]) {
+                _(tmp[adapter]).keys().forEach(function (key) {
 
                     // _.isEmpty returns true for number values, which we don't want
                     // if there is a number value, then the prop is not empty
-                    if (_.isEmpty(tmp.adapter[key]) && !_.isNumber(tmp.adapter[key])) {
-                        delete tmp.adapter[key];
+                    if (_.isEmpty(tmp[adapter][key]) && !_.isNumber(tmp[adapter][key])) {
+                        delete tmp[adapter][key];
                     }
                 });
 
-                if (_.isEmpty(tmp.adapter)) {
-                    delete tmp.adapter;
+                if (_.isEmpty(tmp[adapter])) {
+                    delete tmp[adapter];
                 }
             }
 
