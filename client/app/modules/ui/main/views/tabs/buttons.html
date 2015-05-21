@@ -1,0 +1,53 @@
+
+<div class="section">
+    <legend class="legend-small">Button Examples</legend>
+
+    <rb-button class="separate" intention="primary" >btn-primary</rb-button>
+    <rb-button class="separate" intention="success" >btn-success</rb-button>
+    <rb-button class="separate" intention="danger" >btn-danger</rb-button>
+    <rb-button class="separate" intention="warning" >btn-warning</rb-button>
+    <rb-button class="separate" intention="default" >btn-default</rb-button>
+    <rb-button class="separate" intention="default" ng-disabled="true">btn-disabled</rb-button>
+
+    <hr/>
+
+    <rb-button class="separate" tooltip="Edit Tool"><i class="fa fa-pencil"></i></rb-button>
+    <rb-button href="" class="btn-toggle separate" tooltip="Toggle Versions (2)" tooltip-placement="left" tooltip-append-to-body="true" ng-click="showRevision = !showRevision" tabindex="0">
+        2 <i class="fa" ng-class="{'fa-chevron-right': !showRevision, 'fa-chevron-down': showRevision}"></i>
+    </rb-button>
+</div>
+
+<div class="section">
+    <legend class="legend-small">on-click</legend>
+    <rb-button ng-click="testClick()" intention="danger" class="test">Button</rb-button>
+</div>
+
+<div class="section">
+    <legend class="legend-small">Dropdown</legend>
+    <rb-dropdown class="separate" intention="primary" name="dropdown">
+        <ul>
+            <li><a ng-click="test()" href="">Action</a></li>
+            <li><a href="">Another action</a></li>
+            <li><a href="">Something else here</a></li>
+            <li class="divider"></li>
+            <li><a href="">Separated link</a></li>
+        </ul>
+    </rb-dropdown>
+
+    <rb-dropdown class="separate" intention="primary" type="split" name="'Split dropdown'">
+        <ul>
+            <li><a href="#">Action</a></li>
+            <li><a href="#">Another action</a></li>
+            <li><a href="#">Something else here</a></li>
+        </ul>
+    </rb-dropdown>
+
+    <rb-dropdown class="separate" intention="primary" type="split" name="'Disabled'" ng-disabled="true">
+        <ul>
+            <li><a href="#">Action</a></li>
+            <li><a href="#">Another action</a></li>
+            <li><a href="#">Something else here</a></li>
+        </ul>
+    </rb-dropdown>
+
+</div>

@@ -1,0 +1,13 @@
+<div class="page">
+    <div class="heading sub-heading">
+        <ul class="nav nav-tabs nav-tabs-steps regular">
+            <li ng-repeat="tab in tabs track by $index" ng-class="{active: activeTab === tab}"><a href ng-click="activateTab(tab)">{{tab}}</a></li>
+        </ul>
+    </div>
+
+    <div class="content content-ten" ng-if="tabsMap">
+        <div ng-repeat="tab in tabs track by $index" ng-if="activeTab === tab" ng-class="tab">
+            <ng-include class="include flex-box-column flex-one" src="tabsMap[tab]"></ng-include>
+        </div>
+    </div>
+</div>

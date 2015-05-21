@@ -1,0 +1,31 @@
+<div class="page home">
+
+    <div class="heading sub-heading">
+        <ul class="nav nav-tabs nav-tabs-steps regular">
+            <li ng-class="{active: view.activeTab === 'buttons'}"><a href ng-click="switchTab('buttons')">Buttons</a></li>
+            <li ng-class="{active: view.activeTab === 'forms'}"><a href ng-click="switchTab('forms')">Forms</a></li>
+            <li ng-class="{active: view.activeTab === 'pagination'}"><a href ng-click="switchTab('pagination')">Pagination</a></li>
+            <li ng-class="{active: view.activeTab === 'tabs'}"><a href ng-click="switchTab('tabs')">Tabs</a></li>
+        </ul>
+    </div>
+
+
+    <div class="content content-tbl flex-box-column">
+
+        <div ng-if="view.activeTab === 'buttons'" class="content content-ten">
+            <ng-include class="include flex-box-column flex-one" src="'modules/ui/main/views/tabs/buttons.html'"></ng-include>
+        </div>
+
+        <div ng-if="view.activeTab === 'forms'" class="content content-ten">
+            <ng-include class="include flex-box-column flex-one" src="'modules/ui/main/views/tabs/forms.html'"></ng-include>
+        </div>
+
+        <div ng-if="view.activeTab === 'pagination'" class="content content-ten">
+            <ng-include class="include flex-box-column flex-one" src="'modules/ui/main/views/tabs/pagination.html'"></ng-include>
+        </div>
+
+        <div ng-if="view.activeTab === 'tabs'" class="content content-ten">
+            <ng-include class="include flex-box-column flex-one" src="'modules/ui/main/views/tabs/tabs.html'"></ng-include>
+        </div>
+    </div>
+</div>

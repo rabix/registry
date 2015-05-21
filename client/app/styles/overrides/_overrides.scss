@@ -125,6 +125,7 @@
 /* Form override */
 form,
 .form {
+
   .form-control {
     color: #555;
     height: 33px;
@@ -192,6 +193,10 @@ form,
       }
     }
   }
+}
+
+.section {
+  margin-bottom: 30px;
 }
 
 /* Form control override */

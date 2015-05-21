@@ -1,0 +1,26 @@
+.rb-button {
+  @include box-sizing();
+
+  user-select: none;
+  position: relative;
+
+  outline: none;
+  display: inline-block;
+  white-space: nowrap;
+
+  text-align: center;
+
+  font-style: inherit;
+  font-variant: inherit;
+  font-family: inherit;
+  text-decoration: none;
+
+  cursor: pointer;
+  overflow: hidden;   // for ink containment
+
+}
+
+.separate {
+  margin: 0 2px;
+}
+

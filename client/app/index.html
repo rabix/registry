@@ -25,7 +25,7 @@
 
 </head>
 <body ng-app="registryApp">
-    <!--[if lt IE 7]>
+    <!--[if lt IE 9]>
     <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
@@ -61,7 +61,7 @@
     <script src="bower_components/json3/lib/json3.min.js"></script>
     <![endif]-->
 
-    <!-- build:js({.tmp,app}) scripts/vendor.js -->
+    <!-- build:js({.tmp,app}) modules/vendor.js -->
     <script src="vendor/jsandbox/src/jsandbox.js"></script>
     <script src="vendor/raphael/raphael.js"></script>
     <script src="vendor/raphael/raphael.button.js"></script>
@@ -75,6 +75,7 @@
     <script src="bower_components/angular-cookies/angular-cookies.js"></script>
     <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
     <script src="bower_components/angular-animate/angular-animate.js"></script>
+    <script src="bower_components/angular-aria/angular-aria.js"></script>
     <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
 
     <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
@@ -100,137 +101,151 @@
 
     <!-- endbuild -->
 
-    <!-- build:js scripts/codemirror.js -->
+    <!-- build:js modules/codemirror.js -->
     <script src="bower_components/codemirror/lib/codemirror.js"></script>
     <script src="bower_components/codemirror/mode/javascript/javascript.js"></script>
 
 
     <!-- endbuild -->
 
-    <!-- build:js({.tmp,app}) scripts/scripts.js -->
-    <script src="scripts/main.config.js"></script>
-    <script src="scripts/template.js"></script>
 
-    <script src="scripts/main/controllers/MasterCtrl.js"></script>
-    <script src="scripts/main/controllers/HomeCtrl.js"></script>
-    <script src="scripts/main/controllers/ModalJSONCtrl.js"></script>
-    <script src="scripts/main/controllers/BuildsCtrl.js"></script>
-    <script src="scripts/main/controllers/BuildCtrl.js"></script>
-    <script src="scripts/main/controllers/SettingsCtrl.js"></script>
-    <script src="scripts/main/directives/sidebar.js"></script>
-    <script src="scripts/main/directives/drag.js"></script>
-    <script src="scripts/main/directives/drop.js"></script>
-    <script src="scripts/main/directives/preload.js"></script>
-    <script src="scripts/main/filters/is-empty.js"></script>
-    <script src="scripts/main/filters/encode.js"></script>
-    <script src="scripts/main/filters/trim.js"></script>
-    <script src="scripts/main/filters/repo.js"></script>
-    <script src="scripts/main/filters/is-integer.js"></script>
-    <script src="scripts/main/services/HTTPInterceptor.js"></script>
-    <script src="scripts/main/models/User.js"></script>
-    <script src="scripts/main/models/Build.js"></script>
+    <!-- build:js modules/ui.js -->
+    <script src="modules/ui/ui.config.js"></script>
+    <script src="modules/ui/main/controllers/UICtrl.js"></script>
 
-    <script src="scripts/app/app.config.js"></script>
-    <script src="scripts/app/controllers/AppsCtrl.js"></script>
-    <script src="scripts/app/controllers/ToolCtrl.js"></script>
-    <script src="scripts/app/controllers/ToolRevisionCtrl.js"></script>
-    <script src="scripts/app/controllers/WorkflowViewCtrl.js"></script>
-    <script src="scripts/app/controllers/WorkflowEditorCtrl.js"></script>
-    <script src="scripts/app/models/Tool.js"></script>
-    <script src="scripts/app/models/Workflow.js"></script>
-
-    <script src="scripts/repo/repo.config.js"></script>
-    <script src="scripts/repo/controllers/ReposCtrl.js"></script>
-    <script src="scripts/repo/controllers/RepoCtrl.js"></script>
-    <script src="scripts/repo/controllers/AddYourGitHubRepoCtrl.js"></script>
-    <script src="scripts/repo/controllers/RepoInstructionsCtrl.js"></script>
-    <script src="scripts/repo/controllers/PickRepoModalCtrl.js"></script>
-    <script src="scripts/repo/controllers/ManageRepoCtrl.js"></script>
-    <script src="scripts/repo/models/Repo.js"></script>
-
-    <script src="scripts/task/task.config.js"></script>
-    <script src="scripts/task/controllers/PickAppCtrl.js"></script>
-    <script src="scripts/task/controllers/TasksCtrl.js"></script>
-    <script src="scripts/task/controllers/TaskCtrl.js"></script>
-    <script src="scripts/task/models/Job.js"></script>
-
-    <script src="scripts/common/common.config.js"></script>
-    <script src="scripts/common/constants/HelpMessages.js"></script>
-    <script src="scripts/common/controllers/MarkdownCtrl.js"></script>
-    <script src="scripts/common/controllers/ModalTabsCtrl.js"></script>
-    <script src="scripts/common/controllers/ModalCtrl.js"></script>
-    <script src="scripts/common/controllers/ExpressionCtrl.js"></script>
-    <script src="scripts/common/directives/help-message.js"></script>
-    <script src="scripts/common/directives/copy.js"></script>
-    <script src="scripts/common/directives/loading.js"></script>
-    <script src="scripts/common/directives/paginator.js"></script>
-    <script src="scripts/common/directives/json-preview.js"></script>
-    <script src="scripts/common/directives/error.js"></script>
-    <script src="scripts/common/directives/is-valid-name.js"></script>
-    <script src="scripts/common/directives/is-valid-int.js"></script>
-    <script src="scripts/common/directives/expr.js"></script>
-    <script src="scripts/common/directives/codemirror.js"></script>
-    <script src="scripts/common/directives/focus-here.js"></script>
-    <script src="scripts/common/services/BeforeUnload.js"></script>
-    <script src="scripts/common/services/BeforeRedirect.js"></script>
-    <script src="scripts/common/services/Helper.js"></script>
-    <script src="scripts/common/services/SandBox.js"></script>
-    <script src="scripts/common/services/Api.js"></script>
-    <script src="scripts/common/services/HotkeyRegistry.js"></script>
+    <script src="modules/ui/button/rbButton.js"></script>
+    <script src="modules/ui/checkbox/rbCheckbox.js"></script>
+    <script src="modules/ui/input/rbInput.js"></script>
+    <script src="modules/ui/dropdown/rbDropdown.js"></script>
+    <script src="modules/ui/select/rbSelect.js"></script>
+    <script src="modules/ui/tabs/rbTabs.js"></script>
 
     <!-- endbuild -->
 
-    <!-- build:js({.tmp,app}) scripts/dyole.js -->
-    <script src="scripts/dyole/dyole.config.js"></script>
+    <!-- build:js({.tmp,app}) modules/modules.js -->
+    <script src="modules/main.config.js"></script>
+    <script src="modules/template.js"></script>
 
-    <script src="scripts/dyole/constants/Schemas.js"></script>
+    <script src="modules/main/controllers/MasterCtrl.js"></script>
+    <script src="modules/main/controllers/HomeCtrl.js"></script>
+    <script src="modules/main/controllers/ModalJSONCtrl.js"></script>
+    <script src="modules/main/controllers/BuildsCtrl.js"></script>
+    <script src="modules/main/controllers/BuildCtrl.js"></script>
+    <script src="modules/main/controllers/SettingsCtrl.js"></script>
+    <script src="modules/main/directives/sidebar.js"></script>
+    <script src="modules/main/directives/drag.js"></script>
+    <script src="modules/main/directives/drop.js"></script>
+    <script src="modules/main/directives/preload.js"></script>
+    <script src="modules/main/filters/is-empty.js"></script>
+    <script src="modules/main/filters/encode.js"></script>
+    <script src="modules/main/filters/trim.js"></script>
+    <script src="modules/main/filters/repo.js"></script>
+    <script src="modules/main/filters/is-integer.js"></script>
+    <script src="modules/main/services/HTTPInterceptor.js"></script>
+    <script src="modules/main/models/User.js"></script>
+    <script src="modules/main/models/Build.js"></script>
 
-    <script src="scripts/dyole/controllers/PipelineCtrl.js"></script>
-    <script src="scripts/dyole/controllers/NodeEditCtrl.js"></script>
-    <script src="scripts/dyole/controllers/DyoleJsonEditorCtrl.js"></script>
-    <script src="scripts/dyole/controllers/DyoleEditMetadataCtrl.js"></script>
-    <script src="scripts/dyole/directives/pipeline.js"></script>
-    <script src="scripts/dyole/factories/pipeline.js"></script>
-    <script src="scripts/dyole/factories/event.js"></script>
-    <script src="scripts/dyole/factories/node.js"></script>
-    <script src="scripts/dyole/factories/connection.js"></script>
-    <script src="scripts/dyole/factories/terminal.js"></script>
-    <script src="scripts/dyole/factories/formater.js"></script>
-    <script src="scripts/dyole/factories/formaterD2.js"></script>
-    <script src="scripts/dyole/factories/common.js"></script>
+    <script src="modules/app/app.config.js"></script>
+    <script src="modules/app/controllers/AppsCtrl.js"></script>
+    <script src="modules/app/controllers/ToolCtrl.js"></script>
+    <script src="modules/app/controllers/ToolRevisionCtrl.js"></script>
+    <script src="modules/app/controllers/WorkflowViewCtrl.js"></script>
+    <script src="modules/app/controllers/WorkflowEditorCtrl.js"></script>
+    <script src="modules/app/models/Tool.js"></script>
+    <script src="modules/app/models/Workflow.js"></script>
 
-    <script src="scripts/dyole/services/PipelineService.js"></script>
+    <script src="modules/repo/repo.config.js"></script>
+    <script src="modules/repo/controllers/ReposCtrl.js"></script>
+    <script src="modules/repo/controllers/RepoCtrl.js"></script>
+    <script src="modules/repo/controllers/AddYourGitHubRepoCtrl.js"></script>
+    <script src="modules/repo/controllers/RepoInstructionsCtrl.js"></script>
+    <script src="modules/repo/controllers/PickRepoModalCtrl.js"></script>
+    <script src="modules/repo/controllers/ManageRepoCtrl.js"></script>
+    <script src="modules/repo/models/Repo.js"></script>
+
+    <script src="modules/task/task.config.js"></script>
+    <script src="modules/task/controllers/PickAppCtrl.js"></script>
+    <script src="modules/task/controllers/TasksCtrl.js"></script>
+    <script src="modules/task/controllers/TaskCtrl.js"></script>
+    <script src="modules/task/models/Job.js"></script>
+
+    <script src="modules/common/common.config.js"></script>
+    <script src="modules/common/constants/HelpMessages.js"></script>
+    <script src="modules/common/controllers/MarkdownCtrl.js"></script>
+    <script src="modules/common/controllers/ModalCtrl.js"></script>
+    <script src="modules/common/controllers/ModalTabsCtrl.js"></script>
+    <script src="modules/common/controllers/ExpressionCtrl.js"></script>
+    <script src="modules/common/directives/help-message.js"></script>
+    <script src="modules/common/directives/copy.js"></script>
+    <script src="modules/common/directives/loading.js"></script>
+    <script src="modules/common/directives/paginator.js"></script>
+    <script src="modules/common/directives/json-preview.js"></script>
+    <script src="modules/common/directives/error.js"></script>
+    <script src="modules/common/directives/is-valid-name.js"></script>
+    <script src="modules/common/directives/is-valid-int.js"></script>
+    <script src="modules/common/directives/expr.js"></script>
+    <script src="modules/common/directives/codemirror.js"></script>
+    <script src="modules/common/directives/focus-here.js"></script>
+    <script src="modules/common/services/BeforeUnload.js"></script>
+    <script src="modules/common/services/BeforeRedirect.js"></script>
+    <script src="modules/common/services/Helper.js"></script>
+    <script src="modules/common/services/SandBox.js"></script>
+    <script src="modules/common/services/Api.js"></script>
+    <script src="modules/common/services/HotkeyRegistry.js"></script>
+
     <!-- endbuild -->
 
-    <!-- build:js({.tmp,app}) scripts/cliche.js -->
-    <script src="scripts/cliche/cliche.config.js"></script>
-    <script src="scripts/cliche/constants/schemas.js"></script>
-    <script src="scripts/cliche/constants/ScriptSchema.js"></script>
-    <script src="scripts/cliche/constants/ToolSchema.js"></script>
-    <script src="scripts/cliche/constants/schema-definitions.js"></script>
-    <script src="scripts/cliche/controllers/ClicheCtrl.js"></script>
-    <script src="scripts/cliche/controllers/InputFileMoreCtrl.js"></script>
-    <script src="scripts/cliche/controllers/ManagePropertyArgCtrl.js"></script>
-    <script src="scripts/cliche/controllers/ManagePropertyInputCtrl.js"></script>
-    <script src="scripts/cliche/controllers/ManagePropertyOutputCtrl.js"></script>
-    <script src="scripts/cliche/controllers/JsonEditorCtrl.js"></script>
-    <script src="scripts/cliche/directives/property-input.js"></script>
-    <script src="scripts/cliche/directives/property-output.js"></script>
-    <script src="scripts/cliche/directives/property-arg.js"></script>
-    <script src="scripts/cliche/directives/enum.js"></script>
-    <script src="scripts/cliche/directives/input-field.js"></script>
-    <script src="scripts/cliche/directives/add-property.js"></script>
-    <script src="scripts/cliche/directives/key-changer.js"></script>
-    <script src="scripts/cliche/directives/separator.js"></script>
-    <script src="scripts/cliche/directives/separator-info.js"></script>
-    <script src="scripts/cliche/directives/property-header.js"></script>
-    <script src="scripts/cliche/filters/contains.js"></script>
-    <script src="scripts/cliche/filters/size.js"></script>
-    <script src="scripts/cliche/services/Cliche.js"></script>
-    <script src="scripts/cliche/services/RecursionHelper.js"></script>
-    <script src="scripts/cliche/services/Separator.js"></script>
-    <script src="scripts/cliche/services/Validator.js"></script>
-    <script src="scripts/cliche/services/schema-validator.js"></script>
+    <!-- build:js({.tmp,app}) modules/dyole.js -->
+    <script src="modules/dyole/dyole.config.js"></script>
+
+    <script src="modules/dyole/constants/Schemas.js"></script>
+
+    <script src="modules/dyole/controllers/PipelineCtrl.js"></script>
+    <script src="modules/dyole/controllers/NodeEditCtrl.js"></script>
+    <script src="modules/dyole/controllers/DyoleJsonEditorCtrl.js"></script>
+    <script src="modules/dyole/controllers/DyoleEditMetadataCtrl.js"></script>
+    <script src="modules/dyole/directives/pipeline.js"></script>
+    <script src="modules/dyole/factories/pipeline.js"></script>
+    <script src="modules/dyole/factories/event.js"></script>
+    <script src="modules/dyole/factories/node.js"></script>
+    <script src="modules/dyole/factories/connection.js"></script>
+    <script src="modules/dyole/factories/terminal.js"></script>
+    <script src="modules/dyole/factories/formater.js"></script>
+    <script src="modules/dyole/factories/formaterD2.js"></script>
+    <script src="modules/dyole/factories/common.js"></script>
+
+    <script src="modules/dyole/services/PipelineService.js"></script>
+    <!-- endbuild -->
+
+    <!-- build:js({.tmp,app}) modules/cliche.js -->
+    <script src="modules/cliche/cliche.config.js"></script>
+    <script src="modules/cliche/constants/schemas.js"></script>
+    <script src="modules/cliche/constants/ScriptSchema.js"></script>
+    <script src="modules/cliche/constants/ToolSchema.js"></script>
+    <script src="modules/cliche/constants/schema-definitions.js"></script>
+    <script src="modules/cliche/controllers/ClicheCtrl.js"></script>
+    <script src="modules/cliche/controllers/InputFileMoreCtrl.js"></script>
+    <script src="modules/cliche/controllers/ManagePropertyArgCtrl.js"></script>
+    <script src="modules/cliche/controllers/ManagePropertyInputCtrl.js"></script>
+    <script src="modules/cliche/controllers/ManagePropertyOutputCtrl.js"></script>
+    <script src="modules/cliche/controllers/JsonEditorCtrl.js"></script>
+    <script src="modules/cliche/directives/property-input.js"></script>
+    <script src="modules/cliche/directives/property-output.js"></script>
+    <script src="modules/cliche/directives/property-arg.js"></script>
+    <script src="modules/cliche/directives/enum.js"></script>
+    <script src="modules/cliche/directives/input-field.js"></script>
+    <script src="modules/cliche/directives/add-property.js"></script>
+    <script src="modules/cliche/directives/key-changer.js"></script>
+    <script src="modules/cliche/directives/separator.js"></script>
+    <script src="modules/cliche/directives/separator-info.js"></script>
+    <script src="modules/cliche/directives/property-header.js"></script>
+    <script src="modules/cliche/filters/contains.js"></script>
+    <script src="modules/cliche/filters/size.js"></script>
+    <script src="modules/cliche/services/Cliche.js"></script>
+    <script src="modules/cliche/services/RecursionHelper.js"></script>
+    <script src="modules/cliche/services/Separator.js"></script>
+    <script src="modules/cliche/services/Validator.js"></script>
+    <script src="modules/cliche/services/schema-validator.js"></script>
     <!-- endbuild -->
 
 </body>
