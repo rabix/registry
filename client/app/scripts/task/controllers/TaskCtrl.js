@@ -13,7 +13,7 @@ angular.module('registryApp.task')
         $scope.form = {};
         $scope.view = {};
 
-        $scope.view.job = {json: {inputs: {}, '@type': 'TaskTemplate'}};
+        $scope.view.job = {json: {inputs: {}, 'class': 'TaskTemplate'}};
         $scope.view.app = null;
         $scope.view.mode = $stateParams.id === 'new' ? 'new' : 'edit';
         $scope.view.userRepos = [];
@@ -94,7 +94,7 @@ angular.module('registryApp.task')
                 $scope.view.type = result.type;
 
                 $scope.view.job.json.app = angular.copy($scope.view.app);
-                $scope.view.job.json.app['@type'] = result.type;
+                $scope.view.job.json.app['class'] = result.type;
 
                 $scope.view.properties = $scope.view.app.inputs;
 
