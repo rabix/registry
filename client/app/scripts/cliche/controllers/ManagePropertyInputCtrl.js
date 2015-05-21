@@ -20,8 +20,8 @@ angular.module('registryApp.cliche')
         $scope.view.property.schema =  Cliche.getSchema('input', options.property, options.toolType, false);
 
         // only add adapter if one has been defined
-        if (options.property && options.property.adapter) {
-            $scope.view.property.adapter = Cliche.getAdapter(options.property);
+        if (options.property && options.property.inputBinding) {
+            $scope.view.property.inputBinding = Cliche.getAdapter(options.property, false, 'input');
         }
 
         $scope.view.name = Cliche.parseName(options.property);
@@ -38,7 +38,7 @@ angular.module('registryApp.cliche')
         $scope.view.symbols = enumObj.symbols;
 
         $scope.view.disabled = ($scope.view.items && $scope.view.items.type) === 'record';
-        $scope.view.adapter = !_.isUndefined($scope.view.property.adapter);
+        $scope.view.inputBinding = !_.isUndefined($scope.view.property.inputBinding);
 
         $scope.view.description = $scope.view.property.description || '';
         $scope.view.label = $scope.view.property.label || '';
@@ -119,10 +119,10 @@ angular.module('registryApp.cliche')
                         $scope.view.items.fields = [];
 
                         if ($scope.view.adapter) {
-                            $scope.view.property.adapter.prefix = '';
-                            $scope.view.property.adapter.separator = ' ';
-                            delete $scope.view.property.adapter.itemSeparator;
-                            delete $scope.view.property.adapter.argValue;
+                            $scope.view.property.inputBinding.prefix = '';
+                            $scope.view.property.inputBinding.separator = ' ';
+                            delete $scope.view.property.inputBinding.itemSeparator;
+                            delete $scope.view.property.inputBinding.argValue;
                         }
                     }
                 } else {
@@ -142,20 +142,20 @@ angular.module('registryApp.cliche')
         $scope.updateTransform = function (value) {
 
             if (_.isObject(value)) {
-                $scope.view.property.adapter.argValue = value;
+                $scope.view.property.inputBinding.argValue = value;
             } else {
-                delete $scope.view.property.adapter.argValue;
+                delete $scope.view.property.inputBinding.argValue;
             }
 
         };
 
         /**
-         * Toggle adapter definition
+         * Toggle inputBinding definition
          */
         $scope.toggleAdapter = function () {
 
-            if ($scope.view.adapter) {
-                $scope.view.property.adapter = cacheAdapter;
+            if ($scope.view.inputBinding) {
+                $scope.view.property.inputBinding = cacheAdapter;
             } else {
                 cacheAdapter = angular.copy($scope.view.property.adapter);
                 delete $scope.view.property.adapter;

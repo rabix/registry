@@ -7,26 +7,25 @@
 
 angular.module('registryApp.cliche')
     .constant('toolDefinition', {
-        '@id': {type: 'string', required: true},
-        '@type': {type: 'string', required: true},
+        'id': {type: 'string', required: true},
+        'class': {type: 'string', required: true},
         '@context': {type: 'string', required: true},
         label: {type: 'string', required: true},
         description: {type: 'string'},
         owner: {type: 'array', required: true},
         contributor: {type: 'array'},
         requirements: {type: 'array', strict: false, def: {
-            '@type': {type: 'string', required: true}
+            'class': {type: 'string', required: true}
         }},
         inputs: {type: 'array', required: true, def: {
-            '@id': {type: 'string', required: true},
-            depth: {type: 'number', required: true},
-            schema: {type: 'object', required: true, def: {
+            'id': {type: 'string', required: true},
+            type: {type: 'object', required: true, def: {
                 type: {type: ['string', 'array', 'object'], required: true, def: {
                     type: {type: 'string'},
                     name: {type: 'string'},
                     symbols: {type: 'array'}
                 }},
-                adapter: {type: 'object', def: {
+                inputBinding: {type: 'object', def: {
                     position: {type: 'number'},
                     argValue: {type: 'object'},
                     separator: {type: 'string'},
@@ -58,11 +57,10 @@ angular.module('registryApp.cliche')
             }}
         }},
         outputs: {type: 'array', required: true, def: {
-            '@id': {type: 'string', required: true},
-            depth: {type: 'number', required: true},
-            schema: {type: 'object', required: true, def: {
+            'id': {type: 'string', required: true},
+            type: {type: 'object', required: true, def: {
                 type: {type: ['string', 'array', 'object'], required: true},
-                adapter: {type: 'object', def: {
+                outputBinding: {type: 'object', def: {
                     glob: {type: ['object', 'string']}
                 }},
                 items: {type: 'object', def: {
@@ -84,17 +82,16 @@ angular.module('registryApp.cliche')
 
     })
     .constant('scriptDefinition', {
-        '@id': {type: 'string', required: true},
-        '@type': {type: 'string', required: true},
+        'id': {type: 'string', required: true},
+        'class': {type: 'string', required: true},
         '@context': {type: 'string', required: true},
         label: {type: 'string', required: true},
         description: {type: 'string'},
         owner: {type: 'array', required: true},
         contributor: {type: 'array'},
         inputs: {type: 'array', required: true, def: {
-            '@id': {type: 'string', required: true},
-            depth: {type: 'number', required: true},
-            schema: {type: 'object', required: true, def: {
+            'id': {type: 'string', required: true},
+            type: {type: 'object', required: true, def: {
                 type: {type: ['string', 'array', 'object'], required: true, def: {
                     type: {type: 'string'},
                     name: {type: 'string'},
@@ -118,9 +115,8 @@ angular.module('registryApp.cliche')
             }}
         }},
         outputs: {type: 'array', required: true, def: {
-            '@id': {type: 'string', required: true},
-            depth: {type: 'number', required: true},
-            schema: {type: 'object', required: true, def: {
+            'id': {type: 'string', required: true},
+            type: {type: 'object', required: true, def: {
                 type: {type: ['string', 'array', 'object'], required: true},
                 items: {type: 'object', def: {
                     type: {type: 'string'}

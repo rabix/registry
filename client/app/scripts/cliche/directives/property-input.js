@@ -30,7 +30,7 @@ angular.module('registryApp.cliche')
             $scope.view.required = Cliche.isRequired($scope.view.schema);
             $scope.view.type = Cliche.parseType($scope.view.schema);
             $scope.view.items = Cliche.getItemsRef($scope.view.type, $scope.view.schema);
-            $scope.view.adapter = Cliche.getAdapter($scope.prop);
+            $scope.view.adapter = Cliche.getAdapter($scope.prop, 'input');
 
             enumObj = Cliche.parseEnum($scope.view.schema);
 
@@ -55,12 +55,12 @@ angular.module('registryApp.cliche')
          */
         var checkExpression = function () {
 
-            if ($scope.view.property.adapter && $scope.view.property.adapter.argValue && $scope.view.property.adapter.argValue.value) {
+            if ($scope.view.property.inputBinding && $scope.view.property.inputBinding.argValue && $scope.view.property.inputBinding.argValue.value) {
 
                 var itemType = ($scope.view.items && $scope.view.items.type) ? $scope.view.items.type : null;
                 var self = {$self: Helper.getTestData($scope.view.type, itemType)};
 
-                SandBox.evaluate($scope.view.property.adapter.argValue.value, self)
+                SandBox.evaluate($scope.view.property.inputBinding.argValue.value, self)
                     .then(function () {
                         $scope.view.exprError = '';
                     }, function (error) {

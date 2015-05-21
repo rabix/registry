@@ -51,13 +51,13 @@ angular.module('registryApp.app')
 
                 $scope.view.type = $scope.view.tool.is_script ? 'script' : 'tool';
 
-                $scope.view.atType = $scope.view.tool.is_script ? 'Script' : 'CommandLine';
+                $scope.view.atType = $scope.view.tool.is_script ? 'ExpressionTool' : 'CommandLineTool';
 
                 Job.getJobs(0, '', $scope.view.atType, $stateParams.id).then(jobsLoaded);
 
                 $scope.view.previewNode = $scope.view.tool;
 
-                $scope.view.docker = _.find($scope.view.tool.json.requirements, {'@type': 'DockerCnt'});
+                $scope.view.docker = _.find($scope.view.tool.json.requirements, {'class': 'DockerCnt'});
             });
 
         /**

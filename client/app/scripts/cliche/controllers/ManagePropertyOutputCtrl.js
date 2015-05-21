@@ -19,8 +19,8 @@ angular.module('registryApp.cliche')
         $scope.view.property.schema = Cliche.getSchema('output', options.property, options.toolType, false);
 
         // only add adapter if one has been defined
-        if (options.property && options.property.adapter) {
-            $scope.view.property.adapter = Cliche.getAdapter(options.property);
+        if (options.property && options.property.outputBinding) {
+            $scope.view.property.outputBinding = Cliche.getAdapter(options.property);
         }
 
         $scope.view.name = Cliche.parseName(options.property);
@@ -48,8 +48,8 @@ angular.module('registryApp.cliche')
          * Toggle secondary files into array (not currently using)
          */
         //$scope.toggleToList = function() {
-        //    $scope.view.property.adapter.secondaryFiles = [];
-        //    $scope.view.property.adapter.secondaryFiles.push('');
+        //    $scope.view.property.outputBinding.secondaryFiles = [];
+        //    $scope.view.property.outputBinding.secondaryFiles.push('');
         //    $scope.view.isSecondaryFilesExpr = false;
         //};
 
@@ -61,18 +61,18 @@ angular.module('registryApp.cliche')
         $scope.addMeta = function () {
 
             $scope.view.newMeta.error = false;
-            $scope.view.property.adapter = $scope.view.property.adapter || {};
+            $scope.view.property.outputBinding = $scope.view.property.outputBinding || {};
 
-            if (!$scope.view.property.adapter.metadata) {
-                $scope.view.property.adapter.metadata = {};
+            if (!$scope.view.property.outputBinding.metadata) {
+                $scope.view.property.outputBinding.metadata = {};
             }
 
-            if (!_.isUndefined($scope.view.property.adapter.metadata[$scope.view.newMeta.key]) || $scope.view.newMeta.key === '') {
+            if (!_.isUndefined($scope.view.property.outputBinding.metadata[$scope.view.newMeta.key]) || $scope.view.newMeta.key === '') {
                 $scope.view.newMeta.error = true;
                 return false;
             }
 
-            $scope.view.property.adapter.metadata[$scope.view.newMeta.key] = $scope.view.newMeta.value;
+            $scope.view.property.outputBinding.metadata[$scope.view.newMeta.key] = $scope.view.newMeta.value;
             $scope.view.newMeta = {key: '', value: ''};
 
         };
@@ -84,7 +84,7 @@ angular.module('registryApp.cliche')
          * @returns {boolean}
          */
         $scope.removeMeta = function (index) {
-            delete $scope.view.property.adapter.metadata[index];
+            delete $scope.view.property.outputBinding.metadata[index];
         };
 
         /**
@@ -104,7 +104,7 @@ angular.module('registryApp.cliche')
          * @param value
          */
         $scope.updateMetaValue = function (index, value) {
-            $scope.view.property.adapter.metadata[index] = value;
+            $scope.view.property.outputBinding.metadata[index] = value;
         };
 
         /**
@@ -160,10 +160,10 @@ angular.module('registryApp.cliche')
          */
         $scope.updateGlobValue = function (value) {
 
-            if (_.isUndefined($scope.view.property.adapter)) {
-                $scope.view.property.adapter = {};
+            if (_.isUndefined($scope.view.property.outputBinding)) {
+                $scope.view.property.outputBinding = {};
             }
-            $scope.view.property.adapter.glob = value;
+            $scope.view.property.outputBinding.glob = value;
         };
 
         /**

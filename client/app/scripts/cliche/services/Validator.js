@@ -129,8 +129,8 @@ angular.module('registryApp.cliche')
          */
         var getNodeName = function(node, index) {
 
-            if (node['@id']) {
-                return node['@id'];
+            if (node['id']) {
+                return node['id'];
             } else {
                 if (node.name) {
                     return node.name;

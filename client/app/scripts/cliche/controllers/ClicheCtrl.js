@@ -175,9 +175,9 @@ angular.module('registryApp.cliche')
                     .then(outputCommand, outputError);
 
                 var watch = [
-                    'view.tool.cliAdapter.baseCmd',
-                    'view.tool.cliAdapter.stdout',
-                    'view.tool.cliAdapter.stdin'
+                    'view.tool.baseCmd',
+                    'view.tool.stdout',
+                    'view.tool.stdin'
                 ];
 
                 _.each(watch, function(arg) {
@@ -211,9 +211,9 @@ angular.module('registryApp.cliche')
          */
         var prepareRequirements = function() {
 
-            $scope.view.reqDockerCnt = _.find($scope.view.tool.requirements, {'@type': 'DockerCnt'});
-            $scope.view.reqCpuRequirement = _.find($scope.view.tool.requirements, {'@type': 'CpuRequirement'});
-            $scope.view.reqMemRequirement = _.find($scope.view.tool.requirements, {'@type': 'MemRequirement'});
+            $scope.view.reqDockerCnt = _.find($scope.view.tool.requirements, {'class': 'DockerCnt'});
+            $scope.view.reqCpuRequirement = _.find($scope.view.tool.requirements, {'class': 'CpuRequirement'});
+            $scope.view.reqMemRequirement = _.find($scope.view.tool.requirements, {'class': 'MemRequirement'});
 
         };
 
@@ -292,14 +292,17 @@ angular.module('registryApp.cliche')
 
             var cachedName = $scope.view.tool.label;
 
-            if (angular.isDefined(json.cliAdapter) && angular.isString(json.cliAdapter.baseCmd)) {
-                json.cliAdapter.baseCmd = [json.cliAdapter.baseCmd];
+            if (angular.isDefined(json) && angular.isString(json.baseCommand)) {
+                json.baseCmd = [json.baseCmd];
             }
 
             if ($stateParams.type === 'script') {
 
                 json.transform = Cliche.getTransformSchema();
-                delete json.cliAdapter;
+                delete json.baseCommand;
+                delete json.stdin;
+                delete json.stdout;
+                delete json.argAdapters;
                 delete json.requirements;
 
             } else {
@@ -536,33 +539,33 @@ angular.module('registryApp.cliche')
             value = angular.copy(value);
 
             if (index) {
-                $scope.view.tool.cliAdapter[key][index] = value;
+                $scope.view.tool[key][index] = value;
             } else {
-                $scope.view.tool.cliAdapter[key] = value;
+                $scope.view.tool[key] = value;
             }
 
         };
 
         /**
-         * Add item to the baseCmd
+         * Add item to the baseCommand
          */
         $scope.addBaseCmd = function () {
 
-            $scope.view.tool.cliAdapter.baseCmd.push('');
+            $scope.view.tool.baseCommand.push('');
 
         };
 
         /**
-         * Remove item from the baseCmd
+         * Remove item from the baseCommand
          *
          * @param {integer} index
          * @returns {boolean}
          */
         $scope.removeBaseCmd = function (index) {
 
-            if ($scope.view.tool.cliAdapter.baseCmd.length === 1) { return false; }
+            if ($scope.view.tool.baseCommand.length === 1) { return false; }
 
-            $scope.view.tool.cliAdapter.baseCmd.splice(index, 1);
+            $scope.view.tool.baseCommand.splice(index, 1);
         };
 
         /**
@@ -574,13 +577,13 @@ angular.module('registryApp.cliche')
         $scope.splitBaseCmd = function (value, index) {
             value = value.replace(/\s+/g, ' ');
 
-            var baseCmds = value.split(' ');
-            var adapterBaseCmd = $scope.view.tool.cliAdapter.baseCmd;
+            var baseCommands = value.split(' ');
+            var adapterBaseCmd = $scope.view.tool.cliAdapter.baseCommand;
 
-            if (baseCmds.length > 1) {
+            if (baseCommands.length > 1) {
                 adapterBaseCmd.splice(index, 1);
 
-                _.forEach(baseCmds, function(cmd, key) {
+                _.forEach(baseCommands, function(cmd, key) {
                     adapterBaseCmd.splice(parseInt(index, 10) + key, 0, cmd);
                 });
 

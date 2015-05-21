@@ -14,8 +14,8 @@ angular.module('registryApp.cliche')
         }
     })
     .constant('rawTool', {
-        '@id': '',
-        '@type': 'CommandLine',
+        'id': '',
+        'class': 'CommandLineTool',
         '@context': 'https://github.com/common-workflow-language/common-workflow-language/blob/draft-1/specification/tool-description.md',
         label: '',
         description: '',
@@ -23,31 +23,30 @@ angular.module('registryApp.cliche')
         contributor: [],
         requirements: [
             {
-                '@type': 'DockerCnt',
+                'class': 'DockerCnt',
                 imgRepo: '',
                 imgTag: '',
                 imgId: ''
             },
             {
-                '@type': 'CpuRequirement',
+                'class': 'CpuRequirement',
                 value: 500
             },
             {
-                '@type': 'MemRequirement',
+                'class': 'MemRequirement',
                 value: 1000
             }
         ],
         inputs: [],
         outputs: [],
-        cliAdapter: {
-            baseCmd: [''],
-            stdin: '',
-            stdout: '',
-            argAdapters: []
-        }
+        //moved CLI adapter to root
+        baseCommand: [''],
+        stdin: '',
+        stdout: '',
+        argAdapters: []
     })
     .constant('rawTransform', {
-        '@type': 'Transform',
-        lang: 'javascript',
-        value: ''
+        'class': 'Expression',
+        expression: '#cwl-js-engine',
+        script: ''
     });

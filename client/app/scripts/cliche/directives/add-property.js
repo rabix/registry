@@ -42,8 +42,8 @@ angular.module('registryApp.cliche')
                 /* set default value for the input, but only for the first level */
                 if ($scope.type === 'input' && $scope.inputs) {
 
-                    var name = result.prop['@id'].slice(1);
-                    var schema = result.prop.schema;
+                    var name = result.prop.id.slice(1);
+                    var schema = result.prop.type;
                     var typeObj = schema[0] === 'null' ? schema[1] : schema[0]; //in case property is not required
                     var enumObj = Cliche.parseEnum(typeObj);
                     var type = Cliche.parseType(typeObj);

@@ -10,7 +10,7 @@ angular.module('registryApp.cliche')
     .controller('EnumCtrl', ['$scope', '$modal', '$templateCache', function ($scope, $modal, $templateCache) {
 
         $scope.view = {};
-        $scope.view.tplPath = 'views/cliche/enum/enum-' + $scope.type  + '.html';
+        $scope.view.tplPath = 'views/cliche/enum/enum-' + $scope.type.toLowerCase()  + '.html';
 
         /**
          * Get schema for the appropriate enum type
@@ -22,7 +22,7 @@ angular.module('registryApp.cliche')
 
             if ($scope.type === 'ext') {
                 itemScheme = {path: $scope.path};
-            } else if ($scope.type === 'file') {
+            } else if ($scope.type === 'File') {
                 itemScheme = {path: ''};
             } else if ($scope.type === 'object') {
                 itemScheme = {};
