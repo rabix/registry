@@ -61,7 +61,7 @@
                             <ul class="enum-list" ng-class="{wide: view.tool.baseCommand.length === 1}">
                                 <li ng-repeat="baseCmd in view.tool.baseCommand track by $index">
                                     <div class="enum-field form-group form-group-file">
-                                        <expr ng-model="baseCommand" index="{{ $index }}" handle-item-update="updateCliAdapter(value, index, 'baseCmd')" handle-item-blur="splitBaseCmd(value, index)"></expr>
+                                        <expr ng-model="baseCmd" index="{{ $index }}" handle-item-update="updateCliAdapter(value, index, 'baseCommand')" handle-item-blur="splitBaseCmd(value, index)"></expr>
                                     </div>
                                     <a href ng-hide="view.tool.baseCommand.length === 1" class="fa fa-remove remove-btn" ng-click="removeBaseCmd($index)"></a>
                                 </li>

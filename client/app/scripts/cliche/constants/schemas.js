@@ -47,6 +47,6 @@ angular.module('registryApp.cliche')
     })
     .constant('rawTransform', {
         'class': 'Expression',
-        expression: '#cwl-js-engine',
+        engine: '#cwl-js-engine',
         script: ''
     });

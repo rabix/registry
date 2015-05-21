@@ -617,7 +617,7 @@ angular.module('registryApp.cliche')
 
             var deferred = $q.defer(),
                 SandBox = $injector.get('SandBox'),
-                expr = (transform && transform.value) ? transform.value : null,
+                expr = (transform && transform.script) ? transform.script : null,
                 selfInput = self ? {$self: value} : {};
 
             if (expr) {

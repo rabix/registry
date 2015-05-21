@@ -38,7 +38,7 @@ angular.module('registryApp.common')
                  */
                 var determineStructure = function() {
 
-                    if ($scope.ngModel && $scope.ngModel.value) {
+                    if ($scope.ngModel && $scope.ngModel.script) {
                         $scope.view.mode = 'transform';
                         $scope.view.transform = $scope.ngModel;
                         $scope.view.literal = null;
@@ -62,7 +62,7 @@ angular.module('registryApp.common')
 
                         var self = $scope.self ? {$self: Helper.getTestData($scope.selfType, $scope.selfItemType)} : {};
 
-                        SandBox.evaluate($scope.view.transform.value, self)
+                        SandBox.evaluate($scope.view.transform.script, self)
                             .then(function () {
                                 $scope.view.exprError = '';
                             }, function (error) {
@@ -104,7 +104,7 @@ angular.module('registryApp.common')
 
                 };
 
-                $scope.$watch('view.transform.value', function (n, o) {
+                $scope.$watch('view.transform.script', function (n, o) {
                     triggerUpdate(n, o, 'transform');
                 });
 
@@ -121,7 +121,7 @@ angular.module('registryApp.common')
                  */
                 $scope.editExpression = function () {
 
-                    var expr = $scope.view.mode === 'transform' ? $scope.view.transform.value : '';
+                    var expr = $scope.view.mode === 'transform' ? $scope.view.transform.script : '';
 
                     var modalInstance = $modal.open({
                         template: $templateCache.get('views/partials/edit-expression.html'),
@@ -152,7 +152,7 @@ angular.module('registryApp.common')
                             $scope.view.mode = 'transform';
 
                             if (!_.isObject($scope.view.transform)) { $scope.view.transform = rawTransform; }
-                            $scope.view.transform.value = expr;
+                            $scope.view.transform.script = expr;
                             $scope.view.literal = null;
                         }
 

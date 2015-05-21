@@ -4,14 +4,14 @@
 
         <!--<i class="fa fa-warning error" ng-if="view.exprError" title="{{ view.exprError }}"></i>-->
 
-        <input ng-show="view.mode === 'transform'" type="text" class="form-control" ng-model="view.transform.value" readonly>
+        <input ng-show="view.mode === 'transform'" type="text" class="form-control" ng-model="view.transform.script" readonly>
 
         <input ng-show="view.mode === 'literal'" type="{{ view.type }}" class="form-control" ng-model="view.literal" placeholder="{{ view.placeholder }}" ng-readonly="onlyExpr">
 
         <span class="input-group-btn">
             <a href
                class="btn btn-expression"
-               tooltip="{{ view.transform.value || 'There is no expression defined. Click to add it' }}"
+               tooltip="{{ view.transform.script || 'There is no expression defined. Click to add it' }}"
                tooltip-append-to-body="true"
                ng-click="editExpression()"
                ng-class="{'btn-warning': (view.mode === 'transform'), 'btn-default': (view.mode === 'literal')}">

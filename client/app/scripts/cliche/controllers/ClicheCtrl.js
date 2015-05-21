@@ -510,7 +510,7 @@ angular.module('registryApp.cliche')
          */
         $scope.updateResource = function (transform, key) {
 
-            var req = $scope.view['req' + key];
+            var req = $scope.view['req' + key] || { class: key };
 
             req.value = transform;
 
@@ -578,7 +578,7 @@ angular.module('registryApp.cliche')
             value = value.replace(/\s+/g, ' ');
 
             var baseCommands = value.split(' ');
-            var adapterBaseCmd = $scope.view.tool.cliAdapter.baseCommand;
+            var adapterBaseCmd = $scope.view.tool.baseCommand;
 
             if (baseCommands.length > 1) {
                 adapterBaseCmd.splice(index, 1);
@@ -589,6 +589,7 @@ angular.module('registryApp.cliche')
 
                 if(!$scope.$$phase) {
                     $scope.$apply();
+                    Cliche.generateCommand();
                 }
             }
         };
