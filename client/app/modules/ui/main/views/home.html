@@ -5,7 +5,7 @@
             <li ng-class="{active: view.activeTab === 'buttons'}"><a href ng-click="switchTab('buttons')">Buttons</a></li>
             <li ng-class="{active: view.activeTab === 'forms'}"><a href ng-click="switchTab('forms')">Forms</a></li>
             <li ng-class="{active: view.activeTab === 'pagination'}"><a href ng-click="switchTab('pagination')">Pagination</a></li>
-            <li ng-class="{active: view.activeTab === 'tables'}"><a href ng-click="switchTab('tables')">Tables</a></li>
+            <li ng-class="{active: view.activeTab === 'tabs'}"><a href ng-click="switchTab('tabs')">Tabs</a></li>
         </ul>
     </div>
 
@@ -24,8 +24,8 @@
             <ng-include class="include flex-box-column flex-one" src="'modules/ui/main/views/tabs/pagination.html'"></ng-include>
         </div>
 
-        <div ng-if="view.activeTab === 'tables'" class="content content-ten">
-            <ng-include class="include flex-box-column flex-one" src="'modules/ui/main/views/tabs/tables.html'"></ng-include>
+        <div ng-if="view.activeTab === 'tabs'" class="content content-ten">
+            <ng-include class="include flex-box-column flex-one" src="'modules/ui/main/views/tabs/tabs.html'"></ng-include>
         </div>
     </div>
 </div>
