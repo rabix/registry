@@ -19,9 +19,9 @@ angular.module('registryApp.dyole')
             },
 
             checkTypeFile: function (schema, type) {
-				
-				type = type || {};
-				
+
+                type = type || {};
+
                 if (typeof schema === 'string') {
                     return this._fileTypeCheck(type, schema);
                 }
@@ -37,9 +37,9 @@ angular.module('registryApp.dyole')
                     }
                 }
 
-				if (typeof schema.type === 'string') {
-					return this._fileTypeCheck(schema, schema.type);
-				}
+                if (typeof schema.type === 'string') {
+                    return this._fileTypeCheck(schema, schema.type);
+                }
 
                 return false;
             },
@@ -47,6 +47,49 @@ angular.module('registryApp.dyole')
             checkSystem: function (node_schema) {
 
                 return node_schema.softwareDescription && node_schema.softwareDescription.repo_name === 'system';
+            },
+
+            /**
+             * Generate node id
+             * Node id is represented as unique string for easier manual json formating later
+             *
+             * @param model {object}
+             * @param used {object}
+             * @returns {string}
+             * @private
+             */
+            generateNodeId: function (model, used) {
+                var _id, check = true, name = (model.softwareDescription && model.softwareDescription.label) ? model.softwareDescription.label : model.label || model.name,
+                    n = 0;
+
+                used = used || {};
+
+                var _checkIdAvailable = function (id) {
+                    return !!used[id];
+                };
+
+                if (name.charAt(0) !== '#') {
+                    name = '#' + name;
+                }
+
+                while (check) {
+
+                    if (n === 0) {
+                        check = _checkIdAvailable(name);
+                    } else {
+                        check = _checkIdAvailable(name + '_' + n);
+                    }
+
+                    n = check ? n + 1 : n;
+                }
+
+                if (n === 0) {
+                    _id = name;
+                } else {
+                    _id = name + '_' + n;
+                }
+
+                return _id;
             }
 
         };

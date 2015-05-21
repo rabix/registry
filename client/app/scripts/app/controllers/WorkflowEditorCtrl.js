@@ -379,6 +379,8 @@ angular.module('registryApp.app')
         $scope.onExpose = function (appName, key) {
 
             if (!_.isUndefined($scope.view.values[appName]) && !_.isUndefined($scope.view.values[appName][key])) {
+
+                $scope.view.suggestedValues[appName + Const.exposedSeparator + key.slice(1)] = $scope.view.values[appName][key];
                 delete $scope.view.values[appName][key];
             }
 
@@ -390,17 +392,46 @@ angular.module('registryApp.app')
 
         };
 
+        $scope.onUnExpose = function (appName, key, value) {
+            var keyName = appName + Const.exposedSeparator + key.slice(1);
+
+            if ($scope.view.suggestedValues[keyName]) {
+                delete $scope.view.suggestedValues[keyName];
+            }
+
+            if (value) {
+
+                if (typeof $scope.view.values[appName] === 'undefined') {
+                    $scope.view.values[appName] = {};
+                }
+
+                $scope.view.values[appName][key] = value;
+
+            }
+        };
+
         // think about this when implementing multi select of nodes
         var deepNodeWatch;
         /**
          * Track node select
          */
-        var onNodeSelect = function (e, model, exposed, values) {
+        var onNodeSelect = function (e, model, exposed, values, suggestedValues) {
 
             $scope.view.json = model;
 
             $scope.view.values = values;
             $scope.view.exposed = exposed;
+            $scope.view.suggestedValues = suggestedValues;
+
+            _.forEach($scope.view.suggestedValues, function(sugValue, keyName) {
+                var appId = keyName.split(Const.exposedSeparator)[0];
+                var inputId = '#' + keyName.split(Const.exposedSeparator)[1];
+
+                if (!$scope.view.values[appId]) {
+                    $scope.view.values[appId] = {};
+                    $scope.view.values[appId][inputId] = sugValue;
+                }
+            });
 
             $scope.view.required = $scope.view.json.inputs.required;
 
@@ -419,6 +450,19 @@ angular.module('registryApp.app')
          * Track node deselect
          */
         var onNodeDeselect = function () {
+
+            _.forEach($scope.view.suggestedValues, function(sugValue, keyName) {
+                var appId = keyName.split(Const.exposedSeparator)[0];
+                var inputId = '#' + keyName.split(Const.exposedSeparator)[1];
+
+                if ($scope.view.values[appId] && $scope.view.values[appId][inputId]) {
+                    delete $scope.view.values[appId][inputId];
+
+                    if (!_.isUndefined($scope.view.values[appId]) && _.isEmpty($scope.view.values[appId])) {
+                        delete $scope.view.values[appId];
+                    }
+                }
+            });
 
             $scope.view.json = {};
 

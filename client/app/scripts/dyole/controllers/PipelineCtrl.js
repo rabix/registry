@@ -289,16 +289,32 @@ angular.module('registryApp.dyole')
          */
         var onNodeInfo = function(e, model, schema) {
 
+            var _getConnections = function () {
+                var connections = Pipeline.getConnections();
+
+                return _.filter(connections, function(connection){
+                    return connection.end_node === model.id || connection.start_node === model.id
+                });
+            };
+
             var $modal = $injector.get('$modal');
             var $templateCache = $injector.get('$templateCache');
 
-            $modal.open({
+            var modalInstance = $modal.open({
                 template: $templateCache.get('views/dyole/'+ ( schema ? 'io-' : '') +'node-info.html'),
-                controller: 'ModalCtrl',
+                controller: 'ModalTabsCtrl',
                 windowClass: 'modal-node',
-                resolve: {data: function () { return {model: model, schema: schema};}}
+                resolve: {data: function () { return {model: model, connections: _getConnections(), schema: schema};}}
             });
 
+            modalInstance.result.then(function (scatter) {
+                if (scatter) {
+                    model.scatter = scatter;
+                } else {
+                    model.scatter = false;
+                    delete model.scatter;
+                }
+            });
         };
 
         var onNodeLabelEdit = function(e, name, onEdit, onSave, scope) {

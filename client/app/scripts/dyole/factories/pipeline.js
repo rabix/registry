@@ -37,6 +37,7 @@ angular.module('registryApp.dyole')
                  */
                 this.exposed = this.model.exposed || {};
                 this.values = this.model.values || {};
+                this.suggestedValues = this.model.suggestedValues || {};
 
                 /**
                  * Clone event object for every pipeline
@@ -140,8 +141,8 @@ angular.module('registryApp.dyole')
                     this.Event.subscribe('node:select', function (model) {
                         console.log('subscribeovo sam se jednom?');
 
-                        if (!model.softwareDescription || model.softwareDescription.repo_name !== 'system') {
-                            $rootScope.$broadcast('node:select', model, _self.exposed, _self.values);
+                        if (!model.softwareDescription || model.softwareDescription.type !== 'output') {
+                            $rootScope.$broadcast('node:select', model, _self.exposed, _self.values, _self.suggestedValues);
                         }
 
                     });
@@ -418,7 +419,7 @@ angular.module('registryApp.dyole')
 
                     _.each(this.model.nodes, function (nodeModel) {
 
-                        var nodeId = nodeModel.id || nodeModel['@id'];
+                        var nodeId = nodeModel.id;
                         // schema is not merged because nodes is a copy of schema with modified inputs and outputs for displaying on canvas
                         // schema is only used for tool execution
                         var model = _.extend(nodeModel, _self.model.display.nodes[nodeId]);
@@ -519,7 +520,7 @@ angular.module('registryApp.dyole')
                         '@id': terId,
                         'depth': 0,
 //                        'schema': ['null', 'file']
-						'schema': terminal.model.schema
+						'type': terminal.model.type
                     });
 
                     console.log(model);
@@ -529,7 +530,7 @@ angular.module('registryApp.dyole')
 
                     var _id = model.id || this._generateNodeId(model);
 
-                    model.id = model['@id'] = _id;
+                    model.id = _id;
 
                     this.addNode(model, x, y, true);
                     this._connectSystemNode(terminal, _id, isInput, terminalId);
@@ -1090,7 +1091,8 @@ angular.module('registryApp.dyole')
                 getJSON: function () {
                     var json = angular.copy(this.model),
                         exposed = angular.copy(this.exposed),
-                        values = angular.copy(this.values);
+                        values = angular.copy(this.values),
+                        suggestedValues = angular.copy(this.suggestedValues);
 
                     this._prepareExposedValues(exposed, values);
 
@@ -1100,22 +1102,29 @@ angular.module('registryApp.dyole')
                     json.display.nodes = {};
 
                     _.each(json.nodes, function (node) {
-                        var nodeId = node.id || node['@id'];
+                        var nodeId = node.id;
 
                         json.display.nodes[nodeId] = {
                             x: node.x,
                             y: node.y
                         };
 
+                        if (typeof node.scatter !== 'undefiend') {
+                            json.schemas[nodeId].scatter = node.scatter;
+                        }
+
+                        if (typeof node.suggestedValue !== 'undefiend') {
+                            json.schemas[nodeId].suggestedValue = node.suggestedValue;
+                        }
+
                         delete node.x;
                         delete node.y;
-                        delete node.id;
                     });
 
                     json.display.canvas.x = this.getEl().getTranslation().x;
                     json.display.canvas.y = this.getEl().getTranslation().y;
 
-                    return Formater.toRabixSchema(json, exposed, values);
+                    return Formater.toRabixSchema(json, exposed, values, suggestedValues);
                 },
 
                 /**

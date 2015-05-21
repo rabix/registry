@@ -16,7 +16,7 @@ angular.module('registryApp.dyole')
             this.Pipeline = options.pipeline;
 
             this.pipelineWrap = options.pipelineWrap;
-            this.id = this.model['@id'] || this.model.id;
+            this.id = this.model.id;
 
             this.el = null;
 
@@ -225,7 +225,7 @@ angular.module('registryApp.dyole')
                     stroke: this.constraints.stroke
                 });
 
-                label = canvas.text(0, 0, model['@id'] + ' ' + required);
+                label = canvas.text(0, 0, model['id'] + ' ' + required);
 
                 label.attr({
                     'font-size': '12px'

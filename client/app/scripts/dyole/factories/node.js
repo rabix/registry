@@ -39,16 +39,16 @@ angular.module('registryApp.dyole')
             this.inputRefs = this.model.inputs;
 
             this.inputRefs.sort(function (a, b) {
-                if (a['@id'] < b['@id']) { return 1; }
-                if (b['@id'] < a['@id']) { return -1; }
+                if (a['id'] < b['id']) { return 1; }
+                if (b['id'] < a['id']) { return -1; }
                 return 0;
             });
 
             this.outputRefs = this.model.outputs;
 
             this.outputRefs.sort(function (a, b) {
-                if (a['@id'] < b['@id']) { return 1; }
-                if (b['@id'] < a['@id']) { return -1; }
+                if (a['id'] < b['id']) { return 1; }
+                if (b['id'] < a['id']) { return -1; }
                 return 0;
             });
 
@@ -246,8 +246,8 @@ angular.module('registryApp.dyole')
 
                 _.each(this.inputRefs, function (input) {
 					
-					if (Common.checkTypeFile(input.schema[1] || input.schema[0])) {
-						input.required = input.schema.length === 1;
+					if (Common.checkTypeFile(input.type[1] || input.type[0])) {
+						input.required = input.type.length === 1;
 						inputs.push(input);	
 					}
 
@@ -539,7 +539,7 @@ angular.module('registryApp.dyole')
                 var terminal;
 
                 terminal = _.find(this[type + 's'], function (term) {
-                    var terId = term.model['@id'] || term.model.id;
+                    var terId = term.model.id;
                     return terId === id;
                 });
 
@@ -751,7 +751,6 @@ angular.module('registryApp.dyole')
 
                         old.label = old.name  = name;
                         old.id = name;
-                        old['@id'] = name;
 
                         this.model.outputs.push(old);
 
@@ -768,7 +767,7 @@ angular.module('registryApp.dyole')
                             return inp.id === oldId;
                         });
 
-                        ter.model.label = ter.model.id = ter.model['@id'] = name;
+                        ter.model.label = ter.model.id = name;
 
                         ter.changeTerminalName(name);
 
@@ -786,7 +785,6 @@ angular.module('registryApp.dyole')
 
                         old.label = old.name = name;
                         old.id = name;
-                        old['@id'] = name;
 
                         this.model.inputs.push(old);
 
@@ -803,7 +801,7 @@ angular.module('registryApp.dyole')
                             return inp.id === oldId;
                         });
 
-                        ter.model.label = ter.model.id = ter.model['@id'] = name;
+                        ter.model.label = ter.model.id = name;
 
                         ter.changeTerminalName(name);
 
@@ -811,7 +809,7 @@ angular.module('registryApp.dyole')
 
                     }
 
-                    this.model.id = this.model['@id'] = name;
+                    this.model.id = name;
                     this.model.softwareDescription.name = name;
 
                     this.Pipeline.model.schemas[name].id = this.model.id;
