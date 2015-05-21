@@ -1,8 +1,8 @@
 <div property-header
      class="property-box-header tool"
      name="{{ view.name }}"
-     position="view.property.adapter.position"
-     adapter="view.property.adapter"
+     position="view.property.inputBinding.position"
+     adapter="view.property.inputBinding"
      type="array"
      tool-type="tool"
      mode="input"
@@ -17,23 +17,23 @@
         <div class="col-md-3 box-col">
             <strong class="key">Prefix:</strong>
             <div class="value">
-                <span ng-if="view.items.type !== 'record'">{{ view.property.adapter.prefix }}</span>
+                <span ng-if="view.items.type !== 'record'">{{ view.property.inputBinding.prefix }}</span>
                 <i class="none" ng-if="view.items.type === 'record'">none</i>
-                <i ng-if="!view.property.adapter.prefix && view.items.type !== 'record'">Not defined</i>
+                <i ng-if="!view.property.inputBinding.prefix && view.items.type !== 'record'">Not defined</i>
             </div>
         </div>
 
         <div class="col-md-3 box-col">
             <strong class="key">Separator:</strong>
             <div class="value">
-                <separator-info type="item" model="view.property.adapter.separator"></separator-info>
+                <separator-info type="item" model="view.property.inputBinding.separator"></separator-info>
             </div>
         </div>
 
         <div class="col-md-3 box-col">
             <strong class="key">Item Separator:</strong>
             <div class="value">
-                <separator-info type="list" model="view.property.adapter.itemSeparator"></separator-info>
+                <separator-info type="list" model="view.property.inputBinding.itemSeparator"></separator-info>
             </div>
         </div>
 
@@ -42,10 +42,10 @@
             <div class="value">
                 <div ng-if="view.items.type !== 'record'" class="value">
                     <i class="fa fa-warning error" ng-if="view.exprError" title="{{ view.exprError }}"></i>
-                    {{ view.property.adapter.argValue.value }}
+                    {{ view.property.inputBinding.argValue.value }}
                 </div>
                 <i ng-if="view.items.type === 'record'">none</i>
-                <i ng-if="view.items.type !== 'record' && !view.property.adapter.argValue">Not defined</i>
+                <i ng-if="view.items.type !== 'record' && !view.property.inputBinding.argValue">Not defined</i>
             </div>
         </div>
 

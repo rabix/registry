@@ -1,8 +1,8 @@
 <div property-header
      class="property-box-header tool"
      name="{{ view.name }}"
-     position="view.property.adapter.position"
-     adapter="view.property.adapter"
+     position="view.property.inputBinding.position"
+     adapter="view.property.inputBinding"
      type="enum"
      tool-type="tool"
      mode="input"
@@ -16,15 +16,15 @@
         <div class="col-md-4 box-col">
             <strong class="key">Prefix:</strong>
             <div class="value">
-                <span>{{ view.property.adapter.prefix }}</span>
-                <i ng-if="!view.property.adapter.prefix">Not defined</i>
+                <span>{{ view.property.inputBinding.prefix }}</span>
+                <i ng-if="!view.property.inputBinding.prefix">Not defined</i>
             </div>
         </div>
 
         <div class="col-md-4 box-col">
             <strong class="key">Separator:</strong>
             <div class="value">
-                <separator-info type="item" model="view.property.adapter.separator"></separator-info>
+                <separator-info type="item" model="view.property.inputBinding.separator"></separator-info>
             </div>
         </div>
 
@@ -33,9 +33,9 @@
             <div class="value">
                 <div class="value">
                     <i class="fa fa-warning error" ng-if="view.exprError" title="{{ view.exprError }}"></i>
-                    {{ view.property.adapter.argValue.value}}
+                    {{ view.property.inputBinding.argValue.value}}
                 </div>
-                <i ng-if="!view.property.adapter.argValue">Not defined</i>
+                <i ng-if="!view.property.inputBinding.argValue">Not defined</i>
             </div>
         </div>
 
