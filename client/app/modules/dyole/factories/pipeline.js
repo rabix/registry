@@ -139,9 +139,9 @@ angular.module('registryApp.dyole')
                     });
 
                     this.Event.subscribe('node:select', function (model) {
-                        console.log('subscribeovo sam se jednom?');
 
-                        if (!model.softwareDescription || model.softwareDescription.type !== 'output') {
+//                        if (!model.softwareDescription || model.softwareDescription.type !== 'output') {
+                        if (!Common.checkSystem(model)) {
                             $rootScope.$broadcast('node:select', model, _self.exposed, _self.values, _self.suggestedValues);
                         }
 
