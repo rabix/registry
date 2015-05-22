@@ -6,4 +6,4 @@
 
 'use strict';
 
-angular.module('registryApp.common', []);
+angular.module('registryApp.common', ['markdown']);

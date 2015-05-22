@@ -18,10 +18,11 @@ angular
         'ui.router',
         'ngPrettyJson',
         'LocalForageModule',
-        'hc.marked',
         'ui-notification',
         'cfp.hotkeys',
         'Chronicle',
+        'ui.sortable',
+        'markdown',
         'ngAria',
         'registryApp.app',
         'registryApp.cliche',
@@ -34,7 +35,7 @@ angular
     .constant('Const', {
         exposedSeparator: '$'
     })
-    .config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$localForageProvider', function ($stateProvider, $urlRouterProvider, $httpProvider, $localForageProvider) {
+    .config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$localForageProvider', 'markdownConfig', function ($stateProvider, $urlRouterProvider, $httpProvider, $localForageProvider, markdownConfig) {
         $stateProvider
             .state('home', {
                 url: '/',
@@ -68,5 +69,7 @@ angular
             version: 1.0,
             storeName: 'registryDB'
         });
+
+        markdownConfig.escapeHtml = true;
 
     }]);
