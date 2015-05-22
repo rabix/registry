@@ -447,7 +447,7 @@ angular.module('registryApp.app')
             } , true);
 
             $scope.switchTab('params');
-            $scope.$apply();
+            $scope.$digest();
 
         };
 
@@ -481,7 +481,7 @@ angular.module('registryApp.app')
 
             if ($scope.view.tab !== 'apps') {
                 $scope.switchTab('apps');
-                $scope.$apply();
+                $scope.$digest();
             }
 
             console.timeEnd('node:deselect');

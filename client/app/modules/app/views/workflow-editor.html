@@ -100,9 +100,9 @@
 
         <div class="content content-tbl flex-box-column">
 
-            <div class="tabs right flex-one" ng-switch="view.tab">
+            <div class="tabs right flex-one" >
 
-                <div class="tab flex-box-column flex-one" ng-class="{loading: view.filtering}" ng-switch-when="apps">
+                <div class="tab flex-box-column flex-one" ng-class="{loading: view.filtering}" ng-show="view.tab === 'apps'">
                     <form class="search-form" ng-submit="" novalidate>
                         <div class="input-group">
                             <input type="text" class="form-control" ng-model="view.searchTerm" placeholder="Search apps"
@@ -253,7 +253,7 @@
 
                 </div>
 
-                <div class="tab flex-one" ng-switch-when="params">
+                <div class="tab flex-one" ng-show="view.tab === 'params'">
 
                     <p class="alert alert-info" ng-if="view.json | isEmpty">Select node in order to change its
                         parameters</p>
@@ -288,7 +288,7 @@
 
                 </div>
 
-                <div class="tab flex-one" ng-switch-when="properties">
+                <div class="tab flex-one" ng-show="view.tab === 'properties'">
                     <h3>Properties</h3>
                 </div>
 
