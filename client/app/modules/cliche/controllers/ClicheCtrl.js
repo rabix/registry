@@ -211,7 +211,7 @@ angular.module('registryApp.cliche')
          */
         var prepareRequirements = function() {
 
-            $scope.view.reqDockerCnt = _.find($scope.view.tool.requirements, {'class': 'DockerCnt'});
+            $scope.view.reqDockerRequirement = _.find($scope.view.tool.requirements, {'class': 'DockerRequirement'});
             $scope.view.reqCpuRequirement = _.find($scope.view.tool.requirements, {'class': 'CpuRequirement'});
             $scope.view.reqMemRequirement = _.find($scope.view.tool.requirements, {'class': 'MemRequirement'});
 

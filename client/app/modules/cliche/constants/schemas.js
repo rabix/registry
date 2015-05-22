@@ -23,7 +23,7 @@ angular.module('registryApp.cliche')
         contributor: [],
         requirements: [
             {
-                'class': 'DockerCnt',
+                'class': 'DockerRequirement',
                 imgRepo: '',
                 imgTag: '',
                 imgId: ''

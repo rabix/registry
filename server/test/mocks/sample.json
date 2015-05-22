@@ -51,7 +51,7 @@
                         "imgId": "asdasds",
                         "imgTag": "ewqe13223123",
                         "imgRepo": "dsadasdasd",
-                        "@type": "DockerCnt"
+                        "@type": "DockerRequirement"
                     },
                     {
                         "value": 500,

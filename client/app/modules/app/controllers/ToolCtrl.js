@@ -57,7 +57,7 @@ angular.module('registryApp.app')
 
                 $scope.view.previewNode = $scope.view.tool;
 
-                $scope.view.docker = _.find($scope.view.tool.json.requirements, {'class': 'DockerCnt'});
+                $scope.view.docker = _.find($scope.view.tool.json.requirements, {'class': 'DockerRequirement'});
             });
 
         /**
