@@ -76,11 +76,16 @@ angular.module('registryApp.app')
             }
         });
 
-        PipelineService.register($scope.view.id, function () {
+        var onInstanceRegister = function () {
             PipelineInstance = PipelineService.getInstance($scope.view.id);
 
+            PipelineInstance.getEventObj().subscribe('controller:node:select', onNodeSelect);
+            PipelineInstance.getEventObj().subscribe('controller:node:deselect', onNodeDeselect);
+
             console.log('Pipeline Instance cached', PipelineInstance);
-        });
+        };
+
+        PipelineService.register($scope.view.id, onInstanceRegister, onInstanceRegister);
 
         $q.all([
                 User.getUser(),
@@ -442,7 +447,7 @@ angular.module('registryApp.app')
             } , true);
 
             $scope.switchTab('params');
-            $scope.$digest();
+            $scope.$apply();
 
         };
 
@@ -450,6 +455,8 @@ angular.module('registryApp.app')
          * Track node deselect
          */
         var onNodeDeselect = function () {
+
+            console.time('node:deselect');
 
             _.forEach($scope.view.suggestedValues, function(sugValue, keyName) {
                 var appId = keyName.split(Const.exposedSeparator)[0];
@@ -471,9 +478,13 @@ angular.module('registryApp.app')
                 deepNodeWatch();
             }
 
-            $scope.switchTab('apps');
-            $scope.$digest();
 
+            if ($scope.view.tab !== 'apps') {
+                $scope.switchTab('apps');
+                $scope.$apply();
+            }
+
+            console.timeEnd('node:deselect');
         };
 
         var prompt = false;

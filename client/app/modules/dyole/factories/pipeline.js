@@ -134,7 +134,8 @@ angular.module('registryApp.dyole')
                             }
                         });
 
-                        $rootScope.$broadcast('node:deselect');
+//                        $rootScope.$broadcast('node:deselect');
+                        _self.Event.trigger('controller:node:deselect');
 
                     });
 
@@ -142,7 +143,8 @@ angular.module('registryApp.dyole')
 
 //                        if (!model.softwareDescription || model.softwareDescription.type !== 'output') {
                         if (!Common.checkSystem(model)) {
-                            $rootScope.$broadcast('node:select', model, _self.exposed, _self.values, _self.suggestedValues);
+//                            $rootScope.$broadcast('node:select', model, _self.exposed, _self.values, _self.suggestedValues);
+                            _self.Event.trigger('controller:node:select', {}, model, _self.exposed, _self.values, _self.suggestedValues);
                         }
 
                     });

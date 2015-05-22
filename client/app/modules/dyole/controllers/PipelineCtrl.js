@@ -244,6 +244,14 @@ angular.module('registryApp.dyole')
 
         };
 
+        var getEventObj = function () {
+            if (Pipeline) {
+                return Pipeline.Event
+            } else {
+                return false
+            }
+        };
+
         /**
          * Track pipeline change
          */
@@ -273,6 +281,8 @@ angular.module('registryApp.dyole')
                     Pipeline.destroy();
                     Pipeline = null;
                     initPipeline({});
+
+                    PipelineService.refresh();
                 }
             }, function () {
                 return false;
@@ -393,7 +403,8 @@ angular.module('registryApp.dyole')
                 fork: fork,
                 format: format,
                 validate: validate,
-                adjustSize: adjustSize
+                adjustSize: adjustSize,
+                getEventObj: getEventObj
             };
 
             PipelineService.setInstance($scope.controllerId, methods);

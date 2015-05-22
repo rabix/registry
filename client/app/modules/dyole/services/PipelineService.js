@@ -11,9 +11,18 @@ angular.module('registryApp.dyole').factory('PipelineService', [function() {
 
     var service,
         pipelines = {},
+        refresh = {},
         toCall = {};
 
     service = {
+
+        refresh: function () {
+            _.forEach(refresh, function(callback) {
+                if (callback && _.isFunction(callback)) {
+                    callback();
+                }
+            });
+        },
 
         /**
          * Register Controller to get Instance of pipeline for it
@@ -21,12 +30,16 @@ angular.module('registryApp.dyole').factory('PipelineService', [function() {
          * @param id
          * @param onRegister
          */
-        register: function (id, onRegister) {
+        register: function (id, onRegister, onRefresh) {
 
             pipelines[id] = null;
 
             if (onRegister) {
                 toCall[id] = onRegister;
+            }
+
+            if (onRefresh) {
+                refresh[id] = onRefresh;
             }
 
             console.log('All registered: ', pipelines);

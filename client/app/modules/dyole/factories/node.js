@@ -459,7 +459,6 @@ angular.module('registryApp.dyole')
                             this._showInfo();
                         }
 
-                        //                    }
                     }
 
                     this.dragged = false;

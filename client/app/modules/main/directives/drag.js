@@ -14,7 +14,7 @@ angular.module('registryApp')
             link: function(scope, element) {
                 var mousedown = false,
                     $elem = $(element),
-                    $body = $('body'),
+                    $body = $(document),
                     $svg = $('.pipeline'),
                     images = {},
                     preloadImgBase = '/images/',
