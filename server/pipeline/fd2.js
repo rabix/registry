@@ -42,10 +42,10 @@ function resolveApp(name) {
 /**
  * Bare Rabix schema model
  *
- * @type {{@type: string, @context: string, steps: Array, dataLinks: Array}}
+ * @type {{class: string, @context: string, steps: Array, dataLinks: Array, inputs: Array, outputs: Array}}
  */
 var RabixModel = {
-    '@type': 'Workflow',
+    'class': 'Workflow',
     '@context': 'https://raw.githubusercontent.com/common-workflow-language/common-workflow-language/draft2/specification/context.json',
     'steps': [],
     'dataLinks': [],
@@ -59,7 +59,7 @@ var RabixModel = {
  * @type {{fileFilter: string[], _fileTypeCheck: _fileTypeCheck, checkTypeFile: checkTypeFile}}
  * @private
  */
-var _common = {};
+var _common;
 
 /**
  * Main formatter
@@ -83,7 +83,7 @@ var _formatter = {
      * @param workflow
      * @returns {Array}
      */
-    toRabixRelations: function (relations, exposed, workflow) {
+    toRabixRelations: function (relations, exposed, workflow, suggestedValues) {
         var _self = this,
             dataLinks = [];
 
@@ -92,6 +92,10 @@ var _formatter = {
                 source: '',
                 destination: ''
             };
+
+            if (typeof rel.position !== 'undefined') {
+                dataLink.position = rel.position;
+            }
 
             if (rel.input_name === rel.end_node) {
                 dataLink.destination = rel.end_node;
@@ -115,8 +119,13 @@ var _formatter = {
                 destination: ''
             };
 
-            var input_id = '#' + ids.split(Const.exposedSeparator)[1];
-            dataLink.destination = ids.replace(Const.exposedSeparator, '/#');
+            var input_id = ids;
+
+            if (typeof suggestedValues[ids] !== 'undefined') {
+                schema['sbg:suggestedValue'] = suggestedValues[ids];
+            }
+
+            dataLink.destination = ids.replace(Const.exposedSeparator, '/');
 
             _self._createWorkflowInput(input_id, schema, workflow);
 
@@ -132,17 +141,13 @@ var _formatter = {
     _createWorkflowInput: function (id, schema, workflow) {
 
         var model = {
-            '@id': id
+            'id': id
         };
 
-        model = _.extend(model, schema);
+        model = _.extend(schema, model);
 
         if (model.name) {
             delete model.name;
-        }
-
-        if (model.id) {
-            delete model.id;
         }
 
         workflow.inputs.push(model);
@@ -165,31 +170,37 @@ var _formatter = {
             var schema = schemas[rel.end_node],
                 id = rel.end_node,
                 step = {
-                    '@id': id,
-                    app: schema.ref || schema,
+                    'id': id,
+                    impl: schema.ref || schema,
                     inputs: [],
                     outputs: []
                 };
+
+            if (typeof schema.scatter !== 'undefined' && typeof schema.scatter === 'string') {
+                step.scatter = schema.scatter;
+                delete schema.scatter;
+            }
 
             if (schema.ref) {
                 delete schema.ref;
             }
 
-            if (schema.id) {
-                delete schema.id;
+            if (step.impl.appId) {
+                step.impl.id = step.impl.appId;
+                delete step.impl.appId;
             }
 
             if (!_common.checkSystem(schema)) {
 
                 _.forEach(schema.inputs, function (input) {
                     step.inputs.push({
-                        '@id': id + '/' + input['@id'].slice(1, input['@id'].length)
+                        'id': id + '/' + input['id'].slice(1, input['id'].length)
                     });
                 });
 
                 _.forEach(schema.outputs, function (output) {
                     step.outputs.push({
-                        '@id': id + '/' + output['@id'].slice(1, output['@id'].length)
+                        'id': id + '/' + output['id'].slice(1, output['id'].length)
                     });
                 });
 
@@ -216,14 +227,14 @@ var _formatter = {
             if (typeof stepId !== 'undefined') {
 
                 var step = _.find(steps, function (s) {
-                    return s['@id'] === stepId;
+                    return s['id'] === stepId;
                 });
 
                 if (typeof step !== 'undefined') {
                     _.forEach(inputs, function (val, input_id) {
 
                         var inp = _.find(step.inputs, function (i) {
-                            return i['@id'] === step['@id'] + '/' + input_id.slice(1);
+                            return i['id'] === step['id'] + '/' + input_id.slice(1);
                         });
 
                         if (typeof inp !== 'undefined') {
@@ -257,16 +268,41 @@ var _formatter = {
                 _.forEach(schema.inputs, function (inp) {
                     delete inp.label;
                     delete inp.name;
-                    delete inp.id;
                 });
 
                 _.forEach(schema.outputs, function (out) {
                     delete out.label;
                     delete out.name;
-                    delete out.id;
                 });
 
                 internalType = type === 'input' ? 'outputs' : 'inputs';
+
+                if (typeof schema.suggestedValue !== 'undefined' && _.isArray(schema.suggestedValue) && schema.suggestedValue.length > 0) {
+                    var values = schema[internalType][0]['sbg:suggestedValue'] = [];
+
+                    var s = schema[internalType][0].type[1] || schema[internalType][0].type[0];
+                    var isArray = s.type && s.type === 'array';
+
+                    if (isArray) {
+                        _.forEach(schema.suggestedValue, function (val) {
+                            console.log('Name %s, id %s',val.name, val.id);
+                            values.push({
+                                class: 'File',
+                                name: val.name,
+                                path: val.id
+                            });
+                        });
+                    } else {
+                        console.log('Name %s, id %s',schema.suggestedValue[0].name, schema.suggestedValue[0].id);
+
+                        schema[internalType][0]['sbg:suggestedValue'] = {
+                            class: 'File',
+                            name: schema.suggestedValue[0].name,
+                            path: schema.suggestedValue[0].id
+                        };
+                    }
+
+                }
 
                 workflow[type + 's'].push(schema[internalType][0]);
             }
@@ -283,7 +319,7 @@ var _formatter = {
      */
     _checkStepExists: function (steps, id) {
         var exists = _.find(steps, function (step) {
-            return step['@id'] === id;
+            return step['id'] === id;
         });
 
         return typeof exists !== 'undefined';
@@ -304,9 +340,9 @@ var _formatter = {
         }
 
         _.forEach(workflow.inputs, function (input) {
-            var id = input['@id'];
+            var id = input['id'];
 
-            if (_common.checkTypeFile(input.schema[1] || input.schema[0])) {
+            if (_common.checkTypeFile(input.type[1] || input.type[0])) {
                 system[id] = _self._generateIOSchema('input', input, id);
             }
         });
@@ -316,9 +352,9 @@ var _formatter = {
         }
 
         _.forEach(workflow.outputs, function (output) {
-            var id = output['@id'];
+            var id = output['id'];
 
-            if (_common.checkTypeFile(output.schema[1] || output.schema[0])) {
+            if (_common.checkTypeFile(output.type[1] || output.type[0])) {
                 system[id] = _self._generateIOSchema('output', output, id);
             }
         });
@@ -327,7 +363,7 @@ var _formatter = {
 
     },
 
-    toPipelineRelations: function (schemas, dataLinks, exposed, workflow) {
+    toPipelineRelations: function (schemas, dataLinks, exposed, workflow, suggestedValues) {
 
         var relations = [];
 
@@ -339,11 +375,11 @@ var _formatter = {
                 node = schemas[node_id];
 
             input = _.find(node.inputs, function (i) {
-                return i['@id'] === input_id;
+                return i['id'] === input_id;
             });
 
             if (typeof input !== 'undefined') {
-                schema = input.schema[1] || input.schema[0];
+                schema = input.type[1] || input.type[0];
 
                 return _common.checkTypeFile(schema);
             } else {
@@ -381,6 +417,10 @@ var _formatter = {
                     relation.end_node = dest[0];
                 }
 
+                if (typeof dataLink.position !== 'undefiend') {
+                    relation.position = dataLink.position;
+                }
+
                 relations.push(relation);
 
             } else {
@@ -388,12 +428,19 @@ var _formatter = {
                     src = src[0];
 
                     var ex = _.find(workflow.inputs, function (i) {
-                        return i['@id'] === src;
+                        return i['id'] === src;
                     });
 
                     if (typeof ex !== 'undefined') {
+                        var keyName = dest[0] + Const.exposedSeparator + dest[1];
                         //remove # with slice in front of input id (cliche form builder required)
-                        exposed[dest[0]+ Const.exposedSeparator + dest[1].slice(1,dest[1].length)] = ex;
+                        exposed[keyName] = ex;
+
+                        var sugValue = ex['sbg:suggestedValue'];
+                        if (typeof sugValue !== 'undefined') {
+                            suggestedValues[keyName] = sugValue;
+                        }
+
                     } else {
                         console.error('Param exposed but not set in workflow inputs');
                     }
@@ -402,6 +449,8 @@ var _formatter = {
                     console.error('Param must be exposed as workflow input');
                 }
             }
+
+
 
         });
 
@@ -413,23 +462,28 @@ var _formatter = {
         var schemas = {};
 
         _.forEach(steps, function (step) {
-            var stepId = step['@id'], ref;
+            var stepId = step['id'], ref;
 
-            if (typeof step.app === 'string') {
-                ref = step.app;
-                step.app = resolveApp(step.app);
-                step.app.ref = ref;
+            if (typeof step.impl === 'string') {
+                ref = step.impl;
+                step.impl = resolveApp(step.impl);
+                step.impl.ref = ref;
             }
 
-            step.app.id = stepId;
+            step.impl.appId = step.impl.id;
+            step.impl.id = stepId;
 
-            schemas[stepId] = step.app;
+            if (typeof step.scatter !== 'undefined' && typeof step.scatter=== 'string') {
+                step.impl.scatter = step.scatter;
+            }
+
+            schemas[stepId] = step.impl;
 
             // Check if values are set on step inputs
             // and attach them to values object
             _.forEach(step.inputs, function (input) {
                 if (input.value) {
-                    var input_id = '#' + input['@id'].split('/')[1],
+                    var input_id = '#' + input['id'].split('/')[1],
                         obj = values[stepId] = {};
 
                     obj[input_id] = input.value;
@@ -448,8 +502,37 @@ var _formatter = {
 
         schema.label = schema.label || id;
 
+        var descriptions = {
+            input: '###*Input*' + '\n' + 'Downloads input files to local cluster for further processing.',
+            output: '###*Output*' + '\n' + 'Uploads resulting files from processing cluster to user storage.'
+        };
+
+        var suggestedValue = [];
+
+        if (typeof schema['sbg:suggestedValue'] !== 'undefined') {
+
+            var s = schema.type[1] || schema.type[0];
+            var isArray = s.type && s.type === 'array';
+
+            if (isArray) {
+                _.forEach(schema['sbg:suggestedValue'], function (value) {
+                    value.id = value.path;
+                    suggestedValue.push(value);
+                });
+            } else {
+                schema['sbg:suggestedValue'].id = schema['sbg:suggestedValue'].path;
+                suggestedValue.push(schema['sbg:suggestedValue']);
+            }
+
+            delete schema['sbg:suggestedValue'];
+        }
+
+
         var model = {
-            '@id': id,
+            'id': id,
+            'suggestedValue': suggestedValue,
+            description: descriptions[type],
+            'sbg:createdBy': 'SBG',
             'label': schema.label || 'Rabix System app',
             'softwareDescription': {
                 'repo_owner': 'rabix',
@@ -475,7 +558,7 @@ var _formatter = {
             var r = false;
 
             _.forEach(filter, function (f) {
-                if ( _.contains(id,f) ) {
+                if (_.contains(id, f)) {
                     r = true;
                 }
             });
@@ -484,7 +567,7 @@ var _formatter = {
         }
 
         _.forEach(nodes, function (node) {
-            var _id = node['@id'];
+            var _id = node['id'];
 
             if (!_id || checkUrl(_id)) {
                 _id = node.label;
@@ -608,7 +691,7 @@ var _helper = {
 
         _.forEach(nodes, function (node) {
 
-            var nodeId = node['@id'],
+            var nodeId = node['id'],
                 dis = display.nodes[nodeId],
                 coords;
 
@@ -678,6 +761,16 @@ var _helper = {
     }
 };
 
+var _mergeSBGProps = function (json, model) {
+    _.forEach(json, function (val, key) {
+        if (key.indexOf('sbg') !== -1) {
+            model[key] = val;
+        }
+    });
+
+    return model;
+};
+
 /**
  * Public exposed formatter methods
  *
@@ -685,17 +778,21 @@ var _helper = {
  */
 var fd2 = {
 
-    toRabixSchema: function (p) {
+    toRabixSchema: function (p, exposed, values, suggestedValues) {
         var json = _.clone(p, true),
             model = _.clone(RabixModel, true);
 
         model.display = json.display;
-        model.dataLinks = _formatter.toRabixRelations(json.relations, json.exposed, model);
+        model.dataLinks = _formatter.toRabixRelations(json.relations, exposed, model, suggestedValues);
         model.steps = _formatter.createSteps(json.schemas, json.relations);
 
-        _formatter.addValuesToSteps(model.steps, json.values);
+        _formatter.addValuesToSteps(model.steps, values);
 
         _formatter.createWorkflowInOut(model, json.schemas, json.relations);
+
+        model = _mergeSBGProps(json, model);
+        model['id'] = model['id'] || json['id'];
+        model.label = model.label || json.label;
 
         return model;
     },
@@ -704,6 +801,7 @@ var fd2 = {
         var json = _.clone(p, true),
             relations, nodes, schemas, display,
             exposed = {},
+            suggestedValues = {},
             values = {};
 
         schemas = _formatter.createSchemasFromSteps(json.steps, values);
@@ -714,21 +812,25 @@ var fd2 = {
         //clone schemas to create nodes to manipulate on them
         nodes = _.toArray(_.clone(schemas, true));
 
-//        _formatter.createNodeIds(nodes);
-
         display = _helper.fixDisplay(json.display, nodes);
 
-        relations = _formatter.toPipelineRelations(schemas, json.dataLinks, exposed, json);
+        relations = _formatter.toPipelineRelations(schemas, json.dataLinks, exposed, json, suggestedValues);
 
-
-        return {
+        var model = {
             exposed: exposed,
             values: values,
+            suggestedValues: suggestedValues,
             display: display,
             nodes: nodes,
             schemas: schemas,
             relations: relations
         };
+
+        model['id'] = model['id'] || json['id'];
+        model.label = model.label || json.label;
+        model = _mergeSBGProps(json, model);
+
+        return model;
     }
 };
 
