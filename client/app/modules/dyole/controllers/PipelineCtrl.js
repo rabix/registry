@@ -68,6 +68,8 @@ angular.module('registryApp.dyole')
                 }
 
                 initPipeline(n);
+                PipelineService.refresh();
+
             }
         });
 

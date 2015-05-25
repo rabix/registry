@@ -295,7 +295,7 @@ angular.module('registryApp.app')
             }
 
             if (!$scope.$$phase) {
-                $scope.$apply();
+                $scope.$digest();
             }
         };
 
@@ -493,8 +493,8 @@ angular.module('registryApp.app')
             prompt = true;
         });
 
-        var onNodeSelectOff = $rootScope.$on('node:select', onNodeSelect);
-        var onNodeDeselectOff = $rootScope.$on('node:deselect', onNodeDeselect);
+//        var onNodeSelectOff = $rootScope.$on('node:select', onNodeSelect);
+//        var onNodeDeselectOff = $rootScope.$on('node:deselect', onNodeDeselect);
 
         var onBeforeRedirectOff = BeforeRedirect.register(function () {
 
@@ -682,8 +682,8 @@ angular.module('registryApp.app')
 
 
         $scope.$on('$destroy', function () {
-            onNodeSelectOff();
-            onNodeDeselectOff();
+//            onNodeSelectOff();
+//            onNodeDeselectOff();
 
             onBeforeRedirectOff();
             onBeforeRedirectOff = undefined;

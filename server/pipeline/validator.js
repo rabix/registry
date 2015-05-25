@@ -89,7 +89,7 @@ var validator = {
             relations = json.relations;
 
         result = Sort.tsort(relations);
-        
+
         if (result.errors.length !== 0) {
             _.forEach(result.errors, function (err) {
                 _self.errors.push(err);

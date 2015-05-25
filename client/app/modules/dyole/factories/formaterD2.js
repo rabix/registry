@@ -164,10 +164,10 @@ var _formatter = {
         var _self = this,
             steps = [];
 
-        _.forEach(relations, function (rel) {
+        _.forEach(schemas, function (sc, appId) {
 
-            var schema = schemas[rel.end_node],
-                id = rel.end_node,
+            var schema = sc,
+                id = appId,
                 step = {
                     'id': id,
                     impl: schema.ref || schema,
