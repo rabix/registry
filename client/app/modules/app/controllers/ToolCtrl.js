@@ -57,7 +57,34 @@ angular.module('registryApp.app')
 
                 $scope.view.previewNode = $scope.view.tool;
 
-                $scope.view.docker = _.find($scope.view.tool.json.requirements, {'class': 'DockerCnt'});
+                $scope.view.docker = _.find($scope.view.tool.json.requirements, {'class': 'DockerRequirement'});
+
+                $scope.view.tabOptions = [
+                    {
+                        slug: 'preview',
+                        name: 'Preview',
+                        state: 'tool',
+                        params: {id: $scope.view.tool._id, tab: 'preview'}
+                    },
+                    {
+                        slug: 'info',
+                        name: 'Info',
+                        state: 'tool',
+                        params: {id: $scope.view.tool._id, tab: 'info'}
+                    },
+                    {
+                        slug: 'revisions',
+                        name: 'Revisions',
+                        state: 'tool',
+                        params: {id: $scope.view.tool._id, tab: 'revisions'}
+                    },
+                    {
+                        slug: 'tasks',
+                        name: 'Task Templates',
+                        state: 'tool',
+                        params: {id: $scope.view.tool._id, tab: 'tasks'}
+                    }
+                ];
             });
 
         /**

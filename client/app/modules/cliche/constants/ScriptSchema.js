@@ -185,7 +185,7 @@ var Schema = {
                         properties: {
                             'class': {
                                 type: 'string',
-                                enum: ['DockerCnt']
+                                enum: ['DockerRequirement']
                             },
                             imgRepo: {
                                 type: 'string'

@@ -4,18 +4,7 @@
 
         <ng-include class="include" src="'modules/cliche/views/heading/cliche-header-' + view.mode + '.html'"></ng-include>
 
-        <div class="heading sub-heading">
-            <ul class="nav nav-tabs nav-tabs-steps regular">
-                <li ng-show="view.type === 'tool'" ng-class="{active: view.tab === 'general'}"><a href ng-click="switchTab('general')">General</a></li>
-                <li ng-class="{active: view.tab === 'script'}" ng-show="view.type === 'script'"><a href ng-click="switchTab('script')">Script</a></li>
-                <li ng-class="{active: view.tab === 'inputs'}"><a href ng-click="switchTab('inputs')">Inputs</a></li>
-                <li ng-class="{active: view.tab === 'outputs'}"><a href ng-click="switchTab('outputs')">Outputs</a></li>
-                <li ng-class="{active: view.tab === 'metadata'}"><a href ng-click="switchTab('metadata')">Metadata</a></li>
-                <li ng-show="view.type === 'tool'" ng-class="{active: view.tab === 'test'}"><a href ng-click="switchTab('test')">Test</a></li>
-            </ul>
-            <a href class="btn btn-flush btn-flush-cliche" title="Start with clean template" ng-click="flush()"><i class="fa fa-trash"></i></a>
-        </div>
-        <!-- # .heading -->
+        <rb-tabs tabs="{{ view.type === 'tool' ? 'General, Inputs, Outputs, Metadata, Test' : 'Script, Inputs, Outputs, Metadata'}}" tab-callback="switchTab(tab)"></rb-tabs>
 
         <div class="content content-tbl flex-box-column">
 

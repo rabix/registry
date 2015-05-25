@@ -18,12 +18,7 @@
     </div>
     <!-- # .heading -->
 
-    <div ng-if="view.revisions.length > 0" class="nav nav-tabs nav-page">
-        <li ng-class="{active: view.tab === 'info'}"><a href ng-click="switchTab('info')">Preview</a></li>
-        <li ng-class="{active: view.tab === 'description'}"><a href ng-click="switchTab('description')">Info</a></li>
-        <li ng-class="{active: view.tab === 'revisions'}"><a href ng-click="switchTab('revisions')">Revisions</a></li>
-        <li ng-class="{active: view.tab === 'tasks'}"><a href ng-click="switchTab('tasks')">Task Templates</a></li>
-    </div>
+    <rb-tabs tabs="Info, Description, Revisions, Task Templates" tab-callback="switchTab(tab)" page="true"></rb-tabs>
 
     <div class="content content-mix flex-box-column">
 
@@ -105,7 +100,7 @@
         </section>
         <!-- # .revisions -->
 
-        <section class="tab tab-tbl flex-box-column flex-one jobs" ng-show="view.tab === 'tasks'">
+        <section class="tab tab-tbl flex-box-column flex-one jobs" ng-show="view.tab === 'task-templates'">
 
             <div class="content content-tbl">
                 <table class="table table-hover jobs">

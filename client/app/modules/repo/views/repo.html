@@ -24,13 +24,7 @@
         </div>
 
         <div class="tabs flex-box-column flex-one">
-            <div class="nav nav-tabs">
-                <li ng-class="{active: view.tab === 'tools'}" class=""><a href ng-click="switchTab('tools')">Tools</a></li>
-                <li ng-class="{active: view.tab === 'scripts'}" class=""><a href ng-click="switchTab('scripts')">Scripts</a></li>
-                <li ng-class="{active: view.tab === 'workflows'}" class=""><a href ng-click="switchTab('workflows')">Workflows</a></li>
-                <li ng-class="{active: view.tab === 'tasks'}" class=""><a href ng-click="switchTab('tasks')">Tasks</a></li>
-                <li ng-class="{active: view.tab === 'builds'}" class=""><a href ng-click="switchTab('builds')">Builds</a></li>
-            </div>
+            <rb-tabs tabs="Tools, Scripts, Workflows, Tasks, Builds" tab-callback="switchTab(tab)" heading="false"></rb-tabs>
 
             <section ng-show="view.tab === 'tools'" class="tab tab-tbl apps flex-box-column flex-one">
 

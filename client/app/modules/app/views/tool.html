@@ -12,12 +12,7 @@
     </div>
     <!-- # .heading -->
 
-    <div ng-if="view.revisions.length > 0" class="nav nav-tabs nav-page">
-        <li ng-class="{active: view.tab === 'preview'}"><a ui-sref="tool({id: view.tool._id, tab: 'preview'})">Preview</a></li>
-        <li ng-class="{active: view.tab === 'info'}"><a ui-sref="tool({id: view.tool._id, tab: 'info'})">Info</a></li>
-        <li ng-class="{active: view.tab === 'revisions'}"><a ui-sref="tool({id: view.tool._id, tab: 'revisions'})">Revisions</a></li>
-        <li ng-class="{active: view.tab === 'tasks'}"><a ui-sref="tool({id: view.tool._id, tab: 'tasks'})">Task Templates</a></li>
-    </div>
+    <rb-tabs ng-if="view.revisions.length > 0" state-param="tab" page="true" tab-options="view.tabOptions"></rb-tabs>
 
     <div ng-if="!view.loading" class="content content-mix flex-box-column">
 

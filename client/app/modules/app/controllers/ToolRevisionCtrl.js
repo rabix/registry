@@ -32,7 +32,7 @@ angular.module('registryApp.app')
                     $scope.view.author = result.app.user;
                     $scope.view.app = result.app;
 
-                    $scope.view.docker = _.find($scope.view.revision.json.requirements, {'class': 'DockerCnt'});
+                    $scope.view.docker = _.find($scope.view.revision.json.requirements, {'class': 'DockerRequirement'});
 
                     $scope.view.loading = false;
                 });

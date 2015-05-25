@@ -175,7 +175,7 @@ angular.module('registryApp.cliche')
                     .then(outputCommand, outputError);
 
                 var watch = [
-                    'view.tool.baseCmd',
+                    'view.tool.baseCommand',
                     'view.tool.stdout',
                     'view.tool.stdin'
                 ];
@@ -211,7 +211,7 @@ angular.module('registryApp.cliche')
          */
         var prepareRequirements = function() {
 
-            $scope.view.reqDockerCnt = _.find($scope.view.tool.requirements, {'class': 'DockerCnt'});
+            $scope.view.reqDockerRequirement = _.find($scope.view.tool.requirements, {'class': 'DockerRequirement'});
             $scope.view.reqCpuRequirement = _.find($scope.view.tool.requirements, {'class': 'CpuRequirement'});
             $scope.view.reqMemRequirement = _.find($scope.view.tool.requirements, {'class': 'MemRequirement'});
 
@@ -458,7 +458,7 @@ angular.module('registryApp.cliche')
          */
         $scope.sortByPosition = function(item) {
 
-            var position = item.adapter && item.adapter.position ? item.adapter.position : 0; //input
+            var position = item.inputBinding && item.inputBinding.position ? item.inputBinding.position : 0; //input
             position = item.position ? item.position : position; //args
 
             return position;
@@ -538,6 +538,8 @@ angular.module('registryApp.cliche')
          */
         $scope.updateCliAdapter = function (value, index, key) {
             value = angular.copy(value);
+            debugger;
+
 
             if (index) {
                 $scope.view.tool[key][index] = value;
@@ -581,7 +583,7 @@ angular.module('registryApp.cliche')
             var baseCommands = value.split(' ');
             var adapterBaseCmd = $scope.view.tool.baseCommand;
 
-            if (baseCommands.length > 1) {
+            if (baseCommands.length > 0) {
                 adapterBaseCmd.splice(index, 1);
 
                 _.forEach(baseCommands, function(cmd, key) {

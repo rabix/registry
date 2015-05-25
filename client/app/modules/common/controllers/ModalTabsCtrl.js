@@ -60,8 +60,8 @@ angular.module('registryApp.common')
 
             _.each(inputRefs, function (input) {
 
-                if (Common.checkTypeFile(input.schema[1] || input.schema[0])) {
-                    input.required = input.schema.length === 1;
+                if (Common.checkTypeFile(input.type[1] || input.type[0])) {
+                    input.required = input.type.length === 1;
                     inputs.push(input);
                 }
 
