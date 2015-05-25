@@ -117,11 +117,9 @@ angular.module('registryApp.ui')
             };
 
             scope.$watch('switchActiveTab', function (n, o) {
-                console.log('switchActiveTab', n , o);
                 if (n !== o) {
                     _.forEach(scope.tabOptions, function(tab) {
                         if (tab.slug === n) {
-                            console.log('Switching to new tab');
                             scope.activateTab(tab);
                         }
                     });
