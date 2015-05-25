@@ -72,7 +72,6 @@ angular.module('registryApp.ui')
             
             console.log(scope.ngDisabled);
             scope.view = {};
-            scope.view.name = scope.name || 'Button Dropdown';
 
             transcludeFn(function (clone, scope) {
 
@@ -107,8 +106,18 @@ angular.module('registryApp.ui')
 
         function compile(elem, attr) {
             var intention = attr.intention || 'default';
+            var content = attr.content;
+            var contentWrapper = elem.find('.dropdown-content');
 
             elem.find('rb-button').attr('intention', intention);
+
+            if (contentWrapper.length > 0) {
+                if (content !== 'undefined' && content !== '') {
+                    contentWrapper.replaceWith(attr.content);
+                } else {
+                    contentWrapper.remove();
+                }
+            }
 
             return {
                 post: postLink
@@ -122,6 +131,7 @@ angular.module('registryApp.ui')
             transclude: true,
             scope: {
                 name: '=?',
+                content: '@?',
                 ngDisabled: '=?ngDisabled'
             },
             compile: compile

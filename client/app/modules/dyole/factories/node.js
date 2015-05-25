@@ -31,7 +31,7 @@ angular.module('registryApp.dyole')
             this.dragged = false;
 
             // destroyed flag
-            // used when deleting node can occure from multiple places
+            // used when deleting node can occur from multiple places
             this.destroyed = false;
 
             this.selected = false;

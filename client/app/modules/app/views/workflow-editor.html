@@ -29,25 +29,18 @@
                 <!--<i class="fa fa-undo fa-flip-horizontal"></i>-->
             <!--</button>-->
 
-            <button class="btn btn-default" ng-click="editMetadata()" ng-disabled="view.saving" ><i class="fa fa-pencil"></i> Metadata</button>
+            <rb-button ng-click="editMetadata()" ng-disabled="view.saving" ><i class="fa fa-pencil"></i> Metadata</rb-button>
 
-            <button class="btn btn-default" ng-click="validateWorkflowJSON()" ng-disabled="view.saving"><i
-                    class="fa fa-check"></i> Validate
-            </button>
-            <button class="btn btn-default" ng-click="workflowToJSON()" ng-disabled="view.saving"><i
-                    class="fa fa-code"></i> JSON
-            </button>
+            <rb-button ng-click="validateWorkflowJSON()" ng-disabled="view.saving"><i class="fa fa-check"></i> Validate </rb-button>
 
-            <button ng-if="view.user" ng-click="save()" class="btn btn-default" ng-disabled="!view.isChanged || view.saving">
+            <rb-button ng-click="workflowToJSON()" ng-disabled="view.saving"><i class="fa fa-code"></i> JSON</rb-button>
+
+            <rb-button ng-if="view.user" ng-click="save()" ng-disabled="!view.isChanged || view.saving">
                 <i ng-class="{'fa-plus': view.mode === 'new', 'fa-check': view.mode === 'edit'}" class="fa"></i>
                 {{ view.mode === 'new' ? 'Create' : 'Update' }}
-            </button>
+            </rb-button>
 
-            <div class="btn-group right" ng-class="{open: view.isMenuOpen}">
-                <button type="button" ng-click="toggleMenu()" class="btn btn-default dropdown-toggle">
-                    <i class="fa fa-cog"></i>
-                    <span class="caret"></span>
-                </button>
+            <rb-dropdown class="btn-group right" content="<i class='fa fa-cog'></i>" >
                 <ul class="dropdown-menu" role="menu" ng-click="toggleMenu()">
                     <li>
                         <a href ng-click="loadJsonImport()"><i class="fa fa-cloud-download"></i> <span>Import</span></a>
@@ -66,7 +59,7 @@
                                 class="fa fa-trash"></i> Delete</a>
                     </li>
                 </ul>
-            </div>
+            </rb-dropdown>
         </div>
 
     </h1>
@@ -82,7 +75,7 @@
 
     <div class="col flex-box-column flex-auto sidebar-col" ng-class="{closed: !view.showSidebar}">
 
-        <rb-tabs tabs="Apps, Params" tab-callback="switchTab(tab)" position="left" class="no-padding">
+        <rb-tabs tabs="Apps, Params" tab-callback="switchTab(tab)" position="left" class="no-padding" switch-active-tab="view.tab">
             <li class="toggle-action">
                 <a href ng-click="toggleSidebar()">
                     <i ng-class="{'fa-chevron-right': view.showSidebar, 'fa-chevron-left': !view.showSidebar}" class="fa"></i>

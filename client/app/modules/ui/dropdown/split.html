@@ -1,7 +1,8 @@
 <!-- Single button dropdown -->
 <div class="btn-group" dropdown is-open="status.isopen">
     <rb-button ng-disabled="ngDisabled">
-        {{ view.name }}
+        {{ name || ''}}
+        <span class="dropdown-content"></span>
     </rb-button>
     <rb-button class="dropdown-toggle" dropdown-toggle ng-disabled="ngDisabled">
         <span class="caret"></span>

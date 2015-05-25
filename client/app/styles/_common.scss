@@ -13,7 +13,7 @@
 }
 
 .flex-one {
-  @include flex(1);
+  @include flex(1 1 0);
 }
 
 %trace-box {

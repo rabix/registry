@@ -201,6 +201,7 @@ angular.module('registryApp.dyole')
 
                     Pipeline.addNode(result.data.json, e.clientX, e.clientY);
 
+                    $scope.pipelineChangeFn({value: {value: true, isDisplay: false}});
                 });
             }
         };

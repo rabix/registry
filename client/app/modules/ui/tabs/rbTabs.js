@@ -116,6 +116,18 @@ angular.module('registryApp.ui')
                 }
             };
 
+            scope.$watch('switchActiveTab', function (n, o) {
+                console.log('switchActiveTab', n , o);
+                if (n !== o) {
+                    _.forEach(scope.tabOptions, function(tab) {
+                        if (tab.slug === n) {
+                            console.log('Switching to new tab');
+                            scope.activateTab(tab);
+                        }
+                    });
+                }
+            });
+
             transcludeFn(function (clone, scope) {
                 transclusionScope = scope;
                 var $tabs = element.find('.nav-tabs');
@@ -159,7 +171,8 @@ angular.module('registryApp.ui')
             restrict: 'E',
             scope: {
                 tabCallback: '&',
-                tabOptions: '=?'
+                tabOptions: '=?',
+                switchActiveTab: '='
             },
             transclude: true,
             replace: true,
@@ -167,7 +180,6 @@ angular.module('registryApp.ui')
             compile: function(element, attr) {
                 console.log('compiling again');
                 
-
                 if (attr.tabClasses) {
                     $(element).find('.tabs-inner').addClass(attr.tabClasses);
                 }
