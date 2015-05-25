@@ -5,9 +5,9 @@
 'use strict';
 
 angular.module('registryApp.ui')
-    .controller('UICtrl', ['$scope', function ($scope) {
+    .controller('UICtrl', ['$scope', '$timeout', function ($scope, $timeout) {
         $scope.view = {};
-        $scope.view.activeTab = 'tabs';
+        $scope.view.activeTab = 'buttons';
 
         $scope.switchTab = function (tab) {
             $scope.view.activeTab = tab;
@@ -46,4 +46,11 @@ angular.module('registryApp.ui')
         $scope.selectedAnimal = 'cat';
 
         $scope.dropdown = 'Dropdown #1';
+
+        $scope.view.isDisabled = true;
+
+        $timeout(function () {
+            $scope.view.isDisabled = false;
+        }, 4000);
+
     }]);

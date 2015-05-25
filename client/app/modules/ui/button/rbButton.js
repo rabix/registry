@@ -69,6 +69,10 @@ angular.module('registryApp.ui')
                 .on('blur', function () {
                     element.removeClass('rb-focused');
                 });
+
+            scope.$on('$destroy', function () {
+                button.off('focus blur');
+            })
         }
 
         function preLink(scope, elem, attr) {

@@ -42,7 +42,15 @@
         </ul>
     </rb-dropdown>
 
-    <rb-dropdown class="separate" intention="primary" type="split" name="'Disabled'" ng-disabled="true">
+    <rb-dropdown class="separate" intention="primary" type="split" name="'Disabled'" ng-disabled="'true'">
+        <ul>
+            <li><a href="#">Action</a></li>
+            <li><a href="#">Another action</a></li>
+            <li><a href="#">Something else here</a></li>
+        </ul>
+    </rb-dropdown>
+
+    <rb-dropdown class="separate" intention="primary" type="split" name="'Two way disabled'" ng-disabled="view.isDisabled">
         <ul>
             <li><a href="#">Action</a></li>
             <li><a href="#">Another action</a></li>

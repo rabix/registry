@@ -69,7 +69,8 @@ angular.module('registryApp.ui')
         function postLink(scope, element, attr, ctrl, transcludeFn) {
             var dropdown = element,
                 transclusionScope;
-
+            
+            console.log(scope.ngDisabled);
             scope.view = {};
             scope.view.name = scope.name || 'Button Dropdown';
 
@@ -121,8 +122,7 @@ angular.module('registryApp.ui')
             transclude: true,
             scope: {
                 name: '=?',
-                ngDisabled: '=?',
-                disabled: '=?'
+                ngDisabled: '=?ngDisabled'
             },
             compile: compile
         };
