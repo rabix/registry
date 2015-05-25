@@ -42,20 +42,24 @@ angular.module('registryApp.ui')
          *
          *  <rb-tabs tabs="tab1, tab2, tab3"
          *      [tab-callback="switchTabs(tab)"]
-         *      [tab-src="path/to/tab/templates"]>
+         *      [tab-src="path/to/tab/templates"]
+         *      [tab-options="arrayOnScope"]>
          *  <rb-tabs>
          *
          * @todo: fix problem with scope when passing path to templates
          *
          * @param {string=} tabs List of tab names
-         * @param {object=} tab-options Array with tabs config:
-         *      [
-         *          {
-         *              name: 'nameOfTab',
-         *              slug: 'tabHeading',
-         *              uiSref: 'linkOfTab',
-         *          }
-         *      ]
+         * @param {array=} tab-options Array with tabs config:
+         *
+         *```
+         *  [
+         *      {
+         *          name: 'nameOfTab',
+         *          slug: 'tabHeading',
+         *          uiSref: 'linkOfTab',
+         *      }
+         *  ]
+         *```
          *
          * @param {string=} tab-src Path to directory which contains tab templates
          * @param {string=} active-tab Default active tab, otherwise the first tab in the list will be active
