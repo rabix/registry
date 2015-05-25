@@ -1,5 +1,5 @@
-<div class="flex-box-column">
-    <div ng-class="{'heading sub-heading': heading && !page}">
+<div class="flex-box-column rb-tabs">
+    <div ng-class="{'heading sub-heading': heading && !page}" class="tab-list-container">
         <ul class="nav nav-tabs" ng-class="{'regular nav-tabs-steps': heading && !page, 'nav-page': page}">
             <li ng-repeat="tab in tabOptions track by $index" ng-class="{active: activeTab === tab.slug}"><a href ng-click="activateTab(tab)">{{tab.name}}</a></li>
         </ul>
