@@ -28,11 +28,7 @@
     </div>
     <!-- # .filters -->
 
-    <div class="nav nav-tabs nav-page">
-        <li ng-class="{active: view.tab === 'tools'}"><a href ng-click="switchTab('tools')">Tools</a></li>
-        <li ng-class="{active: view.tab === 'scripts'}"><a href ng-click="switchTab('scripts')">Scripts</a></li>
-        <li ng-class="{active: view.tab === 'workflows'}"><a href ng-click="switchTab('workflows')">Workflows</a></li>
-    </div>
+    <rb-tabs tabs="Tools, Scripts, Workflows" tab-callback="switchTab(tab)" heading="false" page="true"></rb-tabs>
 
     <div ng-show="!view.loading" class="content content-tbl flex-box-column">
 
