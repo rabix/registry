@@ -47,7 +47,7 @@ angular.module('registryApp.ui')
          *  <rb-tabs>
          *
          * @todo: fix problem with scope when passing path to templates+
-         * @todo: add transclude functionality, so that new elements can be added around tab items
+         * @todo: handle stacked sidebar tabs
          *
          * @param {string=} tabs List of tab names
          * @param {array=} tab-options Array with tabs config:
@@ -152,7 +152,7 @@ angular.module('registryApp.ui')
         }
 
         function formatTemplateUrl (tab, src) {
-            return src + tabSlugify(tab) + '.html';
+            return src + tab.slug + '.html';
         }
 
         return {

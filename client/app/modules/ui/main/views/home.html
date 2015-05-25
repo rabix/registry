@@ -1,14 +1,6 @@
 <div class="page home">
 
-    <div class="heading sub-heading">
-        <ul class="nav nav-tabs nav-tabs-steps regular">
-            <li ng-class="{active: view.activeTab === 'buttons'}"><a href ng-click="switchTab('buttons')">Buttons</a></li>
-            <li ng-class="{active: view.activeTab === 'forms'}"><a href ng-click="switchTab('forms')">Forms</a></li>
-            <li ng-class="{active: view.activeTab === 'pagination'}"><a href ng-click="switchTab('pagination')">Pagination</a></li>
-            <li ng-class="{active: view.activeTab === 'tabs'}"><a href ng-click="switchTab('tabs')">Tabs</a></li>
-        </ul>
-    </div>
-
+    <rb-tabs tabs="Buttons, Forms, Pagination, Tabs" tab-callback="switchTab(tab)"></rb-tabs>
 
     <div class="content content-tbl flex-box-column">
 

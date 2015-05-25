@@ -8,13 +8,8 @@
 
 <div class="modal-body no-padding">
     <div class="col">
-        <div class="heading no-padding">
-            <ul class="nav nav-tabs nav-tabs-steps nav-borders">
-                <li ng-class="{active: view.tab === 'info'}"><a href ng-click="switchTab('info')">Info</a></li>
-                <li ng-class="{active: view.tab === 'inputs'}"><a href ng-click="switchTab('inputs')">Inputs</a></li>
-                <!--<li ng-class="{active: view.tab === 'tags'}"><a href ng-click="switchTab('tags')">Tags</a></li>-->
-            </ul>
-        </div>
+        <rb-tabs tabs="Info, Schema" tab-callback="switchTab(tab)" page="true"></rb-tabs>
+        <!--<rb-tabs tabs="Info, Schema, Tags" tab-callback="switchTab(tab)" page="true"></rb-tabs>-->
 
         <div class="tabs right flex-one modal-tabs" ng-switch="view.tab">
             <div class="tab" ng-switch-when="info">
