@@ -31,8 +31,8 @@ angular.module('registryApp.common')
         var inputRefs = $scope.data.inputs;
 
         inputRefs.sort(function (a, b) {
-            if (a['id'] < b['id']) { return 1; }
-            if (b['id'] < a['id']) { return -1; }
+            if (a.id < b.id) { return 1; }
+            if (b.id < a.id) { return -1; }
             return 0;
         });
         

@@ -5,11 +5,11 @@
  */
 'use strict';
 
-angular.module('registryApp.common')
-    .directive('paginator', ['$templateCache', function ($templateCache) {
+angular.module('registryApp.ui')
+    .directive('rbPaginator', ['$templateCache', function ($templateCache) {
         return {
             restrict: 'E',
-            template: $templateCache.get('modules/common/views/paginator.html'),
+            template: $templateCache.get('modules/ui/paginator/default.html'),
             scope: {
                 page: '=',
                 perPage: '@',

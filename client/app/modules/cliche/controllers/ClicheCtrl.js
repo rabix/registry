@@ -780,7 +780,7 @@ angular.module('registryApp.cliche')
                 .then(function(result) {
 
                     var modalInstance = $modal.open({
-                        template: $templateCache.get('modules/main/views/partials/revisions.html'),
+                        template: $templateCache.get('modules/cliche/views/partials/revisions.html'),
                         controller: ['$scope', '$modalInstance', 'data', function ($scope, $modalInstance, data) {
 
                             $scope.view = data;
