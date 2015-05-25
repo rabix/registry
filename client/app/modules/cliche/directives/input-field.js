@@ -17,8 +17,8 @@ angular.module('registryApp.cliche')
         $scope.view.property = $scope.prop || {};
         $scope.view.property.schema = Cliche.getSchema('input', $scope.prop, $scope.type, true);
         $scope.view.property.adapter = Cliche.getAdapter($scope.prop, false, 'input');
-        $scope.view.type = Cliche.parseType($scope.view.property.schema).toLowerCase();
-        $scope.view.required = Cliche.isRequired($scope.view.property.schema);
+        $scope.view.type = Cliche.parseType($scope.view.property.type).toLowerCase();
+        $scope.view.required = Cliche.isRequired($scope.view.property.type);
         $scope.view.items = Cliche.getItemsRef($scope.view.type, $scope.view.property.schema);
 
         $scope.view.tpl = 'modules/cliche/views/inputs/input-' + $scope.view.type.toLowerCase()  + '.html';
@@ -93,7 +93,7 @@ angular.module('registryApp.cliche')
         var inputScheme;
 
         /* type FILE */
-        if ($scope.view.type === 'File') {
+        if ($scope.view.type === 'file') {
 
             inputScheme = getFileScheme($scope.model);
 
@@ -116,7 +116,7 @@ angular.module('registryApp.cliche')
                     inputScheme.push(innerScheme);
                 });
                 break;
-            case 'file' || 'File':
+            case ('file' || 'File'):
                 _.each($scope.model, function(value) {
                     inputScheme.push(getFileScheme(value));
                 });

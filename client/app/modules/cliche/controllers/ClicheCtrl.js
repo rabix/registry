@@ -458,7 +458,7 @@ angular.module('registryApp.cliche')
          */
         $scope.sortByPosition = function(item) {
 
-            var position = item.adapter && item.adapter.position ? item.adapter.position : 0; //input
+            var position = item.inputBinding && item.inputBinding.position ? item.inputBinding.position : 0; //input
             position = item.position ? item.position : position; //args
 
             return position;

@@ -715,7 +715,7 @@ angular.module('registryApp.cliche')
 
                     var key = parseName(property);
 
-                    return _.contains(keys, key) && property.adapter;
+                    return _.contains(keys, key) && property.inputBinding;
                 });
 
             /* go through properties */
@@ -726,18 +726,18 @@ angular.module('registryApp.cliche')
                     schema = getSchema('input', property, 'tool'),
                     type = parseType(schema),
                     items = getItemsRef(type, schema),
-                    prefix = property.adapter.prefix || '',
-                    separator = parseSeparator(prefix, property.adapter.separator),
-                    itemSeparator = parseItemSeparator(property.adapter.itemSeparator),
+                    prefix = property.inputBinding.prefix || '',
+                    separator = parseSeparator(prefix, property.inputBinding.separator),
+                    itemSeparator = parseItemSeparator(property.inputBinding.itemSeparator),
 
                     prop = _.extend({
                         key: key,
                         type: type,
                         val: '',
-                        position: property.adapter.position || 0,
+                        position: property.inputBinding.position || 0,
                         prefix: prefix,
                         separator: separator
-                    }, property.adapter);
+                    }, property.inputBinding);
 
                 switch (type) {
                 case 'array':
@@ -750,9 +750,9 @@ angular.module('registryApp.cliche')
                             deferred.reject(error);
                         });
                     break;
-                case 'file' || 'File':
+                case ('File' || 'file'):
                     /* if input is FILE */
-                    applyTransform(property.adapter.argValue, inputs[key].path, true)
+                    applyTransform(property.inputBinding.argValue, inputs[key].path, true)
                         .then(function (result) {
                             prop.val = result;
                             deferred.resolve(prop);
@@ -772,10 +772,10 @@ angular.module('registryApp.cliche')
                     break;
                 case 'boolean':
                     /* if input is BOOLEAN */
-                    if (property.adapter.argValue) {
+                    if (property.inputBinding.argValue) {
                         //TODO: this is hack, if bool type has expression defined then it works in the same way as (for example) string input type
                         prop.type = 'string';
-                        applyTransform(property.adapter.argValue, inputs[key], true)
+                        applyTransform(property.inputBinding.argValue, inputs[key], true)
                             .then(function (result) {
                                 prop.val = result;
                                 deferred.resolve(prop);
@@ -792,7 +792,7 @@ angular.module('registryApp.cliche')
                     break;
                 default:
                     /* if input is anything else (STRING, ENUM, INT, FLOAT) */
-                    applyTransform(property.adapter.argValue, inputs[key], true)
+                    applyTransform(property.inputBinding.argValue, inputs[key], true)
                         .then(function (result) {
                             prop.val = result;
                             deferred.resolve(prop);

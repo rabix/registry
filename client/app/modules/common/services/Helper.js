@@ -113,6 +113,7 @@ angular.module('registryApp.common')
             var output;
             var map = {
                 file: {path: name},
+                File: {path: name},
                 'enum': symbols ? symbols[0] : name,
                 string: name,
                 int: 0,
