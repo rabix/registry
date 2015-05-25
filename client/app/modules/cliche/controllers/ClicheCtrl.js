@@ -175,7 +175,7 @@ angular.module('registryApp.cliche')
                     .then(outputCommand, outputError);
 
                 var watch = [
-                    'view.tool.baseCmd',
+                    'view.tool.baseCommand',
                     'view.tool.stdout',
                     'view.tool.stdin'
                 ];
@@ -538,6 +538,8 @@ angular.module('registryApp.cliche')
          */
         $scope.updateCliAdapter = function (value, index, key) {
             value = angular.copy(value);
+            debugger;
+
 
             if (index) {
                 $scope.view.tool[key][index] = value;
@@ -581,7 +583,7 @@ angular.module('registryApp.cliche')
             var baseCommands = value.split(' ');
             var adapterBaseCmd = $scope.view.tool.baseCommand;
 
-            if (baseCommands.length > 1) {
+            if (baseCommands.length > 0) {
                 adapterBaseCmd.splice(index, 1);
 
                 _.forEach(baseCommands, function(cmd, key) {
