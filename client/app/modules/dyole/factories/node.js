@@ -36,7 +36,7 @@ angular.module('registryApp.dyole')
 
             this.selected = false;
 
-            this.inputRefs = this.model.inputs;
+            this.inputRefs = this.model.inputs || [];
 
             this.inputRefs.sort(function (a, b) {
                 if (a['id'] < b['id']) { return 1; }
@@ -44,7 +44,7 @@ angular.module('registryApp.dyole')
                 return 0;
             });
 
-            this.outputRefs = this.model.outputs;
+            this.outputRefs = this.model.outputs || [];
 
             this.outputRefs.sort(function (a, b) {
                 if (a['id'] < b['id']) { return 1; }
