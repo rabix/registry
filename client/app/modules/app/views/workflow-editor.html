@@ -82,7 +82,7 @@
 
     <div class="col flex-box-column flex-auto sidebar-col" ng-class="{closed: !view.showSidebar}">
 
-        <rb-tabs tabs="Apps, Params" tab-callback="switchTab(tab)" position="left">
+        <rb-tabs tabs="Apps, Params" tab-callback="switchTab(tab)" position="left" class="no-padding">
             <li class="toggle-action">
                 <a href ng-click="toggleSidebar()">
                     <i ng-class="{'fa-chevron-right': view.showSidebar, 'fa-chevron-left': !view.showSidebar}" class="fa"></i>
