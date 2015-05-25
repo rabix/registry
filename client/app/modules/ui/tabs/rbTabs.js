@@ -46,7 +46,8 @@ angular.module('registryApp.ui')
          *      [tab-options="arrayOnScope"]>
          *  <rb-tabs>
          *
-         * @todo: fix problem with scope when passing path to templates
+         * @todo: fix problem with scope when passing path to templates+
+         * @todo: add transclude functionality, so that new elements can be added around tab items
          *
          * @param {string=} tabs List of tab names
          * @param {array=} tab-options Array with tabs config:
@@ -72,7 +73,8 @@ angular.module('registryApp.ui')
          *
          */
 
-        function postLink (scope, element, attr) {
+        function postLink (scope, element, attr, ctrl, transcludeFn) {
+            var transclusionScope;
             scope.heading = typeof attr.heading === 'undefined' || attr.heading === 'true';
             scope.page = attr.page === 'true';
 
@@ -113,6 +115,36 @@ angular.module('registryApp.ui')
                     $state.go(tab.state, tab.params || {});
                 }
             };
+
+            transcludeFn(function (clone, scope) {
+                transclusionScope = scope;
+                var $tabs = element.find('.nav-tabs');
+
+                if (!clone) {
+                    clone.remove();
+                    scope.$destroy();
+                    return;
+                }
+
+                switch(attr.position) {
+                    case 'right':
+                        $tabs.append(clone);
+                        break;
+                    case 'left':
+                        $tabs.prepend(clone);
+                        break;
+                    default:
+                        $tabs.append(clone);
+                        break;
+                }
+
+
+                element.on('remove', function () {
+                    scope.$destroy();
+                    transclusionScope.$destroy();
+                });
+            });
+
         }
 
         function tabSlugify (tab) {
@@ -129,6 +161,7 @@ angular.module('registryApp.ui')
                 tabCallback: '&',
                 tabOptions: '=?'
             },
+            transclude: true,
             replace: true,
             templateUrl: 'modules/ui/tabs/default.html',
             compile: function(element, attr) {

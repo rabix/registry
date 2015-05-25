@@ -82,21 +82,13 @@
 
     <div class="col flex-box-column flex-auto sidebar-col" ng-class="{closed: !view.showSidebar}">
 
-        <div class="heading no-padding">
-            <ul class="nav nav-tabs nav-tabs-steps">
-
-                <li class="toggle-action">
-                    <a href ng-click="toggleSidebar()">
-                        <i ng-class="{'fa-chevron-right': view.showSidebar, 'fa-chevron-left': !view.showSidebar}"
-                           class="fa"></i>
-                    </a>
-                </li>
-
-                <li ng-class="{active: view.tab === 'apps'}"><a href ng-click="switchTab('apps')">Apps</a></li>
-                <li ng-class="{active: view.tab === 'params'}"><a href ng-click="switchTab('params')">Params</a></li>
-                <!--<li ng-class="{active: view.tab === 'properties'}"><a href ng-click="switchTab('properties')">Properties</a></li>-->
-            </ul>
-        </div>
+        <rb-tabs tabs="Apps, Params" tab-callback="switchTab(tab)" position="left">
+            <li class="toggle-action">
+                <a href ng-click="toggleSidebar()">
+                    <i ng-class="{'fa-chevron-right': view.showSidebar, 'fa-chevron-left': !view.showSidebar}" class="fa"></i>
+                </a>
+            </li>
+        </rb-tabs>
 
         <div class="content content-tbl flex-box-column">
 
