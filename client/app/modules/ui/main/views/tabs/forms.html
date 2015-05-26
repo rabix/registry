@@ -23,7 +23,7 @@
                 Search
             </legend>
 
-            <rb-input type="search" placeholder="Search" ng-model="searchTerm" no-button has-error="helpHasError" clear="true">
+            <rb-input type="search" placeholder="Search" ng-model="searchTerm" has-error="helpHasError" clear="true" callback="submitSearch(search)">
                 <label>Search Label</label>
 
                 <p ng-show="showHelpBlock">

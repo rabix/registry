@@ -13,6 +13,10 @@ angular.module('registryApp.ui')
             $scope.view.activeTab = tab;
         };
 
+        $scope.submitSearch = function (search) {
+            console.log('Submitting search: %s', search);
+        };
+
         $scope.tabCb = function (tab) {
 
             console.log('ctrl got this tab from rbTabs: ', tab);

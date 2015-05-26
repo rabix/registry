@@ -1,6 +1,7 @@
 <!-- Single button dropdown -->
 <div class="btn-group" dropdown is-open="status.isopen">
     <rb-button ng-disabled="ngDisabled">
+        <i class="fa fa-{{view.iconClass}}" ng-if="view.iconClass"></i>
         {{ name || ''}}
         <span class="dropdown-content"></span>
     </rb-button>
