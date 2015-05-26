@@ -40,8 +40,8 @@
                 {{ view.mode === 'new' ? 'Create' : 'Update' }}
             </rb-button>
 
-            <rb-dropdown class="btn-group right" content="<i class='fa fa-cog'></i>" >
-                <ul class="dropdown-menu" role="menu" ng-click="toggleMenu()">
+            <rb-dropdown icon-class="fa-cog" position="right">
+                <ul>
                     <li>
                         <a href ng-click="loadJsonImport()"><i class="fa fa-cloud-download"></i> <span>Import</span></a>
                     </li>

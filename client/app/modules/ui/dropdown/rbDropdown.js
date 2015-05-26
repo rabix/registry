@@ -19,7 +19,9 @@ angular.module('registryApp.ui')
          * @param {boolean=} intention If present, sets button intention oneOf=['danger', 'primary', 'default', 'warning', 'info', 'success'].
          * @param {expression=} ng-disabled En/Disable based on the expression
          * @param {string=} type Dropdown type, oneOf: ['split', 'default']. Default value is 'default'
+         * @param {string=} iconClass FontAwesome icon class which is prepended to the name. No `fa-` prefix necessary.
          * @param {string=} class Space separated additional classes to add to element
+         * @param {string=} position To which side the dropdown opens, oneOf: ['left', 'right']. Default value is 'left'
          *
          * @usage
          *
@@ -72,6 +74,9 @@ angular.module('registryApp.ui')
             
             console.log(scope.ngDisabled);
             scope.view = {};
+            scope.view.name = scope.name || '';
+            scope.view.iconClass = _.contains(attr.iconClass, 'fa-') ? _.trimLeft(attr.iconClass, 'fa-') : attr.iconClass;
+            scope.view.position = attr.position || 'left';
 
             transcludeFn(function (clone, scope) {
 
@@ -121,7 +126,7 @@ angular.module('registryApp.ui')
 
             return {
                 post: postLink
-            }
+            };
         }
 
         return {

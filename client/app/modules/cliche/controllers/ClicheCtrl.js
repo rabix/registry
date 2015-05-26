@@ -827,7 +827,7 @@ angular.module('registryApp.cliche')
             if ($scope.view.canUndo()) {
                 $scope.chron.undo();
                 reInitCliche();
-                Notification({message: 'Undoing', delay: 500});
+                Notification.primary({message: 'Undoing', delay: 500});
             } else {
                 Notification.warning({message: 'No more actions to undo. End of history queue.', delay: 1000});
             }
@@ -837,7 +837,7 @@ angular.module('registryApp.cliche')
             if ($scope.view.canRedo()) {
                 $scope.chron.redo();
                 reInitCliche();
-                Notification({message: 'Redoing', delay: 500});
+                Notification.primary({message: 'Redoing', delay: 500});
             } else {
                 Notification.warning({message: 'No more actions to redo', delay: 1000});
             }
