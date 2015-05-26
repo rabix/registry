@@ -5,10 +5,16 @@
             <div class="col-md-4">
                 <form class="search-form" ng-submit="searchApps()" novalidate>
                     <div class="input-group">
-                        <input type="text" class="form-control" ng-model="view.searchTerm" placeholder="Search apps" required>
+
+                        <rb-input type="text" ng-model="view.searchTerm" placeholder="Search apps" required></rb-input>
+
                         <span class="input-group-btn">
-                            <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
-                            <a ng-if="!(view.searchTerm | isEmpty)" class="btn btn-default" href ng-click="resetSearch()"><i class="fa fa-ban"></i></a>
+
+                            <rb-button intention="primary" type="submit"><i class="fa fa-search"></i></rb-button>
+
+                            <rb-button ng-if="!(view.searchTerm | isEmpty)" class="btn btn-default" href ng-click="resetSearch()">
+                                <i class="fa fa-ban"></i>
+                            </rb-button>
                         </span>
                     </div>
                 </form>

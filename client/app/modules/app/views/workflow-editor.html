@@ -1,10 +1,12 @@
 <div ng-class="view.classes" loading="view.loading">
 
 <div class="heading">
-    <a ng-if="view.mode === 'new'" ui-sref="apps" class="btn btn-default pull-left go-back"><i
-            class="fa fa-chevron-left"></i> Back</a>
-    <a ng-if="view.mode === 'edit'" ui-sref="workflow-view({id: view.workflow._id})"
-       class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
+    
+    <rb-button ng-if="view.mode === 'new'" ui-sref="apps" class="pull-left go-back"><i
+            class="fa fa-chevron-left"></i> Back</rb-button>
+
+    <rb-button ng-if="view.mode === 'edit'" ui-sref="workflow-view({id: view.workflow._id})"
+       class="pull-left go-back"><i class="fa fa-chevron-left"></i> Back</rb-button>
 
     <h1 class="main-heading">
         <div class="form-group workflow-name">
@@ -20,14 +22,6 @@
         </strong>
 
         <div class="actions pull-right">
-
-            <!--<button class="btn btn-default" title="Undo" ng-click="undoAction()" ng-disabled="!view.canUndo()">-->
-                <!--<i class="fa fa-undo"></i>-->
-            <!--</button>-->
-
-            <!--<button class="btn btn-default redo-btn" title="Redo" ng-click="redoAction()" ng-disabled="!view.canRedo()">-->
-                <!--<i class="fa fa-undo fa-flip-horizontal"></i>-->
-            <!--</button>-->
 
             <rb-button ng-click="editMetadata()" ng-disabled="view.saving" ><i class="fa fa-pencil"></i> Metadata</rb-button>
 
@@ -93,9 +87,8 @@
                             <input type="text" class="form-control" ng-model="view.searchTerm" placeholder="Search apps"
                                    required>
                         <span class="input-group-btn">
-                            <!--<button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>-->
-                            <button ng-disabled="view.searchTerm | isEmpty" class="btn btn-default" href
-                               ng-click="resetSearch()"><i class="fa fa-ban"></i></button>
+                            <rb-button ng-disabled="view.searchTerm | isEmpty"
+                               ng-click="resetSearch()"><i class="fa fa-ban"></i></rb-button>
                         </span>
                         </div>
                     </form>

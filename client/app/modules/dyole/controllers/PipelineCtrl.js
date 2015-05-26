@@ -50,7 +50,7 @@ angular.module('registryApp.dyole')
 
             var e = {
                 clientX: 300,
-                clientY: 150
+                clientY: 180
             };
 
             Pipeline.addNode($scope.previewNode, e.clientX, e.clientY);

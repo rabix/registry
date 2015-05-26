@@ -6,14 +6,14 @@
                 <th>Repo</th>
                 <th>Author</th>
                 <th class="right">
-                    <a href
-                       class="btn btn-default btn-toggle"
+                    <rb-button href
+                       class="btn-toggle"
                        tooltip="Toggle Versions"
                        tooltip-placement="left"
                        tooltip-append-to-body="true"
                        ng-click="toggleRevisions('scripts')">
                         <i class="fa" ng-class="{'fa-chevron-right': !view.active.scripts, 'fa-chevron-down': view.active.scripts}"></i>
-                    </a>
+                    </rb-button>
                 </th>
             </tr>
         </thead>
@@ -23,15 +23,15 @@
                 <td><a ui-sref="repo({id: script.repo._id})">{{ ::script.repo.owner }}/{{ ::script.repo.name }}</a></td>
                 <td><p tooltip="{{ ::script.author }}" tooltip-popup-delay="1000">{{ ::script.author }}</p></td>
                 <td class="right">
-                    <a class="btn btn-default" tooltip="Edit Script" ui-sref="cliche-edit({type: 'script', id: script._id, revision: 'latest'})"><i class="fa fa-pencil"></i></a>
-                    <a href
-                       class="btn btn-default btn-toggle"
+                    <rb-button  tooltip="Edit Script" ui-sref="cliche-edit({type: 'script', id: script._id, revision: 'latest'})"><i class="fa fa-pencil"></i></rb-button>
+                    <rb-button href
+                       class="btn-toggle"
                        tooltip="Toggle Versions ({{ ::script.revisions.length }})"
                        tooltip-placement="left"
                        tooltip-append-to-body="true"
                        ng-click="toggleRevisions('scripts', script)">
                         {{ ::script.revisions.length }} <i class="fa" ng-class="{'fa-chevron-right': !script.active, 'fa-chevron-down': script.active}"></i>
-                    </a>
+                    </rb-button>
                 </td>
             </tr>
             <tr class="inner-table" ng-class="{active: script.active}" ng-repeat-end>
@@ -53,7 +53,7 @@
                                     <i ng-if="!revision.description">No description</i>
                                 </td>
                                 <td class="right">
-                                    <a class="btn btn-sm btn-default" tooltip="Edit Revision" ui-sref="cliche-edit({type: 'script', id: script._id, revision: revision._id})"><i class="fa fa-pencil"></i></a>
+                                    <rb-button size="sm" tooltip="Edit Revision" ui-sref="cliche-edit({type: 'script', id: script._id, revision: revision._id})"><i class="fa fa-pencil"></i></rb-button>
                                 </td>
                             </tr>
                             <tr class="empty" ng-if="script.revisions.length === 0">
@@ -72,4 +72,4 @@
 </div>
 <!-- # .content-->
 
-<paginator class="paginator" page="view.page.scripts" total="view.total.scripts" handler="getMoreScripts(offset)"></paginator>
+<rb-paginator class="paginator" page="view.page.scripts" total="view.total.scripts" handler="getMoreScripts(offset)"></rb-paginator>

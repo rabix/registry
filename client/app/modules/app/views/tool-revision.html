@@ -1,14 +1,14 @@
 <div ng-class="view.classes" loading="view.loading">
 
     <div class="heading">
-        <a ui-sref="tool({id: view.revision.app_id, tab: 'revisions'})" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
+        <rb-button ui-sref="tool({id: view.revision.app_id, tab: 'revisions'})" class="pull-left go-back"><i class="fa fa-chevron-left"></i> Back</rb-button>
         <h1>
             <span>
                 {{ ::view.revision.name }}
                 <span class="tool-repo">({{ ::view.repo.owner }}/{{ ::view.repo.name }})</span>
                 <span class="version"><i class="fa fa-tag"></i> v{{ ::view.revision.version }}</span>
             </span>
-            <a ui-sref="cliche-edit({type: (view.app.is_script ? 'script' : 'tool'), id: view.revision.app_id, revision: view.revision._id})" class="btn btn-primary pull-right"><i class="fa fa-pencil"></i> Edit</a>
+            <rb-button ui-sref="cliche-edit({type: (view.app.is_script ? 'script' : 'tool'), id: view.revision.app_id, revision: view.revision._id})" intention="primary" class="pull-right"><i class="fa fa-pencil"></i> Edit</rb-button>
         </h1>
     </div>
     <!-- # .heading -->

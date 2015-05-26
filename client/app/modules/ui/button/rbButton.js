@@ -25,6 +25,7 @@ angular.module('registryApp.ui')
          * @param {expression=} ng-disabled En/Disable based on the expression
          * @param {string=} type Button type
          * @param {string=} class Space separated additional classes to add to element
+         * @param {string=} size Size value oneOf: [xs, sm, block, lg]; Default: none
          * @param {string=} aria-label Adds alternative text to button for accessibility, useful for icon buttons. // TODO: needs implementing
          *
          * @usage
@@ -77,13 +78,18 @@ angular.module('registryApp.ui')
 
         function preLink(scope, elem, attr) {
 
-            var intention = attr.intention;
+            var intention = attr.intention,
+                size = attr.size;
 
             if (typeof intention === 'undefined' || intention === '') {
                 intention = 'default';
             }
 
             elem.addClass('btn-' + intention);
+
+            if (typeof size !== 'undefined' && size !== '') {
+                elem.addClass('btn-' + size);
+            }
 
         }
 
