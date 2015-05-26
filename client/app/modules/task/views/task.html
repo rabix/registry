@@ -6,9 +6,11 @@
         <h1 class="main-heading">
             <rb-input placeholder="Task Template Name" name="jobName" ng-model="view.job.name" required class="job-name"></rb-input>
 
-            <a class="url" ng-if="view.job.url" ng-href="{{ ::view.job.url }}" target="_blank">url</a>
+            <rb-button ng-href="{{ ::view.job.url }}" target="_blank" ng-if="view.job.url">
+                url
+            </rb-button>
 
-            <div class="actions pull-right">K
+            <div class="actions pull-right">
 
                 <rb-button ng-if="view.mode === 'new'" ng-disabled="view.saving" class="app-pick-btn" ng-click="pickApp()">
                     <i class="fa fa-puzzle-piece"></i> Pick

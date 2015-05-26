@@ -40,15 +40,11 @@
                         <span class="label label-primary">{{ ::job.type }}</span>
                     </td>
                     <td>
-                        <rb-button ui-sref="repo({id: job.repo._id})">
-                            {{ ::job.repo.owner }}/{{ ::job.repo.name }}
-                        </rb-button>
+                        <a ui-sref="repo({id: job.repo._id})">{{ ::job.repo.owner }}/{{ ::job.repo.name }}</a>
                     </td>
                     <td>{{ ::job.author }}</td>
                     <td>
-                        <rb-button ng-href="{{ ::job.url }}" class="job-link" target="_blank">
-                            {{ ::job.url }}
-                        </rb-button>
+                        <a ng-href="{{ ::job.url }}" class="job-link" target="_blank">{{ ::job.url }}</a>
                     </td>
                     <td class="right">
                         <rb-button ui-sref="task({id: job._id})"  ng-if="view.user.id === job.user" tooltip="Edit Task Template">
