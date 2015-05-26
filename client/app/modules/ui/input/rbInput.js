@@ -23,6 +23,8 @@ angular.module('registryApp.ui')
          *
          * @param {string} ng-model Model for the input value
          * @param {string=} type Input type, any valid text input type
+         * @param {string=} id Id for the input field, for attribute for label (if included)
+         * @param {string=} name Name for input field
          * @param {boolean=} ng-required Specifies if field is required
          * @param {boolean=} ng-disabled En/Disable based on the expression
          * @param {boolean=} has-error Adds has-error class based on expression
