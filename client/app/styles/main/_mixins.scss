@@ -246,3 +246,11 @@
   -webkit-align-items: $align;
   align-items: $align;
 }
+
+@mixin flex-justify($justify: flex-start) {
+  -webkit-justify-content: $justify;
+  -moz-justify-content: $justify;
+  -ms-justify-content: $justify;
+  -o-justify-content: $justify;
+  justify-content: $justify;
+}

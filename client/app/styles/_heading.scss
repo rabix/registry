@@ -125,6 +125,7 @@ h2 {
   }
 
   .form-group {
+    max-width: 40%;
     &.workflow-name,
     &.tool-name {
       width: auto;
@@ -149,8 +150,7 @@ h2 {
       }
     }
 
-    &.tool-name {
-      max-width: 40%;
+    &.tool-name, .job-name {
       & > span {
         margin-right: 50px;
         max-width: 100%;

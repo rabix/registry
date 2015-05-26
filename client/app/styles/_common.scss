@@ -20,6 +20,18 @@
   @include flex(1 1 0);
 }
 
+.flex-end {
+  @include flex-justify(flex-end);
+}
+
+.flex-start {
+  @include flex-justify(flex-start);
+}
+
+.flex-space-between {
+  @include flex-justify(space-between);
+}
+
 %trace-box {
   position: absolute;
   padding: 20px 30px;

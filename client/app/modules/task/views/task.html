@@ -1,29 +1,35 @@
 <div ng-class="view.classes" loading="view.loading">
     <div class="heading">
-        <a ui-sref="tasks" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
-        <h1>
-            <div class="form-group job-name">
-                <input type="text" placeholder="Task Template Name" name="jobName" ng-model="view.job.name" class="form-control" required />
-            </div>
+        <rb-button ui-sref="tasks" class="pull-left go-back">
+            <i class="fa fa-chevron-left"></i> Back
+        </rb-button>
+        <h1 class="main-heading">
+            <rb-input placeholder="Task Template Name" name="jobName" ng-model="view.job.name" required class="job-name"></rb-input>
+
             <a class="url" ng-if="view.job.url" ng-href="{{ ::view.job.url }}" target="_blank">url</a>
 
-            <div class="actions pull-right">
+            <div class="actions pull-right">K
 
-                <button ng-if="view.mode === 'new'" ng-disabled="view.saving" class="app-pick-btn btn btn-default" ng-click="pickApp()">
+                <rb-button ng-if="view.mode === 'new'" ng-disabled="view.saving" class="app-pick-btn" ng-click="pickApp()">
                     <i class="fa fa-puzzle-piece"></i> Pick
-                </button>
+                </rb-button>
 
-                <button ng-if="view.mode === 'new' && view.user" ng-disabled="view.saving" class="job-create-btn btn btn-primary" ng-click="create()">
+                <rb-button ng-if="view.mode === 'new' && view.user" ng-disabled="view.saving" class="job-create-btn" intention="primary" ng-click="create()">
                     <i class="fa fa-plus"></i> Create
-                </button>
+                </rb-button>
 
-                <button ng-if="view.mode === 'edit' && view.user" ng-disabled="view.saving" class="job-update-btn btn btn-primary" ng-click="update()">
+                <rb-button ng-if="view.mode === 'edit' && view.user" ng-disabled="view.saving" class="job-update-btn" intention="primary" ng-click="update()">
                     <i class="fa fa-check"></i> Update
-                </button>
+                </rb-button>
 
                 <json-preview class="btn-group" json="{{ view.job.json.inputs }}"></json-preview>
 
-                <a href ng-if="view.mode === 'edit' && view.user && !view.job.repo.is_public && view.job.user._id === view.user.id" ng-click="delete()" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</a>
+                <rb-button
+                        ng-if="view.mode === 'edit' && view.user && !view.job.repo.is_public && view.job.user._id === view.user.id"
+                        ng-click="delete()"
+                        intention="danger">
+                    <i class="fa fa-trash"></i> Delete
+                </rb-button>
 
             </div>
             <!-- # .actions -->
