@@ -9,13 +9,13 @@
         </div>
         <div class="actions pull-right">
 
-            <button class="btn btn-default" title="Undo" ng-click="undoAction()" ng-disabled="!view.canUndo()">
+            <rb-button title="Undo" ng-click="undoAction()" ng-disabled="!view.canUndo()">
                 <i class="fa fa-undo"></i>
-            </button>
+            </rb-button>
 
-            <button class="btn btn-default redo-btn" title="Redo" ng-click="redoAction()" ng-disabled="!view.canRedo()">
+            <rb-button class="redo-btn" title="Redo" ng-click="redoAction()" ng-disabled="!view.canRedo()">
                 <i class="fa fa-undo fa-flip-horizontal"></i>
-            </button>
+            </rb-button>
 
             <button type="submit"
                     ng-click="updateTool()"
