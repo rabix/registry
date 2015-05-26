@@ -1,7 +1,7 @@
 <div ng-class="view.classes" loading="view.loading">
 
     <div class="heading">
-        <a ui-sref="apps" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
+        <rb-button ui-sref="apps" class="pull-left go-back"><i class="fa fa-chevron-left"></i> Back</rb-button>
         <h1>
             <span>
                 {{ ::view.workflow.pipeline.name }}
@@ -11,8 +11,8 @@
             </span>
 
             <div class="actions pull-right">
-                <a href ng-if="view.showDelete" ng-click="deleteWorkflow()" class="btn btn-danger" tooltip="Delete workflow" tooltip-placement="bottom"><i class="fa fa-trash"></i> Delete</a>
-                <a ui-sref="workflow-editor({id: view.workflow._id, mode: 'edit'})" class="btn btn-primary"><i class="fa fa-pencil"></i> Edit</a>
+                <rb-button href ng-if="view.showDelete" ng-click="deleteWorkflow()" intention="danger" tooltip="Delete workflow" tooltip-placement="bottom"><i class="fa fa-trash"></i> Delete</rb-button>
+                <rb-button ui-sref="workflow-editor({id: view.workflow._id, mode: 'edit'})" intention="primary"><i class="fa fa-pencil"></i> Edit</rb-button>
             </div>
         </h1>
     </div>
@@ -82,9 +82,9 @@
                         <td><p tooltip="{{ ::revision.description }}" tooltip-popup-delay="1000">{{ ::revision.description || 'This workflow doesn\'t have a description' }}</p></td>
 
                         <td class="right">
-                            <a class="btn btn-sm btn-default" tooltip="View Revision" ui-sref="workflow-view({id: revision._id})"><i class="fa fa-eye"></i></a>
-                            <a class="btn btn-sm btn-default" tooltip="Edit Revision" ui-sref="workflow-editor({id: revision._id, mode: 'edit'})"><i class="fa fa-pencil"></i></a>
-                            <a href ng-if="view.user.id === view.workflow.user._id && view.revisions.length > 1" class="btn btn-sm btn-default" tooltip="Delete Revision" ng-click="deleteRevision(revision._id)"><i class="fa fa-trash"></i></a>
+                            <rb-button size="sm" tooltip="View Revision" ui-sref="workflow-view({id: revision._id})"><i class="fa fa-eye"></i></rb-button>
+                            <rb-button size="sm" tooltip="Edit Revision" ui-sref="workflow-editor({id: revision._id, mode: 'edit'})"><i class="fa fa-pencil"></i></rb-button>
+                            <rb-button href ng-if="view.user.id === view.workflow.user._id && view.revisions.length > 1" size="sm" tooltip="Delete Revision" ng-click="deleteRevision(revision._id)"><i class="fa fa-trash"></i></rb-button>
                         </td>
 
                     </tr>
@@ -120,7 +120,7 @@
                         <td>{{ ::job.author }}</td>
                         <td><a ng-href="{{ ::job.url }}" class="job-link" target="_blank">{{ ::job.url }}</a></td>
                         <td class="right">
-                            <a ui-sref="task({id: job._id})" ng-if="view.user.id === job.user" class="btn btn-default" tooltip="Edit Task Template"><i class="fa fa-pencil"></i></a>
+                            <rb-button ui-sref="task({id: job._id})" ng-if="view.user.id === job.user" tooltip="Edit Task Template"><i class="fa fa-pencil"></i></rb-button>
                         </td>
                     </tr>
                     <tr class="empty" ng-if="view.jobs.length === 0">

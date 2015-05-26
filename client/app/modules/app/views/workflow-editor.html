@@ -183,7 +183,7 @@
                                         <li ng-repeat="workflow in filteredWorkflows=(apps.workflows | filter:view.searchTerm)">
 
                                             <a href drag="workflow.latest">
-                                                <span class="pointer pull-left"
+                                                <span class="pointer pull-left toggle-revisions"
                                                       ng-click="toggleAppRevisions(workflow._id)"
                                                       ng-if="workflow.revisions.length !== 0"><i class="fa"
                                                                                                  ng-class="{'fa-minus-square':view.appRevisions[workflow._id].toggled, 'fa-plus-square': !view.appRevisions[workflow._id].toggled}"></i></span>
