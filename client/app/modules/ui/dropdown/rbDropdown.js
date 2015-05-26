@@ -74,7 +74,6 @@ angular.module('registryApp.ui')
             
             console.log(scope.ngDisabled);
             scope.view = {};
-            scope.view.name = scope.name || '';
             scope.view.iconClass = _.contains(attr.iconClass, 'fa-') ? _.trimLeft(attr.iconClass, 'fa-') : attr.iconClass;
             scope.view.position = attr.position || 'left';
 
