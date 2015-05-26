@@ -1,7 +1,7 @@
 <!-- Single button dropdown -->
 <div class="btn-group" dropdown is-open="status.isopen" ng-class="view.position">
     <rb-button type="button" class="dropdown-toggle" dropdown-toggle ng-disabled="ngDisabled">
-        <i class="fa fa-{{view.iconClass}}"></i>
+        <i class="fa fa-{{view.iconClass}}" ng-if="view.iconClass"></i>
         {{ name || ''}}
         <span class="dropdown-content"></span> 
         <span class="caret"></span>
