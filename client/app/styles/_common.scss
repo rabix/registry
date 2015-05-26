@@ -13,6 +13,10 @@
 }
 
 .flex-one {
+  @include flex(1 1 auto);
+}
+
+.flex-one-no-basis {
   @include flex(1 1 0);
 }
 

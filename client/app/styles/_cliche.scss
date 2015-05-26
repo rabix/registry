@@ -3,6 +3,8 @@
 
     .master-form {
       & > .content {
+        @extend .flex-one-no-basis;
+
         & > .form {
           width: 100%;
         }
