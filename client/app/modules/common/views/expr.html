@@ -9,14 +9,14 @@
         <input ng-show="view.mode === 'literal'" type="{{ view.type }}" class="form-control" ng-model="view.literal" placeholder="{{ view.placeholder }}" ng-readonly="onlyExpr">
 
         <span class="input-group-btn">
-            <a href
-               class="btn btn-expression"
+            <rb-button href
+               class="btn-expression"
                tooltip="{{ view.transform.script || 'There is no expression defined. Click to add it' }}"
                tooltip-append-to-body="true"
                ng-click="editExpression()"
                ng-class="{'btn-warning': (view.mode === 'transform'), 'btn-default': (view.mode === 'literal')}">
                <i class="fa fa-code"></i>
-            </a>
+            </rb-button>
         </span>
     </div>
 

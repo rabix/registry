@@ -21,10 +21,10 @@
 
         <div class="actions">
 
-            <a ng-if="(view.user | isEmpty)" ng-href="/auth/login" class="btn btn-primary btn-block log-in-btn">
+            <rb-button ng-if="(view.user | isEmpty)" ng-href="/auth/login" intention="primary" class="btn-block log-in-btn">
                 <i class="fa fa-github"></i>
                 <span>Log In With GitHub</span>
-            </a>
+            </rb-button>
 
             <div ng-if="!(view.user | isEmpty)" class="user-details">
                 <span class="welcome"><img ng-src="{{ ::view.user.avatar_url }}" width="30" alt=""/> <strong> {{ ::view.user.login }}</strong></span>

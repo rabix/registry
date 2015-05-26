@@ -2,13 +2,13 @@
 
     <span ng-if="showString" title="{{ ::string }}">{{ ::string }}</span>
 
-    <a href
+    <rb-button href
        ng-hide="view.error"
        ng-class="{'btn-sm': isSmall}"
-       class="btn btn-orange btn-copy"
+       class="btn-orange btn-copy"
        ng-disabled="view.copying">
        {{ view.text }}
-    </a>
+    </rb-button>
 
     <p ng-show="view.error" class="error" title="{{ view.error }}">{{ view.error }}</p>
 

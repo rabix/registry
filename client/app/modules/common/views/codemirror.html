@@ -11,11 +11,11 @@
     </div>
 
     <div class="main-actions">
-        <button class="btn btn-warning" ng-click="execute()">Execute</button>
+        <rb-button intention="warning" ng-click="execute()">Execute</rb-button>
         <div class="pull-right">
-            <button class="btn btn-default" ng-click="cancel()">Cancel</button>
-            <button class="btn btn-danger" ng-click="clear()">Clear</button>
-            <button class="btn btn-primary" ng-click="load()">{{ view.firstTry ? 'Confirm' : 'Save' }}</button>
+            <rb-button class="separate" ng-click="cancel()">Cancel</rb-button>
+            <rb-button class="separate" intention="danger" ng-click="clear()">Clear</rb-button>
+            <rb-button class="separate" intention="primary" ng-click="load()">{{ view.firstTry ? 'Confirm' : 'Save' }}</rb-button>
         </div>
     </div>
 
