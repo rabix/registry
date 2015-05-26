@@ -5,7 +5,7 @@
         <button class="btn btn-primary" type="submit">
             <i class="fa fa-search"></i>
         </button>
-        <button class="btn btn-default" type="button" ng-show="ngModel.length && showClear" ng-click="clearModel()">
+        <button class="btn btn-default" type="button" ng-show="ngModel.length && showClear || alwaysShowClear" ng-click="clearModel()">
             <i class="fa fa-ban"></i>
         </button>
     </span>

@@ -88,11 +88,11 @@ angular.module('registryApp.ui')
 
             scope.clearModel = function()  {
                 scope.ngModel = '';
-                scope.$digest();
             };
 
             // add clear button if specified;
             scope.showClear = attr.type === 'search' && (attr.clear === '' || attr.clear === 'true');
+            scope.alwaysShowClear = scope.showClear && (attr.noButton === '' || attr.noButton === 'true');
 
             element.on('remove', function() {
                 scope.$destroy();
