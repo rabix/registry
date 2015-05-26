@@ -23,6 +23,8 @@ angular.module('registryApp.ui')
          *
          * @param {string} ng-model Model for the input value
          * @param {string=} type Input type, any valid text input type
+         * @param {string=} id Id for the input field, for attribute for label (if included)
+         * @param {string=} name Name for input field
          * @param {boolean=} ng-required Specifies if field is required
          * @param {boolean=} ng-disabled En/Disable based on the expression
          * @param {boolean=} has-error Adds has-error class based on expression
@@ -75,6 +77,7 @@ angular.module('registryApp.ui')
 
                 if (label) {
                     $(label).addClass('control-label');
+                    $(label).attr('for', element.find('input').attr('id'));
                     element.prepend(label);
                 }
 
@@ -115,10 +118,14 @@ angular.module('registryApp.ui')
             template: getTemplate,
             compile: function(element, attr) {
 
-                // append type, default to 'text'
+                var $input = element.find('input');
                 var type = attr.type || 'text';
+                var id = attr.id || _.uniqueId();
+                var name = attr.name || '';
 
-                element.find('input').attr('type', type);
+                $input.attr('type', type);
+                $input.attr('id', id);
+                $input.attr('name', name);
 
                 if (attr.noButton === '' || attr.noButton === 'true') {
                     element.find('button[type=submit]').remove();

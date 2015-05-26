@@ -15,12 +15,14 @@
   font-family: inherit;
   text-decoration: none;
 
+  margin: 0 3px;
+
   cursor: pointer;
   overflow: hidden;   // for ink containment
 
 }
 
-.separate {
-  margin: 0 2px;
+.no-space {
+  margin: 0;
 }
 

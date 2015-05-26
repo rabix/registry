@@ -5,7 +5,7 @@
 <div class="modal-body no-padding">
 
     <div class="tabs flex-box-column" ng-class="{loading: view.loading}">
-        <rb-tabs heading="false" tabs="Tools, Scripts, Workflows" tab-callback="switchTab(tab)">
+        <rb-tabs heading="false" tabs="Tools, Scripts, Workflows" tab-callback="switchTab(tab)" class="flex-auto">
             <li class="form-li">
                 <form class="search-form" ng-submit="searchApps()" novalidate>
                     <div class="input-group">
@@ -88,7 +88,7 @@
                     </tbody>
                 </table>
             </div>
-            <paginator class="paginator" page="view.page.tools" total="view.total.tools" handler="getMoreTools(offset)"></paginator>
+            <rb-paginator class="paginator" page="view.page.tools" total="view.total.tools" handler="getMoreTools(offset)"></rb-paginator>
         </section>
         <!-- # .tools -->
 
@@ -161,7 +161,7 @@
                     </tbody>
                 </table>
             </div>
-            <paginator class="paginator" page="view.page.scripts" total="view.total.scripts" handler="getMoreScripts(offset)"></paginator>
+            <rb-paginator class="paginator" page="view.page.scripts" total="view.total.scripts" handler="getMoreScripts(offset)"></rb-paginator>
         </section>
         <!-- # .scripts -->
 
@@ -234,7 +234,7 @@
                     </tbody>
                 </table>
             </div>
-            <paginator class="paginator" page="view.page.workflows" total="view.total.workflows" handler="getMoreWorkflows(offset)"></paginator>
+            <rb-paginator class="paginator" page="view.page.workflows" total="view.total.workflows" handler="getMoreWorkflows(offset)"></rb-paginator>
         </section>
         <!-- # .workflows -->
     </div>
