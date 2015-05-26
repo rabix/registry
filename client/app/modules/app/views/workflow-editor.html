@@ -82,16 +82,8 @@
             <div class="tabs right flex-one" >
 
                 <div class="tab flex-box-column flex-one" ng-class="{loading: view.filtering}" ng-show="view.tab === 'apps'">
-                    <form class="search-form" ng-submit="" novalidate>
-                        <div class="input-group">
-                            <input type="text" class="form-control" ng-model="view.searchTerm" placeholder="Search apps"
-                                   required>
-                        <span class="input-group-btn">
-                            <rb-button ng-disabled="view.searchTerm | isEmpty"
-                               ng-click="resetSearch()"><i class="fa fa-ban"></i></rb-button>
-                        </span>
-                        </div>
-                    </form>
+
+                    <rb-input type="search" ng-model="view.searchTerm" placeholder="Search apps" clear no-button required></rb-input>
 
                     <ul class="app-sidebar-list">
 
