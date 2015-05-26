@@ -83,7 +83,7 @@ angular.module('registryApp.ui')
                 scope.tabOptions = _.map(tabs, function(tab) {
                     return {
                         name: tab,
-                        slug: tabSlugify(tab)
+                        slug: _.kebabCase(tab)
                     };
                 });
             } else if (!scope.tabOptions) {
@@ -155,10 +155,6 @@ angular.module('registryApp.ui')
                 });
             });
 
-        }
-
-        function tabSlugify (tab) {
-            return tab.toLowerCase().replace(/\s+/g, '-');
         }
 
         function formatTemplateUrl (tab, src) {

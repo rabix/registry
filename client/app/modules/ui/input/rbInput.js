@@ -28,6 +28,7 @@ angular.module('registryApp.ui')
          * @param {boolean=} has-error Adds has-error class based on expression
          * @param {boolean=} clear Clears search field
          * @param {boolean=} no-button Removes search button
+         * @param {Function=} callback Callback is called on submit
          *
          * @usage
          *  <rb-input ng-model="model">
@@ -85,24 +86,17 @@ angular.module('registryApp.ui')
                 transclusionScope = scope;
             });
 
-            function clearModel () {
+            scope.clearModel = function()  {
                 scope.ngModel = '';
-                scope.$apply();
-            }
+                scope.$digest();
+            };
 
             // add clear button if specified;
-            if (attr.type === 'search' && (attr.clear === '' || attr.clear === 'true')) {
-                var $clearButton = $('<button class="btn btn-default" type="button"><i class="fa fa-ban"></i></button>');
-                element.find('.input-group-btn').prepend($clearButton);
-
-                $clearButton.on('click', clearModel);
-            }
-
+            scope.showClear = attr.type === 'search' && (attr.clear === '' || attr.clear === 'true');
 
             element.on('remove', function() {
                 scope.$destroy();
                 transclusionScope.$destroy();
-                if ($clearButton) { $clearButton.off(clearModel); }
             });
         }
 
@@ -115,7 +109,8 @@ angular.module('registryApp.ui')
                 ngDisabled: '=',
                 ngRequired: '=',
                 placeholder: '@',
-                hasError: '='
+                hasError: '=',
+                callback: '&'
             },
             template: getTemplate,
             compile: function(element, attr) {
