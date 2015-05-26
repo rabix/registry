@@ -456,8 +456,6 @@ angular.module('registryApp.app')
          */
         var onNodeDeselect = function () {
 
-            console.time('node:deselect');
-
             _.forEach($scope.view.suggestedValues, function(sugValue, keyName) {
                 var appId = keyName.split(Const.exposedSeparator)[0];
                 var inputId = '#' + keyName.split(Const.exposedSeparator)[1];
@@ -484,7 +482,6 @@ angular.module('registryApp.app')
                 $scope.$digest();
             }
 
-            console.timeEnd('node:deselect');
         };
 
         var prompt = false;
