@@ -17,14 +17,14 @@
                 <i class="fa fa-undo fa-flip-horizontal"></i>
             </rb-button>
 
-            <button type="submit"
-                    ng-click="updateTool()"
-                    ng-if="view.user && view.user.id === view.app.user._id"
-                    ng-disabled="view.saving"
-                    class="app-save-btn btn btn-primary">
+            <rb-button type="submit"
+                       ng-click="updateTool()"
+                       ng-if="view.user && view.user.id === view.app.user._id"
+                       ng-disabled="view.saving"
+                       class="app-save-btn btn btn-primary">
                 <i class="fa fa-check"></i> Update
-            </button>
-
+            </rb-button>
+            
             <div class="btn-group" role="group">
                 <json-preview title="Tool JSON" json="{{ view.tool }}"></json-preview>
                 <json-preview title="Job JSON" json="{{ view.job }}"></json-preview>
