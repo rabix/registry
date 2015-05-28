@@ -38,6 +38,7 @@ function resolveApp(name) {
         return false;
     }
 }
+
 /**
  * Bare Rabix schema model
  *

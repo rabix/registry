@@ -295,7 +295,7 @@ router.post('/apps/:action', filters.authenticated, function (req, res, next) {
 
     var name = (req.params.action === 'fork') ? data.name : data.tool.label;
 
-    App.count({name: name}).exec(function(err, count) {
+    App.count({name: name, repo: data.repo_id}).exec(function(err, count) {
         if (err) { return next(err); }
 
         if (count > 0) {
