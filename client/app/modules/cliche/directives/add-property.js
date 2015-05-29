@@ -31,7 +31,8 @@ angular.module('registryApp.cliche')
                             mode: 'add',
                             key: $scope.key,
                             toolType: $scope.toolType,
-                            properties: $scope.properties
+                            properties: $scope.properties,
+                            inputs: $scope.inputs
                         };
                     }
                 }

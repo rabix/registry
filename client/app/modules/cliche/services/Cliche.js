@@ -715,7 +715,10 @@ angular.module('registryApp.cliche')
 
                     var key = parseName(property);
 
-                    return _.contains(keys, key) && property.inputBinding;
+                    // make sure property is included in jobJSON inputs,
+                    // has an inputBinding
+                    // and that that inputBinding does not specify stdin
+                    return _.contains(keys, key) && property.inputBinding && !property.inputBinding.stdin;
                 });
 
             /* go through properties */
@@ -897,8 +900,16 @@ angular.module('registryApp.cliche')
                 })
                 /* apply transforms on stdin/stdout */
                 .then(function (res) {
+
+
+                    var inputStd = _.find(toolJSON.inputs, function(input) {
+                        return input.inputBinding && input.inputBinding.stdin;
+                    });
+
+                    var stdin = inputStd ? jobJSON.inputs[parseName(inputStd)].path : toolJSON.stdin;
+
                     return $q.all([
-                            applyTransform(toolJSON.stdin, toolJSON.stdin),
+                            applyTransform(stdin, stdin),
                             applyTransform(toolJSON.stdout, toolJSON.stdout)
                         ]).then(function(result) {
                             return {command: res.command, baseCommand: res.baseCommand, stdin: result[0], stdout: result[1]};
@@ -1181,9 +1192,9 @@ angular.module('registryApp.cliche')
          * @returns {Object|undefined}
          */
         var getStdinInput = function () {
-            return _.filter(toolJSON.inputs, function(input) {
+            return _.find(toolJSON.inputs, function(input) {
                 return input.inputBinding && input.inputBinding.stdin;
-            })[0];
+            });
         };
 
         /**
@@ -1192,17 +1203,17 @@ angular.module('registryApp.cliche')
          * @returns {Boolean}
          */
         var switchStdin = function (property) {
-            if (!property.inputBinding.stdin) {
-                return false;
+
+            if(property.inputBinding.stdin) {
+                _.forEach(toolJSON.inputs, function(input) {
+                    if (input.inputBinding && input.inputBinding.stdin) {
+                        delete input.inputBinding;
+                    }
+                });
+
+                property.inputBinding = !property.inputBinding ? {} : property.inputBinding;
+                property.inputBinding.stdin = true;
             }
-
-            _.forEach(toolJSON.inputs, function(input) {
-                if (input.inputBinding) {
-                    delete input.inputBinding.stdin;
-                }
-            });
-
-            property.inputBinding.stdin = true;
         };
 
         /**
