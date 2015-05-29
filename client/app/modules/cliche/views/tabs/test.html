@@ -41,7 +41,7 @@
 
         <div class="section bottom flex-box-column flex-one">
 
-            <div class="input-container">
+            <div class="input-container" ng-hide="view.job.inputs | isEmpty">
 
                 <input-field
                         ng-repeat="property in view.tool.inputs | orderBy:sortByPosition track by property['id']"
@@ -54,7 +54,7 @@
 
             </div>
 
-            <p class="alert alert-info" ng-if="view.tool.inputs.length === 0">There are no input ports defined.</p>
+            <p class="alert alert-info" ng-show="view.job.inputs | isEmpty">There are no input ports defined.</p>
         </div>
         <!-- # .section -->
 

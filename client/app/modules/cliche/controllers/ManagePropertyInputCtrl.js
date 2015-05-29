@@ -7,7 +7,7 @@
 'use strict';
 
 angular.module('registryApp.cliche')
-    .controller('ManagePropertyInputCtrl', ['$scope', '$modalInstance', 'Cliche', 'options', function ($scope, $modalInstance, Cliche, options) {
+    .controller('ManagePropertyInputCtrl', ['$scope', '$modalInstance', 'Cliche', 'options', 'Helper', function ($scope, $modalInstance, Cliche, options, Helper) {
 
         var key = options.key || 'name';
         var idObj = {n: '', o: ''};
@@ -39,12 +39,18 @@ angular.module('registryApp.cliche')
 
         $scope.view.disabled = ($scope.view.items && $scope.view.items.type) === 'record';
         $scope.view.inputBinding = !_.isUndefined($scope.view.property.inputBinding);
+        $scope.view.stdin = $scope.view.inputBinding && !_.isUndefined($scope.view.property.inputBinding.stdin);
 
         $scope.view.description = $scope.view.property.description || '';
         $scope.view.label = $scope.view.property.label || '';
         $scope.view.category = $scope.view.property['sbg:category'] || '';
 
+        $scope.view.jobInputs = Cliche.getJob().inputs;
+
         idObj.o = $scope.view.name;
+
+        $scope.view.stdinUsed = Cliche.getStdinInput();
+
 
         /**
          * Save property changes
@@ -67,6 +73,14 @@ angular.module('registryApp.cliche')
                     $scope.view.error = 'Choose another enum name, "' + $scope.view.enumName + '" already exists';
                     return false;
                 }
+            }
+
+            if ($scope.view.inputBinding && $scope.view.mode === 'edit') {
+                $scope.view.jobInputs[$scope.view.name] = Helper.getDefaultInputValue($scope.view.name, enumObj.symbols, $scope.view.type, false);
+            }
+
+            if (!$scope.view.inputBinding) {
+                delete $scope.view.jobInputs[$scope.view.name];
             }
 
             var inner = {
@@ -156,14 +170,32 @@ angular.module('registryApp.cliche')
          * Toggle inputBinding definition
          */
         $scope.toggleAdapter = function () {
-
-            if ($scope.view.inputBinding) {
+            
+            if ($scope.view.inputBinding && !$scope.view.stdin) {
                 $scope.view.property.inputBinding = cacheAdapter;
-            } else {
-                cacheAdapter = angular.copy($scope.view.property.adapter);
-                delete $scope.view.property.adapter;
-            }
+            } else if (!$scope.view.stdin) {
+                delete $scope.view.property.inputBinding.stdin;
 
+                cacheAdapter = _.isEmpty($scope.view.property.inputBinding) ? cacheAdapter : angular.copy($scope.view.property.inputBinding);
+                delete $scope.view.property.inputBinding;
+            }
+        };
+
+
+        /**
+         * switch standard input
+         */
+        $scope.switchStdin = function (input) {
+
+            $scope.view.inputBinding = $scope.view.stdin;
+            $scope.toggleAdapter();
+
+            if ($scope.view.stdin) {
+                input.inputBinding = {stdin: true};
+                Cliche.switchStdin(input);
+            } else {
+                input.inputBinding = cacheAdapter;
+            }
         };
 
         /**

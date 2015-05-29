@@ -6,7 +6,7 @@
 
         <input ng-if="view.mode === 'transform'" type="text" class="form-control" ng-model="view.transform.script" readonly>
 
-        <input ng-if="view.mode === 'literal'" type="{{ view.type }}" class="form-control" ng-model="view.literal" placeholder="{{ view.placeholder }}" ng-readonly="onlyExpr">
+        <input ng-if="view.mode === 'literal'" type="{{ view.type }}" class="form-control" ng-model="view.literal" placeholder="{{ view.placeholder }}" ng-readonly="onlyExpr" ng-disabled="ngDisabled">
 
         <span class="input-group-btn">
             <rb-button href

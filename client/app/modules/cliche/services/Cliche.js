@@ -715,7 +715,10 @@ angular.module('registryApp.cliche')
 
                     var key = parseName(property);
 
-                    return _.contains(keys, key) && property.inputBinding;
+                    // make sure property is included in jobJSON inputs,
+                    // has an inputBinding
+                    // and that that inputBinding does not specify stdin
+                    return _.contains(keys, key) && property.inputBinding && !property.inputBinding.stdin;
                 });
 
             /* go through properties */
@@ -897,8 +900,16 @@ angular.module('registryApp.cliche')
                 })
                 /* apply transforms on stdin/stdout */
                 .then(function (res) {
+
+
+                    var inputStd = _.find(toolJSON.inputs, function(input) {
+                        return input.inputBinding && input.inputBinding.stdin;
+                    });
+
+                    var stdin = inputStd ? jobJSON.inputs[parseName(inputStd)].path : toolJSON.stdin;
+
                     return $q.all([
-                            applyTransform(toolJSON.stdin, toolJSON.stdin),
+                            applyTransform(stdin, stdin),
                             applyTransform(toolJSON.stdout, toolJSON.stdout)
                         ]).then(function(result) {
                             return {command: res.command, baseCommand: res.baseCommand, stdin: result[0], stdout: result[1]};
@@ -1030,7 +1041,7 @@ angular.module('registryApp.cliche')
 
                     // _.isEmpty returns true for number values, which we don't want
                     // if there is a number value, then the prop is not empty
-                    if (_.isEmpty(tmp[adapter][key]) && !_.isNumber(tmp[adapter][key])) {
+                    if (_.isEmpty(tmp[adapter][key]) && !_.isNumber(tmp[adapter][key])  && !_.isBoolean(tmp.adapter[key])) {
                         delete tmp[adapter][key];
                     }
                 });
@@ -1177,6 +1188,35 @@ angular.module('registryApp.cliche')
         };
 
         /**
+         * checks if any input already has stdin set
+         * @returns {Object|undefined}
+         */
+        var getStdinInput = function () {
+            return _.find(toolJSON.inputs, function(input) {
+                return input.inputBinding && input.inputBinding.stdin;
+            });
+        };
+
+        /**
+         * sets stdin to true for param property
+         * @param property
+         * @returns {Boolean}
+         */
+        var switchStdin = function (property) {
+
+            if(property.inputBinding.stdin) {
+                _.forEach(toolJSON.inputs, function(input) {
+                    if (input.inputBinding && input.inputBinding.stdin) {
+                        delete input.inputBinding;
+                    }
+                });
+
+                property.inputBinding = !property.inputBinding ? {} : property.inputBinding;
+                property.inputBinding.stdin = true;
+            }
+        };
+
+        /**
          * Save tool locally
          *
          * @param mode
@@ -1220,6 +1260,8 @@ angular.module('registryApp.cliche')
             getTypes: getTypes,
             getSchema: getSchema,
             getAdapter: getAdapter,
+            getStdinInput: getStdinInput,
+            switchStdin: switchStdin,
             checkIfEnumNameExists: checkIfEnumNameExists,
             manageProperty: manageProperty,
             deleteProperty: deleteProperty,
