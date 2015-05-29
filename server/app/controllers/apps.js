@@ -304,7 +304,7 @@ router.post('/apps/:action', filters.authenticated, function (req, res, next) {
 
             var app = new App();
 
-            data.tool['@id'] = req.protocol + '://' + req.headers.host + '/tool/' + app._id;
+            data.tool['id'] = req.protocol + '://' + req.headers.host + '/tool/' + app._id;
 
             app.name = name;
             data.tool.label = name;
@@ -338,7 +338,7 @@ router.post('/apps/:action', filters.authenticated, function (req, res, next) {
 
                                         var revision = new Revision();
 
-                                        data.tool['@id'] = req.protocol + '://' + req.headers.host + '/tool-revision/' + revision._id;
+                                        data.tool['id'] = req.protocol + '://' + req.headers.host + '/tool-revision/' + revision._id;
 
                                         revision.name = app.name;
                                         revision.description = app.description;

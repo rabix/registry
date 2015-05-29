@@ -165,7 +165,7 @@ router.post('/revisions', filters.authenticated, function (req, res, next) {
 
                 var revision = new Revision();
 
-                data.tool['@id'] = req.protocol + '://' + req.headers.host + '/tool-revision/' + revision._id;
+                data.tool['id'] = req.protocol + '://' + req.headers.host + '/tool-revision/' + revision._id;
 
                 revision.name = app.name;
                 revision.description = data.tool.description;
