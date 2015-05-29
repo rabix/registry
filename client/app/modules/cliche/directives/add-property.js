@@ -32,7 +32,8 @@ angular.module('registryApp.cliche')
                             key: $scope.key,
                             toolType: $scope.toolType,
                             properties: $scope.properties,
-                            inputs: $scope.inputs
+                            inputs: $scope.inputs,
+                            isNested: $scope.isNested
                         };
                     }
                 }
@@ -76,7 +77,8 @@ angular.module('registryApp.cliche')
                 toolType: '@',
                 properties: '=',
                 inputs: '=?',
-                handler: '&'
+                handler: '&',
+                isNested: '@?'
             },
             controller: 'AddPropertyCtrl',
             link: function() {}
