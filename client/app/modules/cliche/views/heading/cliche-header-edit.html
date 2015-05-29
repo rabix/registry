@@ -1,0 +1,52 @@
+<div class="heading">
+
+    <a ui-sref="tool({id: view.app._id, tab: 'preview'})" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
+
+    <h1 class="main-heading">
+        <div class="form-group tool-name" ng-class="{'has-error': form.tool.label.$invalid}">
+            <a href class="version revision" ng-click="changeRevision()"><i class="fa fa-tag"></i> v{{ ::view.revision.version }}</a>
+            <span title="{{ ::view.app.name }}">{{ ::view.app.name }}</span>
+        </div>
+        <div class="actions pull-right">
+
+            <rb-button title="Undo" ng-click="undoAction()" ng-disabled="!view.canUndo()">
+                <i class="fa fa-undo"></i>
+            </rb-button>
+
+            <rb-button class="redo-btn" title="Redo" ng-click="redoAction()" ng-disabled="!view.canRedo()">
+                <i class="fa fa-undo fa-flip-horizontal"></i>
+            </rb-button>
+
+            <rb-button type="submit"
+                       ng-click="updateTool()"
+                       ng-if="view.user && view.user.id === view.app.user._id"
+                       ng-disabled="view.saving"
+                       class="app-save-btn btn btn-primary">
+                <i class="fa fa-check"></i> Update
+            </rb-button>
+            
+            <div class="btn-group" role="group">
+                <json-preview title="Tool JSON" json="{{ view.tool }}"></json-preview>
+                <json-preview title="Job JSON" json="{{ view.job }}"></json-preview>
+            </div>
+
+            <rb-dropdown position="right" icon-class="cog">
+                <ul class="dropdown-menu" role="menu" ng-click="toggleMenu()">
+                    <li><a href ng-click="loadJsonEditor()"><i class="fa fa-cloud-download"></i> <span>Import</span></a></li>
+                    <li ng-if="view.user">
+                        <a href ng-disabled="view.saving" ng-click="forkTool()">
+                            <i class="fa fa-code-fork"></i> <span>Fork</span>
+                        </a>
+                    </li>
+                    <li ng-if="view.user && view.user.id === view.app.user._id && !view.app.repo.is_public">
+                        <a href ng-disabled="view.saving" ng-click="deleteRevision()">
+                            <i class="fa fa-trash"></i> <span>Delete</span>
+                        </a>
+                    </li>
+                </ul>
+            </rb-dropdown>
+        </div>
+        <!-- # .actions -->
+    </h1>
+
+</div>

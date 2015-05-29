@@ -1,0 +1,10 @@
+<div class="modal-body">
+    <div class="json-pretty-scroll">
+        <pre class="json-trace" pretty-json="::data.json"></pre>
+    </div>
+</div>
+
+<div class="modal-footer">
+    <copy data="{{ data.jsonString }}"></copy>
+    <rb-button ng-click="cancel()">Close</rb-button>
+</div>

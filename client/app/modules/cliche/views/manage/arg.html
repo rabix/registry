@@ -1,0 +1,47 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="cancel()"><span>&times;</span><span class="sr-only">Close</span></button>
+    <h4 class="modal-title">
+        <span>{{ (view.mode === 'edit') ? 'Edit' : 'Add' }} Argument</span>
+    </h4>
+</div>
+<div class="modal-body">
+
+    <form ng-submit="save()" name="view.form" novalidate>
+
+        <div class="row">
+
+            <div class="col-md-3">
+                <div class="form-group" ng-class="{'has-error': (view.form.value.$invalid && view.form.$dirty)}">
+                    <label class="control-label">Value</label>
+                    <expr ng-model="view.property.argValue" handle-item-update="updateArgument(value)"></expr>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <rb-input id="prefix" name="prefix" ng-model="view.property.prefix">
+                    <label>Prefix</label>
+                </rb-input>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-group" ng-class="{'has-error': (view.form.separator.$invalid && view.form.$dirty)}">
+                    <label class="control-label">Separator</label>
+                    <separator type="item" model="view.property.separator" is-disabled="view.disabled"></separator>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <rb-input type="number" id="position" name="position" ng-model="view.property.position" has-error="(view.form.position.$invalid && view.form.$dirty)">
+                    <label>Position</label>
+                </rb-input>
+            </div>
+        </div>
+
+        <div class="form-group main-actions">
+            <rb-button type="button" intention="warning" ng-click="cancel()">Cancel</rb-button>
+            <rb-button type="submit" intention="primary">Save</rb-button>
+        </div>
+
+    </form>
+
+</div>

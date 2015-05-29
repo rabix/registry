@@ -123,7 +123,7 @@ var validator = {
                 var inProp = inputs.properties[input];
 
                 if (inProp) {
-                    if (inProp.type === 'file' || (inProp.items && inProp.items.type === 'file')) {
+                    if (inProp.type === 'File' || (inProp.items && inProp.items.type === 'File')) {
                         if (checkConnected(schema.id, input)) {
                             _self.errors.push('There is required input file: "' + input + '" that is not set on node: ' + schema.id);
                         }

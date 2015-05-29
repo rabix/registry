@@ -1,6 +1,4 @@
-@import "variables";
-@import "bootstrap";
-@import "mixins";
+@import "main/main";
 
 html, body {
   height: 100%;
@@ -24,6 +22,8 @@ body {
   height: 100%;
   @extend .flex-one;
 }
+
+@import "ui/ui";
 
 @import "common";
 @import "components/components";

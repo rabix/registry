@@ -1,0 +1,72 @@
+<div class="modal-header">
+    <h4 class="modal-title">
+        <a href="{{::data['id']}}" target="_blank">
+            {{ data.label || data.name || data.softwareDescription.name }}
+        </a>
+    </h4>
+</div>
+
+<div class="modal-body no-padding">
+    <div class="col">
+        <rb-tabs tabs="Info, Schema" tab-callback="switchTab(tab)" page="true"></rb-tabs>
+        <!--<rb-tabs tabs="Info, Schema, Tags" tab-callback="switchTab(tab)" page="true"></rb-tabs>-->
+
+        <div class="tabs right flex-one modal-tabs" ng-switch="view.tab">
+            <div class="tab" ng-switch-when="info">
+                <p>
+                    <strong>Type:</strong>
+                    <span> {{ ::data['class'] }} </span>
+                </p>
+                <p>
+                    <strong>Author:</strong>
+                    <span> {{ ::data['sbg:createdBy'] }} </span>
+                </p>
+                <div>
+                    <strong>Description{{ ::data.description.length ? '' : ':'}}</strong>
+                    <div class="form-group" ng-class="{ 'format': data.description.length}">
+                        <div class="markdown-body" markdown="data.description"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div ng-switch-when="inputs">
+
+                <form class="form">
+
+                    <ul ng-repeat="input in view.inputs">
+                        <li class="row">
+                            <strong class="col-xs-3">
+                                {{ ::input["id"] }}
+                            </strong>
+                            <div class="checkbox col-xs-9">
+                                <label for="{{ ::input['id'] }}">
+                                    <input id="{{ ::input['id'] }}" type="checkbox" ng-model="inputValues[input['id']]" ng-change="onScatterChange(input['id'], inputValues[input['id']])"/>
+                                    Scatter
+                                </label>
+                            </div>
+                            <div class="input-connections col-xs-12">
+                                <ul ui-sortable="sortableOptions" ng-model="inputConnections[input['id']]">
+
+                                    <li ng-repeat="connection in inputConnections[input['id']]" class="connection" data-input="{{ ::input['id'] }}">
+                                        <div><i class="fa fa-bars"></i> Connection - src: {{ ::connection.start_node}}</div>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+
+                </form>
+
+            </div>
+            <div ng-switch-when="tags">
+                <p>Tags</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-footer">
+    <button class="btn btn-default" ng-click="cancel()">Close</button>
+    <button class="btn btn-primary" ng-click="ok()">Save</button>
+</div>

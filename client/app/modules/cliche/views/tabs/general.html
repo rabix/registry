@@ -1,0 +1,123 @@
+<div class="content content-ten">
+    <div class="row-margin">
+        <div class="col-md-6">
+            <form class="section">
+                <legend class="legend-small">Docker Container <help-message message="help.cliche.general.environment"></help-message></legend>
+
+                <div class="row">
+
+                    <rb-input id="imgId" name="imgId" ng-model="view.reqDockerRequirement.imgId">
+                        <label>Image ID</label>
+                    </rb-input>
+
+                    <rb-input id="imgRepo" name="imgRepo" ng-model="view.reqDockerRequirement.imgRepo">
+                        <label>Image Repository</label>
+                    </rb-input>
+
+                    <rb-input id="imgTag" name="imgTag" ng-model="view.reqDockerRequirement.imgTag">
+                        <label>Image Tag</label>
+                    </rb-input>
+                </div>
+            </form>
+
+            <div ng-if="view.type === 'tool'" class="section">
+
+                <legend class="legend-small">Resources <help-message message="help.cliche.general.resources"></help-message></legend>
+
+                <div class="row-margin">
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">CPU</label>
+                            <expr ng-model="view.reqCpuRequirement.value" type="number" handle-item-update="updateResource(value, 'CpuRequirement')"></expr>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Memory (MB)</label>
+                            <expr ng-model="view.reqMemRequirement.value" type="number" handle-item-update="updateResource(value, 'MemRequirement')"></expr>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-6">
+            <div class="section">
+                <legend class="legend-small">Command <help-message message="help.cliche.general.command"></help-message></legend>
+
+                <div class="form-group">
+                    <label class="control-label">Base Command</label>
+
+                    <div class="enum-list-wrap">
+                        <a href ng-click="addBaseCmd()" class="btn btn-default add-enum-item"><i class="fa fa-plus"></i></a>
+                        <div class="enum-list-container">
+                            <ul class="enum-list" ng-class="{wide: view.tool.baseCommand.length === 1}">
+                                <li ng-repeat="baseCmd in view.tool.baseCommand track by $index">
+                                    <div class="enum-field form-group form-group-file">
+                                        <expr ng-model="baseCmd" index="{{ $index }}" handle-item-update="updateCliAdapter(value, index, 'baseCommand')" handle-item-blur="splitBaseCmd(value, index)"></expr>
+                                    </div>
+                                    <a href ng-hide="view.tool.baseCommand.length === 1" class="fa fa-remove remove-btn" ng-click="removeBaseCmd($index)"></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- # Base Cmd-->
+
+                <div class="row-margin">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Stdin</label>
+                            <expr ng-model="view.tool.stdin" handle-item-update="updateCliAdapter(value, null, 'stdin')" ng-disabled="view.stdinUsed"></expr>
+                            <p class="help-block" ng-if="view.stdinUsed">
+                                {{ view.stdinInput.id}} is already being used as standard input.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Stdout</label>
+                            <expr ng-model="view.tool.stdout" handle-item-update="updateCliAdapter(value, null, 'stdout')"></expr>
+                        </div>
+                    </div>
+                </div>
+                <!-- # StdIn and StdOut-->
+            </div>
+
+            <div class="section">
+                <legend class="legend-small">
+                    Arguments
+                    <help-message message="help.cliche.general.argument"></help-message>
+                </legend>
+
+
+                <div class="enum-list-wrap">
+                    <add-property
+                            type="arg"
+                            handler="generateCommand()"
+                            properties="view.tool.argAdapters"
+                            class="add-enum-item large">
+                    </add-property>
+
+                    <div class="enum-list-container">
+                        <property-arg
+                                ng-repeat="arg in view.tool.argAdapters | orderBy:sortByPosition track by $index"
+                                ng-model="arg"
+                                index="{{ $index }}">
+                        </property-arg>
+
+                        <p class="alert alert-info large" ng-if="view.tool.argAdapters | isEmpty">Click the plus button to add command line binding.</p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

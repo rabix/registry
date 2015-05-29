@@ -3,6 +3,8 @@
 
     .master-form {
       & > .content {
+        @extend .flex-one-no-basis;
+
         & > .form {
           width: 100%;
         }
@@ -10,10 +12,6 @@
         .section.top {
           padding: 10px 10px 0 10px;
           border-bottom: 1px solid #ddd;
-        }
-
-        .section {
-          margin-bottom: 30px;
         }
 
         .row {

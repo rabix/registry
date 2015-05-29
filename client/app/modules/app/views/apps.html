@@ -1,0 +1,69 @@
+<div ng-class="view.classes" loading="view.loading">
+
+    <div class="filters">
+        <div class="row no-margin">
+            <div class="col-md-4">
+                <form class="search-form" ng-submit="searchApps()" novalidate>
+                    <div class="input-group">
+
+                        <rb-input type="text" ng-model="view.searchTerm" placeholder="Search apps" required></rb-input>
+
+                        <span class="input-group-btn">
+
+                            <rb-button intention="primary" type="submit"><i class="fa fa-search"></i></rb-button>
+
+                            <rb-button ng-if="!(view.searchTerm | isEmpty)" class="btn btn-default" href ng-click="resetSearch()">
+                                <i class="fa fa-ban"></i>
+                            </rb-button>
+                        </span>
+                    </div>
+                </form>
+            </div>
+
+            <div class="col-md-8">
+                <label class="checkbox inline" ng-show="view.user">
+                    <input type="checkbox" ng-model="view.mine" ng-change="toggleMyApps()" /> mine
+                </label>
+
+                <rb-button ui-sref="cliche-new({type: 'tool'})" ng-if="view.tab === 'tools'" class="pull-right" intention="primary">
+                    <i class="fa fa-plus"></i> New Tool
+                </rb-button>
+
+                <rb-button ui-sref="cliche-new({type: 'script'})" ng-if="view.tab === 'scripts'" class="pull-right" intention="primary">
+                    <i class="fa fa-plus"></i> New Script
+                </rb-button>
+
+                <rb-button ui-sref="workflow-editor({id: 0, mode: 'new'})" ng-if="view.tab === 'workflows'" class="pull-right" intention="primary">
+                    <i class="fa fa-plus"></i> New Workflow
+                </rb-button>
+            </div>
+
+        </div>
+    </div>
+    <!-- # .filters -->
+
+    <rb-tabs tabs="Tools, Scripts, Workflows" tab-callback="switchTab(tab)" heading="false" page="true"></rb-tabs>
+
+    <div ng-show="!view.loading" class="content content-tbl flex-box-column">
+
+        <div class="tabs flex-box-column flex-one">
+
+            <div ng-show="view.tab === 'tools'" class="tab tools flex-box-column flex-one">
+                <ng-include class="include flex-box-column flex-one" src="'modules/app/views/tabs/tools.html'"></ng-include>
+            </div>
+            <!-- # .tools -->
+
+            <div ng-show="view.tab === 'scripts'" class="tab scripts flex-box-column flex-one">
+                <ng-include class="include flex-box-column flex-one" src="'modules/app/views/tabs/scripts.html'"></ng-include>
+            </div>
+            <div ng-show="view.tab === 'workflows'" class="tab workflows flex-box-column flex-one">
+                <ng-include class="include flex-box-column flex-one" src="'modules/app/views/tabs/workflows.html'"></ng-include>
+            </div>
+
+        </div>
+        <!-- # .tabs-->
+
+    </div>
+    <!-- # .content -->
+
+</div>

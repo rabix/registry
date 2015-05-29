@@ -1,0 +1,23 @@
+<div class="page home">
+
+    <rb-tabs tabs="Buttons, Forms, Pagination, Tabs" tab-callback="switchTab(tab)"></rb-tabs>
+
+    <div class="content content-tbl flex-box-column">
+
+        <div ng-if="view.activeTab === 'buttons'" class="content content-ten">
+            <ng-include class="include flex-box-column flex-one" src="'modules/ui/main/views/tabs/buttons.html'"></ng-include>
+        </div>
+
+        <div ng-if="view.activeTab === 'forms'" class="content content-ten">
+            <ng-include class="include flex-box-column flex-one" src="'modules/ui/main/views/tabs/forms.html'"></ng-include>
+        </div>
+
+        <div ng-if="view.activeTab === 'pagination'" class="content content-ten">
+            <ng-include class="include flex-box-column flex-one" src="'modules/ui/main/views/tabs/pagination.html'"></ng-include>
+        </div>
+
+        <div ng-if="view.activeTab === 'tabs'" class="content content-ten">
+            <ng-include class="include flex-box-column flex-one" src="'modules/ui/main/views/tabs/tabs.html'"></ng-include>
+        </div>
+    </div>
+</div>

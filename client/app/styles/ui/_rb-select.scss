@@ -1,0 +1,7 @@
+.rb-select {
+  p, label {
+    &:focus {
+      outline: 0;
+    }
+  }
+}
