@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('registryApp')
+angular.module('registryApp.common')
     .filter('encode', [function() {
         return function(string) {
 

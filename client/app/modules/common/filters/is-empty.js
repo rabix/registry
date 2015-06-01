@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('registryApp')
+angular.module('registryApp.common')
     .filter('isEmpty', [function() {
         return function(object) {
 

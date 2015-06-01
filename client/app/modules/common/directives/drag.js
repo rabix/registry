@@ -5,7 +5,7 @@
  */
 'use strict';
 
-angular.module('registryApp')
+angular.module('registryApp.common')
     .directive('drag', ['$rootScope', 'Notification', function ($rootScope, Notification) {
         return {
             scope: {
