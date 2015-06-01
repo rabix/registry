@@ -1,11 +1,11 @@
 'use strict';
 
 angular.module('registryApp')
-    .controller('HomeCtrl', ['$scope', '$timeout', 'Sidebar', 'User', 'Loading', function ($scope, $timeout, Sidebar, User, Loading) {
+    .controller('HomeCtrl', ['$scope', '$timeout', 'Navigation', 'User', 'Loading', function ($scope, $timeout, Navigation, User, Loading) {
 
         var subscribeTimeoutId;
 
-        Sidebar.setActive('home');
+        Navigation.setActive('home');
 
         $scope.view = {};
         $scope.view.showError = false;

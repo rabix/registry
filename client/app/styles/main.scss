@@ -8,18 +8,18 @@ html, body {
 body {
   color: #555;
   background-color: $gray;
-  background-image: url(/rbx/images/bg.png);
+  background-image: url('/rbx/images/bg.png');
   font-family: 'Open Sans', sans-serif;
 }
 
 .container-fluid {
   padding: 0;
   height: 100%;
-  @extend .flex-box-row;
+  @extend .flex-box-column;
 }
 
 .main {
-  height: 100%;
+  @include flex-box();
   @extend .flex-one;
 }
 
@@ -27,7 +27,7 @@ body {
 
 @import "common";
 @import "components/components";
-@import "sidebar";
+@import "navigation";
 @import "loader";
 @import "error";
 @import "elements";
@@ -38,7 +38,6 @@ body {
 .page {
   position: relative;
   background-color: #fff;
-  height: 100%;
   @extend .flex-box-column;
 
   .content {
@@ -47,6 +46,7 @@ body {
     padding: 20px;
     @extend %scrollbar;
     @extend .flex-one;
+    @extend .flex-box-column;
 
     &.content-tbl {
       padding: 0;
@@ -54,6 +54,11 @@ body {
 
     &.content-mix {
       padding-top: 0;
+    }
+
+    .markdown-body {
+      overflow: initial;
+      @extend .flex-auto;
     }
 
 //    &.content-ten {
@@ -69,8 +74,15 @@ body {
       display: block;
     }
     .subscribe {
+      @include flex-box();
       text-align: center;
-      margin-top: 100px;
+      margin-top: 20px;
+      align-self: center;
+
+      input {
+        height: 100%;
+      }
+
       .alert {
         width: 400px;
         margin: 5px auto;

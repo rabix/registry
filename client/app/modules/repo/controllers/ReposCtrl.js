@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('registryApp.repo')
-    .controller('ReposCtrl', ['$scope', '$q', '$injector', 'Repo', 'Sidebar', 'Loading', 'User', function ($scope, $q, $injector, Repo, Sidebar, Loading, User) {
+    .controller('ReposCtrl', ['$scope', '$q', '$injector', 'Repo', 'Navigation', 'Loading', 'User', function ($scope, $q, $injector, Repo, Navigation, Loading, User) {
 
-        Sidebar.setActive('repos');
+        Navigation.setActive('repos');
 
         $scope.view = {};
         $scope.view.page = 1;

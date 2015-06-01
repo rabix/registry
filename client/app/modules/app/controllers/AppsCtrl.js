@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('registryApp.app')
-    .controller('AppsCtrl', ['$scope', '$q', 'Tool', 'Workflow', 'Sidebar', 'Api', 'Loading', 'User',function ($scope, $q, Tool, Workflow, Sidebar, Api, Loading, User) {
+    .controller('AppsCtrl', ['$scope', '$q', 'Tool', 'Workflow', 'Navigation', 'Api', 'Loading', 'User',function ($scope, $q, Tool, Workflow, Navigation, Api, Loading, User) {
 
-        Sidebar.setActive('apps');
+        Navigation.setActive('apps');
 
         $scope.view = {};
         $scope.view.loading = true;
