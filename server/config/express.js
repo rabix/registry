@@ -13,9 +13,21 @@ var methodOverride = require('method-override');
 var passport = require('passport');
 var session = require('express-session');
 
+var unless = require('express-unless');
+
 var winston = require('../common/logger');
 var clientPath = '';
 var rbxPath = '';
+
+var checkPermission = function (req, res, next) {
+    console.log(req.user, req.isAuthenticated());
+    if (req.user) {
+        return next();
+    } else {
+        console.log('Redirecting, not authenticated');
+        res.redirect('/');
+    }
+};
 
 module.exports = function (app, config) {
 
@@ -35,14 +47,14 @@ module.exports = function (app, config) {
     app.use(bodyParser.urlencoded({
         extended: true
     }));
+
     app.use(cookieParser());
     app.use(compress());
 
-    app.use('/', express.static(clientPath));
-    app.use('/rbx', express.static(config.root + '/static'));
+    app.use('/', express.static(config.root + '/static'));
     app.use('/docs', express.static(config.root + '/docs'));
 
-    app.use(function(req, res, next) {
+    app.use(function (req, res, next) {
         res.header('Access-Control-Allow-Origin', '*');
         res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
         next();
@@ -54,7 +66,7 @@ module.exports = function (app, config) {
     app.use(logger({
         format: 'dev',
         'stream': {
-            write: function(str) {
+            write: function (str) {
                 winston.info(str);
             }
         }
@@ -67,9 +79,12 @@ module.exports = function (app, config) {
         saveUninitialized: true,
         resave: true
     }));
+
     app.use(passport.initialize());
     app.use(passport.session());
 
+    app.use('/rbx*', checkPermission);
+    app.use('/rbx', express.static(clientPath));
 
     var controllersPath = path.join(__dirname, '../app/controllers');
     fs.readdirSync(controllersPath).forEach(function (file) {
@@ -99,8 +114,8 @@ module.exports = function (app, config) {
      * All errors are intercepted here and formated
      */
     app.use(function (err, req, res, next) {
-        console.error('Caught err: ',err);
-        winston.error({route: req.url || req.originalRoute, status: err.status || 500,error: err.body, message: err.message || 'Request parse error'});
+        console.error('Caught err: ', err);
+        winston.error({route: req.url || req.originalRoute, status: err.status || 500, error: err.body, message: err.message || 'Request parse error'});
         res.status(err.status || 500).json({error: err.body, message: err.message || 'Request parse error'});
     });
 
