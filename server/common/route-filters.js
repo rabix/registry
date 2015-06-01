@@ -12,6 +12,16 @@ module.exports = {
         res.json({message: 'You must be logged in!'});
     },
 
+    routeAuth: function (req, res, next) {
+
+        if (req.isAuthenticated()) {
+            return next();
+        } else {
+            res.redirect('/');
+        }
+
+    },
+
     authenticateClient: function (req, res, next) {
         //TODO Figure out how to authenticate rabix client on API
 

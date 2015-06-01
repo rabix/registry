@@ -15,10 +15,12 @@ var session = require('express-session');
 
 var winston = require('../common/logger');
 var clientPath = '';
+var rbxPath = '';
 
 module.exports = function (app, config) {
 
     clientPath = config.clientPath;
+    rbxPath = config.rbxPath;
 
     if (config.clientPath.charAt(0) !== '/') {
         clientPath = config.root + config.clientPath;
@@ -37,6 +39,7 @@ module.exports = function (app, config) {
     app.use(compress());
 
     app.use('/', express.static(clientPath));
+    app.use('/rbx', express.static(config.root + '/static'));
     app.use('/docs', express.static(config.root + '/docs'));
 
     app.use(function(req, res, next) {
