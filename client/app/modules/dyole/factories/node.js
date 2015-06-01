@@ -88,10 +88,10 @@ angular.module('registryApp.dyole')
             },
 
             icons: {
-                input: '/images/icon-input-1.png',
-                output: '/images/icon-output-2.png',
-                workflow: '/images/icon-workflow.png',
-                default: '/images/logo.png'
+                input: '/rbx/images/icon-input-1.png',
+                output: '/rbx/images/icon-output-2.png',
+                workflow: '/rbx/images/icon-workflow.png',
+                default: '/rbx/images/logo.png'
             },
 
             buttons: {
@@ -599,7 +599,7 @@ angular.module('registryApp.dyole')
 
                 if (!this.infoButton && !this.removeNodeButton) {
 
-                    this.buttons.rename.image.url = 'images/' + this.buttons.rename.image.name;
+                    this.buttons.rename.image.url = '/rbx/images/' + this.buttons.rename.image.name;
 
                     this.infoButton = this.canvas.button({
                         fill: this.buttons.info.fill,
@@ -608,7 +608,7 @@ angular.module('registryApp.dyole')
                         radius: this.buttons.radius,
                         border: this.buttons.border,
                         image: {
-                            url: 'images/' + this.buttons.info.image.name,
+                            url: '/rbx/images/' + this.buttons.info.image.name,
                             width: 14,
                             height: 14
                         }
@@ -624,7 +624,7 @@ angular.module('registryApp.dyole')
                         radius: this.buttons.radius,
                         border: this.buttons.border,
                         image: {
-                            url: 'images/' + this.buttons.delete.image.name,
+                            url: '/rbx/images/' + this.buttons.delete.image.name,
                             width: 14,
                             height: 14
                         }
@@ -644,7 +644,7 @@ angular.module('registryApp.dyole')
                             radius: 10,
                             border: this.buttons.border,
                             image: {
-                                url: 'images/' + this.buttons.rename.image.name,
+                                url: '/rbx/images/' + this.buttons.rename.image.name,
                                 width: 13,
                                 height: 13
                             },

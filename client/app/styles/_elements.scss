@@ -216,7 +216,7 @@
   padding: 10px;
   overflow: auto;
   background-color: $gray;
-  background-image: url(../images/bg.png);
+  background-image: url('/rbx/images/bg.png');
   border-top: 1px solid #ddd;
   text-align: center;
   @extend .flex-auto;

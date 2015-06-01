@@ -17,7 +17,7 @@ angular.module('registryApp')
                     $body = $(document),
                     $svg = $('.pipeline'),
                     images = {},
-                    preloadImgBase = '/images/',
+                    preloadImgBase = '/rbx/images/',
                     image, $img;
 
                 /**
