@@ -10,7 +10,7 @@
 
             <div class="actions pull-right" ng-if="!(view.user | isEmpty)">
                 <i ng-if="view.repo.git" class="fa fa-github github-flag" tooltip="This repo is imported from GitHub" tooltip-placement="left"></i>
-                <a href ng-if="!view.repo.is_public && view.user.id === view.repo.user._id" ng-disabled="view.saving" ng-click="publish()" class="btn btn-primary"><i class="fa fa-check"></i> Publish</a>
+                <!--<a href ng-if="!view.repo.is_public && view.user.id === view.repo.user._id" ng-disabled="view.saving" ng-click="publish()" class="btn btn-primary"><i class="fa fa-check"></i> Publish</a>-->
                 <a ng-if="!view.repo.git && view.user.login === view.repo.owner" href ng-click="manageRepoModal()" class="btn btn-default"><i class="fa fa-pencil"></i> Edit</a>
             </div>
         </h1>

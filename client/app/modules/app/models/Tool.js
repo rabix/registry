@@ -20,7 +20,7 @@ angular.module('registryApp.app')
                 params.q = searchTerm;
             }
 
-            params.mine = mine || null;
+            params.mine = mine || true;
 
             return Api.apps.get(params).$promise;
 
@@ -42,7 +42,7 @@ angular.module('registryApp.app')
                 params.q = searchTerm;
             }
 
-            params.mine = mine || null;
+            params.mine = mine || true;
 
             return Api.apps.get(params).$promise;
 

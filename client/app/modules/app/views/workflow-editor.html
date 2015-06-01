@@ -100,7 +100,7 @@
                                     <p class="alert alert-info">
                                         <span ng-if="repoType === 'myRepositories' && !view.user"> {{ view.message }}</span>
                                         <span ng-if="repoType === 'myRepositories' && view.user">You don't have any repository yet</span>
-                                        <span ng-if="repoType === 'otherRepositories'">There are no other repositories</span>
+                                        <span ng-if="repoType === 'publicRepositories'">There are no public repositories</span>
                                     </p>
                                 </li>
                                 <li ng-repeat="(repoName, apps) in ::repoTypeObj"

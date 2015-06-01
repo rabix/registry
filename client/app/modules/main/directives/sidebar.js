@@ -49,7 +49,7 @@ angular.module('registryApp')
 
                 $scope.view.navigation = [
                     {name: 'apps', state: 'apps', desc: 'Apps', icon: 'puzzle-piece'},
-                    {name: 'task tpls', state: 'tasks', desc: 'Task Templates', icon: 'rocket'},
+//                    {name: 'task tpls', state: 'tasks', desc: 'Task Templates', icon: 'rocket'},
 //                    {name: 'builds', state: 'builds', desc: 'Builds', icon: 'cube'},
                     {name: 'repos', state: 'repos', desc: 'Repositories', icon: 'code-fork'},
                     {name: 'workflow editor', state: 'workflow-editor', params: {id: 0, mode: 'new'}, desc: 'Workflow Editor', icon: 'terminal'},

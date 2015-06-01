@@ -184,24 +184,24 @@ angular.module('registryApp.repo')
          */
         $scope.publish = function() {
 
-            var modalInstance = $modal.open({
-                template: $templateCache.get('modules/common/views/confirm-action.html'),
-                controller: 'ModalCtrl',
-                windowClass: 'modal-confirm',
-                resolve: {data: function () { return {message: 'Are you sure you want to publish this repo?'}; }}
-            });
-
-            modalInstance.result
-                .then(function() {
-
-                    $scope.view.saving = true;
-
-                    Repo.publishRepo($scope.view.repo._id)
-                        .then(function() {
-                            $scope.view.repo.is_public = true;
-                            $scope.view.saving = false;
-                        });
-                });
+//            var modalInstance = $modal.open({
+//                template: $templateCache.get('modules/common/views/confirm-action.html'),
+//                controller: 'ModalCtrl',
+//                windowClass: 'modal-confirm',
+//                resolve: {data: function () { return {message: 'Are you sure you want to publish this repo?'}; }}
+//            });
+//
+//            modalInstance.result
+//                .then(function() {
+//
+//                    $scope.view.saving = true;
+//
+//                    Repo.publishRepo($scope.view.repo._id)
+//                        .then(function() {
+//                            $scope.view.repo.is_public = true;
+//                            $scope.view.saving = false;
+//                        });
+//                });
 
         };
 

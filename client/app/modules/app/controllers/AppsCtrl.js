@@ -11,6 +11,8 @@ angular.module('registryApp.app')
         $scope.view.searchTerm = '';
         $scope.view.tab = 'tools';
 
+        $scope.view.mine = true;
+
         $scope.view.tools = [];
         $scope.view.scripts = [];
         $scope.view.workflows = [];

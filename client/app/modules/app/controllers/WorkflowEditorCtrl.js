@@ -27,7 +27,7 @@ angular.module('registryApp.app')
         /* group visibility flags for repos */
         $scope.view.groups = {
             myRepositories: false,
-            otherRepositories: false
+            publicRepositories: false
         };
 
         /* visibility flags for repo groups that hold apps */
@@ -35,14 +35,14 @@ angular.module('registryApp.app')
 
         $scope.view.repoTypes = {
             myRepositories: {},
-            otherRepositories: {}
+            publicRepositories: {}
         };
 
         /* list of my repos */
         $scope.view.myRepositories = {};
 
         /* list of other repos */
-        $scope.view.otherRepositories = {};
+        $scope.view.publicRepositories = {};
 
         /* list of user repos*/
         $scope.view.userRepos= [];
@@ -114,19 +114,19 @@ angular.module('registryApp.app')
             $scope.view.message = result[0].message;
 
             $scope.view.repoTypes.myRepositories = {};
-            $scope.view.repoTypes.otherRepositories = {};
+            $scope.view.repoTypes.publicRepositories = {};
 
             tools = formatApps((result[0].list ? result[0].list.tools : {}));
             scripts = formatApps((result[0].list ? result[0].list.scripts : {}));
-            workflows = formatApps(result[2].list || {});
+            workflows = formatApps(result[1].list || {});
 
             mergeToolsWorkflows('myRepositories', tools, scripts, workflows);
 
-            tools = formatApps((result[1].list ? result[1].list.tools : {}));
-            scripts = formatApps((result[1].list ? result[1].list.scripts : {}));
-            workflows = formatApps(result[3].list || {});
-            
-            mergeToolsWorkflows('otherRepositories', tools, scripts, workflows);
+//            tools = formatApps((result[1].list ? result[1].list.tools : {}));
+//            scripts = formatApps((result[1].list ? result[1].list.scripts : {}));
+//            workflows = formatApps(result[3].list || {});
+//
+//            mergeToolsWorkflows('publicRepositories', tools, scripts, workflows);
 
         };
 
@@ -206,9 +206,9 @@ angular.module('registryApp.app')
         /* load tools/workflows grouped by repositories */
         $q.all([
             Tool.getGroupedTools('my'),
-            Tool.getGroupedTools('other'),
+//            Tool.getGroupedTools('other'),
             Workflow.groupedWorkflows('my'),
-            Workflow.groupedWorkflows('other')
+//            Workflow.groupedWorkflows('other')
         ]).then(appsLoaded);
 
         /**
@@ -236,12 +236,12 @@ angular.module('registryApp.app')
                 $scope.view.repoGroups[repo] = toggleState;
             });
 
-            _.forEach($scope.view.repoTypes.otherRepositories, function (obj, repo) {
+            _.forEach($scope.view.repoTypes.publicRepositories, function (obj, repo) {
                 $scope.view.repoGroups[repo] = toggleState;
             });
 
             $scope.view.groups.myRepositories = toggleState;
-            $scope.view.groups.otherRepositories = toggleState;
+            $scope.view.groups.publicRepositories = toggleState;
 
             toggleState = !toggleState;
 
