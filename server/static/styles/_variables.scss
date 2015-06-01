@@ -1,0 +1,14 @@
+// Core variables and mixins
+// bootstrap variable overrides
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,300,600);
+
+$brand-primary: #1d6385;
+$font-family-base: 'Open Sans';
+
+$grid-gutter-width: 15px;
+$container-large-desktop: (940px + $grid-gutter-width);
+
+$separation-padding: 130px;
+
+@import "bootstrap/variables";
+@import "bootstrap/mixins";
