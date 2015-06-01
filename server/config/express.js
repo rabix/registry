@@ -13,8 +13,6 @@ var methodOverride = require('method-override');
 var passport = require('passport');
 var session = require('express-session');
 
-var unless = require('express-unless');
-
 var winston = require('../common/logger');
 var clientPath = '';
 var rbxPath = '';
