@@ -17,7 +17,7 @@
   /* logo and sidebar toggle */
   .logo-wrap {
     position: relative;
-    height: 55px;
+    height: 53px;
     margin-right: 28px;
 
     .logo {
@@ -131,7 +131,6 @@
         text-shadow: 1px 1px 1px $dark-blue;
         color: $orange;
         padding: 15px;
-        border-bottom: 1px solid lighten($sidebar-blue, 10%);
 
         &:focus, &:hover {
           text-shadow: 1px 1px 1px #fff;
@@ -165,10 +164,8 @@
         margin-top: 0px;
       }
 
-      &:first-child {
-        a {
-          border-left: 1px solid lighten($sidebar-blue, 10%);
-        }
+      a {
+        border-left: 1px solid lighten($sidebar-blue, 10%);
       }
 
       &.active {
