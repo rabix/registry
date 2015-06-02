@@ -70,12 +70,13 @@
         height: 125px;//temporary
         padding: 10px;
         margin: 0 auto;
-        border-radius: 15px;
+        border-radius: 50%;
+        border: 3px solid $light-text-color;
+        @include box-shadow(0 5px 6px rgba(0, 0, 0, .2));
 
-        background-color: $box-background-color;
         color: #fff;
         text-align: center;
-        @include text-shadow(0 5px 6px darken($box-background-color, 15%));
+        @include text-shadow(0 5px 6px rgba(0, 0, 0, .2));
         &:hover, &:focus, &:active {
           text-decoration: none;
           background-color: darken($box-background-color, 10%);
