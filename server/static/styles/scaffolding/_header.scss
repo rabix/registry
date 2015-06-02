@@ -79,6 +79,26 @@ header {
     opacity: 0;
   }
 
+  .login-button {
+    display: none;
+  }
+
+  .go-to-apps {
+    color: #fff;
+    margin-right: 10px;
+
+    &:hover {
+      text-decoration: none;
+    }
+
+    .user-avatar {
+      border-radius: 50%;
+      height: 34px;
+      width: 34px;
+      margin-right: 10px;
+    }
+  }
+
   &.scrolled {
 
     .logo-wrap, .nav-steps {

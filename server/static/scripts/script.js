@@ -4,12 +4,8 @@
     var $header = $('header');
     var $body = $('body');
     var $window = $(window);
-    //var steps = [
-    //    $('#step1'),
-    //    $('#step2'),
-    //    $('#step3'),
-    //    $('#step4')
-    //];
+    var $loginBtn = $('.login-button');
+    var $goToApps = $('.go-to-apps');
 
     var steps = $('article[id^="step"]');
 
@@ -58,7 +54,7 @@
      * handles 'active' class on navbar items
      * @param e
      */
-    function handleActiveClass(e) {
+    function handleActiveClass() {
         var scrollTop = $body.scrollTop();
 
         steps.each(function(index, step) {
@@ -72,10 +68,27 @@
         });
     }
 
+    /**
+     * handle login button
+     */
     $.get('/api/user', function (data) {
         if (data && data.user) {
+            $loginBtn.remove();
+            var $gotoBtn = $('<a class="go-to-apps pull-right" href="/rbx">Go to Apps</a>');
+            var $avatar = $('<img class="user-avatar"/>');
+
+            $avatar.attr('src', data.user.avatar_url);
+            $gotoBtn.prepend($avatar);
+
+            $header.append($gotoBtn);
+
+
+
+
             // change 'login with github' with 'go to app'
         }
+    }).fail(function () {
+        $loginBtn.css('display', 'block');
     });
 
 
