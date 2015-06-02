@@ -15,44 +15,33 @@
   color: #fff;
 
   /* logo and sidebar toggle */
-  .logo-wrap {
-    position: relative;
+  .logo-wrap{
+    padding: 0 15px 0 43px;
+    background: url('../../rbx/images/logo.png') no-repeat 15px;
+    background-size: 21px 28px;
     height: 53px;
     margin-right: 28px;
+  }
 
-    .logo {
-      font-size: 22px;
-      line-height: 50px;
+  .logo {
+    font-size: 22px;
+    position: relative;
 
+    top: 6px;
+    color: #fff;
+    text-decoration: none;
+    text-shadow: 2px 2px 2px $dark-blue;
+
+    small {
+      font-size: 10px;
       position: relative;
-      padding: 0 0 0 43px;
-      color: #fff;
-      text-decoration: none;
-      text-shadow: 2px 2px 2px $dark-blue;
-      float: left;
-
-      margin-left: -3px;
-
-      background: {
-        image: url('/rbx/images/logo.png');
-        repeat: no-repeat;
-        position: left 15px center;
-      }
-
-      @include background-size(21px 28px);
-
-      small {
-        font-size: 10px;
-        line-height: 10px;
-        display: block;
-        color: #f3f3f3;
-        position: absolute;
-        right: 0;
-        bottom: 6px;
-        text-shadow: none;
-      }
-
+      left: 28px;
+      top: -6px;
+      display: block;
+      color: #f3f3f3;
+      text-shadow: none;
     }
+
 
     .toggle-sidebar {
       display: inline-block;

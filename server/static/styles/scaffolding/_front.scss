@@ -1,0 +1,92 @@
+@import "compass";
+
+
+.heading {
+  background-color: $dark-background-color;
+  margin: 0;
+  padding-top: 200px + $header-height; //temporary
+  height: 100vh;
+  min-height: 600px; //temporary
+
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    display: block;
+    width: 100%;
+    height: 500px;
+    @include gradient-vertical(rgba(0, 0, 0, .3), rgba(0, 0, 0, 0));
+  }
+
+  &:after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    display: block;
+    width: 100%;
+    height: 500px;
+    @include gradient-vertical(rgba(0, 0, 0, 0), rgba(76, 106, 150, 0.31));
+  }
+
+  .container {
+    position: relative;
+    z-index: 2;
+  }
+
+  .rabix-title {
+    padding-left: 140px;
+    background: image-url('logo.png') no-repeat 48px;
+    background-size: 45px;
+
+    h1 {
+      font-weight: lighter;
+      color: $light-header-color;
+    }
+
+    h3 {
+      color: $light-header-color;
+      font-weight: normal;
+    }
+  }
+
+  p.value {
+    color: $light-text-color;
+    padding: 50px 0;
+  }
+
+  .step-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    .step {
+      display: inline-block;
+      margin-right: -4px;
+
+      a {//temporary
+        @extend %nav-step;
+
+        width: 125px;//temporary
+        height: 125px;//temporary
+        padding: 10px;
+        margin: 0 auto;
+        border-radius: 15px;
+
+        background-color: $box-background-color;
+        color: #fff;
+        text-align: center;
+        @include text-shadow(0 5px 6px darken($box-background-color, 15%));
+        &:hover, &:focus, &:active {
+          text-decoration: none;
+          background-color: darken($box-background-color, 10%);
+        }
+
+        i {
+          display: block;
+          font-size: 55px;
+          margin-bottom: 10px;
+        }
+      }
+    }
+  }
+}

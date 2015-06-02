@@ -4,13 +4,45 @@
     <meta charset="UTF-8">
     <title>Static</title>
     <link rel="stylesheet" href="styles/main.css"/>
+    <link rel="stylesheet" href="bower_components/fontawesome/css/font-awesome.css"/>
 </head>
 <body>
 
 <header>
-    <a class="btn btn-default pull-right" href="/auth/login">Login</a>
+    <div class="logo-wrap pull-left">
+        <a href="#top" class="logo">
+            Rabix
+            <small>alpha</small>
+        </a>
+    </div>
+
+    <ol class="nav-steps">
+        <li class="step step1">
+            <a href="#step1">
+                <span class="fa fa-check"></span>
+            </a>
+        </li>
+        <li class="step step2">
+            <a href="#step2">
+                <span class="fa fa-share-alt"></span>
+            </a>
+        </li>
+        <li class="step step3">
+            <a href="#step3">
+                <span class="fa fa-terminal"></span>
+            </a>
+        </li>
+        <li class="step step4">
+            <a href="#step4">
+                <span class="fa fa-send-o"></span>
+            </a>
+        </li>
+    </ol>
+
+    <a class="btn btn-primary pull-right" href="/auth/login"><i class="fa fa-github"></i> Login with GitHub</a>
 </header>
-<section class="heading jumbotron">
+
+<section class="heading jumbotron" id="top">
     <div class="container">
         <!--part above the fold, full screen, stretch to fit, some kind of cool graphic-->
         <div class="rabix-title">
@@ -22,10 +54,38 @@
         <p class="value">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi, aut corporis eius eligendi et ex fugit illo incidunt, ipsa, labore laboriosam nemo nostrum pariatur possimus quam quibusdam quidem rerum voluptatum!</p>
 
         <ol class="step-list row">
-            <li class="step step-one col-md-3"><a href="#step1"></a></li>
-            <li class="step step-two col-md-3"><a href="#step2"></a></li>
-            <li class="step step-three col-md-3"><a href="#step3"></a></li>
-            <li class="step step-four col-md-3"><a href="#step4"></a></li>
+            <li class="step step-one col-md-3">
+                <a href="#step1">
+                    <span>
+                        <i class="fa fa-check"></i>
+                        Describe
+                    </span>
+                </a>
+            </li>
+            <li class="step step-two col-md-3">
+                <a href="#step2">
+                    <span>
+                        <i class="fa fa-share-alt"></i>
+                        Create
+                    </span>
+                </a>
+            </li>
+            <li class="step step-three col-md-3">
+                <a href="#step3">
+                    <span>
+                        <i class="fa fa-terminal"></i>
+                        Run
+                    </span>
+                </a>
+            </li>
+            <li class="step step-four col-md-3">
+                <a href="#step4">
+                    <span>
+                        <i class="fa fa-send-o"></i>
+                        Share
+                    </span>
+                </a>
+            </li>
         </ol>
     </div>
 </section>
@@ -65,7 +125,6 @@
     <article class="container">
         <div class="row">
             <div class="col-sm-4">
-                <img src="http://placehold.it/300x300" alt=""/>
             </div>
             <p class="col-sm-8">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur expedita nihil obcaecati placeat quibusdam reprehenderit soluta veritatis, voluptate. Aliquam at atque commodi consequatur cupiditate deserunt, distinctio dolorem eum explicabo facere facilis fuga fugit incidunt mollitia non officia, perferendis placeat provident quae quidem quo quod reiciendis rerum saepe sequi unde voluptatum.</p>
         </div>
@@ -80,5 +139,7 @@
 
 </footer>
 
+<script src="bower_components/jquery/dist/jquery.min.js"></script>
+<script src="scripts/script.js"></script>
 </body>
 </html>

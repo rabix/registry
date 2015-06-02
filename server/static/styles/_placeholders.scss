@@ -1,0 +1,12 @@
+%nav-step {
+  display: table;
+  text-decoration: none;
+  color: lighten($gray-light, 10%); //temporary
+
+  span {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+  }
+
+}

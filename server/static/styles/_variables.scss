@@ -2,13 +2,35 @@
 // bootstrap variable overrides
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:400,300,600);
 
-$brand-primary: #1d6385;
+//$brand-primary: #1d6385;
+$brand-primary: #526EA0;
+$brand-success: #178022;
+$brand-info: #77e6e0;
+$brand-warning: #ff9823;
+$brand-danger: #ff2f3c;
+
 $font-family-base: 'Open Sans';
 
-$grid-gutter-width: 15px;
+$grid-gutter-width: 30px;
 $container-large-desktop: (940px + $grid-gutter-width);
+
+$btn-primary-border: $brand-primary;
+$btn-success-border: $brand-success;
+$btn-info-border: $brand-info;
+$btn-warning-border: $brand-warning;
+$btn-danger-border: $brand-danger;
+
+
 
 $separation-padding: 130px;
 
 @import "bootstrap/variables";
+
+// custom variables
+
+$light-header-color: $gray-lighter;
+$dark-header-background: #20242F;
+$dark-background-color: #2C3241;
+$light-text-color: #8E91A0;
+$box-background-color: $brand-primary;
 @import "bootstrap/mixins";

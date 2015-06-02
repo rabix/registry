@@ -1,0 +1,88 @@
+header {
+  background-color: $dark-header-background;
+  padding: 10px 10px 11px 10px;
+  height: $header-height;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  z-index: 3;
+
+  .logo-wrap {
+    padding: 0 15px 0 43px;
+    background: image-url('logo.png') no-repeat 15px;
+    background-size: 21px 28px;
+    margin: -10px 0 0 -10px;
+
+    // transition
+    @include transition(opacity .9s);
+    opacity: 0;
+
+  }
+
+  .logo {
+    font-size: 22px;
+    position: relative;
+    top: 6px;
+    color: #fff;
+    text-decoration: none;
+    text-shadow: 2px 2px 2px $gray-dark;
+
+    small {
+      font-size: 10px;
+      position: relative;
+      left: 28px;
+      top: -6px;
+      display: block;
+      color: #f3f3f3;
+      text-shadow: none;
+    }
+  }
+
+  .nav-steps {
+    float: left;
+    padding: 0;
+    margin: 0;
+
+    li {
+      display: inline-block;
+      margin-right: 15px;
+
+      a {
+        @extend %nav-step;
+
+        width: 35px; //temporary
+        height: 35px; //temporary
+        border-radius: 20px; //temporary
+        border: 2px solid lighten($gray-light, 10%); //temporary
+        font-size: 20px;
+
+        @include transition(color .8s, border-color .8s);
+
+
+        &.active {
+          border-color: $gray-lighter;//temporary
+          color: $gray-lighter; //temporary
+        }
+
+        &:hover, &:focus, &:active {
+          color: $gray-lighter;  //temporary
+          border-color: $gray-lighter;//temporary
+        }
+        
+
+      }
+    }
+
+
+    // transition
+    @include transition(opacity .9s);
+    opacity: 0;
+  }
+
+  &.scrolled {
+
+    .logo-wrap, .nav-steps {
+      opacity: 1;
+    }
+  }
+}

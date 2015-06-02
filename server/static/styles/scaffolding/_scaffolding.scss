@@ -1,21 +1,8 @@
 $header-height: $input-height-base + 20; //temporary
 $footer-height: 200px;
 
-header {
-  height: $header-height;
-  width: 100%;
-  position: fixed;
-  top: 0;
-  z-index: 2;
-}
-
-.heading {
-  padding-top: 250px + $header-height; //temporary
-  height: 100vh;
-  min-height: 600px; //temporary
-}
-
-@import "heading";
+@import "header";
+@import "front";
 @import "description";
 @import "cwl";
 @import "footer";
