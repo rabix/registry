@@ -6,16 +6,12 @@
 
                 <div class="row">
 
-                    <rb-input id="imgId" name="imgId" ng-model="view.reqDockerRequirement.imgId">
+                    <rb-input id="imgId" name="dockerImageId" ng-model="view.reqDockerRequirement.dockerImageId">
                         <label>Image ID</label>
                     </rb-input>
 
-                    <rb-input id="imgRepo" name="imgRepo" ng-model="view.reqDockerRequirement.imgRepo">
-                        <label>Image Repository</label>
-                    </rb-input>
-
-                    <rb-input id="imgTag" name="imgTag" ng-model="view.reqDockerRequirement.imgTag">
-                        <label>Image Tag</label>
+                    <rb-input id="dockerPull" name="dockerPull" ng-model="view.reqDockerRequirement.dockerPull">
+                        <label>Docker Pull</label>
                     </rb-input>
                 </div>
             </form>
