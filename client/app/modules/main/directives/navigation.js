@@ -47,10 +47,10 @@ angular.module('registryApp')
         $scope.NavigationService = Navigation;
 
         $scope.view.navigation = [
-            {name: 'apps', state: 'apps', desc: 'Apps', icon: 'puzzle-piece'},
+            {name: 'apps', state: 'apps', desc: 'My Apps', icon: 'puzzle-piece'},
 //                    {name: 'task tpls', state: 'tasks', desc: 'Task Templates', icon: 'rocket'},
 //                    {name: 'builds', state: 'builds', desc: 'Builds', icon: 'cube'},
-            {name: 'repos', state: 'repos', desc: 'Repositories', icon: 'code-fork'}
+            {name: 'repos', state: 'repos', desc: 'My Repositories', icon: 'code-fork'}
 //            {name: 'workflow editor', state: 'workflow-editor', params: {id: 0, mode: 'new'}, desc: 'Workflow Editor', icon: 'terminal'},
 //            {name: 'tool editor', state: 'cliche-new', params: {type: 'tool'}, desc: 'Tool Editor', icon: 'terminal'},
 //            {name: 'script editor', state: 'cliche-new', params: {type: 'script'}, desc: 'Script Editor', icon: 'terminal'},
