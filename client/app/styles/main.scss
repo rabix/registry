@@ -39,6 +39,7 @@ body {
   position: relative;
   background-color: #fff;
   @extend .flex-box-column;
+  @extend .flex-one;
 
   .content {
     overflow-x: hidden;
@@ -115,6 +116,8 @@ body {
   &.workflow-edit {
     & > .content {
       overflow-x: hidden;
+      @extend .flex-box-row;
+      @extend .flex-one;
     }
 
     .sidebar-col {
