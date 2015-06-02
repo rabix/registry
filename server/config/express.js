@@ -18,7 +18,7 @@ var clientPath = '';
 var rbxPath = '';
 
 var checkPermission = function (req, res, next) {
-    console.log(req.user, req.isAuthenticated());
+
     if (req.user) {
         return next();
     } else {
