@@ -172,8 +172,7 @@ angular.module('registryApp.ui')
             replace: true,
             templateUrl: 'modules/ui/tabs/default.html',
             compile: function(element, attr) {
-                console.log('compiling again');
-                
+
                 if (attr.tabClasses) {
                     $(element).find('.tabs-inner').addClass(attr.tabClasses);
                 }

@@ -37,11 +37,11 @@ angular
     })
     .config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$localForageProvider', 'markdownConfig', function ($stateProvider, $urlRouterProvider, $httpProvider, $localForageProvider, markdownConfig) {
         $stateProvider
-            .state('home', {
-                url: '/',
-                templateUrl: 'modules/main/views/home.html',
-                controller: 'HomeCtrl'
-            })
+//            .state('home', {
+//                url: '/',
+//                templateUrl: 'modules/main/views/home.html',
+//                controller: 'HomeCtrl'
+//            })
             .state('builds', {
                 url: '/builds',
                 templateUrl: 'modules/main/views/builds.html',
@@ -60,7 +60,7 @@ angular
 
         ZeroClipboard.config({swfPath: 'bower_components/zeroclipboard/dist/ZeroClipboard.swf'});
 
-        $urlRouterProvider.otherwise('/');
+        $urlRouterProvider.otherwise('/apps');
 
         $httpProvider.interceptors.push('HTTPInterceptor');
 

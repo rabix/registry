@@ -72,6 +72,12 @@
         });
     }
 
+    $.get('/api/user', function (data) {
+        if (data && data.user) {
+            // change 'login with github' with 'go to app'
+        }
+    });
+
 
 
 })(window.jQuery);
