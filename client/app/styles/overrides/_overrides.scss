@@ -561,14 +561,14 @@ ul {
 }
 
 /* Btn group override */
-.btn-group {
-  &.right {
-    .dropdown-menu {
-      left: auto;
-      right: 0;
-    }
+
+.right {
+  .dropdown-menu {
+    left: auto;
+    right: 0;
   }
 }
+
 
 /* Dropdown menu override */
 .dropdown-menu {

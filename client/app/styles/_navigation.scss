@@ -65,7 +65,11 @@ $header-hover-color: darken($sidebar-blue, 5%);
     }
 
     .welcome {
-      float:left;
+      padding: 9px;
+      cursor: pointer;
+
+      @include navigation-hover();
+
       .user-name {
         padding: 0 10px;
         font-weight: lighter;
@@ -73,27 +77,6 @@ $header-hover-color: darken($sidebar-blue, 5%);
 
       img {
         border-radius: 50%;
-      }
-    }
-
-    .log-out-btn {
-      display: inline-block;
-      vertical-align: middle;
-    }
-
-    .log-out-btn {
-      text-decoration: none;
-      color: #fff;
-      font-size: 20px;
-      margin: 0 5px;
-      text-shadow: 1px 1px 1px $dark-blue;
-      float: right;
-      line-height: 30px;
-      z-index: 2;
-
-      &:hover {
-        color: #f3f3f3;
-        text-decoration: none;
       }
     }
 
