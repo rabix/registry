@@ -32,5 +32,6 @@ $light-header-color: $gray-lighter;
 $dark-header-background: #20242F;
 $dark-background-color: #2C3241;
 $light-text-color: #8E91A0;
+$lighter-text-color: lighten($light-text-color, 35%);
 $box-background-color: $brand-primary;
 @import "bootstrap/mixins";

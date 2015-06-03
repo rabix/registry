@@ -1,5 +1,15 @@
 /* NAVIGATION
 ================================================ */
+$header-hover-color: darken($sidebar-blue, 5%);
+
+@mixin navigation-hover() {
+  &:hover, &:active, &:focus {
+    background-color: $header-hover-color;
+    color: #fff;
+    border-color: transparent;
+  }
+  @include transition(background-color .3s, color .3s);
+}
 
 .navigation {
   background-color: $sidebar-blue;
@@ -16,19 +26,20 @@
 
   /* logo and sidebar toggle */
   .logo-wrap{
-    padding: 0 15px 0 43px;
-    background: url('../../rbx/images/logo.png') no-repeat 15px;
+    background: url('../../rbx/images/logo.png') no-repeat 17px;
     background-size: 21px 28px;
-    height: 53px;
-    margin-right: 28px;
+
+    @include navigation-hover();
   }
 
   .logo {
-    font-size: 22px;
+    display: block;
+    padding: 6px 50px 2px; // hacky magic numbers so the link will fill the wrap
+    float: left;
     position: relative;
-
-    top: 6px;
     color: #fff;
+
+    font-size: 22px;
     text-decoration: none;
     text-shadow: 2px 2px 2px $dark-blue;
 
@@ -40,18 +51,6 @@
       display: block;
       color: #f3f3f3;
       text-shadow: none;
-    }
-
-
-    .toggle-sidebar {
-      display: inline-block;
-      color: #fff;
-      padding: 0px 19px;
-      position: absolute;
-      top: 0;
-      right: 0;
-      z-index: 100;
-      background-color: $sidebar-blue;
     }
   }
 
@@ -107,11 +106,10 @@
     }
   }
 
-  .nav-tabs {
-    border-bottom: none;
+  .nav-tabs { // top navigation items in header
+    border: none;
 
     li {
-      margin-bottom: 0;
 
       a {
         white-space: nowrap;
@@ -120,41 +118,16 @@
         text-shadow: 1px 1px 1px $dark-blue;
         color: $orange;
         padding: 15px;
+        text-transform: capitalize;
 
-        &:focus, &:hover {
-          text-shadow: 1px 1px 1px #fff;
-          color: darken($orange, 20%);
-          i {
-            color: darken($orange, 20%);
-          }
-        }
-
-        &.dyole,
-        &.cliche {
-          span {
-            text-transform: none;
-          }
-        }
-
-        span {
-          text-transform: capitalize;
-        }
+        @include navigation-hover();
 
         i {
           color: #fff;
           width: 12px;
           margin-right: 10px;
           font-size: 20px;
-          text-align: center;
         }
-
-      }
-      & + li {
-        margin-top: 0px;
-      }
-
-      a {
-        border-left: 1px solid lighten($sidebar-blue, 10%);
       }
 
       &.active {

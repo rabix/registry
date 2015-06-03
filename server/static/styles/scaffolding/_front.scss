@@ -60,8 +60,6 @@
     list-style: none;
 
     .step {
-      display: inline-block;
-      margin-right: -4px;
 
       a {//temporary
         @extend %nav-step;

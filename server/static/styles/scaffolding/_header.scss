@@ -9,13 +9,14 @@ header {
 
   .logo-wrap {
     padding: 0 15px 0 43px;
-    background: image-url('logo.png') no-repeat 15px;
+    background: image-url('logo.png') no-repeat 15px 13px;
     background-size: 21px 28px;
     margin: -10px 0 0 -10px;
 
     // transition
-    @include transition(opacity .9s);
+    @include transition(opacity .9s, visibility .9s);
     opacity: 0;
+    visibility: hidden;
 
   }
 
@@ -53,30 +54,32 @@ header {
         width: 35px; //temporary
         height: 35px; //temporary
         border-radius: 20px; //temporary
-        border: 2px solid lighten($gray-light, 10%); //temporary
+        border: 2px solid $light-text-color; //temporary
         font-size: 20px;
 
+        color: $light-text-color;
         @include transition(color .8s, border-color .8s);
 
 
         &.active {
-          border-color: $gray-lighter;//temporary
-          color: $gray-lighter; //temporary
+          border-color: $lighter-text-color;
+          color: $lighter-text-color;
         }
 
         &:hover, &:focus, &:active {
-          color: $gray-lighter;  //temporary
-          border-color: $gray-lighter;//temporary
+          color: $lighter-text-color;
+          border-color: $lighter-text-color;
         }
-        
+
 
       }
     }
 
 
     // transition
-    @include transition(opacity .9s);
+    @include transition(opacity .9s, visibility .9s);
     opacity: 0;
+    visibility: hidden;
   }
 
   .login-button {
@@ -103,6 +106,7 @@ header {
 
     .logo-wrap, .nav-steps {
       opacity: 1;
+      visibility: visible
     }
   }
 }

@@ -7,7 +7,7 @@
     <ul class="nav nav-tabs">
 
         <li ng-repeat="page in ::view.navigation" ng-class="{active: view.active === page.name}" ng-show="!page.permission || (page.permission === 'user' && view.user)">
-            <a href ng-click="goTo(page)" ng-class="[page.name]" tooltip="{{ ::page.desc }}" tooltip-placement="right" tooltip-append-to-body="true">
+            <a href ng-click="goTo(page)" ng-class="[page.name]" tooltip="{{ ::page.desc }}" tooltip-placement="bottom" tooltip-append-to-body="true">
                 <i ng-class="['fa', 'fa-' + page.icon]"></i>
                 <span>{{ ::page.name }}</span>
             </a>
@@ -18,11 +18,12 @@
     <div class="actions">
 
         <div ng-if="!(view.user | isEmpty)" class="user-details">
-            <span class="welcome"><img ng-src="{{ ::view.user.avatar_url }}" width="30" alt=""/> <strong> {{ ::view.user.login }}</strong></span>
-            <a ng-href="/auth/logout" tooltip="Log out" tooltip-placement="right" tooltip-append-to-body="true" class="fa fa-sign-out log-out-btn"></a>
+            <span class="welcome">
+                <img ng-src="{{ ::view.user.avatar_url }}" width="30" alt=""/>
+                <strong> {{ ::view.user.login }}</strong>
+            </span>
+            <a ng-href="/auth/logout" tooltip="Log out" tooltip-placement="bottom" tooltip-append-to-body="true" class="fa fa-sign-out log-out-btn"></a>
         </div>
-
-
 
     </div>
 

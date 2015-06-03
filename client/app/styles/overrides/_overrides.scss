@@ -13,7 +13,7 @@
       a:hover {
         color: #555;
         background-color: $gray;
-        background-image: url(/rbx/images/bg.png);
+        background-image: url('../../rbx/images/bg.png');
         border-bottom-color: $gray;
         cursor: pointer;
       }
@@ -79,15 +79,14 @@
   &.nav-page {
     border-bottom: 2px solid $orange;
     @extend .flex-auto;
+
     li {
+      border: none;
+      margin-bottom: 0;
       a {
         padding: 5px 15px;
-      }
-      &.active {
-        a,
-        a:focus,
-        a:hover {
-          border-top: none;
+        &:hover {
+          border-bottom-color: $nav-link-hover-bg;
         }
       }
     }
