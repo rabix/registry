@@ -8,8 +8,7 @@ header {
   z-index: 3;
 
   .logo-wrap {
-    padding: 0 15px 0 43px;
-    background: image-url('logo.png') no-repeat 15px 13px;
+    background: image-url('logo.png') no-repeat 17px 13px;
     background-size: 21px 28px;
     margin: -10px 0 0 -10px;
 
@@ -21,9 +20,10 @@ header {
   }
 
   .logo {
+    padding: 6px 50px 3px; // hacky magic numbers to make .logo fill .logo-wrap
     font-size: 22px;
     position: relative;
-    top: 6px;
+    float: left;
     color: #fff;
     text-decoration: none;
     text-shadow: 2px 2px 2px $gray-dark;

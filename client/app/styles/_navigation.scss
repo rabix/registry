@@ -58,17 +58,21 @@ $header-hover-color: darken($sidebar-blue, 5%);
   .actions {
     position: relative;
     align-self: center;
-    width: 100px;
     margin-left: auto;
 
     .user-details {
+      overflow: hidden;
+    }
 
-      .welcome {
-        width: 100%;
-        height: 100%;
-        img {
-          border-radius: 50%;
-        }
+    .welcome {
+      float:left;
+      .user-name {
+        padding: 0 10px;
+        font-weight: lighter;
+      }
+
+      img {
+        border-radius: 50%;
       }
     }
 
@@ -81,14 +85,11 @@ $header-hover-color: darken($sidebar-blue, 5%);
       text-decoration: none;
       color: #fff;
       font-size: 20px;
-      margin: 0 5px 0 0;
+      margin: 0 5px;
       text-shadow: 1px 1px 1px $dark-blue;
       float: right;
       line-height: 30px;
-      position: absolute;
-      top: 0;
-      right: 0;
-      z-index: 100;
+      z-index: 2;
 
       &:hover {
         color: #f3f3f3;
