@@ -111,6 +111,8 @@ h2 {
 
 /* Page heading */
 .heading {
+  overflow: hidden;
+  padding: 15px;
 
   .label {
     font-size: 14px;
@@ -118,11 +120,21 @@ h2 {
     padding: 2px 5px;
   }
 
-  .pipeline-repo,
-  .tool-repo {
-    font-size: 14px;
-    line-height: 22px;
+  .rb-button, .title {
+    display: inline-block;
+    vertical-align: middle;
   }
+
+  .title {
+    @extend h3;
+    margin: 0 0 0 15px;
+  }
+//
+//  .pipeline-repo,
+//  .tool-repo {
+//    font-size: 14px;
+//    line-height: 22px;
+//  }
 
   .form-group {
     max-width: 40%;
@@ -172,10 +184,10 @@ h2 {
       }
     }
   }
-
-  .go-back {
-    margin: 12.5px 0;
-  }
+//
+//  .go-back {
+//    margin: 12.5px 0;
+//  }
 
   .created-by {
     font-size: 15px;

@@ -1,14 +1,21 @@
 <div ng-class="view.classes" loading="view.loading">
 
-    <div class="heading no-margin">
-        <rb-button ui-sref="apps" class="pull-left go-back"><i class="fa fa-chevron-left"></i> Back</rb-button>
-        <h1>
-            <span>{{ ::view.tool.name }} <span class="tool-repo">({{ ::view.tool.repo.owner }}/{{ ::view.tool.repo.name }})</span></span>
-            <div class="actions pull-right">
-                <rb-button href ng-if="!view.tool.repo.is_public && view.tool.user._id === view.user.id" class="separate" ng-click="deleteTool()" intention="danger"><i class="fa fa-trash"></i> Delete</rb-button>
-                <rb-button ui-sref="cliche-edit({type: view.type, id: view.tool._id, revision: 'latest'})" class="separate" intention="primary"><i class="fa fa-pencil"></i> Edit</rb-button>
-            </div>
-        </h1>
+    <div class="heading">
+        <div class="pull-left">
+            <rb-button ui-sref="apps"><i class="fa fa-chevron-left"></i> Back</rb-button>
+            <span class="title">
+                {{ ::view.tool.name }}
+                <small class="text-muted">
+                    ({{ ::view.tool.repo.owner }}/{{ ::view.tool.repo.name }})
+                </small>
+            </span>
+        </div>
+
+        <div class="pull-right" ng-if="!(view.user | isEmpty)">
+            <rb-button href ng-if="!view.tool.repo.is_public && view.tool.user._id === view.user.id" class="separate" ng-click="deleteTool()" intention="danger"><i class="fa fa-trash"></i> Delete</rb-button>
+            <rb-button ui-sref="cliche-edit({type: view.type, id: view.tool._id, revision: 'latest'})" class="separate" intention="primary"><i class="fa fa-pencil"></i> Edit</rb-button>
+        </div>
+
     </div>
     <!-- # .heading -->
 
