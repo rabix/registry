@@ -311,7 +311,7 @@ router.post('/apps/:action', filters.authenticated, function (req, res, next) {
             app.description = data.tool.description;
             app.author = req.user.login;
             app.links = {json: ''};
-            app.is_script = data.tool.transform;
+            app.is_script = !!data.tool.script;
 
             Repo.findById(data.repo_id).populate('user').exec(function (err, repo) {
 
