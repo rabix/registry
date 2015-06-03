@@ -1,8 +1,13 @@
 $header-height: $input-height-base + 20; //temporary
 $footer-height: 200px;
 
+body, header, .container {
+  min-width: 860px; //not responsive yet!
+}
+
 @import "header";
 @import "front";
 @import "description";
 @import "cwl";
+@import "backlog";
 @import "footer";

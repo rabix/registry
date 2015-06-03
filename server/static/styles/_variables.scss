@@ -3,7 +3,7 @@
 @import url(http://fonts.googleapis.com/css?family=Open+Sans:400,300,600);
 
 //$brand-primary: #1d6385;
-$brand-primary: #526EA0;
+$brand-primary: #4779a0;
 $brand-success: #178022;
 $brand-info: #77e6e0;
 $brand-warning: #ff9823;
@@ -30,8 +30,15 @@ $separation-padding: 130px;
 
 $light-header-color: $gray-lighter;
 $dark-header-background: #20242F;
-$dark-background-color: #2C3241;
-$light-text-color: #8E91A0;
+$dark-background-color: #2c3541;
+$light-text-color: #8497a0;
 $lighter-text-color: lighten($light-text-color, 35%);
+
+$backlog-background: lighten($dark-background-color, 10%);
+$description-background: $gray-light;
+
+
 $box-background-color: $brand-primary;
+
+
 @import "bootstrap/mixins";

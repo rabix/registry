@@ -82,6 +82,30 @@ header {
     visibility: hidden;
   }
 
+  .links-list {
+    float: left;
+    li {
+      display: inline-block;
+      a {
+        padding: 17px 15px;
+        margin: -10px 0;
+        text-transform: uppercase;
+        text-decoration: none;
+        display: block;
+        color: $light-text-color;
+
+        &:hover, &:focus, &:active {
+          color: $lighter-text-color;
+        }
+      }
+    }
+
+    // transition
+    @include transition(opacity .9s, visibility .9s);
+    opacity: 0;
+    visibility: hidden;
+  }
+
   .login-button {
     display: none;
   }
@@ -104,7 +128,7 @@ header {
 
   &.scrolled {
 
-    .logo-wrap, .nav-steps {
+    .logo-wrap, .nav-steps, .links-list {
       opacity: 1;
       visibility: visible
     }
