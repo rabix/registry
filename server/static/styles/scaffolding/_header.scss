@@ -1,17 +1,17 @@
 header {
   background-color: $dark-header-background;
-  padding: 10px 10px 11px 10px;
-  height: $header-height;
   width: 100%;
   position: fixed;
   top: 0;
   z-index: 3;
 
+  /**
+  Logo styles
+  **/
   .logo-wrap {
-    padding: 0 15px 0 43px;
-    background: image-url('logo.png') no-repeat 15px 13px;
+    background: image-url('logo.png') no-repeat 17px 13px;
     background-size: 21px 28px;
-    margin: -10px 0 0 -10px;
+    padding: 11px 15px;
 
     // transition
     @include transition(opacity .9s, visibility .9s);
@@ -21,9 +21,10 @@ header {
   }
 
   .logo {
+    padding: 0 35px; // hacky magic numbers to make .logo fill .logo-wrap
     font-size: 22px;
-    position: relative;
-    top: 6px;
+
+    float: left;
     color: #fff;
     text-decoration: none;
     text-shadow: 2px 2px 2px $gray-dark;
@@ -32,66 +33,82 @@ header {
       font-size: 10px;
       position: relative;
       left: 28px;
-      top: -6px;
+      top: -3px;
       display: block;
       color: #f3f3f3;
       text-shadow: none;
     }
   }
 
-  .nav-steps {
-    float: left;
-    padding: 0;
-    margin: 0;
-
-    li {
-      display: inline-block;
-      margin-right: 15px;
-
-      a {
-        @extend %nav-step;
-
-        width: 35px; //temporary
-        height: 35px; //temporary
-        border-radius: 20px; //temporary
-        border: 2px solid $light-text-color; //temporary
-        font-size: 20px;
-
-        color: $light-text-color;
-        @include transition(color .8s, border-color .8s);
-
-
-        &.active {
-          border-color: $lighter-text-color;
-          color: $lighter-text-color;
-        }
-
-        &:hover, &:focus, &:active {
-          color: $lighter-text-color;
-          border-color: $lighter-text-color;
-        }
-
-
-      }
-    }
-
-
-    // transition
+  /**
+  Generic navbar styles for left-side navigation
+  **/
+  .navbar-nav {
     @include transition(opacity .9s, visibility .9s);
     opacity: 0;
     visibility: hidden;
+
+    li a {
+      text-transform: uppercase;
+      @include transition(background-color .8s, color .8s);
+    }
   }
 
-  .login-button {
-    display: none;
+  .nav-steps {
+    a {
+      @extend %nav-step;
+      padding: 8px 15px;
+
+      span {
+        width: 34px;
+        height: 34px;
+        border-radius: 20px;
+        border: 2px solid $light-text-color;
+        font-size: 20px;
+
+        @include transition(border-color .8s);
+      }
+    }
+
+    li.active, li:hover, li:focus, li:active {
+      span {
+        border-color: $lighter-text-color;
+      }
+    }
+
+    li.step4 span:before { // hack to make the share icon align correctly
+      position: relative;
+      right: 2px;
+    }
+  }
+
+  /**
+  Login button styles
+  **/
+  .login-button-nav {
+    li {
+      padding-right: 10px;  // hacky
+
+      .login-button {
+        display: none;
+        padding: $padding-base-vertical $padding-base-horizontal;
+        position: relative; // hacky
+        top: 10px; // hacky, bootstrap navbars don't play nice with link-buttons
+
+        &:hover, &:active, &:focus {
+          background-color: darken($btn-primary-bg, 10%);
+        }
+      }
+    }
   }
 
   .go-to-apps {
     color: #fff;
     margin-right: 10px;
 
-    &:hover {
+    &:hover, &:active, &:focus  {
       text-decoration: none;
+      background-color: transparent !important; //really, really hacky.
     }
 
     .user-avatar {
@@ -102,11 +119,11 @@ header {
     }
   }
 
+  // show navbar items when below splash page
   &.scrolled {
-
-    .logo-wrap, .nav-steps {
+    .logo-wrap, .navbar-nav {
       opacity: 1;
-      visibility: visible
+      visibility: visible;
     }
   }
 }

@@ -1,19 +1,23 @@
 <div ng-class="view.classes" loading="view.loading">
 
 <div class="heading">
-    
-    <rb-button ng-if="view.mode === 'new'" ui-sref="apps" class="pull-left go-back"><i
-            class="fa fa-chevron-left"></i> Back</rb-button>
 
-    <rb-button ng-if="view.mode === 'edit'" ui-sref="workflow-view({id: view.workflow._id})"
-       class="pull-left go-back"><i class="fa fa-chevron-left"></i> Back</rb-button>
+    <div class="pull-left">
+        <rb-button ng-if="view.mode === 'new'" ui-sref="apps">
+            <i class="fa fa-chevron-left"></i> Back
+        </rb-button>
 
-    <h1 class="main-heading">
-        <div class="form-group workflow-name">
-            <span class="pipeline-repo" ng-show="view.workflow.pipeline.repo">({{ ::view.workflow.pipeline.repo.owner }}/{{ ::view.workflow.pipeline.repo.name }}) </span>
+        <rb-button ng-if="view.mode === 'edit'" ui-sref="workflow-view({id: view.workflow._id})">
+            <i class="fa fa-chevron-left"></i> Back
+        </rb-button>
+
+        <div class="title">
             <input ng-show="view.mode === 'new'" type="text" placeholder="Workflow Name" ng-model="view.workflow.name"
                    class="form-control"/>
             <span ng-hide="view.mode === 'new'">{{ ::view.workflow.pipeline.name }}</span>
+            <small class="text-muted" ng-show="view.workflow.pipeline.repo">
+                ({{ ::view.workflow.pipeline.repo.owner }}/{{ ::view.workflow.pipeline.repo.name }})
+            </small>
         </div>
 
         <strong class="changes-mark" ng-if="view.isChanged" tooltip="There are changes in your workflow"
@@ -21,42 +25,42 @@
             (<i class="fa fa-asterisk"></i>)
         </strong>
 
-        <div class="actions pull-right">
+    </div>
 
-            <rb-button ng-click="editMetadata()" ng-disabled="view.saving" ><i class="fa fa-pencil"></i> Metadata</rb-button>
+    <div class="pull-right">
+        <rb-button ng-click="editMetadata()" ng-disabled="view.saving" ><i class="fa fa-pencil"></i> Metadata</rb-button>
 
-            <rb-button ng-click="validateWorkflowJSON()" ng-disabled="view.saving"><i class="fa fa-check"></i> Validate </rb-button>
+        <rb-button ng-click="validateWorkflowJSON()" ng-disabled="view.saving"><i class="fa fa-check"></i> Validate </rb-button>
 
-            <rb-button ng-click="workflowToJSON()" ng-disabled="view.saving"><i class="fa fa-code"></i> JSON</rb-button>
+        <rb-button ng-click="workflowToJSON()" ng-disabled="view.saving"><i class="fa fa-code"></i> JSON</rb-button>
 
-            <rb-button ng-if="view.user" ng-click="save()" ng-disabled="!view.isChanged || view.saving">
-                <i ng-class="{'fa-plus': view.mode === 'new', 'fa-check': view.mode === 'edit'}" class="fa"></i>
-                {{ view.mode === 'new' ? 'Create' : 'Update' }}
-            </rb-button>
+        <rb-button ng-if="view.user" ng-click="save()" ng-disabled="!view.isChanged || view.saving">
+            <i ng-class="{'fa-plus': view.mode === 'new', 'fa-check': view.mode === 'edit'}" class="fa"></i>
+            {{ view.mode === 'new' ? 'Create' : 'Update' }}
+        </rb-button>
 
-            <rb-dropdown icon-class="fa-cog" position="right">
-                <ul>
-                    <li>
-                        <a href ng-click="loadJsonImport()"><i class="fa fa-cloud-download"></i> <span>Import</span></a>
-                    </li>
+        <rb-dropdown icon-class="fa-cog" position="right">
+            <ul>
+                <li>
+                    <a href ng-click="loadJsonImport()"><i class="fa fa-cloud-download"></i> <span>Import</span></a>
+                </li>
 
-                    <li><a href ng-click="loadMarkdown()"><i class="fa fa-ellipsis-h"></i> <span>Description</span></a>
-                    </li>
+                <li><a href ng-click="loadMarkdown()"><i class="fa fa-ellipsis-h"></i> <span>Description</span></a>
+                </li>
 
-                    <li ng-if="view.mode === 'edit' && view.user">
-                        <a href ng-disabled="view.saving" ng-click="fork()"><i class="fa fa-code-fork"></i>
-                            <span>Fork</span></a>
-                    </li>
+                <li ng-if="view.mode === 'edit' && view.user">
+                    <a href ng-disabled="view.saving" ng-click="fork()"><i class="fa fa-code-fork"></i>
+                        <span>Fork</span></a>
+                </li>
 
-                    <li ng-if="view.user && view.mode === 'edit'">
-                        <a href ng-click="delete()" ng-disabled="view.saving || view.deleting"><i
-                                class="fa fa-trash"></i> Delete</a>
-                    </li>
-                </ul>
-            </rb-dropdown>
-        </div>
+                <li ng-if="view.user && view.mode === 'edit'">
+                    <a href ng-click="delete()" ng-disabled="view.saving || view.deleting"><i
+                            class="fa fa-trash"></i> Delete</a>
+                </li>
+            </ul>
+        </rb-dropdown>
+    </div>
 
-    </h1>
 </div>
 <!-- # .heading -->
 

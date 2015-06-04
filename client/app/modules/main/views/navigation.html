@@ -17,12 +17,34 @@
 
     <div class="actions">
 
-        <div ng-if="!(view.user | isEmpty)" class="user-details">
-            <span class="welcome">
-                <img ng-src="{{ ::view.user.avatar_url }}" width="30" alt=""/>
-                <strong> {{ ::view.user.login }}</strong>
-            </span>
-            <a ng-href="/auth/logout" tooltip="Log out" tooltip-placement="bottom" tooltip-append-to-body="true" class="fa fa-sign-out log-out-btn"></a>
+        <div class="dropdown right" dropdown>
+            <div class="welcome" dropdown-toggle>
+                <img ng-src="{{ ::view.user.avatar_url }}" width="34" alt=""/>
+                <span class="user-name"> {{ ::view.user.login }}</span>
+                <span class="caret"></span>
+            </div>
+            <ul  class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                <li>
+                    <a href="" ui-sref="cliche-new({type: 'tool'})">
+                        <i class="fa fa-plus"></i> New Tool
+                    </a>
+                </li>
+                <li>
+                    <a href="" ui-sref="cliche-new({type: 'script'})">
+                        <i class="fa fa-plus"></i> New Script
+                    </a>
+                </li>
+                <li>
+                    <a href="" ui-sref="workflow-editor({id: 0, mode: 'new'})">
+                        <i class="fa fa-plus"></i> New Workflow
+                    </a>
+                </li>
+                <li>
+                    <a ng-href="/auth/logout">
+                        <i class="fa fa-sign-out"></i> Log out
+                    </a>
+                </li>
+            </ul>
         </div>
 
     </div>

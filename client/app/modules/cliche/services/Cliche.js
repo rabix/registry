@@ -670,7 +670,7 @@ angular.module('registryApp.cliche')
                             deferred.reject(error);
                         });
                 } else {
-                    applyTransform(property.adapter.argValue, (_.isObject(val) ? val.path : val), true)
+                    applyTransform(property.adapter.valueFrom, (_.isObject(val) ? val.path : val), true)
                         .then(function (result) {
                             deferred.resolve(result);
                         }, function (error) {
@@ -755,7 +755,7 @@ angular.module('registryApp.cliche')
                     break;
                 case ('File' || 'file'):
                     /* if input is FILE */
-                    applyTransform(property.inputBinding.argValue, inputs[key].path, true)
+                    applyTransform(property.inputBinding.valueFrom, inputs[key].path, true)
                         .then(function (result) {
                             prop.val = result;
                             deferred.resolve(prop);
@@ -775,10 +775,10 @@ angular.module('registryApp.cliche')
                     break;
                 case 'boolean':
                     /* if input is BOOLEAN */
-                    if (property.inputBinding.argValue) {
+                    if (property.inputBinding.valueFrom) {
                         //TODO: this is hack, if bool type has expression defined then it works in the same way as (for example) string input type
                         prop.type = 'string';
-                        applyTransform(property.inputBinding.argValue, inputs[key], true)
+                        applyTransform(property.inputBinding.valueFrom, inputs[key], true)
                             .then(function (result) {
                                 prop.val = result;
                                 deferred.resolve(prop);
@@ -795,7 +795,7 @@ angular.module('registryApp.cliche')
                     break;
                 default:
                     /* if input is anything else (STRING, ENUM, INT, FLOAT) */
-                    applyTransform(property.inputBinding.argValue, inputs[key], true)
+                    applyTransform(property.inputBinding.valueFrom, inputs[key], true)
                         .then(function (result) {
                             prop.val = result;
                             deferred.resolve(prop);
@@ -839,7 +839,7 @@ angular.module('registryApp.cliche')
                             prefix = arg.prefix || '',
                             prop = _.merge({key: 'arg' + key, position: arg.position, prefix: prefix, val: ''}, arg);
 
-                        applyTransform(arg.argValue, arg.argValue)
+                        applyTransform(arg.valueFrom, arg.valueFrom)
                             .then(function (result) {
                                 prop.val = result;
                                 deferred.resolve(prop);
@@ -995,7 +995,7 @@ angular.module('registryApp.cliche')
              */
             var stripParams = function(prop, itemType) {
 
-                var toStrip = ['prefix', 'separator', 'itemSeparator', 'argValue'];
+                var toStrip = ['prefix', 'separator', 'itemSeparator', 'valueFrom'];
 
                 if (itemType === 'record' && prop.adapter) {
 

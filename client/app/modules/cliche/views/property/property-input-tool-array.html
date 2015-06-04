@@ -42,10 +42,10 @@
             <div class="value">
                 <div ng-if="view.items.type !== 'record'" class="value">
                     <i class="fa fa-warning error" ng-if="view.exprError" title="{{ view.exprError }}"></i>
-                    {{ view.property.inputBinding.argValue.value }}
+                    {{ view.property.inputBinding.valueFrom.value }}
                 </div>
                 <i ng-if="view.items.type === 'record'">none</i>
-                <i ng-if="view.items.type !== 'record' && !view.property.inputBinding.argValue">Not defined</i>
+                <i ng-if="view.items.type !== 'record' && !view.property.inputBinding.valueFrom">Not defined</i>
             </div>
         </div>
 

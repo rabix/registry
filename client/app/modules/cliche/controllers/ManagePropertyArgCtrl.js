@@ -44,7 +44,7 @@ angular.module('registryApp.cliche')
          * @param {*} value
          */
         $scope.updateArgument = function (value) {
-            $scope.view.property.argValue = value;
+            $scope.view.property.valueFrom = value;
         };
 
         /**

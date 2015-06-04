@@ -8,7 +8,9 @@
                 <span class="tool-repo">({{ ::view.repo.owner }}/{{ ::view.repo.name }})</span>
                 <span class="version"><i class="fa fa-tag"></i> v{{ ::view.revision.version }}</span>
             </span>
-            <rb-button ui-sref="cliche-edit({type: (view.app.is_script ? 'script' : 'tool'), id: view.revision.app_id, revision: view.revision._id})" intention="primary" class="pull-right"><i class="fa fa-pencil"></i> Edit</rb-button>
+            <rb-button ui-sref="cliche-edit({type: (view.app.is_script ? 'script' : 'tool'), id: view.revision.app_id, revision: view.revision._id})" intention="primary" class="pull-right">
+                <i class="fa fa-pencil"></i> Edit
+            </rb-button>
         </h1>
     </div>
     <!-- # .heading -->

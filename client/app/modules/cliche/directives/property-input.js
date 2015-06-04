@@ -55,12 +55,12 @@ angular.module('registryApp.cliche')
          */
         var checkExpression = function () {
 
-            if ($scope.view.property.inputBinding && $scope.view.property.inputBinding.argValue && $scope.view.property.inputBinding.argValue.value) {
+            if ($scope.view.property.inputBinding && $scope.view.property.inputBinding.valueFrom && $scope.view.property.inputBinding.valueFrom.value) {
 
                 var itemType = ($scope.view.items && $scope.view.items.type) ? $scope.view.items.type : null;
                 var self = {$self: Helper.getTestData($scope.view.type, itemType)};
 
-                SandBox.evaluate($scope.view.property.inputBinding.argValue.value, self)
+                SandBox.evaluate($scope.view.property.inputBinding.valueFrom.value, self)
                     .then(function () {
                         $scope.view.exprError = '';
                     }, function (error) {

@@ -140,7 +140,7 @@ angular.module('registryApp.cliche')
                             $scope.view.property.inputBinding.prefix = '';
                             $scope.view.property.inputBinding.separator = ' ';
                             delete $scope.view.property.inputBinding.itemSeparator;
-                            delete $scope.view.property.inputBinding.argValue;
+                            delete $scope.view.property.inputBinding.valueFrom;
                         }
                     }
                 } else {
@@ -160,9 +160,9 @@ angular.module('registryApp.cliche')
         $scope.updateTransform = function (value) {
 
             if (_.isObject(value)) {
-                $scope.view.property.inputBinding.argValue = value;
+                $scope.view.property.inputBinding.valueFrom = value;
             } else {
-                delete $scope.view.property.inputBinding.argValue;
+                delete $scope.view.property.inputBinding.valueFrom;
             }
 
         };

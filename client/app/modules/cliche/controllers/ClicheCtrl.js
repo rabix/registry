@@ -298,7 +298,7 @@ angular.module('registryApp.cliche')
 
             if ($stateParams.type === 'script') {
 
-                json.transform = Cliche.getTransformSchema();
+                json.enginge = Cliche.getTransformSchema().engine;
                 delete json.baseCommand;
                 delete json.stdin;
                 delete json.stdout;
