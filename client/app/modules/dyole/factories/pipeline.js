@@ -1025,11 +1025,16 @@ angular.module('registryApp.dyole')
                         y = clientY - this.pipelineWrap.getTranslation().y;
                     }
 
+                    // Cache App id to place it in step.impl
+                    // and use generated id from label
+                    if (model.id) {
+                        model.appId = model.id;
+                    }
 
                     model.x = x / zoom;
                     model.y = y / zoom;
 
-                    var _id = model.id || this._generateNodeId(model);
+                    var _id = this._generateNodeId(model);
 
                     model.id = _id;
 
