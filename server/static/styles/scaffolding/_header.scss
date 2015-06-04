@@ -1,16 +1,17 @@
 header {
   background-color: $dark-header-background;
-  padding: 10px 10px 11px 10px;
-  height: $header-height;
   width: 100%;
   position: fixed;
   top: 0;
   z-index: 3;
 
+  /**
+  Logo styles
+  **/
   .logo-wrap {
     background: image-url('logo.png') no-repeat 17px 13px;
     background-size: 21px 28px;
-    margin: -10px 0 0 -10px;
+    padding: 11px 15px;
 
     // transition
     @include transition(opacity .9s, visibility .9s);
@@ -20,9 +21,9 @@ header {
   }
 
   .logo {
-    padding: 6px 50px 3px; // hacky magic numbers to make .logo fill .logo-wrap
+    padding: 0 35px; // hacky magic numbers to make .logo fill .logo-wrap
     font-size: 22px;
-    position: relative;
+
     float: left;
     color: #fff;
     text-decoration: none;
@@ -32,90 +33,82 @@ header {
       font-size: 10px;
       position: relative;
       left: 28px;
-      top: -6px;
+      top: -3px;
       display: block;
       color: #f3f3f3;
       text-shadow: none;
     }
   }
 
+  /**
+  Generic navbar styles for left-side navigation
+  **/
+  .navbar-nav {
+    @include transition(opacity .9s, visibility .9s);
+    opacity: 0;
+    visibility: hidden;
+
+    li a {
+      text-transform: uppercase;
+      @include transition(background-color .8s, color .8s);
+    }
+  }
+
   .nav-steps {
-    float: left;
-    padding: 0;
-    margin: 0;
+    a {
+      @extend %nav-step;
+      padding: 8px 15px;
 
-    li {
-      display: inline-block;
-      margin-right: 15px;
-
-      a {
-        @extend %nav-step;
-
-        width: 35px; //temporary
-        height: 35px; //temporary
-        border-radius: 20px; //temporary
-        border: 2px solid $light-text-color; //temporary
+      span {
+        width: 34px;
+        height: 34px;
+        border-radius: 20px;
+        border: 2px solid $light-text-color;
         font-size: 20px;
 
-        color: $light-text-color;
-        @include transition(color .8s, border-color .8s);
-
-
-        &.active {
-          border-color: $lighter-text-color;
-          color: $lighter-text-color;
-        }
-
-        &:hover, &:focus, &:active {
-          color: $lighter-text-color;
-          border-color: $lighter-text-color;
-        }
-
-
+        @include transition(border-color .8s);
       }
     }
 
+    li.active, li:hover, li:focus, li:active {
+      span {
+        border-color: $lighter-text-color;
+      }
+    }
 
-    // transition
-    @include transition(opacity .9s, visibility .9s);
-    opacity: 0;
-    visibility: hidden;
+    li.step4 span:before { // hack to make the share icon align correctly
+      position: relative;
+      right: 2px;
+    }
   }
 
-  .links-list {
-    float: left;
+  /**
+  Login button styles
+  **/
+  .login-button-nav {
     li {
-      display: inline-block;
-      a {
-        padding: 17px 15px;
-        margin: -10px 0;
-        text-transform: uppercase;
-        text-decoration: none;
-        display: block;
-        color: $light-text-color;
+      padding-right: 10px;  // hacky
 
-        &:hover, &:focus, &:active {
-          color: $lighter-text-color;
+      .login-button {
+        display: none;
+        padding: $padding-base-vertical $padding-base-horizontal;
+        position: relative; // hacky
+        top: 10px; // hacky, bootstrap navbars don't play nice with link-buttons
+
+        &:hover, &:active, &:focus {
+          background-color: darken($btn-primary-bg, 10%);
         }
       }
     }
-
-    // transition
-    @include transition(opacity .9s, visibility .9s);
-    opacity: 0;
-    visibility: hidden;
-  }
-
-  .login-button {
-    display: none;
   }
 
   .go-to-apps {
     color: #fff;
     margin-right: 10px;
 
-    &:hover {
+    &:hover, &:active, &:focus  {
       text-decoration: none;
+      background-color: transparent !important; //really, really hacky.
     }
 
     .user-avatar {
@@ -126,11 +119,11 @@ header {
     }
   }
 
+  // show navbar items when below splash page
   &.scrolled {
-
-    .logo-wrap, .nav-steps, .links-list {
+    .logo-wrap, .navbar-nav {
       opacity: 1;
-      visibility: visible
+      visibility: visible;
     }
   }
 }

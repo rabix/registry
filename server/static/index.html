@@ -8,15 +8,15 @@
 </head>
 <body>
 
-<header>
-    <div class="logo-wrap pull-left">
+<header class="navbar navbar-inverse navbar-fixed-top" id="navbar">
+    <div class="logo-wrap navbar-brand">
         <a href="#top" class="logo">
             Rabix
             <small>alpha</small>
         </a>
     </div>
 
-    <ol class="nav-steps">
+    <ol class="nav-steps nav navbar-nav">
         <li class="step step1">
             <a href="#step1">
                 <span class="fa fa-code"></span>
@@ -39,7 +39,7 @@
         </li>
     </ol>
 
-    <ul class="links-list">
+    <ul class="links-list nav navbar-nav">
         <li>
             <a href="#spec">Spec</a>
         </li>
@@ -51,7 +51,11 @@
         </li>
     </ul>
 
-    <a class="btn btn-primary pull-right login-button" href="/auth/login"><i class="fa fa-github"></i> Login with GitHub</a>
+    <ul class="nav pull-right login-button-nav">
+        <li>
+            <a class="btn btn-primary login-button" href="/auth/login"><i class="fa fa-github"></i> Login with GitHub</a>
+        </li>
+    </ul>
 </header>
 
 <section class="heading jumbotron" id="top">
@@ -61,7 +65,6 @@
             <h1 class="main-title">Rabix</h1>
             <h3>Portable Bioinformatics Pipelines</h3>
         </div>
-
 
         <p class="value">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi, aut corporis eius eligendi et ex fugit illo incidunt, ipsa, labore laboriosam nemo nostrum pariatur possimus quam quibusdam quidem rerum voluptatum!</p>
 
@@ -170,6 +173,7 @@
 </footer>
 
 <script src="bower_components/jquery/dist/jquery.min.js"></script>
+<script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.min.js"></script>
 <script src="scripts/script.js"></script>
 </body>
 </html>

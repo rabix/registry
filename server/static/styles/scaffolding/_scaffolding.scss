@@ -5,6 +5,10 @@ body, header, .container {
   min-width: 860px; //not responsive yet!
 }
 
+body {
+  position: relative;
+}
+
 @import "header";
 @import "front";
 @import "description";

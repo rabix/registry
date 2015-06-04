@@ -5,11 +5,7 @@
     var $body = $('body');
     var $window = $(window);
     var $loginBtn = $('.login-button');
-    var $goToApps = $('.go-to-apps');
-
-    var steps = $('article[id^="step"]');
-
-    var stepLinks = $('ol.nav-steps > li > a');
+    var $rightNav = $('.login-button-nav');
 
     $('a[href^="#"]').on('click',function (e) {
         e.preventDefault();
@@ -17,12 +13,14 @@
         scrollToTarget(this.hash);
     });
 
-    $(window).scroll(function(e) {
-
+    $(window).scroll(function() {
         handleHeaderClass();
-        handleActiveClass(e);
     });
 
+    /**
+     * initiates scrollspy
+     */
+    $body.scrollspy({target: '#navbar'});
 
     /**
      * animates scroll to target section
@@ -51,24 +49,6 @@
     }
 
     /**
-     * handles 'active' class on navbar items
-     * @param e
-     */
-    function handleActiveClass() {
-        var scrollTop = $body.scrollTop();
-
-        steps.each(function(index, step) {
-            var $step = $(step).parent('li');
-            $(stepLinks[index]).removeClass('active');
-            
-
-            if (scrollTop < $step.offset().top + $step.outerHeight() - 40 && scrollTop > $step.offset().top - 40) {
-                $(stepLinks[index]).addClass('active');
-            }
-        });
-    }
-
-    /**
      * handle login button
      */
     $.get('/api/user', function (data) {
@@ -80,17 +60,10 @@
             $avatar.attr('src', data.user.avatar_url);
             $gotoBtn.prepend($avatar);
 
-            $header.append($gotoBtn);
-
-
-
-
-            // change 'login with github' with 'go to app'
+            $rightNav.find('li').append($gotoBtn);
         }
     }).fail(function () {
         $loginBtn.css('display', 'block');
     });
-
-
 
 })(window.jQuery);
