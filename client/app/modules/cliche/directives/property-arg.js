@@ -18,9 +18,9 @@ angular.module('registryApp.cliche')
          */
         var checkExpression = function () {
 
-            if ($scope.prop.argValue && $scope.prop.argValue.value) {
+            if ($scope.prop.valueFrom && $scope.prop.valueFrom.value) {
 
-                SandBox.evaluate($scope.prop.argValue.value, {})
+                SandBox.evaluate($scope.prop.valueFrom.value, {})
                     .then(function () {
                         $scope.view.exprError = '';
                     }, function (error) {

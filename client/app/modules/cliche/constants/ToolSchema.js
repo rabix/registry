@@ -123,7 +123,7 @@ var Schema = {
                 position: {
                     type: 'number'
                 },
-                argValue: {
+                valueFrom: {
                     oneOf: [
                         {
                             type: ['string', 'number']

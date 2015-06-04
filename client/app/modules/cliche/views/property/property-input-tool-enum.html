@@ -33,9 +33,9 @@
             <div class="value">
                 <div class="value">
                     <i class="fa fa-warning error" ng-if="view.exprError" title="{{ view.exprError }}"></i>
-                    {{ view.property.inputBinding.argValue.value}}
+                    {{ view.property.inputBinding.valueFrom.value}}
                 </div>
-                <i ng-if="!view.property.inputBinding.argValue">Not defined</i>
+                <i ng-if="!view.property.inputBinding.valueFrom">Not defined</i>
             </div>
         </div>
 

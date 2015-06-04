@@ -17,9 +17,9 @@
             <div class="value">
                 <div class="value">
                     <i class="fa fa-warning error" ng-if="view.exprError" title="{{ view.exprError }}"></i>
-                    {{ prop.argValue.script ? prop.argValue.script : prop.argValue }}
+                    {{ prop.valueFrom.script ? prop.valueFrom.script : prop.valueFrom }}
                 </div>
-                <i ng-if="!prop.argValue">Not defined</i>
+                <i ng-if="!prop.valueFrom">Not defined</i>
             </div>
         </div>
 
