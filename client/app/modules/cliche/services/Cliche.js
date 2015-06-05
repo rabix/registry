@@ -539,24 +539,13 @@ angular.module('registryApp.cliche')
         };
 
         /**
-         * Parse separator for the input value
+         * Parse separation for the input value
          *
-         * @param {string} prefix
-         * @param {string} separator
+         * @param {boolean} separate
          * @returns {string} output
          */
-        var parseSeparator = function(prefix, separator) {
-
-            var output = '';
-
-            if (_.isUndefined(separator) || separator === ' ') {
-                output = (prefix === '') ? '' : ' ';
-            } else {
-                output = (prefix === '') ? '' : separator;
-            }
-
-            return output;
-
+        var parseSeparation = function(separate) {
+            return separate ? ' ' : '';
         };
 
         /**
@@ -597,7 +586,8 @@ angular.module('registryApp.cliche')
 
                     /* generate command */
                     _.each(props, function(prop) {
-                        command.push(prop.prefix + prop.separator + prop.val);
+                        var separation = parseSeparation(prop.separate);
+                        command.push(prop.prefix + separation + prop.val);
                     });
 
                     return command.join(' ');
@@ -646,13 +636,14 @@ angular.module('registryApp.cliche')
          * @param {string} itemSeparator
          * @returns {string}
          */
-        var parseArrayInput = function(property, input, prefix, separator, itemSeparator) {
+        var parseArrayInput = function(property, input, prefix, itemSeparator) {
 
             var promises = [],
                 joiner = ' ',
                 schema = getSchema('input', property, 'tool', false),
                 type = parseType(schema),
-                items = getItemsRef(type, schema);
+                items = getItemsRef(type, schema),
+                separator = parseSeparation(property.separate);
 
             if (items && items.type !== 'record') {
                 joiner = _.isNull(itemSeparator) ? (' ' + prefix + separator) : itemSeparator;
@@ -726,11 +717,10 @@ angular.module('registryApp.cliche')
 
                 var deferred = $q.defer(),
                     key = parseName(property),
-                    schema = getSchema('input', property, 'tool'),
+                    schema = getSchema('input', property, 'tool', false),
                     type = parseType(schema),
                     items = getItemsRef(type, schema),
                     prefix = property.inputBinding.prefix || '',
-                    separator = parseSeparator(prefix, property.inputBinding.separator),
                     itemSeparator = parseItemSeparator(property.inputBinding.itemSeparator),
 
                     prop = _.extend({
@@ -739,13 +729,13 @@ angular.module('registryApp.cliche')
                         val: '',
                         position: property.inputBinding.position || 0,
                         prefix: prefix,
-                        separator: separator
+                        separate: property.inputBinding.separate
                     }, property.inputBinding);
 
                 switch (type) {
                 case 'array':
                     /* if input is ARRAY */
-                    parseArrayInput(property, inputs[key], prefix, separator, itemSeparator)
+                    parseArrayInput(property, inputs[key], prefix, itemSeparator)
                         .then(function (result) {
                             prop.val = result;
                             deferred.resolve(prop);
@@ -864,12 +854,12 @@ angular.module('registryApp.cliche')
 
                     _.each(joined, function(arg) {
 
-                        var separator = parseSeparator(arg.prefix, arg.separator),
+                        var separate = parseSeparation(arg.separate),
                             value = _.isUndefined(arg.val) ? '' : arg.val,
                             cmd;
 
                         if (!(arg.type && arg.type !== 'boolean' && (arg.val === '' || _.isNull(arg.val) || _.isUndefined(arg.val)))) {
-                            cmd = arg.prefix + separator + value;
+                            cmd = arg.prefix + separate + value;
 
                             if (!_.isEmpty(cmd)) {
                                 command.push(cmd);

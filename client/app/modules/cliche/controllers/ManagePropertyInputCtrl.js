@@ -138,7 +138,6 @@ angular.module('registryApp.cliche')
 
                         if ($scope.view.adapter) {
                             $scope.view.property.inputBinding.prefix = '';
-                            $scope.view.property.inputBinding.separator = ' ';
                             delete $scope.view.property.inputBinding.itemSeparator;
                             delete $scope.view.property.inputBinding.valueFrom;
                         }

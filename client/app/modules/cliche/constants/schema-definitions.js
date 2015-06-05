@@ -28,7 +28,7 @@ angular.module('registryApp.cliche')
                 inputBinding: {type: 'object', def: {
                     position: {type: 'number'},
                     valueFrom: {type: 'object'},
-                    separator: {type: 'string'},
+                    separate: {type: 'bpp;ea'},
                     prefix: {type: 'string'},
                     itemSeparator: {type: ['string', 'object']}
                 }},

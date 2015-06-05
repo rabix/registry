@@ -144,8 +144,8 @@ var Schema = {
                         }
                     ]
                 },
-                separator: {
-                    type: 'string'
+                separate: {
+                    type: 'boolean'
                 },
                 prefix: {
                     type: 'string'

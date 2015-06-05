@@ -1,0 +1,29 @@
+$i: 0;
+@while $i <= 50 {
+  .mg-left-#{$i}, .mg-horizontal-#{$i} {
+    margin-left: #{$i}px;
+  }
+  .mg-right-#{$i}, .mg-horizontal-#{$i} {
+    margin-right: #{$i}px;
+  }
+  .mg-top-#{$i}, .mg-vertical-#{$i} {
+    margin-top: #{$i}px;
+  }
+  .mg-bottom-#{$i}, .mg-vertical-#{$i} {
+    margin-bottom: #{$i}px;
+  }
+  .pd-left-#{$i}, .pd-horizontal-#{$i} {
+    padding-left: #{$i}px;
+  }
+  .pd-right-#{$i}, .pd-horizontal-#{$i} {
+    padding-right: #{$i}px;
+  }
+  .pd-top-#{$i}, .pd-vertical-#{$i} {
+    padding-top: #{$i}px;
+  }
+  .pd-bottom-#{$i}, .pd-vertical-#{$i} {
+    padding-bottom: #{$i}px;
+  }
+
+  $i: $i + 5;
+}
