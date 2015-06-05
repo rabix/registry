@@ -12,7 +12,6 @@
     <div class="logo-wrap navbar-brand">
         <a href="#top" class="logo">
             Rabix
-            <small>alpha</small>
         </a>
     </div>
 
@@ -24,30 +23,33 @@
         </li>
         <li class="step step2">
             <a href="#step2">
-                <span class="fa fa-share-alt"></span>
+                <span class="fa fa-share-alt fa-flip-horizontal"></span>
             </a>
         </li>
         <li class="step step3">
             <a href="#step3">
-                <span class="fa fa-terminal"></span>
+                <span class="fa fa-share-square-o"></span>
             </a>
         </li>
         <li class="step step4">
             <a href="#step4">
-                <span class="fa fa-envelope-o"></span>
+                <span class="fa fa-terminal"></span>
             </a>
         </li>
     </ol>
 
     <ul class="links-list nav navbar-nav">
         <li>
-            <a href="#spec">Spec</a>
+            <a href="#spec">About</a>
         </li>
         <li>
-            <a href="#backlog">Backlog</a>
+            <a href="#features">Features</a>
         </li>
         <li>
-            <a href="#footer">Contact</a>
+            <a href="#roadmap">Roadmap</a>
+        </li>
+        <li>
+            <a href="mailto:rabix@sbgenomics.com">Contact</a>
         </li>
     </ul>
 
@@ -60,13 +62,15 @@
 
 <section class="heading jumbotron" id="top">
     <div class="container">
-        <!--part above the fold, full screen, stretch to fit, some kind of cool graphic-->
         <div class="rabix-title">
             <h1 class="main-title">Rabix</h1>
             <h3>Portable Bioinformatics Pipelines</h3>
         </div>
 
-        <p class="value">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi, aut corporis eius eligendi et ex fugit illo incidunt, ipsa, labore laboriosam nemo nostrum pariatur possimus quam quibusdam quidem rerum voluptatum!</p>
+        <p class="value">
+            An open-source toolkit for developing and running portable workflows based on the <a href="https://github.com/common-workflow-language/common-workflow-language">Common
+            Workflow Language</a> specification and <a href="https://www.docker.com/">Docker</a>.
+        </p>
 
         <ol class="step-list row">
             <li class="step step-one col-xs-3">
@@ -80,7 +84,7 @@
             <li class="step step-two col-xs-3">
                 <a href="#step2">
                     <span>
-                        <i class="fa fa-share-alt"></i>
+                        <i class="fa fa-share-alt fa-flip-horizontal"></i>
                         Wire Up
                     </span>
                 </a>
@@ -88,16 +92,16 @@
             <li class="step step-three col-xs-3">
                 <a href="#step3">
                     <span>
-                        <i class="fa fa-terminal"></i>
-                        Run
+                        <i class="fa fa-share-square-o"></i>
+                        Share
                     </span>
                 </a>
             </li>
             <li class="step step-four col-xs-3">
                 <a href="#step4">
                     <span>
-                        <i class="fa fa-envelope-o"></i>
-                        Share
+                        <i class="fa fa-terminal"></i>
+                        Run
                     </span>
                 </a>
             </li>
@@ -111,26 +115,49 @@
         <ol class="desc-list">
             <li class="step step-one">
                 <article id="step1">
-                    <h3>Wrap</h3>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorum, ducimus error esse fuga fugiat necessitatibus nisi nobis odit perferendis rerum sint vel velit veritatis. Accusamus earum ipsa officia vitae voluptatem. Architecto dolores ea eius facere, ipsum magni odio qui ullam!
+                    <h3>
+                        <i class="fa fa-code"></i>
+                        Wrap
+                    </h3>
+                    <p>
+                        Rabix lets you wrap your data analysis tools so that they can be run on any infrastructure, across diverse environments. Tools are installed inside Docker containers, and their behavior is precisely specified using our graphical editor or, if you prefer, via a JSON document that you can import. Tools wrapped in this way can be directly deployed on any platform: on your laptop, for low data volumes or during testing, with seamless integration to the cloud when demand for computational resources spikes.
+                    </p>
                 </article>
             </li>
             <li class="step step-two">
                 <article id="step2">
-                    <h3>Wire Up</h3>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam cupiditate delectus deleniti, ea, eum facere fuga fugit impedit incidunt inventore ipsam laboriosam, laudantium magni minima modi obcaecati optio praesentium qui quos reiciendis sapiente sed sint temporibus totam unde ut voluptas. Eveniet laudantium quia quidem repellat sapiente veniam! Dolores fuga, labore.
+                    <h3>
+                        <i class="fa fa-share-alt fa-flip-horizontal"></i>
+                        Wire Up
+                    </h3>
+                    <p>
+                        Once you’ve wrapped your tools, wire them together into a data analysis workflow with our simple pipeline editor. The workflow can be fully specified---right down to each tool’s parameter settings---in a single JSON document in accordance with the Common Workflow Language.
+                    </p>
                 </article>
             </li>
             <li class="step step-three">
                 <article id="step3">
-                    <h3>Run</h3>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. A architecto facere fuga, hic nesciunt voluptatum. Exercitationem itaque nisi placeat praesentium rem sed voluptatibus? Ad, alias aliquid dicta earum eligendi, eum facilis fugit, ipsam molestiae odio quasi quis sed sit voluptates voluptatibus. A aliquid animi assumenda atque consectetur cum dolore eaque earum eius error est eum exercitationem expedita fuga fugiat harum labore magni, maiores nobis, nostrum obcaecati odit officiis optio pariatur perferendis praesentium provident quidem quos ratione repellat suscipit tempore voluptates.
+                    <h3>
+                        <i class="fa fa-share-square-o"></i>
+                        Share
+                    </h3>
+                    <p>
+                        Workflows described using the Common Workflow Language are portable. This allows you to distribute workflows to colleagues without any reconfiguration, and submit your workflows to journals and conferences with the guarantee that your results are perfectly reproducible.
+                    </p>
+                    <p>
+                        Even if you don’t have plans to share your tools, Rabix’s precise specification can help you keep track of which inputs, parameter settings, and tool versions were used in every workflow you execute, making it easy to reproduce analyses any given results.
+                    </p>
                 </article>
             </li>
             <li class="step step-four">
                 <article id="step4">
-                    <h3>Share</h3>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab, accusantium, ad consequuntur cum est exercitationem ipsam ipsum neque non possimus quia saepe voluptatem? Enim laborum natus sunt tempora vel veniam?
+                    <h3>
+                        <i class="fa fa-terminal"></i>
+                        Run
+                    </h3>
+                    <p>
+                        Anybody who has the CWL-description of your workflow can execute it, with your precise configurations. Simply pass the JSON document describing your tool to Rabix, along with the data to be analyzed and hit run.
+                    </p>
                 </article>
             </li>
         </ol>
@@ -139,38 +166,96 @@
 
 <div class="cwl" id="spec">
     <article class="container">
-        <h2>Spec</h2>
+        <h2>About</h2>
+        <p>
+            Rabix is an open-source creation of Seven Bridges Genomics’ engineering team.
+        </p>
 
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur expedita nihil obcaecati placeat quibusdam reprehenderit soluta veritatis, voluptate. Aliquam at atque commodi consequatur cupiditate deserunt, distinctio dolorem eum explicabo facere facilis fuga fugit incidunt mollitia non officia, perferendis placeat provident quae quidem quo quod reiciendis rerum saepe sequi unde voluptatum.</p>
-        <p>Lorem placeat quibusdam reprehenderit soluta veritatis, voluptate. Aliquam at atque commodi consequatur cupiditate deserunt, distinctio dolorem eum explicabo facere facilis fuga fugit incidunt mollitia non officia, perferendis placeat provident quae quidem quo quod reiciendis rerum saepe sequi unde voluptatum.</p>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto eveniet explicabo libero minima nemo nulla qui! A cumque ea esse, expedita nulla quidem quos sequi.</p>
+        <p>
+            We first got excited about the Common Workflow Language because we didn’t want to restrict scientists (or ourselves!) to a proprietary format when developing tools to run on our data analysis platform. Recognizing that a common workflow standard would support everybody’s work in the field, we built a toolkit to make working with the Common Workflow Language straightforward. This became Rabix.
+        </p>
     </article>
 </div>
 
-<div class="backlog" id="backlog">
+<div class="backlog" id="features">
     <article class="container">
         <h2>
-            Backlog
-            <small class="text-muted">(What we've done so far)</small>
+            Features
+        </h2>
+        <ul>
+            <li>
+                Run on any Linux system. Just specify the URL of the JSON file describing the tool or workflow.
+            </li>
+            <li>
+                Describe any Linux tool that has a command-line interface.
+            </li>
+            <li>
+                Package tool binaries and all their dependencies in Docker images, ensuring that you always have a complete snapshot of the tool’s requirements.
+            </li>
+            <li>
+                Have much shorter setup times, and require smaller downloads, compared to the same execution on a virtual machine
+            </li>
+            <li>
+                Specify the runtime resources (CPUs and memory) required to optimize execution.
+            </li>
+            <li>
+                Can take variable runtime resources, specified as a function of tool inputs using Javascript expressions.
+            </li>
+            <li>
+                Declare the types (including nested objects) of their input and output ports using Apache Avro to enable strict validation and graphical interfaces.
+            </li>
+            <li>
+                Can take advantage of scatter-gather parallelization by grouping inputs anywhere in the workflow.
+            </li>
+        </ul>
+    </article>
+</div>
+
+
+<div class="roadmap" id="roadmap">
+    <article class="container">
+        <h2>
+            Roadmap
         </h2>
         <ol>
-            <li>Lorem ipsum dolor sit amet, consectetur.</li>
-            <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis, explicabo!</li>
-            <li>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</li>
+            <li>
+                <i class="fa fa-check-square-o"></i>
+                Visual tool editor
+            </li>
+            <li>
+                <i class="fa fa-check-square-o"></i>
+                Visual workflow editor
+            </li>
+            <li>
+                <i class="fa fa-check-square-o"></i>
+                Local runner
+            </li>
+            <li>
+                <i class="fa fa-square-o"></i>
+                Update to CWL draft-2
+            </li>
+            <li>
+                <i class="fa fa-square-o"></i>
+                Mesos-based runner
+            </li>
+            <li>
+                <i class="fa fa-square-o"></i>
+                Integration with related efforts such as <a href="http://bioboxes.org/">Bioboxes</a> and <a
+                    href="https://github.com/broadinstitute/wdl">WDL</a>.
+            </li>
         </ol>
     </article>
 </div>
 
-
-<footer id="footer">
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-6">Contact Us</div>
-            <div class="col-sm-6">Team</div>
-            <div class="col-sm-6">License</div>
-        </div>
-    </div>
-</footer>
+<!--<footer id="footer">-->
+    <!--<div class="container">-->
+        <!--<div class="row">-->
+            <!--<div class="col-sm-6">Contact Us</div>-->
+            <!--<div class="col-sm-6">Team</div>-->
+            <!--<div class="col-sm-6">License</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</footer>-->
 
 <script src="bower_components/jquery/dist/jquery.min.js"></script>
 <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/scrollspy.js"></script>
