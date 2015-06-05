@@ -31,6 +31,11 @@ pwd
 
 npm install
 
+cd static
+bower install
+cd ..
+
+grunt build-static
 grunt docs
 
 cd ..
