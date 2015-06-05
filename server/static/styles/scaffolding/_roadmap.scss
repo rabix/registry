@@ -1,0 +1,16 @@
+.roadmap {
+  padding: $separation-padding 0;
+
+  ol {
+    list-style: none;
+    i {
+      color: lighten($dark-background-color, 30%);
+      font-size: 26px;
+      margin-right: 10px;
+    }
+
+    li {
+      padding: 15px 0;
+    }
+  }
+}

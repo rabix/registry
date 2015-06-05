@@ -21,7 +21,7 @@ header {
   }
 
   .logo {
-    padding: 0 35px; // hacky magic numbers to make .logo fill .logo-wrap
+    padding: 5px 35px; // hacky magic numbers to make .logo fill .logo-wrap
     font-size: 22px;
 
     float: left;
@@ -57,7 +57,7 @@ header {
   .nav-steps {
     a {
       @extend %nav-step;
-      padding: 8px 15px;
+      padding: 10px 15px;
 
       span {
         width: 34px;
@@ -74,6 +74,29 @@ header {
       span {
         border-color: $lighter-text-color;
       }
+    }
+
+    li.step1 .fa:before {
+      position: relative;
+      top: -1px;
+    }
+
+    li.step3 .fa:before {
+      position: relative;
+      left: 1px;
+      top: 1px;
+    }
+
+    li.step4 .fa:before {
+      position: relative;
+      right: 1px;
+      top: -2px;
+    }
+  }
+
+  .links-list {
+    a {
+      padding: 17px 15px;
     }
   }
 
@@ -100,6 +123,7 @@ header {
   .go-to-apps {
     color: #fff;
     margin-right: 10px;
+    padding: 8px 15px;
 
     &:hover, &:active, &:focus  {
       text-decoration: none;
