@@ -7,9 +7,9 @@
         <div class="row-margin section form">
 
             <div class="col-md-6">
-                <div class="form-group">
+                <div class="form-group" ng-class="{'has-error': form.tool.label.$invalid}">
                     <label for="label" class="control-label">Label</label>
-                    <input class="form-control" ng-model="view.tool.label" id="label" name="label" type="text"/>
+                    <input class="form-control" ng-model="view.tool.label" name="labelTool" is-valid-name id="label" type="text"/>
                 </div>
 
                 <div class="form-group" ng-show="view.type !== 'script'">

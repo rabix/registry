@@ -10,7 +10,7 @@ angular.module('registryApp.common')
         return {
             require: 'ngModel',
             scope: {
-                whiteSpace: "@isValidName"
+                whiteSpace: '@isValidName'
             },
             link: function(scope, element, attrs, ctrl) {
                 ctrl.$validators.name = function(modelValue, viewValue) {
