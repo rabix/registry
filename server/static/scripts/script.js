@@ -3,6 +3,7 @@
 
     var $header = $('header');
     var $body = $('body');
+    var $document = $(document);
     var $window = $(window);
     var $loginBtn = $('.login-button');
     var $rightNav = $('.login-button-nav');
@@ -40,10 +41,10 @@
      * handles toggle of 'scrolled' class to header
      */
     function handleHeaderClass() {
-        if ($body.scrollTop() > $window.height() && !$header.hasClass('scrolled')) {
+        if ($document.scrollTop() > $window.height() && !$header.hasClass('scrolled')) {
             $header.addClass('scrolled');
 
-        } else if ($body.scrollTop() < $window.height() && $header.hasClass('scrolled')) {
+        } else if ($document.scrollTop() < $window.height() && $header.hasClass('scrolled')) {
             $header.removeClass('scrolled');
         }
     }
