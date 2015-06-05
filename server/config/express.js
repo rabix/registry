@@ -19,7 +19,7 @@ var rbxPath = '';
 
 var checkPermission = function (req, res, next) {
 
-    if (req.user) {
+    if (req.isAuthenticated()) {
         return next();
     } else {
         console.log('Redirecting, not authenticated');
