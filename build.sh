@@ -19,7 +19,7 @@ pwd
 
 npm install
 
-bower install
+su sbg -c "bower install"
 
 grunt
 
@@ -32,7 +32,7 @@ pwd
 npm install
 
 cd static
-bower install
+su sbg -c "bower install"
 cd ..
 
 grunt build-static
