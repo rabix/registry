@@ -172,7 +172,7 @@ router.get('/login',
  */
 router.get('/logout', function (req, res) {
     req.logout();
-    res.redirect('/');
+    res.redirect('/rbx');
 });
 
 /**
@@ -188,7 +188,7 @@ router.get('/github',
 router.get('/github/callback',
     passport.authenticate('github', { failureRedirect: '/' }),
     function (req, res) {
-        res.redirect('/');
+        res.redirect('/rbx');
     });
 
 /**

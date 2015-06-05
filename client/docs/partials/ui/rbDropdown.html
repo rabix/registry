@@ -1,0 +1,44 @@
+<h1><code ng:non-bindable="">rbDropdown</code>
+<div><span class="hint"></span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="rbdropdown-page"><p><code>&lt;rb-dropdown&gt;</code> is a dropdown button directive.</p>
+<p>Default button look is &#39;default&#39;</p>
+</div></div>
+<h2 id="usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">&lt;!-- Simple dropdown, name can be two way binded from parent ctrl --&gt;
+&lt;rb-dropdown intention="primary" name="view.dropdown"&gt;
+  &lt;ul&gt;
+      &lt;li&gt;Item 1&lt;/li&gt;
+      &lt;li&gt;Item 2&lt;/li&gt;
+      &lt;li&gt;Item 3&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/rb-dropdown&gt;
+
+&lt;!-- Split button dropdown --&gt;
+&lt;rb-dropdown intention="primary" type="split" name="'Split dropdown'"&gt;
+  &lt;ul&gt;
+      &lt;li&gt;Item 1&lt;/li&gt;
+      &lt;li&gt;Item 2&lt;/li&gt;
+      &lt;li&gt;Item 3&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/rb-dropdown&gt;
+
+&lt;!-- Disabled dropdown --&gt;
+&lt;rb-dropdown intention="primary" type="split" name="'Disabled'" ng-disabled="true"&gt;
+  &lt;ul&gt;
+      &lt;li&gt;Item 1&lt;/li&gt;
+      &lt;li&gt;Item 2&lt;/li&gt;
+      &lt;li&gt;Item 3&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/rb-dropdown&gt;</pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>name</td><td><a href="" class="label type-hint type-hint-expression">expression</a></td><td><div class="rbdropdown-page"><p>label of dropdown button, can be two way binded, can pass in a string: name=&quot;&#39;Some name&#39;&quot;</p>
+</div></td></tr><tr><td>intention <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-boolean">boolean</a></td><td><div class="rbdropdown-page"><p>If present, sets button intention oneOf=[&#39;danger&#39;, &#39;primary&#39;, &#39;default&#39;, &#39;warning&#39;, &#39;info&#39;, &#39;success&#39;].</p>
+</div></td></tr><tr><td>ng-disabled <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-expression">expression</a></td><td><div class="rbdropdown-page"><p>En/Disable based on the expression</p>
+</div></td></tr><tr><td>type <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="rbdropdown-page"><p>Dropdown type, oneOf: [&#39;split&#39;, &#39;default&#39;]. Default value is &#39;default&#39;</p>
+</div></td></tr><tr><td>iconClass <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="rbdropdown-page"><p>FontAwesome icon class which is prepended to the name. No <code>fa-</code> prefix necessary.</p>
+</div></td></tr><tr><td>class <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="rbdropdown-page"><p>Space separated additional classes to add to element</p>
+</div></td></tr><tr><td>position <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="rbdropdown-page"><p>To which side the dropdown opens, oneOf: [&#39;left&#39;, &#39;right&#39;]. Default value is &#39;left&#39;</p>
+</div></td></tr></tbody></table></div>
+</div>

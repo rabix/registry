@@ -15,7 +15,17 @@ var session = require('express-session');
 
 var winston = require('../common/logger');
 var clientPath = '';
+var rbxPath = '';
 
+var checkPermission = function (req, res, next) {
+
+    if (req.isAuthenticated()) {
+        return next();
+    } else {
+        console.log('Redirecting, not authenticated');
+        res.redirect('/');
+    }
+};
 module.exports = function (app, config) {
 
     clientPath = config.clientPath;
@@ -36,7 +46,7 @@ module.exports = function (app, config) {
     app.use(cookieParser());
     app.use(compress());
 
-    app.use('/', express.static(clientPath));
+    app.use('/', express.static(config.root + '/static'));
     app.use('/docs', express.static(config.root + '/docs'));
 
     app.use(function(req, res, next) {
@@ -67,6 +77,8 @@ module.exports = function (app, config) {
     app.use(passport.initialize());
     app.use(passport.session());
 
+    app.use('/rbx*', checkPermission);
+    app.use('/rbx', express.static(clientPath));
 
     var controllersPath = path.join(__dirname, '../app/controllers');
     fs.readdirSync(controllersPath).forEach(function (file) {

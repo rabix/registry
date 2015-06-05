@@ -27,7 +27,7 @@ module.exports = function (app) {
  *       "user": "{user}",
  *     }
  */
-router.get('/user', function (req, res, next) {
+router.get('/user', filters.authenticated, function (req, res, next) {
 
     res.json({user: req.user});
 

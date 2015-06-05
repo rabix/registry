@@ -1,0 +1,52 @@
+<h1><code ng:non-bindable="">rbTabs</code>
+<div><span class="hint"></span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="rbtabs-page"><p><code>&lt;rb-tabs&gt;</code> is a directive for navigation tabs.</p>
+<p>Accepts a comma + whitespace separated list of tab names and either a string path to the directory with template files or a callback when tabs are switched
+Templates should match with tab names, in lower case and hyphenated.</p>
+<p>If a callback is provided, it will return the tab which has been clicked and activated back to the controller</p>
+</div></div>
+<h2 id="usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">&lt;!-- It will look for the following templates
+    path/to/tabs/tab1.html
+    path/to/tabs/tab2.html
+    path/to/tabs/tab-3.html
+--&gt;
+
+&lt;rb-tabs tabs="tab1, Tab2, TAB 3" tab-src="path/to/tabs"&gt;&lt;/rb-tabs&gt;
+
+&lt;!-- Changing tabs will call the switchTabs(tab) callback --&gt;
+
+&lt;rb-tabs tabs="tab1, tab2, tab3"
+    tab-callback="switchTabs(tab)"&gt;
+&lt;/rb-tabs&gt;
+
+
+&lt;!-- tab-src and tab-callback can be used together --&gt;
+
+&lt;rb-tabs tabs="tab1, tab2, tab3"
+    [tab-callback="switchTabs(tab)"]
+    [tab-src="path/to/tab/templates"]
+    [tab-options="arrayOnScope"]&gt;
+&lt;rb-tabs&gt;</pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>tabs <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="rbtabs-page"><p>List of tab names</p>
+</div></td></tr><tr><td>tab-options <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-array">array</a></td><td><div class="rbtabs-page"><p>Array with tabs config:</p>
+<pre><code> [
+     {
+         name: &#39;nameOfTab&#39;,
+         slug: &#39;tabHeading&#39;,
+         uiSref: &#39;linkOfTab&#39;,
+     }
+ ]
+</code></pre></div></td></tr><tr><td>tab-src <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="rbtabs-page"><p>Path to directory which contains tab templates</p>
+</div></td></tr><tr><td>active-tab <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="rbtabs-page"><p>Default active tab, otherwise the first tab in the list will be active</p>
+</div></td></tr><tr><td>tab-classes <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="rbtabs-page"><p>List of classes to be applied to each individual tab</p>
+</div></td></tr><tr><td>container-classes <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="rbtabs-page"><p>List of classes to be applied to tab content container</p>
+</div></td></tr><tr><td>state-param <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="rbtabs-page"><p>Which <code>$stateParam</code> should directive listen to for the active tab</p>
+</div></td></tr><tr><td>heading <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-boolean">boolean</a></td><td><div class="rbtabs-page"><p>Applies heading classes, defaults to true</p>
+</div></td></tr><tr><td>page <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-boolean">boolean</a></td><td><div class="rbtabs-page"><p>Applies nav-page class, defaults to false</p>
+</div></td></tr><tr><td>tab-callback <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-function">Function</a></td><td><div class="rbtabs-page"><p>Function on controller scope which is to be called when tab is switched</p>
+</div></td></tr></tbody></table></div>
+</div>

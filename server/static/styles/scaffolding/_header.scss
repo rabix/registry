@@ -1,0 +1,124 @@
+header {
+  background-color: $dark-header-background;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  z-index: 3;
+
+  /**
+  Logo styles
+  **/
+  .logo-wrap {
+    background: image-url('logo.png') no-repeat 17px 13px;
+    background-size: 21px 28px;
+    padding: 11px 15px;
+
+    // transition
+    @include transition(opacity .9s, visibility .9s);
+    opacity: 0;
+    visibility: hidden;
+
+  }
+
+  .logo {
+    padding: 0 35px; // hacky magic numbers to make .logo fill .logo-wrap
+    font-size: 22px;
+
+    float: left;
+    color: #fff;
+    text-decoration: none;
+    text-shadow: 2px 2px 2px $gray-dark;
+
+    small {
+      font-size: 10px;
+      position: relative;
+      left: 28px;
+      top: -3px;
+      display: block;
+      color: #f3f3f3;
+      text-shadow: none;
+    }
+  }
+
+  /**
+  Generic navbar styles for left-side navigation
+  **/
+  .navbar-nav {
+    @include transition(opacity .9s, visibility .9s);
+    opacity: 0;
+    visibility: hidden;
+
+    li a {
+      text-transform: uppercase;
+      @include transition(background-color .8s, color .8s);
+    }
+  }
+
+  .nav-steps {
+    a {
+      @extend %nav-step;
+      padding: 8px 15px;
+
+      span {
+        width: 34px;
+        height: 34px;
+        border-radius: 20px;
+        border: 2px solid $light-text-color;
+        font-size: 20px;
+
+        @include transition(border-color .8s);
+      }
+    }
+
+    li.active, li:hover, li:focus, li:active {
+      span {
+        border-color: $lighter-text-color;
+      }
+    }
+  }
+
+  /**
+  Login button styles
+  **/
+  .login-button-nav {
+    li {
+      padding-right: 10px;  // hacky
+
+      .login-button {
+        display: none;
+        padding: $padding-base-vertical $padding-base-horizontal;
+        position: relative; // hacky
+        top: 10px; // hacky, bootstrap navbars don't play nice with link-buttons
+
+        &:hover, &:active, &:focus {
+          background-color: darken($btn-primary-bg, 10%);
+        }
+      }
+    }
+  }
+
+  .go-to-apps {
+    color: #fff;
+    margin-right: 10px;
+
+    &:hover, &:active, &:focus  {
+      text-decoration: none;
+      background-color: transparent !important; //really, really hacky.
+    }
+
+    .user-avatar {
+      border-radius: 50%;
+      height: 34px;
+      width: 34px;
+      margin-right: 10px;
+    }
+  }
+
+  // show navbar items when below splash page
+  &.scrolled {
+    .logo-wrap, .navbar-nav {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+}

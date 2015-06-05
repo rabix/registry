@@ -1,0 +1,28 @@
+<h1><code ng:non-bindable="">rbSelect</code>
+<div><span class="hint"></span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="rbselect-page"><p><code>&lt;rb-select&gt;</code> is a wrapper directive for select and ng-options directives</p>
+<p>It takes a comprehension expression for <code>ng-options</code> in terms of the <code>options</code> object, which is passed to the directive via the <code>options</code> attribute.</p>
+<p>Transcluded content can be: <code>&lt;label&gt;</code>, <code>&lt;p&gt;</code> or both</p>
+</div></div>
+<h2 id="usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">&lt;rb-select ng-model="model"
+           expression="item.key as item.value for item in options"
+           options="someOptionsArray"&gt;
+    &lt;label&gt;
+        Label for select
+    &lt;/label&gt;
+    &lt;p&gt;
+        Help Block text
+    &lt;/p&gt;
+&lt;/rb-select&gt;</pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>ng-model</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="rbselect-page"><p>Assignable angular expression to data-bind to</p>
+</div></td></tr><tr><td>expression</td><td><a href="" class="label type-hint type-hint-comprehension_expression">comprehension_expression</a></td><td><div class="rbselect-page"><p>Comprehension expression for options. See <a href="https://docs.angularjs.org/api/ng/directive/ngOptions">ngOptions directive docs</a></p>
+</div></td></tr><tr><td>options</td><td><a href="" class="label type-hint type-hint-expression">expression</a></td><td><div class="rbselect-page"><p>object or array for options</p>
+</div></td></tr><tr><td>ng-required <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-boolean">boolean</a></td><td><div class="rbselect-page"><p>Specifies if field is required</p>
+</div></td></tr><tr><td>ng-disabled <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-boolean">boolean</a></td><td><div class="rbselect-page"><p>En/Disable based on the expression</p>
+</div></td></tr><tr><td>has-error <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-boolean">boolean</a></td><td><div class="rbselect-page"><p>Adds has-error class based on expression</p>
+</div></td></tr></tbody></table></div>
+</div>

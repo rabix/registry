@@ -1,0 +1,32 @@
+<h1><code ng:non-bindable="">rbButton</code>
+<div><span class="hint"></span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="rbbutton-page"><p><code>&lt;rb-button&gt;</code> is a button directive with optional types.</p>
+<p>If you supply a <code>href</code>, <code>ng-href</code> or &#39;ui-sref&#39; attribute, it will become an <code>&lt;a&gt;</code> element. Otherwise, it will
+become a <code>&lt;button&gt;</code> element.</p>
+<p>On button focus class <code>rb-focus</code> will be applied and removed when focus is lost</p>
+<p>Default button look is &#39;default&#39;</p>
+</div></div>
+<h2 id="usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">&lt;rb-button&gt;
+  Flat Button
+&lt;/rb-button&gt;
+&lt;rb-button type='submit'&gt;
+  Submit Button
+&lt;/rb-button&gt;
+&lt;rb-button href="http://google.com"&gt;
+  Flat link
+&lt;/rb-button&gt;
+&lt;rb-button ng-disabled="true"&gt;
+  Disabled Button
+&lt;/rb-button&gt;</pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>intention <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-boolean">boolean</a></td><td><div class="rbbutton-page"><p>If present, sets button intention oneOf=[&#39;danger&#39;, &#39;primary&#39;, &#39;default&#39;, &#39;warning&#39;, &#39;info&#39;, &#39;success&#39;].</p>
+</div></td></tr><tr><td>ng-disabled <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-expression">expression</a></td><td><div class="rbbutton-page"><p>En/Disable based on the expression</p>
+</div></td></tr><tr><td>type <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="rbbutton-page"><p>Button type</p>
+</div></td></tr><tr><td>class <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="rbbutton-page"><p>Space separated additional classes to add to element</p>
+</div></td></tr><tr><td>size <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="rbbutton-page"><p>Size value oneOf: [xs, sm, block, lg]; Default: none</p>
+</div></td></tr><tr><td>aria-label <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="rbbutton-page"><p>Adds alternative text to button for accessibility, useful for icon buttons. // TODO: needs implementing</p>
+</div></td></tr></tbody></table></div>
+</div>

@@ -1,0 +1,37 @@
+<h1><code ng:non-bindable="">rbInput</code>
+<div><span class="hint"></span>
+</div>
+</h1>
+<div><h2 id="description">Description</h2>
+<div class="description"><div class="rbinput-page"><p><code>&lt;rb-input&gt;</code> is a directive for input fields.</p>
+<p>Accepts all valid textual input types. No specified input type defaults to &#39;text&#39;.</p>
+<p>Transcluded content can be: <code>&lt;label&gt;</code>, a <code>&lt;p&gt;</code>, or both</p>
+</div></div>
+<h2 id="usage">Usage</h2>
+<div class="usage"><pre class="prettyprint linenums">&lt;rb-input ng-model="model"&gt;
+&lt;/rb-input&gt;
+
+&lt;rb-input type="search" ng-model="model"&gt;
+  &lt;p&gt;
+    Enter search terms
+  &lt;/p&gt;
+&lt;/rb-input&gt;
+
+&lt;rb-input type="number" ng-model="number"&gt;
+&lt;/rb-input&gt;
+
+&lt;rb-input ng-disabled="true" ng-model="model"&gt;
+  &lt;label&gt;Disabled Input&lt;/label&gt;
+&lt;/rb-input&gt;</pre>
+<h4 id="usage_parameters">Parameters</h4><table class="variables-matrix table table-bordered table-striped"><thead><tr><th>Param</th><th>Type</th><th>Details</th></tr></thead><tbody><tr><td>ng-model</td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="rbinput-page"><p>Model for the input value</p>
+</div></td></tr><tr><td>type <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="rbinput-page"><p>Input type, any valid text input type</p>
+</div></td></tr><tr><td>id <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="rbinput-page"><p>Id for the input field, for attribute for label (if included)</p>
+</div></td></tr><tr><td>name <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-string">string</a></td><td><div class="rbinput-page"><p>Name for input field</p>
+</div></td></tr><tr><td>ng-required <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-boolean">boolean</a></td><td><div class="rbinput-page"><p>Specifies if field is required</p>
+</div></td></tr><tr><td>ng-disabled <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-boolean">boolean</a></td><td><div class="rbinput-page"><p>En/Disable based on the expression</p>
+</div></td></tr><tr><td>has-error <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-boolean">boolean</a></td><td><div class="rbinput-page"><p>Adds has-error class based on expression</p>
+</div></td></tr><tr><td>clear <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-boolean">boolean</a></td><td><div class="rbinput-page"><p>Clears search field</p>
+</div></td></tr><tr><td>no-button <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-boolean">boolean</a></td><td><div class="rbinput-page"><p>Removes search button</p>
+</div></td></tr><tr><td>callback <div><em>(optional)</em></div></td><td><a href="" class="label type-hint type-hint-function">Function</a></td><td><div class="rbinput-page"><p>Callback is called on submit</p>
+</div></td></tr></tbody></table></div>
+</div>

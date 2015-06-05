@@ -9,6 +9,9 @@ module.exports = function (grunt) {
     require('load-grunt-tasks')(grunt);
 
     var reloadPort = 35729, files;
+    var config = {
+        app: 'static'
+    };
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
@@ -42,6 +45,45 @@ module.exports = function (grunt) {
                     'app/views/**/*.ejs'
                 ],
                 options: { livereload: reloadPort }
+            },
+            sass: {
+                files: [config.app + '/styles/{,*/}*.{scss,sass}'],
+                tasks: ['compass', 'autoprefixer']
+            }
+        },
+        /**************************************************************************
+         *
+         *      FOR STATIC LANDING PAGE
+         *
+         **************************************************************************/
+        compass: {
+            options: {
+                httpPath: config.app + '/styles/',
+                sassDir: config.app + '/styles',
+                cssDir: config.app + '/styles',
+                fontsDir: config.app + '/fonts',
+                imagesDir: config.app + '/images',
+                javascriptsDir: config.app + '/scripts',
+                importPath: [config.app + '/bower_components', config.app + '/bower_components/bootstrap-sass-official/assets/stylesheets'],
+                relativeAssets: true,
+                assetCacheBuster: false,
+                raw: 'Sass::Script::Number.precision = 10\n'
+            },
+            dist: {
+                options: {
+                    generatedImagesDir: config.app + 'images/generated'
+                }
+            },
+            app: {
+                options: {
+                    debugInfo: true
+                }
+            },
+            watch: {
+                options: {
+                    debugInfo: true,
+                    watch: true
+                }
             }
         }
     });
@@ -63,6 +105,9 @@ module.exports = function (grunt) {
             });
         }, 500);
     });
+
+    grunt.registerTask('static', ['compass:watch']);
+    grunt.registerTask('build-static', ['compass:dist']);
 
     grunt.registerTask('default', ['develop', 'watch']);
     grunt.registerTask('docs',['apidoc']);
