@@ -75,11 +75,6 @@ header {
         border-color: $lighter-text-color;
       }
     }
-
-    li.step4 span:before { // hack to make the share icon align correctly
-      position: relative;
-      right: 2px;
-    }
   }
 
   /**

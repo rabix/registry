@@ -24,9 +24,8 @@
             </div>
 
             <div class="col-md-3">
-                <div class="form-group" ng-class="{'has-error': (view.form.separator.$invalid && view.form.$dirty)}">
-                    <label class="control-label">Separator</label>
-                    <separator type="item" model="view.property.separator" is-disabled="view.disabled"></separator>
+                <div class="form-group mg-top-20">
+                    <rb-checkbox ng-model="view.property.separate" ng-disabled="view.disabled">Separate prefix and value on command line</rb-checkbox>
                 </div>
             </div>
 

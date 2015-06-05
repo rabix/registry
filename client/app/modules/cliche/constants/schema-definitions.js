@@ -28,7 +28,7 @@ angular.module('registryApp.cliche')
                 inputBinding: {type: 'object', def: {
                     position: {type: 'number'},
                     valueFrom: {type: 'object'},
-                    separator: {type: 'string'},
+                    separate: {type: 'boolean'},
                     prefix: {type: 'string'},
                     itemSeparator: {type: ['string', 'object']}
                 }},
@@ -48,7 +48,7 @@ angular.module('registryApp.cliche')
                         adapter: {type: 'object', def: {
                             position: {type: 'number'},
                             valueFrom: {type: 'object'},
-                            separator: {type: 'string'},
+                            separate: {type: 'boolean'},
                             prefix: {type: 'string'},
                             itemSeparator: {type: ['string', 'object']}
                         }}
@@ -75,7 +75,7 @@ angular.module('registryApp.cliche')
             argAdapters: {type: 'object', required: true, def: {
                 position: {type: 'number'},
                 valueFrom: {type: ['string', 'number', 'object'], required: true},
-                separator: {type: 'string'},
+                separate: {type: 'boolean'},
                 prefix: {type: 'string'}
             }}
         }}

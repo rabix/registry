@@ -128,12 +128,10 @@
             <!-- END Prefix -->
 
             <div class="col-md-2">
-                <div class="form-group" ng-class="{'has-error': (view.form.separator.$invalid && view.form.$dirty)}">
-                    <label class="control-label">Separator</label>
-                    <separator type="item" model="view.property.inputBinding.separator" is-disabled="view.disabled"></separator>
+                <div class="form-group mg-top-20">
+                    <rb-checkbox ng-model="view.property.inputBinding.separate" is-disabled="view.disabled">Separate prefix and value on command line</rb-checkbox>
                 </div>
             </div>
-            <!-- END Separator -->
 
             <div ng-if="view.type === 'array'" class="col-md-2">
                 <div class="form-group">

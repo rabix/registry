@@ -14,7 +14,7 @@ angular.module('registryApp.cliche')
         $scope.view.mode = options.mode;
 
         if (_.isUndefined($scope.view.property)) {
-            $scope.view.property = {separator: ' '};
+            $scope.view.property = {};
         }
 
         /**
