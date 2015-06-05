@@ -2,8 +2,6 @@
 
 DIR=/data/app/registry
 
-sudo service rabix-registry stop
-
 echo " ******* Starting build.. ******* "
 
 cd $DIR
@@ -43,7 +41,5 @@ cd ..
 pwd
 
 echo "Frontend build done, starting application.."
-
-sudo service rabix-registry start
 
 echo "******* Build ended.. ******* "
