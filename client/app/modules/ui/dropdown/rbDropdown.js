@@ -76,20 +76,30 @@ angular.module('registryApp.ui')
             scope.view.iconClass = _.contains(attr.iconClass, 'fa-') ? _.trimLeft(attr.iconClass, 'fa-') : attr.iconClass;
             scope.view.position = attr.position || 'left';
 
-            transcludeFn(function (clone, scope) {
-
+            transcludeFn(function (clone, sc) {
                 if ( !clone.length ) {
                     clone.remove();
-                    scope.$destroy();
+                    sc.$destroy();
                     return;
                 }
 
-                clone.addClass('dropdown-menu');
-                clone.attr('role', 'menu');
+                var ul = clone;
+
+                angular.forEach(clone, function (el) {
+
+                   if (typeof $(el).attr('dropdown-body') !== 'undefined') {
+                       dropdown.children().remove();
+                       ul = clone.find('ul');
+                   }
+
+                });
+
+                ul.addClass('dropdown-menu ' + scope.view.position);
+                ul.attr('role', 'menu');
 
                 dropdown.append(clone);
 
-                transclusionScope = scope;
+                transclusionScope = sc;
             });
 
             dropdown

@@ -54,11 +54,16 @@ $header-hover-color: darken($sidebar-blue, 5%);
     }
   }
 
+  .create-app {
+    display: flex;
+    align-self: center;
+    margin-left: auto;
+  }
+
   /* user actions like login and logout */
   .actions {
     position: relative;
     align-self: center;
-    margin-left: auto;
 
     .user-details {
       overflow: hidden;

@@ -1,15 +1,17 @@
 <div ng-class="view.classes" loading="view.loading">
 
     <div class="heading">
-        <a ui-sref="home" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
-        <h1 class="main-heading">
-            Settings
-            <div class="actions pull-right">
-                <button class="btn btn-primary" ng-click="generateToken()" ng-disabled="view.generating" tooltip="You can (re)generate your token" tooltip-placement="bottom">(Re)generate Token</button>
-                <button class="btn btn-danger" ng-click="revokeToken()" ng-disabled="view.revoking" tooltip="You can revoke your token" tooltip-placement="bottom">Revoke Token</button>
-                <button class="btn btn-default" ng-click="getToken()" ng-disabled="view.getting" tooltip="Check your token" tooltip-placement="bottom">Check Token</button>
-            </div>
-        </h1>
+        <div class="pull-left">
+            <rb-button ui-sref="apps" class="go-back"><i class="fa fa-chevron-left"></i> Back</rb-button>
+            <span class="title">
+                Settings <small class="text-muted">(Profile)</small>
+            </span>
+        </div>
+        <div class="pull-right">
+            <rb-button intention="primary" ng-click="generateToken()" ng-disabled="view.generating" tooltip="You can (re)generate your token" tooltip-placement="bottom">(Re)generate Token</rb-button>
+            <rb-button intention="danger" ng-click="revokeToken()" ng-disabled="view.revoking" tooltip="You can revoke your token" tooltip-placement="bottom">Revoke Token</rb-button>
+            <rb-button ng-click="getToken()" ng-disabled="view.getting" tooltip="Check your token" tooltip-placement="bottom">Check Token</rb-button>
+        </div>
     </div>
     <!-- # .heading -->
 

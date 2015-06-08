@@ -15,28 +15,38 @@
 
     </ul>
 
+    <rb-dropdown intention="primary" class="seperate create-app right" name="'New'" icon-class="plus">
+        <ul>
+            <li>
+                <a href="" ui-sref="cliche-new({type: 'tool'})">
+                    <i class="fa fa-plus"></i> New Tool
+                </a>
+            </li>
+            <li>
+                <a href="" ui-sref="cliche-new({type: 'script'})">
+                    <i class="fa fa-plus"></i> New Script
+                </a>
+            </li>
+            <li>
+                <a href="" ui-sref="workflow-editor({id: 0, mode: 'new'})">
+                    <i class="fa fa-plus"></i> New Workflow
+                </a>
+            </li>
+        </ul>
+    </rb-dropdown>
+
     <div class="actions">
 
-        <div class="dropdown right" dropdown>
-            <div class="welcome" dropdown-toggle>
+        <rb-dropdown class="right" intention="default">
+            <div class="welcome" dropdown-toggle dropdown-body>
                 <img ng-src="{{ ::view.user.avatar_url }}" width="34" alt=""/>
                 <span class="user-name"> {{ ::view.user.login }}</span>
                 <span class="caret"></span>
             </div>
             <ul  class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
                 <li>
-                    <a href="" ui-sref="cliche-new({type: 'tool'})">
-                        <i class="fa fa-plus"></i> New Tool
-                    </a>
-                </li>
-                <li>
-                    <a href="" ui-sref="cliche-new({type: 'script'})">
-                        <i class="fa fa-plus"></i> New Script
-                    </a>
-                </li>
-                <li>
-                    <a href="" ui-sref="workflow-editor({id: 0, mode: 'new'})">
-                        <i class="fa fa-plus"></i> New Workflow
+                    <a ui-sref="settings">
+                        <i class="fa fa-cog"></i> Settings
                     </a>
                 </li>
                 <li>
@@ -45,7 +55,7 @@
                     </a>
                 </li>
             </ul>
-        </div>
+        </rb-dropdown>
 
     </div>
 
