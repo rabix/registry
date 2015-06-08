@@ -1,6 +1,7 @@
 /* NAVIGATION
 ================================================ */
-$header-hover-color: darken($sidebar-blue, 5%);
+$dark-header-background: rgb(31, 37, 46);
+$header-hover-color: darken($dark-header-background, 5%);
 
 @mixin navigation-hover() {
   &:hover, &:active, &:focus {
@@ -12,7 +13,7 @@ $header-hover-color: darken($sidebar-blue, 5%);
 }
 
 .navigation {
-  background-color: $sidebar-blue;
+  background-color: $dark-header-background;
   @extend .flex-box-row;
   @extend .flex-auto;
   
@@ -34,7 +35,7 @@ $header-hover-color: darken($sidebar-blue, 5%);
 
   .logo {
     display: block;
-    padding: 6px 50px 2px; // hacky magic numbers so the link will fill the wrap
+    padding: 12px 50px 2px; // hacky magic numbers so the link will fill the wrap
     float: left;
     position: relative;
     color: #fff;
@@ -105,7 +106,7 @@ $header-hover-color: darken($sidebar-blue, 5%);
         font-size: 16px;
         margin-right: 0px;
         text-shadow: 1px 1px 1px $dark-blue;
-        color: $orange;
+        color: #fff;
         padding: 15px;
         text-transform: capitalize;
 
