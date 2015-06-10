@@ -302,6 +302,20 @@ router.post('/repos', filters.authenticated, function (req, res, next) {
 
 });
 
+router.post('/repos/validate', filters.authenticated, function (req, res, next) {
+    var repo = req.body.repo;
+
+    Repo.findOne({name: repo.name, owner: req.user.login}, function (err, check) {
+        if (err) {return next(err);}
+
+        if (!check) {
+            res.json({message: 'Repo name available'});
+        } else {
+            res.status(400).json({message: 'Repo name already in use'});
+        }
+    });
+});
+
 /**
  * @apiName PutRepo
  * @api {PUT} /api/repos/:id/:action Update repository
