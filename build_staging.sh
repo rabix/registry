@@ -32,6 +32,14 @@ npm install
 
 grunt docs
 
+cd static
+
+su sbg -c "bower install"
+
+cd ..
+
+grunt build-static
+
 cd ..
 
 pwd
