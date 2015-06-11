@@ -217,8 +217,8 @@ module.exports = function (grunt) {
             },
             dist: {
                 options: {
-                    style: 'compressed',
-                    sourcemap: 'none'
+                    style: 'expanded',
+                    sourcemap: 'auto'
                 },
                 files: [{
                     expand: true,
@@ -274,15 +274,15 @@ module.exports = function (grunt) {
         // By default, your `index.html`'s <!-- Usemin block --> will take care of
         // minification. These next options are pre-configured if you do not wish
         // to use the Usemin blocks.
-        // cssmin: {
-        //   dist: {
-        //     files: {
-        //       '<%= yeoman.dist %>/styles/main.css': [
-        //         '.tmp/styles/{,*/}*.css'
-        //       ]
-        //     }
-        //   }
-        // },
+        cssmin: {
+           dist: {
+             files: {
+               '<%= yeoman.dist %>/styles/main.css': [
+                 '.tmp/styles/{,*/}*.css'
+               ]
+             }
+           }
+        },
         // uglify: {
         //   dist: {
         //     files: {
@@ -292,9 +292,9 @@ module.exports = function (grunt) {
         //     }
         //   }
         // },
-        // concat: {
-        //   dist: {}
-        // },
+        concat: {
+           dist: {}
+        },
 
         imagemin: {
             dist: {
@@ -414,7 +414,7 @@ module.exports = function (grunt) {
                         src: ['generated/*']
                     }
                 ]
-            },
+            }
 //            styles: {
 //                expand: true,
 //                cwd: '<%= yeoman.app %>/styles',
@@ -514,8 +514,8 @@ module.exports = function (grunt) {
         'concat',
         'ngAnnotate',
         'copy:dist',
-        'cdnify',
         'cssmin',
+        'cdnify',
         'uglify',
         'filerev',
         'usemin',
