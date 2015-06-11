@@ -145,6 +145,20 @@ angular.module('registryApp.repo')
 
         };
 
+        /**
+         * Check if repo name exists
+         *
+         * @param {string} name
+         * @returns {object} $promise
+         */
+        self.validateRepoName = function (name) {
+
+          var repo = {name: name};
+          return Api.repoNameValidate.post({}, {repo: repo}).$promise;
+
+        };
+
+
         return self;
 
     }]);

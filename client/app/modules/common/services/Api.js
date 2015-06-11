@@ -89,6 +89,10 @@ angular.module('registryApp.common')
             post: {method: 'POST'}
         });
 
+        self.repoNameValidate = $resource(apiUrl + '/repos/validate', {}, {
+            post: {method: 'POST'}
+        });
+
         return self;
 
 

@@ -4,18 +4,41 @@
 'use strict';
 
 angular.module('registryApp.repo')
-    .controller('PickRepoModalCtrl', ['$scope', '$modalInstance', 'data', 'HotkeyRegistry', function ($scope, $modalInstance, data, HotkeyRegistry) {
+    .controller('PickRepoModalCtrl', ['$scope', '$modalInstance', 'data', 'HotkeyRegistry', 'Repo', function ($scope, $modalInstance, data, HotkeyRegistry, Repo) {
 
         $scope.view = {};
         $scope.view.repos = data.repos;
         $scope.view.type = data.type;
         $scope.view.pickName = data.pickName || false;
-
+        $scope.view.id = data.repo ? data.repo._id : null;
+        $scope.view.action = 'add';
+        $scope.view.repo = {};
+        $scope.view.repoCreationVisible = false;
         /**
          * Close the modal and send data to be saved
          */
         $scope.ok = function () {
 
+            if (_.isUndefined($scope.view.repoSelected)){
+
+              if (_.isUndefined($scope.view.repo.name)) {
+                return false;
+              }
+              var data = {
+                name: $scope.view.repo.name,
+                description: $scope.view.repo.description
+              };
+              Repo.validateRepoName($scope.view.repo.name).then(function (result) {
+                if (result['message'] === 'Repo name available') {
+                  Repo.manageRepo($scope.view.id, $scope.view.action, data)
+                    .then(function (result) {
+                      $modalInstance.close({repoId: result.repo._id, name: result.repo.name});
+                    });
+                }
+              });
+
+
+            }
             if ($scope.view.pickName && $scope.view.form.name.$invalid) {
                 return false;
             }
@@ -39,5 +62,10 @@ angular.module('registryApp.repo')
         $scope.$on('$destroy', function () {
             unloadHotkeys();
         });
+
+        $scope.showRepoCreation = function(){
+          $scope.view.repoCreationVisible = true;
+
+        }
 
     }]);

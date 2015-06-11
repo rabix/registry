@@ -10,14 +10,25 @@
                 <span ng-if="view.form.name.$invalid" class="help-block" >Please enter new name.</span>
             </div>
 
-
-            <div class="form-group" ng-class="{ 'has-error' : view.form.repo.$invalid }">
+            <div class="form-group" ng-class="{ 'has-error' : view.form.repo.$invalid && !view.repoCreationVisible }">
                 <label>Pick name for forked workflow: </label>
                 <select  ng-model="view.repoSelected" class="form-control" name="repo" ng-options="repo._id as repo.name for repo in view.repos" required focus-here="true">
                     <option value="">-- choose repo --</option>
                 </select>
-                <span ng-if="view.form.repo.$invalid" class="help-block" >Please pick repo from the list.</span>
+                <span ng-if="view.form.repo.$invalid" class="help-block" >Please pick repo from the list or <a href ng-click="showRepoCreation()">create a new one</a></span>
             </div>
+            <div ng-if="view.repoSelected === undefined && view.repoCreationVisible" class="form-group"
+                 ng-class="{'has-error': (view.form.name.$invalid && view.form.$dirty)}">
+              <label for="name" class="control-label">Name</label>
+              <input type="text" class="form-control" id="name" name="name" ng-model="view.repo.name" required>
+            </div>
+
+            <div ng-if="view.repoSelected === undefined && view.repoCreationVisible" class="form-group"
+                 ng-class="{'has-error': (view.form.name.$invalid && view.form.$dirty)}">
+              <label for="description" class="control-label">Description</label>
+              <textarea class="form-control" id="description" name="description" ng-model="view.repo.description"></textarea>
+            </div>
+
 
     </div>
 
