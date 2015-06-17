@@ -26,15 +26,13 @@ angular.module('registryApp.repo')
               }
               var data = {
                 name: $scope.view.repo.name,
-                description: $scope.view.repo.description
+                description: $scope.view.repo.description || ''
               };
               Repo.validateRepoName($scope.view.repo.name).then(function (result) {
-                if (result['message'] === 'Repo name available') {
-                  Repo.manageRepo($scope.view.id, $scope.view.action, data)
+                  Repo.manageRepo(null, $scope.view.action, data)
                     .then(function (result) {
                       $modalInstance.close({repoId: result.repo._id, name: result.repo.name});
                     });
-                }
               });
 
 
