@@ -11,12 +11,15 @@ $header-hover-color: darken($dark-header-background, 5%);
   }
   @include transition(background-color .3s, color .3s);
 }
-
+.avatar{
+  margin-top: 10px;
+  margin-left: 40px;
+}
 .navigation {
   background-color: $dark-header-background;
   @extend .flex-box-row;
   @extend .flex-auto;
-  
+
   & > div {
     width: 100%;
     @extend .flex-box-row;

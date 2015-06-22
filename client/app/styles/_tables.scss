@@ -156,6 +156,14 @@
     }
   }
 
+  &.user-setting{
+    width: 300px;
+    margin-left: 40px;
+    margin-top: 10px;
+    th{
+      padding: 9px;
+    }
+  }
   /* GitHub Repos table */
   &.github-repos {
     th {

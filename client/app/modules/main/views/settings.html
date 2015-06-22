@@ -15,19 +15,31 @@
     </div>
     <!-- # .heading -->
 
-    <div class="content content-tbl" ng-if="!view.loading">
 
-        <table class="table table-hover jobs">
-            <thead><tr><th>History of generated job JSONs</th></tr></thead>
-            <tbody>
-            <tr ng-repeat="job in view.jobs track by $index">
-                <td><a ng-href="{{ ::job.url }}" target="_blank">{{ ::job.url }}</a></td>
-            </tr>
-            <tr class="empty" ng-if="view.jobs.length === 0">
-                <td colspan="3"><p class="alert alert-info">There are no jobs found</p></td>
-            </tr>
-            </tbody>
-        </table>
+        <img class="avatar" ng-src="{{ view.user.avatar_url }}" width="34" alt=""/>
+        <div>
+            <div class="content content-tbl" ng-if="!view.loading">
+            <table class="table user-setting">
+              <tbody>
+              <tr>
+                <th>User</th><td>{{view.user.login}}</td>
+              </tr>
+              <tr>
+                <th>User created on</th><td>{{view.user.createdOn}}</td>
+              </tr>
+              <tr>
+                <th>Email</th><td>{{view.user.email}}</td>
+              </tr>
+              <tr>
+                <th>User repos</th><td><span ng-repeat="repo in view.repos">{{repo}}<span ng-show="$index+1<view.repos.length">,&nbsp;</span></span></td>
+              </tr>
+
+              </tbody>
+            </table>
+        </div>
+        <div>
+          <nvd3 options="options" data="data"></nvd3>
+        </div>
 
     </div>
 

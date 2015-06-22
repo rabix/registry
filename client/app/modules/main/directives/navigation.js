@@ -80,6 +80,7 @@ angular.module('registryApp')
             User.getUser().then(function(result) {
                 $scope.view.user = result.user;
                 $scope.view.loading = false;
+                console.log('user'); console.log(result);
             });
         };
 

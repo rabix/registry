@@ -24,6 +24,7 @@ angular
         'ui.sortable',
         'markdown',
         'ngAria',
+        'nvd3',
         'registryApp.app',
         'registryApp.cliche',
         'registryApp.dyole',
