@@ -963,6 +963,15 @@ angular.module('registryApp.cliche')
 
         };
 
+        var avroPrimitiveTypes = [ 'null', 'boolean', 'int', 'long', 'float', 'double', 'bytes', 'string'];
+        var avroNamedTypes = ['record', 'enum', 'fixed'];
+        var avroComplexTypes = ['array', 'map'].concat(avroNamedTypes);
+        var avroValidTypes = avroPrimitiveTypes.concat(avroComplexTypes);
+
+        var isAvroType = function(type){
+          return avroValidTypes.indexOf(type) !== -1;
+        }
+
         /**
          * Format property according to avro schema
          *
@@ -1001,22 +1010,17 @@ angular.module('registryApp.cliche')
             /* if any level and array */
             if (inner.type === 'array') {
 
-                if (inner.items.type === 'File'){
+                if (!isAvroType(inner.items.type)) {
                   type = {
                     type: 'array',
-                    items: 'File'
+                    items: inner.items.type
                   }
 
-                }else {
+                } else {
                   type = {
                     type: 'array',
-                    items: inner.items
+                    items: stripParams(tmp, type.items.type)
                   };
-                }
-                if (type.items === 'File'){
-                  stripParams(tmp, type);
-                }else {
-                  stripParams(tmp, type.items.type);
                 }
 
             /* if any level and enum */
@@ -1273,7 +1277,8 @@ angular.module('registryApp.cliche')
             manageArg: manageArg,
             deleteArg: deleteArg,
             save: save,
-            subscribe: subscribe
+            subscribe: subscribe,
+            isAvroType: isAvroType
         };
 
     }]);
