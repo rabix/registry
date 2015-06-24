@@ -49,7 +49,13 @@ angular.module('registryApp.cliche')
                     var typeObj = schema[0] === 'null' ? schema[1] : schema[0]; //in case property is not required
                     var enumObj = Cliche.parseEnum(typeObj);
                     var type = Cliche.parseType(typeObj);
-                    var itemType = (typeObj.items ? typeObj.items.type : null);
+                    var itemType;
+                    if (typeObj.items === 'File'){
+                      itemType = 'File';
+                    }
+                    else{
+                      itemType = (typeObj.items ? typeObj.items.type : null);
+                    }
 
                     $scope.inputs[name] = Helper.getDefaultInputValue(name, enumObj.symbols, type, itemType);
                 }

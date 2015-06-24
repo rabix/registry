@@ -1001,12 +1001,23 @@ angular.module('registryApp.cliche')
             /* if any level and array */
             if (inner.type === 'array') {
 
-                type = {
+                if (inner.items.type === 'File'){
+                  type = {
+                    type: 'array',
+                    items: 'File'
+                  }
+
+                }else {
+                  type = {
                     type: 'array',
                     items: inner.items
-                };
-
-                stripParams(tmp, type.items.type);
+                  };
+                }
+                if (type.items === 'File'){
+                  stripParams(tmp, type);
+                }else {
+                  stripParams(tmp, type.items.type);
+                }
 
             /* if any level and enum */
             } else if (inner.type === 'enum') {
@@ -1126,7 +1137,11 @@ angular.module('registryApp.cliche')
 
             if (type === 'array') {
                 var arr = schema[1] || schema[0];
-                return arr.items;
+                if (arr.items === 'File'){
+                  return {type: arr.items};
+                }else {
+                  return arr.items;
+                }
             } else {
                 return null;
             }
