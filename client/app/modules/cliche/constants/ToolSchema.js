@@ -80,7 +80,8 @@ var Schema = {
                         },
                         {
                             $ref: '#/definitions/recordDef'
-                        }
+                        },
+                        { type: 'string' }
                     ]
                 }
             },

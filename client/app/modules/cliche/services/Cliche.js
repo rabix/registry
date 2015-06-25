@@ -1009,7 +1009,6 @@ angular.module('registryApp.cliche')
 
             /* if any level and array */
             if (inner.type === 'array') {
-
                 if (!isAvroType(inner.items.type)) {
                   type = {
                     type: 'array',
@@ -1017,9 +1016,10 @@ angular.module('registryApp.cliche')
                   }
 
                 } else {
+                  stripParams(tmp, inner.items.type);
                   type = {
                     type: 'array',
-                    items: stripParams(tmp, type.items.type)
+                    items: inner.items
                   };
                 }
 
@@ -1141,9 +1141,9 @@ angular.module('registryApp.cliche')
 
             if (type === 'array') {
                 var arr = schema[1] || schema[0];
-                if (arr.items === 'File'){
+                if (arr.items === 'File') {
                   return {type: arr.items};
-                }else {
+                } else {
                   return arr.items;
                 }
             } else {
