@@ -970,7 +970,7 @@ angular.module('registryApp.cliche')
 
         var isAvroType = function(type){
           return avroValidTypes.indexOf(type) !== -1;
-        }
+        };
 
         /**
          * Format property according to avro schema
