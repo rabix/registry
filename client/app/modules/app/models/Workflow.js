@@ -16,7 +16,7 @@ angular.module('registryApp.app')
         self.getWorkflows = function(skip, searchTerm, mine) {
 
             var isSearch = !(_.isUndefined(searchTerm) || _.isEmpty(searchTerm));
-            var params = {skip: skip};
+            var params = {skip: skip, resolve: true};
 
             if (isSearch) {
                 params.q = searchTerm;
@@ -27,6 +27,15 @@ angular.module('registryApp.app')
             return Api.pipelines.get(params).$promise;
 
         };
+        
+        self.getAll = function (resolve, mine) {
+            var params = {
+                resolve: resolve || false,
+                mine: mine || true
+            };
+
+            return Api.pipelines.get(params).$promise;
+        };
 
         /**
          * Get workflow by id
@@ -36,7 +45,7 @@ angular.module('registryApp.app')
          */
         self.getWorkflow = function(id) {
 
-            return Api.pipelines.get({id: id}).$promise;
+            return Api.pipelines.get({id: id, resolve: true}).$promise;
 
         };
 

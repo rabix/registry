@@ -581,3 +581,44 @@ legend {
     display: none;
   }
 }
+
+/**
+ * User settings page
+ */
+.user-settings {
+
+  padding: 5px 30px;
+
+  table.user-setting  {
+
+    width: 640px;
+    margin-left: 40px;
+
+    th {
+      padding: 9px;
+      vertical-align: middle;
+      min-width: 150px;
+    }
+
+    tr, td {
+      border-bottom: 1px solid #ddd;
+      height: 50px;
+    }
+
+    td {
+      border-top: 1px solid transparent;
+      vertical-align: middle;
+    }
+
+    tbody td:nth-child(1) {
+      min-height: 40px;
+    }
+
+    .avatar {
+      border-radius: 50%;
+      margin-right: 5px;
+    }
+
+  }
+
+}

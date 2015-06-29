@@ -54,8 +54,12 @@ router.get('/apps', function (req, res, next) {
 
     var limit = req.query.limit || 25;
     var skip = req.query.skip || 0;
-    var is_script = req.query.is_script || false;
+    // TODO: Sorry about this, casting string to bool value problem
+    var is_script = typeof req.query.is_script !== 'undefined' ? JSON.parse(req.query.is_script) : false;
+    var resolve = typeof req.query.resolve !== 'undefined' ? JSON.parse(req.query.resolve) : false;
     var where = {};
+    
+    console.log('IS SCRIPT', is_script);
 
     _.each(req.query, function(paramVal, paramKey) {
         if (_.contains(paramKey, 'field_')) {
@@ -97,23 +101,36 @@ router.get('/apps', function (req, res, next) {
 
         App.count(whereApps, function(err, total) {
             if (err) { return next(err); }
+            
+            if (resolve) {
+                App.find(whereApps)
+                    .populate('repo')
+                    .populate('user')
+                    .populate({
+                        path: 'revisions',
+                        options: { limit: 25 },
+                        sort: {
+                            _id: 'desc'
+                        }
+                    })
+                    .skip(skip).limit(limit).sort({_id: 'desc'})
+                    .exec(function(err, apps) {
+                        if (err) { return next(err); }
 
-            App.find(whereApps)
-                .populate('repo')
-                .populate('user')
-                .populate({
-                    path: 'revisions',
-                    options: { limit: 25 },
-                    sort: {
-                        _id: 'desc'
-                    }
-                })
-                .skip(skip).limit(limit).sort({_id: 'desc'})
-                .exec(function(err, apps) {
-                    if (err) { return next(err); }
+                        res.json({list: apps, total: total});
+                    });
 
-                    res.json({list: apps, total: total});
-                });
+            } else {
+                App.find(whereApps)
+                    .sort({_id: 'desc'})
+                    .exec(function(err, apps) {
+                        if (err) { return next(err); }
+
+                        res.json({list: apps, total: total});
+                    });
+
+            }
+
         });
 
     });

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('registryApp')
-    .controller('SettingsCtrl', ['$scope', '$modal', '$templateCache', 'Sidebar', 'User', 'Job', 'Loading', 'Tool','Workflow','$q','Repo', function ($scope, $modal, $templateCache, Sidebar, User, Job, Loading, Tool, Workflow, $q, Repo) {
+    .controller('SettingsCtrl', ['$scope', '$modal', '$templateCache', 'Sidebar', 'User', 'Job', 'Loading', 'Tool', 'Workflow', '$q', 'Repo', function ($scope, $modal, $templateCache, Sidebar, User, Job, Loading, Tool, Workflow, $q, Repo) {
 
         Sidebar.setActive('settings');
 
@@ -23,19 +23,21 @@ angular.module('registryApp')
         Loading.setClasses($scope.view.classes);
 
         $scope.Loading = Loading;
-        $scope.$watch('Loading.classes', function(n, o) {
-            if (n !== o) { $scope.view.classes = n; }
+        $scope.$watch('Loading.classes', function (n, o) {
+            if (n !== o) {
+                $scope.view.classes = n;
+            }
         });
 
 
         /**
          * Generate the token for the user
          */
-        $scope.generateToken = function() {
+        $scope.generateToken = function () {
 
             $scope.view.generating = true;
 
-            User.generateToken().then(function() {
+            User.generateToken().then(function () {
 
                 $scope.view.generating = false;
 
@@ -43,7 +45,9 @@ angular.module('registryApp')
                     template: $templateCache.get('modules/common/views/confirm-close.html'),
                     controller: 'ModalCtrl',
                     windowClass: 'modal-info',
-                    resolve: {data: function () { return {message: 'You successfully generated new token'}; }}
+                    resolve: {data: function () {
+                        return {message: 'You successfully generated new token'};
+                    }}
                 });
 
             });
@@ -52,11 +56,11 @@ angular.module('registryApp')
         /**
          * Revoke the token of the user
          */
-        $scope.revokeToken = function() {
+        $scope.revokeToken = function () {
 
             $scope.view.revoking = true;
 
-            User.revokeToken().then(function() {
+            User.revokeToken().then(function () {
 
                 $scope.view.revoking = false;
 
@@ -64,7 +68,9 @@ angular.module('registryApp')
                     template: $templateCache.get('modules/common/views/confirm-close.html'),
                     controller: 'ModalCtrl',
                     windowClass: 'modal-info',
-                    resolve: {data: function () { return {message: 'Your token has been revoked'}; }}
+                    resolve: {data: function () {
+                        return {message: 'Your token has been revoked'};
+                    }}
                 });
 
             });
@@ -77,7 +83,7 @@ angular.module('registryApp')
 
             $scope.view.getting = true;
 
-            User.getToken().then(function(result) {
+            User.getToken().then(function (result) {
 
                 $scope.view.getting = false;
 
@@ -87,7 +93,9 @@ angular.module('registryApp')
                     template: $templateCache.get('modules/common/views/confirm-close.html'),
                     controller: 'ModalCtrl',
                     windowClass: 'modal-info',
-                    resolve: {data: function () { return {message: message}; }}
+                    resolve: {data: function () {
+                        return {message: message};
+                    }}
                 });
 
             });
@@ -98,7 +106,7 @@ angular.module('registryApp')
          *
          * @param result
          */
-        var jobsLoaded = function(result) {
+        var jobsLoaded = function (result) {
 
             $scope.view.jobs = result.list;
             $scope.view.total = result.total;
@@ -112,19 +120,19 @@ angular.module('registryApp')
          *
          * @param offset
          */
-        $scope.getMoreJobs = function(offset) {
+        $scope.getMoreJobs = function (offset) {
 
             $scope.view.loading = true;
 
             Job.getJobs(offset).then(jobsLoaded);
         };
 
-        var getRepoNames = function(array){
-          var repos = [];
-          _.each(array,function(repo){
-            repos.push(repo.name);
-          });
-          return repos;
+        var getRepoNames = function (array) {
+            var repos = [];
+            _.each(array, function (repo) {
+                repos.push(repo.name);
+            });
+            return repos;
         };
 
         /**
@@ -132,96 +140,140 @@ angular.module('registryApp')
          *
          * @returns {*}
          */
-        var getBioTools = function(){
+        var getBioTools = function () {
 
-          var deferred = $q.defer();
+            var deferred = $q.defer();
 
-          $q.all([
+            $q.all([
 
-            Tool.getTools(0,'', true),
-            Tool.getScripts(0,'', true),
-            Workflow.getWorkflows(0,'', true),
-            User.getUser(),
-            Repo.getRepos(0,'',true)
-          ]).then(function(result) {
+                Tool.getAll(false),
+                Tool.getAll(true),
 
-            chartAppsCount['tools'] = result[0].total;
-            chartAppsCount['scripts'] = result[1].total;
-            chartAppsCount['workflows'] = result[2].total;
-            $scope.view.user = result[3].user;
-            $scope.view.repos = result[4].list;
-            $scope.view.repos = getRepoNames($scope.view.repos);
-            deferred.resolve('apps loaded');
+                Workflow.getAll(),
+                User.getUser(),
+                Repo.getRepos(0, '', true)
 
-          });
-          return deferred.promise;
+            ]).then(function (result) {
+
+                chartAppsCount['tools'] = result[0].total;
+                chartAppsCount['scripts'] = result[1].total;
+                chartAppsCount['workflows'] = result[2].total;
+
+                chartAppsCount['toolRevisions'] = getRevisionsCount(result[0].list);
+                chartAppsCount['scriptRevisions'] = getRevisionsCount(result[1].list);
+                chartAppsCount['workflowRevisions'] = getRevisionsCount(result[2].list);
+
+                $scope.view.user = result[3].user;
+                $scope.view.repos = result[4].list;
+                $scope.view.repos = getRepoNames($scope.view.repos);
+
+                deferred.resolve('apps loaded');
+            });
+
+            return deferred.promise;
         };
 
-        getBioTools().then(function(){
-          var formDate = new Date($scope.view.user.createdOn);
-          $scope.view.user.createdOn = formDate.getUTCDate() +'.' + (formDate.getUTCMonth()+1)+'.'+formDate.getUTCFullYear();
+        var getRevisionsCount = function (data) {
+            var count = 0;
 
-          $scope.options = {
-            chart: {
-              type: 'discreteBarChart',
-              height: 300,
-              width: 700,
-              margin : {
-                top: 20,
-                right: 20,
-                bottom: 60,
-                left: 55
-              },
-              x: function(d){return d.label;},
-              y: function(d){return d.value;},
-              showValues: true,
-              valueFormat: function(d){
-                return d3.format(',1f')(d);
-              },
-              transitionDuration: 500,
-              xAxis: {
-                axisLabel: 'Type'
-              },
-              yAxis: {
-                axisLabel: 'Quantity',
-                axisLabelDistance: 30,
-                tickFormat: function(d){
-                  return d3.format(',1f')(d);
-                }
-              },
-              discretebar:{
-                width: 100
-              },
-              tooltips: false
-            },
-            title: {
-              enable: true,
-              text: 'User Apps',
-              class:  'h4'
-            }
-          };
+            _.forEach(data, function(item) {
+                count = count + item.revisions.length;
+            });
 
-          $scope.data = [
-            {
-              key: "Cumulative Return",
-              values: [
-                {
-                  "label" : "Tool" ,
-                  "value" : chartAppsCount.tools
-                } ,
-                {
-                  "label" : "Script" ,
-                  "value" : chartAppsCount.scripts
-                } ,
-                {
-                  "label" : "Workflow" ,
-                  "value" : chartAppsCount.workflows
+            return count;
+        };
+
+        getBioTools().then(function () {
+            var formDate = new Date($scope.view.user.createdOn);
+            $scope.view.user.createdOn = formDate.getUTCDate() + '.' + (formDate.getUTCMonth() + 1) + '.' + formDate.getUTCFullYear();
+
+            $scope.options = {
+                chart: {
+                    type: 'discreteBarChart',
+                    height: 300,
+                    width: 700,
+                    margin: {
+                        top: 20,
+                        right: 20,
+                        bottom: 60,
+                        left: 55
+                    },
+                    x: function (d) {
+                        return d.label;
+                    },
+                    y: function (d) {
+                        return d.value;
+                    },
+                    showValues: true,
+                    valueFormat: function (d) {
+                        return d3.format(',1f')(d);
+                    },
+                    transitionDuration: 500,
+                    xAxis: {
+                        axisLabel: 'Type'
+                    },
+                    yAxis: {
+                        axisLabel: 'Quantity',
+                        axisLabelDistance: 30,
+                        tickFormat: function (d) {
+                            return d3.format(',1f')(d);
+                        }
+                    },
+                    discretebar: {
+                        width: 100
+                    },
+                    tooltips: false
+                },
+                title: {
+                    enable: true,
+                    text: 'Apps',
+                    class: 'h4'
                 }
-              ]
-            }
-          ]
+            };
+
+            $scope.data = [
+                {
+                    key: "Cumulative Return",
+                    values: [
+                        {
+                            "label": "Tools",
+                            "value": chartAppsCount.tools
+                        } ,
+                        {
+                            "label": "Scripts",
+                            "value": chartAppsCount.scripts
+                        } ,
+                        {
+                            "label": "Workflows",
+                            "value": chartAppsCount.workflows
+                        }
+                    ]
+                }
+            ];
+
+            $scope.revsOptions = _.clone($scope.options, true);
+            $scope.revsOptions.title.text = 'Revisions of apps';
+            $scope.revsData = [
+                {
+                    key: "Cumulative Return",
+                    values: [
+                        {
+                            "label": "Tool Revisions",
+                            "value": chartAppsCount.toolRevisions
+                        } ,
+                        {
+                            "label": "Script Revisions",
+                            "value": chartAppsCount.scriptRevisions
+                        } ,
+                        {
+                            "label": "Workflow Revisions",
+                            "value": chartAppsCount.workflowRevisions
+                        }
+                    ]
+                }
+            ]
+
         });
-
 
 
     }]);

@@ -8,41 +8,60 @@
             </span>
         </div>
         <div class="pull-right">
-            <rb-button intention="primary" ng-click="generateToken()" ng-disabled="view.generating" tooltip="You can (re)generate your token" tooltip-placement="bottom">(Re)generate Token</rb-button>
-            <rb-button intention="danger" ng-click="revokeToken()" ng-disabled="view.revoking" tooltip="You can revoke your token" tooltip-placement="bottom">Revoke Token</rb-button>
-            <rb-button ng-click="getToken()" ng-disabled="view.getting" tooltip="Check your token" tooltip-placement="bottom">Check Token</rb-button>
+            <rb-button intention="primary" ng-click="generateToken()" ng-disabled="view.generating"
+                       tooltip="You can (re)generate your token" tooltip-placement="bottom">(Re)generate Token
+            </rb-button>
+            <rb-button intention="danger" ng-click="revokeToken()" ng-disabled="view.revoking"
+                       tooltip="You can revoke your token" tooltip-placement="bottom">Revoke Token
+            </rb-button>
+            <rb-button ng-click="getToken()" ng-disabled="view.getting" tooltip="Check your token"
+                       tooltip-placement="bottom">Check Token
+            </rb-button>
         </div>
     </div>
     <!-- # .heading -->
 
+    <div class="user-settings">
+        <div ng-if="!view.loading">
+            <table class="user-setting">
+                <tbody>
+                <tr>
+                    <th>User</th>
+                    <td>
+                        <span class="avatar-holder">
+                            <img class="avatar" ng-src="{{ view.user.avatar_url }}" width="34" alt=""/>
+                        </span>
+                        <span>{{ view.user.login }}</span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>User created on</th>
+                    <td>{{view.user.createdOn}}</td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td>{{view.user.email}}</td>
+                </tr>
+                <tr>
+                    <th>Repositories</th>
+                    <td>
+                        <span ng-repeat="repo in view.repos">
+                            {{repo}}
+                            <span ng-show="!$last">,&nbsp;</span>
+                        </span>
+                    </td>
+                </tr>
 
-        <img class="avatar" ng-src="{{ view.user.avatar_url }}" width="34" alt=""/>
-        <div>
-            <div class="content content-tbl" ng-if="!view.loading">
-            <table class="table user-setting">
-              <tbody>
-              <tr>
-                <th>User</th><td>{{view.user.login}}</td>
-              </tr>
-              <tr>
-                <th>User created on</th><td>{{view.user.createdOn}}</td>
-              </tr>
-              <tr>
-                <th>Email</th><td>{{view.user.email}}</td>
-              </tr>
-              <tr>
-                <th>User repos</th><td><span ng-repeat="repo in view.repos">{{repo}}<span ng-show="$index+1<view.repos.length">,&nbsp;</span></span></td>
-              </tr>
-
-              </tbody>
+                </tbody>
             </table>
         </div>
         <div>
-          <nvd3 options="options" data="data"></nvd3>
+            <nvd3 options="options" data="data"></nvd3>
+        </div>
+        <div>
+            <nvd3 options="revsOptions" data="revsData"></nvd3>
         </div>
 
     </div>
-
-    <paginator class="paginator" page="view.page" total="view.total" handler="getMoreJobs(offset)"></paginator>
 
 </div>

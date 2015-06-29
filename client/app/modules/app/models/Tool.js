@@ -14,7 +14,7 @@ angular.module('registryApp.app')
         var getTools = function(skip, searchTerm, mine) {
 
             var isSearch = !(_.isUndefined(searchTerm) || _.isEmpty(searchTerm));
-            var params = {skip: (skip || 0)};
+            var params = {skip: (skip || 0), resolve: true};
 
             if (isSearch) {
                 params.q = searchTerm;
@@ -24,6 +24,17 @@ angular.module('registryApp.app')
 
             return Api.apps.get(params).$promise;
 
+        };
+        
+        var getAll = function (isScript, resolve, mine) {
+
+            var params = {
+                resolve: resolve || false,
+                mine: mine || true,
+                is_script: isScript || false
+            };
+
+            return Api.apps.get(params).$promise;
         };
 
         /**
@@ -36,7 +47,7 @@ angular.module('registryApp.app')
         var getScripts = function(skip, searchTerm, mine) {
 
             var isSearch = !(_.isUndefined(searchTerm) || _.isEmpty(searchTerm));
-            var params = {skip: skip || 0, is_script: true};
+            var params = {skip: skip || 0, is_script: true, resolve: true};
 
             if (isSearch) {
                 params.q = searchTerm;
@@ -57,7 +68,7 @@ angular.module('registryApp.app')
          */
         var getTool = function(id, revision) {
 
-            return Api.apps.get({id: id, revision: revision}).$promise;
+            return Api.apps.get({id: id, revision: revision, resolve: true}).$promise;
 
         };
 
@@ -133,7 +144,7 @@ angular.module('registryApp.app')
         var getRevisions = function(skip, searchTerm, appId) {
 
             var isSearch = !(_.isUndefined(searchTerm) || _.isEmpty(searchTerm));
-            var params = {skip: skip || 0};
+            var params = {skip: skip || 0, resolve: true};
 
             if (isSearch) {
                 params.q = searchTerm;
@@ -155,7 +166,7 @@ angular.module('registryApp.app')
          */
         var getRevision = function(id) {
 
-            return Api.revisions.get({id: id}).$promise;
+            return Api.revisions.get({id: id, resolve: true}).$promise;
 
         };
 
@@ -166,7 +177,7 @@ angular.module('registryApp.app')
          */
         var getGroupedTools = function (type, searchTerm) {
 
-            return Api.groupedTools.get({type: type, q: searchTerm}).$promise;
+            return Api.groupedTools.get({type: type, q: searchTerm, resolve: true}).$promise;
 
         };
 
@@ -195,6 +206,7 @@ angular.module('registryApp.app')
         };
 
         return {
+            getAll: getAll,
             getTools: getTools,
             getScripts: getScripts,
             getTool: getTool,
