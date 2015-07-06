@@ -113,7 +113,7 @@ angular.module('registryApp')
             $scope.view.loading = false;
         };
 
-        Job.getJobs(0).then(jobsLoaded);
+//        Job.getJobs(0).then(jobsLoaded);
 
         /**
          * Get more jobs by offset
@@ -167,6 +167,7 @@ angular.module('registryApp')
                 $scope.view.repos = result[4].list;
                 $scope.view.repos = getRepoNames($scope.view.repos);
 
+                $scope.view.loading = false;
                 deferred.resolve('apps loaded');
             });
 
@@ -271,8 +272,9 @@ angular.module('registryApp')
                         }
                     ]
                 }
-            ]
-
+            ];
+            
+            console.log($scope.$$phase);
         });
 
 
