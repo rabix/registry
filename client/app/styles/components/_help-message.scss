@@ -46,10 +46,15 @@ $arrow-placement: $popover-placement - 6px;
     }
 
     .help-container {
-      min-width: 400px;
+      white-space: nowrap;
+      font-weight: normal;
       padding: 0 15px;
+
       .markdown-body {
         margin-bottom: 10px;
+        margin-top: 10px;
+
+        height: auto;
       }
     }
   }

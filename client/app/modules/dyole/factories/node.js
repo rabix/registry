@@ -170,7 +170,12 @@ angular.module('registryApp.dyole')
                 borders.push(outerBorder).push(innerBorder);
 
                 var name = model.label ? model.label : model.name || model['id'];
-                label = canvas.text(0, radius + labelOffset, ((model.softwareDescription && model.softwareDescription.name) ? model.softwareDescription.name : name));
+
+                if ( model.softwareDescription && model.softwareDescription.label ) {
+                    name = model.softwareDescription.label.charAt(0) === '#' ? model.softwareDescription.label.slice(1) : model.softwareDescription.name;
+                }
+
+                label = canvas.text(0, radius + labelOffset, name);
 
                 label.attr({
                     'font-size': 14
@@ -235,25 +240,18 @@ angular.module('registryApp.dyole')
             },
 
             _filterInputs: function () {
-                var inputs = [],
-                    filter = ['file', 'File', 'directory'];
-
-                function checkType(schema, type) {
-
-                    return filter.indexOf(type) !== -1 || (type === 'array' && filter.indexOf(schema.items.type) !== -1);
-
-                }
+                var inputs = [];
 
                 _.each(this.inputRefs, function (input) {
 					
 					if (Common.checkTypeFile(input.type[1] || input.type[0])) {
-						input.required = input.type.length === 1;
+						input.required = typeof input.type === 'string' ? true : input.type.length === 1;
 						inputs.push(input);	
 					}
 
                 });
 
-                return inputs.length === 0 ? this.model.inputs : inputs;
+                return inputs;
             },
 
             _initTerminals: function () {
@@ -843,6 +841,10 @@ angular.module('registryApp.dyole')
                             c.model.end_node = name;
                         }
                     });
+
+                    if (name.charAt(0) === '#') {
+                        name = name.slice(1);
+                    }
 
                     this.label.attr('text', name);
                     this._destroyButtons();

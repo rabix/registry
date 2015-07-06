@@ -16,6 +16,14 @@ angular.module('registryApp.dyole')
         relations: [],
         schemas: {}
     })
+    .constant('rawRabixWorkflow', {
+        'class': 'Workflow',
+        '@context': 'https://raw.githubusercontent.com/common-workflow-language/common-workflow-language/draft2/specification/context.json',
+        'steps': [],
+        'dataLinks': [],
+        'inputs': [],
+        'outputs': []
+    })
     .constant('systemNodeModel', {
         'class': 'CommandLineTool',
         'id': null,

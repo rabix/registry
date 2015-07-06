@@ -5,7 +5,7 @@
 'use strict';
 
 angular.module('registryApp.dyole')
-    .factory('pipeline', ['event', 'node', 'connection', '$rootScope', 'systemNodeModel', 'FormaterD2', 'Const', 'common', function (Event, Node, Connection, $rootScope, systemNodeModel, Formater, Const, Common) {
+    .factory('pipeline', ['event', 'node', 'connection', '$rootScope', 'systemNodeModel', 'FormaterD2', 'Const', 'common', 'SchemaValidator', function (Event, Node, Connection, $rootScope, systemNodeModel, Formater, Const, Common, Validator) {
             /** Temporary hack!! **/
             var initWidth;
 
@@ -246,6 +246,26 @@ angular.module('registryApp.dyole')
 
                         });
                     });
+                },
+
+                _fixDisplay: function (model) {
+
+                    if (typeof this.model.display === 'undefined') {
+                        this.model.display = {};
+                    }
+
+                    if (typeof this.model.display.canvas === 'undefined') {
+                        this.model.display.canvas = {
+                            x: 0,
+                            y: 0,
+                            zoom: 1
+                        };
+                    }
+
+                    if (typeof this.model.display.nodes === 'undefined') {
+                        this.model.display.nodes = {};
+                    }
+
                 },
 
                 /**
@@ -505,31 +525,27 @@ angular.module('registryApp.dyole')
                         internalType = isInput ? 'outputs' : 'inputs',
                         type = isInput ? 'input' : 'output';
 
-                    terId  = this._generateNodeId({label: type});
-
                     var descriptions = {
                         input: '###*Input*' + '\n' + 'Downloads input files to local cluster for further processing.',
                         output: '###*Output*' + '\n' + 'Uploads resulting files from processing cluster to user storage.'
                     };
 
+                    terId  = Common.generateNodeId({label: type}, this.nodes);
+
                     model.label = terId;
                     model.description = descriptions[type];
+                    model['sbg:createdBy'] = 'SBG';
                     model.softwareDescription.label = terId;
                     model.softwareDescription.type = type;
                     model[internalType].push({
-                        'label': terId,
+                        'label': terId.slice(1),
                         'id': terId,
-                        'depth': 0,
-//                        'schema': ['null', 'file']
-						'type': terminal.model.type
+                        'type': terminal.model.type
                     });
-
-                    console.log(model);
-
 
                     terminalId = terId;
 
-                    var _id = model.id || this._generateNodeId(model);
+                    var _id = Common.generateNodeId(model, this.nodes);
 
                     model.id = _id;
 
@@ -1002,47 +1018,83 @@ angular.module('registryApp.dyole')
                  */
                 addNode: function (nodeModel, clientX, clientY, rawCoords) {
 
-                    var rawModel = angular.copy(nodeModel.json || nodeModel),
+                    var _self = this,
+                        rawModel = angular.copy(nodeModel.json || nodeModel),
                         model;
 
-                    if (nodeModel.type && nodeModel.type === 'workflow') {
-                        model = this._transformWorkflowModel(nodeModel);
-                    } else {
-                        model = this._transformModel(nodeModel);
+                    if (typeof rawModel['class'] !== 'string' && !Common.checkSystem(rawModel)) {
+                        Notification.error('App not valid: Missing class property');
+                        return false;
                     }
 
-                    var zoom = this.getEl().getScale().x;
+                    var type;
 
-                    var canvas = this._getOffset(this.$parent[0]);
-
-                    rawCoords = rawCoords || false;
-
-                    var x = ( clientX - canvas.left )  - this.pipelineWrap.getTranslation().x,
-                        y = ( clientY - canvas.top  ) - this.pipelineWrap.getTranslation().y;
-
-                    if (rawCoords) {
-                        x = clientX - this.pipelineWrap.getTranslation().x;
-                        y = clientY - this.pipelineWrap.getTranslation().y;
+                    switch(rawModel['class']) {
+                        case 'Workflow':
+                            type = 'workflow';
+                            break;
+                        case 'CommandLineTool':
+                            type = 'tool';
+                            break;
+                        case 'ExpressionTool':
+                            type = 'script';
+                            break;
                     }
 
-                    // Cache App id to place it in step.impl
-                    // and use generated id from label
-                    if (model.id) {
-                        model.appId = model.id;
+                    var _createNode = function () {
+                        if (nodeModel.type && nodeModel.type === 'workflow') {
+                            model = _self._transformWorkflowModel(nodeModel);
+                        } else {
+                            model = _self._transformModel(nodeModel);
+                        }
+
+                        var zoom = _self.getEl().getScale().x;
+
+                        var canvas = _self._getOffset(_self.$parent[0]);
+
+                        rawCoords = rawCoords || false;
+
+                        var x = ( clientX - canvas.left )  - _self.pipelineWrap.getTranslation().x,
+                            y = ( clientY - canvas.top  ) - _self.pipelineWrap.getTranslation().y;
+
+                        if (rawCoords) {
+                            x = clientX - _self.pipelineWrap.getTranslation().x;
+                            y = clientY - _self.pipelineWrap.getTranslation().y;
+                        }
+
+
+                        model.x = x / zoom;
+                        model.y = y / zoom;
+
+                        // Cache App id to place it in step.run
+                        // and use generated id from label
+                        if (model.id) {
+                            model.appId = model.id;
+                        }
+
+                        var _id = Common.generateNodeId(model, _self.nodes);
+
+                        model.id = _id;
+
+                        _self.model.schemas[model.id] = rawModel;
+
+                        _self.Event.trigger('node:add', model);
+                    };
+
+                    if (Common.checkSystem) {
+                        _createNode();
+
+                        return;
                     }
 
-                    model.x = x / zoom;
-                    model.y = y / zoom;
+                    Validator.validate(type, rawModel)
+                        .then(function () {
 
-                    var _id = this._generateNodeId(model);
+                            _createNode();
 
-                    model.id = _id;
-
-                    console.log('Added node: ', _id);
-
-                    this.model.schemas[model.id] = rawModel;
-
-                    this.Event.trigger('node:add', model);
+                        }, function (trace) {
+                            Notification.error('App not valid:' + trace);
+                        });
                 },
 
                 /**

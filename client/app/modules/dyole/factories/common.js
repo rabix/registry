@@ -93,4 +93,5 @@ angular.module('registryApp.dyole')
             }
 
         };
+
     });

@@ -59,7 +59,7 @@ var RabixModel = {
  * @type {{fileFilter: string[], _fileTypeCheck: _fileTypeCheck, checkTypeFile: checkTypeFile}}
  * @private
  */
-var _common;
+var _common = Common;
 
 /**
  * Main formatter
@@ -100,13 +100,13 @@ var _formatter = {
             if (rel.input_name === rel.end_node) {
                 dataLink.destination = rel.end_node;
             } else {
-                dataLink.destination = rel.end_node + '/' + rel.input_name.slice(1);
+                dataLink.destination = rel.end_node + Const.generalSeparator + rel.input_name.slice(1);
             }
 
             if (rel.output_name === rel.start_node) {
                 dataLink.source = rel.start_node;
             } else {
-                dataLink.source = rel.start_node + '/' + rel.output_name.slice(1);
+                dataLink.source = rel.start_node + Const.generalSeparator + rel.output_name.slice(1);
             }
 
             dataLinks.push(dataLink);
@@ -119,15 +119,15 @@ var _formatter = {
                 destination: ''
             };
 
-            var input_id = ids;
+            var input_id = '#' + ids.split(Const.exposedSeparator)[1];
 
             if (typeof suggestedValues[ids] !== 'undefined') {
                 schema['sbg:suggestedValue'] = suggestedValues[ids];
             }
 
-            dataLink.destination = ids.replace(Const.exposedSeparator, '/');
+            dataLink.destination = ids.replace(Const.exposedSeparator, Const.generalSeparator);
 
-            _self._createWorkflowInput(input_id, schema, workflow);
+            input_id = _self._createWorkflowInput(input_id, schema, workflow);
 
             dataLink.source = input_id;
 
@@ -139,6 +139,8 @@ var _formatter = {
     },
 
     _createWorkflowInput: function (id, schema, workflow) {
+        var _self = this,
+            flag = false;
 
         var model = {
             'id': id
@@ -150,7 +152,27 @@ var _formatter = {
             delete model.name;
         }
 
+        var n = 1;
+
+        while(!flag) {
+
+            if (!_self._checkIdUniqe(model.id, workflow.inputs) && !_self._checkIdUniqe(model.id, workflow.outputs)) {
+                flag = true;
+            } else {
+                model.id = id + '_' + n;
+            }
+
+        }
+
         workflow.inputs.push(model);
+
+        return model.id;
+    },
+
+    _checkIdUniqe: function (id, array) {
+        return _.find(array, function (item) {
+            return item.id === id;
+        });
     },
 
     /**
@@ -160,7 +182,7 @@ var _formatter = {
      * @param relations
      * @returns {Array}
      */
-    createSteps: function (schemas, relations) {
+    createSteps: function (schemas) {
 
         var _self = this,
             steps = [];
@@ -171,13 +193,13 @@ var _formatter = {
                 id = appId,
                 step = {
                     'id': id,
-                    impl: schema.ref || schema,
+                    run: schema.ref || schema,
                     inputs: [],
                     outputs: []
                 };
 
             if (typeof schema.scatter !== 'undefined' && typeof schema.scatter === 'string') {
-                step.scatter = id + '/' + schema.scatter.slice(1);
+                step.scatter = id + Const.generalSeparator + schema.scatter.slice(1);
                 delete schema.scatter;
             }
 
@@ -185,22 +207,22 @@ var _formatter = {
                 delete schema.ref;
             }
 
-            if (step.impl.appId) {
-                step.impl.id = step.impl.appId;
-                delete step.impl.appId;
+            if (step.run.appId) {
+                step.run.id = step.run.appId;
+                delete step.run.appId;
             }
 
             if (!_common.checkSystem(schema)) {
 
                 _.forEach(schema.inputs, function (input) {
                     step.inputs.push({
-                        'id': id + '/' + input['id'].slice(1, input['id'].length)
+                        'id': id + Const.generalSeparator + input['id'].slice(1, input['id'].length)
                     });
                 });
 
                 _.forEach(schema.outputs, function (output) {
                     step.outputs.push({
-                        'id': id + '/' + output['id'].slice(1, output['id'].length)
+                        'id': id + Const.generalSeparator + output['id'].slice(1, output['id'].length)
                     });
                 });
 
@@ -234,11 +256,11 @@ var _formatter = {
                     _.forEach(inputs, function (val, input_id) {
 
                         var inp = _.find(step.inputs, function (i) {
-                            return i['id'] === step['id'] + '/' + input_id.slice(1);
+                            return i['id'] === step['id'] + Const.generalSeparator + input_id.slice(1);
                         });
 
                         if (typeof inp !== 'undefined') {
-                            inp.value = val;
+                            inp.default = val;
                         } else {
                             console.error('Invalid input id to attach values to', input_id);
                         }
@@ -390,8 +412,8 @@ var _formatter = {
         }
 
         _.forEach(dataLinks, function (dataLink) {
-            var dest = dataLink.destination.split('/'),
-                src = dataLink.source.split('/'),
+            var dest = dataLink.destination.split(Const.generalSeparator),
+                src = dataLink.source.split(Const.generalSeparator),
                 relation = {
                     input_name: '',
                     start_node: '',
@@ -417,7 +439,7 @@ var _formatter = {
                     relation.end_node = dest[0];
                 }
 
-                if (typeof dataLink.position !== 'undefiend') {
+                if (typeof dataLink.position !== 'undefined') {
                     relation.position = dataLink.position;
                 }
 
@@ -464,29 +486,33 @@ var _formatter = {
         _.forEach(steps, function (step) {
             var stepId = step['id'], ref;
 
-            if (typeof step.impl === 'string') {
-                ref = step.impl;
-                step.impl = resolveApp(step.impl);
-                step.impl.ref = ref;
+            if (typeof step.run === 'string') {
+                ref = step.run;
+                step.run = resolveApp(step.run);
+                step.run.ref = ref;
             }
 
-            step.impl.appId = step.impl.id;
-            step.impl.id = stepId;
+            step.run.appId = step.run.id;
+            step.run.id = stepId;
 
             if (typeof step.scatter !== 'undefined' && typeof step.scatter=== 'string') {
-                step.impl.scatter = '#' + step.scatter.split('/')[1];
+                step.run.scatter = '#' + step.scatter.split(Const.generalSeparator)[1];
             }
 
-            schemas[stepId] = step.impl;
+            schemas[stepId] = step.run;
 
             // Check if values are set on step inputs
             // and attach them to values object
             _.forEach(step.inputs, function (input) {
-                if (input.value) {
-                    var input_id = '#' + input['id'].split('/')[1],
-                        obj = values[stepId] = {};
+                if (input.default) {
+                    var input_id = '#' + input['id'].split(Const.generalSeparator)[1],
+                        obj;
 
-                    obj[input_id] = input.value;
+                    values[stepId] = values[stepId] || {};
+
+                    obj =  values[stepId];
+
+                    obj[input_id] = input.default;
                 }
             });
         });
@@ -538,7 +564,8 @@ var _formatter = {
                 'repo_owner': 'rabix',
                 'repo_name': 'system',
                 'type': type,
-                'name': schema.label
+                'name': schema.label,
+                'label': schema.label
             },
             'inputs': [],
             'outputs': []
@@ -784,7 +811,7 @@ var fd2 = {
 
         model.display = json.display;
         model.dataLinks = _formatter.toRabixRelations(json.relations, exposed, model, suggestedValues);
-        model.steps = _formatter.createSteps(json.schemas, json.relations);
+        model.steps = _formatter.createSteps(json.schemas);
 
         _formatter.addValuesToSteps(model.steps, values);
 
