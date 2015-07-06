@@ -117,6 +117,7 @@ angular.module('registryApp.cliche')
                         setUpCliche();
                         prepareRequirements();
                         setUpCategories();
+                        prepareStatusCodes();
 
                         $scope.toggleConsole();
 
@@ -228,7 +229,7 @@ angular.module('registryApp.cliche')
             _.each(reqMap, function (key, reqName) {
                 req = $scope.view['req' + reqName];
                 if (req.value && _.isObject(req.value) && _.contains(req.value.value, '$job')) {
-                    SandBox.evaluate(req.value.value, {})
+                    SandBox.evaluate(req.value.script, {})
                         .then(function (result) {
                             $scope.view.job.allocatedResources[key] = result;
                         });
@@ -347,6 +348,17 @@ angular.module('registryApp.cliche')
                 return {text: cat};
             });
         };
+
+        var prepareStatusCodes = function () {
+            if (typeof $scope.view.tool.successCodes === 'undefined') {
+                $scope.view.tool.successCodes = [];
+            }
+
+            if (typeof $scope.view.tool.temporaryFailCodes === 'undefined') {
+                $scope.view.tool.temporaryFailCodes = [];
+            }
+        };
+
 
         /**
          * Switch the tab
@@ -525,7 +537,7 @@ angular.module('registryApp.cliche')
 
             if (_.isObject(transform)) {
 
-                SandBox.evaluate(transform.value, {})
+                SandBox.evaluate(transform.script, {})
                     .then(function (result) {
                         $scope.view.job.allocatedResources[reqMap[key]] = result;
                     });
@@ -554,6 +566,35 @@ angular.module('registryApp.cliche')
             }
 
         };
+
+        $scope.addStatusCode = function (codeType) {
+
+            if ( _.isArray($scope.view.tool[codeType]) ) {
+                $scope.view.tool[codeType].push(0);
+            } else {
+                console.error('Invalid status code key passed');
+                return false;
+            }
+
+        };
+
+        /**
+         * Remove item from the status codes
+         *
+         * @param {string} type
+         * @param {integer} index
+         * @returns {boolean}
+         */
+        $scope.removeStatusCode = function (type,  index) {
+
+            if ( !_.isArray($scope.view.tool[type]) ) {
+                console.error('Invalid status code key passed');
+                return false;
+            }
+
+            $scope.view.tool[type].splice(index, 1);
+        };
+
 
         /**
          * Add item to the baseCommand

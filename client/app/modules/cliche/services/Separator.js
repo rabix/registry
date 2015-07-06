@@ -12,15 +12,15 @@ angular.module('registryApp')
 
         var map = {
             item: [
-                {name: 'empty', value: ''},
-                {name: 'space', value: ' '},
-                {name: 'equal', value: '='}
-            ],
-            list: [
+                {name: 'equal', value: '='},
                 {name: 'comma', value: ','},
                 {name: 'semicolon', value: ';'},
                 {name: 'space', value: ' '},
                 {name: 'repeat', value: null}
+            ],
+            list: [
+                {name: 'space', value: true},
+                {name: 'empty string', value: false}
             ]
         };
 

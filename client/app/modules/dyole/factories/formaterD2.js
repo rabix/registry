@@ -59,7 +59,7 @@ var RabixModel = {
  * @type {{fileFilter: string[], _fileTypeCheck: _fileTypeCheck, checkTypeFile: checkTypeFile}}
  * @private
  */
-var _common = Common;
+var _common;
 
 /**
  * Main formatter

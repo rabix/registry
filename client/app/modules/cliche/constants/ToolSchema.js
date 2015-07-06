@@ -187,13 +187,10 @@ var Schema = {
                                 type: 'string',
                                 enum: ['DockerRequirement']
                             },
-                            imgRepo: {
+                            dockerPull: {
                                 type: 'string'
                             },
-                            imgTag: {
-                                type: 'string'
-                            },
-                            imgId: {
+                            dockerImageId: {
                                 type: 'string'
                             }
                         },
@@ -204,7 +201,7 @@ var Schema = {
                         properties: {
                             'class': {
                                 type: 'string',
-                                enum: ['CpuRequirement', 'MemRequirement']
+                                enum: ['CPURequirement', 'MemRequirement']
                             },
                             value: {
                                 type: ['number', 'object'],
@@ -252,7 +249,15 @@ var Schema = {
                         type: 'string'
                     },
                     inputBinding: {
-                        $ref: '#/definitions/adapterDef'
+                        oneOf: [
+                            {
+                                $ref: '#/definitions/adapterDef'
+                            },
+                            {
+                                // TODO: Temp hack, remove when you figure out why sometimes inputBinding when its not present is undefiend
+                                type: ['undefined', 'null']
+                            }
+                        ]
                     },
                     outputBinding: {
                         $ref: '#/definitions/adapterDef'
@@ -286,14 +291,17 @@ var Schema = {
         stdOut: {
             type: ['string', 'object']
         },
-        argAdapters: {
+        successCodes: {
+            type: 'array'
+        },
+        arguments: {
             type: 'array',
             items: {
                 $ref: '#/definitions/adapterDef'
             }
         }
     },
-    required: ['id', 'class', '@context', 'baseCommand', 'argAdapters', 'label', 'owner', 'inputs', 'outputs']
+    required: ['id', 'class', '@context', 'baseCommand', 'arguments', 'label', 'owner', 'inputs', 'outputs']
 };
 
 if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {

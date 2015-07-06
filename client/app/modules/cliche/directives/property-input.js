@@ -60,7 +60,7 @@ angular.module('registryApp.cliche')
                 var itemType = ($scope.view.items && $scope.view.items.type) ? $scope.view.items.type : null;
                 var self = {$self: Helper.getTestData($scope.view.type, itemType)};
 
-                SandBox.evaluate($scope.view.property.inputBinding.valueFrom.value, self)
+                SandBox.evaluate($scope.view.property.inputBinding.valueFrom.script, self)
                     .then(function () {
                         $scope.view.exprError = '';
                     }, function (error) {

@@ -32,6 +32,9 @@
         <rb-dropdown position="right" icon-class="cog">
             <ul class="dropdown-menu" role="menu" ng-click="toggleMenu()">
                 <li><a href ng-click="loadJsonEditor()"><i class="fa fa-cloud-download"></i> <span>Import</span></a></li>
+                <li>
+                    <a href title="Start with clean template" ng-click="flush()"><i class="fa fa-trash"></i> Flush</a>
+                </li>
             </ul>
         </rb-dropdown>
     </div>

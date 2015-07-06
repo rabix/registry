@@ -7,11 +7,15 @@
 'use strict';
 
 angular.module('registryApp.cliche')
-    .controller('ManagePropertyInputCtrl', ['$scope', '$modalInstance', 'Cliche', 'options', 'Helper', function ($scope, $modalInstance, Cliche, options, Helper) {
+    .controller('ManagePropertyInputCtrl', ['$scope', '$modalInstance', 'Cliche', 'options', 'Helper', 'HelpMessages', function ($scope, $modalInstance, Cliche, options, Helper, HelpMessages) {
 
         var key = options.key || 'name';
         var idObj = {n: '', o: ''};
-        var cacheAdapter = {};
+        var cacheAdapter = {
+            separate: true
+        };
+
+        $scope.help = HelpMessages;
 
         $scope.view = {};
         $scope.view.key = key;
@@ -174,7 +178,9 @@ angular.module('registryApp.cliche')
             if ($scope.view.inputBinding && !$scope.view.stdin) {
                 $scope.view.property.inputBinding = cacheAdapter;
             } else if (!$scope.view.stdin) {
-                delete $scope.view.property.inputBinding.stdin;
+                if ($scope.view.property.inputBinding && $scope.view.property.inputBinding.stdin) {
+                    delete $scope.view.property.inputBinding.stdin;
+                }
 
                 cacheAdapter = _.isEmpty($scope.view.property.inputBinding) ? cacheAdapter : angular.copy($scope.view.property.inputBinding);
                 delete $scope.view.property.inputBinding;

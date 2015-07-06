@@ -5,14 +5,15 @@
                 <legend class="legend-small">Docker Container <help-message message="help.cliche.general.environment"></help-message></legend>
 
                 <div class="row">
+                    <div class="form-group">
+                        <label for="imageId" class="control-label">Image ID</label>
+                        <input tooltip="{{ ::help.cliche.general.imageId }}" tooltip-trigger="focus" type="text" class="form-control" id="imageId" name="imageId" ng-model="view.reqDockerRequirement.dockerImageId">
+                    </div>
 
-                    <rb-input id="imgId" name="dockerImageId" ng-model="view.reqDockerRequirement.dockerImageId">
-                        <label>Image ID</label>
-                    </rb-input>
-
-                    <rb-input id="dockerPull" name="dockerPull" ng-model="view.reqDockerRequirement.dockerPull">
-                        <label>Docker Pull</label>
-                    </rb-input>
+                    <div class="form-group">
+                        <label for="dockerPull" class="control-label">Docker Repository[:Tag]</label>
+                        <input tooltip="{{ ::help.cliche.general.dockerPull }}" tooltip-trigger="focus" type="text" class="form-control" id="dockerPull" name="dockerPull" ng-model="view.reqDockerRequirement.dockerPull">
+                    </div>
                 </div>
             </form>
 
@@ -25,14 +26,14 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="control-label">CPU</label>
-                            <expr ng-model="view.reqCpuRequirement.value" type="number" handle-item-update="updateResource(value, 'CpuRequirement')"></expr>
+                            <expr tooltip-msg="{{ ::help.cliche.general.cpu }}" ng-model="view.reqCpuRequirement.value" type="number" handle-item-update="updateResource(value, 'CPURequirement')"></expr>
                         </div>
                     </div>
 
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="control-label">Memory (MB)</label>
-                            <expr ng-model="view.reqMemRequirement.value" type="number" handle-item-update="updateResource(value, 'MemRequirement')"></expr>
+                            <expr tooltip-msg="{{ ::help.cliche.general.memory }}" ng-model="view.reqMemRequirement.value" type="number" handle-item-update="updateResource(value, 'MemRequirement')"></expr>
                         </div>
                     </div>
 
@@ -50,12 +51,12 @@
                     <label class="control-label">Base Command</label>
 
                     <div class="enum-list-wrap">
-                        <a href ng-click="addBaseCmd()" class="btn btn-default add-enum-item"><i class="fa fa-plus"></i></a>
+                        <a tooltip="{{ ::help.cliche.general.addBaseCMD }}" href ng-click="addBaseCmd()" class="btn btn-default add-enum-item"><i class="fa fa-plus"></i></a>
                         <div class="enum-list-container">
                             <ul class="enum-list" ng-class="{wide: view.tool.baseCommand.length === 1}">
                                 <li ng-repeat="baseCmd in view.tool.baseCommand track by $index">
                                     <div class="enum-field form-group form-group-file">
-                                        <expr ng-model="baseCmd" index="{{ $index }}" handle-item-update="updateCliAdapter(value, index, 'baseCommand')" handle-item-blur="splitBaseCmd(value, index)"></expr>
+                                        <expr tooltip-msg="{{ ::help.cliche.general.baseCMD }}" ng-model="baseCmd" index="{{ $index }}" handle-item-update="updateCliAdapter(value, index, 'baseCommand')" handle-item-blur="splitBaseCmd(value, index)"></expr>
                                     </div>
                                     <a href ng-hide="view.tool.baseCommand.length === 1" class="fa fa-remove remove-btn" ng-click="removeBaseCmd($index)"></a>
                                 </li>
@@ -70,45 +71,99 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="control-label">Stdin</label>
-                            <expr ng-model="view.tool.stdin" handle-item-update="updateCliAdapter(value, null, 'stdin')" ng-disabled="view.stdinUsed"></expr>
-                            <p class="help-block" ng-if="view.stdinUsed">
-                                {{ view.stdinInput.id}} is already being used as standard input.
-                            </p>
+                            <expr tooltip-msg="{{ ::help.cliche.general.stdin }}" ng-model="view.tool.stdin" handle-item-update="updateCliAdapter(value, null, 'stdin')"></expr>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label class="control-label">Stdout</label>
-                            <expr ng-model="view.tool.stdout" handle-item-update="updateCliAdapter(value, null, 'stdout')"></expr>
+                            <expr tooltip-msg="{{ ::help.cliche.general.stdout }}" ng-model="view.tool.stdout" handle-item-update="updateCliAdapter(value, null, 'stdout')"></expr>
                         </div>
                     </div>
                 </div>
                 <!-- # StdIn and StdOut-->
+
+                <div class="row-margin">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Success Codes <help-message message="help.cliche.general.successCodes"></help-message> </label>
+
+                            <div class="enum-list-wrap">
+
+                                <a tooltip="{{ ::help.cliche.general.successCodes }}" href ng-click="addStatusCode('successCodes')" class="btn btn-default add-enum-item"><i class="fa fa-plus"></i></a>
+                                <div class="enum-list-container">
+                                    <ul class="enum-list">
+                                        <li ng-repeat="successCode in view.tool.successCodes track by $index">
+                                            <div class="enum-field form-group form-group-file ">
+                                                <div class="input-group status-codes">
+                                                    <input class="form-control" type="number" ng-model="view.tool.successCodes[$index]" />
+                                                </div>
+                                            </div>
+                                            <a href class="fa fa-remove remove-btn" ng-click="removeStatusCode('successCodes', $index)"></a>
+                                        </li>
+                                    </ul>
+
+                                    <p class="alert alert-info" ng-if="view.tool.successCodes | isEmpty">Click the plus button to add codes</p>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Temporary Fail Codes <help-message message="help.cliche.general.tempFailCodes"></help-message> </label>
+
+                            <div class="enum-list-wrap">
+
+                                <a tooltip="{{ ::help.cliche.general.temporaryFailCodes }}" href ng-click="addStatusCode('temporaryFailCodes')" class="btn btn-default add-enum-item"><i class="fa fa-plus"></i></a>
+                                <div class="enum-list-container">
+                                    <ul class="enum-list" >
+                                        <li ng-repeat="temporaryFailCode in view.tool.temporaryFailCodes track by $index">
+                                            <div class="enum-field form-group form-group-file">
+                                                <div class="input-group status-codes">
+                                                    <input class="form-control" type="number" ng-model="view.tool.temporaryFailCodes[$index]" />
+                                                </div>
+                                            </div>
+                                            <a href class="fa fa-remove remove-btn" ng-click="removeStatusCode('temporaryFailCodes', $index)"></a>
+                                        </li>
+                                    </ul>
+
+                                    <p class="alert alert-info" ng-if="view.tool.temporaryFailCodes | isEmpty">Click the plus button to add codes</p>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
             </div>
 
             <div class="section">
                 <legend class="legend-small">
                     Arguments
-                    <help-message message="help.cliche.general.argument"></help-message>
+                    <help-message message="help.cliche.general.arguments"></help-message>
                 </legend>
 
 
                 <div class="enum-list-wrap">
                     <add-property
+                            tooltip-msg="{{ ::help.cliche.general.addArgument }}"
                             type="arg"
                             handler="generateCommand()"
-                            properties="view.tool.argAdapters"
+                            properties="view.tool.arguments"
                             class="add-enum-item large">
                     </add-property>
 
                     <div class="enum-list-container">
                         <property-arg
-                                ng-repeat="arg in view.tool.argAdapters | orderBy:sortByPosition track by $index"
+                                ng-repeat="arg in view.tool.arguments | orderBy:sortByPosition track by $index"
                                 ng-model="arg"
                                 index="{{ $index }}">
                         </property-arg>
 
-                        <p class="alert alert-info large" ng-if="view.tool.argAdapters | isEmpty">Click the plus button to add command line binding.</p>
+                        <p class="alert alert-info large" ng-if="view.tool.arguments | isEmpty">Click the plus button to add command line binding.</p>
 
                     </div>
                 </div>

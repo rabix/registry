@@ -152,7 +152,7 @@ angular.module('registryApp.common')
 
                             $scope.view.mode = 'transform';
 
-                            if (!_.isObject($scope.view.transform)) { $scope.view.transform = rawTransform; }
+                            if (!_.isObject($scope.view.transform)) { $scope.view.transform = angular.copy(rawTransform); }
                             $scope.view.transform.script = expr;
                             $scope.view.literal = null;
                         }

@@ -151,6 +151,21 @@ var Schema = {
                     type: 'string'
                 }
             }
+        },
+        expressionDef: {
+            type: 'object',
+            properties: {
+                'class': {
+                    type: 'string'
+                },
+                engine: {
+                    type: 'string'
+                },
+                script: {
+                    type: 'string'
+                }
+            },
+            required: ['class', 'engine', 'script']
         }
     },
     properties: {
@@ -187,13 +202,10 @@ var Schema = {
                                 type: 'string',
                                 enum: ['DockerRequirement']
                             },
-                            imgRepo: {
+                            dockerPull: {
                                 type: 'string'
                             },
-                            imgTag: {
-                                type: 'string'
-                            },
-                            imgId: {
+                            dockerImageId: {
                                 type: 'string'
                             }
                         },
@@ -204,7 +216,7 @@ var Schema = {
                         properties: {
                             'class': {
                                 type: 'string',
-                                enum: ['CpuRequirement', 'MemRequirement']
+                                enum: ['CPURequirement', 'MemRequirement']
                             },
                             value: {
                                 type: ['number', 'object'],
@@ -251,7 +263,7 @@ var Schema = {
                     name: {
                         type: 'string'
                     },
-                    adapter: {
+                    inputBinding: {
                         $ref: '#/definitions/adapterDef'
                     }
                 },
@@ -277,11 +289,14 @@ var Schema = {
         engine: {
             type: 'string'
         },
+        successCodes: {
+            type: 'array'
+        },
         script: {
             type: 'string'
         }
     },
-    required: ['id', 'class', '@context', 'label', 'inputs', 'outputs', 'script', 'engine']
+    required: ['id', 'class', '@context', 'label', 'inputs', 'outputs']
 };
 
 /**

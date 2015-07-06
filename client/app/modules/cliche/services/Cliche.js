@@ -1049,7 +1049,7 @@ angular.module('registryApp.cliche')
                 formatted['id'] = '#' + inner.name;
 
                 //@todo: actually calculate depth instead of hardcoding it
-                formatted.depth = inner.type === 'array' ? 1 : 0;
+//                formatted.depth = inner.type === 'array' ? 1 : 0;
 
             /*
             *  schema for every other level

@@ -20,7 +20,7 @@ angular.module('registryApp.cliche')
 
             if ($scope.prop.valueFrom && $scope.prop.valueFrom.value) {
 
-                SandBox.evaluate($scope.prop.valueFrom.value, {})
+                SandBox.evaluate($scope.prop.valueFrom.script, {})
                     .then(function () {
                         $scope.view.exprError = '';
                     }, function (error) {

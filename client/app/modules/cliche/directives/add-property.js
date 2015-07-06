@@ -9,6 +9,10 @@
 angular.module('registryApp.cliche')
     .controller('AddPropertyCtrl', ['$scope', '$modal', '$templateCache', 'Cliche', 'Helper', function ($scope, $modal, $templateCache, Cliche, Helper) {
 
+        $scope.view = {};
+        $scope.view.tooltipMsg = $scope.tooltipMsg || '';
+        $scope.view.tooltipPlacement = $scope.tooltipPlacement || 'top';
+
         /**
          * Show the modal for adding property items
          *
@@ -70,11 +74,13 @@ angular.module('registryApp.cliche')
 
         return {
             restrict: 'E',
-            template: '<a href ng-click="addItem($event)" class="btn btn-default"><i class="fa fa-plus"></i></a>',
+            template: '<a tooltip="{{ ::view.tooltipMsg }}" tooltip-placement="{{ ::view.tooltipPlacement }}" href ng-click="addItem($event)" class="btn btn-default"><i class="fa fa-plus"></i></a>',
             scope: {
                 type: '@',
                 key: '@',
                 toolType: '@',
+                tooltipMsg: '@',
+                tooltipPlacement: '@',
                 properties: '=',
                 inputs: '=?',
                 handler: '&',

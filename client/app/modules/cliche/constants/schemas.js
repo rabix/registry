@@ -24,13 +24,12 @@ angular.module('registryApp.cliche')
         requirements: [
             {
                 'class': 'DockerRequirement',
-                imgRepo: '',
-                imgTag: '',
-                imgId: ''
+                dockerImageId: '',
+                dockerPull: ''
             },
             {
-                'class': 'CpuRequirement',
-                value: 500
+                'class': 'CPURequirement',
+                value: 1
             },
             {
                 'class': 'MemRequirement',
@@ -43,7 +42,9 @@ angular.module('registryApp.cliche')
         baseCommand: [''],
         stdin: '',
         stdout: '',
-        argAdapters: []
+        successCodes: [],
+        temporaryFailCodes: [],
+        arguments: []
     })
     .constant('rawTransform', {
         'class': 'Expression',

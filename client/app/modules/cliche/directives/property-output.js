@@ -44,7 +44,7 @@ angular.module('registryApp.cliche')
 
             if ($scope.view.property.outputBinding && $scope.view.property.outputBinding.glob && $scope.view.property.outputBinding.glob.value) {
 
-                SandBox.evaluate($scope.view.property.outputBinding.glob.value, {})
+                SandBox.evaluate($scope.view.property.outputBinding.glob.script, {})
                     .then(function () {
                         $scope.view.exprError = '';
                     }, function (error) {
