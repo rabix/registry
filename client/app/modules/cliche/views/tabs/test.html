@@ -11,12 +11,12 @@
                         <div class="col-md-6">
                             <div class="form-group" ng-class="{'has-error': form.job.arCpu.$invalid}">
                                 <label class="control-label">CPU</label>
-                                <input type="{{ view.reqCpuRequirement.value.value ? 'text' : 'number' }}"
+                                <input type="{{ view.reqCPURequirement.value.value ? 'text' : 'number' }}"
                                        class="form-control"
                                        name="arCpu"
                                        ng-model="view.job.allocatedResources.cpu"
-                                       ng-readonly="view.reqCpuRequirement.value.value"
-                                       min="{{ view.reqCpuRequirement.value.value ? 0 : view.reqCpuRequirement.value }}">
+                                       ng-readonly="view.reqCPURequirement.value.value"
+                                       min="{{ view.reqCPURequirement.value.value ? 0 : view.reqCPURequirement.value }}">
                             </div>
                         </div>
                         <div class="col-md-6">

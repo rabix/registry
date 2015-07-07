@@ -103,7 +103,7 @@ angular.module('registryApp.cliche')
                 delete transformed.baseCommand;
                 delete transformed.stdin;
                 delete transformed.stdout;
-                delete transformed.argAdapters;
+                delete transformed.arguments;
                 // requirements
                 delete transformed.requirements;
 
@@ -116,12 +116,12 @@ angular.module('registryApp.cliche')
                 if (angular.isUndefined(transformed.baseCommand) ||
                     angular.isUndefined(transformed.stdin) ||
                     angular.isUndefined(transformed.stdout) ||
-                    angular.isUndefined(transformed.argAdapters)) {
+                    angular.isUndefined(transformed.arguments)) {
 
                     transformed.baseCommand = angular.copy(rawTool.baseCommand);
                     transformed.stdin = angular.copy(rawTool.stdin);
                     transformed.stdout = angular.copy(rawTool.stdout);
-                    transformed.argAdapters = angular.copy(rawTool.argAdapters);
+                    transformed.arguments = angular.copy(rawTool.arguments);
                 }
 
                 if (angular.isUndefined(transformed.requirements)) {
@@ -427,7 +427,7 @@ angular.module('registryApp.cliche')
             if (mode === 'edit') {
                 deferred.resolve();
             } else if (mode === 'add') {
-                toolJSON.argAdapters.push(arg);
+                toolJSON.arguments.push(arg);
                 deferred.resolve();
             } else {
                 deferred.reject('Unknown mode "' + mode + '"');
@@ -462,7 +462,7 @@ angular.module('registryApp.cliche')
          */
         var deleteArg = function(index) {
 
-            toolJSON.argAdapters.splice(index, 1);
+            toolJSON.arguments.splice(index, 1);
 
         };
 
@@ -661,7 +661,7 @@ angular.module('registryApp.cliche')
                             deferred.reject(error);
                         });
                 } else {
-                    applyTransform(property.adapter.valueFrom, (_.isObject(val) ? val.path : val), true)
+                    applyTransform(property.inputBinding.valueFrom, (_.isObject(val) ? val.path : val), true)
                         .then(function (result) {
                             deferred.resolve(result);
                         }, function (error) {
@@ -823,7 +823,7 @@ angular.module('registryApp.cliche')
 
                     var argsPromises = [];
 
-                    _.each(toolJSON.argAdapters, function(arg, key) {
+                    _.each(toolJSON.arguments, function(arg, key) {
 
                         var deferred = $q.defer(),
                             prefix = arg.prefix || '',
@@ -987,11 +987,11 @@ angular.module('registryApp.cliche')
 
                 var toStrip = ['prefix', 'separator', 'itemSeparator', 'valueFrom'];
 
-                if (itemType === 'record' && prop.adapter) {
+                if (itemType === 'record' && prop.inputBinding) {
 
                     _.each(toStrip, function(param) {
-                        if (angular.isDefined(prop.adapter[param])) {
-                            delete prop.adapter[param];
+                        if (angular.isDefined(prop.inputBinding[param])) {
+                            delete prop.inputBinding[param];
                         }
                     });
                 }
@@ -1031,7 +1031,7 @@ angular.module('registryApp.cliche')
 
                     // _.isEmpty returns true for number values, which we don't want
                     // if there is a number value, then the prop is not empty
-                    if (_.isEmpty(tmp[adapter][key]) && !_.isNumber(tmp[adapter][key])  && !_.isBoolean(tmp.adapter[key])) {
+                    if (_.isEmpty(tmp[adapter][key]) && !_.isNumber(tmp[adapter][key])  && !_.isBoolean(tmp[adapter][key])) {
                         delete tmp[adapter][key];
                     }
                 });

@@ -23,7 +23,7 @@ angular.module('registryApp.cliche')
                 function () { return Cliche.save($scope.view.mode); },
                 function () { return $scope.form.tool.$dirty; }
             ),
-            reqMap = {CpuRequirement: 'cpu', MemRequirement: 'mem'};
+            reqMap = {CPURequirement: 'cpu', MemRequirement: 'mem'};
 
         $scope.view = {};
         $scope.form = {};
@@ -213,7 +213,7 @@ angular.module('registryApp.cliche')
         var prepareRequirements = function() {
 
             $scope.view.reqDockerRequirement = _.find($scope.view.tool.requirements, {'class': 'DockerRequirement'});
-            $scope.view.reqCpuRequirement = _.find($scope.view.tool.requirements, {'class': 'CpuRequirement'});
+            $scope.view.reqCPURequirement = _.find($scope.view.tool.requirements, {'class': 'CPURequirement'});
             $scope.view.reqMemRequirement = _.find($scope.view.tool.requirements, {'class': 'MemRequirement'});
 
         };
