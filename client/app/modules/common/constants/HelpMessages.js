@@ -9,7 +9,7 @@ angular.module('registryApp.common').constant('HelpMessages', {
             resources: 'Tool execution resource requirements.',
             command: 'Static part of the command line is described using a list of strings and stdin/stdout redirection.',
             arguments: 'Additional command line arguments, if not bound to any input (e.g. dynamic number of threads).',
-            dockerPull: 'Enter image repository and (optionally) tag. For example, "images.sbgenomics.com/jsmith/mytool:latest" or "ubuntu". We suggest using the SevenBridges image registry (images.sbgenomics.com) to speed up transfer of image data to compute nodes.',
+            dockerPull: 'Enter image repository and (optionally) tag. For example, "images.sbgenomics.com/jsmith/mytool:latest" \n\n or "ubuntu". We suggest using the SevenBridges image registry (images.sbgenomics.com) to speed up transfer of image data to compute nodes.',
             imageId: 'Optionally set to ID of the image to make sure same image is used every time.',
             cpu: 'Leave at 0 for multi-threaded tools or set 1 for single threaded tools.',
             memory: 'Amount of RAM (in MB) required by the tool.',
@@ -17,9 +17,9 @@ angular.module('registryApp.common').constant('HelpMessages', {
             addBaseCMD: 'Add base command.',
             successCodes: 'Array of exit codes that signal successful run (defaults to just 0).',
             tempFailCodes: 'Array of retriable exit codes.',
-            stdin: 'If a tool can only take input on stdin, set an expression (</>) here to reference the input file (e.g. $job.inputs.reads.path).',
+            stdin: 'If a tool can only take input on stdin, set an expression (</>) here to reference the input file \n\n(e.g. $job.inputs.reads.path).',
             stdout: 'Enter file name to redirect standard output into. To construct a name based on inputs, use an expression (</>).',
-            addArgument: 'Describe a command line argument that doesn\'t map directly to any of the tool inputs (e.g. —num-threads should have the "value" field set to "$job.allocatedResources.cpu" expression).'
+            addArgument: 'Describe a command line argument that doesn\'t map directly to any of the tool inputs \n\n (e.g. —num-threads should have the "value" field set to "$job.allocatedResources.cpu" expression).'
         },
         inputs: {
             properties: 'Define tool input ports.',
