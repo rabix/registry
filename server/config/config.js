@@ -27,7 +27,7 @@ var config = {
         },
         port: 3000,
         db: 'mongodb://localhost/server-development',
-        clientPath: '../../client/dist',
+        clientPath: '../../client/app',
         github: conf.github[env],
         logging: {
             path: '/data/log/rabix-registry',

@@ -252,8 +252,8 @@ module.exports = function (grunt) {
                 flow: {
                     html: {
                         steps: {
-                            js: ['concat', 'uglifyjs']
-//                            css: ['cssmin']
+                            js: ['concat', 'uglifyjs'],
+                            css: ['cssmin']
                         },
                         post: {}
                     }
@@ -277,7 +277,7 @@ module.exports = function (grunt) {
         cssmin: {
            dist: {
              files: {
-               '<%= yeoman.dist %>/styles/styles.css': [
+               '<%= yeoman.dist %>/styles/main.css': [
                  '.tmp/styles/{,*/}*.css'
                ]
              }
@@ -391,6 +391,7 @@ module.exports = function (grunt) {
                         cwd: '<%= yeoman.app %>',
                         dest: '<%= yeoman.dist %>',
                         src: [
+                            'favicon.ico',
                             '*.{ico,png,txt}',
                             '.htaccess',
                             '*.html',
