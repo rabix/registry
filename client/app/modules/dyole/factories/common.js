@@ -39,7 +39,7 @@ angular.module('registryApp.dyole')
                     } else {
                         // this means input is not required and type is array where first element is null
                         // thats why we take second element since that is it's real type
-                        return this.checkTypeFile(schema, schema.type[1]);
+                        return this.checkTypeFile(schema, schema.type[1] || schema.type[0]);
                     }
                 }
 
