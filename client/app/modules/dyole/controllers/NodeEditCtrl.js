@@ -10,7 +10,7 @@ angular.module('registryApp.dyole')
         };
 
         $scope.ok = function () {
-            var test = data.onEdit($scope.name);
+            var test = data.onEdit($scope.view.name);
 
             if ($scope.form.$invalid) {
                 return false;
@@ -21,7 +21,7 @@ angular.module('registryApp.dyole')
                 data.onSave.call(data.scope, $scope.view.name);
                 $modalInstance.close();
             } else {
-                $scope.view.error = 'Name must be uniqe.';
+                $scope.view.error = 'Name must be unique.';
             }
         };
 

@@ -165,8 +165,8 @@ angular.module('registryApp.dyole')
                             id: _.random(100000, 999999) + '', // it has to be a string
                             start_node: start.parent.model.id,
                             end_node: end.parent.model.id,
-                            input_name: end.id,
-                            output_name: start.id
+                            input_name: end.model.id,
+                            output_name: start.model.id
                         };
 
                         _self.createConnection(model);

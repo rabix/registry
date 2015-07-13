@@ -710,7 +710,7 @@ angular.module('registryApp.dyole')
              */
             _initNameChanging: function () {
                 var _self = this;
-                var nodeName = (this.model.softwareDescription && this.model.softwareDescription.name) ? this.model.id : this.model.name;
+                var nodeName = (this.model.softwareDescription && this.model.softwareDescription.label) ? this.model.id : this.model.label;
 
                 $rootScope.$broadcast('node:label:edit', nodeName, function check(name) {
 
@@ -806,6 +806,7 @@ angular.module('registryApp.dyole')
 
                     }
 
+                    this.id = name;
                     this.model.id = name;
                     this.model.softwareDescription.name = name;
 

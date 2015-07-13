@@ -19,10 +19,10 @@ angular.module('registryApp.common')
 
             if (_.isEmpty(name)) { return false; }
 
-            var pattern = /[\$\.]/g;
+            var pattern = /[\$\-\.]/g;
 
             if (whiteSpace) {
-                pattern = /[\$\.\s]/g;
+                pattern = /[\$\.\-\s]/g;
             }
 
             return !pattern.test(name);
