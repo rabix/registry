@@ -26,8 +26,26 @@
             </div>
 
             <div ng-switch-when="schema">
+
+                <div class="row change-schema">
+                    <div class="col-md-6 input-group">
+
+                        <label >Change Schema:</label>
+
+                        <select class="form-control"
+                                ng-model="view.type"
+                                ng-options=" value.value as value.name for value in view.schemaTypes">
+                        </select>
+                    </div>
+
+                    <div class="col-md-6 input-group">
+                        <label for="isRequired">Required:</label>
+                        <input name="isRequired" type="checkbox" ng-model="view.required"/>
+                    </div>
+
+                </div>
                 <div class="json-pretty-scroll json-trace">
-                    <pre pretty-json="::schema"></pre>
+                    <pre pretty-json="schema"></pre>
                 </div>
             </div>
         </div>

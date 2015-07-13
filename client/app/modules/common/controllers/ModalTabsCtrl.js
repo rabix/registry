@@ -3,15 +3,89 @@
 angular.module('registryApp.common')
     .controller('ModalTabsCtrl', ['$scope', '$modalInstance', 'data', 'common', function ($scope, $modalInstance, data, Common) {
 
+        var schemas = {
+            array: {
+                type: 'array',
+                items: 'File'
+            },
+            File: 'File'
+        };
+
+
         $scope.data = data.model;
         $scope.schema = _.clone(data.schema, true) || {};
+
 
         if (typeof $scope.schema.id !== 'undefined') {
             $scope.schema.id = null;
             delete $scope.schema.id;
         }
 
+        var schemaRef = data.schema;
+
+        var _parseType = function() {
+            var type = Common.parseType($scope.schema.type);
+
+            $scope.view.type = type;
+        };
+
+        var _updateType = function (value) {
+            var newType = schemas[value];
+
+            if (_.isArray(schemaRef.type)) {
+                schemaRef.type.splice(0,schemaRef.type.length);
+
+                if ($scope.view.required) {
+                    schemaRef.type.push(newType);
+                } else {
+                    schemaRef.type.push('null');
+                    schemaRef.type.push(newType);
+                }
+
+            } else {
+
+                if ($scope.view.required) {
+                    schemaRef.type = newType;
+                } else {
+                    schemaRef.type.push('null');
+                    schemaRef.type.push(newType);
+                }
+
+            }
+
+            $scope.schema.type = schemaRef.type;
+        };
+
         $scope.view = {};
+
+        $scope.view.schemaTypes = [
+            {
+                name: 'Array of files',
+                value: 'array'
+            },
+            {
+                name: 'File',
+                value: 'File'
+            }
+        ];
+
+        $scope.view.type = _parseType();
+        $scope.view.required = (_.isArray($scope.schema.type) && $scope.schema.type.length === 1) || typeof $scope.schema.type === 'string';
+
+        if (Common.checkSystem($scope.data)) {
+
+            $scope.$watch('view.type', function (n, o) {
+                if (n !== o) {
+                    _updateType(n, o);
+                }
+            });
+            $scope.$watch('view.required', function (n, o) {
+                if (n !== o) {
+                    _updateType($scope.view.type);
+                }
+            });
+
+        }
 
         $scope.view.tab = data.tabName || 'info';
 

@@ -96,6 +96,22 @@ angular.module('registryApp.dyole')
                 }
 
                 return _id;
+            },
+            
+            parseType: function (type) {
+                var t;
+
+                if (type === 'string') {
+                    return type;
+                }
+
+                if (_.isArray(type)){
+                    return type[1] || type[0]
+                }
+
+                if (typeof type === 'object') {
+                    return type.type;
+                }
             }
 
         };
