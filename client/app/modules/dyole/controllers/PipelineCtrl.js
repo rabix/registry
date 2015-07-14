@@ -320,13 +320,23 @@ angular.module('registryApp.dyole')
                 resolve: {data: function () { return {model: model, connections: _getConnections(), schema: schema};}}
             });
 
-            modalInstance.result.then(function (scatter) {
+            modalInstance.result.then(function (data) {
+                var scatter = data.scatter;
+
+                // get schema for i/o node ( copyes schema from *put )
+                var schema = model.inputs[0] || model.outputs[0];
+                schema.type = data.schema.type;
+
+                Pipeline.updateIOSchema(model.id, schema.type);
+
                 if (scatter) {
                     model.scatter = scatter;
                 } else {
                     model.scatter = false;
                     delete model.scatter;
                 }
+
+
             });
         };
 

@@ -59,17 +59,18 @@ angular.module('registryApp.dyole')
 
             $scope.view.validating = true;
 
-            Workflow.validateJson(json)
-                .then(function (data) {
+//            Workflow.validateJson(json)
+//                .then(function (data) {
+//
+//                    $scope.view.validating = false;
+//
+//
+//                }, function () {
+//                    $scope.view.validating = false;
+//                });
+//
 
-                    $scope.view.validating = false;
-
-                    $modalInstance.close(data);
-
-                }, function () {
-                    $scope.view.validating = false;
-                });
-
+            $modalInstance.close({json: JSON.parse(json)});
 
         };
 

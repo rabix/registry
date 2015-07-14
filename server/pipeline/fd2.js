@@ -266,12 +266,10 @@ var _formatter = {
                 delete schema.softwareDescription;
 
                 _.forEach(schema.inputs, function (inp) {
-                    delete inp.label;
                     delete inp.name;
                 });
 
                 _.forEach(schema.outputs, function (out) {
-                    delete out.label;
                     delete out.name;
                 });
 

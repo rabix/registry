@@ -21,39 +21,40 @@ angular.module('registryApp.common')
             delete $scope.schema.id;
         }
 
-        var schemaRef = data.schema;
-
         var _parseType = function() {
-            var type = Common.parseType($scope.schema.type);
+            var parsed = Common.parseType($scope.schema.type);
 
-            $scope.view.type = type;
+            if (typeof parsed === 'object') {
+                parsed = parsed.type;
+            }
+
+            return parsed;
         };
 
         var _updateType = function (value) {
             var newType = schemas[value];
 
-            if (_.isArray(schemaRef.type)) {
-                schemaRef.type.splice(0,schemaRef.type.length);
+            if (_.isArray($scope.schema.type)) {
+                $scope.schema.type.splice(0,$scope.schema.type.length);
 
                 if ($scope.view.required) {
-                    schemaRef.type.push(newType);
+                    $scope.schema.type.push(newType);
                 } else {
-                    schemaRef.type.push('null');
-                    schemaRef.type.push(newType);
+                    $scope.schema.type.push('null');
+                    $scope.schema.type.push(newType);
                 }
 
             } else {
 
                 if ($scope.view.required) {
-                    schemaRef.type = newType;
+                    $scope.schema.type = newType;
                 } else {
-                    schemaRef.type.push('null');
-                    schemaRef.type.push(newType);
+                    $scope.schema.type.push('null');
+                    $scope.schema.type.push(newType);
                 }
 
             }
 
-            $scope.schema.type = schemaRef.type;
         };
 
         $scope.view = {};
@@ -70,6 +71,7 @@ angular.module('registryApp.common')
         ];
 
         $scope.view.type = _parseType();
+
         $scope.view.required = (_.isArray($scope.schema.type) && $scope.schema.type.length === 1) || typeof $scope.schema.type === 'string';
 
         if (Common.checkSystem($scope.data)) {
@@ -129,8 +131,7 @@ angular.module('registryApp.common')
         });
 
         var _filterInputs = function () {
-            var inputs = [],
-                filter = ['file', 'File', 'directory'];
+            var inputs = [];
 
             _.each(inputRefs, function (input) {
 
@@ -188,10 +189,12 @@ angular.module('registryApp.common')
                 _.forEach(connections, function (connection, index) {
                     connection.position = index;
                 });
-
             });
 
-            $modalInstance.close(scatter);
+            $modalInstance.close({
+                scatter: scatter,
+                schema: $scope.schema
+            });
         };
 
         /**

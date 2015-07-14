@@ -1151,6 +1151,14 @@ angular.module('registryApp.dyole')
                     });
 
                 },
+                
+                updateIOSchema: function (id, type) {
+                    var node = this.model.schemas[id];
+                    var schema = node.inputs[0] || node.outputs[0];
+
+                    schema.type = type;
+
+                },
 
                 /**
                  * Get pipeline model
