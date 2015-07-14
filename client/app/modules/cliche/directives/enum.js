@@ -10,6 +10,7 @@ angular.module('registryApp.cliche')
     .controller('EnumCtrl', ['$scope', '$modal', '$templateCache', function ($scope, $modal, $templateCache) {
 
         $scope.view = {};
+
         $scope.view.tplPath = 'modules/cliche/views/enum/enum-' + $scope.type.toLowerCase()  + '.html';
 
         /**

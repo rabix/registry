@@ -79,6 +79,9 @@ var Schema = {
                             required: ['type']
                         },
                         {
+                            type: 'string'
+                        },
+                        {
                             $ref: '#/definitions/recordDef'
                         }
                     ]

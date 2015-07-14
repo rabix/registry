@@ -1006,7 +1006,7 @@ angular.module('registryApp.cliche')
                     items: inner.items
                 };
 
-                stripParams(tmp, type.items.type);
+                stripParams(tmp, type.items);
 
             /* if any level and enum */
             } else if (inner.type === 'enum') {
@@ -1134,6 +1134,42 @@ angular.module('registryApp.cliche')
         };
 
         /**
+         * Returns items type from items property.
+         *
+         * @param items
+         * @returns {string} type
+         */
+        var getItemsType = function(items) {
+            if (items) {
+                if (typeof items === 'string') {
+                    return items;
+                } else if (typeof items === 'object' && items.type) {
+                    return items.type;
+                }
+            }
+        };
+
+        /**
+         * Returns item value for given item type.
+         *
+         * If the type is complex, returns an object with `type` property, if
+         * the type is primitive, returns a type as a string.
+         *
+         * @param {string} type
+         * @returns {*}
+         */
+        var setItemType = function(type) {
+            if (type === 'record') {
+                return {
+                    type: 'record',
+                    fields: []
+                };
+            } else {
+                return type;
+            }
+        };
+
+        /**
          * Get property schema depending on the level
          *
          * @param {object} type - input or output
@@ -1247,7 +1283,9 @@ angular.module('registryApp.cliche')
             copyPropertyParams: copyPropertyParams,
             getTplType: getTplType,
             getItemsRef: getItemsRef,
+            getItemsType: getItemsType,
             getTypes: getTypes,
+            setItemType: setItemType,
             getSchema: getSchema,
             getAdapter: getAdapter,
             getStdinInput: getStdinInput,

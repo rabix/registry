@@ -112,15 +112,15 @@ angular.module('registryApp.common')
 
             var output;
             var map = {
-                file: {path: name},
-                File: {path: name},
+                file: {path: name + '.ext'},
+                File: {path: name + '.ext'},
                 'enum': symbols ? symbols[0] : name,
                 string: name,
                 int: 0,
                 float: 0,
-                boolean: false,
+                boolean: true,
                 array: {
-                    file: [{path: name}],
+                    file: [{path: name + '.ext'}],
                     string: [name],
                     int: [0],
                     float: [0],
