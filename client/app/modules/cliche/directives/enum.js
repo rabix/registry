@@ -7,13 +7,11 @@
 'use strict';
 
 angular.module('registryApp.cliche')
-    .controller('EnumCtrl', ['$scope', '$modal', '$templateCache', 'Cliche', function ($scope, $modal, $templateCache, Cliche) {
+    .controller('EnumCtrl', ['$scope', '$modal', '$templateCache', function ($scope, $modal, $templateCache) {
 
         $scope.view = {};
 
-        // in case type is passed as object with type property
-        var type = Cliche.getItemsType($scope.type);
-        $scope.view.tplPath = 'modules/cliche/views/enum/enum-' + type.toLowerCase()  + '.html';
+        $scope.view.tplPath = 'modules/cliche/views/enum/enum-' + $scope.type.toLowerCase()  + '.html';
 
         /**
          * Get schema for the appropriate enum type

@@ -82,7 +82,7 @@ angular.module('registryApp.cliche')
             }
 
             if ($scope.view.inputBinding && $scope.view.mode === 'edit') {
-                $scope.view.jobInputs[$scope.view.name] = Helper.getDefaultInputValue($scope.view.name, enumObj.symbols, $scope.view.type, false);
+                $scope.view.jobInputs[$scope.view.name] = Helper.getDefaultInputValue($scope.view.name, enumObj.symbols, $scope.view.type, $scope.view.itemsType);
             }
 
             if (!$scope.view.inputBinding) {
