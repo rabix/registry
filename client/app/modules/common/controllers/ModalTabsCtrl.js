@@ -91,6 +91,10 @@ angular.module('registryApp.common')
 
         $scope.view.tab = data.tabName || 'info';
 
+        if (Common.checkSystem($scope.data)) {
+            $scope.view.tab = 'schema';
+        }
+
         $scope.inputConnections = {};
 
         $scope.sortableOptions = {
