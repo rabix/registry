@@ -4,12 +4,12 @@
      type="array"
      tool-type="script"
      mode="input"
-     item-type="{{ view.items.type }}"
+     item-type="{{ view.itemsType }}"
      is-required="view.required"
      handle="handleAction(action)">
 </div>
 
-<div class="property-box-body" ng-if="view.items.type === 'record'">
+<div class="property-box-body" ng-if="view.itemsType === 'record'">
 
     <div class="row">
         <div class="col-md-12">

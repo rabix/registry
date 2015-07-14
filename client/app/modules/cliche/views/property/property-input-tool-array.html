@@ -6,7 +6,7 @@
      type="array"
      tool-type="tool"
      mode="input"
-     item-type="{{ view.items.type }}"
+     item-type="{{ view.itemsType }}"
      is-required="view.required"
      handle="handleAction(action)">
 </div>
@@ -17,9 +17,9 @@
         <div class="col-md-3 box-col">
             <strong class="key">Prefix:</strong>
             <div class="value">
-                <span ng-if="view.items.type !== 'record'">{{ view.property.inputBinding.prefix }}</span>
-                <i class="none" ng-if="view.items.type === 'record'">none</i>
-                <i ng-if="!view.property.inputBinding.prefix && view.items.type !== 'record'">Not defined</i>
+                <span ng-if="view.itemsType !== 'record'">{{ view.property.inputBinding.prefix }}</span>
+                <i class="none" ng-if="view.itemsType === 'record'">none</i>
+                <i ng-if="!view.property.inputBinding.prefix && view.itemsType !== 'record'">Not defined</i>
             </div>
         </div>
 
@@ -40,18 +40,18 @@
         <div class="col-md-3 box-col">
             <strong class="key">Value:</strong>
             <div class="value">
-                <div ng-if="view.items.type !== 'record'" class="value">
+                <div ng-if="view.itemsType !== 'record'" class="value">
                     <i class="fa fa-warning error" ng-if="view.exprError" title="{{ view.exprError }}"></i>
                     {{ view.property.inputBinding.valueFrom.value }}
                 </div>
-                <i ng-if="view.items.type === 'record'">none</i>
-                <i ng-if="view.items.type !== 'record' && !view.property.inputBinding.valueFrom">Not defined</i>
+                <i ng-if="view.itemsType === 'record'">none</i>
+                <i ng-if="view.itemsType !== 'record' && !view.property.inputBinding.valueFrom">Not defined</i>
             </div>
         </div>
 
     </div>
 
-    <div class="row" ng-if="view.items.type === 'record'">
+    <div class="row" ng-if="view.itemsType === 'record'">
         <div class="col-md-12">
 
             <legend class="legend-small">

@@ -16,10 +16,11 @@ angular.module('registryApp.cliche')
         $scope.view.name = Cliche.parseName($scope.prop);
         $scope.view.property = $scope.prop || {};
         $scope.view.property.schema = Cliche.getSchema('input', $scope.prop, $scope.type, true);
-        $scope.view.property.adapter = Cliche.getAdapter($scope.prop, false, 'input');
+        //$scope.view.property.adapter = Cliche.getAdapter($scope.prop, false, 'input'); // is this being used anywhere?
         $scope.view.type = Cliche.parseType($scope.view.property.type).toLowerCase();
         $scope.view.required = Cliche.isRequired($scope.view.property.type);
         $scope.view.items = Cliche.getItemsRef($scope.view.type, $scope.view.property.schema);
+        $scope.view.itemsType = Cliche.getItemsType($scope.view.items);
 
         $scope.view.tpl = 'modules/cliche/views/inputs/input-' + $scope.view.type.toLowerCase()  + '.html';
 
@@ -35,7 +36,7 @@ angular.module('registryApp.cliche')
 
         $scope.view.exposible = !_.isUndefined($scope.exposed);
 
-        $scope.view.ignore = $scope.ignoreFiles === 'true' && ($scope.view.type === 'File' || ($scope.view.items && $scope.view.items.type === 'File'));
+        $scope.view.ignore = $scope.ignoreFiles === 'true' && ($scope.view.type === 'File' || ($scope.view.items === 'File'));
 
         /**
          * Get default input scheme
@@ -106,9 +107,9 @@ angular.module('registryApp.cliche')
         } else if($scope.view.type === 'array') {
             inputScheme = [];
 
-            $scope.view.items = $scope.view.items || {type: 'string'};
+            $scope.view.items = $scope.view.items || 'string';
 
-            switch($scope.view.items.type) {
+            switch($scope.view.itemsType) {
             case 'record':
                 _.each($scope.model, function(value) {
                     var innerScheme = getObjectScheme(value);
