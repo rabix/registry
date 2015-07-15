@@ -8,13 +8,15 @@
 
         <input ng-if="view.mode === 'literal'" type="{{ view.type }}" class="form-control" ng-model="view.literal" placeholder="{{ view.placeholder }}" ng-readonly="onlyExpr" ng-disabled="ngDisabled">
 
+        <select ng-if="view.mode === 'select'" class="form-control" ng-options="option.key as option.value for option in options" ng-model="view.literal" ng-readonly="onlyExpr" ng-disabled="ngDisabled"></select>
+
         <span class="input-group-btn">
             <rb-button href
                class="btn-expression"
                tooltip="{{ view.transform.script || 'There is no expression defined. Click to add it' }}"
                tooltip-append-to-body="true"
                ng-click="editExpression()"
-               ng-class="{'btn-warning': (view.mode === 'transform'), 'btn-default': (view.mode === 'literal')}">
+               ng-class="{'btn-warning': (view.mode === 'transform'), 'btn-default': (view.mode !== 'transform')}">
                <i class="fa fa-code"></i>
             </rb-button>
         </span>

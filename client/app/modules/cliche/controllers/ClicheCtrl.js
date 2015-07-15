@@ -80,6 +80,17 @@ angular.module('registryApp.cliche')
         /* help messages */
         $scope.help = HelpMessages;
 
+        /* cpu options */
+        $scope.view.cpuOptions = [
+            {
+                key: 0,
+                value: 'Single-Threaded'
+            },
+            {
+                key: 1,
+                value: 'Multi-Threaded'
+            }
+        ];
 
         Loading.setClasses($scope.view.classes);
 

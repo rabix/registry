@@ -8,7 +8,46 @@
 
 angular.module('registryApp.common')
     .directive('expr', ['$templateCache', function ($templateCache) {
-
+        /**
+         * @ngdoc directive
+         * @name expr
+         * @module registryApp.common
+         *
+         * @restrict E
+         *
+         * @description
+         * `<expr>` allows expressions as well as literals to be written to input fields.
+         *
+         * @usage
+         * <expr ng-model="model" handle-item-update="updateCallback(value, index)" [handle-item-blur="blurCallback(value, index)"]></expr>
+         *
+         * @param {string} ngModel Assignable angular expression. Will either be string or transform object.
+         * @param {string=} ngDisabled Assignable angular expression.
+         * @param {string=} index Index of item.
+         * @param {string=} placeholder String to be used as a placeholder
+         * @param {object=} self Object exposed as $self to expression
+         * @param {string=} selfType
+         * @param {string=} selfItemType
+         * @param {boolean=} onlyExpr Disables literals
+         *
+         * @param {array=} options Sets the input to a <select>. Each option is an object with the following format:
+         *
+         * ```
+         *  {
+         *      key: 'key',
+         *      value: 'value'
+         *  }
+         * ```
+         *
+         * The value attribute is displayed as text in the <option> element, while the key will be written to the ngModel
+         *
+         * @param {Function=} handleItemUpdate Function to be called on item update. Accepts to named parameters:
+         *  - `value`: value currently in the field
+         *  - `index`: index provided to directive
+         *
+         * @param {Function=} handleItemUpdate Function to be called on the field's blur event. Accepts the same named parameters as above
+         *
+         */
         return {
             restrict: 'E',
             template: $templateCache.get('modules/common/views/expr.html'),
@@ -22,6 +61,7 @@ angular.module('registryApp.common')
                 selfType: '=?',
                 selfItemType: '=?',
                 onlyExpr: '@',
+                options: '=',
                 handleItemUpdate: '&',
                 handleItemBlur: '&'
             },
@@ -43,6 +83,10 @@ angular.module('registryApp.common')
                         $scope.view.mode = 'transform';
                         $scope.view.transform = $scope.ngModel;
                         $scope.view.literal = null;
+                    } else if ($scope.options) {
+                        $scope.view.mode = 'select';
+                        $scope.view.literal = $scope.ngModel;
+                        $scope.view.transform = null;
                     } else {
                         $scope.view.mode = 'literal';
                         $scope.view.literal = $scope.ngModel;
@@ -90,7 +134,7 @@ angular.module('registryApp.common')
                  *
                  * @param {String} n
                  * @param {String} o
-                 * @param {String} mode - 'literal' | 'transform'
+                 * @param {String} mode - 'literal' | 'transform' | 'select'
                  */
                 var triggerUpdate = function(n, o, mode) {
 
@@ -121,6 +165,8 @@ angular.module('registryApp.common')
                  * Edit custom expression for input value evaluation
                  */
                 $scope.editExpression = function () {
+                    var prevMode = $scope.view.mode;
+                    var defaultLiteral = $scope.options ? $scope.options[0].key : '';
 
                     var expr = $scope.view.mode === 'transform' ? $scope.view.transform.script : '';
 
@@ -144,9 +190,9 @@ angular.module('registryApp.common')
 
                         if (_.isEmpty(expr)) {
 
-                            $scope.view.mode = 'literal';
+                            $scope.view.mode = prevMode !== 'transform' ? prevMode : 'literal';
                             $scope.view.transform = null;
-                            $scope.view.literal = '';
+                            $scope.view.literal = defaultLiteral;
 
                         } else {
 
