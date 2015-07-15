@@ -29,6 +29,7 @@ angular.module('registryApp.cliche')
         $scope.view.required = Cliche.isRequired($scope.view.property.schema);
         $scope.view.type = Cliche.parseType($scope.view.property.schema);
         $scope.view.items = Cliche.getItemsRef($scope.view.type, $scope.view.property.schema);
+        $scope.view.itemsType = Cliche.getItemsType($scope.view.items);
 
         $scope.view.types = Cliche.getTypes('output');
         $scope.view.itemTypes = Cliche.getTypes('outputItem');
@@ -149,8 +150,8 @@ angular.module('registryApp.cliche')
         $scope.$watch('view.type', function(n, o) {
             if (n !== o) {
                 if (n === 'array') {
-                    if (!$scope.view.items) { $scope.view.items = {}; }
-                    $scope.view.items.type = 'File';
+                    $scope.view.itemsType = 'File';
+                    $scope.view.items = $scope.view.itemsType;
                 } else {
                     delete $scope.view.items;
                 }
