@@ -131,7 +131,7 @@ angular.module('registryApp.cliche')
         $scope.$watch('view.itemsType', function(n, o) {
             if (n !== o) {
                 if (n === 'record') {
-                    // if itemType is a record, create object
+                    // if itemsType is a record, create object
                     // items: { type: 'record', fields: []}
                     $scope.view.disabled = true;
                     $scope.view.items = {};
@@ -147,7 +147,7 @@ angular.module('registryApp.cliche')
                         }
                     }
                 } else {
-                    // if itemType is not a record, make items string
+                    // if itemsType is not a record, make items string
                     // items: 'string' || 'boolean' || etc.
 
                     $scope.view.disabled = false;

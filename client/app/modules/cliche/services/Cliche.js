@@ -50,10 +50,12 @@ angular.module('registryApp.cliche')
          */
         var getTypes = function(type) {
 
+            // temporarily removing inputItem and input 'record', because it isn't supported.
+            // frontend supports inputItem: 'record'
             var map = {
                 input: ['File', 'string', 'enum', 'int', 'float', 'boolean', 'array'],
                 output: ['File', 'array'],
-                inputItem: ['string', 'int', 'float', 'File', 'record'],
+                inputItem: ['string', 'int', 'float', 'File'],
                 outputItem: ['File']
             };
 
@@ -1134,10 +1136,9 @@ angular.module('registryApp.cliche')
         };
 
         /**
-         * Returns items type from items property.
-         *
+         * Get
          * @param items
-         * @returns {string} type
+         * @returns {*}
          */
         var getItemsType = function(items) {
             if (items) {
@@ -1146,26 +1147,6 @@ angular.module('registryApp.cliche')
                 } else if (typeof items === 'object' && items.type) {
                     return items.type;
                 }
-            }
-        };
-
-        /**
-         * Returns item value for given item type.
-         *
-         * If the type is complex, returns an object with `type` property, if
-         * the type is primitive, returns a type as a string.
-         *
-         * @param {string} type
-         * @returns {*}
-         */
-        var setItemType = function(type) {
-            if (type === 'record') {
-                return {
-                    type: 'record',
-                    fields: []
-                };
-            } else {
-                return type;
             }
         };
 
@@ -1285,7 +1266,6 @@ angular.module('registryApp.cliche')
             getItemsRef: getItemsRef,
             getItemsType: getItemsType,
             getTypes: getTypes,
-            setItemType: setItemType,
             getSchema: getSchema,
             getAdapter: getAdapter,
             getStdinInput: getStdinInput,
