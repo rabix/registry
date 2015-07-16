@@ -1151,7 +1151,13 @@ angular.module('registryApp.dyole')
                     });
 
                 },
-                
+
+                /**
+                 * Update schema for input/output node
+                 *
+                 * @param id
+                 * @param type
+                 */
                 updateIOSchema: function (id, type) {
                     var node = this.model.schemas[id];
                     var schema = node.inputs[0] || node.outputs[0];
