@@ -170,16 +170,15 @@ angular.module('registryApp.common')
                 //el.find('input').focus();
 
                 // only set up event handler if event can be handled
-                if (!_.isUndefined(scope.handleItemBlur) && scope.view.mode === 'literal') {
-                    function runHandler(event) {
-                        if (event.type === 'keypress' && event.which === 13 || event.type === 'blur' || event.type === 'init' /* for initial load */) {
-                            scope.handleItemBlur({index: scope.index, value: scope.view.literal});
-                        }
+                function runHandler(event) {
+                    if (event.type === 'keypress' && event.which === 13 || event.type === 'blur' || event.type === 'init' /* for initial load */) {
+                        scope.handleItemBlur({index: scope.index, value: scope.view.literal});
                     }
-
-                    runHandler({type: 'init'});
                 }
-                scope.runHandler = runHandler || angular.noop;
+
+                scope.runHandler = !_.isUndefined(scope.handleItemBlur) && scope.view.mode === 'literal' ? runHandler : angular.noop;
+
+                scope.runHandler({type: 'init'});
 
             }
         };
