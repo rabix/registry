@@ -5,7 +5,7 @@
   &:after {
     content: '';
     display: block;
-    background-image: url('/images/loader.gif');
+    background-image: url('/rbx/images/loader.gif');
     background-repeat: no-repeat;
     background-position: center;
     width: 100%;
@@ -19,6 +19,7 @@
     top: 0;
     left: 0;
     height: 100%;
+    z-index: 1000;
     background-color: rgba(255, 255, 255, 0.7);
   }
 }

@@ -1,0 +1,40 @@
+<div property-header
+     class="property-box-header script"
+     name="{{ view.name }}"
+     type="array"
+     tool-type="script"
+     mode="input"
+     item-type="{{ view.itemsType }}"
+     is-required="view.required"
+     handle="handleAction(action)">
+</div>
+
+<div class="property-box-body" ng-if="view.itemsType === 'record'">
+
+    <div class="row">
+        <div class="col-md-12">
+
+            <legend class="legend-small nb">
+                Properties
+                <add-property
+                        type="input"
+                        tool-type="script"
+                        is-nested="'true'"
+                        properties="view.items.fields">
+                </add-property>
+            </legend>
+
+            <property-input
+                    ng-repeat="property in view.items.fields track by property.name"
+                    ng-model="property"
+                    type="{{ type }}"
+                    inputs="inputs[view.name]"
+                    properties="view.items.fields"
+                    handler="handler()">
+            </property-input>
+
+            <p class="alert alert-info" ng-if="view.items.fields.length === 0">There are no properties at this moment.</p>
+        </div>
+    </div>
+
+</div>

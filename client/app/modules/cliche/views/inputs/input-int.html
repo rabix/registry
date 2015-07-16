@@ -1,0 +1,17 @@
+<div class="form-group" ng-class="{required: view.required, 'has-error': (inputForm.inputInteger.$invalid && !isDisabled)}">
+    <div class="control-label">
+        <div ng-if="exposed" class="checkbox">
+            <label><input type="checkbox" ng-model="view.expose" ng-change="exposeParams()"> expose</label>
+        </div>
+        <span class="input-key" title="{{ view.name }}">{{ view.name }}</span>
+    </div>
+
+    <div class="input-property-body">
+
+        <input type="number" class="form-control" name="inputInteger" ng-model="view.model" is-valid-int ng-required="view.required" ng-disabled="isDisabled">
+
+        <span ng-if="inputForm.inputInteger.$invalid && !isDisabled" class="help-block">Please provide correct value</span>
+
+    </div>
+
+</div>

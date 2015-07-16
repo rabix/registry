@@ -1,0 +1,133 @@
+/* NAVIGATION
+================================================ */
+$dark-header-background: rgb(31, 37, 46);
+$header-hover-color: darken($dark-header-background, 5%);
+
+@mixin navigation-hover() {
+  &:hover, &:active, &:focus {
+    background-color: $header-hover-color;
+    color: #fff;
+    border-color: transparent;
+  }
+  @include transition(background-color .3s, color .3s);
+}
+
+.navigation {
+  background-color: $dark-header-background;
+  @extend .flex-box-row;
+  @extend .flex-auto;
+
+  & > div {
+    width: 100%;
+    @extend .flex-box-row;
+  }
+
+  width: 100%;
+  color: #fff;
+
+  /* logo and sidebar toggle */
+  .logo-wrap{
+    background: url('../../rbx/images/logo.png') no-repeat 17px;
+    background-size: 21px 28px;
+
+    @include navigation-hover();
+  }
+
+  .logo {
+    display: block;
+    padding: 12px 50px 2px; // hacky magic numbers so the link will fill the wrap
+    float: left;
+    position: relative;
+    color: #fff;
+
+    font-size: 22px;
+    text-decoration: none;
+    text-shadow: 2px 2px 2px $dark-blue;
+
+    small {
+      font-size: 10px;
+      position: relative;
+      left: 28px;
+      top: -6px;
+      display: block;
+      color: #f3f3f3;
+      text-shadow: none;
+    }
+  }
+
+  .create-app {
+    display: flex;
+    align-self: center;
+    margin-left: auto;
+  }
+
+  /* user actions like login and logout */
+  .actions {
+    position: relative;
+    align-self: center;
+
+    .user-details {
+      overflow: hidden;
+    }
+
+    .welcome {
+      padding: 9px;
+      cursor: pointer;
+
+      @include navigation-hover();
+
+      .user-name {
+        padding: 0 10px;
+        font-weight: lighter;
+      }
+
+      img {
+        border-radius: 50%;
+      }
+    }
+
+    .log-in-btn {
+      text-align: left;
+      i {
+        font-size: 20px;
+        float: left;
+        margin: 0 10px 0 20px;
+      }
+    }
+  }
+
+  .nav-tabs { // top navigation items in header
+    border: none;
+
+    li {
+
+      a {
+        white-space: nowrap;
+        font-size: 16px;
+        margin-right: 0px;
+        text-shadow: 1px 1px 1px $dark-blue;
+        color: #fff;
+        padding: 15px;
+        text-transform: capitalize;
+
+        @include navigation-hover();
+
+        i {
+          color: #fff;
+          width: 12px;
+          margin-right: 10px;
+          font-size: 20px;
+        }
+      }
+
+      &.active {
+        a, a:hover, a:focus {
+          text-shadow: 1px 1px 1px #fff;
+          span, i {
+            color: #555;
+          }
+        }
+      }
+    }
+  }
+}

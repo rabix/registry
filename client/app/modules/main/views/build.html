@@ -1,0 +1,77 @@
+<div ng-class="view.classes" loading="view.loading">
+
+    <div class="heading no-margin">
+        <a ui-sref="builds" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
+        <h1>
+            <span tooltip="Build #{{ ::view.build._id }}" tooltip-popup-delay="1000">Build #{{ ::view.build._id }}</span>
+            <span class="label label-status pull-right" ng-class="{'label-success': view.build.status === 'success', 'label-info': view.build.status === 'running', 'label-danger': view.build.status === 'failure', 'label-warning': view.build.status === 'pending'}">
+                <i class="fa {{ view.build.status }}" ng-class="{'fa-check-circle': view.build.status === 'success', 'fa-repeat': view.build.status === 'running', 'fa-times-circle': view.build.status === 'failure', 'fa-clock-o': view.build.status === 'pending'}"></i>
+                <span>{{ view.build.status }}</span>
+            </span>
+        </h1>
+    </div>
+    <!-- # .heading -->
+
+    <div ng-if="!view.loading" class="content" id="log-content">
+
+        <div class="description">
+
+            <div class="panel panel-warning">
+                <div class="panel-heading"><h4 class="panel-title">Info</h4></div>
+                <div class="panel-body">
+                    <p><strong>Repo/User:</strong> <a ui-sref="builds({repo: view.build.repoId._id})">{{ ::view.build.repoId.owner }}/{{ ::view.build.repoId.name }}</a></p>
+                    <p><strong>Date:</strong> {{ ::view.build.head_commit.timestamp | date:'short' }}</p>
+                    <p><strong>Author:</strong> {{ ::view.build.head_commit.author.name }}</p>
+                    <p><strong>Committer:</strong> {{ ::view.build.head_commit.committer.name }}</p>
+                </div>
+            </div>
+
+            <section>
+                <h4>Message</h4>
+                <p>{{ ::view.build.head_commit.message }}</p>
+            </section>
+
+            <section>
+                <h4>Commit URL</h4>
+                <p><a ng-href="{{ ::view.build.head_commit.url }}" target="_blank">{{ ::view.build.head_commit.url }}</a></p>
+            </section>
+
+        </div>
+        <!-- # .description -->
+
+        <div class="details">
+
+            <div class="snippet list" ng-if="view.build.head_commit.added.length > 0">
+                <p>Added files</p>
+                <ul>
+                    <li ng-repeat="file in ::view.build.head_commit.added" class="line">{{ ::file }}</li>
+                </ul>
+            </div>
+
+            <div class="snippet list" ng-if="view.build.head_commit.modified.length > 0">
+                <p>Modified files</p>
+                <ul>
+                    <li ng-repeat="file in ::view.build.head_commit.modified" class="line">{{ ::file }}</li>
+                </ul>
+            </div>
+
+            <div class="snippet list" ng-if="view.build.head_commit.removed.length > 0">
+                <p>Removed files</p>
+                <ul>
+                    <li ng-repeat="file in ::view.build.head_commit.removed" class="line">{{ ::file }}</li>
+                </ul>
+            </div>
+        </div>
+        <!-- # .details -->
+
+        <div class="snippet log">
+            <p>Log trace</p>
+            <pre>
+                <div class="line" ng-repeat="line in view.log track by $index">{{ line | trim }}</div>
+            </pre>
+        </div>
+        <!-- # .snippet.log-->
+
+    </div>
+    <!-- # .content -->
+</div>

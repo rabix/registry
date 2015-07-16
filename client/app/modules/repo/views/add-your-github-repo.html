@@ -1,0 +1,36 @@
+<div ng-class="view.classes" loading="view.loading">
+
+    <div class="heading no-margin">
+        <a ui-sref="repos" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
+        <h1>Add Your GitHub Repo</h1>
+    </div>
+    <!-- # .heading -->
+
+    <div ng-if="!view.loading" class="content content-tbl">
+
+        <table class="table table-hover github-repos">
+            <thead>
+                <tr>
+                    <th>Owner/Name</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="repo in ::view.repos">
+                    <td>
+                        <a ng-href="{{ ::repo.html_url }}" target="_blank">{{ ::repo.full_name }}</a>
+                    </td>
+                    <td class="right">
+                        <button ng-if="!repo.added" ng-click="addRepo(repo)" ng-disabled="repo.adding" class="btn btn-default fa fa-plus"></button>
+                        <span ng-if="repo.added" class="icon-added fa fa-check"></span>
+                    </td>
+                </tr>
+                <tr class="empty" ng-if="view.repos.length === 0">
+                    <td colspan="2"><p class="alert alert-info">There are no GitHub repos</p></td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+    <!-- # .container -->
+</div>

@@ -12,7 +12,7 @@ var Repo = mongoose.model('Repo');
 var User = mongoose.model('User');
 
 var filters = require('../../common/route-filters');
-var formater = require('../../pipeline/formater');
+var formater = require('../../pipeline/fd2');
 var validator = require('../../pipeline/validator');
 var Amazon = require('../../aws/aws').Amazon;
 
@@ -161,6 +161,8 @@ router.get('/workflows', function (req, res, next) {
 
     var limit = req.query.limit ? req.query.limit : 25;
     var skip = req.query.skip ? req.query.skip : 0;
+    // TODO: Sorry about this, casting string to bool value problem
+    var resolve = typeof req.query.resolve !== 'undefined' ? JSON.parse(req.query.resolve) : false;
     var where = {};
 
     _.each(req.query, function(paramVal, paramKey) {
@@ -197,25 +199,36 @@ router.get('/workflows', function (req, res, next) {
         Pipeline.count(wherePipelines, function(err, total) {
             if (err) { return next(err); }
 
-            Pipeline.find(wherePipelines)
-                .populate('repo')
-                .populate('user', '_id email username name')
-                .populate('latest', 'name description')
-                .populate({
-                    path: 'revisions',
-                    options: { limit: 25 },
-                    sort: {
-                        _id: 'desc'
-                    }
-                })
-                .skip(skip)
-                .limit(limit)
-                .sort({_id: 'desc'})
-                .exec(function(err, pipelines) {
-                    if (err) { return next(err); }
+            if (resolve) {
+                Pipeline.find(wherePipelines)
+                    .populate('repo')
+                    .populate('user', '_id email username name')
+                    .populate('latest', 'name description')
+                    .populate({
+                        path: 'revisions',
+                        options: { limit: 25 },
+                        sort: {
+                            _id: 'desc'
+                        }
+                    })
+                    .skip(skip)
+                    .limit(limit)
+                    .sort({_id: 'desc'})
+                    .exec(function(err, pipelines) {
+                        if (err) { return next(err); }
 
-                    res.json({list: pipelines, total: total});
-                });
+                        res.json({list: pipelines, total: total});
+                    });
+            } else {
+                Pipeline.find(wherePipelines)
+                    .sort({_id: 'desc'})
+                    .exec(function(err, pipelines) {
+                        if (err) { return next(err); }
+
+                        res.json({list: pipelines, total: total});
+                    });
+            }
+
 
         });
     });

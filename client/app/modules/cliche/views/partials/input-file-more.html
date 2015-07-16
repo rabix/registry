@@ -1,0 +1,77 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="cancel()"><span>&times;</span><span class="sr-only">Close</span></button>
+    <h4 class="modal-title">More for <strong>{{ ::view.key }}</strong></h4>
+</div>
+<div class="modal-body">
+
+    <form ng-submit="update()" name="view.form" novalidate>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group" ng-class="{'has-error': (view.form.path.$invalid && view.form.$dirty)}">
+                    <label for="path" class="control-label">Path</label>
+                    <input type="text" class="form-control" id="path" name="path" ng-model="view.schema.path" required>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group" ng-class="{'has-error': (view.form.size.$invalid && view.form.$dirty)}">
+                    <label for="size" class="control-label">Size</label>
+                    <input type="number" min="0" class="form-control" id="size" name="size" ng-model="view.schema.size">
+                </div>
+            </div>
+        </div>
+
+        <div class="meta-list">
+
+            <div class="row">
+                <div class="col-md-12">
+
+                    <label class="control-label">Metadata</label>
+
+                    <div class="form-group meta-group" ng-class="{'has-error': view.newMeta.error}">
+                        <div class="input-group">
+                            <div class="col-md-6 no-padding">
+                                <input type="text" class="form-control" ng-model="view.newMeta.key" placeholder="key" />
+                            </div>
+                            <div class="col-md-6 no-padding">
+                                <input type="text" class="form-control" ng-model="view.newMeta.value" placeholder="value" />
+                            </div>
+                            <span class="input-group-btn">
+                                <a href ng-click="addMeta()" class="btn btn-primary"><i class="fa fa-plus"></i></a>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div ng-repeat="(metaKey, metaValue) in view.schema.metadata" class="form-group meta-group">
+                        <div ng-if="metaKey !== '__inherit__'" class="input-group">
+                            <div class="col-md-6 no-padding">
+                                <key-changer key="metaKey" items="view.schema.metadata"></key-changer>
+                            </div>
+                            <div class="col-md-6 no-padding">
+                                <input type="text" class="form-control" ng-model="metaValue" placeholder="key" />
+                            </div>
+                            <span class="input-group-btn">
+                                <a href ng-click="removeMeta(metaKey)" class="btn btn-default"><i class="fa fa-remove"></i></a>
+                            </span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <label class="control-label">Secondary Files</label>
+                <enum ng-model="view.schema.secondaryFiles" path="view.schema.path" type="'ext'"></enum>
+            </div>
+        </div>
+
+        <div class="form-group main-actions">
+            <a href class="btn btn-warning" ng-click="cancel()">Cancel</a>
+            <button type="submit" class="btn btn-primary">Update</button>
+        </div>
+
+    </form>
+
+</div>

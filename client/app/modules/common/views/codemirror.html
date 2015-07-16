@@ -1,0 +1,22 @@
+<div class="codemirror">
+
+    <div class="codemirror-editor"></div>
+
+    <div ng-if="!view.error" class="result">{{ view.defaultResult ? 'Hit "execute" to see the result of your expression' : (view.result || 'Empty result') }}</div>
+
+    <div ng-if="view.error" class="result error">
+        <p ng-if="view.firstTry">There is an error in your expression. Please confirm if you want to save it anyway.</p>
+        <strong>Type:</strong> {{ view.error.name }}<br/>
+        <strong>Message:</strong> {{ view.error.message }}
+    </div>
+
+    <div class="main-actions">
+        <rb-button intention="warning" ng-click="execute()">Execute</rb-button>
+        <div class="pull-right">
+            <rb-button class="separate" ng-click="cancel()">Cancel</rb-button>
+            <rb-button class="separate" intention="danger" ng-click="clear()">Clear</rb-button>
+            <rb-button class="separate" intention="primary" ng-click="load()">{{ view.firstTry ? 'Confirm' : 'Save' }}</rb-button>
+        </div>
+    </div>
+
+</div>

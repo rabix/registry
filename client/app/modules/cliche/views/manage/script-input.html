@@ -1,0 +1,65 @@
+<div class="modal-header">
+    <button type="button" class="close" ng-click="cancel()"><span>&times;</span><span class="sr-only">Close</span></button>
+    <h4 class="modal-title">
+        <span>{{ (view.mode === 'edit') ? 'Edit' : 'Add' }} Property</span>
+        <label class="checkbox inline">
+            <input type="checkbox" ng-model="view.required"> required
+        </label>
+    </h4>
+</div>
+<div class="modal-body">
+
+    <form ng-submit="save()" name="view.form" novalidate>
+
+        <p ng-if="view.error" class="alert alert-danger">{{ view.error }}</p>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group" ng-class="{'has-error': (view.form.name.$invalid && view.form.$dirty)}">
+                    <label class="control-label" for="name">{{ view.key === 'id' ? 'ID' : 'Name' }}</label>
+                    <input type="text" class="form-control" id="name" name="name" ng-model="view.name" is-valid-name required>
+                    <span class="help-block">Allowed characters are alphanumerics, _, and -</span>
+                </div>
+            </div>
+            <!-- END Name -->
+
+            <div class="col-md-4">
+                <div class="form-group" ng-class="{'has-error': (view.form.type.$invalid && view.form.$dirty)}">
+                    <label class="control-label" for="type">Type</label>
+                    <select class="form-control" id="type" name="type" ng-model="view.type" ng-options="option for option in view.types" required></select>
+                </div>
+            </div>
+            <!-- END Type -->
+
+            <div class="col-md-4" ng-if="view.type === 'array'">
+                <div class="form-group">
+                    <label class="control-label" for="item-type" class="control-label">Item Type</label>
+                    <select class="form-control" id="item-type" name="itemType" ng-model="view.itemsType" ng-options="option for option in view.itemTypes"></select>
+                </div>
+            </div>
+            <!-- END Item Type -->
+
+            <div class="col-md-4" ng-if="view.type === 'enum'">
+                <div class="form-group" ng-class="{'has-error': (view.form.enumName.$invalid && view.form.$dirty)}">
+                    <label class="control-label" for="name">Enum Name</label>
+                    <input type="text" class="form-control" id="enumName" name="enumName" ng-model="view.enumName" required>
+                </div>
+            </div>
+            <!-- END Name -->
+
+        </div>
+
+        <div class="row" ng-if="view.type === 'enum'">
+            <div class="col-md-12">
+                <enum ng-model="view.symbols" type="'string'" min="1" is-required="true"></enum>
+            </div>
+        </div>
+
+        <div class="form-group main-actions">
+            <a href class="btn btn-warning" ng-click="cancel()">Cancel</a>
+            <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+
+    </form>
+
+</div>

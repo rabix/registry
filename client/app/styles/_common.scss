@@ -13,7 +13,23 @@
 }
 
 .flex-one {
-  @include flex(1);
+  @include flex(1 1 auto);
+}
+
+.flex-one-no-basis {
+  @include flex(1 1 0);
+}
+
+.flex-end {
+  @include flex-justify(flex-end);
+}
+
+.flex-start {
+  @include flex-justify(flex-start);
+}
+
+.flex-space-between {
+  @include flex-justify(space-between);
 }
 
 %trace-box {

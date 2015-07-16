@@ -13,6 +13,7 @@ var _ = require('lodash');
 var App = mongoose.model('App');
 var Revision = mongoose.model('Revision');
 var PipelineRevision = mongoose.model('PipelineRevision');
+var ToolValidator = require('../../tools/ToolValidator');
 
 module.exports = function (app) {
     app.use('/', router);
@@ -118,5 +119,17 @@ router.get('/workflow/:revision', function (req, res, next) {
             res.status(404).json({message: 'This workflow doesn\'t exist'});
         }
     });
+
+});
+
+router.post('/tools/validate', function (req, res, next) {
+
+    var type = req.body.type || 'tool',
+        json = req.body.json;
+
+    var errors = ToolValidator.validate(type, json).then(function (errors) {
+        res.json({errors: errors});
+    });
+
 
 });

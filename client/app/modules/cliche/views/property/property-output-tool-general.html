@@ -1,0 +1,28 @@
+<div property-header
+     class="property-box-header tool"
+     name="{{ view.name }}"
+     position="view.property.outputBinding.position"
+     type="{{ view.type }}"
+     tool-type="tool"
+     mode="output"
+     is-required="view.required"
+     handle="handleAction(action)">
+</div>
+
+<div class="property-box-body">
+
+    <div class="row">
+
+        <div class="col-md-12 box-col">
+            <strong class="key">Glob:</strong>
+            <div class="value">
+                <i class="fa fa-warning error" ng-if="view.exprError" title="{{ view.exprError }}"></i>
+                {{ view.property.outputBinding.glob.value ? view.property.outputBinding.glob.value : view.property.outputBinding.glob }}
+            </div>
+            <i ng-if="!view.property.outputBinding.glob">Not defined</i>
+        </div>
+        <!-- END Glob -->
+
+    </div>
+
+</div>

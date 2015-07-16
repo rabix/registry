@@ -1,17 +1,22 @@
 .page {
   &.cliche {
-    & > .content {
-      & > .form {
-        width: 100%;
-      }
 
-      .section.top {
-        padding: 10px 10px 0 10px;
-        border-bottom: 1px solid #ddd;
-      }
+    .master-form {
+      & > .content {
+        @extend .flex-one-no-basis;
 
-      .row {
-        margin: 0 !important;
+        & > .form {
+          width: 100%;
+        }
+
+        .section.top {
+          padding: 10px 10px 0 10px;
+          border-bottom: 1px solid #ddd;
+        }
+
+        .row {
+          margin: 0 !important;
+        }
       }
     }
 
@@ -49,30 +54,25 @@
           padding: 0;
           overflow: hidden;
         }
-        .zclip {
+        .copy-btn {
           display: none;
         }
+      }
+
+      .copy-btn {
+        position: absolute;
+        bottom: 5px;
+        right: 5px;
+        z-index: 100;
       }
     }
 
     @for $num from 1 through 12 {
       .col-md-#{$num} {
-        padding-left: 10px;
-        padding-right: 10px;
+        padding-left: $custom-gutter;
+        padding-right: $custom-gutter;
       }
     }
-  }
-}
-
-/* ZeroClipboard box */
-.zclip {
-  .btn {
-    position: absolute;
-    bottom: 5px;
-    left: 5px;
-  }
-  p {
-    @extend %trace-box;
   }
 }
 
@@ -202,9 +202,9 @@
       }
 
       .property-box-short-info {
-        padding: 0px 10px 0px 25px;
+        padding: 10px 10px 10px 25px;
         margin-right: 60px;
-        .order {
+        .position {
           background-color: $orange;
           color: #fff;
           padding: 0 5px;
@@ -212,6 +212,12 @@
         .required {
           color: #cc0000;
         }
+        //.info-block {
+        //  display: inline-block;
+        //  vertical-align: middle;
+        //  margin-right: 10px;
+        //}
+        .position,
         .info-block {
           display: inline-block;
           vertical-align: middle;
@@ -227,9 +233,10 @@
         a:not(.btn) {
           color: #555;
           font-size: 17px;
+          line-height: 15px;
           display: inline-block;
           vertical-align: middle;
-          padding: 7.5px 10px;
+          padding: 12px 10px;
 
           &:last-child {
             margin-left: -5px;
@@ -273,7 +280,7 @@
 
       .legend-small {
         font-size: 14px;
-        margin-top: 10px;
+        margin: 10px 0 20px;
       }
     }
   }
@@ -322,7 +329,8 @@
 
 /* Input property box regular */
 .input-property {
-  & > .form-group {
+  //& > .form-group {
+  .form-group {
     margin: 0 0 10px 0;
     border: 1px solid #ddd;
 
@@ -339,7 +347,8 @@
       }
     }
 
-    & > .control-label {
+    //& > .control-label {
+    .control-label {
       padding: 5px 10px;
       margin: 0;
       position: relative;
@@ -369,10 +378,18 @@
       }
     }
 
-    & > .input-property-body {
+    //& > .input-property-body {
+    .input-property-body {
       padding: 10px;
       background-color: #f9f9f9;
       overflow: auto;
+
+      .checkbox {
+        label {
+          @extend %ellipsis;
+          width: 100%;
+        }
+      }
 
       &.split {
         & > .form-control {

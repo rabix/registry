@@ -1,0 +1,648 @@
+/* TWITTER BOOTSTRAP, MARKDOWN and CODEMIRROR OVERRIDES OVERRIDES
+================================================ */
+
+/* Nav tabs override */
+.nav-tabs {
+  li {
+    a {
+      @include border-radius(0);
+    }
+    &.active {
+      a,
+      a:focus,
+      a:hover {
+        color: #555;
+        background-color: $gray;
+        background-image: url('../../rbx/images/bg.png');
+        border-bottom-color: $gray;
+        cursor: pointer;
+      }
+    }
+
+  }
+
+  &.nav-tabs-steps,
+  &.nav-tabs-trace {
+    border-bottom: none;
+    li {
+      margin-bottom: 0;
+      float: none;
+      display: inline-block;
+      vertical-align: middle;
+      text-align: center;
+      
+      a {
+        font-size: 14px;
+        text-transform: uppercase;
+        padding: 5px 10px;
+        margin: 0;
+        border: none;
+        text-overflow: ellipsis;
+        overflow: hidden;
+      }
+      &.active {
+        a,
+        a:focus,
+        a:hover {
+          background: $orange;
+          color: #fff;
+          text-shadow: 1px 1px 1px #222;
+          border: none;
+        }
+      }
+
+      &.toggle-action {
+        width: auto !important;
+        float: left;
+        a {
+          color: #555;
+        }
+      }
+    }
+  }
+
+  &.nav-tabs-steps {
+    li {
+      width: 16%;
+    }
+  }
+
+  &.nav-tabs-trace {
+    li {
+      width: 30%;
+    }
+  }
+}
+
+/* Nav tabs override */
+.nav-tabs {
+  &.nav-page {
+    border-bottom: 2px solid $orange;
+    @extend .flex-auto;
+
+    li {
+      border: none;
+      margin-bottom: 0;
+      a {
+        padding: 5px 15px;
+        &:hover {
+          border-bottom-color: $nav-link-hover-bg;
+        }
+      }
+    }
+  }
+}
+
+/* Form group override */
+.form-group {
+  &.required {
+    & > .control-label {
+      position: relative;
+      &:after {
+        content: '*';
+        display: inline-block;
+        color: #D9534F;
+        padding: 0 5px;
+      }
+    }
+  }
+}
+
+.control-label {
+  small {
+    font-weight: normal;
+  }
+}
+
+/* Input group override */
+.input-group {
+  .form-control {
+    height: 33px;
+  }
+}
+
+/* Form override */
+form,
+.form {
+
+  .form-control {
+    color: #555;
+    height: 33px;
+    @include border-radius(0);
+  }
+  input {
+    &.form-control {
+      &:read-only {
+        cursor: text;
+        background-color: #fff;
+      }
+    }
+  }
+  textarea {
+    resize: none;
+    &.form-control {
+      height: auto;
+    }
+  }
+  .form-group {
+    position: relative;
+    &.meta-group {
+      margin: 0;
+      .btn {
+        width: 41px;
+      }
+    }
+
+    &.unit {
+      &:after {
+        content: 'KB';
+        position: absolute;
+        top: 6px;
+        right: 6px;
+        color: #999;
+      }
+      .form-control {
+        padding-right: 30px;
+      }
+    }
+
+    .checkboxes {
+      .checkbox {
+        display: inline-block;
+        vertical-align: middle;
+        width: 50%;
+        margin: 0 0 5px 0;
+        + .checkbox {
+          margin-top: 0px;
+        }
+      }
+    }
+
+    &.form-group-email {
+      input[type=email] {
+        padding-left: 60px;
+      }
+      &:before {
+        content: 'mailto:';
+        display: inline-block;
+        color: #aaa;
+        position: absolute;
+        bottom: 7px;
+        left: 7px;
+      }
+    }
+  }
+}
+
+.section {
+  margin-bottom: 30px;
+}
+
+/* Form control override */
+.form-control {
+  color: #555;
+  @include border-radius(0);
+
+  &.script-area {
+    resize: none;
+    min-height: 400px;
+    background-color: #222;
+    color: $orange;
+    border-color: $orange;
+    padding: 10px;
+    font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+  }
+}
+
+/* Help block override */
+.help-block {
+  margin: 0;
+  font-size: 12px;
+}
+
+/* Alert box override */
+.alert {
+  @include border-radius(0);
+}
+
+/* Btn override with additional extensions */
+.btn {
+  @include border-radius(0);
+  &.btn-orange {
+    border: 1px solid darken($orange, 10%);
+    background-color: $orange;
+    color: #fff;
+    cursor: pointer;
+    &:active, &:focus {
+      color: #fff;
+    }
+  }
+
+  &:active, &:focus {
+    outline: none;
+  }
+
+  &.btn-flush {
+    font-size: 20px;
+    position: absolute;
+    z-index: 100;
+    top: 0;
+    right: 0;
+    color: #555;
+    padding: 1px 10px;
+
+    &.btn-flush-cliche {
+      background-color: transparent;
+    }
+
+    &.btn-flush-pipeline,
+    &.btn-flush-app {
+      background-color: #fff;
+    }
+
+    &:active, &:focus {
+      outline: none;
+      @include box-shadow(none);
+    }
+  }
+
+  &.btn-toggle {
+    i {
+      width: 20px;
+    }
+  }
+}
+
+/* Input group override */
+.input-group {
+  &.input-group-lg {
+    .form-control {
+      @include border-radius(0);
+    }
+    .btn {
+      @include border-radius(0);
+    }
+  }
+}
+
+/* Panel override */
+.panel {
+  .panel-heading, .panel-body {
+    @include border-radius(0);
+  }
+}
+
+/* Table override */
+.table {
+  thead {
+    tr {
+      background-image: url(/rbx/images/bg.png);
+      border-left: 1px solid #ddd;
+      border-right: 1px solid #ddd;
+      th {
+        &.center {
+          text-align: center;
+        }
+        &.right {
+          text-align: right;
+        }
+      }
+    }
+  }
+  tbody {
+    tr {
+      border-left: 1px solid transparent;
+      border-right: 1px solid transparent;
+      td {
+        &.center {
+          text-align: center;
+        }
+        &.right {
+          text-align: right;
+        }
+        .version {
+          color: #555;
+          &:hover {
+            text-decoration: none;
+          }
+        }
+      }
+    }
+  }
+  &.table-hover {
+    tr {
+      td, th {
+        vertical-align: middle !important;
+      }
+    }
+    tbody {
+      tr {
+        &:hover {
+          background-color: #fcfcfc;
+          td {
+            background-color: transparent;
+          }
+          &.empty {
+            background-image: none;
+            border-left-color: transparent;
+            border-right-color: transparent;
+          }
+        }
+      }
+    }
+  }
+}
+
+/* Pre tag override */
+pre {
+  background-color: #f2f2f2;
+}
+
+/* Center block override */
+.center-block {
+  text-align: center;
+}
+
+/* Label extension */
+label {
+  &.empty-label {
+    @media (max-width: 600px) {
+      height: 0;
+      float: left;
+    }
+  }
+}
+
+/* Legend extension */
+legend {
+  &.legend-small {
+    font-size: 16px;
+//    margin-bottom: 5px;
+    font-weight: normal;
+
+    &.nb {
+      border-bottom: none;
+    }
+
+    .btn {
+      padding: 1px 7px;
+      line-height: 20px;
+      margin: 3px;
+      font-size: 12px;
+    }
+
+    label {
+      font-weight: normal;
+    }
+  }
+  &.legend-r {
+    text-align: right;
+  }
+  &.legend-tiny {
+    font-size: 14px;
+    font-weight: bold;
+    border-bottom: none;
+    margin: 0 0 5px 0;
+    background-color: #eee;
+    padding: 2px 5px;
+  }
+}
+
+/* Ul list override */
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Markdown style override */
+.markdown-body {
+  h1 {
+    padding-left: 0;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    color: #555;
+    font-weight: normal !important;
+  }
+  ul {
+    list-style: initial;
+  }
+}
+
+/* Modal override */
+.modal {
+
+  &.modal-prop {
+    .modal-dialog {
+      .main-actions {
+        text-align: right;
+        margin: 10px -15px -15px;
+        border-top: 1px solid #ddd;
+        padding: 10px;
+      }
+    }
+  }
+
+  &.modal-markdown {
+    textarea {
+      height: 300px;
+    }
+    .markdown-body {
+      height: 300px;
+      overflow: auto;
+      padding: 10px;
+      border: 1px solid #eee;
+    }
+  }
+
+  .actions {
+    .btn {
+      margin-left: 10px;
+    }
+  }
+}
+
+/* Modal content override */
+.modal-content {
+  @include border-radius(0);
+}
+
+/* Modal header override */
+.modal-header {
+  .close {
+    margin-top: 0;
+  }
+  .modal-title {
+    .checkbox {
+      font-size: 14px;
+      margin-left: 30px;
+      font-weight: normal;
+    }
+  }
+}
+
+/* Modal body override */
+.modal-body {
+  &.alert {
+    margin: 0;
+    .messages {
+      margin-bottom: 20px;
+    }
+  }
+
+  .tabs {
+    overflow: hidden;
+    margin-top: 10px;
+
+    &.loading {
+      @extend %loading-abs;
+    }
+
+    .nav.nav-tabs {
+      .form-li {
+        width: 300px;
+        margin-right: 10px;
+        float: right;
+      }
+    }
+
+    .content {
+      overflow-y: auto;
+      min-height: 100px;
+      max-height: 500px;
+      @extend %scrollbar;
+    }
+  }
+}
+
+/* Modal footer override */
+.modal-footer {
+  & > .btn,
+  & > .copy-btn {
+    margin-left: 5px;
+  }
+}
+
+/* CodeMirror override */
+.codemirror {
+  .CodeMirror {
+    margin-bottom: 10px;
+    border: 1px solid #f0ad4e;
+  }
+
+  .result {
+    margin-bottom: 10px;
+    background-color: #333;
+    color: $orange;
+    padding: 15px;
+    font-family: monospace;
+    border: 1px solid $orange;
+    word-break: break-all;
+    word-wrap: break-word;
+
+    &.error {
+      color: #ff0000;
+      border: 1px solid #cc0000;
+    }
+  }
+}
+
+/* Inline override */
+.inline {
+  display: inline-block !important;
+  width: auto !important;
+  vertical-align: middle;
+  margin-right: 10px;
+  margin-left: 20px;
+}
+
+[draggable] {
+  @include user-select(none);
+}
+
+/* Btn group override */
+
+.right {
+  .dropdown-menu {
+    left: auto;
+    right: 0;
+  }
+}
+
+
+/* Dropdown menu override */
+.dropdown-menu {
+  li {
+    a {
+      i, span {
+        display: inline-block;
+        vertical-align: middle;
+      }
+      i {
+        width: 20px;
+      }
+    }
+  }
+}
+
+
+/* Input tags override */
+.tag-item {
+  @extend .alert;
+  @extend .alert-info;
+
+  display: inline-block;
+  padding: 2px 5px;
+  margin: 0 4px 4px 0;
+  float: left;
+
+  &:last-of-type {
+    margin-right: 7px;
+  }
+}
+
+.tags {
+  @extend .form-control;
+}
+
+.host div.tags { //to override the above @extend
+  overflow: hidden;
+  word-wrap: break-word;
+  min-height: 50px;
+  height: auto;
+
+  .remove-button {
+    &:hover {
+      cursor: pointer;
+      text-decoration: none;
+    }
+  }
+
+  .tags-list {
+    margin: 0;
+    padding: 0;
+  }
+
+  input.input {
+    padding: 2px 0;
+    border: none;
+    float: left;
+
+
+    &:focus, &:active {
+      outline: none;
+    }
+  }
+}
+
+.row-margin {
+  @extend .clearfix;
+  margin-right: -$custom-gutter;
+  margin-left: -$custom-gutter;
+}
+
+.modal-markdown .modal-dialog .row-margin {
+  margin: 0;
+}
+
+@import "tag-overrides";

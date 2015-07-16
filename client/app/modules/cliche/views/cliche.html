@@ -1,0 +1,45 @@
+<div ng-class="view.classes" loading="view.loading">
+
+    <ng-form class="master-form flex-box-column flex-one" name="form.tool">
+
+        <ng-include class="include" src="'modules/cliche/views/heading/cliche-header-' + view.mode + '.html'"></ng-include>
+
+        <rb-tabs tabs="{{ view.type === 'tool' ? 'General, Inputs, Outputs, Metadata, Test' : 'Script, Inputs, Outputs, Metadata'}}" tab-callback="switchTab(tab)"></rb-tabs>
+
+        <div class="content content-tbl flex-box-column">
+
+            <div ng-show="view.tab === 'metadata'" class="tab general flex-box-column flex-one">
+                <ng-include class="include flex-box-column flex-one" src="'modules/cliche/views/tabs/metadata.html'"></ng-include>
+            </div>
+
+            <div ng-show="view.tab === 'inputs'" class="tab inputs flex-box-column flex-one">
+                <ng-include class="include flex-box-column flex-one" src="'modules/cliche/views/tabs/inputs.html'"></ng-include>
+            </div>
+
+            <div ng-show="view.tab === 'outputs'" class="tab outputs flex-box-column flex-one">
+                <ng-include class="include flex-box-column flex-one" src="'modules/cliche/views/tabs/outputs.html'"></ng-include>
+            </div>
+
+            <div ng-if="view.type === 'tool'" ng-show="view.tab === 'general'" class="tab adapter flex-box-column flex-one">
+                <ng-include class="include flex-box-column flex-one" src="'modules/cliche/views/tabs/general.html'"></ng-include>
+            </div>
+
+            <div ng-if="view.type === 'tool' && view.tab === 'test'" class="tab test flex-box-column flex-one">
+                <ng-include class="include flex-box-column flex-one" src="'modules/cliche/views/tabs/test.html'"></ng-include>
+            </div>
+
+            <div ng-if="view.type === 'script' && view.tab === 'script'" class="tab test flex-box-column flex-one">
+                <ng-include class="include flex-box-column flex-one" src="'modules/cliche/views/tabs/script.html'"></ng-include>
+            </div>
+        </div>
+        <!-- # .content -->
+
+        <div class="console flex-auto" ng-if="view.type === 'tool'" ng-class="{'console-hide': !view.isConsoleVisible}">
+            <div ng-click="toggleConsole()" class="heading">Resulting command line <i ng-class="{'fa-chevron-down': view.isConsoleVisible, 'fa-chevron-right': !view.isConsoleVisible}" class="fa pull-right"></i></div>
+            <copy data="{{ view.command }}"></copy>
+            {{ view.cmdErrors.length }}
+            <pre class="console-trace" ng-class="{wait: view.generatingCommand, error: view.cmdError && !view.command }">{{ view.command || view.cmdError }}</pre>        </div>
+        <!-- # .console -->
+
+    </ng-form>
+</div>

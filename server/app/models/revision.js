@@ -8,7 +8,6 @@ var RevisionSchema = new Schema({
     name: String,
     description: String,
     author: String,
-    script: String,
     json: Schema.Types.Mixed,
     job: Schema.Types.Mixed,
     version: {type: Number, default: 1},

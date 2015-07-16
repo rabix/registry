@@ -1,0 +1,52 @@
+<div ng-class="view.classes" loading="view.loading">
+
+    <div class="filters empty"></div>
+    <!-- # .filters -->
+
+    <div ng-if="!view.loading" class="content content-tbl">
+        <table class="table table-hover builds">
+            <thead>
+                <tr>
+                    <th class="field-status"></th>
+                    <th class="field-id">Build</th>
+                    <th class="field-repo">Repo/User</th>
+                    <th class="field-message">Message</th>
+                    <th class="field-commit">Commit</th>
+                    <th class="field-committer">Committer</th>
+                    <th class="field-date">Duration</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="build in view.builds">
+                    <td class="field-status">
+                        <span class="status fa {{ ::build.status }}"
+                              tooltip="{{ ::build.status }}"
+                              ng-class="{'fa-check-circle': build.status === 'success', 'fa-clock-o': build.status === 'pending', 'fa-times-circle': build.status === 'failure', 'fa-repeat': build.status === 'running'}">
+                        </span>
+                    </td>
+                    <td class="field-id">
+                        <a ui-sref="build({id: build.head_commit.id})" tooltip="{{ ::build.head_commit.id }}" tooltip-popup-delay="1000">#{{ ::build.head_commit.id }}</a>
+                    </td>
+                    <td class="field-repo">
+                        <a ui-sref="repo({id: build.repoId._id})">{{ ::build.repoId.owner }}/{{ ::build.repoId.name }}</a>
+                    </td>
+                    <td class="field-message">
+                        <p tooltip="{{ ::build.head_commit.message }}" tooltip-popup-delay="1000">{{ ::build.head_commit.message }}</p>
+                    </td>
+                    <td class="field-commit">
+                        <a ng-href="{{ ::build.head_commit.url }}" target="_blank" tooltip="{{ ::build.head_commit.id }}" tooltip-popup-delay="1000">{{ ::build.head_commit.id }}</a>
+                    </td>
+                    <td class="field-committer">{{ ::build.head_commit.committer.name }}</td>
+                    <td class="field-date">{{ ::build.head_commit.timestamp | date:'short' }}</td>
+                </tr>
+                <tr class="empty" ng-if="view.builds.length === 0">
+                    <td colspan="7"><p class="alert alert-info">There are no builds</p></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- # .content -->
+
+    <paginator class="paginator" page="view.page" total="view.total" handler="getMoreBuilds(offset)"></paginator>
+
+</div>

@@ -15,10 +15,12 @@
     },
     "clientPath": "/data/app/rabix-registry/client/dist",
     "github": {
-        "clientId": "%{SBG:GITHUB_OAUTH_CLIENT_ID}",
-        "clientSecret": "%{SBG:GITHUB_OAUTH_CLIENT_SECRET}",
-        "callbackURL": "http://%{SBG:PUBLIC_HOST}:%{SBG:PUBLIC_PORT}/auth/github/callback",
-        "scope": "repo:status,read:org,read:repo_hook,write:repo_hook,admin:repo_hook,user"
+        "production": {
+            "clientId": "%{SBG:GITHUB_OAUTH_CLIENT_ID}",
+            "clientSecret": "%{SBG:GITHUB_OAUTH_CLIENT_SECRET}",
+            "callbackURL": "https://%{SBG:PUBLIC_HOST}:%{SBG:PUBLIC_PORT}/auth/github/callback",
+            "scope": "repo:status,read:org,read:repo_hook,write:repo_hook,admin:repo_hook,user"
+        }
     },
     "logging": {
         "path": "/data/log/rabix-registry",

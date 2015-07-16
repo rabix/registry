@@ -1,0 +1,67 @@
+<div ng-class="view.classes" loading="view.loading">
+    <div class="heading">
+        <rb-button ui-sref="tasks" class="pull-left go-back">
+            <i class="fa fa-chevron-left"></i> Back
+        </rb-button>
+        <h1 class="main-heading">
+            <rb-input placeholder="Task Template Name" name="jobName" ng-model="view.job.name" required class="job-name"></rb-input>
+
+            <rb-button ng-href="{{ ::view.job.url }}" target="_blank" ng-if="view.job.url">
+                url
+            </rb-button>
+
+            <div class="actions pull-right">
+
+                <rb-button ng-if="view.mode === 'new'" ng-disabled="view.saving" class="app-pick-btn" ng-click="pickApp()">
+                    <i class="fa fa-puzzle-piece"></i> Pick
+                </rb-button>
+
+                <rb-button ng-if="view.mode === 'new' && view.user" ng-disabled="view.saving" class="job-create-btn" intention="primary" ng-click="create()">
+                    <i class="fa fa-plus"></i> Create
+                </rb-button>
+
+                <rb-button ng-if="view.mode === 'edit' && view.user" ng-disabled="view.saving" class="job-update-btn" intention="primary" ng-click="update()">
+                    <i class="fa fa-check"></i> Update
+                </rb-button>
+
+                <json-preview class="btn-group" json="{{ view.job.json.inputs }}"></json-preview>
+
+                <rb-button
+                        ng-if="view.mode === 'edit' && view.user && !view.job.repo.is_public && view.job.user._id === view.user.id"
+                        ng-click="delete()"
+                        intention="danger">
+                    <i class="fa fa-trash"></i> Delete
+                </rb-button>
+
+            </div>
+            <!-- # .actions -->
+        </h1>
+    </div>
+    <!-- # .heading -->
+
+    <div ng-if="!view.loading" class="content content-tbl flex-box-column">
+
+        <section ng-if="!view.app">
+            <p class="job-user-guide">Pick <a href ng-click="pickApp()">tool, script or workflow</a> for which you want to generate task template</p>
+        </section>
+
+        <ng-form ng-show="view.app" class="form flex-box-column flex-one" name="form.jobForm" role="form" novalidate>
+
+            <div class="content content-ten">
+
+                <input-field
+                        ng-repeat="property in view.properties track by property['id']"
+                        ng-model="view.job.json.inputs[property['id'].slice(1)]"
+                        class="input-field"
+                        key="id"
+                        prop="property"
+                        form="form.jobForm">
+                </input-field>
+
+                <p class="alert alert-info" ng-if="view.properties.length === 0">There are no values to be set at this moment.</p>
+            </div>
+
+        </ng-form>
+
+    </div>
+</div>

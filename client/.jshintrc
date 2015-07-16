@@ -34,6 +34,7 @@
         "xit": false,
         "xdescribe": false,
         "__FIXTURES__": false,
-        "inject": false
+        "inject": false,
+        "jjv": false
     }
 }

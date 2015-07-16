@@ -1,0 +1,20 @@
+<div class="form-group" ng-class="{required: view.required, 'has-error': (inputForm.inputBoolean.$invalid && !isDisabled)}">
+
+    <div ng-if="exposed" class="control-label">
+        <div class="checkbox">
+            <label><input type="checkbox" ng-model="view.expose" ng-change="exposeParams()"> expose</label>
+        </div>
+        <span class="input-key">&nbsp;</span>
+    </div>
+
+    <div class="input-property-body">
+
+        <div class="checkbox">
+            <label title="{{ view.name }}">
+                <input type="checkbox" name="inputBoolean" ng-model="view.model" ng-disabled="isDisabled">
+                {{ view.name }}
+            </label>
+        </div>
+
+    </div>
+</div>

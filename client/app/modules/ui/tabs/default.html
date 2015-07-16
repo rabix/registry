@@ -1,0 +1,12 @@
+<div class="flex-box-column rb-tabs">
+    <div ng-class="{'heading sub-heading': heading && !page}" class="tab-list-container">
+        <ul class="nav nav-tabs" ng-class="{'regular nav-tabs-steps': heading && !page, 'nav-page': page}">
+            <li ng-repeat="tab in tabOptions track by $index" ng-class="{active: activeTab === tab.slug}"><a href ng-click="activateTab(tab)">{{tab.name}}</a></li>
+        </ul>
+    </div>
+
+    <div class="tabs-container" ng-if="hasSrc">
+        <ng-include src="tab.src" ng-repeat="tab in tabOptions track by $index" ng-if="activeTab === tab.slug" ng-class="tab.slug" class="tabs-inner"></ng-include>
+    </div>
+
+</div>

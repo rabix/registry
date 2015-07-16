@@ -1,0 +1,152 @@
+{
+    "@type": "Workflow",
+    "@context": "https://raw.githubusercontent.com/common-workflow-language/common-workflow-language/draft2/specification/context.json",
+    "steps": [
+        {
+            "@id": "#draft2",
+            "app": {
+                "cliAdapter": {
+                    "argAdapters": [],
+                    "stdout": "",
+                    "stdin": "",
+                    "baseCmd": [
+                        ""
+                    ]
+                },
+                "outputs": [
+                    {
+                        "schema": {
+                            "type": [
+                                "null",
+                                "file"
+                            ]
+                        },
+                        "depth": 0,
+                        "@id": "#bam"
+                    }
+                ],
+                "inputs": [
+                    {
+                        "schema": {
+                            "type": [
+                                "null",
+                                "array"
+                            ],
+                            "items": {
+                                "type": "file"
+                            }
+                        },
+                        "depth": 1,
+                        "@id": "#reads"
+                    },
+                    {
+                        "schema": {
+                            "type": "file"
+                        },
+                        "depth": 0,
+                        "@id": "#refs"
+                    },
+                    {
+                        "schema": {
+                            "type": [
+                                "null",
+                                "int"
+                            ]
+                        },
+                        "depth": 0,
+                        "@id": "#nesto"
+                    }
+                ],
+                "requirements": [
+                    {
+                        "imgId": "asdasds",
+                        "imgTag": "ewqe13223123",
+                        "imgRepo": "dsadasdasd",
+                        "@type": "DockerRequirement"
+                    },
+                    {
+                        "value": 500,
+                        "@type": "CpuRequirement"
+                    },
+                    {
+                        "value": 1000,
+                        "@type": "MemRequirement"
+                    }
+                ],
+                "contributor": [],
+                "owner": [],
+                "description": "",
+                "label": "draft2",
+                "@context": "https://github.com/common-workflow-language/common-workflow-language/blob/draft-1/specification/tool-description.md",
+                "@type": "CommandLine",
+                "@id": "#draft2"
+            },
+            "inputs": [
+                {
+                    "@id": "#draft2/reads"
+                },
+                {
+                    "@id": "#draft2/refs"
+                },
+                {
+                    "@id": "#draft2/nesto",
+                    "value": 100
+                }
+            ],
+            "outputs": [
+                {
+                    "@id": "#draft2/bam"
+                }
+            ]
+        }
+    ],
+    "dataLinks": [
+        {
+            "source": "#input",
+            "destination": "#draft2/#refs"
+        },
+        {
+            "source": "#draft2/#bam",
+            "destination": "#output"
+        },
+        {
+            "source": "#nesto",
+            "destination": "#draft2/#nesto"
+        }
+    ],
+    "inputs": [
+        {
+            "@id": "#nesto",
+            "depth": 0,
+            "schema": {
+                "type": "int"
+            }
+        },
+        {
+            "@id": "#input",
+            "depth": 0,
+            "schema": {
+                "type": "file"
+            },
+            "name": "#input"
+        },
+        {
+            "@id": "#nesto",
+            "depth": 0,
+            "schema": {
+                "type": "int"
+            },
+            "name": "#nesto"
+        }
+    ],
+    "outputs": [
+        {
+            "@id": "#output",
+            "depth": 0,
+            "schema": {
+                "type": "file"
+            },
+            "name": "#output"
+        }
+    ]
+}

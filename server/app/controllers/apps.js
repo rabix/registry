@@ -11,7 +11,6 @@ var Repo = mongoose.model('Repo');
 var Revision = mongoose.model('Revision');
 
 var filters = require('../../common/route-filters');
-var validator = require('../../common/validator');
 var Amazon = require('../../aws/aws').Amazon;
 
 module.exports = function (app) {
@@ -30,7 +29,7 @@ module.exports = function (app) {
 
 /**
  * Get all Tools
- *
+ *z
  * @apiName GetTools
  * @api {GET} /api/apps Get all Tools
  * @apiGroup Repos
@@ -55,8 +54,12 @@ router.get('/apps', function (req, res, next) {
 
     var limit = req.query.limit || 25;
     var skip = req.query.skip || 0;
-    var is_script = req.query.is_script || false;
+    // TODO: Sorry about this, casting string to bool value problem
+    var is_script = typeof req.query.is_script !== 'undefined' ? JSON.parse(req.query.is_script) : false;
+    var resolve = typeof req.query.resolve !== 'undefined' ? JSON.parse(req.query.resolve) : false;
     var where = {};
+    
+    console.log('IS SCRIPT', is_script);
 
     _.each(req.query, function(paramVal, paramKey) {
         if (_.contains(paramKey, 'field_')) {
@@ -98,23 +101,36 @@ router.get('/apps', function (req, res, next) {
 
         App.count(whereApps, function(err, total) {
             if (err) { return next(err); }
+            
+            if (resolve) {
+                App.find(whereApps)
+                    .populate('repo')
+                    .populate('user')
+                    .populate({
+                        path: 'revisions',
+                        options: { limit: 25 },
+                        sort: {
+                            _id: 'desc'
+                        }
+                    })
+                    .skip(skip).limit(limit).sort({_id: 'desc'})
+                    .exec(function(err, apps) {
+                        if (err) { return next(err); }
 
-            App.find(whereApps)
-                .populate('repo')
-                .populate('user')
-                .populate({
-                    path: 'revisions',
-                    options: { limit: 25 },
-                    sort: {
-                        _id: 'desc'
-                    }
-                })
-                .skip(skip).limit(limit).sort({_id: 'desc'})
-                .exec(function(err, apps) {
-                    if (err) { return next(err); }
+                        res.json({list: apps, total: total});
+                    });
 
-                    res.json({list: apps, total: total});
-                });
+            } else {
+                App.find(whereApps)
+                    .sort({_id: 'desc'})
+                    .exec(function(err, apps) {
+                        if (err) { return next(err); }
+
+                        res.json({list: apps, total: total});
+                    });
+
+            }
+
         });
 
     });
@@ -294,34 +310,25 @@ router.post('/apps/:action', filters.authenticated, function (req, res, next) {
 
     var data = req.body;
 
-    var check = validator.validate(data.tool);
+    var name = (req.params.action === 'fork') ? data.name : data.tool.label;
 
-    if (!_.isEmpty(check.invalid) || !_.isEmpty(check.obsolete) || !_.isEmpty(check.required)) {
-        res.status(400).json({message: 'There are some errors in your json scheme', json: check});
-        return false;
-    }
-
-    var name = (req.params.action === 'fork') ? data.name : data.tool.name;
-
-    App.count({name: name}).exec(function(err, count) {
+    App.count({name: name, repo: data.repo_id}).exec(function(err, count) {
         if (err) { return next(err); }
 
         if (count > 0) {
             res.status(400).json({message: 'The "'+name+'" tool already exists, please choose another name!'});
         } else {
 
-            data.tool['@type'] = data.is_script ? 'Script' : 'CommandLine';
-
             var app = new App();
 
+            data.tool['id'] = req.protocol + '://' + req.headers.host + '/tool/' + app._id;
+
             app.name = name;
-            data.tool.name = name;
+            data.tool.label = name;
             app.description = data.tool.description;
-            app.script = data.tool.script;
             app.author = req.user.login;
-            app.json = JSON.stringify(data.tool);
             app.links = {json: ''};
-            app.is_script = data.is_script;
+            app.is_script = !!data.tool.script;
 
             Repo.findById(data.repo_id).populate('user').exec(function (err, repo) {
 
@@ -332,7 +339,7 @@ router.post('/apps/:action', filters.authenticated, function (req, res, next) {
 
                     app.repo = repo._id;
 
-                    app.json.documentAuthor = app.author;
+                    app.json = JSON.stringify(data.tool);
 
                     var folder = 'users/' + req.user.login + '/apps/' + repo.owner + '-' + repo.name;
 
@@ -348,11 +355,12 @@ router.post('/apps/:action', filters.authenticated, function (req, res, next) {
 
                                         var revision = new Revision();
 
+                                        data.tool['id'] = req.protocol + '://' + req.headers.host + '/tool-revision/' + revision._id;
+
                                         revision.name = app.name;
                                         revision.description = app.description;
-                                        revision.script = app.script;
                                         revision.author = app.author;
-                                        revision.json = app.json;
+                                        revision.json = JSON.stringify(data.tool);
                                         revision.job = JSON.stringify(data.job);
                                         revision.app_id = app._id;
 
@@ -382,38 +390,6 @@ router.post('/apps/:action', filters.authenticated, function (req, res, next) {
             });
         }
     });
-
-});
-
-/**
- *
- * Validate tool json
- *
- * @apiName ValidateWorkflow
- * @api {POST} /api/validate Validate tool json
- * @apiGroup Tools
- * @apiDescription Validate tool json
- * @apiUse InvalidToolError
- *
- * @apiSuccess {Object} json Successfully passed validation
- * @apiSuccessExample {json} Success-Response:
- *     HTTP/1.1 200 OK
- *     {
- *        {json}
- *     }
- */
-router.post('/validate', function (req, res) {
-
-    var data = req.body;
-
-    var check = validator.validate(data);
-
-    if (!_.isEmpty(check.invalid) || !_.isEmpty(check.obsolete) || !_.isEmpty(check.required)) {
-        res.status(400).json({message: 'There are some errors in your json scheme', json: check});
-        return false;
-    }
-
-    res.json(data);
 
 });
 

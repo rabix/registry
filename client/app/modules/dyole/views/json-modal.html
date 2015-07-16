@@ -1,0 +1,10 @@
+<div class="modal-body">
+    <div class="json-pretty-scroll json-trace">
+        <pre pretty-json="::view.json"></pre>
+    </div>
+</div>
+<div class="modal-footer">
+    <copy data="{{ view.stringJson }}"></copy>
+    <button class="btn btn-primary" ng-if="view.url" ng-click="getUrl()"><i class="fa fa-external-link-square"></i> Get URL</button>
+    <button class="btn btn-default" ng-click="cancel()">Close</button>
+</div>

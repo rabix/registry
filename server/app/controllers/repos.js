@@ -279,27 +279,48 @@ router.post('/repos', filters.authenticated, function (req, res, next) {
     var repo = req.body.repo,
         r;
 
+    if (typeof repo.name === 'undefined' && repo.name === '') {
+
+        res.status(400).json({message: 'Repo name must be provided'});
+
+    } else {
+
+        Repo.findOne({name: repo.name, owner: req.user.login}, function (err, check) {
+            if (!check) {
+                r = new Repo();
+
+                r.name = repo.name;
+                r.description = repo.description;
+                r.owner = req.user.login;
+                r.created_by = req.user.login;
+                r.user = req.user.id;
+                //TODO: Ask boysha about this secret (answered) but ask him again when the time comes
+                r.secret = uuid.v4();
+                r.git = false;
+
+                r.save();
+
+                res.json({repo: r});
+            } else {
+                res.status(400).json({message: 'Repo name already in use'});
+            }
+        });
+
+    }
+});
+
+router.post('/repos/validate', filters.authenticated, function (req, res, next) {
+    var repo = req.body.repo;
+
     Repo.findOne({name: repo.name, owner: req.user.login}, function (err, check) {
+        if (err) {return next(err);}
+
         if (!check) {
-            r = new Repo();
-
-            r.name = repo.name;
-            r.description = repo.description;
-            r.owner = req.user.login;
-            r.created_by = req.user.login;
-            r.user = req.user.id;
-            //TODO: Ask boysha about this secret (answered) but ask him again when the time comes
-            r.secret = uuid.v4();
-            r.git = false;
-
-            r.save();
-
-            res.json({repo: r});
+            res.json({message: 'Repo name available'});
         } else {
             res.status(400).json({message: 'Repo name already in use'});
         }
     });
-
 });
 
 /**

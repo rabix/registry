@@ -1,0 +1,25 @@
+<div class="property-box-header-inner {{ type }}" ng-click="triggerAction('toggle')">
+
+    <div class="property-box-actions pull-right">
+        <a href ng-click="triggerAction('edit', $event)" title="Edit"><i class="fa fa-pencil"></i></a>
+        <a href ng-click="triggerAction('remove', $event)" title="Delete"><i class="fa fa-times"></i></a>
+    </div>
+
+    <div class="property-box-short-info">
+
+        <span ng-if="toolType === 'tool' && (mode === 'input' || mode === 'arg')" class="position" tooltip="position">{{ view.position }}</span>
+
+        <div class="info-block">
+            <strong class="name" tooltip="name">{{ name }}</strong>
+            <i class="type" tooltip="type">{{ type }} {{ itemType ? ' (' + itemType + ')' : '' }}</i>
+            <span ng-if="isRequired" class="required" tooltip="required">*</span>
+        </div>
+
+        <div ng-if="symbols" class="info-block">
+            <strong class="name">Enum:</strong>
+            <span class="value">{{ symbols.join(', ') }}</span>
+        </div>
+
+    </div>
+
+</div>

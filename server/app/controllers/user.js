@@ -29,6 +29,8 @@ module.exports = function (app) {
  */
 router.get('/user', filters.authenticated, function (req, res, next) {
 
+    req.user.createdOn = new mongoose.Types.ObjectId(req.user.id).getTimestamp();
+
     res.json({user: req.user});
 
 });

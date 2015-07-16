@@ -9,7 +9,17 @@ module.exports = {
         }
 
         res.statusCode = 403;
-        res.json({message: 'You must be logged in!'});
+        res.json({message: 'Unauthorized, login required.'});
+    },
+
+    routeAuth: function (req, res, next) {
+
+        if (req.isAuthenticated()) {
+            return next();
+        } else {
+            res.redirect('/');
+        }
+
     },
 
     authenticateClient: function (req, res, next) {

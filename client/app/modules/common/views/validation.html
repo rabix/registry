@@ -1,0 +1,9 @@
+<div class="modal-body alert alert-danger">
+
+    <ul class="messages">
+        <li ng-repeat="message in ::data.messages">{{ ::message }}</li>
+    </ul>
+
+    <rb-button intention="warning" class="btn-block" ng-click="cancel()">OK</rb-button>
+
+</div>

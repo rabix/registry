@@ -1,0 +1,11 @@
+.rb-tabs {
+  &.no-padding {
+    .tab-list-container {
+      padding: 0;
+    }
+  }
+
+  .tab-list-container.heading {
+    padding: 0;
+  }
+}

@@ -10,7 +10,6 @@ var Revision = mongoose.model('Revision');
 var Repo = mongoose.model('Repo');
 
 var filters = require('../../common/route-filters');
-var validator = require('../../common/validator');
 
 module.exports = function (app) {
     app.use('/api', router);
@@ -155,13 +154,6 @@ router.post('/revisions', filters.authenticated, function (req, res, next) {
 
     var data = req.body;
 
-    var check = validator.validate(data.tool);
-
-    if (!_.isEmpty(check.invalid) || !_.isEmpty(check.obsolete) || !_.isEmpty(check.required)) {
-        res.status(400).json({message: 'There are some errors in your json scheme', json: check});
-        return false;
-    }
-
     App.findById(data.app_id, function(err, app) {
 
         var user_id = req.user.id.toString();
@@ -171,14 +163,13 @@ router.post('/revisions', filters.authenticated, function (req, res, next) {
 
             Revision.findOne({app_id: data.app_id}).sort({_id: 'desc'}).exec(function(err, r) {
 
-                data.tool['@type'] = app.is_script ? 'Script' : 'CommandLine';
-
                 var revision = new Revision();
+
+                data.tool['id'] = req.protocol + '://' + req.headers.host + '/tool-revision/' + revision._id;
 
                 revision.name = app.name;
                 revision.description = data.tool.description;
-                revision.script = data.tool.script;
-                revision.author = data.tool.documentAuthor;
+                revision.author = req.user.login;
                 revision.json = JSON.stringify(data.tool);
                 revision.job = JSON.stringify(data.job);
                 revision.app_id = data.app_id;
@@ -191,8 +182,6 @@ router.post('/revisions', filters.authenticated, function (req, res, next) {
 
                     app.json = revision.json;
                     app.description = revision.description;
-                    app.script = revision.script;
-                    app.author = revision.author;
 
                     app.save(function(err) {
                         if (err) { return next(err); }

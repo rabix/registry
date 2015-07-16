@@ -1,0 +1,198 @@
+<div ng-class="view.classes" loading="view.loading">
+
+    <div class="heading">
+        <div class="pull-left">
+            <rb-button ui-sref="repos"><i class="fa fa-chevron-left"></i> Back</rb-button>
+            <span class="title">
+                {{ ::view.repo.owner }}/{{ ::view.repo.name }}
+                <small class="text-muted">
+                    ({{ ::view.repo.created_by }})
+                </small>
+            </span>
+        </div>
+
+        <div class="pull-right" ng-if="!(view.user | isEmpty)">
+            <i ng-if="view.repo.git" class="fa fa-github github-flag" tooltip="This repo is imported from GitHub" tooltip-placement="left"></i>
+            <!--<a href ng-if="!view.repo.is_public && view.user.id === view.repo.user._id" ng-disabled="view.saving" ng-click="publish()" class="btn btn-primary"><i class="fa fa-check"></i> Publish</a>-->
+            <a ng-if="!view.repo.git && view.user.login === view.repo.owner" href ng-click="manageRepoModal()" class="btn btn-default"><i class="fa fa-pencil"></i> Edit</a>
+        </div>
+    </div>
+    <!-- # .heading -->
+
+    <div ng-show="!view.loading" class="content content-mix flex-box-column">
+
+        <div class="content-top flex-auto">
+            <p class="description">{{ ::view.repo.description }}<i ng-if="!view.repo.description">There is no description for this repo</i></p>
+        </div>
+
+        <div class="tabs flex-box-column flex-one">
+            <rb-tabs tabs="Tools, Scripts, Workflows, Tasks, Builds" tab-callback="switchTab(tab)" heading="false"></rb-tabs>
+
+            <section ng-show="view.tab === 'tools'" class="tab tab-tbl apps flex-box-column flex-one">
+
+                <div class="content content-tbl">
+                    <table class="table table-hover repo-apps">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="app in view.tools">
+                                <td><a ui-sref="tool({id: app._id, tab: 'preview'})" class="inline">{{ ::app.name }}</a></td>
+                                <td><p tooltip="{{ ::app.description }}" tooltip-popup-delay="1000">{{ ::app.description }}</p></td>
+                            </tr>
+                            <tr class="empty" ng-if="view.tools.length === 0">
+                                <td colspan="2"><p class="alert alert-info">There are no tools found in this repo</p></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <paginator class="paginator" page="view.page.tools" total="view.total.tools" handler="getMoreTools(offset)"></paginator>
+
+            </section>
+            <!-- # .tab.tools -->
+
+            <section ng-show="view.tab === 'scripts'" class="tab tab-tbl apps flex-box-column flex-one">
+
+                <div class="content content-tbl">
+                    <table class="table table-hover repo-apps">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="app in view.scripts">
+                                <td><a ui-sref="tool({id: app._id, tab: 'preview'})" class="inline">{{ ::app.name }}</a></td>
+                                <td><p tooltip="{{ ::app.description }}" tooltip-popup-delay="1000">{{ ::app.description }}</p></td>
+                            </tr>
+                            <tr class="empty" ng-if="view.scripts.length === 0">
+                                <td colspan="2"><p class="alert alert-info">There are no scripts found in this repo</p></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <paginator class="paginator" page="view.page.scripts" total="view.total.scripts" handler="getMoreScripts(offset)"></paginator>
+
+            </section>
+            <!-- # .tab.scripts -->
+
+            <section ng-show="view.tab === 'workflows'" class="tab tab-tbl workflows flex-box-column flex-one">
+
+                <div class="content content-tbl">
+                    <table class="table table-hover repo-apps">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="workflow in view.workflows">
+                                <td><a ui-sref="workflow-view({id: workflow.latest._id})">{{ ::workflow.name }}</a></td>
+                                <td><p tooltip="{{ ::workflow.description }}" tooltip-popup-delay="1000">{{ ::workflow.description }}</p></td>
+                            </tr>
+                            <tr class="empty" ng-if="view.workflows.length === 0">
+                                <td colspan="2"><p class="alert alert-info">There are no workflows found in this repo</p></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <paginator class="paginator" page="view.page.workflows" total="view.total.workflows" handler="getMoreWorkflows(offset)"></paginator>
+
+            </section>
+            <!-- # .tab.workflows -->
+
+            <section ng-show="view.tab === 'tasks'" class="tab tab-tbl tasks flex-box-column flex-one">
+
+                <div class="content content-tbl">
+                    <table class="table table-hover tasks">
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Author</th>
+                            <th>Url</th>
+                            <th class="right">Action</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="task in view.tasks">
+                            <td>{{ ::task.name }}</td>
+                            <td><span class="label label-primary">{{ ::task.type }}</span></td>
+                            <td>{{ ::task.author }}</td>
+                            <td><a ng-href="{{ ::task.url }}" class="job-link" target="_blank">{{ ::task.url }}</a></td>
+                            <td class="right">
+                                <a ui-sref="task({id: task._id})" ng-if="view.user.id === task.user._id" class="btn btn-default" tooltip="Edit Task Template"><i class="fa fa-pencil"></i></a>
+                            </td>
+                        </tr>
+                        <tr class="empty" ng-if="view.tasks.length === 0">
+                            <td colspan="5"><p class="alert alert-info">There are no task templates found in this repo</p></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <paginator class="paginator" page="view.page.tasks" total="view.total.tasks" handler="getMoreTasks(offset)"></paginator>
+
+            </section>
+            <!-- # .tab.tasks -->
+
+            <section ng-show="view.tab === 'builds'" class="tab tab-tbl builds flex-box-column flex-one">
+
+                <div class="content content-tbl">
+                    <table class="table table-hover builds">
+                        <thead>
+                            <tr>
+                                <th class="field-status"></th>
+                                <th class="field-id">Build</th>
+                                <th class="field-message">Message</th>
+                                <th class="field-commit">Commit</th>
+                                <th class="field-committer">Committer</th>
+                                <th class="field-date">Duration</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="build in view.builds">
+                                <td class="field-status">
+                                    <span class="status fa {{ ::build.status }}"
+                                          tooltip="{{ ::build.status }}"
+                                          ng-class="{'fa-check-circle': build.status === 'success', 'fa-time': build.status === 'pending', 'fa-remove-circle': build.status === 'failure', 'fa-repeat': build.status === 'running'}">
+                                    </span>
+                                </td>
+                                <td class="field-id">
+                                    <a ui-sref="build({id: build._id})" tooltip="{{ ::build._id }}" tooltip-popup-delay="1000">#{{ ::build._id }}</a>
+                                </td>
+                                <td class="field-message">
+                                    <p tooltip="{{ ::build.head_commit.message }}" tooltip-popup-delay="1000">{{ ::build.head_commit.message }}</p>
+                                </td>
+                                <td class="field-commit">
+                                    <a ng-href="{{ ::build.head_commit.url }}" target="_blank" tooltip="{{ ::build.head_commit.id }}" tooltip-popup-delay="1000">{{ ::build.head_commit.id }}</a>
+                                </td>
+                                <td class="field-committer">{{ ::build.head_commit.committer.name }}</td>
+                                <td class="field-date">{{ ::build.head_commit.timestamp | date:'short' }}</td>
+                            </tr>
+                            <tr class="empty" ng-if="view.builds.length === 0">
+                                <td colspan="7"><p class="alert alert-info">There are no builds found in this repo</p></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <paginator class="paginator" page="view.page.builds" total="view.total.builds" handler="getMoreBuilds(offset)"></paginator>
+
+            </section>
+            <!-- # .tab.build -->
+        </div>
+        <!-- # .tabs -->
+
+    </div>
+    <!-- # .content -->
+
+</div>

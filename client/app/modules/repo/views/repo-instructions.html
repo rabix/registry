@@ -1,0 +1,18 @@
+<div ng-class="view.classes" loading="view.loading">
+
+    <div class="heading">
+        <a ui-sref="repos" class="btn btn-default pull-left go-back"><i class="fa fa-chevron-left"></i> Back</a>
+        <h1>Instructions for the {{ ::view.repo._id }}</h1>
+    </div>
+    <!-- # .heading -->
+
+    <div ng-if="!view.loading" class="content">
+
+        <div class="snippet">
+            <p>Use this secret to setup CI</p>
+            <pre>{{ ::view.repo.secret }}</pre>
+        </div>
+
+    </div>
+
+</div>
