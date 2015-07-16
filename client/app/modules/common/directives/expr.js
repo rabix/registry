@@ -165,16 +165,22 @@ angular.module('registryApp.common')
             }],
             link: function(scope, element) {
                 var el = angular.element(element);
+                // TODO: Check out this, bootstrap tooltip messing with $digest and breaking if you manual trigger
+                // focus or anything
+                //el.find('input').focus();
 
-                el.find('input').on('blur', function() {
-                    if (!_.isUndefined(scope.handleItemBlur) && scope.view.mode === 'literal') {
-                        scope.handleItemBlur({index: scope.index, value: scope.view.literal});
+                // only set up event handler if event can be handled
+                if (!_.isUndefined(scope.handleItemBlur) && scope.view.mode === 'literal') {
+                    function runHandler(event) {
+                        if (event.type === 'keypress' && event.which === 13 || event.type === 'blur' || event.type === 'init' /* for initial load */) {
+                            scope.handleItemBlur({index: scope.index, value: scope.view.literal});
+                        }
                     }
-                });
 
-                scope.$on('$destroy', function() {
-                    el.off('blur');
-                });
+                    runHandler({type: 'init'});
+                }
+                scope.runHandler = runHandler || angular.noop;
+
             }
         };
     }]);
