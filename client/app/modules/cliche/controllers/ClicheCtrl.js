@@ -543,9 +543,7 @@ angular.module('registryApp.cliche')
                     });
 
             } else {
-                if ($scope.view.job.allocatedResources[reqMap[key]] < transform) {
-                    $scope.view.job.allocatedResources[reqMap[key]] = transform;
-                }
+                $scope.view.job.allocatedResources[reqMap[key]] = transform;
             }
 
         };
