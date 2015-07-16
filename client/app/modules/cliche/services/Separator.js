@@ -12,7 +12,6 @@ angular.module('registryApp')
 
         var map = {
             item: [
-                {name: 'equal', value: '='},
                 {name: 'comma', value: ','},
                 {name: 'semicolon', value: ';'},
                 {name: 'space', value: ' '},
