@@ -68,6 +68,15 @@ angular.module('registryApp.dyole')
                 var _id, check = true, name = (model.softwareDescription && model.softwareDescription.label) ? model.softwareDescription.label : model.label || model.name,
                     n = 0;
 
+                var _fixName = function (n) {
+
+                    var regex = /[^A-Za-z0-9]/g;
+
+                    return n.replace(regex, '_');
+                };
+
+                name = _fixName(name);
+
                 used = used || {};
 
                 var _checkIdAvailable = function (id) {

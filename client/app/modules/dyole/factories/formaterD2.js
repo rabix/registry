@@ -818,8 +818,9 @@ var fd2 = {
         _formatter.createWorkflowInOut(model, json.schemas, json.relations);
 
         model = _mergeSBGProps(json, model);
-        model['id'] = model['id'] || json['id'];
-        model.label = model.label || json.label;
+        model['id'] = json['id'] || model['id'];
+        model.label = json.label || model.label;
+        model.description = json.description || model.description;
 
         return model;
     },
@@ -853,8 +854,9 @@ var fd2 = {
             relations: relations
         };
 
-        model['id'] = model['id'] || json['id'];
-        model.label = model.label || json.label;
+        model['id'] = json['id'];
+        model.label = json.label || json.id;
+        model.description = json.description || '';
         model = _mergeSBGProps(json, model);
 
         return model;
