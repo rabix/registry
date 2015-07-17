@@ -1,6 +1,42 @@
-var gulp = require('gulp');
+'use strict';
 
-gulp.task('default', function() {
+var gulp = require('gulp');
+var path = require('path');
+
+var $ = require('gulp-load-plugins')({
+    pattern: ['gulp-*', 'gulp.*', 'del', 'size']
+});
+
+var config = {
+    sassPath: './app/styles',
+    bowerDir: './app/bower_components',
+    dist: './gulp-test'
+};
+
+gulp.task('icons', function() {
+    return gulp.src(path.join(config.bowerDir, '/fontawesome/fonts/**.*'))
+    .pipe(gulp.dest(config.dist));
+});
+
+gulp.task('css', ['clean'], function() {
+    return gulp.src([
+        path.join('./app/styles/main.scss')
+    ])
+    .pipe($.sass({
+        outputStyle: 'expanded',
+        includePaths: [
+            config.bowerDir + '/bootstrap-sass-official/vendor/assets/stylesheets'
+        ]
+    }).on('error', $.sass.logError))
+    .pipe($.autoprefixer())
+    .pipe(gulp.dest(config.dist));
+});
+
+gulp.task('clean', function (done) {
+    $.del(['./gulp-test/'], done);
+});
+
+gulp.task('default', ['css'], function() {
 
     /*
 
@@ -27,16 +63,14 @@ gulp.task('default', function() {
     clean:
         -clears out dist
 
-         gulp.task('clean', function (done) {
-            $.del([path.join(conf.paths.dist, '/'), path.join(conf.paths.tmp, '/')], done);
-         });
+
 
 
     autoprefixer
         https://www.npmjs.com/package/gulp-autoprefixer
 
 
-    wiredep
+    wiredep** not being run ever
         https://github.com/taptapship/wiredep
 
     sass
@@ -59,7 +93,7 @@ gulp.task('default', function() {
         https://github.com/sindresorhus/gulp-imagemin
 
     svgmin
-
+        https://www.npmjs.com/package/gulp-svgmin
     htmlmin (don't need this? Using ng-templates)
         https://www.npmjs.com/package/gulp-minify-html
 
@@ -78,6 +112,8 @@ gulp.task('default', function() {
     ng-templates
         https://www.npmjs.com/package/gulp-ng-templates
 
+
+    cdnify
 
     */
 });
