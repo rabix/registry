@@ -42,7 +42,8 @@
             <div class="col-md-4" ng-if="view.type === 'enum'">
                 <div class="form-group" ng-class="{'has-error': (view.form.enumName.$invalid && view.form.$dirty)}">
                     <label class="control-label" for="name">Enum Name</label>
-                    <input type="text" class="form-control" id="enumName" name="enumName" ng-model="view.enumName" required>
+                    <input type="text" class="form-control" id="enumName" ng-model="view.enumName" equals="view.name" own="view.enumName" name="enumName" required>
+                    <span class="help-block">Enum name must not be the same as ID/Name</span>
                 </div>
             </div>
             <!-- END Name -->
