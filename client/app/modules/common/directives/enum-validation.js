@@ -4,12 +4,13 @@
 'use strict';
 
 angular.module('registryApp.common')
-.directive('isUnequal', function ($timeout) {
+.directive('enumValidation', function ($timeout) {
     return {
         require: '?ngModel',
         scope :{
           other: '=',
-            own: '='
+            own: '=',
+            nameArray: '='
         },
         link: function(scope, element, attrs,ngModel, ctrl) {
             if(!ngModel) { return; } // do nothing if no ng-model
@@ -30,11 +31,19 @@ angular.module('registryApp.common')
                     var val1 = scope.own;
                     var val2 = scope.other;
                     var value = (val1 !== val2);
+                    var isReservedName = checkNames();
                     // set validity
-                    ngModel.$setValidity('isUnequal', value);
+                    ngModel.$setValidity('enumValidation', value && !isReservedName);
                 },0);
 
-
+            };
+            var checkNames = function() {
+                if (ngModel.$viewValue !== null && ngModel.$viewValue !== '') {
+                    var name = ngModel.$viewValue;
+                    var lowerName = name.toLowerCase();
+                    var result = scope.nameArray.indexOf(lowerName) > -1;
+                    return result;
+                }
             };
         }
     };
