@@ -37,6 +37,7 @@ angular.module('registryApp.cliche')
         $scope.view.types = Cliche.getTypes('input');
         $scope.view.itemTypes = Cliche.getTypes('inputItem');
 
+
         var enumObj = Cliche.parseEnum($scope.view.property.schema);
 
         $scope.view.enumName = enumObj.name;
@@ -175,7 +176,7 @@ angular.module('registryApp.cliche')
          * Toggle inputBinding definition
          */
         $scope.toggleAdapter = function () {
-            
+
             if ($scope.view.inputBinding && !$scope.view.stdin) {
                 $scope.view.property.inputBinding = cacheAdapter;
             } else if (!$scope.view.stdin) {
