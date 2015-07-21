@@ -76,14 +76,28 @@ angular.module('registryApp.common')
 
             var output;
             var map = {
-                file: 'i-am-file.txt',
+                File: {
+                    path: 'i-am-file.txt',
+                    'class': 'classname',
+                    secondaryFiles: [
+                        'file1', 'file2'
+                    ],
+                    size: 1234
+                },
                 directory: 'dir-me-dir-me-a-man_after_midnight',
                 string: 'test',
                 int: 42,
                 float: 332.1234242,
                 boolean: false,
                 array: {
-                    file: 'i-am-file.txt',
+                    File: {
+                        path: 'i-am-file.txt',
+                        'class': 'classname',
+                        secondaryFiles: [
+                            'file1', 'file2'
+                        ],
+                        size: 1234
+                    },
                     directory: 'dir-me-dir-me-a-man_after_midnight',
                     string: 'test',
                     int: 42,
@@ -112,15 +126,16 @@ angular.module('registryApp.common')
 
             var output;
             var map = {
-                file: {path: name + '.ext', 'class': 'File'},
-                File: {path: name + '.ext', 'class': 'File'},
+                file: {path: name + '.ext', 'class': 'File', size: 0, secondaryFiles: []},
+                File: {path: name + '.ext', 'class': 'File', size: 0, secondaryFiles: []},
                 'enum': symbols ? symbols[0] : name,
                 string: name,
                 int: 0,
                 float: 0,
                 boolean: true,
                 array: {
-                    file: [{path: name + '.ext', 'class': 'File'}],
+                    file: [{path: name + '.ext', 'class': 'File', size: 0, secondaryFiles: []}],
+                    File: [{path: name + '.ext', 'class': 'File', size: 0, secondaryFiles: []}],
                     string: [name],
                     int: [0],
                     float: [0],

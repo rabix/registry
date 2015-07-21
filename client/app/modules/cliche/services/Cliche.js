@@ -747,7 +747,7 @@ angular.module('registryApp.cliche')
                     break;
                 case ('File' || 'file'):
                     /* if input is FILE */
-                    applyTransform(property.inputBinding.valueFrom, inputs[key].path, true)
+                    applyTransform(property.inputBinding.valueFrom, inputs[key], true)
                         .then(function (result) {
                             prop.val = result;
                             deferred.resolve(prop);
