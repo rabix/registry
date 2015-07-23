@@ -292,7 +292,8 @@ angular.module('registryApp.cliche')
             var cachedName = $scope.view.tool.label;
 
             if (angular.isDefined(json) && angular.isString(json.baseCommand)) {
-                json.baseCmd = [json.baseCmd];
+                json.baseCommand.replace(/\s+/g, ' ');
+                json.baseCommand = json.baseCommand.split(' ');
             }
 
             if ($stateParams.type === 'script') {
@@ -318,6 +319,7 @@ angular.module('registryApp.cliche')
 
             prepareRequirements();
             setUpCategories();
+
 
         };
 
