@@ -6,7 +6,7 @@
 'use strict';
 
 angular.module('registryApp.cliche')
-    .controller('ClicheCtrl', ['$parse', '$scope', '$q', '$stateParams', '$modal', '$templateCache', '$state', '$rootScope', 'User', 'Repo', 'Tool', 'Cliche', 'Sidebar', 'Loading', 'SandBox', 'BeforeUnload', 'BeforeRedirect', 'HelpMessages', 'HotkeyRegistry', 'Chronicle', 'Notification', function($parse, $scope, $q, $stateParams, $modal, $templateCache, $state, $rootScope, User, Repo, Tool, Cliche, Sidebar, Loading, SandBox, BeforeUnload, BeforeRedirect, HelpMessages, HotkeyRegistry, Chronicle, Notification) {
+    .controller('ClicheCtrl', ['$timeout', '$parse', '$scope', '$q', '$stateParams', '$modal', '$templateCache', '$state', '$rootScope', 'User', 'Repo', 'Tool', 'Cliche', 'Sidebar', 'Loading', 'SandBox', 'BeforeUnload', 'BeforeRedirect', 'HelpMessages', 'HotkeyRegistry', 'Chronicle', 'Notification', 'Helper', function($timeout, $parse, $scope, $q, $stateParams, $modal, $templateCache, $state, $rootScope, User, Repo, Tool, Cliche, Sidebar, Loading, SandBox, BeforeUnload, BeforeRedirect, HelpMessages, HotkeyRegistry, Chronicle, Notification, Helper) {
 
         $scope.Loading = Loading;
 
@@ -303,7 +303,11 @@ angular.module('registryApp.cliche')
                 delete json.stdin;
                 delete json.stdout;
                 delete json.argAdapters;
-                delete json.requirements;
+                json.requirements.forEach(function(req, index) {
+                    if (req.class !== 'ExpressionEngineRequirement') {
+                        json.requirements.splice(index, 1);
+                    }
+                });
 
             } else {
                 if (angular.isDefined(json.transform)) { delete json.transform; }
@@ -358,6 +362,21 @@ angular.module('registryApp.cliche')
                 $scope.view.tool.temporaryFailCodes = [];
             }
         };
+
+        function checkExpressionRequirement() {
+            if (Helper.deepPropertyExists($scope.view.tool, 'script')) {
+                console.log('adding requirement');
+
+                $scope.view.tool.requirements.push(Cliche.getExpressionRequirement());
+                console.log($scope.view.tool.requirements);
+
+            } else {
+                console.log('removing requirement');
+
+                _.remove($scope.view.tool.requirements, {'class': 'ExpressionEngineRequirement'});
+                console.log($scope.view.tool.requirements);
+            }
+        }
 
 
         /**
@@ -519,8 +538,12 @@ angular.module('registryApp.cliche')
          * Initiate command generating
          */
         $scope.generateCommand = function() {
-            Cliche.generateCommand()
-                .then(outputCommand, outputError);
+            checkExpressionRequirement();
+            $timeout(function() {
+                Cliche.generateCommand()
+                    .then(outputCommand, outputError);
+            });
+
         };
 
         var debouncedGenerateCommand = _.debounce($scope.generateCommand, 200);

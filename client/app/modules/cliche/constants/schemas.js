@@ -34,6 +34,16 @@ angular.module('registryApp.cliche')
             {
                 'class': 'MemRequirement',
                 value: 1000
+            },
+            {
+                'class': 'ExpressionEngineRequirement',
+                id: '#cwl-js-engine',
+                requirements: [
+                    {
+                        'class': 'DockerRequirement',
+                        dockerPull: 'rabix/js-engine'
+                    }
+                ]
             }
         ],
         inputs: [],
