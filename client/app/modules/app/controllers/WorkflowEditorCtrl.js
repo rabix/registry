@@ -157,7 +157,7 @@ angular.module('registryApp.app')
 
             return apps;
         };
-        
+
         var mergeToolsWorkflows = function (type, tools, scripts, workflows) {
             var repositories = $scope.view.repoTypes[type];
 
@@ -541,7 +541,7 @@ angular.module('registryApp.app')
             });
 
         };
-        
+
         $scope.publish = function () {
             Workflow.publishRevision($scope.view.workflow._id, {publish: true}).then(function (data) {
                 var trace = data;
@@ -580,7 +580,7 @@ angular.module('registryApp.app')
             $scope.view.isMenuOpen = !$scope.view.isMenuOpen;
 
         };
-        
+
         $scope.view.capitalize = function (string) {
             return string.charAt(0).toUpperCase() + string.slice(1);
         };
@@ -640,7 +640,7 @@ angular.module('registryApp.app')
             });
 
         };
-        
+
         $scope.validateWorkflowJSON = function () {
 
             PipelineInstance.validate().then(function (workflow) {

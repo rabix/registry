@@ -184,7 +184,7 @@
                                         <li ng-if="apps.workflows.length !== 0"><span
                                                 class="label label-info section-name">Workflows</span></li>
 
-                                        <li ng-repeat="workflow in filteredWorkflows=(apps.workflows | filter:view.searchTerm)">
+                                        <li ng-hide="view.workflow.pipeline._id === workflow._id" ng-repeat="workflow in filteredWorkflows=(apps.workflows | filter:view.searchTerm)">
 
                                             <a href drag="workflow.latest">
                                                 <span class="pointer pull-left toggle-revisions"
@@ -200,7 +200,7 @@
                                                 </div>
                                             </a>
 
-                                            <div ng-show="view.appRevisions[workflow._id].toggled"
+                                            <div ng-show="view.appRevisions[workflow._id].toggled && view.workflow.pipeline._id === workflow._id"
                                                  ng-repeat="revision in workflow.revisions | orderBy:'-version':false"
                                                  class="revisions-list nested"
                                                  ng-if="view.appRevisions[workflow._id].toggled">
