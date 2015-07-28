@@ -21,7 +21,6 @@
 
                 <legend class="legend-small">Resources <help-message message="help.cliche.general.resources"></help-message></legend>
 
-                <pre>{{ view.tool.requirements | json }}</pre>
                 <div class="row-margin">
 
                     <div class="col-md-6">
@@ -36,6 +35,12 @@
                             <label class="control-label">Memory (MB)</label>
                             <expr tooltip-msg="{{ ::help.cliche.general.memory }}" ng-model="view.reqMemRequirement.value" type="number" handle-item-update="updateResource(value, 'MemRequirement')"></expr>
                         </div>
+                    </div>
+
+                    <div class="col-sm-12" ng-if="view.expReq">
+                        <p class="alert alert-warning">
+                            This tool requires an Expression Engine.
+                        </p>
                     </div>
 
                 </div>

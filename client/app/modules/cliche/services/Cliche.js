@@ -149,9 +149,6 @@ angular.module('registryApp.cliche')
                     $localForage.getItem('tool'),
                     $localForage.getItem('job')
                 ]).then(function (result) {
-                    console.log(result);
-                    
-
                     toolJSON = transformToolJson(type, result[0]);
                     jobJSON = result[1];
 

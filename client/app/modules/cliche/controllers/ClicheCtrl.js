@@ -6,7 +6,7 @@
 'use strict';
 
 angular.module('registryApp.cliche')
-    .controller('ClicheCtrl', ['$timeout', '$parse', '$scope', '$q', '$stateParams', '$modal', '$templateCache', '$state', '$rootScope', 'User', 'Repo', 'Tool', 'Cliche', 'Sidebar', 'Loading', 'SandBox', 'BeforeUnload', 'BeforeRedirect', 'HelpMessages', 'HotkeyRegistry', 'Chronicle', 'Notification', 'Helper', function($timeout, $parse, $scope, $q, $stateParams, $modal, $templateCache, $state, $rootScope, User, Repo, Tool, Cliche, Sidebar, Loading, SandBox, BeforeUnload, BeforeRedirect, HelpMessages, HotkeyRegistry, Chronicle, Notification, Helper) {
+    .controller('ClicheCtrl', ['$timeout', '$parse', '$scope', '$q', '$stateParams', '$modal', '$templateCache', '$state', '$rootScope', 'User', 'Repo', 'Tool', 'Cliche', 'Sidebar', 'Loading', 'SandBox', 'BeforeUnload', 'BeforeRedirect', 'HelpMessages', 'HotkeyRegistry', 'Chronicle', 'Notification', 'Helper', 'ClicheEvents', function($timeout, $parse, $scope, $q, $stateParams, $modal, $templateCache, $state, $rootScope, User, Repo, Tool, Cliche, Sidebar, Loading, SandBox, BeforeUnload, BeforeRedirect, HelpMessages, HotkeyRegistry, Chronicle, Notification, Helper, ClicheEvents) {
 
         $scope.Loading = Loading;
 
@@ -89,6 +89,14 @@ angular.module('registryApp.cliche')
 
         $scope.$watch('Loading.classes', function(n, o) {
             if (n !== o) { $scope.view.classes = n; }
+        });
+
+        /**
+         * Cliche events that can be broadcast by various components
+         */
+        $scope.$on(ClicheEvents.EXPRESSION.CHANGED, function(e, obj) {
+            console.log('got obj', obj);
+            checkExpressionRequirement();
         });
 
         Cliche.checkVersion()
@@ -363,20 +371,21 @@ angular.module('registryApp.cliche')
             }
         };
 
-        function checkExpressionRequirement() {
+        /**
+         * Checks if the app has any expressions.
+         *
+         * Apps with expressions require an expression engine. It adds an expression engine
+         * requirement to apps with any expressions.
+         */
+        var checkExpressionRequirement = function () {
             if (Helper.deepPropertyExists($scope.view.tool, 'script')) {
-                console.log('adding requirement');
-
+                $scope.view.expReq = true;
                 $scope.view.tool.requirements.push(Cliche.getExpressionRequirement());
-                console.log($scope.view.tool.requirements);
-
             } else {
-                console.log('removing requirement');
-
+                $scope.view.expReq = false;
                 _.remove($scope.view.tool.requirements, {'class': 'ExpressionEngineRequirement'});
-                console.log($scope.view.tool.requirements);
             }
-        }
+        };
 
 
         /**
@@ -538,7 +547,6 @@ angular.module('registryApp.cliche')
          * Initiate command generating
          */
         $scope.generateCommand = function() {
-            checkExpressionRequirement();
             $timeout(function() {
                 Cliche.generateCommand()
                     .then(outputCommand, outputError);
