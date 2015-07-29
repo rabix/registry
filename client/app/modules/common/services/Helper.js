@@ -171,13 +171,56 @@ angular.module('registryApp.common')
 
         };
 
+        function deepPropValue (obj, prop) {
+            var result = null;
+
+            if (obj instanceof Array) {
+                for(var i = 0; i < obj.length; i ++) {
+                    result = deepPropertyExists(obj[i], prop);
+                    if (result) {
+                        break;
+                    }
+                }
+            } else {
+                for (var oProp in obj) {
+                    if (!obj.hasOwnProperty(oProp)) {
+                        continue;
+                    }
+                    if (oProp === prop) {
+                        return obj;
+                    }
+                    if(obj[oProp] instanceof Object || obj[oProp] instanceof Array) {
+                        result = deepPropertyExists(obj[oProp], prop);
+                        if (result) {
+                            break;
+                        }
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        /**
+         *
+         */
+        var deepPropertyExists = function(obj, prop) {
+            return !! deepPropValue(obj, prop);
+        };
+
+        var deepPropertyEquals = function(obj, prop, val) {
+            return deepPropValue(obj, prop) === val;
+        };
+
         return {
             isValidName: isValidName,
             isValidInt: isValidInt,
             getDomain: getDomain,
             getTestData: getTestData,
             getDefaultInputValue: getDefaultInputValue,
-            stopPropagation: stopPropagation
+            stopPropagation: stopPropagation,
+            deepPropertyExists: deepPropertyExists,
+            deepPropertyEquals: deepPropertyEquals
         };
 
     }]);
