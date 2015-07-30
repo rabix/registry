@@ -37,6 +37,7 @@ angular.module('registryApp.cliche')
         $scope.view.types = Cliche.getTypes('input');
         $scope.view.itemTypes = Cliche.getTypes('inputItem');
 
+
         var enumObj = Cliche.parseEnum($scope.view.property.schema);
         $scope.view.reservedNames = ['file','string','enum','int','float','boolean','array'];
         $scope.view.enumName = enumObj.name;
