@@ -6,7 +6,7 @@
 'use strict';
 
 angular.module('registryApp.cliche')
-    .controller('ClicheCtrl', ['$parse', '$scope', '$q', '$stateParams', '$modal', '$templateCache', '$state', '$rootScope', 'User', 'Repo', 'Tool', 'Cliche', 'Sidebar', 'Loading', 'SandBox', 'BeforeUnload', 'BeforeRedirect', 'HelpMessages', 'HotkeyRegistry', 'Chronicle', 'Notification', function($parse, $scope, $q, $stateParams, $modal, $templateCache, $state, $rootScope, User, Repo, Tool, Cliche, Sidebar, Loading, SandBox, BeforeUnload, BeforeRedirect, HelpMessages, HotkeyRegistry, Chronicle, Notification) {
+    .controller('ClicheCtrl', ['$timeout', '$parse', '$scope', '$q', '$stateParams', '$modal', '$templateCache', '$state', '$rootScope', 'User', 'Repo', 'Tool', 'Cliche', 'Sidebar', 'Loading', 'SandBox', 'BeforeUnload', 'BeforeRedirect', 'HelpMessages', 'HotkeyRegistry', 'Chronicle', 'Notification', 'Helper', 'ClicheEvents', function($timeout, $parse, $scope, $q, $stateParams, $modal, $templateCache, $state, $rootScope, User, Repo, Tool, Cliche, Sidebar, Loading, SandBox, BeforeUnload, BeforeRedirect, HelpMessages, HotkeyRegistry, Chronicle, Notification, Helper, ClicheEvents) {
 
         $scope.Loading = Loading;
 
@@ -91,6 +91,14 @@ angular.module('registryApp.cliche')
             if (n !== o) { $scope.view.classes = n; }
         });
 
+        /**
+         * Cliche events that can be broadcast by various components
+         */
+        $scope.$on(ClicheEvents.EXPRESSION.CHANGED, function(e, obj) {
+            console.log('got obj', obj);
+            checkExpressionRequirement();
+        });
+
         Cliche.checkVersion()
             .then(function() {
 
@@ -172,8 +180,7 @@ angular.module('registryApp.cliche')
             if ($stateParams.type === 'tool') {
 
                 $scope.view.generatingCommand = true;
-                Cliche.generateCommand()
-                    .then(outputCommand, outputError);
+                debouncedGenerateCommand();
 
                 var watch = [
                     'view.tool.baseCommand',
@@ -185,8 +192,7 @@ angular.module('registryApp.cliche')
                     var watcher = $scope.$watch(arg, function(n, o) {
                         if (n !== o) {
                             $scope.view.generatingCommand = true;
-                            Cliche.generateCommand()
-                                .then(outputCommand, outputError);
+                            debouncedGenerateCommand();
                         }
                     }, true);
                     cliAdapterWatchers.push(watcher);
@@ -249,8 +255,8 @@ angular.module('registryApp.cliche')
 
                 if ($scope.view.isConsoleVisible) {
                     $scope.view.generatingCommand = true;
-                    Cliche.generateCommand()
-                        .then(outputCommand, outputError);
+                    debouncedGenerateCommand();
+
                 }
 
                 jobWatcher = $scope.$watch('view.job.inputs', function(n, o) {
@@ -258,8 +264,8 @@ angular.module('registryApp.cliche')
                         checkRequirements();
                         if ($scope.view.isConsoleVisible) {
                             $scope.view.generatingCommand = true;
-                            Cliche.generateCommand()
-                                .then(outputCommand, outputError);
+                            debouncedGenerateCommand();
+
                         }
                     }
                 }, true);
@@ -294,7 +300,8 @@ angular.module('registryApp.cliche')
             var cachedName = $scope.view.tool.label;
 
             if (angular.isDefined(json) && angular.isString(json.baseCommand)) {
-                json.baseCmd = [json.baseCmd];
+                json.baseCommand.replace(/\s+/g, ' ');
+                json.baseCommand = json.baseCommand.split(' ');
             }
 
             if ($stateParams.type === 'script') {
@@ -304,7 +311,11 @@ angular.module('registryApp.cliche')
                 delete json.stdin;
                 delete json.stdout;
                 delete json.argAdapters;
-                delete json.requirements;
+                json.requirements.forEach(function(req, index) {
+                    if (req.class !== 'ExpressionEngineRequirement') {
+                        json.requirements.splice(index, 1);
+                    }
+                });
 
             } else {
                 if (angular.isDefined(json.transform)) { delete json.transform; }
@@ -320,6 +331,7 @@ angular.module('registryApp.cliche')
 
             prepareRequirements();
             setUpCategories();
+
 
         };
 
@@ -356,6 +368,24 @@ angular.module('registryApp.cliche')
 
             if (typeof $scope.view.tool.temporaryFailCodes === 'undefined') {
                 $scope.view.tool.temporaryFailCodes = [];
+            }
+        };
+
+        /**
+         * Checks if the app has any expressions.
+         *
+         * Apps with expressions require an expression engine. It adds an expression engine
+         * requirement to apps with any expressions.
+         */
+        var checkExpressionRequirement = function () {
+            if (Helper.deepPropertyExists($scope.view.tool, 'script')) {
+                $scope.view.expReq = true;
+                if (!_.find($scope.view.tool.requirements, {'class': 'ExpressionEngineRequirement'})) {
+                    $scope.view.tool.requirements.push(Cliche.getExpressionRequirement());
+                }
+            } else {
+                $scope.view.expReq = false;
+                _.remove($scope.view.tool.requirements, {'class': 'ExpressionEngineRequirement'});
             }
         };
 
@@ -513,15 +543,20 @@ angular.module('registryApp.cliche')
             } else {
                 turnOffCliAdapterDeepWatch();
             }
-
         };
 
         /**
          * Initiate command generating
          */
         $scope.generateCommand = function() {
-            Cliche.generateCommand();
+            $timeout(function() {
+                Cliche.generateCommand()
+                    .then(outputCommand, outputError);
+            });
+
         };
+
+        var debouncedGenerateCommand = _.debounce($scope.generateCommand, 200);
 
         /**
          * Update tool resources and apply transformation on allocated resources if needed
@@ -637,7 +672,7 @@ angular.module('registryApp.cliche')
 
                 if(!$scope.$$phase) {
                     $scope.$apply();
-                    Cliche.generateCommand();
+                    debouncedGenerateCommand();
                 }
             }
         };
@@ -863,8 +898,7 @@ angular.module('registryApp.cliche')
             setUpCliche();
             prepareRequirements();
             setUpCategories();
-            Cliche.generateCommand()
-                .then(outputCommand, outputError);
+            debouncedGenerateCommand();
         }
 
         /**

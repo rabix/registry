@@ -107,8 +107,8 @@ angular.module('registryApp.cliche')
                 delete transformed.stdout;
                 delete transformed.arguments;
                 // requirements
-                delete transformed.requirements;
-
+                // scripts by default should only have the ExpressionEngineRequirement
+                transformed.requirements = _.filter(transformed.requirements, {class: 'ExpressionEngineRequirement'});
             } else {
 
                 transformed['class'] = 'CommandLineTool';
@@ -123,7 +123,7 @@ angular.module('registryApp.cliche')
                     transformed.baseCommand = angular.copy(rawTool.baseCommand);
                     transformed.stdin = angular.copy(rawTool.stdin);
                     transformed.stdout = angular.copy(rawTool.stdout);
-                    transformed.arguments = angular.copy(rawTool.arguments);
+                    transformed.arguments = angular.copy(rawTool['arguments']);
                 }
 
                 if (angular.isUndefined(transformed.requirements)) {
@@ -149,7 +149,6 @@ angular.module('registryApp.cliche')
                     $localForage.getItem('tool'),
                     $localForage.getItem('job')
                 ]).then(function (result) {
-
                     toolJSON = transformToolJson(type, result[0]);
                     jobJSON = result[1];
 
@@ -368,6 +367,10 @@ angular.module('registryApp.cliche')
                 return checkInner(nameObj.newName, toolJSON.inputs, true);
             }
 
+        };
+
+        var getExpressionRequirement = function() {
+            return _.find(rawTool.requirements, {'class': 'ExpressionEngineRequirement'});
         };
 
         /**
@@ -747,7 +750,8 @@ angular.module('registryApp.cliche')
                     break;
                 case ('File' || 'file'):
                     /* if input is FILE */
-                    applyTransform(property.inputBinding.valueFrom, inputs[key].path, true)
+                    var value = property.inputBinding.valueFrom ? inputs[key] : inputs[key].path;
+                    applyTransform(property.inputBinding.valueFrom, value, true)
                         .then(function (result) {
                             prop.val = result;
                             deferred.resolve(prop);
@@ -1271,6 +1275,7 @@ angular.module('registryApp.cliche')
             getStdinInput: getStdinInput,
             switchStdin: switchStdin,
             checkIfEnumNameExists: checkIfEnumNameExists,
+            getExpressionRequirement: getExpressionRequirement,
             manageProperty: manageProperty,
             deleteProperty: deleteProperty,
             manageArg: manageArg,
