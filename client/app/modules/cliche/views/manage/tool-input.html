@@ -18,7 +18,7 @@
                 <div class="form-group" ng-class="{'has-error': (view.form.name.$invalid && view.form.$dirty)}">
                     <label class="control-label" for="name">{{ view.key === 'id' ? 'ID' : 'Name' }}</label>
                     <input type="text" class="form-control" id="name" name="name" ng-model="view.name" is-valid-name required>
-                    <span class="help-block">Allowed characters are alphanumerics, _, and -</span>
+                    <span class="help-block">{{help.cliche.inputs.AllowedInputChars}}</span>
                 </div>
             </div>
             <!-- END Name -->
@@ -42,7 +42,8 @@
             <div class="col-md-4" ng-if="view.type === 'enum'">
                 <div class="form-group" ng-class="{'has-error': (view.form.enumName.$invalid && view.form.$dirty)}">
                     <label class="control-label" for="name">Enum Name</label>
-                    <input type="text" class="form-control" id="enumName" name="enumName" ng-model="view.enumName" required>
+                    <input type="text" class="form-control" id="enumName" ng-model="view.enumName" name-array="view.reservedNames" enum-validation other="view.name" own="view.enumName" name="enumName" required>
+                    <span class="help-block">Enum name must not be the same as ID/Name. Name can't be type name, e.g 'File'</span>
                 </div>
             </div>
             <!-- END Name -->

@@ -95,7 +95,6 @@ angular.module('registryApp.cliche')
          * Cliche events that can be broadcast by various components
          */
         $scope.$on(ClicheEvents.EXPRESSION.CHANGED, function(e, obj) {
-            console.log('got obj', obj);
             checkExpressionRequirement();
         });
 

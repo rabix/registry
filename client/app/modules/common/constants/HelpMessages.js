@@ -30,7 +30,8 @@ angular.module('registryApp.common').constant('HelpMessages', {
             label: 'Name to show when presenting the input on graphical interfaces.',
             description: 'Help text to show when presenting the input on graphical interfaces.',
             category: 'Category where this input will be grouped under.',
-            inputBinding: 'Include this input into command line, and it will show in command line preview bellow.'
+            inputBinding: 'Include this input into command line, and it will show in command line preview bellow.',
+            AllowedInputChars: 'Allowed characters are alphanumerics and _'
         },
         outputs: {
             properties: 'Define tool output ports.',

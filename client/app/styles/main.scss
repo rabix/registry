@@ -5,6 +5,11 @@ html, body {
   overflow-x: hidden;
 }
 
+// firefox hack for fixing content overflow in flexbox containers.
+* {
+  min-height: 0;
+}
+
 body {
   color: #555;
   background-color: $gray;
