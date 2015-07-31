@@ -34,7 +34,6 @@ angular.module('registryApp.cliche')
                         }
                         // set validity
 
-                        //formCtrl.$setValidity(value);
                         formCtrl[scope.valName].$setValidity(scope.valName, value);
 
                     },0);
