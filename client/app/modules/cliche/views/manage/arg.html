@@ -11,9 +11,10 @@
         <div class="row">
 
             <div class="col-md-3">
-                <div class="form-group" ng-class="{'has-error': (view.form.value.$invalid && view.form.$dirty)}">
+                <div class="form-group" ng-class="{'has-error': (view.form.Value.$invalid && view.form.$dirty)}">
                     <label class="control-label">Value</label>
-                    <expr ng-model="view.property.valueFrom" handle-item-update="updateArgument(value)"></expr>
+                    <expr name="Value" ng-model="view.property.valueFrom" handle-item-update="updateArgument(value)"></expr>
+                    <span name="error-span" id="error-span" check-argument-prefix val-name="Value" other="view.property.prefix" own="view.property.valueFrom" class="help-block">If prefix is set on argument, expression must be set or value must be defined.</span>
                 </div>
             </div>
 
