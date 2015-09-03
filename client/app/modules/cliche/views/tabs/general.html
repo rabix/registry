@@ -41,6 +41,69 @@
 
             </div>
 
+
+            <div ng-if="view.type === 'tool'" class="section">
+
+                <legend class="legend-small">
+                    Create Files <help-message message="help.cliche.general.createFiles"></help-message>
+                </legend>
+
+                <div class="enum-list-wrap" ng-class="{'enum-labeled': view.reqCreateFileRequirement.fileDef.length > 0}">
+                    <a href ng-click="addFileDef()" class="btn btn-default add-enum-item"><i class="fa fa-plus"></i></a>
+
+                    <div class="enum-list-container">
+                        <ul class="enum-list">
+                            <li ng-repeat="fileDef in view.reqCreateFileRequirement.fileDef">
+                                <div class="enum-field form-group form-group-file">
+                                    <div class="col-md-6">
+                                        <label class="control-label" ng-if="$index === 0">File Name</label>
+                                        <expr ng-model="fileDef.filename" index="{{ $index }}" type="string" handle-item-update="updateFileDef(value, index, 'filename')"></expr>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="control-label" ng-if="$index === 0">File Content</label>
+                                        <expr ng-model="fileDef.fileContent" long-literal="true" only-expr="true" index="{{ $index }}" type="string"  handle-item-update="updateFileDef(value, index, 'fileContent')"></expr>
+                                    </div>
+                                </div>
+                                <a href class="fa fa-remove remove-btn" ng-class="{'labeled': $index === 0}" ng-click="removeFileDef($index)"></a>
+                            </li>
+                        </ul>
+
+                        <p class="alert alert-info" ng-if="view.reqCreateFileRequirement.fileDef | isEmpty">Click the plus button to add a file</p>
+                    </div>
+                </div>
+            </div>
+
+            <div ng-if="view.type === 'tool'" class="section">
+
+                <legend class="legend-small">
+                    Create Env Variables <help-message message="help.cliche.general.createEnvVariables"></help-message>
+                </legend>
+
+                <div class="enum-list-wrap" ng-class="{'enum-labeled': view.reqEnvVarRequirement.environmentDef.length > 0}">
+                    <a href ng-click="addEnvironmentDef()" class="btn btn-default add-enum-item"><i class="fa fa-plus"></i></a>
+
+                    <div class="enum-list-container">
+                        <ul class="enum-list">
+                            <li ng-repeat="environmentDef in view.reqEnvVarRequirement.environmentDef">
+                                <div class="enum-field form-group form-group-file">
+                                    <div class="col-md-6">
+                                        <label class="control-label" ng-if="$index === 0">Variable Name</label>
+                                        <expr ng-model="environmentDef.envName" index="{{ $index }}" type="string" handle-item-update="updateEnvironmentDef(value, index, 'envName')"></expr>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="control-label" ng-if="$index === 0">Variable Value</label>
+                                        <expr ng-model="environmentDef.envValue" long-literal="true" index="{{ $index }}" type="string"  handle-item-update="updateEnvironmentDef(value, index, 'envValue')"></expr>
+                                    </div>
+                                </div>
+                                <a href class="fa fa-remove remove-btn" ng-class="{'labeled': $index === 0}" ng-click="removeEnvironmentDef($index)"></a>
+                            </li>
+                        </ul>
+
+                        <p class="alert alert-info" ng-if="view.reqEnvVarRequirement.environmentDef | isEmpty">Click the plus button to add a variable</p>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
         <div class="col-md-6">

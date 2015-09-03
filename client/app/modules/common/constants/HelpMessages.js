@@ -19,7 +19,9 @@ angular.module('registryApp.common').constant('HelpMessages', {
             tempFailCodes: 'Array of retriable exit codes.',
             stdin: 'If a tool can only take input on stdin, set an expression (</>) here to reference the input file \n\n(e.g. $job.inputs.reads.path).',
             stdout: 'Enter file name to redirect standard output into. To construct a name based on inputs, use an expression (</>).',
-            addArgument: 'Describe a command line argument that doesn\'t map directly to any of the tool inputs \n\n (e.g. —num-threads should have the "value" field set to "$job.allocatedResources.cpu" expression).'
+            addArgument: 'Describe a command line argument that doesn\'t map directly to any of the tool inputs \n\n (e.g. —num-threads should have the "value" field set to "$job.allocatedResources.cpu" expression).',
+            createFiles: 'Here you can enumerate files that need to be created in the job directory before the command line is executed. File content can be a literal string (e.g. bash wrapper script) or an expression. If the expression evaluates to a File structure (object with "class" and "path" properties, with value for "class" being "File"), this indicates that the file should be copied to the job directory. This is usually used to copy input files before creating indices.',
+            createEnvVariables: 'Message to be authored by Boysha'
         },
         inputs: {
             properties: 'Define tool input ports.',

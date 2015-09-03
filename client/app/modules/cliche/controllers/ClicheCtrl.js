@@ -6,7 +6,7 @@
 'use strict';
 
 angular.module('registryApp.cliche')
-    .controller('ClicheCtrl', ['$timeout', '$parse', '$scope', '$q', '$stateParams', '$modal', '$templateCache', '$state', '$rootScope', 'User', 'Repo', 'Tool', 'Cliche', 'Sidebar', 'Loading', 'SandBox', 'BeforeUnload', 'BeforeRedirect', 'HelpMessages', 'HotkeyRegistry', 'Chronicle', 'Notification', 'Helper', 'ClicheEvents', function($timeout, $parse, $scope, $q, $stateParams, $modal, $templateCache, $state, $rootScope, User, Repo, Tool, Cliche, Sidebar, Loading, SandBox, BeforeUnload, BeforeRedirect, HelpMessages, HotkeyRegistry, Chronicle, Notification, Helper, ClicheEvents) {
+    .controller('ClicheCtrl', ['$timeout', '$parse', '$scope', '$q', '$stateParams', '$modal', '$templateCache', '$state', '$rootScope', 'User', 'Repo', 'Tool', 'Cliche', 'Sidebar', 'Loading', 'SandBox', 'BeforeUnload', 'BeforeRedirect', 'HelpMessages', 'HotkeyRegistry', 'Chronicle', 'Notification', 'Helper', 'ClicheEvents', 'rawTool', function($timeout, $parse, $scope, $q, $stateParams, $modal, $templateCache, $state, $rootScope, User, Repo, Tool, Cliche, Sidebar, Loading, SandBox, BeforeUnload, BeforeRedirect, HelpMessages, HotkeyRegistry, Chronicle, Notification, Helper, ClicheEvents, rawTool) {
 
         $scope.Loading = Loading;
 
@@ -213,6 +213,29 @@ angular.module('registryApp.cliche')
         };
 
         /**
+         * Remove unnecessary requirements
+         */
+
+        var removeRequirements = function (reqKeys) {
+            for (var key in reqKeys){
+                switch (key){
+                    case 'CreateFileRequirement': {
+                        if ($scope.view.reqCreateFileRequirement && $scope.view.reqCreateFileRequirement.fileDef.length === 0) {
+                            _.remove($scope.view.tool.requirements, {'class': key});
+                            delete $scope.view.reqCreateFileRequirement;
+                        }
+                    }
+                    case 'EnvVarRequirement':{
+                        if ($scope.view.reqEnvVarRequirement && $scope.view.reqEnvVarRequirement.environmentDef.length === 0) {
+                            _.remove($scope.view.tool.requirements, {'class': key});
+                            delete $scope.view.reqEnvVarRequirement;
+                        }
+                    }
+                }
+            }
+        };
+
+        /**
          * Split requirements in separate objects in order to use them directly
          */
         var prepareRequirements = function() {
@@ -220,7 +243,29 @@ angular.module('registryApp.cliche')
             $scope.view.reqDockerRequirement = _.find($scope.view.tool.requirements, {'class': 'DockerRequirement'});
             $scope.view.reqCPURequirement = _.find($scope.view.tool.requirements, {'class': 'CPURequirement'});
             $scope.view.reqMemRequirement = _.find($scope.view.tool.requirements, {'class': 'MemRequirement'});
+            $scope.view.reqCreateFileRequirement = _.find($scope.view.tool.requirements, {'class': 'CreateFileRequirement'});
+            $scope.view.reqEnvVarRequirement = _.find($scope.view.tool.requirements, {'class': 'EnvVarRequirement'});
+            var reqKeys = ['CreateFileRequirement', 'EnvVarRequirement'];
+            removeRequirements(reqKeys);
+        };
 
+        /**
+         * Connects requirement object on $scope.view to object
+         * in $scope.view.tool.requirements array.
+         *
+         * If such a requirement does not exist, will copy req from
+         * rawTool and make view object a reference to object in array.
+         *
+         * @param {string} key
+         */
+        var connectRequirement = function(key){
+            var tempRequirement = _.find($scope.view.tool.requirements, {'class': key});
+            if (!tempRequirement) {
+                $scope.view.tool.requirements.push(_.clone(_.find(rawTool.requirements, {'class': key})));
+                $scope.view['req'+key] = _.find($scope.view.tool.requirements, {'class': key});
+            } else {
+                $scope.view['req'+key] = tempRequirement;
+            }
         };
 
         /**
@@ -627,6 +672,95 @@ angular.module('registryApp.cliche')
             $scope.view.tool[type].splice(index, 1);
         };
 
+        /**
+         * Add environmentDef object to EnvVarRequirement.
+         *
+         * creates requirement if it envDef was empty.
+         */
+        $scope.addEnvironmentDef = function () {
+            if (!$scope.view.reqEnvVarRequirement) {
+                connectRequirement('EnvVarRequirement');
+            }
+
+            $scope.view.reqEnvVarRequirement.environmentDef.push({
+                envName: '',
+                envValue: ''
+            })
+        };
+
+        /**
+         * update environmentDef in EnvVarRequirement by index.
+         * @param {string | expression} transform
+         * @param {number} index
+         * @param {string} key
+         */
+        $scope.updateEnvironmentDef = function (transform, index, key) {
+            $scope.view.reqEnvVarRequirement.environmentDef[index][key] = transform;
+        };
+
+        /**
+         * Removes environmentDef object from EnvVarRequirement by index.
+         *
+         * if environmentDef is empty, then it will remove the whole EnvVarRequirement
+         * requirement form the tool.
+         *
+         * @param index
+         */
+        $scope.removeEnvironmentDef = function(index) {
+            $scope.view.reqEnvVarRequirement.environmentDef.splice(index, 1);
+
+            if (_.isEmpty($scope.view.reqEnvVarRequirement.environmentDef)) {
+                _.remove($scope.view.tool.requirements, {'class': 'EnvVarRequirement'});
+                delete $scope.view.reqEnvVarRequirement;
+
+            }
+            checkExpressionRequirement();
+        };
+
+        /**
+         * Add fileDef object to CreateFileRequirement.
+         *
+         * creates requirement if it fileDef was empty.
+         */
+        $scope.addFileDef = function () {
+            if (!$scope.view.reqCreateFileRequirement) {
+                connectRequirement('CreateFileRequirement');
+            }
+
+            $scope.view.reqCreateFileRequirement.fileDef.push({
+                filename: '',
+                fileContent: ''
+            })
+        };
+
+        /**
+         * update fileDef in CreateFileRequirement by index.
+         * @param {string | expression} transform
+         * @param {number} index
+         * @param {string} key
+         */
+        $scope.updateFileDef = function (transform, index, key) {
+            $scope.view.reqCreateFileRequirement.fileDef[index][key] = transform;
+        };
+
+        /**
+         * Removes fileDef object from CreateFileRequirement by index.
+         *
+         * if fileDef is empty, then it will remove the whole CreateFileRequirement
+         * requirement form the tool.
+         *
+         * @param index
+         */
+        $scope.removeFileDef = function(index) {
+            $scope.view.reqCreateFileRequirement.fileDef.splice(index, 1);
+
+            if (_.isEmpty($scope.view.reqCreateFileRequirement.fileDef)) {
+                _.remove($scope.view.tool.requirements, {'class': 'CreateFileRequirement'});
+                delete $scope.view.reqCreateFileRequirement;
+
+            }
+            checkExpressionRequirement();
+        };
 
         /**
          * Add item to the baseCommand
@@ -928,7 +1062,7 @@ angular.module('registryApp.cliche')
             {name: 'undo', callback: $scope.undoAction, preventDefault: true, allowIn: ['INPUT', 'SELECT', 'TEXTAREA']},
             {name: 'redo', callback: $scope.redoAction, preventDefault: true, allowIn: ['INPUT', 'SELECT', 'TEXTAREA']}
         ]);
-        
+
         $scope.chron = Chronicle.record('view.tool', $scope, true);
 
         $scope.view.canUndo = function () {

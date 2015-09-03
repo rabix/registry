@@ -292,6 +292,16 @@
     display: block;
     margin-left: 50px;
   }
+
+    &.enum-labeled {
+        li > .labeled.remove-btn {
+            top: 27px;
+        }
+
+        .add-enum-item {
+            margin-top: 23px;
+        }
+    }
   .enum-list {
     li {
       position: relative;
