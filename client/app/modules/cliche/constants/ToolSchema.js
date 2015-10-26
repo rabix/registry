@@ -304,7 +304,7 @@ var Schema = {
             }
         }
     },
-    required: ['id', 'class', '@context', 'baseCommand', 'arguments', 'label', 'owner', 'inputs', 'outputs']
+    required: ['id', 'class', '@context', 'baseCommand', 'arguments', 'label', 'inputs', 'outputs']
 };
 
 if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
