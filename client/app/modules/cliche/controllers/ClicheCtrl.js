@@ -74,9 +74,6 @@ angular.module('registryApp.cliche')
         /* current user */
         $scope.view.user = null;
 
-        /* categories */
-        $scope.view.categories = [];
-
         /* help messages */
         $scope.help = HelpMessages;
 
@@ -123,7 +120,6 @@ angular.module('registryApp.cliche')
 
                         setUpCliche();
                         prepareRequirements();
-                        setUpCategories();
                         prepareStatusCodes();
 
                         $scope.toggleConsole();
@@ -329,7 +325,6 @@ angular.module('registryApp.cliche')
             $scope.view.job = Cliche.getJob();
 
             prepareRequirements();
-            setUpCategories();
 
 
         };
@@ -350,15 +345,6 @@ angular.module('registryApp.cliche')
 
         };
 
-        /**
-         * Prepares categories for tagsInput directive
-         */
-        var setUpCategories = function() {
-            $scope.view.categories = _.map($scope.view.tool['sbg:category'], function(cat) {
-
-                return {text: cat};
-            });
-        };
 
         var prepareStatusCodes = function () {
             if (typeof $scope.view.tool.successCodes === 'undefined') {
@@ -450,8 +436,6 @@ angular.module('registryApp.cliche')
 
                         setUpCliche();
                         prepareRequirements();
-                        setUpCategories();
-
                     });
 
             }, function () {
@@ -511,13 +495,6 @@ angular.module('registryApp.cliche')
             position = item.position ? item.position : position; //args
 
             return position;
-        };
-
-        /**
-         * Updates $scope.view.tool.categories
-         */
-        $scope.updateCategories = function() {
-            $scope.view.tool['sbg:category'] = _.pluck($scope.view.categories, 'text');
         };
 
 
@@ -896,7 +873,6 @@ angular.module('registryApp.cliche')
             Cliche.setTool($scope.view.tool);
             setUpCliche();
             prepareRequirements();
-            setUpCategories();
             debouncedGenerateCommand();
         }
 
@@ -928,7 +904,7 @@ angular.module('registryApp.cliche')
             {name: 'undo', callback: $scope.undoAction, preventDefault: true, allowIn: ['INPUT', 'SELECT', 'TEXTAREA']},
             {name: 'redo', callback: $scope.redoAction, preventDefault: true, allowIn: ['INPUT', 'SELECT', 'TEXTAREA']}
         ]);
-        
+
         $scope.chron = Chronicle.record('view.tool', $scope, true);
 
         $scope.view.canUndo = function () {
