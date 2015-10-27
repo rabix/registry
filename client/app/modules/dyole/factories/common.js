@@ -17,8 +17,8 @@ angular.module('registryApp.dyole')
 
                 if (type === 'array') {
                     return typeof schema.items === 'string' ?
-                        filter.indexOf(schema.items) !== -1 :
-                        filter.indexOf(schema.items.type) !== -1;
+                    filter.indexOf(schema.items) !== -1 :
+                    filter.indexOf(schema.items.type) !== -1;
                 }
 
                 return filter.indexOf(type) !== -1;
@@ -39,7 +39,7 @@ angular.module('registryApp.dyole')
                     } else {
                         // this means input is not required and type is array where first element is null
                         // thats why we take second element since that is it's real type
-                        return this.checkTypeFile(schema, schema.type[1] || schema.type[0]);
+                        return this.checkTypeFile(schema, schema.type[1]);
                     }
                 }
 
@@ -65,9 +65,11 @@ angular.module('registryApp.dyole')
              * @private
              */
             generateNodeId: function (model, used) {
-                var _id, check = true, name = (model.softwareDescription && model.softwareDescription.label) ? model.softwareDescription.label : model.label || model.name,
+                var _id, check = true,
+                    name = (model.softwareDescription && model.softwareDescription.label) ? model.softwareDescription.label : model.label || model.name,
                     n = 0;
 
+                // remove # to start striping and creating unique id
                 if (name.charAt(0) === '#') {
                     name = name.slice(1);
                 }
@@ -110,23 +112,38 @@ angular.module('registryApp.dyole')
 
                 return _id;
             },
-            
-            parseType: function (type) {
-                var t;
 
+            parseType: function (type) {
                 if (type === 'string') {
                     return type;
                 }
 
                 if (_.isArray(type)){
-                    return type[1] || type[0]
+                    return type[1] || type[0];
                 }
 
                 if (typeof type === 'object') {
                     return type.type;
                 }
+            },
+
+            fullParseType: function (type) {
+
+                if (typeof type === 'string') {
+                    return type;
+                }
+
+                if (_.isArray(type)){
+                    return this.fullParseType(type[1] || type[0]);
+                }
+
+                if (typeof type === 'object') {
+                    return this.fullParseType(type.type);
+                }
+
             }
 
         };
+
 
     });

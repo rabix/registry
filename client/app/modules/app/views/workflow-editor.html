@@ -103,8 +103,8 @@
                                 <li ng-if="(repoTypeObj | isEmpty) && (repoTypeObj | isEmpty)">
                                     <p class="alert alert-info">
                                         <span ng-if="repoType === 'myRepositories' && !view.user"> {{ view.message }}</span>
-                                        <span ng-if="repoType === 'myRepositories' && view.user">You don't have any repository yet</span>
-                                        <span ng-if="repoType === 'publicRepositories'">There are no public repositories</span>
+                                        <span ng-if="repoType === 'myRepositories' && view.user">You don't have any repository with apps yet</span>
+                                        <span ng-if="repoType === 'publicRepositories'">There are no public repositories containing apps</span>
                                     </p>
                                 </li>
                                 <li ng-repeat="(repoName, apps) in ::repoTypeObj"
@@ -236,19 +236,32 @@
 
                         <h3 class="tab-title">{{ ::view.json.name }}</h3>
 
-                        <input-field
-                                ng-repeat="property in view.json.inputs track by property['id']"
-                                ng-model="view.values[view.json.id][property['id']]"
-                                class="input-field input-field-sm"
-                                key="id"
-                                prop="property"
-                                form="form.jobForm"
-                                app-name="{{ ::view.json.id }}"
-                                exposed="view.exposed"
-                                ignore-files="true"
-                                handle-expose="onExpose(appName, property['id'])"
-                                on-un-expose="onUnExpose(appName, property['id'], value)">
-                        </input-field>
+                        <div ng-repeat="cat in view.inputCategories" ng-if="!view.json.softwareDescription" class="category-container sm">
+                            <h4 class="category-title" ng-class="{first: $first}"  ng-click="cat.show = !cat.show">
+                                {{ ::cat.name == 'undefined' ? 'Uncategorized' : cat.name }}
+                                <i class="fa pull-right mg-right-10" ng-class="{'fa-caret-up': cat.show, 'fa-caret-down': !cat.show}"></i>
+                            </h4>
+                            <div class="input-container input-container-sm" ng-show="cat.show">
+
+                                <input-field
+                                        ng-repeat="property in cat.inputs track by property['id']"
+                                        ng-model="view.values[view.json.id][property['id']]"
+                                        suggested-values="view.suggestedValues"
+                                        values="view.values[view.json.id][property['id']]"
+                                        class="input-field input-field-sm"
+                                        key="id"
+                                        prop="property"
+                                        form="form.jobForm"
+                                        app-name="{{ ::view.json.id }}"
+                                        exposed="view.exposed"
+                                        ignore-files="true"
+                                        handle-expose="onExpose(appName, property['id'])"
+                                        handle-include-in-ports="onIncludeInPorts(appName, property['id'], value)"
+                                        on-un-expose="onUnExpose(appName, property['id'], value)">
+                                </input-field>
+                            </div>
+
+                        </div>
 
                         <!-- For input suggested files -->
                         <!--<suggested-files-->

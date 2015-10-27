@@ -17,7 +17,8 @@ if (typeof require !== 'undefined') {
 }
 
 var Const = {
-    exposedSeparator: '$'
+    exposedSeparator: '$',
+    generalSeparator: '.'
 };
 
 var baseUrl = '../test/mocks/';
@@ -38,7 +39,6 @@ function resolveApp(name) {
         return false;
     }
 }
-
 /**
  * Bare Rabix schema model
  *
@@ -48,9 +48,14 @@ var RabixModel = {
     'class': 'Workflow',
     '@context': 'https://raw.githubusercontent.com/common-workflow-language/common-workflow-language/draft2/specification/context.json',
     'steps': [],
+    'requirements': [],
     'dataLinks': [],
     'inputs': [],
     'outputs': []
+};
+
+var MetadataRequirement =  {
+    "class": "sbg:Metadata"
 };
 
 /**
@@ -59,7 +64,7 @@ var RabixModel = {
  * @type {{fileFilter: string[], _fileTypeCheck: _fileTypeCheck, checkTypeFile: checkTypeFile}}
  * @private
  */
-var _common;
+var _common = {};
 
 /**
  * Main formatter
@@ -152,13 +157,14 @@ var _formatter = {
             delete model.name;
         }
 
-        var n = 1;
+        var n = 0;
 
         while(!flag) {
 
             if (!_self._checkIdUniqe(model.id, workflow.inputs) && !_self._checkIdUniqe(model.id, workflow.outputs)) {
                 flag = true;
             } else {
+                n++;
                 model.id = id + '_' + n;
             }
 
@@ -288,12 +294,10 @@ var _formatter = {
                 delete schema.softwareDescription;
 
                 _.forEach(schema.inputs, function (inp) {
-                    delete inp.label;
                     delete inp.name;
                 });
 
                 _.forEach(schema.outputs, function (out) {
-                    delete out.label;
                     delete out.name;
                 });
 
@@ -364,7 +368,7 @@ var _formatter = {
         _.forEach(workflow.inputs, function (input) {
             var id = input['id'];
 
-            if (_common.checkTypeFile(input.type[1] || input.type[0])) {
+            if (_common.checkTypeFile(input.type[1] || input.type[0]) || input['sbg:includeInPorts']) {
                 system[id] = _self._generateIOSchema('input', input, id);
             }
         });
@@ -403,7 +407,7 @@ var _formatter = {
             if (typeof input !== 'undefined') {
                 schema = input.type[1] || input.type[0];
 
-                return _common.checkTypeFile(schema);
+                return input['sbg:includeInPorts']? true : _common.checkTypeFile(schema);
             } else {
                 console.log('Input %s not found on node %s', input_id, node_id);
             }
@@ -446,30 +450,30 @@ var _formatter = {
                 relations.push(relation);
 
             } else {
-                if (src.length === 1) {
-                    src = src[0];
+//                        if (src.length === 1) {
+                src = src[0];
 
-                    var ex = _.find(workflow.inputs, function (i) {
-                        return i['id'] === src;
-                    });
+                var ex = _.find(workflow.inputs, function (i) {
+                    return i['id'] === src;
+                });
 
-                    if (typeof ex !== 'undefined') {
-                        var keyName = dest[0] + Const.exposedSeparator + dest[1];
-                        //remove # with slice in front of input id (cliche form builder required)
-                        exposed[keyName] = ex;
+                if (typeof ex !== 'undefined') {
+                    var keyName = dest[0] + Const.exposedSeparator + dest[1];
+                    //remove # with slice in front of input id (cliche form builder required)
+                    exposed[keyName] = ex;
 
-                        var sugValue = ex['sbg:suggestedValue'];
-                        if (typeof sugValue !== 'undefined') {
-                            suggestedValues[keyName] = sugValue;
-                        }
-
-                    } else {
-                        console.error('Param exposed but not set in workflow inputs');
+                    var sugValue = ex['sbg:suggestedValue'];
+                    if (typeof sugValue !== 'undefined') {
+                        suggestedValues[keyName] = sugValue;
                     }
 
                 } else {
-                    console.error('Param must be exposed as workflow input');
+                    console.error('Param exposed but not set in workflow inputs');
                 }
+
+//                        } else {
+//                            console.error('Param must be exposed as workflow input');
+//                        }
             }
 
 
@@ -820,7 +824,12 @@ var fd2 = {
         model = _mergeSBGProps(json, model);
         model['id'] = json['id'] || model['id'];
         model.label = json.label || model.label;
-        model.description = json.description || model.description;
+        model.description = json.description || '';
+        model.hints = json.hints;
+
+        if (json.requireSBGMetadata) {
+            model.requirements.push(_.clone(MetadataRequirement, true));
+        }
 
         return model;
     },
@@ -844,7 +853,13 @@ var fd2 = {
 
         relations = _formatter.toPipelineRelations(schemas, json.dataLinks, exposed, json, suggestedValues);
 
+        var requireMetadata = _.find(json.requirements, function(req){
+            return req.class === MetadataRequirement.class;
+        });
+
         var model = {
+            hints: json.hints || [],
+            requireSBGMetadata: typeof requireMetadata !== 'undefined',
             exposed: exposed,
             values: values,
             suggestedValues: suggestedValues,
@@ -871,8 +886,8 @@ if (typeof module !== 'undefined' && module.exports) {
 
 } else if (typeof angular !== 'undefined') {
     angular.module('registryApp.dyole')
-        .factory('FormaterD2', ['Const', 'common', function (Cons, Common) {
-            Const = Cons;
+        .factory('FormaterD2', ['Const', 'common', function (_const, Common) {
+            Const = _const;
             _common = Common;
 
             return fd2;

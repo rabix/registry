@@ -14,6 +14,9 @@ angular.module('registryApp.cliche')
                 CHANGED: 'expression-changed',
                 NEW: 'expression-new',
                 DELETED: 'expression-deleted'
+            },
+            JOB: {
+                CHANGED: 'job:changed'
             }
         };
 }]);

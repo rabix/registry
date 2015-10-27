@@ -3,12 +3,19 @@
      ng-class="{required: view.required, 'has-error': view.required && view.model.length === 0 && !isDisabled}">
 
     <div class="control-label">
+
         <div ng-if="exposed && view.itemsType !== 'File'" class="checkbox">
-            <label><input type="checkbox" ng-model="view.expose" ng-change="exposeParams()"> expose</label>
+            <label><input ng-disabled="view.includeInPorts" type="checkbox" ng-model="view.expose" ng-change="exposeParams()"> expose</label>
         </div>
-        <span class="input-key" title="{{ view.name }}">
-            <span class="input-key-inner">{{ view.name }}</span>
+
+        <div class="checkbox" ng-if="exposed">
+            <label><input type="checkbox" ng-model="view.includeInPorts" ng-change="includeInPorts()"> Include in Ports</label>
+        </div>
+
+        <span class="input-key" title="{{ ::view.name }}">
+            <span class="input-key-inner">{{ ::view.name }}</span>
         </span>
+
     </div>
 
     <div class="input-property-body">
@@ -16,6 +23,7 @@
              ng-model="view.model"
              type="view.itemsType"
              properties="view.items.fields"
+             symbols="view.items.symbols"
              is-required="view.required"
              exposible="{{ view.exposible }}"
              form="form"

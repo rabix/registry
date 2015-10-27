@@ -27,4 +27,9 @@ angular.module('registryApp.cliche', ['ngTagsInput'])
             storeName: 'registryDB'
         });
 
-    }]);
+    }])
+    .constant('Const', {
+        exposedSeparator: '$',
+        generalSeparator: '.'
+    });
+

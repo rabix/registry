@@ -4,7 +4,7 @@
 'use strict';
 
 angular.module('registryApp.app')
-    .controller('WorkflowEditorCtrl', ['$scope', '$rootScope', '$q', '$stateParams', '$modal', '$templateCache', 'Sidebar', 'Loading', 'Tool', 'Workflow', 'User', 'Repo', 'BeforeRedirect', 'Helper', 'PipelineService', 'Notification', 'HotkeyRegistry', function ($scope, $rootScope, $q, $stateParams, $modal, $templateCache, Sidebar, Loading, Tool, Workflow, User, Repo, BeforeRedirect, Helper, PipelineService, Notification, HotkeyRegistry) {
+    .controller('WorkflowEditorCtrl', ['$scope', '$rootScope', '$q', '$stateParams', '$modal', '$templateCache', 'Sidebar', 'Loading', 'Tool', 'Workflow', 'User', 'Repo', 'BeforeRedirect', 'Helper', 'PipelineService', 'Notification', 'HotkeyRegistry', 'Cliche', function ($scope, $rootScope, $q, $stateParams, $modal, $templateCache, Sidebar, Loading, Tool, Workflow, User, Repo, BeforeRedirect, Helper, PipelineService, Notification, HotkeyRegistry, Cliche) {
 
         Sidebar.setActive('workflow editor');
 
@@ -81,6 +81,7 @@ angular.module('registryApp.app')
 
             PipelineInstance.getEventObj().subscribe('controller:node:select', onNodeSelect);
             PipelineInstance.getEventObj().subscribe('controller:node:deselect', onNodeDeselect);
+            PipelineInstance.getEventObj().subscribe('controller:node:destroy', onNodeDestroy);
 
             console.log('Pipeline Instance cached', PipelineInstance);
         };
@@ -415,6 +416,14 @@ angular.module('registryApp.app')
             }
         };
 
+        $scope.onIncludeInPorts = function (appName, key, value) {
+
+            // call onExpose to remove values from values object
+            $scope.onExpose(appName, key);
+            PipelineInstance.onIncludeInPorts(appName, key, value)
+        };
+
+
         // think about this when implementing multi select of nodes
         var deepNodeWatch;
         /**
@@ -428,7 +437,7 @@ angular.module('registryApp.app')
             $scope.view.exposed = exposed;
             $scope.view.suggestedValues = suggestedValues;
 
-            _.forEach($scope.view.suggestedValues, function(sugValue, keyName) {
+            _.forEach($scope.view.suggestedValues, function (sugValue, keyName) {
                 var appId = keyName.split(Const.exposedSeparator)[0];
                 var inputId = '#' + keyName.split(Const.exposedSeparator)[1];
 
@@ -440,23 +449,39 @@ angular.module('registryApp.app')
 
             $scope.view.required = $scope.view.json.inputs.required;
 
+            // TODO: think about this when implementing multi select of nodes
             deepNodeWatch = $scope.$watch('view.values', function (n, o) {
                 if (n !== o) {
                     $scope.onWorkflowChange({value: true, isDisplay: false});
                 }
-            } , true);
+            }, true);
+
+            $scope.view.inputCategories = _($scope.view.json.inputs).filter(filterInputs).groupBy('sbg:category').map(function(value, key){
+                return {
+                    name: key,
+                    inputs: value,
+                    show: true
+                }
+            }).value();
 
             $scope.switchTab('params');
             $scope.$digest();
 
         };
 
+        function filterInputs (input) {
+            var schema = Cliche.getSchema('input', input, 'tool', false);
+            var type = Cliche.parseType(schema);
+            var items = Cliche.getItemsType(Cliche.getItemsRef(type, schema));
+            return (type !== 'File' && items !== 'File');
+        }
+
         /**
          * Track node deselect
          */
         var onNodeDeselect = function () {
 
-            _.forEach($scope.view.suggestedValues, function(sugValue, keyName) {
+            _.forEach($scope.view.suggestedValues, function (sugValue, keyName) {
                 var appId = keyName.split(Const.exposedSeparator)[0];
                 var inputId = '#' + keyName.split(Const.exposedSeparator)[1];
 
@@ -476,12 +501,16 @@ angular.module('registryApp.app')
                 deepNodeWatch();
             }
 
+            $scope.switchTab('apps');
+            $scope.$digest();
+        };
 
-            if ($scope.view.tab !== 'apps') {
-                $scope.switchTab('apps');
+        var onNodeDestroy = function () {
+            $scope.switchTab('apps');
+
+            if (!$scope.$$phase) {
                 $scope.$digest();
             }
-
         };
 
         var prompt = false;
@@ -587,17 +616,22 @@ angular.module('registryApp.app')
 
         $scope.editMetadata = function () {
 
+            var json = PipelineInstance.getJSON();
+
             var modalInstance = $modal.open({
                 template: $templateCache.get('modules/dyole/views/edit-metadata.html'),
                 controller: 'DyoleEditMetadataCtrl',
                 windowClass: 'modal-markdown',
                 size: 'lg',
                 backdrop: 'static',
-                resolve: {data: function () {return {tool: $scope.view.workflow}; } }
+                resolve: {data: function () {
+                    return {tool: json};
+                }}
             });
 
-            modalInstance.result.then(function(result) {
-                $scope.view.workflow = result;
+            modalInstance.result.then(function (result) {
+                PipelineInstance.updateMetadata(result);
+                $scope.view.isChanged = !_.isEqual(result, json) || $scope.view.isChanged;
             });
 
         };
@@ -625,7 +659,6 @@ angular.module('registryApp.app')
          * Load json importer
          */
         $scope.loadJsonImport = function() {
-
             var modalInstance = $modal.open({
                 template: $templateCache.get('modules/cliche/views/partials/json-editor.html'),
                 controller: 'DyoleJsonEditorCtrl',
@@ -635,12 +668,33 @@ angular.module('registryApp.app')
             modalInstance.result.then(function (json) {
 
                 if (json) {
+                    $scope.onWorkflowChange({value: true, isDisplay: false});
                     $scope.view.workflow = json;
                 }
             });
 
         };
-        
+
+        $scope.workflowSettings = function () {
+            var modalInstance = $modal.open({
+                template: $templateCache.get('modules/dyole/views/workflow-settings.html'),
+                controller: 'WorkflowSettingsCtrl',
+                resolve: { data: function () {
+                    return {
+                        hints: PipelineInstance.getWorkflowHints(),
+                        instances: [],
+                        requireSBGMetadata: PipelineInstance.getRequireSBGMetadata()
+                    };
+                }}
+            });
+
+            modalInstance.result.then(function (result) {
+                PipelineInstance.updateWorkflowSettings(result.hints, result.requireSBGMetadata);
+            });
+
+        };
+
+
         $scope.validateWorkflowJSON = function () {
 
             PipelineInstance.validate().then(function (workflow) {

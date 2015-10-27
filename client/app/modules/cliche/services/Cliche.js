@@ -53,36 +53,13 @@ angular.module('registryApp.cliche')
             // temporarily removing inputItem and input 'record', because it isn't supported.
             // frontend supports inputItem: 'record'
             var map = {
-                input: ['File', 'string', 'enum', 'int', 'float', 'boolean', 'array'],
-                output: ['File', 'array'],
-                inputItem: ['string', 'int', 'float', 'File'],
-                outputItem: ['File']
+                input: ['File', 'string', 'enum', 'int', 'float', 'boolean', 'array', 'record', 'map'],
+                output: ['File', 'string', 'enum', 'int', 'float', 'boolean', 'array', 'record', 'map'],
+                inputItem: ['string', 'int', 'float', 'File', 'record', 'map', 'enum'],
+                outputItem: ['string', 'int', 'float', 'File', 'record', 'map', 'enum']
             };
 
             return map[type] || [];
-
-        };
-
-        /**
-         * Check if old version of structure and if yes clean up the storage
-         *
-         * @returns {*}
-         */
-        var checkVersion = function() {
-
-            return $localForage.getItem('version')
-                .then(function(v) {
-
-                    if (v === version) {
-                        return false;
-                    } else {
-                        return $q.all([
-                            $localForage.setItem('version', version),
-                            $localForage.setItem('tool', rawTool),
-                            $localForage.setItem('job', rawJob)
-                        ]);
-                    }
-                });
 
         };
 
@@ -125,7 +102,6 @@ angular.module('registryApp.cliche')
                     transformed.stdout = angular.copy(rawTool.stdout);
                     transformed.arguments = angular.copy(rawTool['arguments']);
                 }
-
                 if (angular.isUndefined(transformed.requirements)) {
                     transformed.requirements = angular.copy(rawTool.requirements);
                 }
@@ -136,50 +112,18 @@ angular.module('registryApp.cliche')
         };
 
         /**
-         * Fetch tool and job from local db if exist
-         *
-         * @param {String} type
-         * @returns {*}
-         */
-        var fetchLocalToolAndJob = function (type) {
-
-            var deferred = $q.defer();
-
-            $q.all([
-                    $localForage.getItem('tool'),
-                    $localForage.getItem('job')
-                ]).then(function (result) {
-                    toolJSON = transformToolJson(type, result[0]);
-                    jobJSON = result[1];
-
-                    deferred.resolve();
-                });
-
-            return deferred.promise;
-        };
-
-        /**
          * Set current tool
          *
          * @param t
-         * @param preserve
          */
-        var setTool = function(t, preserve) {
+        var setTool = function(t) {
 
             var deferred = $q.defer();
 
             t = t || rawTool;
-
             toolJSON = angular.copy(t);
 
-            if (preserve) {
-                $localForage.setItem('tool', toolJSON)
-                    .then(function() {
-                        deferred.resolve();
-                    });
-            } else {
-                deferred.resolve();
-            }
+            deferred.resolve();
 
             return deferred.promise;
         };
@@ -188,9 +132,8 @@ angular.module('registryApp.cliche')
          * Set current job
          *
          * @param j
-         * @param preserve
          */
-        var setJob = function(j, preserve) {
+        var setJob = function(j) {
 
             var deferred = $q.defer();
 
@@ -198,14 +141,7 @@ angular.module('registryApp.cliche')
 
             jobJSON = angular.copy(j);
 
-            if (preserve) {
-                $localForage.setItem('job', jobJSON)
-                    .then(function() {
-                        deferred.resolve();
-                    });
-            } else {
-                deferred.resolve();
-            }
+            deferred.resolve();
 
             return deferred.promise;
 
@@ -343,8 +279,8 @@ angular.module('registryApp.cliche')
                             exists = true;
                             return false;
                         }
-                    } else if (type === 'array' && input.items && input.items.type === 'record') {
-                        exists = checkInner(name, input.items.fields);
+                    } else if (type === 'array' && input.items && input.items.type === 'record' || type === 'record') {
+                        exists = checkInner(name, input.items.fields, false);
                         if (exists) {
                             return false;
                         }
@@ -367,10 +303,6 @@ angular.module('registryApp.cliche')
                 return checkInner(nameObj.newName, toolJSON.inputs, true);
             }
 
-        };
-
-        var getExpressionRequirement = function() {
-            return _.find(rawTool.requirements, {'class': 'ExpressionEngineRequirement'});
         };
 
         /**
@@ -442,6 +374,9 @@ angular.module('registryApp.cliche')
 
         };
 
+        var getExpressionRequirement = function() {
+            return _.find(rawTool.requirements, {'class': 'ExpressionEngineRequirement'});
+        };
 
         /**
          * Delete property (input or output) from the object
@@ -461,14 +396,12 @@ angular.module('registryApp.cliche')
         };
 
         /**
-         * Delete argument property from adapter
+         * Delete argument property from cliAdapter
          *
-         * @param {integer} index
+         * @param {object} argument
          */
-        var deleteArg = function(index) {
-
-            toolJSON.arguments.splice(index, 1);
-
+        var deleteArg = function(argument) {
+            _.remove(toolJSON['arguments'], argument);
         };
 
         /**
@@ -637,7 +570,6 @@ angular.module('registryApp.cliche')
          * @param {object} property
          * @param {object} input
          * @param {string} prefix
-         * @param {string} separator
          * @param {string} itemSeparator
          * @returns {string}
          */
@@ -648,7 +580,7 @@ angular.module('registryApp.cliche')
                 schema = getSchema('input', property, 'tool', false),
                 type = parseType(schema),
                 items = getItemsRef(type, schema),
-                separator = parseSeparation(property.separate);
+                separator = parseSeparation(property.inputBinding.separate);
 
             if (items && items.type !== 'record') {
                 joiner = _.isNull(itemSeparator) ? (' ' + prefix + separator) : itemSeparator;
@@ -699,22 +631,24 @@ angular.module('registryApp.cliche')
         /**
          * Prepare properties for the command line generating
          *
-         * @param {object} properties
+         * @param {Array} properties
          * @param {object} inputs
          * @returns {Promise} props
          */
         var prepareProperties = function(properties, inputs) {
-
             var promises = [],
                 keys = _.keys(inputs),
                 defined = _.filter(properties, function(property) {
 
                     var key = parseName(property);
 
-                    // make sure property is included in jobJSON inputs,
-                    // has an inputBinding
-                    // and that that inputBinding does not specify stdin
-                    return _.contains(keys, key) && property.inputBinding && !property.inputBinding.stdin;
+                    // To normalize input bindings, because this property is not set during migrations
+                    // but it is necessary for Cliche
+                    if (property.inputBinding && !_.isEmpty(property.inputBinding)) {
+                        property.inputBinding['sbg:cmdInclude'] = true;
+                    }
+
+                    return _.contains(keys, key) && property.inputBinding && property.inputBinding['sbg:cmdInclude'];
                 });
 
             /* go through properties */
@@ -725,55 +659,77 @@ angular.module('registryApp.cliche')
                     schema = getSchema('input', property, 'tool', false),
                     type = parseType(schema),
                     items = getItemsRef(type, schema),
+                    fields = getFieldsRef(schema),
                     prefix = property.inputBinding.prefix || '',
                     itemSeparator = parseItemSeparator(property.inputBinding.itemSeparator),
 
                     prop = _.extend({
                         key: key,
                         type: type,
+                        required: isRequired(property.type),
                         val: '',
                         position: property.inputBinding.position || 0,
                         prefix: prefix,
-                        separate: property.inputBinding.separate
+                        separate: property.inputBinding.separate || false
                     }, property.inputBinding);
 
+                // check that a value has been set inside the job, if not return
+                if (typeof inputs[key] === 'undefined') { return; }
+
                 switch (type) {
-                case 'array':
-                    /* if input is ARRAY */
-                    parseArrayInput(property, inputs[key], prefix, itemSeparator)
-                        .then(function (result) {
-                            prop.val = result;
+                    case 'array':
+                        /* if input is ARRAY */
+                        parseArrayInput(property, inputs[key], prefix, itemSeparator)
+                            .then(function (result) {
+                                prop.val = result;
+                                deferred.resolve(prop);
+                            }, function (error) {
+                                deferred.reject(error);
+                            });
+                        break;
+                    case ('File' || 'file'):
+                        /* if input is FILE */
+                        var value = property.inputBinding.valueFrom ? inputs[key] : inputs[key].path;
+                        applyTransform(property.inputBinding.valueFrom, value, true)
+                            .then(function (result) {
+                                prop.val = result;
+                                deferred.resolve(prop);
+                            }, function (error) {
+                                deferred.reject(error);
+                            });
+                        break;
+                    case 'record':
+                        /* if input is RECORD  */
+                        parseObjectInput(fields, inputs[key])
+                            .then(function (result) {
+                                prop.val = result;
+                                deferred.resolve(prop);
+                            }, function (error) {
+                                deferred.reject(error);
+                            });
+                        break;
+                    case 'boolean':
+                        /* if input is BOOLEAN */
+                        if (property.inputBinding.valueFrom) {
+                            //TODO: this is hack, if bool type has expression defined then it works in the same way as (for example) string input type
+                            prop.type = 'string';
+                            applyTransform(property.inputBinding.valueFrom, inputs[key], true)
+                                .then(function (result) {
+                                    prop.val = result;
+                                    deferred.resolve(prop);
+                                }, function (error) {
+                                    deferred.reject(error);
+                                });
+                        } else {
+                            prop.val = '';
                             deferred.resolve(prop);
-                        }, function (error) {
-                            deferred.reject(error);
-                        });
-                    break;
-                case ('File' || 'file'):
-                    /* if input is FILE */
-                    var value = property.inputBinding.valueFrom ? inputs[key] : inputs[key].path;
-                    applyTransform(property.inputBinding.valueFrom, value, true)
-                        .then(function (result) {
-                            prop.val = result;
-                            deferred.resolve(prop);
-                        }, function (error) {
-                            deferred.reject(error);
-                        });
-                    break;
-                case 'record':
-                    /* if input is RECORD - not in use at this moment, because input type can not be record for now */
-                    parseObjectInput(items.fields, inputs[key])
-                        .then(function (result) {
-                            prop.val = result;
-                            deferred.resolve(prop);
-                        }, function (error) {
-                            deferred.reject(error);
-                        });
-                    break;
-                case 'boolean':
-                    /* if input is BOOLEAN */
-                    if (property.inputBinding.valueFrom) {
-                        //TODO: this is hack, if bool type has expression defined then it works in the same way as (for example) string input type
-                        prop.type = 'string';
+                            if (inputs[key]) {
+                                promises.push(deferred.promise);
+                            }
+                        }
+                        break;
+                    default:
+                        /* if input is anything else (STRING, ENUM, INT, FLOAT) */
                         applyTransform(property.inputBinding.valueFrom, inputs[key], true)
                             .then(function (result) {
                                 prop.val = result;
@@ -781,25 +737,8 @@ angular.module('registryApp.cliche')
                             }, function (error) {
                                 deferred.reject(error);
                             });
-                    } else {
-                        prop.val = '';
-                        deferred.resolve(prop);
-                        if (inputs[key]) {
-                            promises.push(deferred.promise);
-                        }
-                    }
-                    break;
-                default:
-                    /* if input is anything else (STRING, ENUM, INT, FLOAT) */
-                    applyTransform(property.inputBinding.valueFrom, inputs[key], true)
-                        .then(function (result) {
-                            prop.val = result;
-                            deferred.resolve(prop);
-                        }, function (error) {
-                            deferred.reject(error);
-                        });
 
-                    break;
+                        break;
                 }
 
                 if (prop.type !== 'boolean') {
@@ -819,12 +758,13 @@ angular.module('registryApp.cliche')
          */
         var generateCommand = function() {
 
+            // in case baseCommand is not yet defined
             if (!toolJSON.baseCommand) {
                 toolJSON.baseCommand = [''];
             }
 
             return prepareProperties(toolJSON.inputs, jobJSON.inputs)
-                /* go through arguments and concat then with inputs */
+            /* go through arguments and concat then with inputs */
                 .then(function (props) {
 
                     var argsPromises = [];
@@ -833,7 +773,7 @@ angular.module('registryApp.cliche')
 
                         var deferred = $q.defer(),
                             prefix = arg.prefix || '',
-                            prop = _.merge({key: 'arg' + key, position: arg.position, prefix: prefix, val: ''}, arg);
+                            prop = _.merge({key: 'arg' + key, position: arg.position || 0, prefix: prefix, val: ''}, arg);
 
                         applyTransform(arg.valueFrom, arg.valueFrom)
                             .then(function (result) {
@@ -855,23 +795,41 @@ angular.module('registryApp.cliche')
                 /* generate command from arguments and inputs and apply transforms on baseCmd */
                 .then(function (joined) {
 
+                    function isBlank(val) {
+                        return val === '' || _.isNull(val);
+                    }
+
                     var command = [],
+                        requiredCommand = [],
                         baseCmdPromises = [];
 
                     _.each(joined, function(arg) {
 
                         var separate = parseSeparation(arg.separate),
                             value = _.isUndefined(arg.val) ? '' : arg.val,
-                            cmd;
+                            cmd = '';
 
-                        if (!(arg.type && arg.type !== 'boolean' && (arg.val === '' || _.isNull(arg.val) || _.isUndefined(arg.val)))) {
-                            cmd = arg.prefix + separate + value;
+                        if (!arg.type || arg.type === 'boolean' || !isBlank(value)) {
+                            if (_.isArray(value)) {
+                                // set default value for itemSeparator for arguments that haven't been saved with new interface
+                                arg.itemSeparator = _.isUndefined(arg.itemSeparator) ? null : arg.itemSeparator;
+
+                                var itemSeparator = parseItemSeparator(arg.itemSeparator),
+                                    joiner = _.isNull(itemSeparator) ? (' ' + arg.prefix + separate) : itemSeparator;
+
+                                cmd = arg.prefix + separate + value.join(joiner);
+                            } else {
+                                cmd = arg.prefix + separate + value;
+                            }
 
                             if (!_.isEmpty(cmd)) {
                                 command.push(cmd);
+
+                                if (arg.required) {
+                                    requiredCommand.push(cmd);
+                                }
                             }
                         }
-
                     });
 
                     _.each(toolJSON.baseCommand, function (baseCmd) {
@@ -890,46 +848,56 @@ angular.module('registryApp.cliche')
 
                     return $q.all(baseCmdPromises)
                         .then(function (cmds) {
-                            return {command: command, baseCommand: cmds.join(' ')};
+                            return {
+                                command: command,
+                                requiredCommand: requiredCommand,
+                                baseCommand: cmds.join(' ')
+                            };
                         }, function (error) { return $q.reject(error); });
 
                 })
                 /* apply transforms on stdin/stdout */
                 .then(function (res) {
-
-
-                    var inputStd = _.find(toolJSON.inputs, function(input) {
-                        return input.inputBinding && input.inputBinding.stdin;
-                    });
-
-                    var stdin = inputStd ? jobJSON.inputs[parseName(inputStd)].path : toolJSON.stdin;
-
                     return $q.all([
-                            applyTransform(stdin, stdin),
+                            applyTransform(toolJSON.stdin, toolJSON.stdin),
                             applyTransform(toolJSON.stdout, toolJSON.stdout)
-                        ]).then(function(result) {
-                            return {command: res.command, baseCommand: res.baseCommand, stdin: result[0], stdout: result[1]};
+                        ])
+                        .then(function(result) {
+                            return {
+                                command: res.command,
+                                requiredCommand: res.requiredCommand,
+                                baseCommand: res.baseCommand,
+                                stdin: result[0],
+                                stdout: result[1]
+                            };
                         }, function (error) { return $q.reject(error); });
                 })
                 /* generate final command */
                 .then(function (result) {
 
+                    var cmdPreview = result.baseCommand + ' ' + result.requiredCommand.join(' ' );
+
                     consoleCMD = result.baseCommand + ' ' + result.command.join(' ');
 
                     if (result.stdin) {
                         consoleCMD += ' < ' + result.stdin;
+                        cmdPreview += ' < ' + result.stdin;
                     }
 
                     if (result.stdout) {
                         consoleCMD += ' > ' + result.stdout;
+                        cmdPreview += ' > ' + result.stdout;
                     }
 
                     if (_.isFunction(consoleCMDCallback)) {
                         consoleCMDCallback(consoleCMD);
                     }
 
-                    return consoleCMD;
+                    consoleCMD = consoleCMD.trim();
 
+                    toolJSON['sbg:cmdPreview'] = cmdPreview.trim();
+
+                    return consoleCMD;
                 })
                 .catch(function (error) { return $q.reject(error); });
 
@@ -990,7 +958,6 @@ angular.module('registryApp.cliche')
              * @param {string} itemType
              */
             var stripParams = function(prop, itemType) {
-
                 var toStrip = ['prefix', 'separator', 'itemSeparator', 'valueFrom'];
 
                 if (itemType === 'record' && prop.inputBinding) {
@@ -1012,9 +979,10 @@ angular.module('registryApp.cliche')
                     items: inner.items
                 };
 
-                stripParams(tmp, type.items);
+                stripParams(tmp, getItemsType(type.items));
 
-            /* if any level and enum */
+
+                /* if any level and enum */
             } else if (inner.type === 'enum') {
 
                 type = {
@@ -1023,13 +991,29 @@ angular.module('registryApp.cliche')
                     symbols: inner.symbols
                 };
 
-            /* every other case */
+            } else if (inner.type === 'map') {
+
+                type = {
+                    type: 'map',
+                    name: inner.mapName,
+                    values: inner.values
+                };
+
+                /* every other case */
+            } else if (inner.type === 'record') {
+                type = {
+                    type: 'record',
+                    name: inner.recordName,
+                    fields: inner.fields
+                }
+
             } else {
                 type = inner.type;
             }
 
             /* check if adapter has empty fields and remove them */
             /* and remove remove adapter property if no adapter is set */
+
             var adapter = propertyType === 'input' ? 'inputBinding' : 'outputBinding';
 
             if (tmp[adapter]) {
@@ -1037,8 +1021,10 @@ angular.module('registryApp.cliche')
 
                     // _.isEmpty returns true for number values, which we don't want
                     // if there is a number value, then the prop is not empty
-                    if (_.isEmpty(tmp[adapter][key]) && !_.isNumber(tmp[adapter][key])  && !_.isBoolean(tmp[adapter][key])) {
-                        delete tmp[adapter][key];
+                    if (_.isEmpty(tmp[adapter][key]) && !_.isNumber(tmp[adapter][key]) && !_.isBoolean(tmp[adapter][key]) && !_.isNull(tmp[adapter][key])) {
+                        if (key !== 'metadata') {
+                            delete tmp[adapter][key];
+                        }
                     }
                 });
 
@@ -1054,27 +1040,15 @@ angular.module('registryApp.cliche')
                 formatted = tmp;
                 formatted['id'] = '#' + inner.name;
 
-                //@todo: actually calculate depth instead of hardcoding it
-//                formatted.depth = inner.type === 'array' ? 1 : 0;
-
-            /*
-            *  schema for every other level
-            *  under the key "type"
-            */
+                /*
+                 *  schema for every other level
+                 *  under the key "type"
+                 */
             } else {
                 /* format structure for required property */
                 tmp.type = inner.required ? [type] : ['null', type];
                 formatted = tmp;
                 formatted.name = inner.name;
-            }
-
-            /*
-            * add description, label, and sbg:category to input if they exist
-            */
-            if (propertyType === 'input') {
-                if (!_.isUndefined(inner.description)){ formatted.description = inner.description; }
-                if (!_.isUndefined(inner.label)){ formatted.label = inner.label; }
-                if (!_.isUndefined(inner.category)){ formatted['sbg:category'] = inner.category; }
             }
 
             return formatted;
@@ -1111,7 +1085,7 @@ angular.module('registryApp.cliche')
          */
         var getTplType = function(type) {
             type = type.toLowerCase();
-            var general = ['file', 'string', 'int', 'float', 'boolean'];
+            var general = ['file', 'string', 'int', 'float', 'boolean', 'map'];
 
             if (_.contains(general, type)) {
                 return 'general';
@@ -1140,9 +1114,10 @@ angular.module('registryApp.cliche')
         };
 
         /**
-         * Get
+         * Returns items type from items property.
+         *
          * @param items
-         * @returns {*}
+         * @returns {string} type
          */
         var getItemsType = function(items) {
             if (items) {
@@ -1152,6 +1127,15 @@ angular.module('registryApp.cliche')
                     return items.type;
                 }
             }
+        };
+
+        /**
+         * Returns array of fields for records
+         *
+         * @param {object} schema
+         */
+        var getFieldsRef = function (schema) {
+            return schema[0] == 'null' ? schema[1].fields : schema[0].fields;
         };
 
         /**
@@ -1174,14 +1158,14 @@ angular.module('registryApp.cliche')
                 return (toolType === 'tool') ? ['null', defaultTypes[type]] : ['null', defaultTypes[type]];
             }
 
-            if (_.isUndefined(property.type)) {
+            if (_.isUndefined(property.type) && _.isUndefined(property.type)) {
                 /*
-                in case of second level inputs where structure is
-                {
-                    type: {*},
-                    name: {string}
-                    adapters: {object}
-                }
+                 in case of second level inputs where structure is
+                 {
+                 type: {*},
+                 name: {string}
+                 adapters: {object}
+                 }
                  */
                 return ref ? property : angular.copy(property);
             } else {
@@ -1193,64 +1177,13 @@ angular.module('registryApp.cliche')
             if (_.isEmpty(property)) {
                 return {};
             }
+
             var ad = type + 'Binding';
 
             return ref ? property[ad] : angular.copy(property[ad]);
         };
 
-        /**
-         * checks if any input already has stdin set
-         * @returns {Object|undefined}
-         */
-        var getStdinInput = function () {
-            return _.find(toolJSON.inputs, function(input) {
-                return input.inputBinding && input.inputBinding.stdin;
-            });
-        };
-
-        /**
-         * sets stdin to true for param property
-         * @param property
-         * @returns {Boolean}
-         */
-        var switchStdin = function (property) {
-
-            if(property.inputBinding.stdin) {
-                _.forEach(toolJSON.inputs, function(input) {
-                    if (input.inputBinding && input.inputBinding.stdin) {
-                        delete input.inputBinding;
-                    }
-                });
-
-                property.inputBinding = !property.inputBinding ? {} : property.inputBinding;
-                property.inputBinding.stdin = true;
-            }
-        };
-
-        /**
-         * Save tool locally
-         *
-         * @param mode
-         * @returns {*}
-         */
-        var save = function(mode) {
-
-            if (mode === 'new') {
-                return $q.all([
-                    $localForage.setItem('tool', toolJSON),
-                    $localForage.setItem('job', jobJSON)
-                ]);
-            } else {
-                var d = $q.defer();
-                d.resolve();
-                return d.promise;
-            }
-
-        };
-
         return {
-            checkVersion: checkVersion,
-            fetchLocalToolAndJob: fetchLocalToolAndJob,
             setTool: setTool,
             setJob: setJob,
             getTool: getTool,
@@ -1269,18 +1202,16 @@ angular.module('registryApp.cliche')
             getTplType: getTplType,
             getItemsRef: getItemsRef,
             getItemsType: getItemsType,
+            getFieldsRef: getFieldsRef,
             getTypes: getTypes,
             getSchema: getSchema,
             getAdapter: getAdapter,
-            getStdinInput: getStdinInput,
-            switchStdin: switchStdin,
             checkIfEnumNameExists: checkIfEnumNameExists,
             getExpressionRequirement: getExpressionRequirement,
             manageProperty: manageProperty,
             deleteProperty: deleteProperty,
             manageArg: manageArg,
             deleteArg: deleteArg,
-            save: save,
             subscribe: subscribe
         };
 

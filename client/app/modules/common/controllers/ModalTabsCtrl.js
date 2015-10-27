@@ -8,7 +8,16 @@ angular.module('registryApp.common')
                 type: 'array',
                 items: 'File'
             },
-            File: 'File'
+            File: 'File',
+            boolean: 'boolean',
+            int: 'int',
+            float: 'float',
+            enum: {
+                type: 'enum',
+                symbols: [],
+                name: ''
+            },
+            string: 'string'
         };
 
 
@@ -31,8 +40,65 @@ angular.module('registryApp.common')
             return parsed;
         };
 
+        var _parseItemType = function () {
+            var parsed = Common.parseType($scope.schema.type);
+
+            if (typeof parsed === 'object') {
+
+                if (parsed.type === 'array') {
+                    parsed = parsed.items;
+                } else {
+                    // default item type if its not array so it can be prepopulated
+                    parsed = 'File';
+                }
+            }
+
+            return parsed;
+
+        };
+
+        var _getSymbols = function () {
+            var parsed = Common.parseType($scope.schema.type);
+
+            if (typeof parsed === 'object') {
+
+                if (parsed.type === 'enum') {
+                    return parsed.symbols;
+                }
+
+            }
+
+            return [];
+        };
+
+        var _getEnumName = function () {
+            var parsed = Common.parseType($scope.schema.type);
+
+            if (typeof parsed === 'object') {
+
+                if (parsed.type === 'enum') {
+                    return parsed.name;
+                }
+
+            }
+
+            return '';
+        };
+
         var _updateType = function (value) {
-            var newType = schemas[value];
+            var newType = _.clone(schemas[value], true);
+
+            if (typeof newType === 'object' &&  newType.type === 'array') {
+                newType.items = _.clone(schemas[$scope.view.itemType]);
+            }
+
+            if (value === 'enum') {
+                newType.name = $scope.view.enumName;
+                newType.symbols = $scope.view.enumSymbols;
+
+                console.log('Logging enum type');
+                console.log(newType, $scope.view.enumName, $scope.view.enumSymbols);
+            }
 
             if (_.isArray($scope.schema.type)) {
                 $scope.schema.type.splice(0,$scope.schema.type.length);
@@ -55,22 +121,71 @@ angular.module('registryApp.common')
 
             }
 
+            if (!$scope.schema['sbg:includeInPorts']) {
+                $scope.schema['sbg:includeInPorts'] = true;
+            }
         };
 
         $scope.view = {};
 
         $scope.view.schemaTypes = [
             {
-                name: 'Array of files',
+                name: 'Array',
                 value: 'array'
             },
             {
                 name: 'File',
                 value: 'File'
+            },
+            {
+                name: 'boolean',
+                value: 'boolean'
+            },
+            {
+                name: 'string',
+                value: 'string'
+            },
+            {
+                name: 'int',
+                value: 'int'
+            },
+            {
+                name: 'float',
+                value: 'float'
+            },
+            {
+                name: 'enum',
+                value: 'enum'
+            }
+        ];
+
+        $scope.view.itemTypes = [
+            {
+                name: 'File',
+                value: 'File'
+            },
+            {
+                name: 'boolean',
+                value: 'boolean'
+            },
+            {
+                name: 'string',
+                value: 'string'
+            },
+            {
+                name: 'int',
+                value: 'int'
+            },
+            {
+                name: 'float',
+                value: 'float'
             }
         ];
 
         $scope.view.type = _parseType();
+        $scope.view.itemType = _parseItemType();
+        $scope.view.enumSymbols = _getSymbols();
+        $scope.view.enumName = _getEnumName();
 
         $scope.view.required = (_.isArray($scope.schema.type) && $scope.schema.type.length === 1) || typeof $scope.schema.type === 'string';
 
@@ -81,6 +196,25 @@ angular.module('registryApp.common')
                     _updateType(n, o);
                 }
             });
+
+            $scope.$watch('view.itemType', function (n, o) {
+                if (n !== o) {
+                    _updateType($scope.view.type);
+                }
+            });
+
+            $scope.$watch('view.enumName', function (n, o) {
+                if (n !== o) {
+                    _updateType($scope.view.type);
+                }
+            });
+
+            $scope.$watch('view.enumSymbols', function (n, o) {
+                if (n !== o) {
+                    _updateType($scope.view.type);
+                }
+            });
+
             $scope.$watch('view.required', function (n, o) {
                 if (n !== o) {
                     _updateType($scope.view.type);
@@ -115,7 +249,7 @@ angular.module('registryApp.common')
             if (b.id < a.id) { return -1; }
             return 0;
         });
-        
+
         _.forEach(data.connections, function (connection) {
             if ( typeof $scope.inputConnections[connection.input_name] === 'undefined') {
                 $scope.inputConnections[connection.input_name] = [];
@@ -139,7 +273,7 @@ angular.module('registryApp.common')
 
             _.each(inputRefs, function (input) {
 
-                if (Common.checkTypeFile(input.type[1] || input.type[0])) {
+                if (Common.checkTypeFile(input.type[1] || input.type[0]) || input['sbg:includeInPorts']) {
                     input.required = input.type.length === 1;
                     inputs.push(input);
                 }
@@ -153,7 +287,7 @@ angular.module('registryApp.common')
         // placeholder for input values
         $scope.inputValues = {};
 
-        if (typeof $scope.data.scatter !== 'undefiend' && typeof $scope.data.scatter === 'string') {
+        if (typeof $scope.data.scatter !== 'undefined' && typeof $scope.data.scatter === 'string') {
             $scope.inputValues[$scope.data.scatter] = true;
         }
 
@@ -207,5 +341,4 @@ angular.module('registryApp.common')
         $scope.cancel = function () {
             $modalInstance.dismiss('cancel');
         };
-
     }]);
