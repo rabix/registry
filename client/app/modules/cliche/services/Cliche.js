@@ -1069,7 +1069,7 @@ angular.module('registryApp.cliche')
             }
 
             /*
-            * add description, label, and sbg:category to input if they exist
+            * add description, and label to input if they exist
             */
             if (propertyType === 'input') {
                 if (!_.isUndefined(inner.description)){ formatted.description = inner.description; }
