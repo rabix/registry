@@ -122,6 +122,7 @@ angular.module('registryApp.cliche')
                     $scope.view.itemsType = 'string';
                     $scope.view.items = $scope.view.itemsType;
                 } else {
+                    $scope.view.itemsType = '';
                     delete $scope.view.items;
                 }
             }
