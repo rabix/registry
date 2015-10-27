@@ -28,7 +28,7 @@ angular.module('registryApp.cliche')
             $scope.view.name = Cliche.parseName($scope.prop);
             $scope.view.type = Cliche.parseType(schema);
             $scope.view.required = Cliche.isRequired(schema);
-            $scope.view.items = Cliche.getItemsRef($scope.view.type, $scope.view.property);
+            $scope.view.items = Cliche.getItemsRef($scope.view.type, schema);
             $scope.view.itemsType = Cliche.getItemsType($scope.view.items);
 
             var tplType = Cliche.getTplType($scope.view.type);
