@@ -1074,7 +1074,6 @@ angular.module('registryApp.cliche')
             if (propertyType === 'input') {
                 if (!_.isUndefined(inner.description)){ formatted.description = inner.description; }
                 if (!_.isUndefined(inner.label)){ formatted.label = inner.label; }
-                if (!_.isUndefined(inner.category)){ formatted['sbg:category'] = inner.category; }
             }
 
             return formatted;

@@ -49,7 +49,6 @@ angular.module('registryApp.cliche')
 
         $scope.view.description = $scope.view.property.description || '';
         $scope.view.label = $scope.view.property.label || '';
-        $scope.view.category = $scope.view.property['sbg:category'] || '';
 
         $scope.view.jobInputs = Cliche.getJob().inputs;
         $scope.view.isNested = options.isNested === 'true';
