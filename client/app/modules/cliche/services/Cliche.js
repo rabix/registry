@@ -1154,6 +1154,15 @@ angular.module('registryApp.cliche')
         };
 
         /**
+         * Returns array of fields for records
+         *
+         * @param {object} schema
+         */
+        var getFieldsRef = function (schema) {
+            return schema[0] == 'null' ? schema[1].fields : schema[0].fields;
+        };
+
+        /**
          * Get property schema depending on the level
          *
          * @param {object} type - input or output
@@ -1280,7 +1289,8 @@ angular.module('registryApp.cliche')
             manageArg: manageArg,
             deleteArg: deleteArg,
             save: save,
-            subscribe: subscribe
+            subscribe: subscribe,
+            getFieldsRef: getFieldsRef
         };
 
     }]);

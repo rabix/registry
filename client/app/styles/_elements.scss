@@ -196,6 +196,10 @@
       .rb-tabs {
         @include flex(0 0 auto)
       }
+
+      .input-property .form-group .control-label > .input-key {
+        max-width: 40%;
+      }
     }
   }
 }
