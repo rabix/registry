@@ -889,7 +889,7 @@ angular.module('registryApp.dyole')
              * @private
              */
             _transformWorkflowModel: function (nodeModel) {
-                var model = nodeModel.json;
+                var model = nodeModel.json || nodeModel;
 
                 return model;
             },

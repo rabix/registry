@@ -184,7 +184,7 @@ angular.module('registryApp.dyole')
 
             if (app.pipeline) {
 
-                formatted.json = JSON.parse(formatted.json);
+                formatted.json = typeof formatted.json === 'string' ? JSON.parse(formatted.json) : formatted.json;
 
                 $scope.view.loading = false;
 
