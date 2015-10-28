@@ -1,0 +1,1428 @@
+{
+  "description": "",
+  "class": "Workflow",
+  "sbg:name": "nju-wf",
+  "steps": [
+    {
+      "run": {
+        "description": "SnpEff is a variant annotation and effect prediction tool. It annotates and predicts the effects of variants on genes (such as amino acid changes).\n\nTypical usage assumes using the inputs that are predicted variants (SNPs, insertions, deletions and MNPs). The input file is usually obtained as a result of a sequencing experiment, and it is usually in variant call format (VCF). SnpEff analyses the input variants and in the process it annotates the variants and calculates the effects they produce on known genes (e.g. amino acid changes). Output file can be in several file formats, while the most common is VCF.\n\nThis is adjusted version of the tool that handles primarily config file editing. Also command line option to control amount of RAM in MB [-Xmx%m] for java process is added as a custom parameter.",
+        "owner": [],
+        "class": "CommandLineTool",
+        "sbg:projectId": "9c481e24-9b5f-43ad-9b5d-1430ef77b4f5",
+        "sbg:job": {
+          "allocatedResources": {
+            "cpu": 1,
+            "mem": 2048
+          },
+          "inputs": {
+            "insertions_only": true,
+            "filelist": false,
+            "input_format": "vcf",
+            "nostats": false,
+            "csvstats": true,
+            "mem_mb": null,
+            "stats": "stats.txt",
+            "database": "database",
+            "heterozygous_only": false,
+            "variants_file": {
+              "size": 0,
+              "path": "/asdas/fa/sfs/adf/sdfas.dfas.dfas.varinats_file.vcf",
+              "class": "File",
+              "secondaryFiles": []
+            },
+            "output_format": "vcf",
+            "homozygous_only": false,
+            "deletions_only": true
+          }
+        },
+        "sbg:latestRevision": 5,
+        "outputs": [
+          {
+            "description": "SnpEff Annotated file.",
+            "outputBinding": {
+              "glob": {
+                "script": "{\t\n  filename = $job.inputs.variants_file.path\n  basename = filename.split('.').slice(0, filename.split('.').length-1).join('.').replace(/^.*[\\\\\\/]/, '')\n \n  \n  if($job.inputs.output_format === \"txt\")\n  {\n    return basename.concat(\".snpEff_annotated.txt\")\n  }\n  else if ($job.inputs.output_format === \"bed\" || $job.inputs.output_format === \"bedAnn\")\n  {\n    return basename.concat(\".snpEff_annotated.bed\")\n  }\n  else\n  {\n    return basename.concat(\".snpEff_annotated.vcf\")\n  }\n}",
+                "engine": "#cwl-js-engine",
+                "class": "Expression"
+              },
+              "metadata": {},
+              "sbg:inheritMetadataFrom": "#variants_file"
+            },
+            "sbg:fileTypes": "VCF, TXT, GATK, BED, BEDANN",
+            "id": "#annotated",
+            "label": "SnpEff Annotated file",
+            "type": [
+              "null",
+              "File"
+            ]
+          },
+          {
+            "description": "SnpEff summary file in HTML or CSV file format.",
+            "outputBinding": {
+              "glob": {
+                "script": "{\n  filename = $job.inputs.variants_file.path\n  namebase = filename.split('.').slice(0, filename.split('.').length-1).join('.').replace(/^.*[\\\\\\/]/, '')\n \n  \n  if($job.inputs.csv_stats){\n    return namebase.concat(\".snpEff_summary.csv\")\n  }else{\n    return namebase.concat(\".snpEff_summary.html\")\n  }\n}",
+                "engine": "#cwl-js-engine",
+                "class": "Expression"
+              },
+              "metadata": {},
+              "sbg:inheritMetadataFrom": "#variants_file"
+            },
+            "sbg:fileTypes": "HTML, CSV",
+            "id": "#summary",
+            "label": "Summary file",
+            "type": [
+              "null",
+              "File"
+            ]
+          },
+          {
+            "description": "SnpEff Summary in text format.",
+            "outputBinding": {
+              "glob": {
+                "script": "{\t\n  filename = $job.inputs.variants_file.path\n  namebase = filename.split('.').slice(0, filename.split('.').length-1).join('.').replace(/^.*[\\\\\\/]/, '')\n \n  \n  return namebase.concat(\".snpEff_summary.genes.txt\")\n}",
+                "engine": "#cwl-js-engine",
+                "class": "Expression"
+              },
+              "metadata": {},
+              "sbg:inheritMetadataFrom": "#variants_file"
+            },
+            "sbg:fileTypes": "TXT",
+            "id": "#summary_text",
+            "label": "Summary",
+            "type": [
+              "null",
+              "File"
+            ]
+          }
+        ],
+        "sbg:modifiedOn": 1445942575,
+        "sbg:revisionsInfo": [
+          {
+            "sbg:modifiedBy": "admin",
+            "sbg:revision": 1,
+            "sbg:modifiedOn": 1445555313
+          },
+          {
+            "sbg:modifiedBy": "admin",
+            "sbg:revision": 3,
+            "sbg:modifiedOn": 1445558305
+          },
+          {
+            "sbg:modifiedBy": "admin",
+            "sbg:revision": 0,
+            "sbg:modifiedOn": 1445555232
+          },
+          {
+            "sbg:modifiedBy": "admin",
+            "sbg:revision": 2,
+            "sbg:modifiedOn": 1445557975
+          },
+          {
+            "sbg:modifiedBy": "admin",
+            "sbg:revision": 4,
+            "sbg:modifiedOn": 1445562405
+          },
+          {
+            "sbg:modifiedBy": "admin",
+            "sbg:revision": 5,
+            "sbg:modifiedOn": 1445942575
+          }
+        ],
+        "sbg:sbgMaintained": false,
+        "id": "https://rabix-vayu.sbgenomics.com:11180/v1/apps/admin/snpeff-dev/snpeff-adjusted/5/",
+        "sbg:toolAuthor": "Pablo Cingolani/Broad Institue",
+        "contributor": [],
+        "stdin": "",
+        "arguments": [],
+        "sbg:projectSlug": "admin/snpeff-dev",
+        "sbg:createdOn": 1445555232,
+        "sbg:validationErrors": [],
+        "successCodes": [],
+        "sbg:createdBy": "admin",
+        "sbg:cmdPreview": "python /opt/snpEff_3.6/snpEff_adjusted.py",
+        "temporaryFailCodes": [],
+        "@context": "https://github.com/common-workflow-language/common-workflow-language/blob/draft-1/specification/tool-description.md",
+        "sbg:revision": 5,
+        "sbg:license": "GNU Lesser General Public License v3.0 only",
+        "inputs": [
+          {
+            "description": "Show N codons and amino acids around change (only in coding regions).",
+            "sbg:category": "Other input types",
+            "id": "#around",
+            "label": "Show N codons and amino acids around change (only in coding regions)",
+            "sbg:toolDefaultValue": "0",
+            "inputBinding": {
+              "sbg:cmdInclude": true,
+              "separate": true,
+              "prefix": "--around"
+            },
+            "type": [
+              "null",
+              "int"
+            ],
+            "sbg:altPrefix": ""
+          },
+          {
+            "description": "Prepend 'string' to chromosome name (e.g. 'chr1' instead of '1'). Only on TXT output.",
+            "sbg:category": "Other input types",
+            "id": "#chr",
+            "label": "Prepend 'string' to chromosome name (e.g. 'chr1' instead of '1')",
+            "sbg:toolDefaultValue": null,
+            "inputBinding": {
+              "sbg:cmdInclude": true,
+              "separate": true,
+              "prefix": "--chr"
+            },
+            "type": [
+              "null",
+              "string"
+            ],
+            "sbg:altPrefix": ""
+          },
+          {
+            "description": "Input format. Possible values: {vcf, txt, pileup, bed}. [Default: vcf].",
+            "sbg:category": "Other input types",
+            "id": "#input_format",
+            "label": "Input format",
+            "sbg:toolDefaultValue": "vcf",
+            "inputBinding": {
+              "sbg:cmdInclude": true,
+              "separate": true,
+              "prefix": "--input_format"
+            },
+            "type": [
+              "null",
+              {
+                "name": "input_format",
+                "type": "enum",
+                "symbols": [
+                  "vcf",
+                  " txt",
+                  " pileup",
+                  " bed"
+                ]
+              }
+            ],
+            "sbg:altPrefix": ""
+          },
+          {
+            "description": "Input actually contains a list of files to process.",
+            "sbg:category": "Other input types",
+            "id": "#filelist",
+            "label": "Input actually contains a list of files to process",
+            "sbg:toolDefaultValue": false,
+            "inputBinding": {
+              "sbg:cmdInclude": true,
+              "separate": true,
+              "prefix": "--fileList"
+            },
+            "type": [
+              "null",
+              "boolean"
+            ],
+            "sbg:altPrefix": ""
+          },
+          {
+            "description": "Ouput format. Possible values: {txt, vcf, gatk, bed, bedAnn}.",
+            "sbg:category": "Other input types",
+            "id": "#output_format",
+            "label": "Ouput format",
+            "sbg:toolDefaultValue": "vcf",
+            "inputBinding": {
+              "sbg:cmdInclude": true,
+              "separate": true,
+              "prefix": "--output_format"
+            },
+            "type": [
+              {
+                "name": "output_format",
+                "type": "enum",
+                "symbols": [
+                  "txt",
+                  "vcf",
+                  "gatk",
+                  "bed",
+                  "bedAnn"
+                ]
+              }
+            ],
+            "sbg:altPrefix": ""
+          },
+          {
+            "description": "Name of stats file (summary).",
+            "sbg:category": "Other input types",
+            "id": "#stats",
+            "label": "Name of stats file (summary)",
+            "sbg:toolDefaultValue": "snpEff_summary.html",
+            "inputBinding": {
+              "sbg:cmdInclude": true,
+              "separate": true,
+              "prefix": "--stats"
+            },
+            "type": [
+              "null",
+              "string"
+            ],
+            "sbg:altPrefix": "-s"
+          },
+          {
+            "description": "Do not create stats (summary) file",
+            "sbg:category": "Other input types",
+            "id": "#nostats",
+            "label": "Do not create stats (summary) file",
+            "sbg:toolDefaultValue": false,
+            "inputBinding": {
+              "sbg:cmdInclude": true,
+              "separate": true,
+              "prefix": "--noStats"
+            },
+            "type": [
+              "null",
+              "boolean"
+            ],
+            "sbg:altPrefix": ""
+          },
+          {
+            "description": "Create CSV summary file instead of HTML",
+            "sbg:category": "Other input types",
+            "id": "#csvstats",
+            "label": "Create CSV summary file instead of HTML",
+            "sbg:toolDefaultValue": false,
+            "inputBinding": {
+              "sbg:cmdInclude": true,
+              "separate": true,
+              "prefix": "--csvStats"
+            },
+            "type": [
+              "null",
+              "boolean"
+            ],
+            "sbg:altPrefix": ""
+          },
+          {
+            "description": "Analyze deletions only",
+            "sbg:category": "Other input types",
+            "id": "#deletions_only",
+            "label": "Analyze deletions only",
+            "sbg:toolDefaultValue": false,
+            "inputBinding": {
+              "sbg:cmdInclude": true,
+              "separate": true,
+              "prefix": "--del"
+            },
+            "type": [
+              "null",
+              "boolean"
+            ],
+            "sbg:altPrefix": ""
+          },
+          {
+            "description": "Analyze insertions only",
+            "sbg:category": "Other input types",
+            "id": "#insertions_only",
+            "label": "Analyze insertions only",
+            "sbg:toolDefaultValue": false,
+            "inputBinding": {
+              "sbg:cmdInclude": true,
+              "separate": true,
+              "prefix": "--ins"
+            },
+            "type": [
+              "null",
+              "boolean"
+            ],
+            "sbg:altPrefix": ""
+          },
+          {
+            "description": "Analyze homozygous variants only",
+            "sbg:category": "Other input types",
+            "id": "#homozygous_only",
+            "label": "Analyze homozygous variants only",
+            "sbg:toolDefaultValue": false,
+            "inputBinding": {
+              "sbg:cmdInclude": true,
+              "separate": true,
+              "prefix": "--hom"
+            },
+            "type": [
+              "null",
+              "boolean"
+            ],
+            "sbg:altPrefix": ""
+          },
+          {
+            "description": "Analyze heterozygous variants only",
+            "sbg:category": "Other input types",
+            "id": "#heterozygous_only",
+            "label": "Analyze heterozygous variants only",
+            "sbg:toolDefaultValue": false,
+            "inputBinding": {
+              "sbg:cmdInclude": true,
+              "separate": true,
+              "prefix": "--het"
+            },
+            "type": [
+              "null",
+              "boolean"
+            ],
+            "sbg:altPrefix": ""
+          },
+          {
+            "description": "Filter out variants with quality lower than X",
+            "sbg:category": "Other input types",
+            "id": "#minquality",
+            "label": "Filter out variants with quality lower than X",
+            "sbg:toolDefaultValue": null,
+            "inputBinding": {
+              "sbg:cmdInclude": true,
+              "separate": true,
+              "prefix": "--minQuality"
+            },
+            "type": [
+              "null",
+              "int"
+            ],
+            "sbg:altPrefix": "-minQ"
+          },
+          {
+            "description": "Filter out variants with quality higher than X",
+            "sbg:category": "Other input types",
+            "id": "#maxquality",
+            "label": "Filter out variants with quality higher than X",
+            "sbg:toolDefaultValue": null,
+            "inputBinding": {
+              "sbg:cmdInclude": true,
+              "separate": true,
+              "prefix": "--maxQuality"
+            },
+            "type": [
+              "null",
+              "int"
+            ],
+            "sbg:altPrefix": "-maxQ"
+          },
+          {
+            "description": "Filter out variants with coverage lower than X",
+            "sbg:category": "Other input types",
+            "id": "#mincoverage",
+            "label": "Filter out variants with coverage lower than X",
+            "sbg:toolDefaultValue": null,
+            "inputBinding": {
+              "sbg:cmdInclude": true,
+              "separate": true,
+              "prefix": "--minCoverage"
+            },
+            "type": [
+              "null",
+              "int"
+            ],
+            "sbg:altPrefix": "-minC"
+          },
+          {
+            "description": "Filter out variants with coverage higher than X",
+            "sbg:category": "Other input types",
+            "id": "#maxcoverage",
+            "label": "Filter out variants with coverage higher than X",
+            "sbg:toolDefaultValue": null,
+            "inputBinding": {
+              "sbg:cmdInclude": true,
+              "separate": true,
+              "prefix": "--maxCoverage"
+            },
+            "type": [
+              "null",
+              "int"
+            ],
+            "sbg:altPrefix": "-maxC"
+          },
+          {
+            "description": "Only MNPs (multiple nucleotide polymorphisms)",
+            "sbg:category": "Other input types",
+            "id": "#nmp",
+            "label": "Only MNPs (multiple nucleotide polymorphisms)",
+            "sbg:toolDefaultValue": false,
+            "inputBinding": {
+              "sbg:cmdInclude": true,
+              "separate": true,
+              "prefix": "--nmp"
+            },
+            "type": [
+              "null",
+              "boolean"
+            ],
+            "sbg:altPrefix": ""
+          },
+          {
+            "description": "Only SNPs (single nucleotide polymorphisms)",
+            "sbg:category": "Other input types",
+            "id": "#snp",
+            "label": "Only SNPs (single nucleotide polymorphisms)",
+            "sbg:toolDefaultValue": false,
+            "inputBinding": {
+              "sbg:cmdInclude": true,
+              "separate": true,
+              "prefix": "--snp"
+            },
+            "type": [
+              "null",
+              "boolean"
+            ],
+            "sbg:altPrefix": ""
+          },
+          {
+            "description": "Only analyze changes that intersect with the intervals specified in this file (you may use this option many times)",
+            "sbg:category": "File type inputs",
+            "id": "#filterinterval",
+            "label": "Only analyze changes that intersect with the intervals specified in this file (you may use this option many times)",
+            "sbg:toolDefaultValue": null,
+            "inputBinding": {
+              "sbg:cmdInclude": true,
+              "separate": true,
+              "prefix": "--filterInterval",
+              "position": 1
+            },
+            "type": [
+              "null",
+              {
+                "type": "array",
+                "items": {
+                  "type": "File"
+                }
+              }
+            ],
+            "sbg:altPrefix": "-fi"
+          },
+          {
+            "description": "Do not show DOWNSTREAM changes",
+            "sbg:category": "Other input types",
+            "id": "#no_downstream",
+            "label": "Do not show DOWNSTREAM changes",
+            "sbg:toolDefaultValue": false,
+            "inputBinding": {
+              "sbg:cmdInclude": true,
+              "separate": true,
+              "prefix": "--no-downstream"
+            },
+            "type": [
+              "null",
+              "boolean"
+            ],
+            "sbg:altPrefix": ""
+          },
+          {
+            "description": "Do not show INTERGENIC changes",
+            "sbg:category": "Other input types",
+            "id": "#no_intergenic",
+            "label": "Do not show INTERGENIC changes",
+            "sbg:toolDefaultValue": false,
+            "inputBinding": {
+              "sbg:cmdInclude": true,
+              "separate": true,
+              "prefix": "--no-intergenic"
+            },
+            "type": [
+              "null",
+              "boolean"
+            ],
+            "sbg:altPrefix": ""
+          },
+          {
+            "description": "Do not show INTRON changes",
+            "sbg:category": "Other input types",
+            "id": "#no_intron",
+            "label": "Do not show INTRON changes",
+            "sbg:toolDefaultValue": false,
+            "inputBinding": {
+              "sbg:cmdInclude": true,
+              "separate": true,
+              "prefix": "--no-intron"
+            },
+            "type": [
+              "null",
+              "boolean"
+            ],
+            "sbg:altPrefix": ""
+          },
+          {
+            "description": "Do not show UPSTREAM changes",
+            "sbg:category": "Other input types",
+            "id": "#no_upstream",
+            "label": "Do not show UPSTREAM changes",
+            "sbg:toolDefaultValue": false,
+            "inputBinding": {
+              "sbg:cmdInclude": true,
+              "separate": true,
+              "prefix": "--no-upstream"
+            },
+            "type": [
+              "null",
+              "boolean"
+            ],
+            "sbg:altPrefix": ""
+          },
+          {
+            "description": "Do not show 5_PRIME_UTR or 3_PRIME_UTR changes",
+            "sbg:category": "Other input types",
+            "id": "#no_utr",
+            "label": "Do not show 5_PRIME_UTR or 3_PRIME_UTR changes",
+            "sbg:toolDefaultValue": false,
+            "inputBinding": {
+              "sbg:cmdInclude": true,
+              "separate": true,
+              "prefix": "--no-utr"
+            },
+            "type": [
+              "null",
+              "boolean"
+            ],
+            "sbg:altPrefix": ""
+          },
+          {
+            "description": "Do not show 'EffectType'. This option can be used several times.",
+            "sbg:category": "Other input types",
+            "id": "#dont_show_effect_type",
+            "label": "Do not show 'EffectType'",
+            "sbg:toolDefaultValue": null,
+            "inputBinding": {
+              "sbg:cmdInclude": true,
+              "separate": true,
+              "prefix": "--no"
+            },
+            "type": [
+              "null",
+              "boolean"
+            ],
+            "sbg:altPrefix": ""
+          },
+          {
+            "description": "Perform 'cancer' comparisons (Somatic vs Germline).",
+            "sbg:category": "Other input types",
+            "id": "#cancer",
+            "label": "Perform 'cancer' comparisons (Somatic vs Germline)",
+            "sbg:toolDefaultValue": false,
+            "inputBinding": {
+              "sbg:cmdInclude": true,
+              "separate": true,
+              "prefix": "--cancer"
+            },
+            "type": [
+              "null",
+              "boolean"
+            ],
+            "sbg:altPrefix": ""
+          },
+          {
+            "description": "Two column TXT file defining 'oringinal \\t derived' samples.",
+            "sbg:category": "File type inputs",
+            "id": "#cancersamples",
+            "label": "Two column TXT file defining 'oringinal \\t derived' samples",
+            "sbg:toolDefaultValue": null,
+            "inputBinding": {
+              "sbg:cmdInclude": true,
+              "separate": true,
+              "prefix": "--cancerSamples"
+            },
+            "sbg:fileTypes": "File type inputs",
+            "type": [
+              "null",
+              "File"
+            ],
+            "sbg:altPrefix": ""
+          },
+          {
+            "description": "Use gene ID instead of gene name (VCF output).",
+            "sbg:category": "Other input types",
+            "id": "#geneid",
+            "label": "Use gene ID instead of gene name (VCF output)",
+            "sbg:toolDefaultValue": false,
+            "inputBinding": {
+              "sbg:cmdInclude": true,
+              "separate": true,
+              "prefix": "--geneId"
+            },
+            "type": [
+              "null",
+              "boolean"
+            ],
+            "sbg:altPrefix": ""
+          },
+          {
+            "description": "Use HGVS annotations for amino acid sub-field.",
+            "sbg:category": "Other input types",
+            "id": "#add_hgvs_anno",
+            "label": "Use HGVS annotations for amino acid sub-field",
+            "sbg:toolDefaultValue": false,
+            "inputBinding": {
+              "sbg:cmdInclude": true,
+              "separate": true,
+              "prefix": "--hgvs"
+            },
+            "type": [
+              "null",
+              "boolean"
+            ],
+            "sbg:altPrefix": ""
+          },
+          {
+            "description": "Add loss of function (LOF) and Nonsense mediated decay (NMD) tags.",
+            "sbg:category": "Other input types",
+            "id": "#add_lof_tag",
+            "label": "Add loss of function (LOF) and Nonsense mediated decay (NMD) tags",
+            "sbg:toolDefaultValue": false,
+            "inputBinding": {
+              "sbg:cmdInclude": true,
+              "separate": true,
+              "prefix": "--lof"
+            },
+            "type": [
+              "null",
+              "boolean"
+            ],
+            "sbg:altPrefix": ""
+          },
+          {
+            "description": "Add OICR tag in VCF file.",
+            "sbg:category": "Other input types",
+            "id": "#add_oicr_tag",
+            "label": "Add OICR tag in VCF file",
+            "sbg:toolDefaultValue": false,
+            "inputBinding": {
+              "sbg:cmdInclude": true,
+              "separate": true,
+              "prefix": "--oicr"
+            },
+            "type": [
+              "null",
+              "boolean"
+            ],
+            "sbg:altPrefix": ""
+          },
+          {
+            "description": "Use Sequence Ontology terms.",
+            "sbg:category": "Other input types",
+            "id": "#sequenceontology",
+            "label": "Use Sequence Ontology terms",
+            "sbg:toolDefaultValue": false,
+            "inputBinding": {
+              "sbg:cmdInclude": true,
+              "separate": true,
+              "prefix": "--sequenceOntology"
+            },
+            "type": [
+              "null",
+              "boolean"
+            ],
+            "sbg:altPrefix": ""
+          },
+          {
+            "description": "Specify config file",
+            "sbg:category": "Other input types",
+            "id": "#config",
+            "label": "Specify config file",
+            "sbg:toolDefaultValue": false,
+            "inputBinding": {
+              "sbg:cmdInclude": true,
+              "separate": true,
+              "prefix": "--config"
+            },
+            "type": [
+              "null",
+              "boolean"
+            ],
+            "sbg:altPrefix": "-c"
+          },
+          {
+            "description": "Override data_dir parameter from config file.",
+            "sbg:category": "Other input types",
+            "id": "#datadir",
+            "label": "Override data_dir parameter from config file",
+            "sbg:toolDefaultValue": null,
+            "inputBinding": {
+              "sbg:cmdInclude": true,
+              "separate": true,
+              "prefix": "--dataDir"
+            },
+            "type": [
+              "null",
+              "string"
+            ],
+            "sbg:altPrefix": ""
+          },
+          {
+            "description": "Offset input by a number of bases. E.g. '-inOffset 1' for one-based TXT input files",
+            "sbg:category": "Other input types",
+            "id": "#inoffset",
+            "label": "Offset input by a number of bases",
+            "sbg:toolDefaultValue": null,
+            "inputBinding": {
+              "sbg:cmdInclude": true,
+              "separate": true,
+              "prefix": "--inOffset"
+            },
+            "type": [
+              "null",
+              "int"
+            ],
+            "sbg:altPrefix": "-if"
+          },
+          {
+            "description": "Offset output by a number of bases. E.g. '-outOffset 1' for one-based TXT output files",
+            "sbg:category": "Other input types",
+            "id": "#outoffset",
+            "label": "Offset output by a number of bases",
+            "sbg:toolDefaultValue": null,
+            "inputBinding": {
+              "sbg:cmdInclude": true,
+              "separate": true,
+              "prefix": "--outOffset"
+            },
+            "type": [
+              "null",
+              "int"
+            ],
+            "sbg:altPrefix": "-of"
+          },
+          {
+            "description": "Do not report usage statistics to server",
+            "sbg:category": "Other input types",
+            "id": "#nolog",
+            "label": "Do not report usage statistics to server",
+            "sbg:toolDefaultValue": false,
+            "inputBinding": {
+              "sbg:cmdInclude": true,
+              "separate": true,
+              "prefix": "--noLog"
+            },
+            "type": [
+              "null",
+              "boolean"
+            ],
+            "sbg:altPrefix": ""
+          },
+          {
+            "description": "Use multiple threads (implies '-noStats').",
+            "sbg:category": "Other input types",
+            "id": "#multi_threads",
+            "label": "Use multiple threads (implies '-noStats')",
+            "sbg:toolDefaultValue": "off",
+            "inputBinding": {
+              "sbg:cmdInclude": true,
+              "separate": true,
+              "prefix": "-t"
+            },
+            "type": [
+              "null",
+              "string"
+            ],
+            "sbg:altPrefix": ""
+          },
+          {
+            "description": "Quiet mode (do not show any messages or errors)",
+            "sbg:category": "Other input types",
+            "id": "#quiet",
+            "label": "Quiet mode (do not show any messages or errors)",
+            "sbg:toolDefaultValue": false,
+            "inputBinding": {
+              "sbg:cmdInclude": true,
+              "separate": true,
+              "prefix": "--quiet"
+            },
+            "type": [
+              "null",
+              "boolean"
+            ],
+            "sbg:altPrefix": ""
+          },
+          {
+            "description": "Only use canonical transcripts.",
+            "sbg:category": "Other input types",
+            "id": "#canon",
+            "label": "Only use canonical transcripts",
+            "sbg:toolDefaultValue": false,
+            "inputBinding": {
+              "sbg:cmdInclude": true,
+              "separate": true,
+              "prefix": "--canon"
+            },
+            "type": [
+              "null",
+              "boolean"
+            ],
+            "sbg:altPrefix": ""
+          },
+          {
+            "description": "Use a custom intervals in TXT/BED/BigBed/VCF/GFF file (you may use this option many times)",
+            "sbg:category": "Other input types",
+            "id": "#interval",
+            "label": "Use a custom intervals in TXT/BED/BigBed/VCF/GFF file (you may use this option many times)",
+            "sbg:toolDefaultValue": false,
+            "inputBinding": {
+              "sbg:cmdInclude": true,
+              "separate": true,
+              "prefix": "--interval"
+            },
+            "type": [
+              "null",
+              "boolean"
+            ],
+            "sbg:altPrefix": ""
+          },
+          {
+            "description": "Annotate using motifs (requires Motif database).",
+            "sbg:category": "Other input types",
+            "id": "#motif",
+            "label": "Annotate using motifs (requires Motif database)",
+            "sbg:toolDefaultValue": false,
+            "inputBinding": {
+              "sbg:cmdInclude": true,
+              "separate": true,
+              "prefix": "--motif"
+            },
+            "type": [
+              "null",
+              "boolean"
+            ],
+            "sbg:altPrefix": ""
+          },
+          {
+            "description": "Annotate using NextProt (requires NextProt database).",
+            "sbg:category": "Other input types",
+            "id": "#nextprot",
+            "label": "Annotate using NextProt (requires NextProt database)",
+            "sbg:toolDefaultValue": false,
+            "inputBinding": {
+              "sbg:cmdInclude": true,
+              "separate": true,
+              "prefix": "--nextProt"
+            },
+            "type": [
+              "null",
+              "boolean"
+            ],
+            "sbg:altPrefix": ""
+          },
+          {
+            "description": "Regulation track to use (this option can be used add several times).",
+            "sbg:category": "Other input types",
+            "id": "#reg",
+            "label": "Regulation track to use (this option can be used add several times)",
+            "sbg:toolDefaultValue": null,
+            "inputBinding": {
+              "sbg:cmdInclude": true,
+              "separate": true,
+              "prefix": "--reg",
+              "position": 3
+            },
+            "type": [
+              "null",
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            ],
+            "sbg:altPrefix": ""
+          },
+          {
+            "description": "Only use regulation tracks.",
+            "sbg:category": "Other input types",
+            "id": "#onlyreg",
+            "label": "Only use regulation tracks",
+            "sbg:toolDefaultValue": false,
+            "inputBinding": {
+              "sbg:cmdInclude": true,
+              "separate": true,
+              "prefix": "--onlyReg"
+            },
+            "type": [
+              "null",
+              "boolean"
+            ],
+            "sbg:altPrefix": ""
+          },
+          {
+            "description": "Only use the transcripts in this file. Format: One transcript ID per line.",
+            "sbg:category": "File type inputs",
+            "id": "#onlytr",
+            "label": "Only use the transcripts in this file",
+            "sbg:toolDefaultValue": null,
+            "inputBinding": {
+              "sbg:cmdInclude": true,
+              "separate": true,
+              "prefix": "--onlyTr"
+            },
+            "sbg:fileTypes": "TEXT",
+            "type": [
+              "null",
+              "File"
+            ],
+            "sbg:altPrefix": ""
+          },
+          {
+            "description": "Set size for splice sites (donor and acceptor) in bases.",
+            "sbg:category": "Other input types",
+            "id": "#splicesitesize",
+            "label": "Set size for splice sites (donor and acceptor) in bases",
+            "sbg:toolDefaultValue": "2",
+            "inputBinding": {
+              "sbg:cmdInclude": true,
+              "separate": true,
+              "prefix": "--spliceSiteSize"
+            },
+            "type": [
+              "null",
+              "int"
+            ],
+            "sbg:altPrefix": "-ss"
+          },
+          {
+            "description": "Set upstream downstream interval length (in bases)",
+            "sbg:category": "Other input types",
+            "id": "#updownstreamlen",
+            "label": "Set upstream downstream interval length (in bases)",
+            "sbg:toolDefaultValue": null,
+            "inputBinding": {
+              "sbg:cmdInclude": true,
+              "separate": true,
+              "prefix": "--upDownStreamLen"
+            },
+            "type": [
+              "null",
+              "int"
+            ],
+            "sbg:altPrefix": "-ud"
+          },
+          {
+            "description": "Input variants file.",
+            "sbg:fileTypes": "VCF, TXT, PILEUP, BED",
+            "id": "#variants_file",
+            "label": "Input variants file",
+            "inputBinding": {
+              "sbg:cmdInclude": true,
+              "separate": true,
+              "prefix": "--variants",
+              "position": -3
+            },
+            "type": [
+              "File"
+            ],
+            "sbg:category": "File type inputs"
+          },
+          {
+            "description": "Java Xmx%M requirement in MB.",
+            "sbg:category": "Other input types",
+            "id": "#mem_mb",
+            "label": "Java Xmx%m requirement",
+            "sbg:toolDefaultValue": "2048",
+            "inputBinding": {
+              "sbg:cmdInclude": true,
+              "valueFrom": {
+                "script": "{\n  if ($job.inputs.mem_mb)\n  {\n    return $job.inputs.mem_mb\n  }\n  \n  else\n  {\n    return '2048'\n  }\n}",
+                "engine": "#cwl-js-engine",
+                "class": "Expression"
+              },
+              "separate": true,
+              "prefix": "--mem_mb",
+              "position": -5
+            },
+            "type": [
+              "null",
+              "int"
+            ]
+          },
+          {
+            "description": "SnpEff database file is zip archive that can be downloaded from the SnpEff official site, or using the SnpEff download app.",
+            "sbg:category": "File type inputs",
+            "id": "#database",
+            "label": "SnpEff database file",
+            "inputBinding": {
+              "sbg:cmdInclude": true,
+              "separate": true,
+              "prefix": "--database",
+              "position": -4
+            },
+            "sbg:fileTypes": "ZIP",
+            "type": [
+              "File"
+            ]
+          }
+        ],
+        "sbg:toolkit": "SnpEff",
+        "sbg:categories": [
+          "Annotation",
+          "VCF-Processing"
+        ],
+        "sbg:name": "snpeff-adjusted",
+        "requirements": [
+          {
+            "dockerPull": "images.sbgenomics.com/djordje_klisic/snpeff-adjusted:3.6--1",
+            "class": "DockerRequirement",
+            "dockerImageId": "aae3dcb89b53"
+          },
+          {
+            "value": 1,
+            "class": "CPURequirement"
+          },
+          {
+            "value": {
+              "script": "{\n  if ($job.inputs.mem_mb)\n  {\n    return $job.inputs.mem_mb\n  }\n  \n  else\n  {\n    return 2048\n  }\n}",
+              "engine": "#cwl-js-engine",
+              "class": "Expression"
+            },
+            "class": "MemRequirement"
+          },
+          {
+            "class": "ExpressionEngineRequirement",
+            "requirements": [
+              {
+                "dockerPull": "rabix/js-engine",
+                "class": "DockerRequirement"
+              }
+            ],
+            "id": "#cwl-js-engine"
+          }
+        ],
+        "label": "SnpEff adjusted",
+        "baseCommand": [
+          "python",
+          "/opt/snpEff_3.6/snpEff_adjusted.py"
+        ],
+        "sbg:modifiedBy": "admin",
+        "sbg:links": [
+          {
+            "id": "http://snpeff.sourceforge.net/index.html",
+            "label": "Homepage"
+          },
+          {
+            "id": "https://github.com/pcingola/SnpEff",
+            "label": "Source Code"
+          },
+          {
+            "id": "http://snpeff.sourceforge.net/SnpEff_manual.html",
+            "label": "Wiki"
+          },
+          {
+            "id": "http://sourceforge.net/projects/snpeff/files/snpEff_v3_6_core.zip/download",
+            "label": "Download"
+          },
+          {
+            "id": "http://snpeff.sourceforge.net/SnpEff_paper.pdf",
+            "label": "Publication"
+          }
+        ],
+        "sbg:toolkitVersion": "3.6",
+        "sbg:contributors": [
+          "admin"
+        ],
+        "stdout": ""
+      },
+      "outputs": [
+        {
+          "id": "#SnpEff_adjusted.annotated"
+        },
+        {
+          "id": "#SnpEff_adjusted.summary"
+        },
+        {
+          "id": "#SnpEff_adjusted.summary_text"
+        }
+      ],
+      "id": "#SnpEff_adjusted",
+      "inputs": [
+        {
+          "source": [],
+          "id": "#SnpEff_adjusted.around"
+        },
+        {
+          "source": [],
+          "id": "#SnpEff_adjusted.chr"
+        },
+        {
+          "source": [],
+          "id": "#SnpEff_adjusted.input_format"
+        },
+        {
+          "source": [],
+          "id": "#SnpEff_adjusted.filelist"
+        },
+        {
+          "source": [],
+          "id": "#SnpEff_adjusted.output_format"
+        },
+        {
+          "source": [],
+          "id": "#SnpEff_adjusted.stats"
+        },
+        {
+          "source": [],
+          "id": "#SnpEff_adjusted.nostats"
+        },
+        {
+          "source": [],
+          "id": "#SnpEff_adjusted.csvstats"
+        },
+        {
+          "source": [],
+          "id": "#SnpEff_adjusted.deletions_only"
+        },
+        {
+          "source": [],
+          "id": "#SnpEff_adjusted.insertions_only"
+        },
+        {
+          "source": [],
+          "id": "#SnpEff_adjusted.homozygous_only"
+        },
+        {
+          "source": [],
+          "id": "#SnpEff_adjusted.heterozygous_only"
+        },
+        {
+          "source": [],
+          "id": "#SnpEff_adjusted.minquality"
+        },
+        {
+          "source": [],
+          "id": "#SnpEff_adjusted.maxquality"
+        },
+        {
+          "source": [],
+          "id": "#SnpEff_adjusted.mincoverage"
+        },
+        {
+          "source": [],
+          "id": "#SnpEff_adjusted.maxcoverage"
+        },
+        {
+          "source": [],
+          "id": "#SnpEff_adjusted.nmp"
+        },
+        {
+          "source": [],
+          "id": "#SnpEff_adjusted.snp"
+        },
+        {
+          "source": [],
+          "id": "#SnpEff_adjusted.filterinterval"
+        },
+        {
+          "source": [],
+          "id": "#SnpEff_adjusted.no_downstream"
+        },
+        {
+          "source": [],
+          "id": "#SnpEff_adjusted.no_intergenic"
+        },
+        {
+          "source": [],
+          "id": "#SnpEff_adjusted.no_intron"
+        },
+        {
+          "source": [],
+          "id": "#SnpEff_adjusted.no_upstream"
+        },
+        {
+          "source": [],
+          "id": "#SnpEff_adjusted.no_utr"
+        },
+        {
+          "source": [],
+          "id": "#SnpEff_adjusted.dont_show_effect_type"
+        },
+        {
+          "source": [],
+          "id": "#SnpEff_adjusted.cancer"
+        },
+        {
+          "source": [],
+          "id": "#SnpEff_adjusted.cancersamples"
+        },
+        {
+          "source": [],
+          "id": "#SnpEff_adjusted.geneid"
+        },
+        {
+          "source": [],
+          "id": "#SnpEff_adjusted.add_hgvs_anno"
+        },
+        {
+          "source": [],
+          "id": "#SnpEff_adjusted.add_lof_tag"
+        },
+        {
+          "source": [],
+          "id": "#SnpEff_adjusted.add_oicr_tag"
+        },
+        {
+          "source": [],
+          "id": "#SnpEff_adjusted.sequenceontology"
+        },
+        {
+          "source": [],
+          "id": "#SnpEff_adjusted.config"
+        },
+        {
+          "source": [],
+          "id": "#SnpEff_adjusted.datadir"
+        },
+        {
+          "source": [],
+          "id": "#SnpEff_adjusted.inoffset"
+        },
+        {
+          "source": [],
+          "id": "#SnpEff_adjusted.outoffset"
+        },
+        {
+          "source": [],
+          "id": "#SnpEff_adjusted.nolog"
+        },
+        {
+          "source": [],
+          "id": "#SnpEff_adjusted.multi_threads"
+        },
+        {
+          "source": [],
+          "id": "#SnpEff_adjusted.quiet"
+        },
+        {
+          "source": [],
+          "id": "#SnpEff_adjusted.canon"
+        },
+        {
+          "source": [],
+          "id": "#SnpEff_adjusted.interval"
+        },
+        {
+          "source": [],
+          "id": "#SnpEff_adjusted.motif"
+        },
+        {
+          "source": [],
+          "id": "#SnpEff_adjusted.nextprot"
+        },
+        {
+          "source": [],
+          "id": "#SnpEff_adjusted.reg"
+        },
+        {
+          "source": [],
+          "id": "#SnpEff_adjusted.onlyreg"
+        },
+        {
+          "source": [],
+          "id": "#SnpEff_adjusted.onlytr"
+        },
+        {
+          "source": [],
+          "id": "#SnpEff_adjusted.splicesitesize"
+        },
+        {
+          "source": [],
+          "id": "#SnpEff_adjusted.updownstreamlen"
+        },
+        {
+          "source": [
+            "#variants_file"
+          ],
+          "id": "#SnpEff_adjusted.variants_file"
+        },
+        {
+          "source": [],
+          "id": "#SnpEff_adjusted.mem_mb"
+        },
+        {
+          "source": [
+            "#database"
+          ],
+          "id": "#SnpEff_adjusted.database"
+        }
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "source": [
+        "#SnpEff_adjusted.summary"
+      ],
+      "type": [
+        "null",
+        "File"
+      ],
+      "id": "#summary",
+      "label": "summary"
+    }
+  ],
+  "sbg:modifiedOn": 1446039977,
+  "sbg:revisionsInfo": [
+    {
+      "sbg:modifiedBy": "admin",
+      "sbg:revision": 0,
+      "sbg:modifiedOn": 1446039947
+    },
+    {
+      "sbg:modifiedBy": "admin",
+      "sbg:revision": 1,
+      "sbg:modifiedOn": 1446039977
+    }
+  ],
+  "sbg:sbgMaintained": false,
+  "id": "https://rabix-vayu.sbgenomics.com:11180/v1/apps/admin/filip-cwl-testing/nju-wf/1/",
+  "sbg:projectId": "cce7717b-c0f4-4709-833f-5cdf1a83cef9",
+  "sbg:latestRevision": 1,
+  "sbg:createdOn": 1446039947,
+  "sbg:createdBy": "admin",
+  "sbg:validationErrors": [],
+  "@context": "https://raw.githubusercontent.com/common-workflow-language/common-workflow-language/draft2/specification/context.json",
+  "sbg:revision": 1,
+  "inputs": [
+    {
+      "type": [
+        "File"
+      ],
+      "id": "#variants_file",
+      "label": "variants_file"
+    },
+    {
+      "type": [
+        "File"
+      ],
+      "id": "#database",
+      "label": "database"
+    }
+  ],
+  "sbg:projectSlug": "admin/filip-cwl-testing",
+  "display": {
+    "canvas": {
+      "x": 0,
+      "zoom": 1,
+      "y": 0
+    },
+    "nodes": {
+      "#variants_file": {
+        "x": 137,
+        "y": 139
+      },
+      "#SnpEff_adjusted": {
+        "x": 372,
+        "y": 212
+      },
+      "#database": {
+        "x": 101,
+        "y": 286
+      },
+      "#summary": {
+        "x": 777,
+        "y": 124
+      }
+    }
+  },
+  "label": "nju wf",
+  "sbg:modifiedBy": "admin",
+  "requirements": [],
+  "hints": [],
+  "sbg:contributors": [
+    "admin"
+  ]
+}

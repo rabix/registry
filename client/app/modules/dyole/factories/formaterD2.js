@@ -610,6 +610,98 @@ var _formatter = {
         });
 
         return nodes;
+    },
+
+    createDataLinks: function (json) {
+        json.dataLinks = [];
+
+        var dataLinks = [];
+        var steps = json.steps;
+        var outputs = json.outputs;
+
+        _.forEach(steps, function (step) {
+            _.forEach(step.inputs, function (input) {
+                if (_.isArray(input.source)) {
+                    _.forEach(input.source, function (src, position) {
+
+                        var dataLink = {
+                            source: src,
+                            destination: input.id,
+                            position: position+1
+                        };
+
+                        dataLinks.push(dataLink);
+                    });
+                }
+            });
+        });
+
+
+        _.forEach(outputs, function (output) {
+            if (_.isArray(output.source)) {
+                _.forEach(output.source, function (src, position) {
+
+                    var dataLink = {
+                        source: src,
+                        destination: output.id,
+                        position: position+1
+                    };
+
+                    dataLinks.push(dataLink);
+                });
+            }
+        });
+
+        return dataLinks;
+    },
+
+    dataLinksToSource: function (json) {
+        var dataLinks = json.dataLinks;
+
+        var grouped = _.groupBy(dataLinks, function (link) {
+            return link.destination;
+        });
+
+        _.forEach(grouped, function (links, group) {
+
+            var node;
+            var split = group.split('.');
+
+            if (split.length === 1) {
+
+                node = _.find(json.outputs, function (output) {
+                    return output.id === group;
+                });
+
+            } else {
+                var step = _.find(json.steps, function (step) {
+                    return step.id === split[0]
+                });
+
+                node = _.find(step.inputs, function (inp) {
+                    return inp.id === group;
+                });
+
+            }
+
+
+            node.source = node.source || [];
+            
+            links.sort(function (a, b) {
+                var posA = a.position || 9999;
+                var posB= b.position || 9999;
+
+                if (posA < posB) { return -1; }
+                if (posB < posA) { return 1; }
+
+                return 0;
+            });
+
+            _.forEach(links, function (link) {
+               node.source.push(link.source);
+            });
+        })
+
     }
 
 };
@@ -815,6 +907,7 @@ var fd2 = {
 
         model.display = json.display;
         model.dataLinks = _formatter.toRabixRelations(json.relations, exposed, model, suggestedValues);
+
         model.steps = _formatter.createSteps(json.schemas);
 
         _formatter.addValuesToSteps(model.steps, values);
@@ -826,6 +919,10 @@ var fd2 = {
         model.label = json.label || model.label;
         model.description = json.description || '';
         model.hints = json.hints;
+
+        _formatter.dataLinksToSource(model);
+
+        delete model.dataLinks;
 
         if (json.requireSBGMetadata) {
             model.requirements.push(_.clone(MetadataRequirement, true));
@@ -841,6 +938,8 @@ var fd2 = {
             suggestedValues = {},
             values = {};
 
+        json.dataLinks = _formatter.createDataLinks(json);
+        
         schemas = _formatter.createSchemasFromSteps(json.steps, values);
 
         //extend schemas with inputs and outputs
