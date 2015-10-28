@@ -10,7 +10,7 @@
 
 
 angular.module('registryApp.dyole')
-    .controller('WorkflowSettingsCtrl', ['$scope', '$modalInstance', 'data', 'HelpMessages', 'lodash', function ($scope, $modalInstance, data, HelpMessages, _) {
+    .controller('WorkflowSettingsCtrl', ['$scope', '$modalInstance', 'data', 'HelpMessages', function ($scope, $modalInstance, data, HelpMessagess) {
         $scope.help = HelpMessages;
 
         $scope.view = {};
