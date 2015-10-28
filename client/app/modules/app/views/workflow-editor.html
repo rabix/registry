@@ -237,11 +237,11 @@
                         <h3 class="tab-title">{{ ::view.json.name }}</h3>
 
                         <div ng-repeat="cat in view.inputCategories" ng-if="!view.json.softwareDescription" class="category-container sm">
-                            <h4 class="category-title" ng-class="{first: $first}"  ng-click="cat.show = !cat.show">
-                                {{ ::cat.name == 'undefined' ? 'Uncategorized' : cat.name }}
-                                <i class="fa pull-right mg-right-10" ng-class="{'fa-caret-up': cat.show, 'fa-caret-down': !cat.show}"></i>
-                            </h4>
-                            <div class="input-container input-container-sm" ng-show="cat.show">
+                            <!--<h4 class="category-title" ng-class="{first: $first}"  ng-click="cat.show = !cat.show">-->
+                                <!--{{ ::cat.name == 'undefined' ? 'Uncategorized' : cat.name }}-->
+                                <!--<i class="fa pull-right mg-right-10" ng-class="{'fa-caret-up': cat.show, 'fa-caret-down': !cat.show}"></i>-->
+                            <!--</h4>-->
+                            <!--<div class="input-container input-container-sm" ng-show="cat.show">-->
 
                                 <input-field
                                         ng-repeat="property in cat.inputs track by property['id']"
@@ -259,7 +259,7 @@
                                         handle-include-in-ports="onIncludeInPorts(appName, property['id'], value)"
                                         on-un-expose="onUnExpose(appName, property['id'], value)">
                                 </input-field>
-                            </div>
+                            <!--</div>-->
 
                         </div>
 
