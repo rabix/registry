@@ -78,6 +78,6 @@ angular
         AngularyticsProvider.setEventHandlers(['Console', 'GoogleUniversal']);
 
     }])
-    .run(function(Angularytics){
+    .run(['Angularytics', function(Angularytics){
         Angularytics.init();
-    });
+    }]);
