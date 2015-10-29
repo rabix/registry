@@ -4,7 +4,7 @@
 'use strict';
 
 angular.module('registryApp.common')
-.directive('enumValidation', function ($timeout) {
+.directive('enumValidation', ['$timeout', function ($timeout) {
     return {
         require: '?ngModel',
         scope :{
@@ -47,5 +47,5 @@ angular.module('registryApp.common')
             };
         }
     };
-});
+}]);
 
