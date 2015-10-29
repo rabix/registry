@@ -17,9 +17,7 @@ cd client
 
 pwd
 
-npm install
-
-bower install
+npm-cache install
 
 grunt
 
@@ -29,7 +27,7 @@ cd server
 
 pwd
 
-npm install
+npm-cache install
 
 grunt docs
 
