@@ -714,7 +714,12 @@ angular.module('registryApp.cliche')
                     // make sure property is included in jobJSON inputs,
                     // has an inputBinding
                     // and that that inputBinding does not specify stdin
-                    return _.contains(keys, key) && property.inputBinding && !property.inputBinding.stdin;
+
+                    if (property.inputBinding && !_.isEmpty(property.inputBinding)) {
+                        property.inputBinding['rbx:cmdInclude'] = true;
+                    }
+
+                    return _.contains(keys, key) && property.inputBinding && !property.inputBinding.stdin && property.inputBinding['rbx:cmdInclude'];
                 });
 
             /* go through properties */

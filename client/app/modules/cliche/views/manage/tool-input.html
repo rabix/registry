@@ -101,7 +101,7 @@
             </label>
         </legend>
 
-        <div ng-if="view.inputBinding && !view.stdin" class="row">
+        <div ng-if="(view.property.inputBinding['rbx:cmdInclude']) && !view.stdin" class="row">
 
             <div class="col-md-2">
                 <div class="form-group" ng-class="{'has-error': (view.form.position.$invalid && view.form.$dirty)}">
@@ -150,11 +150,11 @@
 
         </div>
 
-        <p ng-if="!view.inputBinding && !view.stdin" class="alert alert-info">
+        <p ng-if="!(view.property.inputBinding['rbx:cmdInclude']) && !view.stdin" class="alert alert-info">
             This input will not be added to command line. Check the box above to create command line binding.
         </p>
 
-        <p ng-if="view.inputBinding && view.stdin" class="alert alert-info">
+        <p ng-if="(view.property.inputBinding['rbx:cmdInclude']) && view.stdin" class="alert alert-info">
             This input will be used in the command line as stdin.
         </p>
 

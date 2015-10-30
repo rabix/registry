@@ -12,6 +12,7 @@ angular.module('registryApp.cliche')
         var key = options.key || 'name';
         var idObj = {n: '', o: ''};
         var cacheAdapter = {
+            'rbx:cmdInclude': true,
             separate: true
         };
 
@@ -44,7 +45,7 @@ angular.module('registryApp.cliche')
         $scope.view.symbols = enumObj.symbols;
 
         $scope.view.disabled = ($scope.view.items && $scope.view.items.type) === 'record';
-        $scope.view.inputBinding = !_.isUndefined($scope.view.property.inputBinding);
+        $scope.view.inputBinding = !!(!_.isUndefined($scope.view.property.inputBinding) && $scope.view.property.inputBinding['rbx:cmdInclude']);
         $scope.view.stdin = $scope.view.inputBinding && !_.isUndefined($scope.view.property.inputBinding.stdin);
 
         $scope.view.description = $scope.view.property.description || '';
@@ -178,7 +179,7 @@ angular.module('registryApp.cliche')
         $scope.toggleAdapter = function () {
 
             if ($scope.view.inputBinding && !$scope.view.stdin) {
-                $scope.view.property.inputBinding = cacheAdapter;
+                $scope.view.property.inputBinding = _.extend($scope.view.property.inputBinding, cacheAdapter) || cacheAdapter;
             } else if (!$scope.view.stdin) {
                 if ($scope.view.property.inputBinding && $scope.view.property.inputBinding.stdin) {
                     delete $scope.view.property.inputBinding.stdin;
