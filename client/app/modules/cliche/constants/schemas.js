@@ -7,11 +7,11 @@
 
 angular.module('registryApp.cliche')
     .constant('rawJob', {
-        inputs: {},
-        allocatedResources: {
-            cpu: 0,
-            mem: 0
-        }
+        inputs: {}
+        //allocatedResources: {
+        //    cpu: 0,
+        //    mem: 0
+        //}
     })
     .constant('rawTool', {
         'id': '',

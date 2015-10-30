@@ -44,6 +44,7 @@ body {
 .page {
   position: relative;
   background-color: #fff;
+  max-width: 100%;
   @extend .flex-box-column;
   @extend .flex-one;
 

@@ -22,8 +22,8 @@ angular.module('registryApp.cliche')
             onBeforeRedirectOff = BeforeRedirect.register(
                 function () { return Cliche.save($scope.view.mode); },
                 function () { return $scope.form.tool.$dirty; }
-            ),
-            reqMap = {CPURequirement: 'cpu', MemRequirement: 'mem'};
+            );
+            //reqMap = {CPURequirement: 'cpu', MemRequirement: 'mem'};
 
         $scope.view = {};
         $scope.form = {};
@@ -223,20 +223,20 @@ angular.module('registryApp.cliche')
          * Check if there are expressions applied on cpu and mem requirements and evaluate
          * them in order to refresh result for the allocated resources
          */
-        var checkRequirements = function () {
-
-            var req;
-
-            _.each(reqMap, function (key, reqName) {
-                req = $scope.view['req' + reqName];
-                if (req.value && _.isObject(req.value) && _.contains(req.value.value, '$job')) {
-                    SandBox.evaluate(req.value.script, {})
-                        .then(function (result) {
-                            $scope.view.job.allocatedResources[key] = result;
-                        });
-                }
-            });
-        };
+        //var checkRequirements = function () {
+        //
+        //    var req;
+        //
+        //    _.each(reqMap, function (key, reqName) {
+        //        req = $scope.view['req' + reqName];
+        //        if (req.value && _.isObject(req.value) && _.contains(req.value.value, '$job')) {
+        //            SandBox.evaluate(req.value.script, {})
+        //                .then(function (result) {
+        //                    $scope.view.job.allocatedResources[key] = result;
+        //                });
+        //        }
+        //    });
+        //};
 
         /**
          * Watch the job's inputs in order to evaluate
@@ -246,7 +246,7 @@ angular.module('registryApp.cliche')
 
             if ($stateParams.type === 'tool') {
 
-                checkRequirements();
+                //checkRequirements();
 
                 if ($scope.view.isConsoleVisible) {
                     $scope.view.generatingCommand = true;
@@ -256,7 +256,7 @@ angular.module('registryApp.cliche')
 
                 jobWatcher = $scope.$watch('view.job.inputs', function(n, o) {
                     if (n !== o) {
-                        checkRequirements();
+                        //checkRequirements();
                         if ($scope.view.isConsoleVisible) {
                             $scope.view.generatingCommand = true;
                             debouncedGenerateCommand();
@@ -540,24 +540,24 @@ angular.module('registryApp.cliche')
          * @param {*} transform
          * @param {string} key
          */
-        $scope.updateResource = function (transform, key) {
-
-            var req = $scope.view['req' + key] || { class: key };
-
-            req.value = transform;
-
-            if (_.isObject(transform)) {
-
-                SandBox.evaluate(transform.script, {})
-                    .then(function (result) {
-                        $scope.view.job.allocatedResources[reqMap[key]] = result;
-                    });
-
-            } else {
-                $scope.view.job.allocatedResources[reqMap[key]] = transform;
-            }
-
-        };
+        //$scope.updateResource = function (transform, key) {
+        //
+        //    var req = $scope.view['req' + key] || { class: key };
+        //
+        //    req.value = transform;
+        //
+        //    if (_.isObject(transform)) {
+        //
+        //        SandBox.evaluate(transform.script, {})
+        //            .then(function (result) {
+        //                $scope.view.job.allocatedResources[reqMap[key]] = result;
+        //            });
+        //
+        //    } else {
+        //        $scope.view.job.allocatedResources[reqMap[key]] = transform;
+        //    }
+        //
+        //};
 
         /**
          * Update value from the cliAdapter
