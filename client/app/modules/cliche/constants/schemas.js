@@ -22,7 +22,6 @@ angular.module('registryApp.cliche')
         requirements: [
             {
                 'class': 'DockerRequirement',
-                dockerImageId: '',
                 dockerPull: ''
             },
             {
