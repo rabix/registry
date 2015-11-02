@@ -26,14 +26,6 @@ angular.module('registryApp.cliche')
                 dockerPull: ''
             },
             {
-                'class': 'CPURequirement',
-                value: 1
-            },
-            {
-                'class': 'MemRequirement',
-                value: 1000
-            },
-            {
                 'class': 'ExpressionEngineRequirement',
                 id: '#cwl-js-engine',
                 requirements: [
