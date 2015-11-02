@@ -169,15 +169,9 @@ var Schema = {
         }
     },
     properties: {
-        'id': {
-            type: 'string'
-        },
         'class': {
             type: 'string',
             enum: ['ExpressionTool']
-        },
-        '@context': {
-            type: 'string'
         },
         label: {
             type: 'string'
@@ -296,7 +290,7 @@ var Schema = {
             type: 'string'
         }
     },
-    required: ['id', 'class', '@context', 'label', 'inputs', 'outputs']
+    required: ['class', 'label', 'inputs', 'outputs']
 };
 
 /**

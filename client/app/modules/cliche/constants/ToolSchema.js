@@ -157,15 +157,9 @@ var Schema = {
         }
     },
     properties: {
-        'id': {
-            type: 'string'
-        },
         'class': {
             type: 'string',
             enum: ['CommandLineTool']
-        },
-        '@context': {
-            type: 'string'
         },
         label: {
             type: 'string'
@@ -304,7 +298,7 @@ var Schema = {
             }
         }
     },
-    required: ['id', 'class', '@context', 'baseCommand', 'arguments', 'label', 'inputs', 'outputs']
+    required: ['class', 'baseCommand', 'arguments', 'label', 'inputs', 'outputs']
 };
 
 if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
