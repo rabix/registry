@@ -452,6 +452,11 @@ pre.result  {
   @include box-shadow(none);
   @include border-radius(0);
 
+  &::selection, &::-moz-selection, span::selection, span::-moz-selection {
+    background: #ddd;
+    color: #333;
+  }
+
   &.error {
     color: #ff0000;
     border: 1px solid #cc0000;

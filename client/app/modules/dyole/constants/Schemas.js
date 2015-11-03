@@ -21,6 +21,7 @@ angular.module('registryApp.dyole')
         '@context': 'https://raw.githubusercontent.com/common-workflow-language/common-workflow-language/draft2/specification/context.json',
         'steps': [],
         'dataLinks': [],
+        'requirements': [],
         'inputs': [],
         'outputs': []
     })

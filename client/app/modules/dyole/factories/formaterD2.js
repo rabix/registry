@@ -17,7 +17,8 @@ if (typeof require !== 'undefined') {
 }
 
 var Const = {
-    exposedSeparator: '$'
+    exposedSeparator: '$',
+    generalSeparator: '.'
 };
 
 var baseUrl = '../test/mocks/';
@@ -38,7 +39,6 @@ function resolveApp(name) {
         return false;
     }
 }
-
 /**
  * Bare Rabix schema model
  *
@@ -46,11 +46,16 @@ function resolveApp(name) {
  */
 var RabixModel = {
     'class': 'Workflow',
-    '@context': 'https://raw.githubusercontent.com/common-workflow-language/common-workflow-language/draft2/specification/context.json',
+    // '@context': 'https://raw.githubusercontent.com/common-workflow-language/common-workflow-language/draft2/specification/context.json',
     'steps': [],
+    'requirements': [],
     'dataLinks': [],
     'inputs': [],
     'outputs': []
+};
+
+var MetadataRequirement =  {
+    "class": "sbg:Metadata"
 };
 
 /**
@@ -59,7 +64,7 @@ var RabixModel = {
  * @type {{fileFilter: string[], _fileTypeCheck: _fileTypeCheck, checkTypeFile: checkTypeFile}}
  * @private
  */
-var _common;
+var _common = {};
 
 /**
  * Main formatter
@@ -152,13 +157,14 @@ var _formatter = {
             delete model.name;
         }
 
-        var n = 1;
+        var n = 0;
 
         while(!flag) {
 
             if (!_self._checkIdUniqe(model.id, workflow.inputs) && !_self._checkIdUniqe(model.id, workflow.outputs)) {
                 flag = true;
             } else {
+                n++;
                 model.id = id + '_' + n;
             }
 
@@ -207,10 +213,11 @@ var _formatter = {
                 delete schema.ref;
             }
 
-            if (step.run.appId) {
-                step.run.id = step.run.appId;
-                delete step.run.appId;
-            }
+            // if (step.run.appId) {
+                // step.run.id = step.run.appId;
+            //     delete step.run.appId;
+            // }
+            delete step.run.id;
 
             if (!_common.checkSystem(schema)) {
 
@@ -288,12 +295,10 @@ var _formatter = {
                 delete schema.softwareDescription;
 
                 _.forEach(schema.inputs, function (inp) {
-                    delete inp.label;
                     delete inp.name;
                 });
 
                 _.forEach(schema.outputs, function (out) {
-                    delete out.label;
                     delete out.name;
                 });
 
@@ -364,7 +369,7 @@ var _formatter = {
         _.forEach(workflow.inputs, function (input) {
             var id = input['id'];
 
-            if (_common.checkTypeFile(input.type[1] || input.type[0])) {
+            if (_common.checkTypeFile(input.type[1] || input.type[0]) || input['sbg:includeInPorts']) {
                 system[id] = _self._generateIOSchema('input', input, id);
             }
         });
@@ -403,7 +408,7 @@ var _formatter = {
             if (typeof input !== 'undefined') {
                 schema = input.type[1] || input.type[0];
 
-                return _common.checkTypeFile(schema);
+                return input['sbg:includeInPorts']? true : _common.checkTypeFile(schema);
             } else {
                 console.log('Input %s not found on node %s', input_id, node_id);
             }
@@ -446,30 +451,30 @@ var _formatter = {
                 relations.push(relation);
 
             } else {
-                if (src.length === 1) {
-                    src = src[0];
+//                        if (src.length === 1) {
+                src = src[0];
 
-                    var ex = _.find(workflow.inputs, function (i) {
-                        return i['id'] === src;
-                    });
+                var ex = _.find(workflow.inputs, function (i) {
+                    return i['id'] === src;
+                });
 
-                    if (typeof ex !== 'undefined') {
-                        var keyName = dest[0] + Const.exposedSeparator + dest[1];
-                        //remove # with slice in front of input id (cliche form builder required)
-                        exposed[keyName] = ex;
+                if (typeof ex !== 'undefined') {
+                    var keyName = dest[0] + Const.exposedSeparator + dest[1];
+                    //remove # with slice in front of input id (cliche form builder required)
+                    exposed[keyName] = ex;
 
-                        var sugValue = ex['sbg:suggestedValue'];
-                        if (typeof sugValue !== 'undefined') {
-                            suggestedValues[keyName] = sugValue;
-                        }
-
-                    } else {
-                        console.error('Param exposed but not set in workflow inputs');
+                    var sugValue = ex['sbg:suggestedValue'];
+                    if (typeof sugValue !== 'undefined') {
+                        suggestedValues[keyName] = sugValue;
                     }
 
                 } else {
-                    console.error('Param must be exposed as workflow input');
+                    console.error('Param exposed but not set in workflow inputs');
                 }
+
+//                        } else {
+//                            console.error('Param must be exposed as workflow input');
+//                        }
             }
 
 
@@ -606,6 +611,98 @@ var _formatter = {
         });
 
         return nodes;
+    },
+
+    createDataLinks: function (json) {
+        json.dataLinks = [];
+
+        var dataLinks = [];
+        var steps = json.steps;
+        var outputs = json.outputs;
+
+        _.forEach(steps, function (step) {
+            _.forEach(step.inputs, function (input) {
+                if (_.isArray(input.source)) {
+                    _.forEach(input.source, function (src, position) {
+
+                        var dataLink = {
+                            source: src,
+                            destination: input.id,
+                            position: position+1
+                        };
+
+                        dataLinks.push(dataLink);
+                    });
+                }
+            });
+        });
+
+
+        _.forEach(outputs, function (output) {
+            if (_.isArray(output.source)) {
+                _.forEach(output.source, function (src, position) {
+
+                    var dataLink = {
+                        source: src,
+                        destination: output.id,
+                        position: position+1
+                    };
+
+                    dataLinks.push(dataLink);
+                });
+            }
+        });
+
+        return dataLinks;
+    },
+
+    dataLinksToSource: function (json) {
+        var dataLinks = json.dataLinks;
+
+        var grouped = _.groupBy(dataLinks, function (link) {
+            return link.destination;
+        });
+
+        _.forEach(grouped, function (links, group) {
+
+            var node;
+            var split = group.split('.');
+
+            if (split.length === 1) {
+
+                node = _.find(json.outputs, function (output) {
+                    return output.id === group;
+                });
+
+            } else {
+                var step = _.find(json.steps, function (step) {
+                    return step.id === split[0]
+                });
+
+                node = _.find(step.inputs, function (inp) {
+                    return inp.id === group;
+                });
+
+            }
+
+
+            node.source = node.source || [];
+
+            links.sort(function (a, b) {
+                var posA = a.position || 9999;
+                var posB= b.position || 9999;
+
+                if (posA < posB) { return -1; }
+                if (posB < posA) { return 1; }
+
+                return 0;
+            });
+
+            _.forEach(links, function (link) {
+               node.source.push(link.source);
+            });
+        })
+
     }
 
 };
@@ -811,6 +908,7 @@ var fd2 = {
 
         model.display = json.display;
         model.dataLinks = _formatter.toRabixRelations(json.relations, exposed, model, suggestedValues);
+
         model.steps = _formatter.createSteps(json.schemas);
 
         _formatter.addValuesToSteps(model.steps, values);
@@ -818,8 +916,18 @@ var fd2 = {
         _formatter.createWorkflowInOut(model, json.schemas, json.relations);
 
         model = _mergeSBGProps(json, model);
-        model['id'] = model['id'] || json['id'];
-        model.label = model.label || json.label;
+        model['id'] = json['id'] || model['id'];
+        model.label = json.label || model.label;
+        model.description = json.description || '';
+        model.hints = json.hints;
+
+        _formatter.dataLinksToSource(model);
+
+        delete model.dataLinks;
+
+        if (json.requireSBGMetadata) {
+            model.requirements.push(_.clone(MetadataRequirement, true));
+        }
 
         return model;
     },
@@ -830,6 +938,8 @@ var fd2 = {
             exposed = {},
             suggestedValues = {},
             values = {};
+
+        json.dataLinks = _formatter.createDataLinks(json);
 
         schemas = _formatter.createSchemasFromSteps(json.steps, values);
 
@@ -843,7 +953,13 @@ var fd2 = {
 
         relations = _formatter.toPipelineRelations(schemas, json.dataLinks, exposed, json, suggestedValues);
 
+        var requireMetadata = _.find(json.requirements, function(req){
+            return req.class === MetadataRequirement.class;
+        });
+
         var model = {
+            hints: json.hints || [],
+            requireSBGMetadata: typeof requireMetadata !== 'undefined',
             exposed: exposed,
             values: values,
             suggestedValues: suggestedValues,
@@ -853,8 +969,9 @@ var fd2 = {
             relations: relations
         };
 
-        model['id'] = model['id'] || json['id'];
-        model.label = model.label || json.label;
+        model['id'] = json['id'];
+        model.label = json.label || json.id;
+        model.description = json.description || '';
         model = _mergeSBGProps(json, model);
 
         return model;
@@ -869,8 +986,8 @@ if (typeof module !== 'undefined' && module.exports) {
 
 } else if (typeof angular !== 'undefined') {
     angular.module('registryApp.dyole')
-        .factory('FormaterD2', ['Const', 'common', function (Cons, Common) {
-            Const = Cons;
+        .factory('FormaterD2', ['Const', 'common', function (_const, Common) {
+            Const = _const;
             _common = Common;
 
             return fd2;

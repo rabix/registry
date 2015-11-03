@@ -6,7 +6,7 @@
 
 'use strict';
 
-angular.module('registryApp.cliche', ['ngTagsInput'])
+angular.module('registryApp.cliche', [])
     .config(['$stateProvider', '$localForageProvider', function ($stateProvider, $localForageProvider) {
 
         $stateProvider
@@ -27,4 +27,9 @@ angular.module('registryApp.cliche', ['ngTagsInput'])
             storeName: 'registryDB'
         });
 
-    }]);
+    }])
+    .constant('Const', {
+        exposedSeparator: '$',
+        generalSeparator: '.'
+    });
+

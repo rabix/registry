@@ -7,16 +7,14 @@
 
 angular.module('registryApp.cliche')
     .constant('rawJob', {
-        inputs: {},
-        allocatedResources: {
-            cpu: 0,
-            mem: 0
-        }
+        inputs: {}
+        //allocatedResources: {
+        //    cpu: 0,
+        //    mem: 0
+        //}
     })
     .constant('rawTool', {
-        'id': '',
         'class': 'CommandLineTool',
-        '@context': 'https://github.com/common-workflow-language/common-workflow-language/blob/draft-1/specification/tool-description.md',
         label: '',
         description: '',
         owner: [],
@@ -24,16 +22,17 @@ angular.module('registryApp.cliche')
         requirements: [
             {
                 'class': 'DockerRequirement',
-                dockerImageId: '',
                 dockerPull: ''
             },
             {
-                'class': 'CPURequirement',
-                value: 1
-            },
-            {
-                'class': 'MemRequirement',
-                value: 1000
+                'class': 'ExpressionEngineRequirement',
+                id: '#cwl-js-engine',
+                requirements: [
+                    {
+                        'class': 'DockerRequirement',
+                        dockerPull: 'rabix/js-engine'
+                    }
+                ]
             }
         ],
         inputs: [],

@@ -18,17 +18,17 @@ angular.module('registryApp.cliche')
         $scope.view.key = key;
         $scope.view.mode = options.mode;
         $scope.view.property = options.property || {};
-        $scope.view.property.schema = Cliche.getSchema('output', options.property, options.toolType, false);
+        $scope.view.property.type = Cliche.getSchema('output', options.property, options.toolType, false);
 
         // only add adapter if one has been defined
         if (options.property && options.property.outputBinding) {
-            $scope.view.property.outputBinding = Cliche.getAdapter(options.property);
+            $scope.view.property.outputBinding = Cliche.getAdapter(options.property, false, 'output');
         }
 
         $scope.view.name = Cliche.parseName(options.property);
-        $scope.view.required = Cliche.isRequired($scope.view.property.schema);
-        $scope.view.type = Cliche.parseType($scope.view.property.schema);
-        $scope.view.items = Cliche.getItemsRef($scope.view.type, $scope.view.property.schema);
+        $scope.view.required = Cliche.isRequired($scope.view.property.type);
+        $scope.view.type = Cliche.parseType($scope.view.property.type);
+        $scope.view.items = Cliche.getItemsRef($scope.view.type, $scope.view.property.type);
         $scope.view.itemsType = Cliche.getItemsType($scope.view.items);
 
         $scope.view.types = Cliche.getTypes('output');

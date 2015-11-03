@@ -1,0 +1,58 @@
+<div class="modal-header">
+    <h4 class="modal-title">{{ view.type }} settings</h4>
+</div>
+<div class="modal-body">
+    <div class="row workflow-settings">
+
+        <div class="col-md-12">
+            <label>Requires SBG metadata extension: <input class="form-control require-metadata" type="checkbox"
+                                                        ng-model="view.requireSBGMetadata"></label>
+        </div>
+
+        <!--<div class="col-md-12 set-instance">-->
+        <!--<label>Set instance to run workflow on: </label>-->
+        <!--<select ng-model="view.instanceHint.value"-->
+        <!--ng-options="instance.typeId as instance.typeId for instance in view.instances">-->
+        <!--<option value="">Default</option>-->
+        <!--</select>-->
+        <!--</div>-->
+
+        <div class="col-md-12 set-instance">
+            <h4><strong>Hints</strong></h4>
+            <div class="enum-list-wrap">
+                <a href ng-click="addMetadata()" class="btn btn-default add-enum-item"><i
+                        class="fa fa-plus"></i></a>
+
+                <div class="enum-list-container">
+                    <ul class="enum-list">
+                        <li ng-repeat="hint in view.hints">
+                            <div class="enum-field form-group form-group-file">
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control" placeholder="Requirement class"
+                                           ng-model="hint.class"/>
+                                </div>
+                                <div class="col-md-6">
+                                    <input type="text" class="form-control" placeholder="Requirement value"
+                                           ng-model="hint.value"/>
+                                </div>
+                            </div>
+                            <a href class="fa fa-remove remove-btn" ng-click="removeMetadata($index)"></a>
+                        </li>
+                    </ul>
+
+                    <p class="alert alert-info" ng-if="view.hints | isEmpty">Click the plus button to add a
+                        requirement.</p>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="alert alert-danger" ng-if="view.error">{{view.error}}</div>
+    </div>
+</div>
+<div class="modal-footer">
+    <div>
+        <button class="btn btn-primary" ng-click="ok()">Save</button>
+        <a href class="btn btn-default" ng-click="cancel()">Cancel</a>
+    </div>
+</div>

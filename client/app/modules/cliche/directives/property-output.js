@@ -22,12 +22,13 @@ angular.module('registryApp.cliche')
          * - load appropriate template
          */
         var parseStructure = function() {
+            var schema = Cliche.getSchema('output', $scope.prop, $scope.type, false);
 
-            $scope.view.property = Cliche.getSchema('output', $scope.prop, $scope.type, true);
+            $scope.view.property = $scope.prop;
             $scope.view.name = Cliche.parseName($scope.prop);
-            $scope.view.type = Cliche.parseType($scope.view.property);
-            $scope.view.required = Cliche.isRequired($scope.view.property);
-            $scope.view.items = Cliche.getItemsRef($scope.view.type, $scope.view.property);
+            $scope.view.type = Cliche.parseType(schema);
+            $scope.view.required = Cliche.isRequired(schema);
+            $scope.view.items = Cliche.getItemsRef($scope.view.type, schema);
             $scope.view.itemsType = Cliche.getItemsType($scope.view.items);
 
             var tplType = Cliche.getTplType($scope.view.type);
