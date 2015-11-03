@@ -46,7 +46,7 @@ function resolveApp(name) {
  */
 var RabixModel = {
     'class': 'Workflow',
-    '@context': 'https://raw.githubusercontent.com/common-workflow-language/common-workflow-language/draft2/specification/context.json',
+    // '@context': 'https://raw.githubusercontent.com/common-workflow-language/common-workflow-language/draft2/specification/context.json',
     'steps': [],
     'requirements': [],
     'dataLinks': [],
@@ -213,10 +213,11 @@ var _formatter = {
                 delete schema.ref;
             }
 
-            if (step.run.appId) {
-                step.run.id = step.run.appId;
-                delete step.run.appId;
-            }
+            // if (step.run.appId) {
+                // step.run.id = step.run.appId;
+            //     delete step.run.appId;
+            // }
+            delete step.run.id;
 
             if (!_common.checkSystem(schema)) {
 
@@ -686,7 +687,7 @@ var _formatter = {
 
 
             node.source = node.source || [];
-            
+
             links.sort(function (a, b) {
                 var posA = a.position || 9999;
                 var posB= b.position || 9999;
@@ -939,7 +940,7 @@ var fd2 = {
             values = {};
 
         json.dataLinks = _formatter.createDataLinks(json);
-        
+
         schemas = _formatter.createSchemasFromSteps(json.steps, values);
 
         //extend schemas with inputs and outputs
