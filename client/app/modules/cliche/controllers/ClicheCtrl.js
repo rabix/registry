@@ -306,6 +306,8 @@ angular.module('registryApp.cliche')
                 delete json.stdin;
                 delete json.stdout;
                 delete json.argAdapters;
+                delete json.successCodes;
+                delete json.temporaryFailCodes;
                 json.requirements.forEach(function(req, index) {
                     if (req.class !== 'ExpressionEngineRequirement') {
                         json.requirements.splice(index, 1);
@@ -347,11 +349,11 @@ angular.module('registryApp.cliche')
 
 
         var prepareStatusCodes = function () {
-            if (typeof $scope.view.tool.successCodes === 'undefined') {
+            if (typeof $scope.view.tool.successCodes === 'undefined' && $stateParams.type !== 'script') {
                 $scope.view.tool.successCodes = [];
             }
 
-            if (typeof $scope.view.tool.temporaryFailCodes === 'undefined') {
+            if (typeof $scope.view.tool.temporaryFailCodes === 'undefined' && $stateParams.type !== 'script') {
                 $scope.view.tool.temporaryFailCodes = [];
             }
         };

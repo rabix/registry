@@ -280,14 +280,8 @@ var Schema = {
                 required: ['type', 'id']
             }
         },
-        engine: {
-            type: 'string'
-        },
-        successCodes: {
-            type: 'array'
-        },
-        script: {
-            type: 'string'
+        expression: {
+            $ref: '#/definitions/expressionDef'
         }
     },
     required: ['class', 'label', 'inputs', 'outputs']

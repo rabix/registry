@@ -99,13 +99,15 @@ angular.module('registryApp.cliche')
             if (type === 'script') {
 
                 transformed['class'] = 'ExpressionTool';
-                transformed.transform = getTransformSchema();
+                transformed.expression = getTransformSchema();
 
                 // ex cli adapter stuff;
                 delete transformed.baseCommand;
                 delete transformed.stdin;
                 delete transformed.stdout;
                 delete transformed.arguments;
+                delete transformed.successCodes;
+                delete transformed.temporaryFailCodes;
                 // requirements
                 // scripts by default should only have the ExpressionEngineRequirement
                 transformed.requirements = _.filter(transformed.requirements, {class: 'ExpressionEngineRequirement'});
