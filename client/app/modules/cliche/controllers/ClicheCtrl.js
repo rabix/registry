@@ -326,6 +326,18 @@ angular.module('registryApp.cliche')
             Cliche.setJob(null, preserve);
             $scope.view.job = Cliche.getJob();
 
+            if ($stateParams.type === 'tool') {
+                _.forEach($scope.view.tool.inputs, function(input) {
+                    var name = Cliche.parseName(input);
+                    var schema = Cliche.getSchema('input', input, 'tool', false);
+                    var enumObj = Cliche.parseEnum(schema);
+                    var type = Cliche.parseType(schema);
+                    var itemsType = Cliche.getItemsType(Cliche.getItemsRef(input));
+
+                    $scope.view.job.inputs[name] = Helper.getDefaultInputValue(name, enumObj.symbols, type, itemsType);
+                });
+            }
+
             prepareRequirements();
 
 
