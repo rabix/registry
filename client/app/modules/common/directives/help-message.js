@@ -12,16 +12,31 @@ angular.module('registryApp.common')
             restrict: 'E',
             replace: true,
             template:   '<div class="help-message">' +
-                            '<i ng-if="showButton" class="fa fa-question help-button"></i>' +
+                            '<i ng-if="showButton" class="fa fa-question-circle help-button"></i>' +
                             '<help-message-popover></help-message-popover>' +
                         '</div>',
             link: function(scope, element) {
+                var MAX_WIDTH = 500;
 
                 scope.showButton = !_.isEmpty(scope.message);
                 scope.showPopup = false;
+                scope.position = 'right';
 
-                function handler () {
+                function handler (e) {
                     scope.showPopup = !scope.showPopup;
+                    var width;
+
+                    if (e.clientX > ($(window).width() / 2)) {
+                        width = e.clientX - 40;
+                        scope.position = 'left';
+                    } else {
+                        width = $(window).width() - e.clientX - 40;
+                        scope.position = 'right';
+                    }
+
+                    width = width > MAX_WIDTH ? MAX_WIDTH : width;
+                    angular.element(element).find('.help-popup').css('width', width);
+
                     scope.$apply();
                 }
 

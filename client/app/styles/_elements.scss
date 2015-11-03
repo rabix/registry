@@ -192,6 +192,14 @@
           display: none;
         }
       }
+
+      .rb-tabs {
+        @include flex(0 0 auto)
+      }
+
+      .input-property .form-group .control-label > .input-key {
+        max-width: 40%;
+      }
     }
   }
 }
@@ -461,7 +469,7 @@ legend {
   }
   .alert {
     margin: 0;
-    padding: 5px 10px 5px 30px;
+    padding: 5px 10px 5px 12px;
   }
 }
 

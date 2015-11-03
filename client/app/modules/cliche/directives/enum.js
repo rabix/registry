@@ -107,7 +107,6 @@ angular.module('registryApp.cliche')
 
         };
 
-        // TODO: try to use $watchCollection
         $scope.$watch('view.list', function(n, o) {
             if (n !== o) {
                 $scope.model = _.pluck(n, 'value');

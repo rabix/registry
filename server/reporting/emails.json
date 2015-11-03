@@ -1,0 +1,461 @@
+{
+    "users": [
+        {
+            "name": "Filip Jelic",
+            "login": "flipio",
+            "email": "jelic.filip@gmail.com"
+        },
+        {
+            "name": "Milica Kadic",
+            "login": "milica",
+            "email": "milica.kadic.87@gmail.com"
+        },
+        {
+            "login": "debugpoint136",
+            "email": "debugpoint136@users.noreply.github.com"
+        },
+        {
+            "name": "brunoli",
+            "login": "brunoli",
+            "email": "brunoli6124@gmail.com"
+        },
+        {
+            "login": "rozowsky",
+            "email": "joel.rozowsky@gmail.com"
+        },
+        {
+            "name": null,
+            "login": "cloudtrends",
+            "email": "cloudtrends@users.noreply.github.com"
+        },
+        {
+            "name": "Sinisa Ivkovic",
+            "login": "sinisa88",
+            "email": "sinisa.ivkovic@sbgenomics.com"
+        },
+        {
+            "name": "Nebojsa Tijanic",
+            "login": "ntijanic",
+            "email": "boysha@sbgenomics.com"
+        },
+        {
+            "name": "Mark Burnett",
+            "login": "mark-burnett",
+            "email": "mburnett@genome.wustl.edu"
+        },
+        {
+            "name": "Peter Clarke",
+            "login": "fourpartswater",
+            "email": "peter@fourpartswater.com"
+        },
+        {
+            "name": "Tengfei Yin",
+            "login": "tengfei",
+            "email": "yintengfei@gmail.com"
+        },
+        {
+            "name": "蔡涵镛",
+            "login": "chanyying",
+            "email": "caiying@genedock.com"
+        },
+        {
+            "name": "Drasko Milosevic",
+            "login": "draskomilosevic",
+            "email": "drasko.milosevic@sbgenomics.com"
+        },
+        {
+            "name": "Vincent Weiss",
+            "login": "vincentweiss",
+            "email": "windweiss@gmail.com"
+        },
+        {
+            "login": "ebiomed",
+            "email": "ebiomed@qq.com"
+        },
+        {
+            "name": null,
+            "login": "djordjeklisic",
+            "email": "djordje.klisic@sbgenomics.com"
+        },
+        {
+            "name": "Damir Krstanovic",
+            "login": "damirkrstanovic",
+            "email": "damir.krstanovic@sbgenomics.com"
+        },
+        {
+            "name": "Jovan",
+            "login": "JovanCe",
+            "email": "jovan.cejovic@gmail.com"
+        },
+        {
+            "name": "",
+            "login": "arsenijae",
+            "email": "vladan.arsenijevic@sbgenomics.com"
+        },
+        {
+            "name": null,
+            "login": "talli",
+            "email": "talli@musea.vc"
+        },
+        {
+            "name": null,
+            "login": "tziotas",
+            "email": "milos.tziotas@sbgenomics.com"
+        },
+        {
+            "name": "ognjenp",
+            "login": "ogip",
+            "email": "ognjen.perisic@sbgenomics.com"
+        },
+        {
+            "name": null,
+            "login": "sbg-oliver",
+            "email": "oliver.bradonjic@sbgenomics.com"
+        },
+        {
+            "name": "Luka Stojanovic",
+            "login": "StarvingMarvin",
+            "email": "luka@magrathea.rs"
+        },
+        {
+            "login": "stevanradanovic",
+            "email": "stevan.radanovic@gmail.com"
+        },
+        {
+            "name": "Nebojsa Tijanic",
+            "login": "ntijanic",
+            "email": "boysha@gmail.com"
+        },
+        {
+            "name": "S.I",
+            "login": "SenadI",
+            "email": "senad.ibraimoski@gmail.com"
+        },
+        {
+            "name": null,
+            "login": "goranrakocevic",
+            "email": "goran.rakocevic@sbgenomics.com"
+        },
+        {
+            "name": "Stefan Risteski",
+            "login": "stefanristeski",
+            "email": "stefan.risteski@sbgenomics.com"
+        },
+        {
+            "name": null,
+            "login": "davidroberson",
+            "email": "david.roberson@gmail.com"
+        },
+        {
+            "name": "Kaushik Ghose",
+            "login": "kghosesbg",
+            "email": "kaushik.ghose@sbgenomics.com"
+        },
+        {
+            "name": "Lu Zhang",
+            "login": "HelloLu",
+            "email": "lu.zhang@sbgenomics.com"
+        },
+        {
+            "name": "Sean Davis",
+            "login": "seandavi",
+            "email": "seandavi@gmail.com"
+        },
+        {
+            "name": null,
+            "login": "sarmadym",
+            "email": "sarmady.m@gmail.com"
+        },
+        {
+            "name": "Kate Blair",
+            "login": "geneknit",
+            "email": "blair@sbgenomics.com"
+        },
+        {
+            "login": "mdjones",
+            "email": "mikedeanjones@yahoo.com"
+        },
+        {
+            "name": null,
+            "login": "xiaojay",
+            "email": "xiaojay@gmail.com"
+        },
+        {
+            "name": "",
+            "login": "freezecoder",
+            "email": "zayed.albertyn@gmail.com"
+        },
+        {
+            "name": "Dion Whitehead Amago",
+            "login": "dionjwa",
+            "email": "dionjw@gmail.com"
+        },
+        {
+            "login": "hongiiv",
+            "email": "hongiiv@gmail.com"
+        },
+        {
+            "name": "Stephen J Newhouse",
+            "login": "snewhouse",
+            "email": "stephen.j.newhouse@gmail.com"
+        },
+        {
+            "name": "Ken Demarest",
+            "login": "kdemarest",
+            "email": "ken.demarest@gmail.com"
+        },
+        {
+            "name": "Robert Syme",
+            "login": "robsyme",
+            "email": "rob.syme@gmail.com"
+        },
+        {
+            "name": "Andrew L. Stachyra",
+            "login": "stachyra-sbg",
+            "email": "andrew.stachyra@sbgenomics.com"
+        },
+        {
+            "name": "Ming Wang",
+            "login": "bakerwm",
+            "email": "wangmcas@gmail.com"
+        },
+        {
+            "login": "logust79",
+            "email": "logust@yahoo.com"
+        },
+        {
+            "login": "zhenfeiwang",
+            "email": "rebel.stone@outlook.com"
+        },
+        {
+            "name": "Xin Wu",
+            "login": "alartin",
+            "email": "alartin@gmail.com"
+        },
+        {
+            "name": "Kate Hodesdon",
+            "login": "satsumas",
+            "email": "kate@hodesdon.com"
+        },
+        {
+            "name": null,
+            "login": "apsoleimany",
+            "email": "apsoleimany@gmail.com"
+        },
+        {
+            "login": "rabixdemo",
+            "email": "sdk@sbgenomics.com"
+        },
+        {
+            "name": "Nan Xiao",
+            "login": "road2stat",
+            "email": "road2stat@gmail.com"
+        },
+        {
+            "name": "Matt Ralston",
+            "login": "MatthewRalston",
+            "email": "mrals89@gmail"
+        },
+        {
+            "name": "Glenn Proctor",
+            "login": "glennproctor",
+            "email": "glenn.proctor@eaglegenomics.com"
+        },
+        {
+            "name": "Daniel Barrell",
+            "login": "dbarrell",
+            "email": "danbarrell@gmail.com"
+        },
+        {
+            "name": "Dan Leehr (Do not use)",
+            "login": "Leehro",
+            "email": "dan.leehr@me.com"
+        },
+        {
+            "name": "Lei ZHANG",
+            "login": "jameslz",
+            "email": "jameslz@foxmail.com"
+        },
+        {
+            "name": "Dragan Bajcic",
+            "login": "kodi",
+            "email": "dragan@bajcic.com"
+        },
+        {
+            "login": "bioinfobox",
+            "email": "bioinfobox@gmail.com"
+        },
+        {
+            "name": "Michael Steinbaugh",
+            "login": "mjsteinbaugh",
+            "email": "mike@steinbaugh.com"
+        },
+        {
+            "login": "jdiiulio",
+            "email": "jdiiulio@geetics.med.harvard.edu"
+        },
+        {
+            "login": "andjelkog",
+            "email": "andjelko.golubovic@sbgenomics.com"
+        },
+        {
+            "name": "dragan",
+            "login": "outout",
+            "email": "jabukenet@gmail.com"
+        },
+        {
+            "name": "Nils Gehlenborg",
+            "login": "ngehlenborg",
+            "email": "nils@gehlenborg.com"
+        },
+        {
+            "login": "anamijalkovic",
+            "email": "ana.mijalkovic@sbgenomics.com"
+        },
+        {
+            "name": "Michael R. Crusoe",
+            "login": "mr-c",
+            "email": "mcrusoe@msu.edu"
+        },
+        {
+            "login": "vvenkat6",
+            "email": "vaishu.ruby@gmail.com"
+        },
+        {
+            "name": "Bo Han",
+            "login": "bowhan",
+            "email": "bo.han@umassmed.edu"
+        },
+        {
+            "name": "Cyriac Kandoth",
+            "login": "ckandoth",
+            "email": "ckandoth@gmail.com"
+        },
+        {
+            "login": "lordzappo",
+            "email": "ccharris@gmail.com"
+        },
+        {
+            "name": "Ramon Felciano",
+            "login": "felciano",
+            "email": "felciano@yahoo.com"
+        },
+        {
+            "name": null,
+            "login": "nate-d-olson",
+            "email": "nolson@nist.gov"
+        },
+        {
+            "name": "Paolo D.",
+            "login": "pdonorio",
+            "email": "p.donorio.demeo@gmail.com"
+        },
+        {
+            "name": "Hyunmin",
+            "login": "hmkim",
+            "email": "hmkim@live.co.kr"
+        },
+        {
+            "name": "Eric Rasche",
+            "login": "erasche",
+            "email": "esr@tamu.edu"
+        },
+        {
+            "name": "Deniz Kural",
+            "login": "denizkural",
+            "email": "denizkural@gmail.com"
+        },
+        {
+            "name": "Nathan Hammond",
+            "login": "nhammond",
+            "email": "nathan.hammond@gmail.com"
+        },
+        {
+            "login": "isaacliao",
+            "email": "isaacliao@gmail.com"
+        },
+        {
+            "name": "Mike Smoot",
+            "login": "mes5k",
+            "email": "mes@aescon.com"
+        },
+        {
+            "name": "Jemma Nelson",
+            "login": "fwip",
+            "email": "pink.fwip@gmail.com"
+        },
+        {
+            "login": "EverestOcean",
+            "email": "why196@gmail.com"
+        },
+        {
+            "name": "Bruno Vieira",
+            "login": "bmpvieira",
+            "email": "mail@bmpvieira.com"
+        },
+        {
+            "name": "Stian Soiland-Reyes",
+            "login": "stain",
+            "email": "stian@soiland-reyes.com"
+        },
+        {
+            "name": "Hannah",
+            "login": "light940929",
+            "email": "light940929@gmail.com"
+        },
+        {
+            "name": "Nick Greenfield",
+            "login": "boydgreenfield",
+            "email": "boyd.greenfield@gmail.com"
+        },
+        {
+            "name": "Maxwell Bates",
+            "login": "maxbates",
+            "email": "maxbates@gmail.com"
+        },
+        {
+            "login": "Ankitmaroo",
+            "email": "ankitmaru@gmail.com"
+        },
+        {
+            "name": "Eric Swenson",
+            "login": "eswenson1",
+            "email": "eric@swenson.org"
+        },
+        {
+            "login": "fakep",
+            "email": "fakep@wf.opt"
+        },
+        {
+            "login": "filip-sbg",
+            "email": "filip.jelic@sbgenomics.com"
+        },
+        {
+            "name": "Maya Nedeljkovich",
+            "login": "mayacoda",
+            "email": "maya.nedeljko@gmail.com"
+        }
+    ],
+    "subscribers": [
+        "Heidi.Sofia@nih.gov",
+        "dpurushotham136@gmail.com",
+        "madduri@gmail.com",
+        "hali@coh.org",
+        "yanzhixiang@genomics.cn",
+        "kmfagnan@lbl.gov",
+        "genedocker@gmail.com",
+        "lixiarong@genedock.com",
+        "david.roberson@nih.gov",
+        "caihanyong@foxmail.com",
+        "isan.wong@gmail.com",
+        "sada@das.com",
+        "budechao@ict.ac.cn",
+        "ognjen.perisic@sbgenomics.com",
+        "kslowikowski@gmail.com",
+        "xiaojay@gmail.com",
+        "aramos@broadinstitute.org",
+        "adam@curoverse.com",
+        "logust@yahoo.com",
+        "kandoth@cbio.mskcc.org"
+    ]
+}

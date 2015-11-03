@@ -6,7 +6,7 @@
 'use strict';
 
 angular.module('registryApp.dyole')
-    .controller('PipelineCtrl', ['$scope', '$rootScope', '$stateParams', '$element', '$state', '$window', '$timeout', '$injector', 'pipeline', 'Tool', 'rawPipeline', 'Workflow', '$modal', '$templateCache', 'PipelineService', 'Notification', function ($scope, $rootScope, $stateParams, $element, $state, $window, $timeout, $injector, pipeline, Tool, rawPipeline, Workflow, $modal, $templateCache, PipelineService, Notification) {
+    .controller('PipelineCtrl', ['$scope', '$rootScope', '$stateParams', '$element', '$state', '$window', '$timeout', '$injector', 'pipeline', 'Tool', 'rawPipeline', 'Workflow', '$modal', '$templateCache', 'PipelineService', 'Notification', 'HotkeyRegistry', function ($scope, $rootScope, $stateParams, $element, $state, $window, $timeout, $injector, pipeline, Tool, rawPipeline, Workflow, $modal, $templateCache, PipelineService, Notification, HotkeyRegistry) {
 
         var Pipeline;
         var selector = '.pipeline';
@@ -184,7 +184,7 @@ angular.module('registryApp.dyole')
 
             if (app.pipeline) {
 
-                formatted.json = JSON.parse(formatted.json);
+                formatted.json = typeof formatted.json === 'string' ? JSON.parse(formatted.json) : formatted.json;
 
                 $scope.view.loading = false;
 
@@ -252,6 +252,12 @@ angular.module('registryApp.dyole')
                 return Pipeline.Event
             } else {
                 return false
+            }
+        };
+
+        var updateMetadata = function (metadata) {
+            if (Pipeline) {
+                Pipeline.updateMetadata(metadata);
             }
         };
 
@@ -323,11 +329,14 @@ angular.module('registryApp.dyole')
             modalInstance.result.then(function (data) {
                 var scatter = data.scatter;
 
-                // get schema for i/o node ( copyes schema from *put )
-                var schema = model.inputs[0] || model.outputs[0];
-                schema.type = data.schema.type;
+                if (!_.isEmpty(data.schema)) {
+                    // get schema for i/o node ( copyes schema from *put )
+                    var schema = model.inputs[0] || model.outputs[0];
+                    schema.type = data.schema.type;
 
-                Pipeline.updateIOSchema(model.id, schema.type);
+                    Pipeline.updateIOSchema(model.id, schema.type, data.schema.description);
+
+                }
 
                 if (scatter) {
                     model.scatter = scatter;
@@ -335,15 +344,18 @@ angular.module('registryApp.dyole')
                     model.scatter = false;
                     delete model.scatter;
                 }
-
-
             });
+
         };
 
-        var onNodeLabelEdit = function(e, name, onEdit, onSave, scope) {
+        var onNodeLabelEdit = function(e, opts, onEdit, onSave, scope) {
 
             var $modal = $injector.get('$modal');
             var $templateCache = $injector.get('$templateCache');
+            var name = opts.name;
+            var isSystem = opts.isSystem;
+
+            var template = isSystem ? 'views/dyole/input-label-edit.html' : 'views/dyole/node-label-edit.html';
 
             $modal.open({
                 template: $templateCache.get('modules/dyole/views/node-label-edit.html'),
@@ -359,6 +371,21 @@ angular.module('registryApp.dyole')
 
         };
 
+        var onIncludeInPorts = function (nodeId, inputId, value) {
+            return Pipeline.updateNodePorts(nodeId, inputId, value);
+        };
+
+        var getWorkflowHints = function () {
+            return Pipeline.getHints();
+        };
+
+        var getRequireSBGMetadata = function () {
+            return Pipeline.getRequireSBGMetadata();
+        };
+
+        var updateWorkflowSettings = function (hints, requireSBGMetadata) {
+            return Pipeline.updateWorkflowSettings(hints,requireSBGMetadata);
+        };
 
         var onNodeInfoOff = $rootScope.$on('node:info', onNodeInfo);
         var onNodeLabelEditOff = $rootScope.$on('node:label:edit', onNodeLabelEdit);
@@ -383,7 +410,12 @@ angular.module('registryApp.dyole')
         var validate = function () {
             return Workflow.validateJson(Pipeline.getJSON());
         };
-        
+
+        HotkeyRegistry.loadHotkeys([
+            {name: 'delete', callback: Pipeline.deleteSelected, preventDefault: true, context: Pipeline},
+            {name: 'backspace delete', callback: Pipeline.deleteSelected, preventDefault: true, context: Pipeline}
+        ]);
+
         $scope.pipelineActions = {
             //TODO: Add disabling buttons logic
             zoomIn: function () {
@@ -410,14 +442,20 @@ angular.module('registryApp.dyole')
 
             var methods = {
                 flush: $scope.flush,
-                dropNode: dropNode,
                 save: save,
+                dropNode: dropNode,
                 getUrl: getUrl,
                 fork: fork,
                 format: format,
+                getJSON: format,
                 validate: validate,
                 adjustSize: adjustSize,
-                getEventObj: getEventObj
+                getEventObj: getEventObj,
+                updateMetadata: updateMetadata,
+                onIncludeInPorts: onIncludeInPorts,
+                getWorkflowHints: getWorkflowHints,
+                getRequireSBGMetadata: getRequireSBGMetadata,
+                updateWorkflowSettings: updateWorkflowSettings
             };
 
             PipelineService.setInstance($scope.controllerId, methods);

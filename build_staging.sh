@@ -16,10 +16,10 @@ cd client
 
 pwd
 
-npm install
+npm-cache install
 
 #su sbg -c "bower install"
-bower install
+#bower install
 
 grunt
 
@@ -29,14 +29,14 @@ cd server
 
 pwd
 
-npm install
+npm-cache install
 
 grunt docs
 
 cd static
 
 #su sbg -c "bower install"
-bower install
+npm-cache install
 
 cd ..
 

@@ -12,6 +12,7 @@ angular.module('registryApp.cliche')
         var key = options.key || 'name';
         var idObj = {n: '', o: ''};
         var cacheAdapter = {
+            'rbx:cmdInclude': true,
             separate: true
         };
 
@@ -37,18 +38,18 @@ angular.module('registryApp.cliche')
         $scope.view.types = Cliche.getTypes('input');
         $scope.view.itemTypes = Cliche.getTypes('inputItem');
 
-        var enumObj = Cliche.parseEnum($scope.view.property.schema);
 
+        var enumObj = Cliche.parseEnum($scope.view.property.schema);
+        $scope.view.reservedNames = ['file','string','enum','int','float','boolean','array'];
         $scope.view.enumName = enumObj.name;
         $scope.view.symbols = enumObj.symbols;
 
         $scope.view.disabled = ($scope.view.items && $scope.view.items.type) === 'record';
-        $scope.view.inputBinding = !_.isUndefined($scope.view.property.inputBinding);
+        $scope.view.inputBinding = !!(!_.isUndefined($scope.view.property.inputBinding) && $scope.view.property.inputBinding['rbx:cmdInclude']);
         $scope.view.stdin = $scope.view.inputBinding && !_.isUndefined($scope.view.property.inputBinding.stdin);
 
         $scope.view.description = $scope.view.property.description || '';
         $scope.view.label = $scope.view.property.label || '';
-        $scope.view.category = $scope.view.property['sbg:category'] || '';
 
         $scope.view.jobInputs = Cliche.getJob().inputs;
         $scope.view.isNested = options.isNested === 'true';
@@ -82,7 +83,7 @@ angular.module('registryApp.cliche')
             }
 
             if ($scope.view.mode === 'edit') {
-                $scope.view.jobInputs[$scope.view.name] = Helper.getDefaultInputValue($scope.view.name, enumObj.symbols, $scope.view.type, $scope.view.itemsType);
+                $scope.view.jobInputs[$scope.view.name] = Helper.getDefaultInputValue($scope.view.name, $scope.view.symbols, $scope.view.type, $scope.view.itemsType);
             }
 
             var inner = {
@@ -122,6 +123,7 @@ angular.module('registryApp.cliche')
                     $scope.view.itemsType = 'string';
                     $scope.view.items = $scope.view.itemsType;
                 } else {
+                    $scope.view.itemsType = '';
                     delete $scope.view.items;
                 }
             }
@@ -175,9 +177,9 @@ angular.module('registryApp.cliche')
          * Toggle inputBinding definition
          */
         $scope.toggleAdapter = function () {
-            
+
             if ($scope.view.inputBinding && !$scope.view.stdin) {
-                $scope.view.property.inputBinding = cacheAdapter;
+                $scope.view.property.inputBinding = _.extend($scope.view.property.inputBinding, cacheAdapter) || cacheAdapter;
             } else if (!$scope.view.stdin) {
                 if ($scope.view.property.inputBinding && $scope.view.property.inputBinding.stdin) {
                     delete $scope.view.property.inputBinding.stdin;

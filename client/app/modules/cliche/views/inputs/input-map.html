@@ -1,0 +1,20 @@
+<div class="form-group"
+     ng-class="{required: view.required, 'has-error': view.required && view.model.length === 0 && !isDisabled}">
+
+    <div class="control-label">
+        <div ng-if="exposed" class="checkbox">
+            <label><input type="checkbox" ng-model="view.expose" ng-change="exposeParams()"> expose</label>
+        </div>
+        <span class="input-key" title="{{ ::view.name }}">
+            <span class="input-key-inner">{{ ::view.name }}</span>
+        </span>
+    </div>
+
+    <div class="input-property-body">
+        <key-value-map
+                empty-list-label="Click the plus button to add a key-value pair to {{ ::view.name }}."
+                list="view.model">
+        </key-value-map>
+    </div>
+
+</div>

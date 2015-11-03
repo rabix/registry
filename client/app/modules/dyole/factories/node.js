@@ -239,15 +239,85 @@ angular.module('registryApp.dyole')
                 return this;
             },
 
+
+            reRenderTerminals: function () {
+
+                var _self = this,
+                    node = this.el,
+                    connections = [];
+
+                _.forEach(this.connections, function (c) {
+                    connections.push(c.model);
+                    c.destroy(false);
+                });
+
+                _.forEach(this.inputs, function (input) {
+                    input.destroy();
+                });
+
+                _.forEach(this.outputs, function (output) {
+                    output.destroy();
+                });
+
+                this.inputs = [];
+                this.outputs = [];
+
+                this._initTerminals();
+
+                // render input terminals
+                _.forEach(this.inputs, function (terminal) {
+                    node.push(terminal.render().el);
+                });
+
+                // render output terminals
+                _.forEach(this.outputs, function (terminal) {
+                    node.push(terminal.render().el);
+                });
+
+                var toRemove = [];
+                _.forEach(connections, function (connection) {
+
+                    var inp = _.find(_self.inputs, function (input) {
+                        return input.model.id === connection.input_name;
+                    });
+
+                    if (!inp && connection.end_node === _self.model.id) {
+                        toRemove.push(connection.id);
+                    }
+                });
+
+                _.remove(connections, function (connection) {
+                    return toRemove.indexOf(connection.id) !== -1;
+                });
+
+                this._restoreConnections(connections);
+            },
+
+            _checkNodeOutdated: function () {
+
+                if (Common.checkSystem(this.model)) {
+                    return false;
+                }
+
+                return this.model['sbg:revision'] !== this.model['sbg:latestRevision'];
+            },
+
+            _restoreConnections: function (connections) {
+                var _self = this;
+                _.forEach(connections, function (cModel) {
+                    _self.Pipeline.createConnectionFromModel(cModel);
+                });
+            },
+
             _filterInputs: function () {
                 var inputs = [];
 
                 _.each(this.inputRefs, function (input) {
-					
-					if (Common.checkTypeFile(input.type[1] || input.type[0])) {
-						input.required = typeof input.type === 'string' ? true : input.type.length === 1;
-						inputs.push(input);	
-					}
+
+                    if (Common.checkTypeFile(input.type[1] || input.type[0]) || input['sbg:includeInPorts']) {
+                        input.required = typeof input.type === 'string' ? true : input.type.length === 1;
+                        inputs.push(input);
+                    }
 
                 });
 
@@ -367,43 +437,6 @@ angular.module('registryApp.dyole')
                     outerBorder = this._outerBorder,
                     inputs = this.inputs,
                     outputs = this.outputs;
-                //
-                //            this.listenTo(model, 'change:selected', function (model, value) {
-                //
-                //                if (!value) {
-                //                    this._deselect();
-                //                }
-                //
-                //            });
-                //
-                //            this.listenTo(model, 'change:paramValues', function () {
-                //                globals.vents.trigger('pipeline:change', 'revision');
-                //            });
-                //
-                //            this.listenTo(globals.vents, 'key:arrow', function (e) {
-                //
-                //                if (!this.selected) {
-                //                    return;
-                //                }
-                //
-                //                var keycode = e.keyCode ? e.keyCode : e.which,
-                //                    arrowCodes = [37,38,39,40], inputFocus;
-                //
-                //                inputFocus = $('input,textarea').is(':focus');
-                //                if ( (keycode === 46 || keycode === 8)) {
-                //
-                //                    if (!inputFocus) {
-                //                        self.removeNodeButtonClick();
-                //                        e.preventDefault();
-                //                    }
-                //
-                //                }
-                //
-                //                if (_.contains(arrowCodes, keycode) && !inputFocus) {
-                //                    self.moveNode(keycode);
-                //                }
-                //
-                //            });
 
                 borders.mouseover(function () {
 
@@ -417,13 +450,7 @@ angular.module('registryApp.dyole')
                         stroke: '#9b9b9b'
                     });
 
-                    // show input and output terminals' labels
-                    _.each(inputs, function (input) {
-                        input.showTerminalName();
-                    });
-                    _.each(outputs, function (output) {
-                        output.showTerminalName();
-                    });
+                    _self.showTerminalNames();
 
                 });
 
@@ -432,15 +459,9 @@ angular.module('registryApp.dyole')
                     if (typeof _self.glow !== 'undefined') {
                         _self.glow.remove();
                     }
-                    // hide input and output terminals' labels
-                    _.each(inputs, function (input) {
-                        input.hideTerminalName();
-                    });
-                    _.each(outputs, function (output) {
-                        output.hideTerminalName();
-                    });
 
-                    //                _self.hideTooltip();
+                    _self.hideTerminalNames();
+
                 });
 
                 borders.click(function () {
@@ -462,8 +483,7 @@ angular.module('registryApp.dyole')
                     this.dragged = false;
                 }, this);
 
-                borders.drag(this.onMove, this.onMoveStart, this.onMoveEnd,
-                    this, this, this);
+                borders.drag(this.onMove, this.onMoveStart, this.onMoveEnd,  this, this, this);
                 
                 this.label.dblclick(function (e) {
                     e.preventDefault();
@@ -543,8 +563,35 @@ angular.module('registryApp.dyole')
                 return terminal;
             },
 
+            showTerminalNames: function () {
+                var inputs = this.inputs,
+                    outputs = this.outputs;
+
+                // show input and output terminals' labels
+                _.forEach(inputs, function (input) {
+                    input.showTerminalName();
+                });
+                _.forEach(outputs, function (output) {
+                    output.showTerminalName();
+                });
+            },
+
+            hideTerminalNames: function () {
+                var inputs = this.inputs,
+                    outputs = this.outputs;
+
+                // hide input and output terminals' labels
+                _.forEach(inputs, function (input) {
+                    input.hideTerminalName();
+                });
+                _.forEach(outputs, function (output) {
+                    output.hideTerminalName();
+                });
+
+            },
+
             redrawConnections: function () {
-                _.each(this.connections, function (connection, id) {
+                _.each(this.connections, function (connection) {
                     if (connection) {
                         connection.draw();
                     }
@@ -577,6 +624,11 @@ angular.module('registryApp.dyole')
                 //            }
             },
 
+            _updateNode: function () {
+                // call update from Pipeline Instance
+                this.Pipeline.updateNodeSchema(this.model.id, this.model.x, this.model.y);
+            },
+
             deselectAvailableTerminals: function () {
 
                 _.each(this.inputs, function (terminal) {
@@ -595,13 +647,19 @@ angular.module('registryApp.dyole')
                     nodeRadius = this.constraints.radius,
                     buttonDistance = typeof this.buttons.distance !== 'undefined' ? -this.buttons.distance - nodeRadius - this.buttons.radius : -nodeRadius * 1.5;
 
-                if (!this.infoButton && !this.removeNodeButton) {
+                var buttonCoords = [+32, -32, 0];
 
-                    this.buttons.rename.image.url = '/rbx/images/' + this.buttons.rename.image.name;
+                if (!this.isOutdated) {
+                    buttonCoords = [+16, -16, 0];
+                }
+
+                if (!this.infoButton && !this.removeNodeButton && !this.updateNodeButton) {
+
+                    this.buttons.rename.image.url = 'images/' + this.buttons.rename.image.name;
 
                     this.infoButton = this.canvas.button({
                         fill: this.buttons.info.fill,
-                        x: +16,
+                        x: buttonCoords[0],
                         y: buttonDistance,
                         radius: this.buttons.radius,
                         border: this.buttons.border,
@@ -617,7 +675,7 @@ angular.module('registryApp.dyole')
 
                     this.removeNodeButton = this.canvas.button({
                         fill: this.buttons.delete.fill,
-                        x: -16,
+                        x: buttonCoords[1],
                         y: buttonDistance,
                         radius: this.buttons.radius,
                         border: this.buttons.border,
@@ -631,34 +689,56 @@ angular.module('registryApp.dyole')
                         scope: this
                     });
 
+                    if (this.isOutdated) {
 
-                    if (this.model.softwareDescription && this.model.softwareDescription.repo_name === 'system') {
-
-                        bbox = this.label.getBBox();
-                        this.editLabelButton = this.canvas.button({
-                            fill: this.buttons.rename.fill,
-                            x: bbox.x + bbox.width + 20,
-                            y: bbox.y + 8,
-                            radius: 10,
+                        this.updateNodeButton = this.canvas.button({
+                            fill: this.buttons.update.fill,
+                            x: buttonCoords[2],
+                            y: buttonDistance,
+                            radius: this.buttons.radius,
                             border: this.buttons.border,
                             image: {
-                                url: '/rbx/images/' + this.buttons.rename.image.name,
-                                width: 13,
-                                height: 13
-                            },
-
-                            borderFill: 'transparent',
-                            borderStroke: 'transparent'
+                                url: '/rbx/images/' + this.buttons.update.image.name,
+                                width: 14,
+                                height: 14
+                            }
                         }, {
-                            onClick: this._initNameChanging,
+                            onClick: this._updateNode,
                             scope: this
                         });
 
-                        this.el.push(this.editLabelButton.getEl());
                     }
 
-                    _self.el.push(_self.infoButton.getEl())
+                    bbox = this.label.getBBox();
+                    this.editLabelButton = this.canvas.button({
+                        fill: this.buttons.rename.fill,
+                        x: bbox.x + bbox.width + 20,
+                        y: bbox.y + 8,
+                        radius: 10,
+                        border: this.buttons.border,
+                        image: {
+                            url: '/rbx/images/' + this.buttons.rename.image.name,
+                            width: 13,
+                            height: 13
+                        },
+
+                        borderFill: 'transparent',
+                        borderStroke: 'transparent'
+                    }, {
+                        onClick: this._initNameChanging,
+                        scope: this
+                    });
+
+                    this.el.push(this.editLabelButton.getEl());
+
+
+                    _self.el
+                        .push(_self.infoButton.getEl())
                         .push(_self.removeNodeButton.getEl());
+
+                    if (this.isOutdated) {
+                        _self.el.push(_self.updateNodeButton.getEl())
+                    }
 
                 }
 
@@ -674,6 +754,11 @@ angular.module('registryApp.dyole')
                 if (this.removeNodeButton) {
                     this.removeNodeButton.remove();
                     this.removeNodeButton = null;
+                }
+
+                if (this.updateNodeButton) {
+                    this.updateNodeButton.remove();
+                    this.updateNodeButton = null;
                 }
 
                 if (this.editLabelButton) {
@@ -710,12 +795,16 @@ angular.module('registryApp.dyole')
              */
             _initNameChanging: function () {
                 var _self = this;
-                var nodeName = (this.model.softwareDescription && this.model.softwareDescription.label) ? this.model.id : this.model.label;
+                var nodeName = !Common.checkSystem(this.model) ? this.model.label : this.model.id;
+                var opts = {
+                    name: nodeName,
+                    isSystem: Common.checkSystem(this.model)
+                };
 
-                $rootScope.$broadcast('node:label:edit', nodeName, function check(name) {
+                $rootScope.$broadcast('node:label:edit', opts, function check(name) {
 
                     var test = _.filter(_self.Pipeline.nodes, function (n) {
-                        return n.model.softwareDescription && n.model.softwareDescription.repo_name === 'system' && n.model.id === name;
+                        return n.model.id === name;
                     });
 
                     return test.length === 0;
@@ -727,13 +816,12 @@ angular.module('registryApp.dyole')
                 var ter, old, oldId,
                     isInput = this.inputs.length === 0;
 
+                this.model.label = name;
+
                 if (this.model.softwareDescription && this.model.softwareDescription.repo_name === 'system') {
 
                     // Genereta id first(Check for id conflict)
-                    name = this.Pipeline._generateNodeId({name: name});
-
-
-                    this.model.label = name;
+                    name = Common.generateNodeId({name: name}, this.Pipeline.nodes);
                     this.Pipeline.model.schemas[this.model.id].name = name;
 
                     //TODO: Refactor this to use one function
@@ -746,7 +834,7 @@ angular.module('registryApp.dyole')
 
                         oldId = ter.model.id;
 
-                        old.label = old.name  = name;
+                        old.label = old.name = name;
                         old.id = name;
 
                         this.model.outputs.push(old);
@@ -847,14 +935,15 @@ angular.module('registryApp.dyole')
                         name = name.slice(1);
                     }
 
-                    this.label.attr('text', name);
-                    this._destroyButtons();
-
-                    if (this.selected) {
-                        this._showButtons();
-                    }
-
                 }
+
+                this.label.attr('text', name);
+                this._destroyButtons();
+
+                if (this.selected) {
+                    this._showButtons();
+                }
+
             },
 
             _select: function () {
@@ -862,8 +951,6 @@ angular.module('registryApp.dyole')
                 if (!this.Pipeline.editMode) {
                     return;
                 }
-
-                this.Pipeline.selectedNodes.push(this);
 
                 this._showButtons();
 
@@ -874,21 +961,28 @@ angular.module('registryApp.dyole')
 
                 this.selected = true;
 
-                console.log('__select__', this.model.id);
-                this.Pipeline.Event.trigger('node:select', this.model);
+                this.Pipeline.Event.trigger('node:select', this);
+
+                //_.forEach(this.connections, function (connection) {
+                //    connection.getEl().glow();
+                //});
             },
 
+
             _deselect: function () {
+                var nodeId = this.id;
                 this._destroyButtons();
 
                 // Show default state
                 this._innerBorder.attr({
-                    fill: this.constraints.fill
+                    fill: this.isOutdated ? this.constraints.outdated.fill : this.constraints.fill
                 });
 
-                console.log('deselect');
-
                 this.selected = false;
+
+                //_.forEach(this.connections, function (connection) {
+                //    connection.connection.unGlow();
+                //});
             },
 
             _removeValues: function () {
@@ -903,11 +997,30 @@ angular.module('registryApp.dyole')
 
                 _.forEach(this.Pipeline.exposed, function (val, ni, obj) {
                     var nodeId = ni.split(Const.exposedSeparator)[0];
-                    console.log(nodeId, ni);
+
                     if (nodeId === id) {
                         obj[ni] = null;
                         delete obj[ni];
                     }
+                });
+            },
+
+            /**
+             * Set outdated state
+             *
+             * @param isOutdated
+             */
+            setOutdated: function (isOutdated) {
+
+                if (typeof isOutdated !== 'boolean') {
+                    console.error('Wrong parametar passed, expexted boolean, got: ', typeof isOutdated);
+                    return false;
+                }
+
+                this.isOutdated = isOutdated;
+
+                this._innerBorder.attr({
+                    fill: this.isOutdated ? this.constraints.outdated.fill : this.constraints.fill
                 });
             },
 
@@ -921,14 +1034,14 @@ angular.module('registryApp.dyole')
                     this.destroyed = true;
                 }
 
-				this._destroyButtons();
+                this._destroyButtons();
 
-				_.each(this.connections, function (connection) {
-					if (connection) {
-						connection.destroyConnection(_self.id);
-					}
-				});
-				
+                _.each(this.connections, function (connection) {
+                    if (connection) {
+                        connection.destroyConnection(_self.id);
+                    }
+                });
+
                 _.each(this.inputs, function (t) {
                     t.destroy();
                 });
@@ -937,7 +1050,7 @@ angular.module('registryApp.dyole')
                     t.destroy();
                 });
 
-				this.connections = {};
+                this.connections = {};
 
                 if (typeof this.glow !== 'undefined') {
                     this.glow.remove();
@@ -949,12 +1062,12 @@ angular.module('registryApp.dyole')
 
                 this.Pipeline.nodes[this.model.id] = null;
                 this.Pipeline.model.schemas[this.model.id] = null;
-				
+
                 delete this.Pipeline.model.schemas[this.model.id];
                 delete this.Pipeline.nodes[this.model.id];
-				
+
                 _.remove(this.Pipeline.nodes, function (n) {
-                    return n.id === _self.model.id;
+                    return n.model.id === _self.model.id;
                 });
 
             },
@@ -966,7 +1079,11 @@ angular.module('registryApp.dyole')
                 this.circle.remove();
 
                 this.el.remove();
+
+                this.Pipeline.Event.trigger('node:destroy', this.id);
+
             }
+
         };
 
         return {

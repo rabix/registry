@@ -99,16 +99,18 @@ angular.module('registryApp.cliche')
             if (type === 'script') {
 
                 transformed['class'] = 'ExpressionTool';
-                transformed.transform = getTransformSchema();
+                transformed.expression = getTransformSchema();
 
                 // ex cli adapter stuff;
                 delete transformed.baseCommand;
                 delete transformed.stdin;
                 delete transformed.stdout;
                 delete transformed.arguments;
+                delete transformed.successCodes;
+                delete transformed.temporaryFailCodes;
                 // requirements
-                delete transformed.requirements;
-
+                // scripts by default should only have the ExpressionEngineRequirement
+                transformed.requirements = _.filter(transformed.requirements, {class: 'ExpressionEngineRequirement'});
             } else {
 
                 transformed['class'] = 'CommandLineTool';
@@ -123,7 +125,7 @@ angular.module('registryApp.cliche')
                     transformed.baseCommand = angular.copy(rawTool.baseCommand);
                     transformed.stdin = angular.copy(rawTool.stdin);
                     transformed.stdout = angular.copy(rawTool.stdout);
-                    transformed.arguments = angular.copy(rawTool.arguments);
+                    transformed.arguments = angular.copy(rawTool['arguments']);
                 }
 
                 if (angular.isUndefined(transformed.requirements)) {
@@ -149,7 +151,6 @@ angular.module('registryApp.cliche')
                     $localForage.getItem('tool'),
                     $localForage.getItem('job')
                 ]).then(function (result) {
-
                     toolJSON = transformToolJson(type, result[0]);
                     jobJSON = result[1];
 
@@ -368,6 +369,10 @@ angular.module('registryApp.cliche')
                 return checkInner(nameObj.newName, toolJSON.inputs, true);
             }
 
+        };
+
+        var getExpressionRequirement = function() {
+            return _.find(rawTool.requirements, {'class': 'ExpressionEngineRequirement'});
         };
 
         /**
@@ -711,7 +716,12 @@ angular.module('registryApp.cliche')
                     // make sure property is included in jobJSON inputs,
                     // has an inputBinding
                     // and that that inputBinding does not specify stdin
-                    return _.contains(keys, key) && property.inputBinding && !property.inputBinding.stdin;
+
+                    if (property.inputBinding && !_.isEmpty(property.inputBinding)) {
+                        property.inputBinding['rbx:cmdInclude'] = true;
+                    }
+
+                    return _.contains(keys, key) && property.inputBinding && !property.inputBinding.stdin && property.inputBinding['rbx:cmdInclude'];
                 });
 
             /* go through properties */
@@ -747,7 +757,8 @@ angular.module('registryApp.cliche')
                     break;
                 case ('File' || 'file'):
                     /* if input is FILE */
-                    applyTransform(property.inputBinding.valueFrom, inputs[key].path, true)
+                    var value = property.inputBinding.valueFrom ? inputs[key] : inputs[key].path;
+                    applyTransform(property.inputBinding.valueFrom, value, true)
                         .then(function (result) {
                             prop.val = result;
                             deferred.resolve(prop);
@@ -1065,12 +1076,11 @@ angular.module('registryApp.cliche')
             }
 
             /*
-            * add description, label, and sbg:category to input if they exist
+            * add description, and label to input if they exist
             */
             if (propertyType === 'input') {
                 if (!_.isUndefined(inner.description)){ formatted.description = inner.description; }
                 if (!_.isUndefined(inner.label)){ formatted.label = inner.label; }
-                if (!_.isUndefined(inner.category)){ formatted['sbg:category'] = inner.category; }
             }
 
             return formatted;
@@ -1148,6 +1158,15 @@ angular.module('registryApp.cliche')
                     return items.type;
                 }
             }
+        };
+
+        /**
+         * Returns array of fields for records
+         *
+         * @param {object} schema
+         */
+        var getFieldsRef = function (schema) {
+            return schema[0] == 'null' ? schema[1].fields : schema[0].fields;
         };
 
         /**
@@ -1271,12 +1290,14 @@ angular.module('registryApp.cliche')
             getStdinInput: getStdinInput,
             switchStdin: switchStdin,
             checkIfEnumNameExists: checkIfEnumNameExists,
+            getExpressionRequirement: getExpressionRequirement,
             manageProperty: manageProperty,
             deleteProperty: deleteProperty,
             manageArg: manageArg,
             deleteArg: deleteArg,
             save: save,
-            subscribe: subscribe
+            subscribe: subscribe,
+            getFieldsRef: getFieldsRef
         };
 
     }]);

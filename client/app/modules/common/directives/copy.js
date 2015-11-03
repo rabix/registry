@@ -40,7 +40,7 @@ angular.module('registryApp.common')
 
                     clip.on('aftercopy', function () {
 
-                        scope.view.text = 'copied';
+                        scope.view.text = 'Copied';
 
                         scope.cancelTimeout();
 

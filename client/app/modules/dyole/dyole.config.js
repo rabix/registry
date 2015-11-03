@@ -6,4 +6,8 @@
 
 'use strict';
 
-angular.module('registryApp.dyole', []);
+angular.module('registryApp.dyole', [])
+    .constant('Const', {
+        exposedSeparator: '$',
+        generalSeparator: '.'
+    });

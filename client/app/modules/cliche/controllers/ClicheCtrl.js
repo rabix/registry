@@ -6,7 +6,7 @@
 'use strict';
 
 angular.module('registryApp.cliche')
-    .controller('ClicheCtrl', ['$parse', '$scope', '$q', '$stateParams', '$modal', '$templateCache', '$state', '$rootScope', 'User', 'Repo', 'Tool', 'Cliche', 'Sidebar', 'Loading', 'SandBox', 'BeforeUnload', 'BeforeRedirect', 'HelpMessages', 'HotkeyRegistry', 'Chronicle', 'Notification', function($parse, $scope, $q, $stateParams, $modal, $templateCache, $state, $rootScope, User, Repo, Tool, Cliche, Sidebar, Loading, SandBox, BeforeUnload, BeforeRedirect, HelpMessages, HotkeyRegistry, Chronicle, Notification) {
+    .controller('ClicheCtrl', ['$timeout', '$parse', '$scope', '$q', '$stateParams', '$modal', '$templateCache', '$state', '$rootScope', 'User', 'Repo', 'Tool', 'Cliche', 'Sidebar', 'Loading', 'SandBox', 'BeforeUnload', 'BeforeRedirect', 'HelpMessages', 'HotkeyRegistry', 'Chronicle', 'Notification', 'Helper', 'ClicheEvents', function($timeout, $parse, $scope, $q, $stateParams, $modal, $templateCache, $state, $rootScope, User, Repo, Tool, Cliche, Sidebar, Loading, SandBox, BeforeUnload, BeforeRedirect, HelpMessages, HotkeyRegistry, Chronicle, Notification, Helper, ClicheEvents) {
 
         $scope.Loading = Loading;
 
@@ -22,8 +22,8 @@ angular.module('registryApp.cliche')
             onBeforeRedirectOff = BeforeRedirect.register(
                 function () { return Cliche.save($scope.view.mode); },
                 function () { return $scope.form.tool.$dirty; }
-            ),
-            reqMap = {CPURequirement: 'cpu', MemRequirement: 'mem'};
+            );
+            //reqMap = {CPURequirement: 'cpu', MemRequirement: 'mem'};
 
         $scope.view = {};
         $scope.form = {};
@@ -74,9 +74,6 @@ angular.module('registryApp.cliche')
         /* current user */
         $scope.view.user = null;
 
-        /* categories */
-        $scope.view.categories = [];
-
         /* help messages */
         $scope.help = HelpMessages;
 
@@ -89,6 +86,13 @@ angular.module('registryApp.cliche')
 
         $scope.$watch('Loading.classes', function(n, o) {
             if (n !== o) { $scope.view.classes = n; }
+        });
+
+        /**
+         * Cliche events that can be broadcast by various components
+         */
+        $scope.$on(ClicheEvents.EXPRESSION.CHANGED, function(e, obj) {
+            checkExpressionRequirement();
         });
 
         Cliche.checkVersion()
@@ -116,7 +120,6 @@ angular.module('registryApp.cliche')
 
                         setUpCliche();
                         prepareRequirements();
-                        setUpCategories();
                         prepareStatusCodes();
 
                         $scope.toggleConsole();
@@ -172,8 +175,7 @@ angular.module('registryApp.cliche')
             if ($stateParams.type === 'tool') {
 
                 $scope.view.generatingCommand = true;
-                Cliche.generateCommand()
-                    .then(outputCommand, outputError);
+                debouncedGenerateCommand();
 
                 var watch = [
                     'view.tool.baseCommand',
@@ -185,8 +187,7 @@ angular.module('registryApp.cliche')
                     var watcher = $scope.$watch(arg, function(n, o) {
                         if (n !== o) {
                             $scope.view.generatingCommand = true;
-                            Cliche.generateCommand()
-                                .then(outputCommand, outputError);
+                            debouncedGenerateCommand();
                         }
                     }, true);
                     cliAdapterWatchers.push(watcher);
@@ -222,20 +223,20 @@ angular.module('registryApp.cliche')
          * Check if there are expressions applied on cpu and mem requirements and evaluate
          * them in order to refresh result for the allocated resources
          */
-        var checkRequirements = function () {
-
-            var req;
-
-            _.each(reqMap, function (key, reqName) {
-                req = $scope.view['req' + reqName];
-                if (req.value && _.isObject(req.value) && _.contains(req.value.value, '$job')) {
-                    SandBox.evaluate(req.value.script, {})
-                        .then(function (result) {
-                            $scope.view.job.allocatedResources[key] = result;
-                        });
-                }
-            });
-        };
+        //var checkRequirements = function () {
+        //
+        //    var req;
+        //
+        //    _.each(reqMap, function (key, reqName) {
+        //        req = $scope.view['req' + reqName];
+        //        if (req.value && _.isObject(req.value) && _.contains(req.value.value, '$job')) {
+        //            SandBox.evaluate(req.value.script, {})
+        //                .then(function (result) {
+        //                    $scope.view.job.allocatedResources[key] = result;
+        //                });
+        //        }
+        //    });
+        //};
 
         /**
          * Watch the job's inputs in order to evaluate
@@ -245,21 +246,21 @@ angular.module('registryApp.cliche')
 
             if ($stateParams.type === 'tool') {
 
-                checkRequirements();
+                //checkRequirements();
 
                 if ($scope.view.isConsoleVisible) {
                     $scope.view.generatingCommand = true;
-                    Cliche.generateCommand()
-                        .then(outputCommand, outputError);
+                    debouncedGenerateCommand();
+
                 }
 
                 jobWatcher = $scope.$watch('view.job.inputs', function(n, o) {
                     if (n !== o) {
-                        checkRequirements();
+                        //checkRequirements();
                         if ($scope.view.isConsoleVisible) {
                             $scope.view.generatingCommand = true;
-                            Cliche.generateCommand()
-                                .then(outputCommand, outputError);
+                            debouncedGenerateCommand();
+
                         }
                     }
                 }, true);
@@ -294,7 +295,8 @@ angular.module('registryApp.cliche')
             var cachedName = $scope.view.tool.label;
 
             if (angular.isDefined(json) && angular.isString(json.baseCommand)) {
-                json.baseCmd = [json.baseCmd];
+                json.baseCommand.replace(/\s+/g, ' ');
+                json.baseCommand = json.baseCommand.split(' ');
             }
 
             if ($stateParams.type === 'script') {
@@ -304,7 +306,13 @@ angular.module('registryApp.cliche')
                 delete json.stdin;
                 delete json.stdout;
                 delete json.argAdapters;
-                delete json.requirements;
+                delete json.successCodes;
+                delete json.temporaryFailCodes;
+                json.requirements.forEach(function(req, index) {
+                    if (req.class !== 'ExpressionEngineRequirement') {
+                        json.requirements.splice(index, 1);
+                    }
+                });
 
             } else {
                 if (angular.isDefined(json.transform)) { delete json.transform; }
@@ -318,8 +326,20 @@ angular.module('registryApp.cliche')
             Cliche.setJob(null, preserve);
             $scope.view.job = Cliche.getJob();
 
+            if ($stateParams.type === 'tool') {
+                _.forEach($scope.view.tool.inputs, function(input) {
+                    var name = Cliche.parseName(input);
+                    var schema = Cliche.getSchema('input', input, 'tool', false);
+                    var enumObj = Cliche.parseEnum(schema);
+                    var type = Cliche.parseType(schema);
+                    var itemsType = Cliche.getItemsType(Cliche.getItemsRef(input));
+
+                    $scope.view.job.inputs[name] = Helper.getDefaultInputValue(name, enumObj.symbols, type, itemsType);
+                });
+            }
+
             prepareRequirements();
-            setUpCategories();
+
 
         };
 
@@ -339,23 +359,32 @@ angular.module('registryApp.cliche')
 
         };
 
-        /**
-         * Prepares categories for tagsInput directive
-         */
-        var setUpCategories = function() {
-            $scope.view.categories = _.map($scope.view.tool['sbg:category'], function(cat) {
-
-                return {text: cat};
-            });
-        };
 
         var prepareStatusCodes = function () {
-            if (typeof $scope.view.tool.successCodes === 'undefined') {
+            if (typeof $scope.view.tool.successCodes === 'undefined' && $stateParams.type !== 'script') {
                 $scope.view.tool.successCodes = [];
             }
 
-            if (typeof $scope.view.tool.temporaryFailCodes === 'undefined') {
+            if (typeof $scope.view.tool.temporaryFailCodes === 'undefined' && $stateParams.type !== 'script') {
                 $scope.view.tool.temporaryFailCodes = [];
+            }
+        };
+
+        /**
+         * Checks if the app has any expressions.
+         *
+         * Apps with expressions require an expression engine. It adds an expression engine
+         * requirement to apps with any expressions.
+         */
+        var checkExpressionRequirement = function () {
+            if (Helper.deepPropertyExists($scope.view.tool, 'script')) {
+                $scope.view.expReq = true;
+                if (!_.find($scope.view.tool.requirements, {'class': 'ExpressionEngineRequirement'})) {
+                    $scope.view.tool.requirements.push(Cliche.getExpressionRequirement());
+                }
+            } else {
+                $scope.view.expReq = false;
+                _.remove($scope.view.tool.requirements, {'class': 'ExpressionEngineRequirement'});
             }
         };
 
@@ -421,8 +450,6 @@ angular.module('registryApp.cliche')
 
                         setUpCliche();
                         prepareRequirements();
-                        setUpCategories();
-
                     });
 
             }, function () {
@@ -484,13 +511,6 @@ angular.module('registryApp.cliche')
             return position;
         };
 
-        /**
-         * Updates $scope.view.tool.categories
-         */
-        $scope.updateCategories = function() {
-            $scope.view.tool['sbg:category'] = _.pluck($scope.view.categories, 'text');
-        };
-
 
         /**
          * Toggle dropdown menu
@@ -513,15 +533,20 @@ angular.module('registryApp.cliche')
             } else {
                 turnOffCliAdapterDeepWatch();
             }
-
         };
 
         /**
          * Initiate command generating
          */
         $scope.generateCommand = function() {
-            Cliche.generateCommand();
+            $timeout(function() {
+                Cliche.generateCommand()
+                    .then(outputCommand, outputError);
+            });
+
         };
+
+        var debouncedGenerateCommand = _.debounce($scope.generateCommand, 200);
 
         /**
          * Update tool resources and apply transformation on allocated resources if needed
@@ -529,26 +554,24 @@ angular.module('registryApp.cliche')
          * @param {*} transform
          * @param {string} key
          */
-        $scope.updateResource = function (transform, key) {
-
-            var req = $scope.view['req' + key] || { class: key };
-
-            req.value = transform;
-
-            if (_.isObject(transform)) {
-
-                SandBox.evaluate(transform.script, {})
-                    .then(function (result) {
-                        $scope.view.job.allocatedResources[reqMap[key]] = result;
-                    });
-
-            } else {
-                if ($scope.view.job.allocatedResources[reqMap[key]] < transform) {
-                    $scope.view.job.allocatedResources[reqMap[key]] = transform;
-                }
-            }
-
-        };
+        //$scope.updateResource = function (transform, key) {
+        //
+        //    var req = $scope.view['req' + key] || { class: key };
+        //
+        //    req.value = transform;
+        //
+        //    if (_.isObject(transform)) {
+        //
+        //        SandBox.evaluate(transform.script, {})
+        //            .then(function (result) {
+        //                $scope.view.job.allocatedResources[reqMap[key]] = result;
+        //            });
+        //
+        //    } else {
+        //        $scope.view.job.allocatedResources[reqMap[key]] = transform;
+        //    }
+        //
+        //};
 
         /**
          * Update value from the cliAdapter
@@ -639,7 +662,7 @@ angular.module('registryApp.cliche')
 
                 if(!$scope.$$phase) {
                     $scope.$apply();
-                    Cliche.generateCommand();
+                    debouncedGenerateCommand();
                 }
             }
         };
@@ -864,9 +887,7 @@ angular.module('registryApp.cliche')
             Cliche.setTool($scope.view.tool);
             setUpCliche();
             prepareRequirements();
-            setUpCategories();
-            Cliche.generateCommand()
-                .then(outputCommand, outputError);
+            debouncedGenerateCommand();
         }
 
         /**
@@ -897,7 +918,7 @@ angular.module('registryApp.cliche')
             {name: 'undo', callback: $scope.undoAction, preventDefault: true, allowIn: ['INPUT', 'SELECT', 'TEXTAREA']},
             {name: 'redo', callback: $scope.redoAction, preventDefault: true, allowIn: ['INPUT', 'SELECT', 'TEXTAREA']}
         ]);
-        
+
         $scope.chron = Chronicle.record('view.tool', $scope, true);
 
         $scope.view.canUndo = function () {

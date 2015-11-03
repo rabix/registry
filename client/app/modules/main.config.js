@@ -10,6 +10,7 @@
  */
 angular
     .module('registryApp', [
+        'angularytics',
         'ngAnimate',
         'ngCookies',
         'ngResource',
@@ -37,7 +38,7 @@ angular
         exposedSeparator: '$',
         generalSeparator: '.'
     })
-    .config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$localForageProvider', 'markdownConfig', function ($stateProvider, $urlRouterProvider, $httpProvider, $localForageProvider, markdownConfig) {
+    .config(['$stateProvider', '$urlRouterProvider', '$httpProvider', '$localForageProvider', 'markdownConfig','AngularyticsProvider', function ($stateProvider, $urlRouterProvider, $httpProvider, $localForageProvider, markdownConfig,AngularyticsProvider) {
         $stateProvider
 //            .state('home', {
 //                url: '/',
@@ -74,4 +75,9 @@ angular
 
         markdownConfig.escapeHtml = true;
 
+        AngularyticsProvider.setEventHandlers(['Console', 'GoogleUniversal']);
+
+    }])
+    .run(['Angularytics', function(Angularytics){
+        Angularytics.init();
     }]);

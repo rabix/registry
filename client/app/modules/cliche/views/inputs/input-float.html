@@ -1,9 +1,15 @@
 <div class="form-group" ng-class="{required: view.required, 'has-error': (inputForm.inputNumber.$invalid && !isDisabled)}">
     <div class="control-label">
+
         <div ng-if="exposed" class="checkbox">
-            <label><input type="checkbox" ng-model="view.expose" ng-change="exposeParams()"> expose</label>
+            <label><input ng-disabled="view.includeInPorts" type="checkbox" ng-model="view.expose" ng-change="exposeParams()"> expose</label>
         </div>
-        <span class="input-key" title="{{ view.name }}">{{ view.name }}</span>
+
+        <div class="checkbox" ng-if="exposed">
+            <label><input type="checkbox" ng-model="view.includeInPorts" ng-change="includeInPorts()"> Include in Ports</label>
+        </div>
+
+        <span class="input-key" title="{{ ::view.name }}">{{ ::view.name }}</span>
     </div>
 
     <div class="input-property-body">
